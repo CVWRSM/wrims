@@ -50,7 +50,7 @@ public class CondensedReferenceCacheAndRead {
         }
     }
 
-    private static CondensedReferenceCache createCondensedCache(String filename, String pathnameFilter) {
+    public static CondensedReferenceCache createCondensedCache(String filename, String pathnameFilter) {
         HecDssCatalog catalog = new HecDssCatalog(filename);
         CondensedReference[] condensedArray = catalog.getCondensedCatalog(pathnameFilter);
         Set<DSSPathname> condensedReferences = Arrays.stream(condensedArray)
@@ -60,14 +60,14 @@ public class CondensedReferenceCacheAndRead {
         return new CondensedReferenceCache(condensedReferences);
     }
 
-    private static class CondensedReferenceCache {
+    public static class CondensedReferenceCache {
         private final Set<DSSPathname> condensedReferences;
 
         private CondensedReferenceCache(Set<DSSPathname> condensedReferences) {
             this.condensedReferences = condensedReferences;
         }
 
-        private DSSPathname getNominalPathname(String pathname) {
+        public DSSPathname getNominalPathname(String pathname) {
             return condensedReferences.stream()
                     .filter(c -> c.isSamePathname(pathname, false))
                     .findFirst()

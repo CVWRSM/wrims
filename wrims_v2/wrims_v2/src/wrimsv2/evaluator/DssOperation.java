@@ -16,6 +16,11 @@ import wrimsv2.components.Error;
 import wrimsv2.hdf5.HDF5Reader;
 import wrimsv2.parallel.ParallelVars;
 import wrimsv2.tools.General;
+import hec.heclib.dss.DSSPathname;
+import hec.heclib.dss.HecTimeSeries;
+import hec.heclib.util.HecTime;
+import hec.heclib.util.doubleArrayContainer;
+import hec.io.TimeSeriesContainer;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -44,27 +49,33 @@ public class DssOperation {
 		ControlData.partE=timeStep;
 		Timeseries ts=ControlData.allTsMap.get(name);
 		String partC=ts.kind;
-		DataSet ds=getDataForSvar(regularExp(ControlData.partA),regularExp(ts.dssBPart),regularExp(partC),"",regularExp(timeStep), regularExp(ControlData.svDvPartF), svFileIndex);
+		HecTimeSeries hts=getDataForSvar(ControlData.partA.toUpperCase(),ts.dssBPart.toUpperCase(),partC.toUpperCase(),"",timeStep.toUpperCase(), ControlData.svDvPartF.toUpperCase(), svFileIndex, file);
 		
-		if (ds==null){
+		if (hts==null){
 			return false;
 		}
-		if (!ds.getAttributes().getYUnits().toUpperCase().equals(ts.units.toUpperCase())){
-			return false;
-		}	
-		if (!(ds instanceof RegularTimeSeries)){
+		if (!hts.units().toUpperCase().equals(ts.units.toUpperCase())){
 			return false;
 		}
-		RegularTimeSeries rts=(RegularTimeSeries)ds;
+		/*
+		if (!(hts instanceof RegularTimeSeries)){
+			return false;
+		}
+		*/
+		//RegularTimeSeries rts=(RegularTimeSeries)ds;
+		
 		DssDataSet dds= new DssDataSet();
 		ArrayList<Double> dataArray= new ArrayList<Double>();
-		Date startDate=rts.getStartTime().getDate();
-		int year=startDate.getYear()+1900;
-		int month=startDate.getMonth();
-		int day = startDate.getDate();
+		HecTime startDate=hts.startTime();
+		int year=startDate.year();
+		int month=startDate.month();
+		int day = startDate.day();
+		System.out.println(year+" "+month+" "+day);
+		doubleArrayContainer values=new doubleArrayContainer();
+		hts.getData(values);
 		if (ts.units.equals("taf") && ts.convertToUnits.equals("cfs")){
 			int i=0;
-			for (double dataEntry :  rts.getYArray()){
+			for (double dataEntry :  values.array){
 				if (dataEntry==-901.0){
 					dataArray.add(-901.0);
 				}else if (dataEntry==-902.0){
@@ -78,7 +89,7 @@ public class DssOperation {
 			}
 		}else if (ts.units.equals("cfs") && ts.convertToUnits.equals("taf")){
 			int i=0;
-			for (double dataEntry :  rts.getYArray()){
+			for (double dataEntry :  values.array){
 				if (dataEntry==-901.0){
 					dataArray.add(-901.0);
 				}else if (dataEntry==-902.0){
@@ -91,7 +102,7 @@ public class DssOperation {
 				i=i+1;
 			}
 		}else{
-			for (double dataEntry :  rts.getYArray()){
+			for (double dataEntry :  values.array){
 				dataArray.add(dataEntry);
 			}
 		}
@@ -99,8 +110,9 @@ public class DssOperation {
 		dds.setConvertToUnits(ts.convertToUnits);
 		dds.setKind(partC);
         dds.setData(dataArray);
-        dds.setTimeStep(rts.getTimeInterval().toString());
-        dds.setStartTime(startDate);
+        dds.setTimeStep(timeStep);
+        Date startDateJ=new Date(year-1900, month-1, day);
+        dds.setStartTime(startDateJ);
         dds.setFromDssFile(true);
         dds.generateStudyStartIndex();
         String entryNameTS=entryNameTS(name, timeStep);
@@ -232,19 +244,36 @@ public class DssOperation {
         return ref.getData();
     }
     
-    public static synchronized DataSet getDataForSvar(String apart, String bpart, String cpart, String dpart, String epart, String fpart, int svFileIndex){
-    	DataReference[] refs;
-    	
+    public static synchronized HecTimeSeries getDataForSvar(String apart, String bpart, String cpart, String dpart, String epart, String fpart, int svFileIndex, String filename){
+    	//DataReference[] refs;
+    	String path="/"+apart+"/"+bpart+"/"+cpart+"/"+dpart+"/"+epart+"/"+fpart+"/";
+    	HecTimeSeries ts = new HecTimeSeries();
     	if (svFileIndex==1){
-    		refs = ControlData.groupSvar.find(new String[]{apart, bpart, cpart, dpart, epart, fpart});
+    		//refs = ControlData.groupSvar.find(new String[]{apart, bpart, cpart, dpart, epart, fpart});
+    		DSSPathname dssPathname = ControlData.cacheSvar.getNominalPathname(path);
+            TimeSeriesContainer tsc = new TimeSeriesContainer();
+            tsc.fileName = filename;
+            tsc.fullName = dssPathname.pathname();
+            boolean removeMissing = false;
+            ts.read(tsc, removeMissing);
     	}else{
-    		refs = ControlData.groupSvar2.find(new String[]{apart, bpart, cpart, dpart, epart, fpart});
+    		//refs = ControlData.groupSvar2.find(new String[]{apart, bpart, cpart, dpart, epart, fpart});
+    		DSSPathname dssPathname = ControlData.cacheSvar2.getNominalPathname(path);
+            TimeSeriesContainer tsc = new TimeSeriesContainer();
+            tsc.fileName = filename;
+            tsc.fullName = dssPathname.pathname();
+            boolean removeMissing = false;
+            ts.read(tsc, removeMissing);
     	}
+    	/*
         if (refs.length==0){
               return null;
         } else {
               return refs[0].getData();
         }
+        */
+    	
+    	return ts;
     }
     
     public static DataSet getDataForInitial(String apart, String bpart, String cpart, String dpart, String epart, String fpart){

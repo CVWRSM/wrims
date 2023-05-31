@@ -11,6 +11,7 @@ import wrimsv2.commondata.wresldata.ModelDataSet;
 import wrimsv2.commondata.wresldata.StudyDataSet;
 import wrimsv2.commondata.wresldata.Svar;
 import wrimsv2.commondata.wresldata.Timeseries;
+import wrimsv2.evaluator.CondensedReferenceCacheAndRead.CondensedReferenceCache;
 import wrimsv2.evaluator.TimeOperation;
 import wrimsv2.evaluator.LoopIndex;
 import wrimsv2.external.ExternalFunction;
@@ -82,6 +83,9 @@ public class ControlData {
 	public static Group groupInit;
 	public static Group groupSvar;
 	public static Group groupSvar2;
+	public static CondensedReferenceCache cacheInit;
+	public static CondensedReferenceCache cacheSvar;
+	public static CondensedReferenceCache cacheSvar2;
 	public static DSSDataWriter writer;
 	public static String solverName="cbc'";
 	public static Optimizer xasolver;

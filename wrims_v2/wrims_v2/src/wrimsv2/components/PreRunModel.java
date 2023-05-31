@@ -1,5 +1,7 @@
 package wrimsv2.components;
 
+import hec.heclib.dss.HecDssCatalog;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -27,10 +29,12 @@ import wrimsv2.commondata.wresldata.External;
 import wrimsv2.commondata.wresldata.ModelDataSet;
 import wrimsv2.commondata.wresldata.StudyDataSet;
 import wrimsv2.commondata.wresldata.Timeseries;
+import wrimsv2.evaluator.CondensedReferenceCacheAndRead;
 import wrimsv2.evaluator.DataTimeSeries;
 import wrimsv2.evaluator.DssDataSetFixLength;
 import wrimsv2.evaluator.DssOperation;
 import wrimsv2.evaluator.TimeOperation;
+import wrimsv2.evaluator.CondensedReferenceCacheAndRead.CondensedReferenceCache;
 import wrimsv2.external.LoadAllDll;
 import wrimsv2.hdf5.HDF5Reader;
 import wrimsv2.hdf5.HDF5Writer;
@@ -79,11 +83,15 @@ public class PreRunModel {
 		if (FilePaths.svarFile.toLowerCase().endsWith(".h5")){
 			HDF5Reader.readTimeseries();
 		}else{
-			if (ControlData.genSVCatalog) DSSUtil.generateCatalog(FilePaths.fullSvarFilePath);
-			ControlData.groupSvar= DSSUtil.createGroup("local", FilePaths.fullSvarFilePath);
+			//if (ControlData.genSVCatalog) DSSUtil.generateCatalog(FilePaths.fullSvarFilePath);
+			//ControlData.groupSvar= DSSUtil.createGroup("local", FilePaths.fullSvarFilePath);
+			HecDssCatalog catalog = new HecDssCatalog(FilePaths.fullSvarFilePath);
+	        ControlData.cacheSvar = CondensedReferenceCacheAndRead.createCondensedCache(FilePaths.fullSvarFilePath, "*");
 			if (!FilePaths.fullSvarFile2Path.equals("")){
-				if (ControlData.genSVCatalog) DSSUtil.generateCatalog(FilePaths.fullSvarFile2Path);
-				ControlData.groupSvar2= DSSUtil.createGroup("local", FilePaths.fullSvarFile2Path);
+				//if (ControlData.genSVCatalog) DSSUtil.generateCatalog(FilePaths.fullSvarFile2Path);
+				//ControlData.groupSvar2= DSSUtil.createGroup("local", FilePaths.fullSvarFile2Path);
+				HecDssCatalog catalog2 = new HecDssCatalog(FilePaths.fullSvarFile2Path);
+		        ControlData.cacheSvar2 = CondensedReferenceCacheAndRead.createCondensedCache(FilePaths.fullSvarFile2Path, "*");
 			}
 			readTimeseries();
 		}
