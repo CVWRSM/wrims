@@ -70,7 +70,6 @@ public class DssOperation {
 		int year=startDate.year();
 		int month=startDate.month();
 		int day = startDate.day();
-		System.out.println(year+" "+month+" "+day);
 		doubleArrayContainer values=new doubleArrayContainer();
 		hts.getData(values);
 		if (ts.units.equals("taf") && ts.convertToUnits.equals("cfs")){
@@ -256,6 +255,7 @@ public class DssOperation {
             tsc.fullName = dssPathname.pathname();
             boolean removeMissing = false;
             ts.read(tsc, removeMissing);
+            ts.setUnits(tsc.units);
     	}else{
     		//refs = ControlData.groupSvar2.find(new String[]{apart, bpart, cpart, dpart, epart, fpart});
     		DSSPathname dssPathname = ControlData.cacheSvar2.getNominalPathname(path);
@@ -264,6 +264,7 @@ public class DssOperation {
             tsc.fullName = dssPathname.pathname();
             boolean removeMissing = false;
             ts.read(tsc, removeMissing);
+            ts.setUnits(tsc.units);
     	}
     	/*
         if (refs.length==0){

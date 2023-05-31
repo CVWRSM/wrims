@@ -1,6 +1,7 @@
 package wrimsv2.components;
 
 import hec.heclib.dss.HecDssCatalog;
+import hec.heclib.dss.HecTimeSeries;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -79,6 +80,7 @@ public class PreRunModel {
 		}
 		ControlData.allTsMap=sds.getTimeseriesMap();
 
+		HecTimeSeries.setMessageLevel(0);
 		long t1 = Calendar.getInstance().getTimeInMillis();
 		if (FilePaths.svarFile.toLowerCase().endsWith(".h5")){
 			HDF5Reader.readTimeseries();
