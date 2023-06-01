@@ -83,7 +83,7 @@ public class DssDataSet {
 		Date st=getStartTime();
 		//long sTime=st.getTime();
 		int sYear=st.getYear()+1900;
-		int sMonth=st.getMonth(); //Originally it should be getMonth()-1. However, dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
+		int sMonth=st.getMonth()+1; //Originally it should be getMonth()-1. However, dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
 		Date studyStart=new Date(ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);
 		if (getTimeStep().equals("1MON")){
 			studyStartIndex=ControlData.startYear*12+ControlData.startMonth-(sYear*12+sMonth);
@@ -94,7 +94,7 @@ public class DssDataSet {
 			Calendar c2=Calendar.getInstance();
 			c2.setTime(studyStart);
 			long indexValue = Duration.between(c1.toInstant(), c2.toInstant()).toDays();
-			studyStartIndex=(int)indexValue+2;
+			studyStartIndex=(int)indexValue+1;
 		}
 	}
 	
@@ -192,7 +192,7 @@ public class DssDataSet {
 		if (index<0) index=0;
 		Date dataDate=selDataMap.get(values[index]);
 		int dataYear=dataDate.getYear()+1900;
-		int dataMonth=dataDate.getMonth()+1;
+		int dataMonth=dataDate.getMonth()+1; //HEC DSS7 uses m+1. However, Vista/HecDSS6 uses because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
 		int dataDay = dataDate.getDate();
 		if (ControlData.timeStep.equals("1MON")){
 			return (dataYear-ControlData.currYear)*12+(dataMonth-ControlData.currMonth);

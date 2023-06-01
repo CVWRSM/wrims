@@ -105,8 +105,10 @@ public class PreRunModel {
 			HDF5Reader.readInitialData();
 		}else{
 			ControlData.initHDF5=false;
-			DSSUtil.generateCatalog(FilePaths.fullInitFilePath);
-			ControlData.groupInit= DSSUtil.createGroup("local", FilePaths.fullInitFilePath);
+			//DSSUtil.generateCatalog(FilePaths.fullInitFilePath);
+			//ControlData.groupInit= DSSUtil.createGroup("local", FilePaths.fullInitFilePath);
+			HecDssCatalog catalog = new HecDssCatalog(FilePaths.fullInitFilePath);
+	        ControlData.cacheInit = CondensedReferenceCacheAndRead.createCondensedCache(FilePaths.fullInitFilePath, "*");
 		}
 		initialDvarAliasTS();
 
