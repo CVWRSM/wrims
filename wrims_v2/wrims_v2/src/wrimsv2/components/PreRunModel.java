@@ -1,5 +1,6 @@
 package wrimsv2.components;
 
+import hec.heclib.dss.HecDss;
 import hec.heclib.dss.HecDssCatalog;
 import hec.heclib.dss.HecTimeSeries;
 
@@ -57,16 +58,24 @@ public class PreRunModel {
 		ControlData.monthlyStartTime=new Date(ControlData.startYear-1900, ControlData.startMonth-1, TimeOperation.numberOfDays(ControlData.startMonth, ControlData.startYear));
 		ControlData.dailyStartTime=new Date(ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);
 
-		//if (ControlData.outputType!=1){
-			ControlData.writer = new DSSDataWriter(FilePaths.fullDvarDssPath);
-			try {
-				ControlData.writer.openDSSFile();
-			} catch (Exception e) {
-				ControlData.writer.closeDSSFile();
-				Error.addEngineError("Could not open dv file. "+e);
-				return;
-			}
-		//}
+		/*
+		ControlData.writer = new DSSDataWriter(FilePaths.fullDvarDssPath);
+		try {
+			ControlData.writer.openDSSFile();
+		} catch (Exception e) {
+			ControlData.writer.closeDSSFile();
+			Error.addEngineError("Could not open dv file. "+e);
+			return;
+		}
+		*/
+		
+		try {
+			ControlData.dvDss = HecDss.open(FilePaths.fullDvarDssPath);
+		} catch (Exception e) {
+			Error.addEngineError("Could not open dv file. "+e);
+			ControlData.dvDss.close();
+			return;
+		}
 		
 		if (!(new File(FilePaths.fullInitFilePath)).exists()){
 			System.out.println("Error: Initial file "+ FilePaths.fullInitFilePath+" doesn't exist.");
@@ -80,7 +89,7 @@ public class PreRunModel {
 		}
 		ControlData.allTsMap=sds.getTimeseriesMap();
 
-		HecTimeSeries.setMessageLevel(0);
+		HecTimeSeries.setMessageLevel(2);
 		long t1 = Calendar.getInstance().getTimeInMillis();
 		if (FilePaths.svarFile.toLowerCase().endsWith(".h5")){
 			HDF5Reader.readTimeseries();

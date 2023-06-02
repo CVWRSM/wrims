@@ -16,6 +16,7 @@ import wrimsv2.evaluator.TimeOperation;
 import wrimsv2.evaluator.LoopIndex;
 import wrimsv2.external.ExternalFunction;
 import wrimsv2.solver.ortools.OrToolsSolver;
+import hec.heclib.dss.HecDss;
 
 import java.sql.Connection;
 import java.time.LocalDateTime;
@@ -87,6 +88,7 @@ public class ControlData {
 	public static CondensedReferenceCache cacheSvar;
 	public static CondensedReferenceCache cacheSvar2;
 	public static DSSDataWriter writer;
+	public static HecDss dvDss;
 	public static String solverName="cbc'";
 	public static Optimizer xasolver;
 	public static OrToolsSolver otsolver;
