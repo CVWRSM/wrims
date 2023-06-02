@@ -192,7 +192,7 @@ public class DssDataSet {
 		if (index<0) index=0;
 		Date dataDate=selDataMap.get(values[index]);
 		int dataYear=dataDate.getYear()+1900;
-		int dataMonth=dataDate.getMonth()+1; //HEC DSS7 uses m+1. However, Vista/HecDSS6 uses because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
+		int dataMonth=dataDate.getMonth()+1; //HEC DSS7 uses getMonth()+1. However, Vista/HecDSS6 uses getMonth() because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
 		int dataDay = dataDate.getDate();
 		if (ControlData.timeStep.equals("1MON")){
 			return (dataYear-ControlData.currYear)*12+(dataMonth-ControlData.currMonth);

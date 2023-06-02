@@ -71,7 +71,7 @@ public class CondensedReferenceCacheAndRead {
             return condensedReferences.stream()
                     .filter(c -> c.isSamePathname(pathname, false))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Could not find DSS path: " + pathname));
+                    .orElse(null);
         }
     }
 }
