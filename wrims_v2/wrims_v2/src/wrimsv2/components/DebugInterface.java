@@ -1,5 +1,7 @@
 package wrimsv2.components;
 
+import hec.heclib.dss.HecDss;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -355,8 +357,8 @@ public class DebugInterface {
 				}else if (ControlData.solverName.equalsIgnoreCase("Cbc")){
 					CbcSolver.close();
 				}
-				DssOperation.saveInitialData(ControlData.writer, FilePaths.fullDvarDssPath);
-				DssOperation.saveDvarData(ControlData.writer, FilePaths.fullDvarDssPath);
+				DssOperation.saveInitialData(ControlData.dvDss, FilePaths.fullDvarDssPath);
+				DssOperation.saveDvarData(ControlData.dvDss, FilePaths.fullDvarDssPath);
 				ControlData.writer.closeDSSFile();
 				terminateCode=1;
 			}
@@ -2505,6 +2507,7 @@ public class DebugInterface {
 	}
 	
 	public boolean saveInitDss(String fileName){
+		/*
 		DSSDataWriter writer = new DSSDataWriter(fileName);
 		try {
 			writer.openDSSFile();
@@ -2512,41 +2515,55 @@ public class DebugInterface {
 			writer.closeDSSFile();
 			return false;
 		}
-		DssOperation.saveDVInitialData(writer, fileName);
-		DssOperation.saveSVInitialData(writer, fileName);
-		writer.closeDSSFile();
+		*/
+		HecDss dss;
+		try {
+			dss = HecDss.open(fileName);
+		} catch (Exception e) {
+			return false;
+		}
+		DssOperation.saveDVInitialData(dss, fileName);
+		DssOperation.saveSVInitialData(dss, fileName);
+		dss.close();
 		return true;
 	}
 	
 	public boolean saveSvDss(String fileName){
-		DSSDataWriter writer = new DSSDataWriter(fileName);
+		HecDss dss;
 		try {
-			writer.openDSSFile();
-			DssOperation.saveSvarTSData(writer, fileName);
-			writer.closeDSSFile();
+			dss = HecDss.open(fileName);
+			DssOperation.saveSvarTSData(dss, fileName);
+			dss.close();
 			return true;
 		} catch (Exception e) {
-			writer.closeDSSFile();
 			return false;
 		}
 	}
 		
 	public boolean saveDvDss(String fileName){
 		if (fileName.equalsIgnoreCase(FilePaths.fullDvarDssPath)){
-			DssOperation.saveInitialData(ControlData.writer, fileName);
-			DssOperation.saveDvarData(ControlData.writer, fileName);
+			DssOperation.saveInitialData(ControlData.dvDss, fileName);
+			DssOperation.saveDvarData(ControlData.dvDss, fileName);
 			return true;
 		}else{
-			DSSDataWriter writer = new DSSDataWriter(fileName);
+			/*DSSDataWriter writer = new DSSDataWriter(fileName);
 			try {
 				writer.openDSSFile();
 			} catch (Exception e) {
 				writer.closeDSSFile();
 				return false;
 			}
-			DssOperation.saveInitialData(writer, fileName);
-			DssOperation.saveDvarData(writer, fileName);
-			writer.closeDSSFile();
+			*/
+			HecDss dss;
+			try {
+				dss = HecDss.open(fileName);
+			} catch (Exception e) {
+				return false;
+			}
+			DssOperation.saveInitialData(dss, fileName);
+			DssOperation.saveDvarData(dss, fileName);
+			dss.close();
+			//writer.closeDSSFile();
 			return true;
 		}
 	}
