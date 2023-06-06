@@ -1,5 +1,8 @@
 package wrimsv2.debug;
 
+import hec.heclib.dss.HecDss;
+import hec.heclib.dss.HecDssCatalog;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,14 +11,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import vista.db.dss.DSSDataWriter;
-import vista.db.dss.DSSUtil;
 import wrimsv2.commondata.wresldata.External;
 import wrimsv2.commondata.wresldata.ModelDataSet;
 import wrimsv2.commondata.wresldata.StudyDataSet;
 import wrimsv2.commondata.wresldata.Timeseries;
 import wrimsv2.components.ControlData;
 import wrimsv2.components.FilePaths;
+import wrimsv2.evaluator.CondensedReferenceCacheAndRead;
 import wrimsv2.evaluator.DataTimeSeries;
 import wrimsv2.evaluator.DssDataSetFixLength;
 import wrimsv2.evaluator.DssOperation;
@@ -30,10 +32,18 @@ public class ReLoadSVDss {
 			System.out.println("=======Run Complete Unsuccessfully=======");
 			System.exit(0);
 		}
-		ControlData.groupSvar= DSSUtil.createGroup("local", FilePaths.fullSvarFilePath);
-		ControlData.allTsMap=sds.getTimeseriesMap();
-		
-		readTimeseries();
+		try {
+			HecDssCatalog catalog = new HecDssCatalog(FilePaths.fullSvarFilePath);
+	        ControlData.cacheSvar = CondensedReferenceCacheAndRead.createCondensedCache(FilePaths.fullSvarFilePath, "*");
+			if (!FilePaths.fullSvarFile2Path.equals("")){
+				HecDssCatalog catalog2 = new HecDssCatalog(FilePaths.fullSvarFile2Path);
+		        ControlData.cacheSvar2 = CondensedReferenceCacheAndRead.createCondensedCache(FilePaths.fullSvarFile2Path, "*");
+			}
+			ControlData.allTsMap=sds.getTimeseriesMap();
+			readTimeseries();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void readTimeseries(){

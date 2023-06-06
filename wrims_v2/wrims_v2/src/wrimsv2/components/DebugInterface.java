@@ -33,10 +33,6 @@ import org.antlr.runtime.TokenStream;
 import com.google.common.primitives.Doubles;
 import com.sun.java.util.collections.Arrays;
 
-import vista.db.dss.DSSData;
-import vista.db.dss.DSSDataWriter;
-import vista.db.dss.DSSUtil;
-import vista.time.TimeFactory;
 import wrimsv2.commondata.solverdata.SolverData;
 import wrimsv2.commondata.wresldata.Alias;
 import wrimsv2.commondata.wresldata.Dvar;
@@ -359,7 +355,7 @@ public class DebugInterface {
 				}
 				DssOperation.saveInitialData(ControlData.dvDss, FilePaths.fullDvarDssPath);
 				DssOperation.saveDvarData(ControlData.dvDss, FilePaths.fullDvarDssPath);
-				ControlData.writer.closeDSSFile();
+				ControlData.dvDss.close();
 				terminateCode=1;
 			}
 			System.out.println("Terminated");

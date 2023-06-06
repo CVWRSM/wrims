@@ -1,8 +1,5 @@
 package wrimsv2.components;
 
-import vista.db.dss.DSSDataWriter;
-import vista.db.dss.DSSUtil;
-import vista.set.Group;
 import wrimsv2.commondata.wresldata.Alias;
 import wrimsv2.commondata.wresldata.Dvar;
 import wrimsv2.commondata.wresldata.External;
@@ -81,13 +78,13 @@ public class ControlData {
 	public static String partA="";
 	public static String svDvPartF="";
 	public static String initPartF;
-	public static Group groupInit;
-	public static Group groupSvar;
-	public static Group groupSvar2;
+	//public static Group groupInit;
+	//public static Group groupSvar;
+	//public static Group groupSvar2;
 	public static CondensedReferenceCache cacheInit;
 	public static CondensedReferenceCache cacheSvar;
 	public static CondensedReferenceCache cacheSvar2;
-	public static DSSDataWriter writer;
+	//public static DSSDataWriter writer;
 	public static HecDss dvDss;
 	public static String solverName="cbc'";
 	public static Optimizer xasolver;

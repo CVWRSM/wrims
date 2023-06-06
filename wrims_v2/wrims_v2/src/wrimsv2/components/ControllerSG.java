@@ -332,7 +332,7 @@ public class ControllerSG {
 				DssOperation.writeInitDvarAliasToDSS();
 			}
 			DssOperation.writeDVAliasToDSS();
-			ControlData.writer.closeDSSFile();
+			ControlData.dvDss.close();
 		}
 	}
 	
@@ -602,7 +602,7 @@ public class ControllerSG {
 				DssOperation.writeInitDvarAliasToDSS();
 			}
 			DssOperation.writeDVAliasToDSS();
-			ControlData.writer.closeDSSFile();
+			ControlData.dvDss.close();
 		}
 	}
 

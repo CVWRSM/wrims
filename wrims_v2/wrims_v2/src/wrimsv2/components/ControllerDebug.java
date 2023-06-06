@@ -24,8 +24,6 @@ import org.antlr.runtime.TokenStream;
 
 import com.sunsetsoft.xa.Optimizer;
 
-import vista.db.dss.DSSDataWriter;
-import vista.db.dss.DSSUtil;
 import wrimsv2.commondata.solverdata.SolverData;
 import wrimsv2.commondata.wresldata.Alias;
 import wrimsv2.commondata.wresldata.Dvar;

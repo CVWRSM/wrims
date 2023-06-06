@@ -308,7 +308,7 @@ public class Controller {
 			DssOperation.writeInitDvarAliasToDSS();
 		}
 		DssOperation.writeDVAliasToDSS();
-		ControlData.writer.closeDSSFile();
+		ControlData.dvDss.close();
 	}
 
 	public void runModelGurobi(StudyDataSet sds){
@@ -427,7 +427,7 @@ public class Controller {
 		DssOperation.writeInitDvarAliasToDSS();
 		}
 		DssOperation.writeDVAliasToDSS();
-		ControlData.writer.closeDSSFile();
+		ControlData.dvDss.close();
 	}
 
 	public void writeOutputDssEveryTenYears(){
@@ -594,6 +594,6 @@ public class Controller {
 		DssOperation.writeInitDvarAliasToDSS();
 		}
 		DssOperation.writeDVAliasToDSS();
-		ControlData.writer.closeDSSFile();
+		ControlData.dvDss.close();
 	}
 }

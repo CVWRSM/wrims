@@ -1,11 +1,5 @@
 package wrimsv2.evaluator;
 
-import vista.db.dss.*;
-import vista.time.Time;
-import vista.time.TimeFactory;
-import vista.time.TimeInterval;
-import vista.time.TimeWindow;
-import vista.set.*;
 import wrimsv2.commondata.wresldata.Alias;
 import wrimsv2.commondata.wresldata.Dvar;
 import wrimsv2.commondata.wresldata.StudyDataSet;
