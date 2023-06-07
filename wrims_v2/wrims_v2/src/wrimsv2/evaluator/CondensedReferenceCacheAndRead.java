@@ -61,7 +61,7 @@ public class CondensedReferenceCacheAndRead {
     }
 
     public static class CondensedReferenceCache {
-        private final Set<DSSPathname> condensedReferences;
+        public final Set<DSSPathname> condensedReferences;
 
         private CondensedReferenceCache(Set<DSSPathname> condensedReferences) {
             this.condensedReferences = condensedReferences;
