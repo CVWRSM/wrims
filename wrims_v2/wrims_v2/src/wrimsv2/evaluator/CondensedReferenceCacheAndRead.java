@@ -4,6 +4,7 @@ import hec.heclib.dss.*;
 import hec.io.TimeSeriesContainer;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
