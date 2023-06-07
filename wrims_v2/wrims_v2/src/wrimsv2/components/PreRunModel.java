@@ -89,7 +89,7 @@ public class PreRunModel {
 		}
 		ControlData.allTsMap=sds.getTimeseriesMap();
 
-		HecTimeSeries.setMessageLevel(2);
+		HecTimeSeries.setMessageLevel(0);
 		long t1 = Calendar.getInstance().getTimeInMillis();
 		if (FilePaths.svarFile.toLowerCase().endsWith(".h5")){
 			HDF5Reader.readTimeseries();
