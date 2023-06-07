@@ -1054,12 +1054,8 @@ public class DSSHDF5Converter {
 		}
 		
 		int firstYear = firstDateMonthly.getYear()+1900;
-		int firstMonth = firstDateMonthly.getMonth()+1-1;
-		if (firstMonth==0){
-			firstYear=firstYear-1;
-			firstMonth=12;
-		}
-		
+		int firstMonth = firstDateMonthly.getMonth();
+	
 		int dim=(ControlData.startYear-firstYear)*12+(ControlData.startMonth-firstMonth);
 		if (dim>0){
 			it = cache.condensedReferences.iterator();
@@ -1068,7 +1064,7 @@ public class DSSHDF5Converter {
 				DSSPathname dp = it.next();
 				TimeSeriesContainer tsc = new TimeSeriesContainer();
 				HecTimeSeries hts = new HecTimeSeries();
-	            tsc.fileName = FilePaths.fullSvarFilePath;
+	            tsc.fileName = FilePaths.fullInitFilePath;
 	            tsc.fullName = dp.pathname();
 	            boolean removeMissing = false;
 	            hts.read(tsc, removeMissing);
