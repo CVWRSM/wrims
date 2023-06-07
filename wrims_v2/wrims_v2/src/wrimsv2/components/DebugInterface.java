@@ -2146,9 +2146,9 @@ public class DebugInterface {
 			ParallelVars prvs = TimeOperation.findTime(0);
 			int currIndex;
 			if (ControlData.timeStep.equals("1MON")){
-				currIndex=ValueEvaluation.timeSeriesIndex(ddsf, prvs)-1;
+				currIndex=ValueEvaluation.timeSeriesIndex(ddsf, prvs);
 			}else{
-				currIndex=ValueEvaluation.timeSeriesIndex(ddsf, prvs)-2;
+				currIndex=ValueEvaluation.timeSeriesIndex(ddsf, prvs)-1;
 			}		
 			for (int i=0; i<=currIndex; i++){
 				double value;
