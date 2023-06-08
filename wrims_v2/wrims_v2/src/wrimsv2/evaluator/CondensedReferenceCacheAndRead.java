@@ -8,6 +8,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.lang.IllegalArgumentException;
 
@@ -55,17 +58,20 @@ public class CondensedReferenceCacheAndRead {
     public static CondensedReferenceCache createCondensedCache(String filename, String pathnameFilter) {
         HecDssCatalog catalog = new HecDssCatalog(filename);
         CondensedReference[] condensedArray = catalog.getCondensedCatalog(pathnameFilter);
-        Set<DSSPathname> condensedReferences = Arrays.stream(condensedArray)
+        Comparator<DSSPathname> dssPathnameComparator = Comparator.comparing(DSSPathname::getPathname);
+        Supplier<TreeSet<DSSPathname>> dssPathnameSetSupplier = () -> new TreeSet<DSSPathname>(dssPathnameComparator);
+
+        SortedSet<DSSPathname> condensedReferences = Arrays.stream(condensedArray)
                 .map(CondensedReference::getNominalPathname)
                 .map(DSSPathname::new)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(dssPathnameSetSupplier));
         return new CondensedReferenceCache(condensedReferences);
     }
 
     public static class CondensedReferenceCache {
-        public final Set<DSSPathname> condensedReferences;
+    	public final SortedSet<DSSPathname> condensedReferences;
 
-        private CondensedReferenceCache(Set<DSSPathname> condensedReferences) {
+        private CondensedReferenceCache(SortedSet<DSSPathname> condensedReferences) {
             this.condensedReferences = condensedReferences;
         }
 
