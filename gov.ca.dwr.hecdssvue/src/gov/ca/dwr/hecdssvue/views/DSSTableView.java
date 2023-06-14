@@ -51,7 +51,7 @@ public class DSSTableView extends AbstractDSSView {
 				dataVector.remove(i);
 			}
 		}
-		
+
 		if (dataVector != null && dataVector.size() > 0) {
 			contentPane.removeAll();
 			table = new HecDataTable(contentPane);
