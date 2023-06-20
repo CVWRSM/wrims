@@ -890,7 +890,7 @@ public class DSSCatalogView extends AbstractDSSView {
 
 		boolean match = true;
 		for (i = 1; i < 7; i++) {
-			match = pattern[i].matcher((String) pathParts[i]).matches();
+			match = pattern[i].matcher((String) pathParts[i].toUpperCase()).matches();
 			if (!match)
 				break;
 		}
