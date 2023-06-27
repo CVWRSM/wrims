@@ -106,7 +106,7 @@ public class ControllerBatch {
 				int runPeriod=(int) (endTimeInMillis-startTimeInMillis);
 				System.out.println("=================Run Time is "+runPeriod/60000+"min"+Math.round((runPeriod/60000.0-runPeriod/60000)*60)+"sec====");
 				ILP.writeNoteLn("Total time", "(sec): "+                        Math.round(runPeriod/1000.0));
-				ILP.writeNoteLn("Total time", "(min): "+                        Math.round(runPeriod/1000.0/60));	
+				ILP.writeNoteLn("Total time", "(min): "+                        Math.round(runPeriod/1000.0/60));
 				ILP.writeNoteLn("Total time", "(sec): "+                        Math.round(runPeriod/1000.0), ILP._noteFile_timeusage);
 				ILP.writeNoteLn("Total time", "(min): "+                        Math.round(runPeriod/1000.0/60), ILP._noteFile_timeusage);
 			} else {
@@ -230,9 +230,9 @@ public class ControllerBatch {
 			return null;
 			
 		} else if(StudyUtils.loadParserData) {
-			String canonicalMainFilePath = Tools.getCanonicalLowCasePath(FilePaths.fullMainPath);			
-			ParserUtils.setRunDir(new File(canonicalMainFilePath).getParent()); 
-			
+			String canonicalMainFilePath = Tools.getCanonicalLowCasePath(FilePaths.fullMainPath);
+			ParserUtils.setRunDir(new File(canonicalMainFilePath).getParent());
+
 			StudyDataSet sds = StudyUtils.loadObject(StudyUtils.parserDataPath);
 			LoadParameter.process(sds);
 			if (ControlData.useCbcWarmStart || ControlData.cbcCheckIntErr || ControlData.cbc_debug_routeCbc || ControlData.cbc_debug_routeXA){
@@ -297,9 +297,13 @@ public class ControllerBatch {
 			System.exit(1);
 		}
 		
+		boolean noEndOutput=false;
 		TimeOperation.initOutputDate(ControlData.yearOutputSection);
 		TimeOperation.initMemDate(ControlData.monMemSection);
-		
+		if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
+			noEndOutput=true;
+		}
+
 		ArrayList<ValueEvaluatorParser> modelConditionParsers=sds.getModelConditionParsers();
 		boolean noError=true;
 		VariableTimeStep.initialCurrTimeStep(modelList);
@@ -441,6 +445,9 @@ public class ControllerBatch {
 				TimeOperation.setMemDate(ControlData.monMemSection);
 				DssOperation.shiftData();
 				TimeOperation.setOutputDate(ControlData.yearOutputSection);
+				if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
+					noEndOutput=true;
+				}
 			}
 			VariableTimeStep.setCycleStartDate(ControlData.cycleEndDay, ControlData.cycleEndMonth, ControlData.cycleEndYear);
 			VariableTimeStep.setCycleEndDate(sds);
@@ -545,9 +552,13 @@ public class ControllerBatch {
 			Error.writeErrorLog();
 		}
 		
+		boolean noEndOutput=false;
 		TimeOperation.initOutputDate(ControlData.yearOutputSection);
 		TimeOperation.initMemDate(ControlData.monMemSection);
-		
+		if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
+			noEndOutput=true;
+		}
+
 		ArrayList<ValueEvaluatorParser> modelConditionParsers=sds.getModelConditionParsers();
 		boolean noError=true;
 		VariableTimeStep.initialCurrTimeStep(modelList);
@@ -830,6 +841,9 @@ public class ControllerBatch {
 				TimeOperation.setMemDate(ControlData.monMemSection);
 				DssOperation.shiftData();
 				TimeOperation.setOutputDate(ControlData.yearOutputSection);
+				if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
+					noEndOutput=true;
+				}
 			}
 			VariableTimeStep.setCycleStartDate(ControlData.cycleEndDay, ControlData.cycleEndMonth, ControlData.cycleEndYear);
 			VariableTimeStep.setCycleEndDate(sds);
@@ -903,9 +917,13 @@ public class ControllerBatch {
 		ILP.initializeIlp();
 		GurobiSolver.initialize();
 		
+		boolean noEndOutput=false;
 		TimeOperation.initOutputDate(ControlData.yearOutputSection);
 		TimeOperation.initMemDate(ControlData.monMemSection);
-		
+		if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
+			noEndOutput=true;
+		}
+
 		int sectionI=0;
 		while (VariableTimeStep.checkEndDate(ControlData.cycleStartDay, ControlData.cycleStartMonth, ControlData.cycleStartYear, ControlData.endDay, ControlData.endMonth, ControlData.endYear)<=0 && noError){
 
@@ -1057,6 +1075,9 @@ public class ControllerBatch {
 				TimeOperation.setMemDate(ControlData.monMemSection);
 				DssOperation.shiftData();
 				TimeOperation.setOutputDate(ControlData.yearOutputSection);
+				if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
+					noEndOutput=true;
+				}
 			}
 			VariableTimeStep.setCycleStartDate(ControlData.cycleEndDay, ControlData.cycleEndMonth, ControlData.cycleEndYear);
 			VariableTimeStep.setCycleEndDate(sds);
@@ -1534,9 +1555,13 @@ public class ControllerBatch {
 			System.exit(1);
 		}
 		
+		boolean noEndOutput=false;
 		TimeOperation.initOutputDate(ControlData.yearOutputSection);
 		TimeOperation.initMemDate(ControlData.monMemSection);
-		
+		if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
+			noEndOutput=true;
+		}
+
 		ArrayList<ValueEvaluatorParser> modelConditionParsers=sds.getModelConditionParsers();
 		boolean noError=true;
 		VariableTimeStep.initialCurrTimeStep(modelList);
@@ -1721,6 +1746,9 @@ public class ControllerBatch {
 				TimeOperation.setMemDate(ControlData.monMemSection);
 				DssOperation.shiftData();
 				TimeOperation.setOutputDate(ControlData.yearOutputSection);
+				if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
+					noEndOutput=true;
+				}
 			}
 			VariableTimeStep.setCycleStartDate(ControlData.cycleEndDay, ControlData.cycleEndMonth, ControlData.cycleEndYear);
 			VariableTimeStep.setCycleEndDate(sds);
