@@ -296,8 +296,7 @@ public class ControllerBatch {
 			System.out.println("Model run exits due to error.");
 			System.exit(1);
 		}
-		
-		boolean noEndOutput=false;
+
 		TimeOperation.initOutputDate(ControlData.yearOutputSection);
 		TimeOperation.initMemDate(ControlData.monMemSection);
 		if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
@@ -445,9 +444,6 @@ public class ControllerBatch {
 				TimeOperation.setMemDate(ControlData.monMemSection);
 				DssOperation.shiftData();
 				TimeOperation.setOutputDate(ControlData.yearOutputSection);
-				if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
-					noEndOutput=true;
-				}
 			}
 			VariableTimeStep.setCycleStartDate(ControlData.cycleEndDay, ControlData.cycleEndMonth, ControlData.cycleEndYear);
 			VariableTimeStep.setCycleEndDate(sds);
@@ -551,8 +547,7 @@ public class ControllerBatch {
 			Error.addConfigError("Solver name not recognized: "+ControlData.solverName);
 			Error.writeErrorLog();
 		}
-		
-		boolean noEndOutput=false;
+
 		TimeOperation.initOutputDate(ControlData.yearOutputSection);
 		TimeOperation.initMemDate(ControlData.monMemSection);
 		if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
@@ -841,9 +836,6 @@ public class ControllerBatch {
 				TimeOperation.setMemDate(ControlData.monMemSection);
 				DssOperation.shiftData();
 				TimeOperation.setOutputDate(ControlData.yearOutputSection);
-				if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
-					noEndOutput=true;
-				}
 			}
 			VariableTimeStep.setCycleStartDate(ControlData.cycleEndDay, ControlData.cycleEndMonth, ControlData.cycleEndYear);
 			VariableTimeStep.setCycleEndDate(sds);
@@ -916,8 +908,7 @@ public class ControllerBatch {
 		
 		ILP.initializeIlp();
 		GurobiSolver.initialize();
-		
-		boolean noEndOutput=false;
+
 		TimeOperation.initOutputDate(ControlData.yearOutputSection);
 		TimeOperation.initMemDate(ControlData.monMemSection);
 		if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
@@ -1075,9 +1066,6 @@ public class ControllerBatch {
 				TimeOperation.setMemDate(ControlData.monMemSection);
 				DssOperation.shiftData();
 				TimeOperation.setOutputDate(ControlData.yearOutputSection);
-				if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
-					noEndOutput=true;
-				}
 			}
 			VariableTimeStep.setCycleStartDate(ControlData.cycleEndDay, ControlData.cycleEndMonth, ControlData.cycleEndYear);
 			VariableTimeStep.setCycleEndDate(sds);
@@ -1554,8 +1542,7 @@ public class ControllerBatch {
 			System.out.println("Model run exits due to error.");
 			System.exit(1);
 		}
-		
-		boolean noEndOutput=false;
+
 		TimeOperation.initOutputDate(ControlData.yearOutputSection);
 		TimeOperation.initMemDate(ControlData.monMemSection);
 		if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
@@ -1746,9 +1733,6 @@ public class ControllerBatch {
 				TimeOperation.setMemDate(ControlData.monMemSection);
 				DssOperation.shiftData();
 				TimeOperation.setOutputDate(ControlData.yearOutputSection);
-				if ((ControlData.outputYear==ControlData.endYear && ControlData.outputMonth==ControlData.endMonth && ControlData.outputDay==ControlData.endDay) || noEndOutput){
-					noEndOutput=true;
-				}
 			}
 			VariableTimeStep.setCycleStartDate(ControlData.cycleEndDay, ControlData.cycleEndMonth, ControlData.cycleEndYear);
 			VariableTimeStep.setCycleEndDate(sds);
