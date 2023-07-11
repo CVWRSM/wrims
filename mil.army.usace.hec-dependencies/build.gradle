@@ -13,15 +13,19 @@ repositories {
 }
 
 configurations {
-    hecjars.extendsFrom(runtimeClasspath)
+    hecjars.extendsFrom(api)
     hecdll
 }
 
 dependencies {
-    api('mil.army.usace.hec:hec-cwms-ratings-core:2.0.2')
+    api('mil.army.usace.hec:hec-cwms-ratings-core:2.0.2') {
+        exclude group : "mil.army.usace.hec", module: "hec-monolith"
+    }
     api('mil.army.usace.hec:hec-monolith:3.3.22')
     api('mil.army.usace.hec:hec-nucleus-metadata:2.0.1')
-    api('mil.army.usace.hec:dssgui:3.3.33')
+    api('mil.army.usace.hec:dssgui:3.3.33') {
+        exclude group: "com.google.guava", module: "guava"
+    }
     hecdll('mil.army.usace.hec:javaHeclib:7-IR-2-win-x86_64@zip')
 }
 
@@ -84,6 +88,9 @@ task update {
 
 eclipse {
     classpath {
+        //you can tweak the classpath of the Eclipse project by adding extra configurations:
+//        plusConfigurations += [ configurations.hecjars ]
+
         //default settings for downloading sources and Javadoc:
         downloadSources = false
         downloadJavadoc = false

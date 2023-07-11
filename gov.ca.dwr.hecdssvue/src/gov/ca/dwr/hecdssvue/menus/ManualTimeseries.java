@@ -2,41 +2,27 @@ package gov.ca.dwr.hecdssvue.menus;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import gov.ca.dwr.hecdssvue.DssPluginCore;
 import gov.ca.dwr.hecdssvue.components.CatalogListSelection;
-import gov.ca.dwr.hecdssvue.components.DssMathFrame;
 import gov.ca.dwr.hecdssvue.views.DSSCatalogView;
-import gov.ca.dwr.hecdssvue.views.DSSPlotView;
-import gov.ca.dwr.hecdssvue.views.DSSTableView;
-import hec.dataTable.HecDataTable;
-import hec.dssgui.CombinedDataManager;
-import hec.dssgui.ListSelection;
-import hec.dssgui.MathFrame2;
-import hec.dssgui.NewPartsDialog;
+import hec.heclib.dss.CombinedDataManager;
 import hec.dssgui.TimeSeriesDataEntry;
 import hec.heclib.dss.HecDss;
-import hec.io.DataContainer;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
-import wrimsv2_plugin.debugger.exception.WPPException;
-import wrimsv2_plugin.debugger.view.WPPVarMonitorView;
 
 public class ManualTimeseries implements IWorkbenchWindowActionDelegate{
 

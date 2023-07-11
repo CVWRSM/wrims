@@ -18,9 +18,9 @@ import rma.util.RMAIO;
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
 import gov.ca.dwr.hecdssvue.DssPluginCore;
 import gov.ca.dwr.hecdssvue.views.DSSCatalogView;
-import hec.dssgui.CombinedDataManager;
-import hec.dssgui.DataReference;
-import hec.dssgui.DataReferenceSet;
+import hec.heclib.dss.CombinedDataManager;
+import hec.heclib.dss.DataReference;
+import hec.heclib.dss.DataReferenceSet;
 import hec.dssgui.DssVueProgressBar;
 import hec.dssgui.ListSelection;
 import hec.heclib.dss.DSSPathname;
@@ -301,11 +301,7 @@ public class CatalogListSelection extends ListSelection {
 			HecDataManager.setDefaultDSSFileName(DSSFileName);
 			if (_titleName.length() == 0)
 			setTitle(RMAIO.getFileFromPath(DSSFileName) + " - " + _programName);
-			if (remote) {
-				_remoteDirectory = RMAIO.getDirectoryFromPath(_dataManager.
-					DSSFileName());
-			}
-			else {
+			if (!remote) {
 				_currentDirectory = RMAIO.getDirectoryFromPath(_dataManager.
 					DSSFileName());
 			}
