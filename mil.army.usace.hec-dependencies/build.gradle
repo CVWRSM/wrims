@@ -1,70 +1,36 @@
 apply plugin: 'base'
 
 repositories {
+    maven {
+        url 'https://www.hec.usace.army.mil/nexus/repository/maven-public'
+    }
     mavenCentral()
-
-    maven {
-        url 'https://www.hec.usace.army.mil/nexus/repository/maven-public'
-//        content {
-//            excludeModule("mil.army.usace.hec","heclib")
-//        }
-    }
-
-    maven {
-    /* GeoTools 8.5 */
-    url 'https://josm.openstreetmap.de/nexus/content/repositories/releases/'
-    }
-    
-    maven {
-    /* GeoTools */
-    url 'https://repo.osgeo.org/repository/release/'
-    }
-
-    def heclib = ivy {
-        url 'https://www.hec.usace.army.mil/nexus/repository/maven-public'
-        patternLayout {
-            artifact '/[organisation]/[module]/archive/[revision].[ext]'
-        }
-        metadataSources { artifact() }
-    }
-
-    exclusiveContent {
-        forRepositories(heclib)
-        filter { includeModule("mil/army/usace/hec","heclib") }
-    }
 }
 
 
 configurations {
-    toCopy
+    hecjars
+    hecdll
 }
 
 dependencies {
-    toCopy 'mil.army.usace.hec:dssgui:3.3.33'
-    toCopy 'mil.army.usace.hec:heclib:7-IR-2-win-x86_64@zip'
+    hecjars 'mil.army.usace.hec:dssgui:3.3.33'
+    hecdll 'mil.army.usace.hec:javaHeclib:7-IR-2-win-x86_64@zip'
 }
 
-task copyDeps(type: Copy) {
-    from configurations.toCopy
-    exclude 'heclib-*.zip'
-    into 'dss-lib'
+task copyHecJars(type: Copy) {
+    from configurations.hecjars
+    into file("$buildDir/hecjars")
 }
 
-task unzipHeclib(type: Copy) {
-    def zipPath = configurations.toCopy.find {it.name.startsWith("heclib") }
-    def zipFile = file(zipPath)
-    def outputDir = file('heclib')
-
-    from zipTree(zipPath)
-    include 'release64/javaHeclib.dll'
-    into outputDir
-    eachFile { f ->
-        f.path = f.path.replaceFirst('release64', '')
+task copyHeclib(type: Sync) { syncTask ->
+    from {
+        configurations.hecdll.collect { zipTree(it) }
     }
-    includeEmptyDirs false
+    into file("$buildDir/heclib")
 }
 
 task downloadDeps(type: Copy) {
-    dependsOn copyDeps
-    dependsOn unzipHeclib
+    dependsOn copyHecJars
+    dependsOn copyHeclib
 }
