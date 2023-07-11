@@ -1,4 +1,9 @@
-apply plugin: 'base'
+import java.nio.file.Paths
+
+plugins {
+    id 'java-library'
+    id 'eclipse'
+}
 
 repositories {
     maven {
@@ -7,15 +12,50 @@ repositories {
     mavenCentral()
 }
 
-
 configurations {
-    hecjars
+    hecjars.extendsFrom(runtimeClasspath)
     hecdll
 }
 
 dependencies {
-    hecjars 'mil.army.usace.hec:dssgui:3.3.33'
-    hecdll 'mil.army.usace.hec:javaHeclib:7-IR-2-win-x86_64@zip'
+    api('mil.army.usace.hec:hec-cwms-ratings-core:2.0.2')
+    api('mil.army.usace.hec:hec-monolith:3.3.22')
+    api('mil.army.usace.hec:hec-nucleus-metadata:2.0.1')
+    api('mil.army.usace.hec:dssgui:3.3.33')
+    hecdll('mil.army.usace.hec:javaHeclib:7-IR-2-win-x86_64@zip')
+}
+
+configurations.all {
+    exclude group: "mil.army.usace.hec", module: "hec-db-core"
+    exclude group: "mil.army.usace.hec", module: "hec-isocline-paint"
+    exclude group: "mil.army.usace.hec", module: "hec-isocline-g2d-plot"
+    exclude group: "mil.army.usace.hec", module: "service-annotations"
+    exclude group: "mil.army.usace.hec", module: "callback-services"
+    exclude group: "mil.army.usace.hec", module: "hec-server-suite"
+    exclude group: "mil.army.usace.hec", module: "hec-server-suite-ui"
+    exclude group: "mil.army.usace.hec", module: "radar-server-suite"
+    exclude group: "mil.army.usace.hec", module: "vrt"
+    exclude group: "mil.army.usace.hec.swingx", module: "swingx-core"
+    exclude group: "javax.xml.bind", module: "jaxb-api"
+    exclude group: "com.sun.xml.bind", module: "jaxb-impl"
+    exclude group: "com.sun.xml.bind", module: "jaxb-core"
+    exclude group: "org.bouncycastle", module: "bcprov-jdk15on"
+    exclude group: "org.bouncycastle", module: "bcpkix-jdk15on"
+    exclude group: "com.mrsid", module: "mrsidreader"
+    exclude group: "org.jfree", module: "jfreechart"
+    exclude group: "org.jfree", module: "jcommon"
+    exclude group: "org.apache.poi", module: "poi"
+    exclude group: "org.apache.poi", module: "poi-ooxml"
+    exclude group: "org.apache.poi", module: "poi-ooxml-schemas"
+    exclude group: "com.oracle.database.jdbc", module: "jmscommon"
+    exclude group: "org.apache.xmlbeans", module: "xmlbeans"
+    exclude group: "dom4j", module: "dom4j"
+    exclude group: "javax.media", module: "jai_core"
+    exclude group: "javax.media", module: "jai_codec"
+    exclude group: "com.sun.media", module: "jai_imageio"
+    exclude group: "net.java.dev.jna", module: "jna"
+    exclude group: "com.fifesoft", module: "rstaui"
+    exclude group: "org.python", module: "jython-standalone"
 }
 
 task copyHecJars(type: Copy) {
@@ -30,7 +70,37 @@ task copyHeclib(type: Sync) { syncTask ->
     into file("$buildDir/heclib")
 }
 
-task downloadDeps(type: Copy) {
-    dependsOn copyHecJars
-    dependsOn copyHeclib
+task update {
+    dependsOn 'clean'
+    dependsOn 'copyHecJars'
+    dependsOn 'copyHeclib'
+    dependsOn 'eclipse'
+    tasks.findByName('copyHecJars').mustRunAfter 'clean'
+    tasks.findByName('copyHeclib').mustRunAfter 'clean'
+    tasks.findByName('eclipse').mustRunAfter 'copyHecJars'
+    tasks.findByName('eclipse').mustRunAfter 'clean'
+    tasks.findByName('eclipse').mustRunAfter 'copyHeclib'
+}
+
+eclipse {
+    classpath {
+        //default settings for downloading sources and Javadoc:
+        downloadSources = false
+        downloadJavadoc = false
+        file {
+            whenMerged { classpath ->
+                classpath.entries.stream()
+                        .filter(e -> Paths.get(e.path).getFileName().toString().endsWith(".jar"))
+                        .forEach(e -> {
+                            java.nio.file.Path filename = Paths.get(e.path).getFileName()
+                            e.path = Paths.get("build")
+                                    .resolve("hecjars")
+                                    .resolve(filename).toString()
+                            String filenameString = filename.toString()
+                            e.exported = filenameString.startsWith("dssgui") || filenameString.startsWith("hec-monolith")
+                                    || filenameString.startsWith("hec-nucleus") || filenameString.startsWith("hec-cwms-ratings-core")
+                        })
+            }
+        }
+    }
 }
