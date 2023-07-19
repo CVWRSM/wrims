@@ -199,7 +199,7 @@ public class WPPDssToSqlDialog extends Dialog {
 			FileWriter fw = new FileWriter(batchFilePath);
 			PrintWriter out = new PrintWriter(fw);
 			out.println("@echo off");
-			out.println("jre\\bin\\java -Xmx4096m -Xss1024K -XX:+CreateMinidumpOnCrash -Duser.timezone=Etc/GMT+8 -Djava.library.path=\"lib\" -cp \"lib\\WRIMSv2.jar;lib\\jep-3.8.2.jar;lib\\jna-3.5.1.jar;lib\\hec-monolith-3.1.11.jar;lib\\hec-nucleus-metadata-2.0.1.jar;lib\\flogger-0.5.1.jar;lib\\flogger-system-backend-0.5.1.jar;lib\\heclib.jar;lib\\jnios.jar;lib\\jpy.jar;lib\\misc.jar;lib\\pd.jar;lib\\vista.jar;lib\\mysql-connector-java-5.1.42-bin.jar;lib\\sqljdbc4-2.0.jar\" wrimsv2.sql.DssToSQLDatabase -dss_sql=" + profileFilePath);
+			out.println("jre\\bin\\java -Xmx4096m -Xss1024K -XX:+CreateMinidumpOnCrash -Duser.timezone=Etc/GMT+8 -Djava.library.path=\"lib\" -cp \"lib\\WRIMSv2.jar;lib\\jep-3.8.2.jar;lib\\jna-3.5.1.jar;lib\\hec-monolith-3.3.22.jar;lib\\hec-nucleus-metadata-2.0.1.jar;lib\\flogger-0.5.1.jar;lib\\flogger-system-backend-0.5.1.jar;lib\\jnios.jar;lib\\jpy.jar;lib\\misc.jar;lib\\pd.jar;lib\\vista.jar;lib\\mysql-connector-java-5.1.42-bin.jar;lib\\sqljdbc4-2.0.jar\" wrimsv2.sql.DssToSQLDatabase -dss_sql=" + profileFilePath);
 			out.close();
 			fw.close();
 		} catch (IOException e) {

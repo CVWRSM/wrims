@@ -877,7 +877,7 @@ public abstract class SchematicBase extends ViewPart {
 
 				Enumeration<String> variableEnum = names.keys();
 				while (variableEnum.hasMoreElements()) {
-					String name = variableEnum.nextElement();
+					String name = variableEnum.nextElement().toLowerCase();
 					ArrayList<String[]> pathParts = new ArrayList<String[]>();
 					CondensedReference found = null;
 					boolean isStorage=false;
@@ -1157,7 +1157,7 @@ public abstract class SchematicBase extends ViewPart {
 				}
 				Enumeration<String> variableEnum = names.keys();
 				while (variableEnum.hasMoreElements()) {
-					String name = variableEnum.nextElement();
+					String name = variableEnum.nextElement().toLowerCase();
 					ArrayList<String[]> pathParts = new ArrayList<String[]>();
 					CondensedReference found = null;
 					boolean isStorage=false;
@@ -1239,7 +1239,7 @@ public abstract class SchematicBase extends ViewPart {
 				HashMap<String, Double> altAverage = termAverage.get(k);
 				Enumeration<String> variableEnum = names.keys();
 				while (variableEnum.hasMoreElements()) {
-					String name = variableEnum.nextElement();
+					String name = variableEnum.nextElement().toLowerCase();
 					ArrayList<String[]> pathParts = new ArrayList<String[]>();
 					CondensedReference found = null;
 					boolean isStorage=false;
@@ -1314,7 +1314,7 @@ public abstract class SchematicBase extends ViewPart {
 			if (DebugCorePlugin.selectedStudies[k]){
 				
 				while (variableEnum.hasMoreElements()) {
-					String name = variableEnum.nextElement();
+					String name = variableEnum.nextElement().toLowerCase();
 					ArrayList<String[]> pathParts = new ArrayList<String[]>();
 					boolean isStorage=false;
 					String value = "";			
@@ -1392,7 +1392,7 @@ public abstract class SchematicBase extends ViewPart {
 				for (int studyId = 0; studyId < values.length; studyId++) {
 					Hashtable<String, String> valuesInStudy = values[studyId];
 					for (String name : valuesInStudy.keySet()) {
-						Object object = visibleNodes.get(name);
+						Object object = visibleNodes.get(name.toUpperCase());
 						if (object == null) {
 							continue;
 						}
@@ -1714,7 +1714,7 @@ public abstract class SchematicBase extends ViewPart {
 			if (size>0){
 							
 				for (int j=0; j<size; j++) {
-					String name = DssPluginCore.allSchematicVariableNames.get(j);
+					String name = DssPluginCore.allSchematicVariableNames.get(j).toLowerCase();
 					if (DssPluginCore.allPathName.containsKey(name)){
 						String pathName = DssPluginCore.allPathName.get(name);
 						for (int i=0; i<4; i++){
