@@ -7,24 +7,12 @@ import gov.ca.dwr.hecdssvue.components.DataOps;
 import hec.dssgui.NewPartsDialog;
 import hec.heclib.dss.CondensedReference;
 import hec.heclib.dss.HecDss;
-import hec.heclib.util.HecTime;
-import hec.hecmath.HecMath;
-import hec.hecmath.HecMathException;
-import hec.hecmath.TimeSeriesMath;
 import hec.io.DataContainer;
 import hec.io.TimeSeriesContainer;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-import java.util.regex.Pattern;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -50,11 +38,10 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
@@ -65,9 +52,20 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.statushandlers.StatusManager;
-
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
-import wrimsv2_plugin.debugger.exception.WPPException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.Vector;
+import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 //public class DSSCatalogView extends ViewPart {
 public class DSSCatalogView extends AbstractDSSView {
@@ -137,58 +135,40 @@ public class DSSCatalogView extends AbstractDSSView {
 
 	class ViewContentProvider implements IStructuredContentProvider {
 		Job catalogJob = null;
-//		Vector<CondensedReference> condensedCatalog_elem;
-//		ArrayList<HecDss> dssInputs = new ArrayList<HecDss>();
-		ArrayList<HecDss> dssInputs;
 
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-//			final HecDss dssInput = (HecDss) newInput;   //1 dss
-//			final ArrayList<HecDss> dssInputs = (ArrayList<HecDss>) newInput;
-			dssInputs = (ArrayList<HecDss>) newInput;
-
 			while (catalogJob != null && catalogJob.getState() == Job.RUNNING) {
 				catalogJob.cancel();
-				try {
-					catalogJob.join();
-				} catch (InterruptedException e) {
-				}
 			}
-			catalogJob = new Job("DSS Catalog") {
-
-				@Override
-				protected IStatus run(IProgressMonitor monitor) {
-					//1 dss
-//					if (dssInput != null) {
-//						monitor.beginTask("Cataloging...", 2);
-//						monitor.worked(1);
-//						condensedCatalog = dssInput.getCondensedCatalog();
-//						monitor.done();
-//					} else {
-//						condensedCatalog = null;
-//					}
-					if (dssInputs != null) {
-						DssPluginCore.condensedCatalog = new Vector<CondensedReference>();//TODO
-						int i=0;
-					    for (Iterator<HecDss> it = dssInputs.iterator(); it.hasNext();i++){
-						    HecDss dssInput = it.next();
-							monitor.beginTask("Cataloging...", 2);
-							monitor.worked(1);
-							Vector<CondensedReference> condensedCatalog_elem = dssInput.getCondensedCatalog();
-//							if (dssInput!=null) {
-//								Vector<CondensedReference> condensedCatalog_elem = dssInput.getCondensedCatalog();
-//							}
-							if (i<2){
-								DssPluginCore.condensedCatalog.addAll(condensedCatalog_elem);
-							}
-							monitor.done();
-					    }
-					    
-					} else {
-						DssPluginCore.condensedCatalog = null;
-					}					
-					return Status.OK_STATUS;
+			List<HecDss> dssInputs = (List<HecDss>) newInput;
+			if(dssInputs == null) {
+				DssPluginCore.condensedCatalog = null;
+				return;
+			}
+			catalogJob = Job.create("Opening DSS Catalogs", monitor -> {
+				DssPluginCore.condensedCatalog = new Vector<>();
+				Display.getDefault().asyncExec(v::refresh);
+				List<CondensedReference> catalog = new ArrayList<>();
+				SubMonitor subMonitor = SubMonitor.convert(monitor, dssInputs.size());
+				List<CompletableFuture<Void>> futures = new ArrayList<>();
+				for (HecDss dssInput : dssInputs) {
+					futures.add(CompletableFuture.runAsync(() -> {
+						catalog.addAll(dssInput.getCondensedCatalog());
+						subMonitor.worked(1);
+					}));
 				}
-			};
+				CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+				if(!subMonitor.isCanceled()) {
+					List<CondensedReference> unique = catalog.stream()
+							.collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(CondensedReference::getNominalPathname))),
+									ArrayList<CondensedReference>::new));
+					DssPluginCore.condensedCatalog.addAll(unique);
+				}
+				monitor.done();
+				Display.getDefault().asyncExec(v::refresh);
+				return Status.OK_STATUS;
+			});
+			catalogJob.setUser(true);
 			catalogJob.schedule();
 		}
 
@@ -196,33 +176,18 @@ public class DSSCatalogView extends AbstractDSSView {
 		}
 
 		public Object[] getElements(Object parent) {
-			if (catalogJob == null) {
-				return new Object[] {};
-			}
-			if (catalogJob.getState() == Job.RUNNING) {
-				try {
-					catalogJob.join();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 			if (DssPluginCore.condensedCatalog == null) {
 				return new Object[] {};
 			}
 
-			ArrayList<String[]> pathParts = new ArrayList<String[]>();
-			DssPluginCore.allStorageNames= new ArrayList<String>();
-			DssPluginCore.allPathName = new HashMap<String, String>();
-			int i=0;
-			for (Iterator<CondensedReference> it = DssPluginCore.condensedCatalog.iterator();
-					it.hasNext();) {
-				CondensedReference next = it.next();
-				String pathName = next.getNominalPathname();
+			ArrayList<String[]> pathParts = new ArrayList<>();
+			DssPluginCore.allStorageNames= new ArrayList<>();
+			DssPluginCore.allPathName = new HashMap<>();
+			for (CondensedReference condensedReference : DssPluginCore.condensedCatalog) {
+				String pathName = condensedReference.getNominalPathname();
 				String[] parts = pathName.split("/");
 				if (parts[3].toLowerCase().startsWith("storage")) DssPluginCore.allStorageNames.add(parts[2]);
 				DssPluginCore.allPathName.put(parts[2], getPath(parts));
-				i++;
 				if (showFilteredRows(parts, DssPluginCore.filter, false)) pathParts.add(parts);
 			}
 			return pathParts.toArray();
