@@ -1034,6 +1034,9 @@ public class ConfigUtils {
 		ControlData.numberRestartFiles = Integer.parseInt(configMap.get("numberrestartfiles"));
 		System.out.println("NumberRestartFiles:    " + ControlData.numberRestartFiles);
 		
+		ControlData.vHecLib = Integer.parseInt(configMap.get("vheclib"));
+		System.out.println("VersionHecDssOutput:    " + ControlData.vHecLib);
+		
 		ControlData.databaseURL = configMap.get("databaseurl");
 		ControlData.sqlGroup = configMap.get("sqlgroup");
 		ControlData.ovOption = Integer.parseInt(configMap.get("ovoption"));
@@ -1379,6 +1382,7 @@ public class ConfigUtils {
 		configMap.put("MonthMemorySection".toLowerCase(), "-1");
 		configMap.put("unchangeGWRestart".toLowerCase(), "no");
 		configMap.put("GenSVCatalog".toLowerCase(), "yes");
+		configMap.put("vHecLib".toLowerCase(), "6");
 		return configMap;
 
 	}

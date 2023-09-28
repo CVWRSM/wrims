@@ -119,6 +119,7 @@ public class BatchRunProcess {
 	private String dssEndOutput;
 	private String yearSectionOutput;
 	private String monMemSection;
+	private String vHecLib;
 	private String unchangeGWRestart;
 	private String unchangeInitialDss;
 	private boolean isSameInitialDss=true;
@@ -411,6 +412,7 @@ public class BatchRunProcess {
 		dssEndOutput = configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_DSSENDOUTPUT, "yes");
 		yearSectionOutput = configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_YEARSECTIONOUTPUT, "10");
 		monMemSection = configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_MONMEMSECTION, "24");
+		vHecLib = configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");
 		
 		databaseURL=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_DATABASEURL, "none");
 		sqlGroup=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_SQLGROUP, "calsim");
@@ -529,6 +531,7 @@ public class BatchRunProcess {
 			configMap.put("AllowSvTsInit".toLowerCase(), allowSvTsInit);
 			configMap.put("AllRestartFiles".toLowerCase(), allRestartFiles);
 			configMap.put("NumberRestartFiles".toLowerCase(), numberRestartFiles);
+			configMap.put("vHecLib".toLowerCase(), vHecLib);
 	
 			if (!dssEndOutput.equalsIgnoreCase("yes")){
 				configMap.put("YearOutputSection".toLowerCase(), yearSectionOutput);
@@ -685,6 +688,7 @@ public class BatchRunProcess {
 			out.println("SelectedCycleOutput "+configMap.get("SelectedCycleOutput".toLowerCase()));
 			out.println("ShowRunTimeMessage "+configMap.get("ShowRunTimeMessage".toLowerCase()));
 			out.println("PrintGWFuncCalls   "+configMap.get("PrintGWFuncCalls".toLowerCase()));
+			out.println("VersionHecDssOutput "+configMap.get("vHecLib".toLowerCase()));
 			
 			if (!dssEndOutput.equalsIgnoreCase("yes")){
 				out.println("YearOutputSection  "+configMap.get("YearOutputSection".toLowerCase()));

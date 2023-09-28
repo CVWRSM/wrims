@@ -274,6 +274,7 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 			out.println("AllowSvTsInit      "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_ALLOWSVTSINIT, "no"));
 			out.println("AllRestartFiles    "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_ALLRESTARTFILES, "no"));
 			out.println("NumberRestartFiles "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_NUMBERRESTARTFILES, "12"));
+			out.println("VersionHecDssOutput "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6"));
 			out.println("DatabaseURL        "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_DATABASEURL, "none"));
 			out.println("SQLGroup           "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_SQLGROUP, "calsim"));
 			String ovOption=launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_OVOPTION, "0");

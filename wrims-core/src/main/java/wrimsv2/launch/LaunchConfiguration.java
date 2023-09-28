@@ -108,6 +108,7 @@ public class LaunchConfiguration {
 	public static final String ATTR_WPP_ALLRESTARTFILES=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_ALLRESTARTFILES";
 	public static final String ATTR_WPP_NUMBERRESTARTFILES=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_NUMBERRESTARTFILES";
 	public static final String ATTR_WPP_UNCHANGEGWRESTART=ID_WPP_DEBUG_MODEL + "ATTR_WPP_UNCHANGEGWRESTART";
+	public static final String ATTR_WPP_VHECLIB=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_VHECLIB";
 	
 	//private ILaunchConfigurationType fType;
 	
@@ -408,6 +409,7 @@ public class LaunchConfiguration {
 			ControlData.allRestartFiles=true;
 		}
 		ControlData.numberRestartFiles  = Integer.parseInt(getStringAttribute(ATTR_WPP_NUMBERRESTARTFILES, "12"));
+		ControlData.vHecLib = Integer.parseInt(getStringAttribute(ATTR_WPP_VHECLIB, "6"));
 		
 		ControlData.databaseURL=getStringAttribute(ATTR_WPP_DATABASEURL, "none");
 		ControlData.sqlGroup=getStringAttribute(ATTR_WPP_SQLGROUP, "calsim");

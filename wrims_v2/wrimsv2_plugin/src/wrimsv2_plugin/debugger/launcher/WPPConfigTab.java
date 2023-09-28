@@ -41,6 +41,8 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 	//private Text yearSectionText;
 	private Text memSectionText;
 	private Text yearSectionText;
+	private Button bvHecLib6;
+	private Button bvHecLib7;
 	
 	@Override
 	public void createControl(Composite parent) {
@@ -369,6 +371,63 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 		memMonSectionOutputLabel.setLayoutData(gd);
 		memMonSectionOutputLabel.setFont(font);
 		memMonSectionOutputLabel.setText("Months");
+		
+		Label lvHecLib = new Label(comp, SWT.NONE);
+		lvHecLib.setText("&Hec Lib version for output dss file:");
+		gd = new GridData(GridData.BEGINNING);
+		gd.horizontalSpan=2;
+		lvHecLib.setLayoutData(gd);
+		lvHecLib.setFont(font);
+		
+		bvHecLib6 = new Button(comp, SWT.RADIO);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan =2;
+		bvHecLib6.setText("6");
+		bvHecLib6.setLayoutData(gd);
+		bvHecLib6.setFont(font);
+		bvHecLib6.setEnabled(true);
+		bvHecLib6.addSelectionListener(new SelectionListener(){
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				bvHecLib6.setSelection(true);
+				bvHecLib7.setSelection(false);
+				updateLaunchConfigurationDialog();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				bvHecLib6.setSelection(true);
+				bvHecLib7.setSelection(false);
+				updateLaunchConfigurationDialog();				
+			}
+			
+		});
+		
+		bvHecLib7 = new Button(comp, SWT.RADIO);
+		gd = new GridData(GridData.FILL_HORIZONTAL);
+		gd.horizontalSpan =2;
+		bvHecLib7.setText("7");
+		bvHecLib7.setLayoutData(gd);
+		bvHecLib7.setFont(font);
+		bvHecLib7.setEnabled(true);
+		bvHecLib7.addSelectionListener(new SelectionListener(){
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				bvHecLib7.setSelection(true);
+				bvHecLib6.setSelection(false);
+				updateLaunchConfigurationDialog();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				bvHecLib7.setSelection(true);
+				bvHecLib6.setSelection(false);
+				updateLaunchConfigurationDialog();				
+			}
+			
+		});
 	}
 
 	@Override
@@ -381,6 +440,7 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(DebugCorePlugin.ATTR_WPP_DSSENDOUTPUT, "yes");
 		configuration.setAttribute(DebugCorePlugin.ATTR_WPP_YEARSECTIONOUTPUT, "10");
 		configuration.setAttribute(DebugCorePlugin.ATTR_WPP_MONMEMSECTION, "24");
+		configuration.setAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");
 	}
 
 	@Override
@@ -484,6 +544,20 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			WPPException.handleException(e);
 		}
+		
+		String vHecLib  = null;
+		try {
+			vHecLib = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");
+			if (vHecLib.equals("6")){
+				bvHecLib6.setSelection(true);
+				bvHecLib7.setSelection(false);
+			}else{
+				bvHecLib6.setSelection(false);
+				bvHecLib7.setSelection(true);
+			}
+		} catch (CoreException e) {
+			WPPException.handleException(e);
+		}
 	}
 
 	@Override
@@ -546,6 +620,13 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 		
 		String monMemSection  = memSectionText.getText();
 		configuration.setAttribute(DebugCorePlugin.ATTR_WPP_MONMEMSECTION, monMemSection);
+		
+		boolean isBVHecLib6Sel=bvHecLib6.getSelection();
+		if (isBVHecLib6Sel){
+			configuration.setAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");
+		}else{
+			configuration.setAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "7");
+		}
 	}
 
 	@Override

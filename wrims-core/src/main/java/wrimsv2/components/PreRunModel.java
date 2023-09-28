@@ -3,6 +3,7 @@ package wrimsv2.components;
 import hec.heclib.dss.HecDss;
 import hec.heclib.dss.HecDssCatalog;
 import hec.heclib.dss.HecTimeSeries;
+import hec.heclib.util.Heclib;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -71,6 +72,7 @@ public class PreRunModel {
 		
 		try {
 			ControlData.dvDss = HecDss.open(FilePaths.fullDvarDssPath);
+			Heclib.zset("ALLV", "", ControlData.vHecLib);
 		} catch (Exception e) {
 			Error.addEngineError("Could not open dv file. "+e);
 			ControlData.dvDss.close();

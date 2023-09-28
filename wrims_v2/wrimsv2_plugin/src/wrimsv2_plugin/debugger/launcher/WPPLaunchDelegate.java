@@ -100,6 +100,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 	private String unchangeGWRestart;
 	private String unchangeInitialDss;
 	private boolean isSameInitialDss=true;
+	private String vHecLib;
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
@@ -499,6 +500,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 			dssEndOutput = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_DSSENDOUTPUT, "yes");
 			yearSectionOutput = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_YEARSECTIONOUTPUT, "10");
 			monMemSection = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_MONMEMSECTION, "24");
+			vHecLib = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");
 			
 			databaseURL=configuration.getAttribute(DebugCorePlugin.ATTR_WPP_DATABASEURL, "none");
 			sqlGroup=configuration.getAttribute(DebugCorePlugin.ATTR_WPP_SQLGROUP, "calsim");
@@ -628,6 +630,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 			configMap.put("AllowSvTsInit".toLowerCase(), allowSvTsInit);
 			configMap.put("AllRestartFiles".toLowerCase(), allRestartFiles);
 			configMap.put("NumberRestartFiles".toLowerCase(), numberRestartFiles);
+			configMap.put("vHecLib".toLowerCase(), vHecLib);
 			
 			if (!dssEndOutput.equalsIgnoreCase("yes")){
 				configMap.put("YearOutputSection".toLowerCase(), yearSectionOutput);
@@ -793,6 +796,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 			out.println("SelectedCycleOutput "+configMap.get("SelectedCycleOutput".toLowerCase()));
 			out.println("ShowRunTimeMessage "+configMap.get("ShowRunTimeMessage".toLowerCase()));
 			out.println("PrintGWFuncCalls   "+configMap.get("PrintGWFuncCalls".toLowerCase()));
+			out.println("VersionHecDssOutput "+configMap.get("vHecLib".toLowerCase()));
 			
 			if (!dssEndOutput.equalsIgnoreCase("yes")){
 				out.println("YearOutputSection  "+configMap.get("YearOutputSection".toLowerCase()));

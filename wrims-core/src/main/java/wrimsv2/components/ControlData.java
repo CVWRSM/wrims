@@ -106,6 +106,7 @@ public class ControlData {
 	public static boolean allowSvTsInit=false;
 	public static boolean allRestartFiles=false;
 	public static int numberRestartFiles=12;
+	public static int vHecLib=6;
 	public static int outputType=0;
 	public static boolean isOutputCycle=false;
 	public static boolean outputAllCycles=true;
