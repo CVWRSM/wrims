@@ -1,0 +1,280 @@
+!WRESL code for Vernalis Water Quality
+!VERNALIS_WQMIN
+! Edward Chang
+! 5/01/2000
+! Modified by Ken Yokoyama,USBR, April 15,2003 for Link-Node method
+!
+!The following code calculates the required flows below Goodwin Dam to meet the Vernalis
+!water quality requirement
+!*****************************************************************************************
+!The Vernalis water quality requirement is an Electrical Conductivity (EC) requirement of
+!700 and 1000 micromhos/cm for the irrigation (Apr-Aug) and non-irragation (Sep-Mar) seasons,
+!respectively.  This is different from the irrigation and non-irrigation season used to label
+!the salinities of Goodwin, Accretions, main-stem, and west-side return flows (which use an
+!irrigation season of March thru September.  The EC of the flows without Goodwin Dam flows
+!are calculated by combining the flows and salinity from the Stanislaus river accretions and
+!returns, main-stem flows of the San Joaquin river before confluence with the Stanislaus river,
+!and the west-side return flows.  Based on these flows and salinities, and a known salinity for
+!Goodwin flows, a flow requirement is calculated at Goodwin to ensure that the water quality
+!requirement at Vernalis is met.
+!
+!******************************************************************************************
+!Cycle 2 (Water Quality for non-pulse period)
+! *********************************************************************************************************************************
+!
+! This is the link-node salinity algorithm covering the San Joaquin River from Lander Ave. to Vernalis.  The link-node algorithm
+! consists of a series of EC mass balance equations from node 614 to node 639.  The computed EC from an upstream node is used as
+! the input EC of a downstream node.  Flow-EC regressions are used for the San Joaquin River at Lander Ave., Merced River near
+! Stevinson and the Tuolumne River near Modesto. Mud and Salt Slough, return Flow and accretion EC use monthly average values.
+! Written by Ken Yokoyama and Nancy Parker, April 2003
+
+/*Tributary Boundary Conditions to the link-node domain
+EC[microS/cm] = f(flow[cfs]), subject to max/min constraints
+(i.e. Regression Equations defining EC as a function of flow for the following tribs:
+-- San Joaquin River at Lander Ave.
+-- Merced River near Stevinson
+-- Tuolumne River near Modesto)
+Equation parameters developed by D. Steiner - 7/29/04, reflecting ~WY2000-2004 observations
+Max/min constraints on EC at each boundary were proposed by D. Steiner based on the same
+recent observations.
+*/
+define Lan_WQparam_1 {value -239.45}
+define Lan_WQparam_2 {value 2101.5}
+define Mer_WQparam_1 {value -100.52}
+define Mer_WQparam_2 {value 729.58}
+define Tuo_WQparam_1 {value -57.018}
+define Tuo_WQparam_2 {value 500.75}
+
+!A. Fock 2005/09/19 define EC_611 {value min(2000., max(500., Lan_WQparam_1*log(max(1., C611[SJRBASE])) + Lan_WQparam_2))} ! SJR at Lander Ave:
+
+define EC_566 {value min(500., max(85., Mer_WQparam_1*log(max(1.,C566[SJRBASE])) + Mer_WQparam_2))}! Merced at Stevinson
+define EC_545 {value min(275., max(85., Tuo_WQparam_1*log(max(1.,C545[SJRBASE])) + Tuo_WQparam_2))}! Tuolumne at Modesto
+
+!Start of the link-node method.
+define EC_605 { value EC_C603 }
+
+define EC_595 {
+    case NearZero {
+        condition C595[SJRBASE] + D595[SJRBASE] + L595[SJRBASE] <0.0001
+        value 0.0 }
+    case otherwise {
+        condition always
+        value (C605B[SJRBASE] * EC_605
+            + C588[SJRBASE] * EC_C588
+            + R595[SJRBASE] * EC_R595)
+            / (C595[SJRBASE] + D595[SJRBASE] + L595[SJRBASE] )
+            }}
+
+define EC_607 {
+    case NearZero {
+        condition C607[SJRBASE] + C607BC[SJRBASE] + D607A[SJRBASE] + D607D[SJRBASE] + L607[SJRBASE] < 0.0001
+        value 0.0 }
+    case otherwise {
+        condition always
+        value (C605A[SJRBASE] * EC_605
+            + I607 * EC_I607
+            + C708[SJRBASE] * EC_Mendota_Pool
+            + R607West[SJRBASE] * EC1_R607West )
+            / (C607[SJRBASE] + C607BC[SJRBASE] + D607A[SJRBASE] + D607D[SJRBASE] + L607[SJRBASE])}
+            }
+
+define EC_608 {
+    case NearZero {
+        condition C608[SJRBASE] + L608[SJRBASE] + C608BC[SJRBASE] < 0.0001
+        value 0.0 }
+    case otherwise {
+        condition always
+        value (C607[SJRBASE] * EC_607
+            + C605C[SJRBASE] * EC_605 )
+            / (C608[SJRBASE] + L608[SJRBASE] + C608BC[SJRBASE])}
+            }
+
+define EC_609 {
+    case NearZero {
+        condition C609a[SJRBASE] + C609b[SJRBASE] + L609[SJRBASE] < 0.0001
+        value 0.0 }
+    case otherwise {
+        condition always
+        value (C608[SJRBASE] * EC_608)
+            / (C609a[SJRBASE] + C609b[SJRBASE] + L609[SJRBASE])}
+            }
+
+define EC_587 {
+    case NearZero {
+
+        condition C587[SJRBASE] + C587a[SJRBASE] + L587[SJRBASE] < 0.0001
+        value 0.0 }
+    case otherwise {
+
+        condition always
+        value (C595[SJRBASE] * EC_595
+            + C582[SJRBASE] * EC_C582
+            + R587A[SJRBASE] * EC_R587A
+            + R587B[SJRBASE] * EC_R587B
+            + C609a[SJRBASE] * EC_609)
+            / (C587[SJRBASE] + C587a[SJRBASE] + L587[SJRBASE]) }
+            }
+
+define EC_589 {
+    case NearZero {
+
+        condition C589[SJRBASE] < 0.0001
+        value 0.0 }
+    case otherwise {
+
+        condition always
+        value (C587[SJRBASE] * EC_587
+            + I589 * EC_I589 )
+            / C589[SJRBASE] }
+            }
+
+define EC_610 {
+    case NearZero {
+        condition C610[SJRBASE] + L610[SJRBASE] < 0.0001
+        value 0.0 }
+    case otherwise {
+        condition always
+        value (C609b[SJRBASE] * EC_609
+            + C587a[SJRBASE] * EC_587)
+            / (C610[SJRBASE] + L610[SJRBASE])}
+            }
+
+define EC_611 {
+    case NearZero {
+        condition C611[SJRBASE] + L611[SJRBASE] < 0.0001
+        value 0.0 }
+    case otherwise {
+        condition always
+        value (C589[SJRBASE] * EC_589
+            + C610[SJRBASE] * EC_610)
+            / (C611[SJRBASE] + L611[SJRBASE])}
+            }
+
+/*This latter term represents load closure at the first of two "control" points used to calibrated
+the WQ Module:  "Above Newman" and "Maze".  At either control point, the simulated difference
+is computed between the upstream explicits and the control point's flow-EC relationship as
+observed during recent years.  This difference is accepted as a residual load (mostly related to
+precipitation-runoff, but not completely), and gets injected into the module domain as a distributed
+residual at nodes 614 and 620.  The distribution coefficients at nodes 614 and 620 were chosen
+arbitrarily, defined in wq_defs_Disag.*/
+!All loads entering into this mass balance are "explicit" except for "0.5*AbvNwmnResLoad"
+define EC_614 {value (C611[SJRBASE] * EC_611
+               + I614A * EC_I614A
+               + (I614[SJRBASE]-I614A) * EC_Grassland_B  ! I614 (Grasslands Bypass is currently lumped with Mud and Salt Slough)
+               + R614West[SJRBASE] * EC1_R614
+               + C607BVAMP[SJRBASE] * EC_Mendota_Pool
+               + PctAt614*AbvNwmnResLoad)   !LDB, 8/30/04
+               /C614[SJRBASE]
+               }
+
+/* This mass balance represents Newman or the Merced/San Joaquin River confluence */
+define EC_620 {value (C614[SJRBASE] * EC_614
+               + C566[SJRBASE] * EC_566
+               + C619[SJRBASE] * EC1_R619
+               + R620[SJRBASE] * EC_E_Return620
+               + PctAt620*AbvNwmnResLoad)          !LDB, 8/30/04
+               /(C620[SJRBASE]+D620A[SJRBASE]+D620B[SJRBASE]+D620C[SJRBASE])    !LDB, 8/30/04
+               }
+
+/* This mass balance represents near Modesto or the Tuolumne/San Joaquin River confluence.
+As with the "Above Newman" control, a load residual was computed at the "Maze" control and
+reflects load residual between Newman and Maze.  This residual has been distributed
+at nodes 630 and 636.*/
+define EC_630 {value (C620[SJRBASE] * EC_620
+               + C545[SJRBASE] * EC_545
+               + R630West[SJRBASE] * EC1_R630
+               + R630J[SJRBASE] * EC_TID_Return
+               + R630K[SJRBASE] * EC_TID_Return
+               + R630L[SJRBASE] * EC_TID_Return
+               + R630M[SJRBASE] * EC_R630M
+               + Salt630 !A. Fock 2005/09/23 Salt from tile drains and GW base flow
+               + PctAt630*BtwMazeNwmnResLoad) !LDB, 9/13/04
+               /(C630[SJRBASE]+D630A[SJRBASE]+D630B[SJRBASE])
+               }
+
+/* This mass balance represents Maze upstream of the Stanislaus/San Joaquin River confluence.
+This EC now replaces the EC formerly computed by the Kratzer Equation */
+define EC_636 {value (C630[SJRBASE] * EC_630
+               + R636A[SJRBASE] * EC_MID_Return
+               + R636B[SJRBASE] * EC_MID_Return
+               + R636C[SJRBASE] * EC_MID_Return
+               + Salt636 !A. Fock 2005/09/23 Salt from tile drains and GW base flow
+               + PctAt636*BtwMazeNwmnResLoad) !LDB, 9/13/04
+               /(C636[SJRBASE])
+               }
+
+/*This mass balance represents the Stanislaus River at Ripon */
+define I528pos {value max(0.,I528)}
+define I528neg {value min(0.,I528)}
+
+define EC_528 {value (C520[SJRBASE] * EC_Goodwin
+               + R528A[SJRBASE] * EC_Stan_Return !OID/SSJID
+               + R528B[SJRBASE] * EC_Stan_Return !SSJID
+               + R528C[SJRBASE] * EC_MID_Return
+               + I528pos * EC_Stan_Accr)
+               /(C528[SJRBASE]+D528[SJRBASE]-I528neg)
+               }
+
+/*This mass balance represents the Stanislaus/San Joaquin River confluence.
+Note that potential creek loads between Maze-Ripon-Vernalis are not represented.*/
+define EC_637 {value (C636[SJRBASE] * EC_636
+               + C528[SJRBASE] * EC_528
+               + I637 * EC_Stan_Rip_Rtn !LDB 10/22/04; Subjective; Creek Inflow EC = quality of Stanislaus Basin Return Flow
+               + R637A[SJRBASE] * EC_MID_Return
+               + R637B[SJRBASE] * EC_MID_Return
+               + R637C[SJRBASE] * EC_Stan_Rip_Rtn
+               + R637D[SJRBASE] * EC_R637D)
+               /(C637[SJRBASE]+D637[SJRBASE])
+               }
+
+/* This mass balance represents Vernalis */
+define EC_639 {value (C637[SJRBASE] * EC_637
+           + R639A[SJRBASE] * EC_R639A
+           + R639B[SJRBASE] * EC1_R639)
+           /(C639[SJRBASE]+D639[SJRBASE])
+               }
+
+define Goodwin_Req_min1 { value  R528A[SJRBASE]*(VernWQstd - EC_Stan_Return)/(EC_Goodwin - VernWQstd)
+                              + R528B[SJRBASE]*(VernWQstd - EC_Stan_Return)/(EC_Goodwin - VernWQstd)
+                              + R528C[SJRBASE]*(VernWQstd - EC_MID_Return)/(EC_Goodwin - VernWQstd)
+                              + I528*(VernWQstd - EC_Stan_Accr)/(EC_Goodwin - VernWQstd)
+                              + C636[SJRBASE]*(VernWQstd - EC_636)/(EC_Goodwin - VernWQstd)
+                              + R637A[SJRBASE]*(VernWQstd - EC_MID_Return)/(EC_Goodwin - VernWQstd)
+                              + R637B[SJRBASE]*(VernWQstd - EC_MID_Return)/(EC_Goodwin - VernWQstd) }
+
+define Goodwin_Req_min2 { value R637C[SJRBASE]*(VernWQstd - EC_Stan_Rip_Rtn)/(EC_Goodwin - VernWQstd)
+                              + R637D[SJRBASE]*(VernWQstd - EC_R637D)/(EC_Goodwin - VernWQstd)
+                              + I637*(VernWQstd - EC_Stan_Rip_Rtn)/(EC_Goodwin - VernWQstd)
+                              + R639A[SJRBASE]*(VernWQstd - EC_R639A)/(EC_Goodwin - VernWQstd)
+                              + R639B[SJRBASE]*(VernWQstd - EC1_R639)/(EC_Goodwin - VernWQstd)
+                              - D637[SJRBASE]*(VernWQstd - EC_637)/(EC_Goodwin - VernWQstd)
+                              - D528[SJRBASE]*(VernWQstd - EC_Goodwin)/(EC_Goodwin - VernWQstd)
+                              }
+
+define Goodwin_Req_min {value Goodwin_Req_min1 + Goodwin_Req_min2}
+
+define WQ_min_def { value   max(0.,Goodwin_Req_min-C520[SJRBASE]) }
+
+define WQ_reduced_min_def {
+    case March {
+        condition   month == mar
+        value       max(0.,min ( WQRelCap * TAF_cfs, WQ_min_def )) }
+    case april {
+        condition   month == apr
+        value       max(0.,min ( remWQrelCap(-1)*30./14. * TAF_cfs, WQ_min_def )) }
+    case may {
+        condition   month == may
+        value       max(0.,min ( remWQrelCap(-1)*31./15. * TAF_cfs, WQ_min_def )) }
+    case otherwise {
+        condition   always
+        value       max(0.,min ( remWQrelCap(-1) * TAF_cfs, WQ_min_def )) }
+        }
+
+goal capC10wqcycle2 { C10WQ < WQ_reduced_min_def }
+!goal maintainC10m1cycle2 { C10m > max(0.,C10m[SJRBASE]) }
+goal maintainC10m2cycle2 { C10m = C10m[SJRBASE]  }
+
+define WQ_min_defdv { std kind 'flow-deficiency' units 'cfs' }
+goal setWQ_min_defdv { WQ_min_defdv = WQ_min_def }
+define WQ_REDmin_defdv { std kind 'flow-deficiency' units 'cfs' }
+goal setWQ_REDmin_defdv { WQ_REDmin_defdv = WQ_REDUCED_min_def }

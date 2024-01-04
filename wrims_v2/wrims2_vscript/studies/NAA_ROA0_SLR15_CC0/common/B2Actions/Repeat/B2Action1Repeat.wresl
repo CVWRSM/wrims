@@ -1,0 +1,24 @@
+! This file imposes all the (b)(2) upstream actions that are taken in the (b)(2) run
+
+! B2 Action 1: Upstream AFRP Actions
+goal b2action1Whi_1 {
+  lhs C3_MIF
+    rhs       max(C3MIF__z3, clear_min)
+    lhs>rhs   constrain
+    lhs<rhs   penalty 0 }
+
+goal b2action1Sha_2 {
+  lhs C5_MIF
+    rhs       max(C5MIF__z3, effective_C5min, ERP_C5MIF)
+    lhs>rhs   constrain
+    lhs<rhs   penalty 0 }
+
+goal set_C114_NCP {C114_MIF < max(HC_min,ERP_C114MIF)}
+goal set_C169_MIF {C169_MIF < ERP_C169MIF}
+
+goal b2action1Fol_3 {
+  lhs C9_MIF
+    rhs       max(C9MIF__z3, /*nimbus_hist_std,*/ minflowFMPAmer)
+    lhs>rhs   constrain
+    lhs<rhs   penalty 0 }
+

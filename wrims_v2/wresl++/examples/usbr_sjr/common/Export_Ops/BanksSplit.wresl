@@ -1,0 +1,52 @@
+! Banks Split between SWP and CVP
+
+define CAA000_swp {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! SWP Banks
+define CAA000_cvp {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! Total CVP wheeling at Banks
+
+define CAA000_cvc {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVC wheeling at Banks
+define CAA000_cvcrels {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVC - Released Water
+define CAA000_cvcsurp {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVC - Surplus Only
+define CAA000_cvcsurp1 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define CAA000_cvcsurp2 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+
+define CAA000_cvpwhl {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVP Wheeling to CVP San Luis
+define CAA000_whlrels {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! JPOD - Released Water
+define CAA000_whlsurp {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! JPOD - Surplus Only
+define CAA000_whlsurp1 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define CAA000_whlsurp2 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+
+define CAA000_WTS {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! Water transfer export at Banks
+
+define CAA000_ewa {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks
+define CAA000_ewapurch {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Purchase Transfer
+define CAA000_ewa_dwex {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Dry/Wet Exchange
+define CAA000_ewarels {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Release
+define CAA000_ewasurp {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Surp
+define CAA000_ewasurp1 {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Surp
+define CAA000_ewasurp2 {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Surp
+
+define CAA000_fded {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define CAA000_fded_Exp1 { std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define CAA000_fded_Exp2 { std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+
+define Surp1Terms {std kind 'FLOW-CHANNEL' units 'CFS'}
+define Surp2Terms {std kind 'FLOW-CHANNEL' units 'CFS'}
+define SurpTerms {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+goal totalBanks {C_CAA000 = CAA000_swp + CAA000_cvp + CAA000_ewa + CAA000_WTS} !Total Banks
+goal totalcvpWheel {CAA000_cvp = CAA000_cvc + CAA000_cvpwhl + CAA000_fded} ! Total Wheeling at Banks for CVP.
+
+goal totalcvpded {CAA000_fded = CAA000_fded_exp1 + CAA000_fded_exp2}
+
+goal totalcvcwhl {CAA000_cvc = CAA000_cvcrels + CAA000_cvcsurp}
+goal totalcvcsurp {CAA000_cvcsurp = CAA000_cvcsurp1 + CAA000_cvcsurp2}
+
+goal totaljpodwhl {CAA000_cvpwhl = CAA000_whlrels + CAA000_whlsurp}
+goal totalcvpwhlsurp {CAA000_whlsurp = CAA000_whlsurp1 + CAA000_whlsurp2}
+
+goal totalewa {CAA000_ewa = CAA000_ewapurch + CAA000_ewa_dwex + CAA000_ewarels + CAA000_ewasurp} 
+goal totalewasurp {CAA000_ewasurp = CAA000_ewasurp1 + CAA000_ewasurp2}
+
+goal SetSurp1Terms {Surp1Terms = CAA000_cvcsurp1 + CAA000_whlsurp1 + CAA000_ewasurp1}
+goal SetSurp2Terms {Surp2Terms = CAA000_cvcsurp2 + CAA000_whlsurp2 + CAA000_ewasurp2}
+goal SetSurpTerms {SurpTerms = Surp1Terms + Surp2Terms}

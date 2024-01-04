@@ -1,0 +1,33 @@
+!WRESL statements for ERPP operations
+!NODERPP_ARCSPLIT
+!Edward Chang
+!7/16/99  2:30pm
+!
+!This code defines and aggregates split arcs
+!******************************************************************************************
+!Split arcs at each ERPP location
+!main arcs route pre-ERPP water
+!erpp arcs route released water when the main arc is below the ERPP requirement 
+define C151_main {std kind 'flow-channel' units 'cfs' }
+define C151_erpp {std kind 'flow-channel' units 'cfs' }
+goal aggregC151 { C151 = C151_main + C151_erpp }
+
+define C152_main {std kind 'flow-channel' units 'cfs' }
+define C152_erpp {std kind 'flow-channel' units 'cfs' }
+goal aggregC152 { C152 = C152_main + C152_erpp }
+
+define C153_main {std kind 'flow-channel' units 'cfs' }
+define C153_erpp {std kind 'flow-channel' units 'cfs' }
+goal aggregC153 { C153 = C153_main + C153_erpp }
+
+define C154_main {std kind 'flow-channel' units 'cfs' }
+define C154_erpp {std kind 'flow-channel' units 'cfs' }
+goal aggregC154 { C154 = C154_main + C154_erpp }
+
+define C_YBP002_main {std kind 'flow-channel' units 'cfs' }
+define C_YBP002_erpp {std kind 'flow-channel' units 'cfs' }
+goal aggregC_YBP002 { C_YBP002 = C_YBP002_main + C_YBP002_erpp }
+
+define D158_main {std kind 'flow-delivery' units 'cfs' }
+define D158_erpp {std kind 'flow-delivery' units 'cfs' }
+goal aggregD158 { D158 = D158_main  + D158_erpp }

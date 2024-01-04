@@ -1,0 +1,63 @@
+
+ENVVAR
+NAME                     VALUE
+DCUNo    cu5
+DXCNo    dxc0
+ForNo    for3
+RunNo    DB3-JUN
+DSM2MODIFIER             ${ForNo}_${RunNo}_${DCUNo}_${DXCNo}  #Study name used for DSM2 output                  
+#DSM2OUTPUTFILE           Drough_Res_${RunNo}               #Study name used for DSM2 output                  
+DSM2INPUTDIR             ../../common_input                                           
+DSM2AGENCY               dwr
+VERSIONDATE              201403_FORECAST                                                       
+HISTFLOWVERSION DWR-DMS-${VERSIONDATE}_${ForNo}                                    
+HISTSTAGEVERSION         DWR-DMS-${VERSIONDATE}
+#HISTQUALVERSION          DWR-DMS-${VERSIONDATE}
+HISTQUALVERSION DWR-DMS-${VERSIONDATE}_${ForNo}
+#runtime                
+START_DATE               28FEB2014
+START_TIME               0000
+QUAL_START_DATE          02MAR2014
+PTM_START_DATE           ${QUAL_START_DATE}
+END_DATE                 01NOV2014
+END_TIME                 0000
+TEMPDIR                  z:/temp #Spacious directory for scratch files             
+#Input envvars          
+STUDYDIR                 .
+TSINPUTDIR               ./timeseries
+BNDRYINPUT       ${TSINPUTDIR}/hist19902014_droughtstudy.dss
+GATEFILE         ${TSINPUTDIR}/gates-201403_droughtstudy.dss
+DICUFILE         ${TSINPUTDIR}/dicu_201412_${DCUNo}.dss
+QUALBNDINP       ${TSINPUTDIR}/hist19902014_droughtstudy.dss 
+DICUFILE_ECS     ${TSINPUTDIR}/dicuwq_3vals.dss   #dicuwq_200611.dss        #seasonal DICU file for EC                        
+DICUFILE_ECE             ${TSINPUTDIR}/dicuwq_3vals_extended.dss   #dicuwq_200611_expand.dss #expanded DICU file for EC                        
+DICUFILE-ECS             ${TSINPUTDIR}/dicu.dss                 #seasonal DICU file for EC                        
+CLIMATE                  ${TSINPUTDIR}/climate-5years.dss
+STOCKTON_FLOW_FILE       constant
+#WWTP_FLOW_FILE           ${TSINPUTDIR}/WWTP1992_2010.dss        #needed for DO runs, if not available use constant
+STOCKTON_EFF_FLOW        0.0                                    #needed for DO runs, if not available use 0.0     
+#Output                 
+DSM2OUTPUTDIR            ${STUDYDIR}/output
+OUTPUTFILE               ${DSM2MODIFIER}.dss                                                                      
+#hydro                  
+FLOWPATTERN              ./output/FLOWPATTERN.dss
+HYDROOUTDSSFILE          ${DSM2OUTPUTDIR}/${OUTPUTFILE}
+HYDROOUTFILE             ${DSM2OUTPUTDIR}/${DSM2MODIFIER}.hof
+HYDRORSTFILE             ${DSM2OUTPUTDIR}/${DSM2MODIFIER}.hrf
+HYDROTIDEFILE            ${DSM2OUTPUTDIR}/${DSM2MODIFIER}.h5
+GATEOUTPUTFILE           ${DSM2OUTPUTDIR}/${OUTPUTFILE}                                                           
+#Qual                   
+QUALOUTDSSFILE           ${DSM2OUTPUTDIR}/${OUTPUTFILE}
+QUALOUTFILE              ${DSM2OUTPUTDIR}/${DSM2MODIFIER}.qof
+QUALRSTFILE              ${DSM2OUTPUTDIR}/${DSM2MODIFIER}.qrf
+QUALTIDEFILE             ${DSM2OUTPUTDIR}/${DSM2MODIFIER}_ec.h5
+FINE_OUT                 15MIN
+FINE_OUT_DAY             1DAY                                                                                     
+#Jones Tract Levee Break
+EVENTSINPUT              ${TSINPUTDIR}/events.dss
+#PTM
+PTMOUTFILE               ${DSM2OUTPUTDIR}/${DSM2MODIFIER}.pof
+PTMOUTPUTFILE            ${DSM2OUTPUTDIR}/ptmout.dss
+END
+
+

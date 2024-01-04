@@ -1,0 +1,244 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnvnnnnvvnnnnnvvnvnnnvvnnvnvnnnnnnnnnnnnvnvnnnnnnvvvnnvnvvnvvnnnnnnnnnnnnnnn
+
+U system.shared_storage%b  s-shasto.adb		49c2a3f1 OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.finalization.list_controller%s  a-filico.adb  a-filico.ali
+W ada.io_exceptions%s	a-ioexce.ads		a-ioexce.ali
+W ada.streams%s		a-stream.ads		a-stream.ali
+W ada.streams.stream_io%s  a-ststio.adb		a-ststio.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_conversion%s
+W ada.unchecked_deallocation%s
+W system%s		system.ads		system.ali
+W system.file_control_block%s  s-ficobl.ads	s-ficobl.ali
+W system.file_io%s	s-fileio.adb		s-fileio.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.global_locks%s	s-gloloc.adb		s-gloloc.ali
+W system.htable%s	s-htable.adb		s-htable.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+U system.shared_storage%s  s-shasto.ads		8e5f073b BN EE NE OL PK
+W system%s		system.ads		system.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-ststio.ads		20090409150020 958fe54e
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-fileio.ads		20091027141444 42b99b37
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-gloloc.ads		20090409150020 3d600ba2
+D s-htable.ads		20090715094204 58b5da38
+D s-htable.adb		20090622122458 080a467e
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-shasto.ads		20090409150020 36b45ff8
+D s-shasto.adb		20090409150020 0303bcd7
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-strhas.ads		20090623093900 68e5ad16
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 26|32r6 33r6 34r6 44r6 45r6 49r23 51r24 57r24 60r26 109r26
+. 113r26 118r10 431r16 514r16
+X 5 a-ioexce.ads
+18K13*IO_Exceptions 30e22 26|32w10 51r28
+23X4*Name_Error 26|459r25 534r22
+X 6 a-stream.ads
+36K13*Streams 69e16 26|33w10 34r10 49r27 57r28 431r20 514r20
+39H9*Root_Stream_Type 67e64 26|76r36
+42M9*Stream_Element
+44I9*Stream_Element_Offset<integer> 26|84r23 304r23
+51A9*Stream_Element_Array(42M9)<44I9> 26|83r23 88r19 303r23 579r19
+X 7 a-ststio.ads
+39K21*Stream_IO 221e26 26|34w18 57r36 431r28 514r28
+41P9*Stream_Access(6|39R9) 26|172r56 178r56 184r42 353r42 393r20 400r18 414r18
+. 428r56 476r18 511r56 565r18
+43P9*File_Type(184R9) 26|77r18 118r40
+45E9*File_Mode 45e54 26|431r38 514r38
+45n23*In_File{45E9} 26|446r44 468r47 469r48
+45n32*Out_File{45E9} 26|527r44 537r52 557r47 558r48
+66U14*Create 26|537r23
+69s7 Name{string} 26|537r62
+72U14*Open 26|446r17 527r17
+75s7 Name{string} 26|446r53 527r54
+78U14*Close 26|213r14
+83V13*Mode{45E9} 26|468r17 557r17
+102U14*Read 26|307r11
+112U14*Write 26|582r11
+120U14*Set_Index 26|473r14 562r14
+125U14*Set_Mode 26|469r17 558r17
+X 9 a-unccon.ads
+20v14*Unchecked_Conversion 26|45w10 118r14
+X 10 a-uncdea.ads
+17+9 Object 26|61r7 110r7 114r7
+18P9 Name(17+9) 26|61r25 111r7 115r7
+20u15*Unchecked_Deallocation 26|44w10 60r30 109r30 113r30
+X 13 system.ads
+37K9*System 197e11 25|137r9 183r5 26|36r6 37r6 39w6 40r6 41r6 42r6 47r14
+. 53r24 55r24 133r23 293r10 357r7 368r7 373r10 377r10 378r10 383r10 434r7
+. 461r19 480r10 492r7 497r10 499r7 503r10 517r7 569r10 585r5
+64M9*Address 26|270r56 273r50 279r34
+X 16 s-ficobl.ads
+42K16*File_Control_Block 160e30 26|40w13 53r31
+80P9*AFCB_Ptr(82R9) 26|118r55
+X 17 s-fileio.ads
+39K16*File_IO 254e19 26|41w13 55r31
+239U14*Make_Unbuffered 26|447r17 470r17 528r17 559r17
+X 20 s-gloloc.ads
+35K16*Global_Locks 63e24 26|36w13 145r18 293r17 378r17 497r17
+40I9*Lock_Type 26|145r31
+47U14*Create_Lock 26|293r30
+51U14*Acquire_Lock 26|378r30
+55U14*Release_Lock 26|497r30
+X 21 s-htable.ads
+44K16*HTable 200e18 26|42w13 133r30
+58I12 Header_Num 26|134r7
+61+12 Element 26|135r7
+64*7 No_Element{61+12} 26|136r7
+68+12 Key 26|137r7
+69V21 Hash{58I12} 26|138r7
+70V21 Equal{boolean} 26|139r7
+72k12*Simple_HTable 99e21 26|133r37
+74U17*Set 26|224r11[133]
+81V16*Get{26|95P9} 26|322r18[133]
+85U17*Remove 26|212r14[133]
+X 25 s-shasto.ads
+137K16*Shared_Storage 13|37k9 25|183l12 183e26 26|47b21 585l12 585t26
+139U14*Shared_Var_Lock 139>31 26|364b14 385l8 385t23
+139s31 Var{string} 26|364b31 365r29
+146U14*Shared_Var_Unlock 146>33 26|488b14 505l8 505t25
+146s33 Var{string} 26|488b33 489r29
+158+12 Typ 161r18 26|404r13 417r10
+161*7 V{158+12} 26|404m26 417r24
+164s7 Full_Name{string} 26|402r33 416r33
+167k12*Shared_Var_Procs 158z12 161z7 164z7 181l8 181e24 26|391b17 422l8 422t24
+169U17*Read 26|399b17 407l11 407t15
+176U17*Write 26|413b17 420l11 420t16
+X 26 s-shasto.adb
+49K12 AS=49:27 76r33 83r20 84r20 88r16 303r20 304r20 579r16
+51K12 IOX=51:28 459r21 534r18
+53K12 FCB=53:31 118r51
+55K12 SFI=55:31 447r13 470r13 528r13 559r13
+57K12 SIO=57:36 77r14 118r36 172r52 178r52 184r38 213r10 307r7 353r38 393r16
+. 400r14 414r14 428r52 446r13 446r40 468r13 468r43 469r13 469r44 473r10 476r14
+. 511r52 527r13 527r40 537r19 537r48 557r13 557r43 558r13 558r44 562r10 565r14
+. 582r7
+59P9 String_Access(string) 61r33 63r10 98r14 129r24 130r29 137r21 243r29
+. 252r23
+60U14 Free[10|20] 214r10
+63p4 Dir{59P9} 283r10 287m10 290r22 293r56 441r45 522r45
+70N4 Max_Shared_Var_Files 204r35
+73i4 Shared_Var_Files_Open{natural} 204r10 219m10 219r35
+76R9 File_Stream_Type<6|39R9> 78e14 79r42 81P14 82r23 86P14 87r23 114r17
+. 302r23 445r31 526r31 578r23
+77p7*File{7|43P9} 213m34 307r24 446m34 447r58 468r34 469m38 470r58 473r36
+. 527m34 528r58 537m42 557r34 558m38 559r58 562r36 582r25
+79P9 File_Stream_Access(76R9) 101r16 115r17
+81U14 Read<6|54p14> 82=7 83<7 84<7 301b14 311l8 311t12
+82r7 Stream{76R9} 302b7 307r17
+83a7 Item{6|51A9} 303b7 307m30 310r15
+84i7 Last{6|44I9} 304b7 307m36 310m7
+86U14 Write<6|60p14> 87=7 88>7 577b14 583l8 583t13
+87r7 Stream{76R9} 578b7 582r18
+88a7 Item{6|51A9} 579b7 582r31
+90I12 Hash_Header{natural} 129r51 134r21 252r45 259r48
+94R9 Shared_Var_File_Entry 95r45 97c9 107e14 110r17 444r24 525r24
+95P9 Shared_Var_File_Entry_Ptr(94R9) 104r14 105r14 111r17 120r15 121r15 135r21
+. 158r31 166r45 196r31 197r15 317r45 318r13 429r13 512r13
+98p7*Name{59P9} 200m11 212r28 214m22 224r20
+101p7*Stream{79P9} 213r27 215m22 445m17 446r27 447r51 468r27 469r31 470r51
+. 473r29 476r37 526m17 527r27 528r51 537r35 557r27 558r31 559r51 562r29 565r37
+104p7*Next{95P9} 207r19 208r19 211r28 234m19 332r34 336r17 337m22 337r34
+. 340m14 342m19
+105p7*Prev{95P9} 208m24 233m14 333m22 336m22 336r34 337r17 341m14
+109U14 Free[10|20] 216r10 460r19
+113U14 Free[10|20] 215r10
+117V13 To_AFCB_Ptr[9|20]{16|80P9} 447r34 470r34 528r34 559r34
+120p4 LRU_Head{95P9} 205r19 211m10 228r10 229m10 331r22 332m13 332r25 333r13
+121p4 LRU_Tail{95P9} 230m10 233r22 234r10 235m10 328r19 341r22 342r10 343m10
+129V13 Hash{90I12} 129>20 138r21 252b13 263l8 263t12
+129p20 F{59P9} 252b19 258r16 259r35
+130V13 Equal{boolean} 130>20 130>24 139r21 243b13 246l8 246t13
+130p20 F1{59P9} 243b20 245r14
+130p24 F2{59P9} 243b24 245r23
+133K12 SFT[21|72] 212r10 224r7 322r14
+145i4 Global_Lock{20|40I9} 293m43 378m44 497m44
+147i4 Lock_Count{natural} 371r10 372m10 372r24 376m10 494m7 494r21 496r10
+154U14 Initialize 269b14 295l8 295t18 321r7 369r7 493r7
+158U14 Enter_SFE 158>25 158>58 196b14 237l8 237t17 452r13 552r10
+158p25 SFE{95P9} 196b25 200r7 224r16 224r26 229r22 230r22 233r10 234r27 235r22
+158s58 Fname{string} 196b58 200r31
+166V13 Retrieve{95P9} 166>23 317b13 347l8 347t16 435r14 518r14
+166s23 File{string} 317b23 322r23
+172V13 Shared_Var_ROpen{7|41P9} 172>31 402r15 428b13 482l8 482t24
+172s31 Var{string} 428b31 435r24 441r55 452r29
+178V13 Shared_Var_WOpen{7|41P9} 178>31 416r15 511b13 571l8 571t24
+178s31 Var{string} 511b31 518r24 522r55 552r26
+184U14 Shared_Var_Close 184>32 353b14 358l8 358t24 405r13 418r10
+184p32 Var{7|41P9} 353b32 354r29
+197p7 Freed{95P9} 205m10 207r13 208r13 211r22 212r22 213r21 214r16 215r16
+. 216m16
+253i7 N{natural} 259m10 259r16 262r14
+258i11 J{integer} 259r38
+270U17*Get_Env_Value_Ptr 270>36 270>42 270>50 271b<c,__gnat_getenv>25 284r10
+270m36 Name{13|64M9}
+270m42 Length{13|64M9}
+270m50 Ptr{13|64M9}
+273U17*Strncpy 273>26 273>40 273>59 274b<c,strncpy>25 290r13
+273m26 Astring_Addr{13|64M9}
+273m40 Cstring{13|64M9}
+273i59 N{integer}
+276a7 Dir_Name{string} 285r13
+279m7 Env_Value_Ptr{13|64M9} 285m57 290r39
+280i7 Env_Value_Length{integer} 285m31 287r34 289r13 290r54
+318p7 SFE{95P9} 322m7 324r10 328r13 331r16 336r13 336r30 337r13 337r30 340r10
+. 341r10 342r27 343r22 346r14
+400p10 S{7|41P9} 402m10 403r13 404r23 405r31
+414p10 S{7|41P9} 416m10 417r21 418r28
+429p7 SFE{95P9} 435m7 439r10 444m13 445r13 446r23 447r47 452r24 460m25 468r23
+. 469r27 470r47 473r25 476r33
+441a13 S{string} 446r61
+512p7 SFE{95P9} 518m7 520r10 525m13 526r13 527r23 528r47 537r31 552r21 557r23
+. 558r27 559r47 562r25 565r33
+522a13 S{string} 527r62 537r70 544r71
+X 27 s-soflin.ads
+45K16*Soft_Links 26|37w13 357r14 368r14 373r17 377r17 383r17 434r14 461r26
+. 480r17 492r14 499r14 503r17 517r14 569r17 27|397e22
+60P9*No_Param_Proc
+185p4*Lock_Task{60P9} 26|368r25 434r25 492r25 517r25
+195p4*Unlock_Task{60P9} 26|357r25 373r28 377r28 383r28 461r37 480r28 499r25
+. 503r28 569r28
+

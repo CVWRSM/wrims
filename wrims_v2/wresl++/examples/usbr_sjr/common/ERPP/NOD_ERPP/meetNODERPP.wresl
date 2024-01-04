@@ -1,0 +1,132 @@
+!WRESL statements for ERPP operations
+!MEETNODERPP
+!Edward Chang
+!7/21/99	10:30am
+!
+!This code meets the NOD ERPP requirement by calling for addwater and reservoir releases up 
+!to the calculated deficiency from 'NODERPPdefic.wresl'
+!******************************************************************************************
+
+goal meet151ERPP {                      !Sacramento - Knights Landing 
+     lhs  I151 
+     case ERPPmonth {
+          condition ERPP151 > 0.1
+          rhs       DeficERPP151*10./31. }
+          }
+goal restrictI151 {
+     lhs  I151 
+     case NOERPP {
+          condition ERPP151 < 0.1
+          rhs       0. }
+          }  
+
+goal meet152ERPP {                      !Yuba - Marysville
+     lhs  I152 
+     case ERPPmonth {
+          condition ERPP152 > 0.1
+          rhs       DeficERPP152*10./31. }
+     case otherwise {
+          condition always 
+          rhs       0. }
+          }
+
+goal meet153ERPP {                      !Feather - Gridley
+     lhs  I153 
+     case ERPPmonth {
+          condition ERPP153 > 0.1
+          rhs       DeficERPP153*10./31. }
+     case otherwise {
+          condition always 
+          rhs       0. }
+          }
+
+goal meet154ERPP {                      !Sacramento - Freeport
+     lhs  I154  
+     case ERPPmonth {
+          condition ERPP154 > 0.1
+          rhs       DeficERPP154 }
+          }
+goal restrictI154 {
+     lhs  I154 
+     case NOERPP {
+          condition ERPP154 < 0.1
+          rhs       0. }
+          }  
+        
+goal meet157ERPP {                      !American - Nimbus Dam
+     lhs  I157 
+     case ERPPmonth {
+          condition ERPP157 > 0.1
+          rhs       DeficERPP157*10./31. }
+     case otherwise {
+          condition always 
+          rhs       0. }
+          }
+
+goal meet158ERPP {                      !Sacramento - San Joaquin Delta Outflow
+     lhs  I150 
+     case ERPPmonth {
+          condition ERPP158 > 0.1
+          rhs       DeficERPP158*10./31. }
+          }
+goal restrictI150 {
+     lhs  I150 
+     case NOERPP {
+          condition ERPP158 < 0.1
+          rhs       0. }
+          }          
+
+
+!water released for ERPP water flows parallel to pre-operated system water
+goal setC151_ERPP {
+     lhs  C151_ERPP
+     case ERPPmonth {
+          condition month == mar
+          rhs       I151  }
+     case otherwise {
+          condition always
+          rhs       0. }
+          }
+goal setC152_ERPP { C152_ERPP = I152 }
+goal setC153_ERPP { C153_ERPP = I153 }
+goal setC154_ERPP { 
+     lhs  C154_ERPP
+     case ERPPreq {
+          condition month == may
+          rhs       I154  }
+     case otherwise {
+          condition always
+          rhs       0. }
+          }         
+goal setC_YBP002_ERPP { C_YBP002_ERPP = I157 }
+goal setD158_ERPP { D158_ERPP = I150 }
+
+!other upstream ERPP releases are accounted for in the main arc
+!This is routed separately than ERPP releases for Delta Outflow
+goal restirctD158_main { D158_main =    C151_erpp + C152_erpp + C153_erpp + C154_erpp + C_YBP002_erpp
+                                    +   I155 + I156 + I651  } 
+
+!******************************************************************************************
+!Because the "I" inflow arcs are defined using GENWRESL they have no weight.  To give the
+!inflow add-water arcs a lower priority than NDES releases a negative weight is needed.
+!This is done by defining an ERPP inflow arc with a negative weight and setting equal to "I" arc.
+define ERPP151inflow {std weight wt_I151 kind 'flow-inflow' units 'cfs' }
+goal setERPP151 { ERPP151inflow = I151 }
+
+define ERPP152inflow {std weight wt_I152 kind 'flow-inflow' units 'cfs' }
+goal setERPP152 { ERPP152inflow = I152 }
+
+define ERPP153inflow {std weight wt_I153 kind 'flow-inflow' units 'cfs' }
+goal setERPP153 { ERPP153inflow = I153 }
+
+define ERPP157inflow {std weight wt_I157 kind 'flow-inflow' units 'cfs' }
+goal setERPP157 { ERPP157inflow = I157 }
+
+define ERPP154inflow {std weight wt_I154 kind 'flow-inflow' units 'cfs' }
+goal setERPP154 { ERPP154inflow = I154 }
+
+define ERPP150inflow {std weight wt_I150 kind 'flow-inflow' units 'cfs' }
+goal setERPP150 { ERPP150inflow = I150 }
+
+
+

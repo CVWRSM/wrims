@@ -1,0 +1,15 @@
+!Draft WRESL statements for CVP delivery logic
+!CVPDEL_DEFS    (defining decision variables for cvp delivery logic)
+!Edward Chang
+!4/27/99    10:00am
+
+!This code defines decision variables in cycle 1, which will be set in cycle 6 and 
+!accessed next month's cycle 1
+!*************************************************************************************************************
+
+!Sum of CVP storages
+define WSI_CVP_Storage { std kind 'storage' units 'TAF' }
+
+!CVP San Luis storage to be set in cycle 6
+define CVP_SL { std kind 'storage' units 'TAF' }
+

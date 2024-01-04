@@ -1,0 +1,223 @@
+! Outputs for spreadsheet analyzing controlling factors
+
+define D_NapaBASE  {alias D_NAPA[BASE]     KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define c_YubFeaBASE  {alias c_YubFea[Base]      kind 'FLOW-CHANNEL'  units 'CFS'}
+
+define c_OMRUP  {alias c_OMR[UPSTREAM]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define c_OMRBASE  {alias c_OMR[Base]      kind 'FLOW-CHANNEL'  units 'CFS'}
+
+define D_BanksUP     {alias D_Banks[UPSTREAM]    KIND 'debug' UNITS 'CFS'}
+define D_Banks_swpUP     {alias D_Banks_swp[UPSTREAM]    KIND 'debug' UNITS 'CFS'}
+define D_JonesUp         {alias D_Jones[UPSTREAM]        KIND 'debug' UNITS 'CFS'}
+define D_Banks_exp1UP    {alias D_Banks_exp1[UPSTREAM]   KIND 'debug' UNITS 'CFS'}
+define D_Banks_exp2UP    {alias D_Banks_exp2[UPSTREAM]   KIND 'debug' UNITS 'CFS'}
+define D_Jones_exp1UP    {alias D_Jones_exp1[UPSTREAM]   KIND 'debug' UNITS 'CFS'}
+define D_Jones_exp2UP    {alias D_Jones_exp2[UPSTREAM]   KIND 'debug' UNITS 'CFS'}
+define C_Delta_swpUP     {alias C_Delta_swp[UPSTREAM]    KIND 'debug' UNITS 'CFS'}
+define C_Delta_cvpUP     {alias C_Delta_cvp[UPSTREAM]    KIND 'debug' UNITS 'CFS'}
+define D_EXPTDUP         {alias D_EXPTD[UPSTREAM]        KIND 'debug' units 'cfs'}
+define eiexpctrlUP       {alias eiexpctrl[UPSTREAM]      KIND 'debug' units 'cfs'}
+define aprmayexpctrlUP       {alias aprmayexpctrl[UPSTREAM]      KIND 'debug' units 'cfs'}
+define aprmaybanksctrlUP       {alias aprmaybanksctrl[UPSTREAM]      KIND 'debug' units 'cfs'}
+define aprmayjonesctrlUP       {alias aprmayjonesctrl[UPSTREAM]      KIND 'debug' units 'cfs'}
+
+define D_BanksBASE  {alias D_Banks[BASE]     KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D_Banks_swpBASE  {alias D_Banks_swp[BASE]     KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D_JonesBASE  {alias D_Jones[BASE]     KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D_Banks_exp1BASE  {alias D_Banks_exp1[BASE]   KIND 'debug' UNITS 'CFS'}
+define D_Banks_exp2BASE  {alias D_Banks_exp2[BASE]   KIND 'debug' UNITS 'CFS'}
+define D_Jones_exp1BASE  {alias D_Jones_exp1[BASE]   KIND 'debug' UNITS 'CFS'}
+define D_Jones_exp2BASE  {alias D_Jones_exp2[BASE]   KIND 'debug' UNITS 'CFS'}
+define C_Delta_swpBASE       {alias C_Delta_swp[BASE]    KIND 'debug' UNITS 'CFS'}
+define C_Delta_cvpBASE       {alias C_Delta_cvp[BASE]    KIND 'debug' UNITS 'CFS'}
+define D_EXPTDBASE           {alias D_EXPTD[BASE]        KIND 'debug' units 'cfs'}
+define eiexpctrlBASE     {alias eiexpctrl[BASE]      KIND 'debug' units 'cfs'}
+define aprmayexpctrlBASE     {alias aprmayexpctrl[BASE]      KIND 'debug' units 'cfs'}
+define aprmaybanksctrlBASE       {alias aprmaybanksctrl[BASE]      KIND 'debug' units 'cfs'}
+define aprmayjonesctrlBASE       {alias aprmayjonesctrl[BASE]      KIND 'debug' units 'cfs'}
+
+define c_kswck_mUP   {alias c_kswck_m[UPSTREAM]  KIND 'debug' UNITS 'CFS'}
+define c_nimbus_mUP  {alias c_nimbus_m[UPSTREAM] KIND 'debug' UNITS 'CFS'}
+define c_wkytn_mUP   {alias c_wkytn_m[UPSTREAM]  KIND 'debug' UNITS 'CFS'}
+define d_spring_mUP  {alias d_spring_m[UPSTREAM] KIND 'debug' UNITS 'CFS'}
+define c_thermUP     {alias c_therm[UPSTREAM]    KIND 'debug' UNITS 'CFS'}
+
+define c_kswck_mBASE     {alias c_kswck_m[BASE]  KIND 'debug' UNITS 'CFS'}
+define c_nimbus_mBASE    {alias c_nimbus_m[BASE] KIND 'debug' UNITS 'CFS'}
+define c_wkytn_mBASE     {alias c_wkytn_m[BASE]  KIND 'debug' UNITS 'CFS'}
+define d_spring_mBASE    {alias d_spring_m[BASE] KIND 'debug' UNITS 'CFS'}
+define c_thermBASE       {alias c_therm[BASE]    KIND 'debug' UNITS 'CFS'}
+
+define Inflow_UP {alias Inflow[upstream] kind 'debug' units 'cfs'}
+define Inflow_BASE {alias Inflow[BASE] kind 'debug' units 'cfs'}
+
+define SWPDS_up       {alias SWPDS[UPSTREAM]     KIND 'debug' UNITS 'CFS'}
+define SHADS_up       {alias SHADS[UPSTREAM]     KIND 'debug' UNITS 'CFS'}
+define FOLDS_up       {alias FOLDS[UPSTREAM]     KIND 'debug' UNITS 'CFS'}
+define WHSSW_up       {alias WHSSW[UPSTREAM]     KIND 'debug' UNITS 'CFS'}
+define IBU_up         {alias IBU[UPSTREAM]       KIND 'debug' UNITS 'CFS'}
+define UWFE_up        {alias UWFE[UPSTREAM]      KIND 'debug' UNITS 'CFS'}
+define UNUSED_FS_up   {alias UNUSED_FS[UPSTREAM] KIND 'debug' UNITS 'CFS'}
+define UNUSED_SS_up   {alias UNUSED_SS[UPSTREAM] KIND 'debug' UNITS 'CFS'}
+                                                        
+define SWPDS_base       {alias SWPDS[BASE]     KIND 'debug' UNITS 'CFS'}
+define SHADS_base       {alias SHADS[BASE]     KIND 'debug' UNITS 'CFS'}
+define FOLDS_base       {alias FOLDS[BASE]     KIND 'debug' UNITS 'CFS'}
+define WHSSW_base       {alias WHSSW[BASE]     KIND 'debug' UNITS 'CFS'}
+define IBU_base         {alias IBU[BASE]       KIND 'debug' UNITS 'CFS'}
+define UWFE_base        {alias UWFE[BASE]      KIND 'debug' UNITS 'CFS'}
+define UNUSED_FS_base   {alias UNUSED_FS[BASE] KIND 'debug' UNITS 'CFS'}
+define UNUSED_SS_base   {alias UNUSED_SS[BASE] KIND 'debug' UNITS 'CFS'}
+                                                        
+define exp_est_SWP_up        {alias exp_est_SWP[UPSTREAM] kind 'debug' units 'cfs'}
+define exp_est_SWP_base      {alias exp_est_SWP[BASE] kind 'debug' units 'cfs'}
+define exp_estSWPlim3c2  {alias exp_estSWPlim3[BASE] kind 'debug' units 'cfs'}
+define exp_est_CVP_up        {alias exp_est_CVP[UPSTREAM] kind 'debug' units 'cfs'}
+define exp_est_CVP_base      {alias exp_est_CVP[BASE] kind 'debug' units 'cfs'}
+
+define RSReqSacDVup {alias RSReqSacDV[UPSTREAM] kind 'debug' units 'CFS'}
+define RSReqSacDVbase {alias RSReqSacDV[BASE] kind 'debug' units 'CFS'}
+
+define JPReqSacDVup {alias JPReqSacDV[UPSTREAM] kind 'debug' units 'CFS'}
+define JPReqSacDVbase {alias JPReqSacDV[BASE] kind 'debug' units 'CFS'}
+
+define EMReqSacDVup {alias EMReqSacDV[UPSTREAM] kind 'debug' units 'CFS'}
+define EMReqSacDVbase {alias EMReqSacDV[BASE] kind 'debug' units 'CFS'}
+
+define COReqSacDVup {alias COReqSacDV[UPSTREAM] kind 'debug' units 'CFS'}
+define COReqSacDVbase {alias COReqSacDV[BASE] kind 'debug' units 'CFS'}
+
+define AnnSacReqDVup {alias AnnSacReqDV[UPSTREAM] kind 'debug' units 'CFS'}
+define AnnSacReqDVbase {alias AnnSacReqDV[BASE] kind 'debug' units 'CFS'}
+
+define C_HOOD_MIFUP {alias C_HOOD_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_HOOD_MIFBASE {alias C_HOOD_MIF[BASE] kind 'debug' units 'CFS'}
+define C_HOOD_EXCUP {alias C_HOOD_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_HOOD_EXCBASE {alias C_HOOD_EXC[BASE] kind 'debug' units 'CFS'}
+define C_HOOD_ANNUP {alias C_HOOD_ANN[UPSTREAM] kind 'debug' units 'CFS'}
+define C_HOOD_ANNBASE {alias C_HOOD_ANN[BASE] kind 'debug' units 'CFS'}
+define C_HOODbase 	{alias C_HOOD[BASE] kind 'debug' units 'cfs'}
+define C_HOODup 		{alias C_HOOD[UPSTREAM] kind 'debug' units 'cfs'}
+
+define C_HST_MIFUP {alias C_HST_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_HST_MIFBASE {alias C_HST_MIF[BASE] kind 'debug' units 'CFS'}
+define C_HST_EXCUP {alias C_HST_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_HST_EXCBASE {alias C_HST_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_KSWCK_MIFUP {alias C_KSWCK_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_KSWCK_MIFBASE {alias C_KSWCK_MIF[BASE] kind 'debug' units 'CFS'}
+define C_KSWCK_EXCUP {alias C_KSWCK_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_KSWCK_EXCBASE {alias C_KSWCK_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_NIMBUS_MIFUP {alias C_NIMBUS_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_NIMBUS_MIFBASE {alias C_NIMBUS_MIF[BASE] kind 'debug' units 'CFS'}
+define C_NIMBUS_EXCUP {alias C_NIMBUS_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_NIMBUS_EXCBASE {alias C_NIMBUS_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_OROVL_MIFUP {alias C_OROVL_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_OROVL_MIFBASE {alias C_OROVL_MIF[BASE] kind 'debug' units 'CFS'}
+define C_OROVL_EXCUP {alias C_OROVL_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_OROVL_EXCBASE {alias C_OROVL_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_REDBLF_MIFUP {alias C_REDBLF_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_REDBLF_MIFBASE {alias C_REDBLF_MIF[BASE] kind 'debug' units 'CFS'}
+define C_REDBLF_EXCUP {alias C_REDBLF_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_REDBLF_EXCBASE {alias C_REDBLF_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_SACRV_MIFUP {alias C_SACRV_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_SACRV_MIFBASE {alias C_SACRV_MIF[BASE] kind 'debug' units 'CFS'}
+define C_SACRV_EXCUP {alias C_SACRV_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_SACRV_EXCBASE {alias C_SACRV_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_THERM_MIFUP {alias C_THERM_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_THERM_MIFBASE {alias C_THERM_MIF[BASE] kind 'debug' units 'CFS'}
+define C_THERM_EXCUP {alias C_THERM_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_THERM_EXCBASE {alias C_THERM_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_WILKNS_MIFUP {alias C_WILKNS_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_WILKNS_MIFBASE {alias C_WILKNS_MIF[BASE] kind 'debug' units 'CFS'}
+define C_WILKNS_EXCUP {alias C_WILKNS_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_WILKNS_EXCBASE {alias C_WILKNS_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_WKYTN_MIFUP {alias C_WKYTN_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_WKYTN_MIFBASE {alias C_WKYTN_MIF[BASE] kind 'debug' units 'CFS'}
+define C_WKYTN_EXCUP {alias C_WKYTN_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_WKYTN_EXCBASE {alias C_WKYTN_EXC[BASE] kind 'debug' units 'CFS'}
+
+define C_YOLOBP_MIFUP {alias C_YOLOBP_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_YOLOBP_MIFBASE {alias C_YOLOBP_MIF[BASE] kind 'debug' units 'CFS'}
+define C_YOLOBP_EXCUP {alias C_YOLOBP_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_YOLOBP_EXCBASE {alias C_YOLOBP_EXC[BASE] kind 'debug' units 'CFS'}
+define C_YOLOBPup 	{alias C_YOLOBP[UPSTREAM] kind 'debug' units 'cfs'}
+define C_YOLOBPbase 	{alias C_YOLOBP[BASE] kind 'debug' units 'cfs'}
+
+define C_YUBFEA_MIFUP {alias C_YUBFEA_MIF[UPSTREAM] kind 'debug' units 'CFS'}
+define C_YUBFEA_MIFBASE {alias C_YUBFEA_MIF[BASE] kind 'debug' units 'CFS'}
+define C_YUBFEA_EXCUP {alias C_YUBFEA_EXC[UPSTREAM] kind 'debug' units 'CFS'}
+define C_YUBFEA_EXCBASE {alias C_YUBFEA_EXC[BASE] kind 'debug' units 'CFS'}
+
+define S_SHSTAUP {alias S_SHSTA[UPSTREAM] kind 'debug' units 'TAF'}
+define S_SHSTABASE {alias S_SHSTA[BASE] kind 'debug' units 'TAF'}
+
+define S_FOLSMUP {alias S_FOLSM[UPSTREAM] kind 'debug' units 'TAF'}
+define S_FOLSMBASE {alias S_FOLSM[BASE] kind 'debug' units 'TAF'}
+
+define S_TRNTYUP {alias S_TRNTY[UPSTREAM] kind 'debug' units 'TAF'}
+define S_TRNTYBASE {alias S_TRNTY[BASE] kind 'debug' units 'TAF'}
+
+define S_OROVLUP {alias S_OROVL[UPSTREAM] kind 'debug' units 'TAF'}
+define S_OROVLBASE {alias S_OROVL[BASE] kind 'debug' units 'TAF'}
+
+define S_SLCVPUP {alias S_SLCVP[UPSTREAM] kind 'debug' units 'TAF'}
+define S_SLCVPBASE {alias S_SLCVP[BASE] kind 'debug' units 'TAF'}
+
+define S_SLSWPUP {alias S_SLSWP[UPSTREAM] kind 'debug' units 'TAF'}
+define S_SLSWPBASE {alias S_SLSWP[BASE] kind 'debug' units 'TAF'}
+
+define CVPRULECVUP {alias CVPRULECV[UPSTREAM] kind 'debug' units 'CFS'}
+define CVPRULECVBASE {alias CVPRULECV[BASE] kind 'debug' units 'CFS'}
+
+define SWPRULECVUP {alias SWPRULECV[UPSTREAM] kind 'debug' units 'CFS'}
+define SWPRULECVBASE {alias SWPRULECV[BASE] kind 'debug' units 'CFS'}
+
+define C_DELTAUP {alias C_DELTA[UPSTREAM] kind 'debug' units 'CFS'}
+define C_DELTABASE {alias C_DELTA[BASE] kind 'debug' units 'CFS'}
+
+define D_DELTAREQDUP {alias D_DELTAREQD[UPSTREAM] kind 'debug' units 'CFS'}
+define D_DELTAREQDBASE {alias D_DELTAREQD[BASE] kind 'debug' units 'CFS'}
+
+define C_DELTA_ANNUP {alias C_DELTA_ANN[UPSTREAM] kind 'debug' units 'CFS'}
+define C_DELTA_ANNBASE {alias C_DELTA_ANN[BASE] kind 'debug' units 'CFS'}
+
+define MRDO_FINALUP {alias MRDO_FINALDV[UPSTREAM] kind 'debug' units 'CFS'}
+define MRDO_FINALBASE {alias MRDO_FINALDV[BASE] kind 'debug' units 'CFS'}
+
+define exp_est_totalup {alias exp_est_total[UPSTREAM] kind 'debug' units 'cfs'}
+define exp_est_totalbase {alias exp_est_total[BASE] kind 'debug' units 'cfs'}
+
+define S_SHSTALEVEL3DVUP {alias S_SHSTALEVEL3DV[UPSTREAM] kind 'debug' units 'TAF'}
+define S_FOLSMLEVEL3DVUP {alias S_FOLSMLEVEL3DV[UPSTREAM] kind 'debug' units 'TAF'}
+define S_TRNTYLEVEL3DVUP {alias S_TRNTYLEVEL3DV[UPSTREAM] kind 'debug' units 'TAF'}
+define S_OROVLLEVEL3DVUP {alias S_OROVLLEVEL3DV[UPSTREAM] kind 'debug' units 'TAF'}
+define S_OROVLLEVEL4DVUP {alias S_OROVLLEVEL4DV[UPSTREAM] kind 'debug' units 'TAF'}
+
+define S_SHSTALEVEL3DVBASE {alias S_SHSTALEVEL3DV[BASE] kind 'debug' units 'TAF'}
+define S_FOLSMLEVEL3DVBASE {alias S_FOLSMLEVEL3DV[BASE] kind 'debug' units 'TAF'}
+define S_TRNTYLEVEL3DVBASE {alias S_TRNTYLEVEL3DV[BASE] kind 'debug' units 'TAF'}
+define S_OROVLLEVEL3DVBASE {alias S_OROVLLEVEL3DV[BASE] kind 'debug' units 'TAF'}
+define S_OROVLLEVEL4DVBASE {alias S_OROVLLEVEL4DV[BASE] kind 'debug' units 'TAF'}
+
+
+define C_OrovlUp 	{alias C_Orovl[UPSTREAM] kind 'debug' units 'cfs'}
+define C_OrovlBase	{alias C_Orovl[BASE] kind 'debug' units 'cfs'}
+
+define exest_SWPDemB     {alias exp_est_SWPDem[BASE] kind 'debug' units 'cfs'}
+define exest_SWPRCB	{alias exp_est_SWPRC[BASE] kind 'debug' units 'cfs'}
+define exest_CVPDemB 	{alias exp_est_CVPDem[Base] kind 'debug' units 'cfs'}
+define exest_CVPRCB 	{alias exp_est_CVPRC[BASE] kind 'debug' units 'cfs'}
+define C_Orovl_IBU_B 	{alias C_Orovl_IBU[Base] kind 'debug' units 'cfs'}
+define C_Orovl_EXP_B	{alias C_Orovl_EXP[BASE] kind 'debug' units 'cfs'}
+define C_Orovl_IBU_U 	{alias C_Orovl_IBU[UPSTREAM] kind 'debug' units 'cfs'}
+define C_Orovl_EXP_U	{alias C_Orovl_EXP[UPSTREAM] kind 'debug' units 'cfs'}
+
+

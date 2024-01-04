@@ -1,0 +1,74 @@
+/*************************************
+demands_WilkinsSlough_defs.wresl
+ 
+Tom FitzHugh BOR 5/13/2010
+ 
+Defines variables for Wilkins Slough delivery logic
+**************************************/
+
+! Wilkins Slough deliveries by type --------------------------------------------------------------------
+define D_Wilkns_psc {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_Wilkns_SC {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_Wilkns_GCID {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_Wilkns_prf {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+! For Refuges within Colusa Basin ----------------------------------------------------------------------
+define D143B {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D145B {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D182B {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+
+define dem_D14302_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Sacramento - includes losses
+define dem_D18201A_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Delevan - includes losses
+define dem_D18201B_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Colusa - includes losses
+
+define con_D14302_prf {timeseries kind 'demand-cvp-rf' units 'cfs'} !Sacramento
+define con_D18201A_prf {timeseries kind 'demand-cvp-rf' units 'cfs'} !Delevan
+define con_D18201B_prf {timeseries kind 'demand-cvp-rf' units 'cfs'} !Colusa
+
+! WBA8NN ------------------------------------------------------------------------------------------------
+define L122A {std kind 'FLOW-DELIVERY' units 'CFS'} !GCID Loss WBA 8NS
+define D122A {std kind 'FLOW-DELIVERY' units 'CFS'}
+define L143A {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D143A {std kind 'FLOW-DELIVERY' units 'CFS'}
+define L143 {std kind 'FLOW-DELIVERY' units 'CFS'} !!conveyance loss for the Glen Colusa Canal 
+define D114 {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+define ConvLs_14301 {value 0.10}
+define con_14301SC {timeseries kind 'DEMAND' units 'cfs'}
+define con_114GCID {timeseries kind 'DEMAND' units 'cfs'}
+
+define target_D14301SC {timeseries kind 'DIV-REQUIREMENT' units 'CFS'}  ! sw diversion requirement which incorporates on-farm efficiency and reuse factor
+define target_D14301GCID {timeseries kind 'DIV-REQUIREMENT' units 'CFS'}  ! sw diversion requirement which incorporates on-farm efficiency, reuse factor, and conveyance losses
+
+! WBA8NS ------------------------------------------------------------------------------------------------
+define L122B {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA 8NS Sac River
+define D122B {std kind 'FLOW-DELIVERY' units 'CFS'}
+define L145A {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D145A {std kind 'FLOW-DELIVERY' units 'CFS'}
+!define L182A {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D182A {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+
+define ConvLs_14501 {value 0.15}
+define ConvLs_14501GCID {value 0.15}
+define con_14501SC {timeseries kind 'DEMAND' units 'cfs'} 
+
+define target_D14501SC {timeseries kind 'DIV-REQUIREMENT' units 'CFS'}  ! sw diversion requirement which incorporates on-farm efficiency and reuse factor
+define target_D14501GCID {timeseries kind 'DIV-REQUIREMENT' units 'CFS'}  ! sw diversion requirement which incorporates on-farm efficiency, reuse factor, and conveyance losses
+
+! WBA8S ------------------------------------------------------------------------------------------------
+define L129A {std kind 'FLOW-DELIVERY' units 'CFS'} ! WBA 8S Sac R diversion
+define D129A {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+define ConvLs_18301 {value 0.1}
+define con_18301SC {timeseries kind 'DEMAND' units 'cfs'} 
+
+define target_D18301SC {timeseries kind 'DIV-REQUIREMENT' units 'CFS'} ! sw diversion requirement which incorporates on-farm efficiency and reuse factor
+
+! WBA 9, 18, 19  East side of DSA 15 -------------------------------------------------------------------
+define L128 {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D128 {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+define ConvLs_131 {value 0.1}
+define con_131SC {timeseries kind 'DEMAND' units 'cfs'} 
+
+define target_D131SC {timeseries kind 'DIV-REQUIREMENT' units 'CFS'} ! sw diversion requirement which incorporates on-farm efficiency and reuse factor

@@ -1,0 +1,7 @@
+define SJRR_mon_taf {select release from SJRR_Reqs_off where month=month, yt=wyt_SJRRest}
+define SJRR_mon {value SJRR_mon_taf*taf_cfs}
+define SJRR_mon_jun {select thruJun from SJRR_Reqs_off where month=month, YT=wyt_SJRRest}
+define SJRR_mon_sep {select thruSep from SJRR_Reqs_off where month=month, YT=wyt_SJRRest}
+
+define SJRR_mon_jun_ {alias SJRR_mon_jun kind 'restoration-sum' units 'taf'}
+define SJRR_mon_sep_ {alias SJRR_mon_sep kind 'restoration-sum' units 'taf'}

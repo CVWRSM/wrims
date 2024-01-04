@@ -1,0 +1,53 @@
+! InstreamFromOID.wresl
+! Edward Chang
+! 6/05/2000
+! Joint Model, Cycle 6
+! The following code reallocates purchased water from OID to various in-stream needs.
+
+/*
+ The following code makes releases from New Melones to augment Stanislaus flows
+ by the amounts purchased from OID.
+ October - the amount is an even 15 TAF
+ November and December - the amount is any remaining from the 11 TAF that OID
+ reserves every year to sell for VAMP and other instream flows.  In the event
+ that the entire 11 TAF was not used in April and May for VAMP, the balance is
+ split between November and December.
+*/
+/*
+ Revised by R. Field 01/15/2004, Reclamation, Added 0.5 to be multiplied
+ to C_PEDRO_STS_Vamp for Arpil and May.
+ Revised by C. Hsu, 3/3/03, USBR, for review and documentation project
+ Modified 1/03 by Nancy Parker
+*/
+!##################################################################################
+
+! Minimum instream Stanislaus flows to be met from New Melones releases.
+define OIDInstreamToBeMet   {
+    case first_months {
+        condition month<=DEC .and. wateryear==1922
+        value       0. }
+    case October {
+        condition month == OCT
+        value 15. }
+    case November {
+        condition month == NOV
+        value max(0., 11.0 - (C_MELONvamp_M(-7)*cfs_taf(-7) + C_PEDRO_STS_VAMP(-7)*cfs_taf(-7)
+                            + C_MELONvamp_M(-6)*cfs_taf(-6) + C_PEDRO_STS_VAMP(-6)*cfs_taf(-6))/2.)*30./61. }
+    case December {
+        condition month == DEC
+        value max(0., 11.0 - (C_MELONvamp_M(-8)*cfs_taf(-8) + C_PEDRO_STS_VAMP(-8)*cfs_taf(-8)
+                            + C_MELONvamp_M(-7)*cfs_taf(-7) + C_PEDRO_STS_VAMP(-7)*cfs_taf(-7))/2.)*31./61. }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! Alias Stanislaus minimum intream flow releases from New Melones
+define C_MELONinstTgtdv    {alias OIDInstreamToBeMet kind 'alias' units 'taf'}
+define C_MELONinstTgtdvcfs {alias OIDInstreamToBeMet*taf_cfs kind 'alias' units 'cfs'}
+
+! Release for instream flow on Stanislaus from New Melones
+goal meetC_MELONinstream   {C_MELONinstream  < OIDInstreamToBeMet*TAF_cfs}
+
+! Release for instream flow on Stanislaus at Goodwin
+! <COMMENTED IN BO RUN>    goal meetC_STS059INSTREAM  {C_STS059INSTREAM < OIDInstreamToBeMet*TAF_cfs}

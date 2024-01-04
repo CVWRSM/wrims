@@ -1,0 +1,518 @@
+/** R1: CVP Users: Anderson Cottonwood, Clear Creek, Bella Vista, Sacramento River miscellaneous
+users **/
+define R1_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R1_NP_DEL { R1_NP_DEL =
+! R1_NP_DEL:
+! Region: DSA 58
+D104_NP * 1 ! Quantity: 27.5 TAF out of 27.5 TAF;
+}
+define R1_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R1_GW_DEL { R1_GW_DEL =
+! R1_GW_DEL:
+! Region: DSA 58
+GP60 * 1 ! Quantity: 97.5 TAF out of 97.5 TAF;
+}
+define R1_CVPSC_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R1_CVPSC_DEL { R1_CVPSC_DEL =
+! R1_CVPSC_DEL:
+! Region: DSA 58
+D104_PSC * 0.852 ! Quantity: 129.91 TAF out of 152.43 TAF;
+}
+define R1_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R1_CVP_DEL { R1_CVP_DEL =
+! R1_CVP_DEL:
+! Region: DSA 58
+D104_PSC * 0.01 ! Quantity: 1.52 TAF out of 152.43 TAF;
++ D104_PAG * 1 ! Quantity: 38.87 TAF out of 38.87 TAF;
+}
+/** R2: CVP Users: Corning Canal, Kirkwood, Tehama, Sacramento River miscellaneous users **/
+define R2_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R2_NP_DEL { R2_NP_DEL =
+! R2_NP_DEL:
+! Region: WBA 4
+D113A * -1 ! Multiplier: -1;
++ D11301 * 1 ! Quantity: 3.5 TAF out of 3.5 TAF;
+! Region: WBA 5
++ D113B * 1 ! Quantity: 10.9 TAF out of 10.9 TAF;
++ D11305 * 1 ! Quantity: 77.7 TAF out of 77.7 TAF;
+}
+define R2_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R2_GW_DEL { R2_GW_DEL =
+! R2_GW_DEL:
+! Region: WBA 4
+GP17201 * 1 ! Quantity: 0.3 TAF out of 0.3 TAF;
++ GP17101 * 1 ! Quantity: 14.8 TAF out of 14.8 TAF;
++ GP11302 * 1 ! Quantity: 157.6 TAF out of 157.6 TAF;
+! Region: WBA 5
++ GP11306 * 1 ! Quantity: 115.7 TAF out of 115.7 TAF;
+! Region: WBA 6
++ GP17302 * 1 ! Quantity: 21.3 TAF out of 21.3 TAF;
+}
+define R2_CVPSC_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R2_CVPSC_DEL { R2_CVPSC_DEL =
+! R2_CVPSC_DEL:
+! Region: WBA 4
+D113A * 0.41 ! Quantity: 0.61 TAF out of 1.49 TAF;
+}
+define R2_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R2_CVP_DEL { R2_CVP_DEL =
+! R2_CVP_DEL:
+! Region: WBA 4
+D171_NDS
++ D113A * 0.59 ! Quantity: 0.88 TAF out of 1.49 TAF;
++ D171_PAG * 1 ! Quantity: 32.9 TAF out of 32.9 TAF;
+! Region: WBA 6
++ D17301 * 1 ! Quantity: 32.3 TAF out of 32.3 TAF;
++ D42 * 1 ! Quantity: 70.6 TAF out of 70.6 TAF;
+}
+/** R3: CVP Users: Glenn Colusa ID, Provident, Princeton-Codora, Maxwell, and Colusa Basin
+Drain MWC **/
+define R3_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R3_GW_DEL { R3_GW_DEL =
+! R3_GW_DEL:
+! Region: WBA 8NN
+GP14301 * 1 ! Quantity: 128.5 TAF out of 128.5 TAF;
+! Region: WBA 8NS
++ GP14501 * 0.8 ! Quantity: 84.4 TAF out of 105.5 TAF;
+}
+define R3_CVPSC_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R3_CVPSC_DEL { R3_CVPSC_DEL =
+! R3_CVPSC_DEL:
+! Region: WBA 8NN
+D122A_WTS
++ D143A_EWA
++ D143A_WTS
++ D180_PSC * 1 ! Quantity: 7.7 TAF out of 7.7 TAF;
++ D122A_PSC * 0.83 ! Quantity: 107.3 TAF out of 129.21 TAF;
++ D143A_PSC * 0.873 ! Quantity: 385.31 TAF out of 441.5 TAF;
+! Region: WBA 8NS
++ D122_EWA * 0.5 ! Multiplier: 0.5;
++ D145A_WTS
++ D18302 * 1 ! Quantity: 0.8 TAF out of 0.8 TAF;
++ D122B_PSC * 0.144 ! Quantity: 10.8 TAF out of 74.85 TAF;
++ D182A * 1 ! Quantity: 62.3 TAF out of 62.3 TAF;
++ D145A_PSC * 0.873 ! Quantity: 334.69 TAF out of 383.5 TAF;
+! Region: WBA 8S
++ D145A_EWA
+}
+define R3_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R3_CVP_DEL { R3_CVP_DEL =
+! R3_CVP_DEL:
+! Region: WBA 8NN
+D143A_NDS
++ D122A_PSC * 0.17 ! Quantity: 21.92 TAF out of 129.21 TAF;
++ D143A_PSC * 0.127 ! Quantity: 56.19 TAF out of 441.5 TAF;
+! Region: WBA 8NS
++ D145A_NDS
++ D122B_PSC * 0.072 ! Quantity: 5.4 TAF out of 74.85 TAF;
++ D145A_PSC * 0.127 ! Quantity: 48.81 TAF out of 383.5 TAF;
+}
+/** R3B: Tehama Colusa Canal Service Area. CVP Users: Orland-Artois WD, most of County of
+Colusa, Davis, Dunnigan, Glide, Kanawha, La Grande, Westside WD **/
+define R3B_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R3B_GW_DEL { R3B_GW_DEL =
+! R3B_GW_DEL:
+! Region: WBA 7N
+GP17401 * 1 ! Quantity: 194.7 TAF out of 194.7 TAF;
+! Region: WBA 7S
++ GP17801 * 1 ! Quantity: 173.6 TAF out of 173.6 TAF;
+}
+define R3B_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R3B_CVP_DEL { R3B_CVP_DEL =
+! R3B_CVP_DEL:
+! Region: WBA 4
+D172_NDS
++ D172_PAG * 1 ! Quantity: 2.1 TAF out of 2.1 TAF;
+! Region: WBA 7N
++ D174_NDS
++ D174_PAG * 1 ! Quantity: 108.5 TAF out of 108.5 TAF;
+! Region: WBA 7S
++ D178_NDS
++ D178_PAG * 1 ! Quantity: 175.2 TAF out of 175.2 TAF;
+}
+/** R4: CVP Users: Princeton-Codora-Glenn, Colusa Irrigation Co., Meridian Farm WC, Pelger
+Mutual WC, Recl. Dist. 1004, Recl. Dist. 108, Roberts Ditch, Sartain M.D., Sutter MWC, Swinford
+Tract IC, Tisdale Irrigation, Sac River miscellaneous users **/
+define R4_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R4_GW_DEL { R4_GW_DEL =
+! R4_GW_DEL:
+! Region: DSA 15 (partial)
+GP131 * 1 ! Quantity: 171.7 TAF out of 171.7 TAF;
+! Region: WBA 8NS
++ GP14501 * 0.2 ! Quantity: 21.1 TAF out of 105.5 TAF;
+! Region: WBA 8S
++ GP18301 * 1 ! Quantity: 18.6 TAF out of 18.6 TAF;
+}
+define R4_CVPSC_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R4_CVPSC_DEL { R4_CVPSC_DEL =
+! R4_CVPSC_DEL:
+! Region: DSA 15 (partial)
+D128_EWA
++ D128_WTS
++ D128_PSC * 0.726 ! Quantity: 347.98 TAF out of 479.31 TAF;
+! Region: WBA 8NS
++ D122_EWA * 0.5 ! Multiplier: 0.5;
++ D122B_WTS
++ D122B_PSC * 0.59 ! Quantity: 44.2 TAF out of 74.85 TAF;
+! Region: WBA 8S
++ D183_PSC
++ D129A_PSC * 0.872 ! Quantity: 217.82 TAF out of 249.84 TAF;
+}
+define R4_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R4_CVP_DEL { R4_CVP_DEL =
+! R4_CVP_DEL:
+! Region: DSA 15 (partial)
+D128_PSC * 0.274 ! Quantity: 131.33 TAF out of 479.31 TAF;
+! Region: WBA 8NS
++ D122B_PSC * 0.193 ! Quantity: 14.45 TAF out of 74.85 TAF;
+! Region: WBA 8S
++ D129A_PSC * 0.128 ! Quantity: 32.03 TAF out of 249.84 TAF;
+}
+/** R5: Most Feather River Region riparian and appropriative users **/
+define R5_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R5_NP_DEL { R5_NP_DEL =
+! R5_NP_DEL:
+! Region: DSA 69
+I204_EWA * -1 ! Multiplier: -1;
++ I204_WTS * -1 ! Multiplier: -1;
++ D7B_PWR * 1 ! Quantity: 5 TAF out of 5 TAF;
++ D206B_PWR * 1 ! Quantity: 5.13 TAF out of 5.13 TAF;
++ D206C_PWR * 1 ! Quantity: 6.21 TAF out of 6.21 TAF;
++ D202_PWR * 1 ! Quantity: 8 TAF out of 8 TAF;
++ D285_AG * 1 ! Quantity: 12.57 TAF out of 12.57 TAF;
++ D6_PWR * 1 ! Quantity: 17.6 TAF out of 17.6 TAF;
++ D217 * 1 ! Quantity: 70.6 TAF out of 70.6 TAF;
++ D207A * 1 ! Quantity: 87.3 TAF out of 87.3 TAF;
++ D7A_PWR * 1 ! Quantity: 145 TAF out of 145 TAF;
++ D230_NP * 0.75 * 1 ! Multiplier: 0.75; Quantity: 333.6 TAF out of 333.6 TAF;
+}
+define R5_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R5_GW_DEL { R5_GW_DEL =
+! R5_GW_DEL:
+! Region: DSA 69
+I204_EWA
++ I204_WTS
++ GP65_NP * 1 ! Quantity: 90.6 TAF out of 90.6 TAF;
++ GP65_PRJ * 1 ! Quantity: 354.1 TAF out of 354.1 TAF;
+}
+define R5_FRSA_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R5_FRSA_DEL { R5_FRSA_DEL =
+! R5_FRSA_DEL:
+! Region: DSA 69
+D7B_EWA
++ D7B_WTS
++ D206C_PAG * 1 ! Quantity: 13.09 TAF out of 13.09 TAF;
++ D206A_PAG * 1 ! Quantity: 17 TAF out of 17 TAF;
++ D206B_PAG * 1 ! Quantity: 65.72 TAF out of 65.72 TAF;
++ D7A_PAG * 1 ! Quantity: 150 TAF out of 150 TAF;
++ D7B_PAG * 1 ! Quantity: 550 TAF out of 550 TAF;
+}
+/** R6: Yolo, Solano Counties. CVP Users: Conaway Ranch, Sac River Miscellaneous users **/
+define R6_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R6_NP_DEL { R6_NP_DEL =
+! R6_NP_DEL:
+! Region: DSA 65
+D163_PSC * -1 ! Multiplier: -1;
++ D165_PSC * -1 ! Multiplier: -1;
++ C152A * 1 ! Quantity: 80.4 TAF out of 80.4 TAF;
+}
+define R6_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R6_GW_DEL { R6_GW_DEL =
+! R6_GW_DEL:
+! Region: DSA 65
+GP64 * 1 ! Quantity: 342.5 TAF out of 342.5 TAF;
+}
+define R6_CVPSC_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R6_CVPSC_DEL { R6_CVPSC_DEL =
+! R6_CVPSC_DEL:
+! Region: DSA 65
+D163_PSC * 0.985 ! Quantity: 55.94 TAF out of 56.77 TAF;
+}
+define R6_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R6_CVP_DEL { R6_CVP_DEL =
+! R6_CVP_DEL:
+! Region: DSA 65
+D163_PSC * 0.015 ! Quantity: 0.82 TAF out of 56.77 TAF;
+}
+/** R7: Sacramento Co. north of American River. CVP Users: Natomas Central MWC, Sac River
+miscellaneous users, Pleasant Grove-Verona, San Juan Suburban **/
+define R7_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R7_NP_DEL { R7_NP_DEL =
+! R7_NP_DEL:
+! Region: DSA 70
+C308 * -1 ! Multiplier: -1;
++ D168A_WTS
++ D308A * -1 ! Multiplier: -1;
++ I225
++ D223 * 1 ! Quantity: 11 TAF out of 11 TAF;
++ D283 * 1 ! Quantity: 99.24 TAF out of 99.24 TAF;
++ D168A * 1 ! Quantity: 137.1 TAF out of 137.1 TAF;
+}
+define R7_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R7_GW_DEL { R7_GW_DEL =
+! R7_GW_DEL:
+! Region: DSA 70
+GP66_NP * 1 ! Quantity: 77 TAF out of 77 TAF;
++ GP66_PRJ * 1 ! Quantity: 215.8 TAF out of 215.8 TAF;
+}
+define R7_CVPSC_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R7_CVPSC_DEL { R7_CVPSC_DEL =
+! R7_CVPSC_DEL:
+! Region: DSA 70
+D162A_PSC * 0.64 ! Quantity: 3.07 TAF out of 4.8 TAF;
++ D162C_PSC * 0.905 ! Quantity: 23.79 TAF out of 26.29 TAF;
++ D162B_PSC * 0.817 ! Quantity: 98.2 TAF out of 120.2 TAF;
+}
+define R7_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R7_CVP_DEL { R7_CVP_DEL =
+! R7_CVP_DEL:
+! Region: DSA 70
+D162A_PSC * 0.36 ! Quantity: 1.72 TAF out of 4.8 TAF;
++ D162C_PSC * 0.095 ! Quantity: 2.5 TAF out of 26.29 TAF;
++ D162B_PSC * 0.183 ! Quantity: 22 TAF out of 120.2 TAF;
+}
+/** R9: Delta Region. Direct diverters, CVP Users: Banta Carbona, West Side, Plainview **/
+define R9_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R9_NP_DEL { R9_NP_DEL =
+! R9_NP_DEL:
+! Region: DSA 55
+D412 * 1 ! Quantity: 54.8 TAF out of 54.8 TAF;
++ D400B * 1 ! Quantity: 67.3 TAF out of 67.3 TAF;
++ D406 * 1 ! Quantity: 87.7 TAF out of 87.7 TAF;
++ D413 * 1 ! Quantity: 159.5 TAF out of 159.5 TAF;
++ D410 * 1 ! Quantity: 205.8 TAF out of 205.8 TAF;
++ D404 * 1 ! Quantity: 254.4 TAF out of 254.4 TAF;
++ D409B * 1 ! Quantity: 297.5 TAF out of 297.5 TAF;
+}
+define R9_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R9_CVP_DEL { R9_CVP_DEL =
+! R9_CVP_DEL:
+! Region: _Other_
+D700_PAG * 0.67 ! Quantity: 40.6 TAF out of 60.6 TAF;
+}
+/** R10: Delta Mendota Canal. CVP Users: Panoche, Pacheco, Del Puerto, Hospital, Sunflower, West
+Stanislaus, Mustang, Orestimba, Patterson, Foothill, San Luis WD, Broadview, Eagle Field, Mercy
+Springs, Pool Exchange Contractors, Schedule II water rights, more **/
+define R10_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R10_NP_DEL { R10_NP_DEL =
+! R10_NP_DEL:
+! Region: _Other_
+D701_PAG * 0.028 ! Quantity: 6 TAF out of 212.71 TAF;
+}
+define R10_CVPSC_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R10_CVPSC_DEL { R10_CVPSC_DEL =
+! R10_CVPSC_DEL:
+! Region: _Other_
+I607_EWA * -1 ! Multiplier: -1;
++ I607_WTS * -1 ! Multiplier: -1;
++ D608B_PEX * 1 ! Quantity: 140 TAF out of 140 TAF;
++ D707_PEX * 1 ! Quantity: 140 TAF out of 140 TAF;
++ D607B_PEX * 0.941 ! Quantity: 560 TAF out of 594.81 TAF;
+}
+define R10_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R10_CVP_DEL { R10_CVP_DEL =
+! R10_CVP_DEL:
+! Region: _Other_
+I706_EWA * -1 ! Multiplier: -1;
++ D836_PAG * 1 ! Quantity: 36.69 TAF out of 36.69 TAF;
++ D833_PAG * 1 ! Quantity: 62.58 TAF out of 62.58 TAF;
++ D706_PAG * 1 ! Quantity: 84.37 TAF out of 84.37 TAF;
++ D835_PAG * 1 ! Quantity: 97.5 TAF out of 97.5 TAF;
++ D701_PAG * 0.972 ! Quantity: 206.71 TAF out of 212.71 TAF;
+}
+/** R14A: CVP Users: Westlands WD **/
+define R14A_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R14A_CVP_DEL { R14A_CVP_DEL =
+! R14A_CVP_DEL:
+! Region: _Other_
+I839_EWA * -1 ! Multiplier: -1;
++ I839_WTS * -1 ! Multiplier: -1;
++ D843_PAG * 1 ! Quantity: 142 TAF out of 142 TAF;
++ D837_PAG * 1 ! Quantity: 219 TAF out of 219 TAF;
++ D841_PAG * 1 ! Quantity: 219 TAF out of 219 TAF;
++ D839_PAG * 1 ! Quantity: 570 TAF out of 570 TAF;
+}
+/** R15A: Tulare Lake Bed. CVP Users: Fresno Slough, James, Tranquillity, Traction Ranch,
+Laguna, Real. Dist. 1606 **/
+define R15A_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R15A_NP_DEL { R15A_NP_DEL =
+! R15A_NP_DEL:
+! Region: _Other_
+D607B_PEX * 0.059 ! Quantity: 34.81 TAF out of 594.81 TAF;
+}
+define R15A_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R15A_CVP_DEL { R15A_CVP_DEL =
+! R15A_CVP_DEL:
+! Region: _Other_
+D607A_PAG * 1 ! Quantity: 55.48 TAF out of 55.48 TAF;
+}
+define R15A_SWP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R15A_SWP_DEL { R15A_SWP_DEL =
+! R15A_SWP_DEL:
+! Region: _Other_
+D846_PCO
++ D847_PCO
++ D848_PCO
++ D846_PAG * 1 ! Quantity: 3 TAF out of 3 TAF;
++ D847_PAG * 1 ! Quantity: 9 TAF out of 9 TAF;
++ D848_PAG * 1 ! Quantity: 96.23 TAF out of 96.23 TAF;
+}
+define R15A_SWP21_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R15A_SWP21_DEL { R15A_SWP21_DEL =
+! R15A_SWP21_DEL:
+! Region: _Other_
+D846_PIN * 1 ! Quantity: 1 TAF out of 1 TAF;
++ D848_PIN * 1 ! Quantity: 15 TAF out of 15 TAF;
+}
+/** R16: Eastern Fresno Co. CVP Users: Friant-Kern Canal. Fresno ID, Garfield, International **/
+define R16_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R16_CVP_DEL { R16_CVP_DEL =
+! R16_CVP_DEL:
+! Region: _Other_
+D855_PAG * 0.023 ! Quantity: 3 TAF out of 128.3 TAF;
+}
+/** R17: CVP Users: Friant-Kern Canal. Hills Valley, Tri-Valley Orange Cove **/
+define R17_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R17_CVP_DEL { R17_CVP_DEL =
+! R17_CVP_DEL:
+! Region: _Other_
+D855_PAG * 0.035 ! Quantity: 4.49 TAF out of 128.3 TAF;
+}
+/** R18: CVP Users: Friant-Kern Canal, County of Fresno, Lower Tule River ID, Pixley ID, portion
+of Rag Gulch, Ducor, County of Tulare, most of Delano Earlimart, Exeter, Ivanhoe, Lewis Cr.,
+Lindmore, Lindsay-Strathmore, Porterville, Sausalito, Stone Corral, Tea Po **/
+define R18_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R18_CVP_DEL { R18_CVP_DEL =
+! R18_CVP_DEL:
+! Region: _Other_
+D855_PAG * 0.526 ! Quantity: 67.51 TAF out of 128.3 TAF;
+}
+/** R19A: Kern Co. SWP Service Area **/
+define R19A_SWP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R19A_SWP_DEL { R19A_SWP_DEL =
+! R19A_SWP_DEL:
+! Region: _Other_
+D851_PCO * 0.455 ! Multiplier: 0.455;
++ D867_PCO
++ D867_PAG * 1 ! Quantity: 73.07 TAF out of 73.07 TAF;
++ D851_PAG * 0.455 ! Quantity: 273.54 TAF out of 600.61 TAF;
+}
+define R19A_SWP21_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R19A_SWP21_DEL { R19A_SWP21_DEL =
+! R19A_SWP21_DEL:
+! Region: _Other_
+D859_PIN * 0.43 ! Quantity: 77.4 TAF out of 180 TAF;
+}
+/** R20: CVP Users: Friant-Kern Canal. Shafter-Wasco, S. San Joaquin **/
+define R20_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R20_CVP_DEL { R20_CVP_DEL =
+! R20_CVP_DEL:
+! Region: _Other_
+D855_PAG * 0.415 ! Quantity: 53.3 TAF out of 128.3 TAF;
+}
+define R20_SWP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R20_SWP_DEL { R20_SWP_DEL =
+! R20_SWP_DEL:
+! Region: _Other_
+D851_PCO * 0.07 ! Multiplier: 0.07;
++ D851_PAG * 0.07 ! Quantity: 42.04 TAF out of 600.61 TAF;
+}
+/** R21A: CVP Users: Cross Valley Canal, Friant-Kern Canal **/
+define R21A_SWP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21A_SWP_DEL { R21A_SWP_DEL =
+! R21A_SWP_DEL:
+! Region: _Other_
+D851_PCO * 0.056 ! Multiplier: 0.056;
++ D859_PCO
++ D851_PAG * 0.056 ! Quantity: 33.41 TAF out of 600.61 TAF;
++ D859_PAG * 1 ! Quantity: 111.68 TAF out of 111.68 TAF;
+}
+define R21A_SWP21_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21A_SWP21_DEL { R21A_SWP21_DEL =
+! R21A_SWP21_DEL:
+! Region: _Other_
+D859_PIN * 0.18 ! Quantity: 32.4 TAF out of 180 TAF;
+}
+/** R15B: Dudley Ridge and Devils Den (Castaic Lake) **/
+define R15B_SWP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R15B_SWP_DEL { R15B_SWP_DEL =
+! R15B_SWP_DEL:
+! Region: _Other_
+D849_PCO
++ D849_PAG * 1 ! Quantity: 57.34 TAF out of 57.34 TAF;
+}
+define R15B_SWP21_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R15B_SWP21_DEL { R15B_SWP21_DEL =
+! R15B_SWP21_DEL:
+! Region: _Other_
+D849_PIN * 1 ! Quantity: 1 TAF out of 1 TAF;
+}
+/** R19B: Semitropic WSD. SWP Service Area **/
+define R19B_SWP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R19B_SWP_DEL { R19B_SWP_DEL =
+! R19B_SWP_DEL:
+! Region: _Other_
+D851_PCO * 0.242 ! Multiplier: 0.242;
++ D852_ILWB_EWA * 0.75 ! Multiplier: 0.75;
++ D859_DW_EWA * 0.75 ! Multiplier: 0.75;
++ I852_ILWB_EWA * -0.75 ! Multiplier: -0.75;
++ I852_WTS * -0.75 ! Multiplier: -0.75;
++ I859_DWEX_EWA * -0.75 ! Multiplier: -0.75;
++ D851_PAG * 0.242 ! Quantity: 145.1 TAF out of 600.61 TAF;
+}
+define R19B_SWP21_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R19B_SWP21_DEL { R19B_SWP21_DEL =
+! R19B_SWP21_DEL:
+! Region: _Other_
+D859_PIN * 0.18 ! Quantity: 32.4 TAF out of 180 TAF;
+}
+define R19B_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R19B_GW_DEL { R19B_GW_DEL =
+! R19B_GW_DEL:
+! Region: _Other_
+D852_ILWB_EWA * -0.75 ! Multiplier: -0.75;
++ D859_DW_EWA * -0.75 ! Multiplier: -0.75;
++ I852_ILWB_EWA * 0.75 ! Multiplier: 0.75;
++ I852_WTS * 0.75 ! Multiplier: 0.75;
++ I859_DWEX_EWA * 0.75 ! Multiplier: 0.75;
+}
+/** R21B: CVP Users: Arvin Edison **/
+define R21B_SWP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_SWP_DEL { R21B_SWP_DEL =
+! R21B_SWP_DEL:
+! Region: _Other_
+D851_PCO * 0.094 ! Multiplier: 0.094;
++ D851_PAG * 0.094 ! Quantity: 56.42 TAF out of 600.61 TAF;
+}
+define R21B_SWP21_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_SWP21_DEL { R21B_SWP21_DEL =
+! R21B_SWP21_DEL:
+! Region: _Other_
+D859_PIN * 0.07 ! Quantity: 12.6 TAF out of 180 TAF;
+}
+define R21B_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_GW_DEL { R21B_GW_DEL =
+! R21B_GW_DEL:
+! Region: _Other_
+D852_ILWB_EWA * -0.25 ! Multiplier: -0.25;
++ D859_DW_EWA * -0.25 ! Multiplier: -0.25;
++ I852_ILWB_EWA * 0.25 ! Multiplier: 0.25;
++ I852_WTS * 0.25 ! Multiplier: 0.25;
++ I859_DWEX_EWA * 0.25 ! Multiplier: 0.25;
+}
+/** R21C: CVP Users: Wheeler Ridge-Maricopa **/
+define R21C_SWP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21C_SWP_DEL { R21C_SWP_DEL =
+! R21C_SWP_DEL:
+! Region: _Other_
+D851_PCO * 0.083 ! Multiplier: 0.083;
++ D863_PCO
++ D851_PAG * 0.083 ! Quantity: 50.1 TAF out of 600.61 TAF;
++ D863_PAG * 1 ! Quantity: 62.77 TAF out of 62.77 TAF;
+}
+define R21C_SWP21_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21C_SWP21_DEL { R21C_SWP21_DEL =
+! R21C_SWP21_DEL:
+! Region: _Other_
+D859_PIN * 0.14 ! Quantity: 25.2 TAF out of 180 TAF;
+}

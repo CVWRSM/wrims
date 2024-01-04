@@ -1,0 +1,383 @@
+! Stanislaus_dems.wresl
+! Nancy Parker
+! 11/02
+! USBR
+! Stanislaus River Deliveries and Operations
+/*
+ Revised by: R. Field. 1/02/04, Reclamation,
+ Purpose: Revise CSJSEWD_PAGyr logic to incorporate STANMOD IOP logic.
+ Revised by: R. Field. 9/25/03, USBR
+ Purpose: Incorporated additional M&I variable names and added M&I
+ return flow capabilities.
+ Revised by C. Hsu, 3/09/03, USBR,
+ Purpose: Review and comment.
+*/
+
+!#################################################################################
+/*
+Stockton East and Central San Joaquin
+The demands for Stockton East and the Central San Joaquin are determined using the New Melones
+forecast, NMforecast1.  From NMforecast1, an annual delivery request is calculated using a
+look-up table.  Another look-up table distributes the annual delivery requests throughout the
+year.  The two requests in the monthly demand imposed on CP 520.
+*/
+/*
+Define annual delivery quantity based on February forecast, and monthly distributions
+*/
+! Define SEWD annually M & I delivery
+define SEWD_PMIyr {select  SEWD from stan_yr given NMF = NMforecast1 use linear }
+
+!define AL_sewdpmiyr {alias sewd_pmiyr kind 'temp' units 'taf'}
+
+! Define SEWD monthly M & I delivery pattern
+define SEWD_PMImonth { select  SEWD from stan_mon where month = month }
+
+! Define SEWD annual M & I demand
+define demand_D520_PMI { value SEWD_PMIyr * SEWD_PMImonth * TAF_cfs }
+!define AL_demd520pmi {alias demand_D520_pmi kind 'temp' units 'cfs'}
+
+
+! Set limits on SEWD maximum M & I delivery
+goal maxdelivD520_PMI { D520_SEWD_PMI < demand_D520_PMI }
+! Sale of OIDSSJID water to Stockton East from lookup table
+define ann_SEWD_sale {select sale from SEWD_sale given NM_Inf = NMforecast2 use minimum}
+!define AL_annsewdsale {alias ann_SEWD_sale kind 'temp' units 'taf'}
+! Define SEWD sale percentage
+define SEWD_sale_pct {select percent from SEWD_sale_mon where month=month}
+!define AL_sewdsalepct {alias sewd_sale_pct kind 'temp' units 'percent'}
+! SEWD sale limits
+goal meet_SEWD_sale {D520A1 < (ann_SEWD_sale * SEWD_sale_pct) * taf_cfs}
+
+! Alias for output
+!define SEWD_PMIyr_a {alias SEWD_PMIyr kind 'temp' units 'taf'}
+
+/*
+CSJID demands and operation
+*/
+! Define CSJSEWD annual Ag delivery based on New Melones forecast 1
+define CSJSEWD_PAGyr {
+!    case below2000 {
+!        condition NMforecast1 < 2000.0
+!        value 0. }
+!    case below2500 {
+!        condition NMforecast1 >= 2000.0 .and. NMforecast1 <=2500.0
+        select CSJSEWD from stan_yr given NMF = NMforecast1 use linear}
+!    case otherwise {
+!        condition always
+!        value 80.0 }
+!}
+!define CSJSEWD_PAGyr_a {alias CSJSEWD_PAGyr kind 'temp' units 'taf'}
+
+! Retrieve predefined CUAW timeseries values for SJR demand
+define cuaw_512_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Define deep percolation as 30% of CUAW (assumed value)
+define dperc_512_pag {value cuaw_512_pag * .3}
+
+! Total CSJID annual demand decision variable
+define ann_CSJIDdv {std kind 'annual-demand' units 'taf'}
+
+define ann_CSJID {
+    case mar {
+        condition month == mar
+        sum(i=0,11,1) max(0.,(cuaw_512_pag(i)*1.1 + cuaw_512_pag(i)*0.3
+                       - min(i512(i), (cuaw_512_pag(i)*1.1 + cuaw_512_pag(i)*0.3)))) * cfs_taf(i)}
+    case initial {
+          condition month < mar .and. wateryear == 1922
+          value 132.0 }   ! set to annual average
+    case otherwise {
+        condition   always
+        value ann_CSJIDdv(-1) }
+        }
+
+! Set limits on annual CSJID demands
+goal set_ann_CSJIDdv {ann_CSJIDdv = ann_CSJID}
+
+! define monthly distribution of annual Stanislaus allocation
+define CSJID_pattern {value (max(0.,(cuaw_512_pag*1.1 + cuaw_512_pag*0.3
+                       - min(i512, (cuaw_512_pag*1.1 + cuaw_512_pag*0.3)))) * cfs_taf)/ ann_CSJID}
+
+!define aL_CSJID_pattern {alias CSJID_pattern kind 'temp' units 'percent'}
+
+define demand_D520_PAG { value CSJSEWD_PAGyr * CSJID_pattern * TAF_cfs }
+!define AL_demD520pag {alias demand_D520_pag kind 'temp' units 'cfs'}
+
+! Set limits on CSJSID maximum Ag delivery
+goal maxdelivD520_PAG { D520_CSJSEWD_PAG < demand_D520_PAG }
+
+! Decision variable that defines losses in Stanislaus diversion
+goal set_loss_509A {L509A = D520_CSJSEWD_PAG * .05}
+
+goal set_D509 {D509 = D520_CSJSEWD_PAG - D520_CSJSEWD_PAG * .05}
+
+! Limit  deliveries to the sum of NRL, CUAW, and deep percolation
+goal set_D512 {D512 < 1.1*CUAW_512_pag + dperc_512_pag }
+
+define demand_D512 {value 1.1*CUAW_512_pag + dperc_512_pag }
+
+goal lim_DI512 {DI512 < I512}
+
+goal lim_DI512a {DI512 < 1.1*CUAW_512_pag + dperc_512_pag }
+
+define gw512_lim {value max(0.,demand_d512 - min(i512, (cuaw_512_pag*1.1 + cuaw_512_pag*0.3)) ) }
+
+! Satisfy demands by groundwater pumping if demand is not all met by surface water
+goal set_GP512 {GP512 < gw512_lim - D520_CSJSEWD_PAG + D520_CSJSEWD_PAG * .05}
+
+
+/*
+Oakdale South District Deliveries (node 530)
+district loss is a monthly function of surface supply
+order of delivery is 1. min district pumping, 2. min private pumping, 3. surface supply,
+4. max district pumping, and 5. max private pumping
+*/
+
+! Define maximum Ag groundwater pumping limit from
+define GP530_max_pag_lim1 {select max530pag from StanGWPUMP where month=month}
+!define AL_g530maxpag1 {alias gp530_max_pag_lim1 kind 'temp' units 'cfs'}
+! Define maximum Ag groundwater pumping limit
+define GP530_max_pag_limit {value GP530_max_pag_lim1 - GP530_min_pag_limit}
+!define AL_g530maxpag {alias gp530_max_pag_limit kind 'temp' units 'cfs'}
+! Set limits on minimum private groundwater pumping
+goal set_GP530_min_prv {GP530_min_prv < GP530_min_prv_limit}
+! Set limits on minimum Ag groundwater pumping
+goal set_GP530_min_pag {GP530_min_pag < GP530_min_pag_limit}
+! Set limits on maximum Ag groundwater pumping
+goal set_GP530_max_pag {GP530_max_pag < GP530_max_pag_limit}
+
+! Define Oakdale ID South canal losses
+define dloss_531_pag {value max(0.,min(2.* taf_cfs,(cuaw_531_pag/D531_pag_factor-GP530_min_prv_limit-GP530_min_pag_limit))) }
+
+!define AL_dloss531pag {alias dloss_531_pag kind 'temp' units 'cfs'}
+
+
+! Return flow from Oakdale ID to Tuolumne River depends on cuaw and spill conditions
+goal set_R545b {R545b = min(spill_545b_pag*taf_cfs, cuaw_531_pag/D531_pag_factor)}
+
+! Return flow from Oakdale ID to Modesto ID depends on cuaw and spill conditions
+goal set_R532 {R532 = min(spill_532_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)}
+
+! Return flow from Oakdale ID to Stanislaus River depends on cuaw an spill conditions
+goal set_R528a {R528A = min(spill_528a_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)}
+
+! Oakdale ID to Stanislaus River non Project return flow depends on cuaw and spill conditions
+goal set_R534b {R534b = min(spill_534b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)}
+
+! Set limits on Oakdale ID South Ag delivery
+goal set_D531 {D531_pag < 1.1*CUAW_531_pag/D531_pag_factor + dloss_531_pag }
+
+! Limit Stanislaus River delivery to Oakdale ID based on allocation
+
+goal limit_D520C {D520C < max(0., ((OID_South_yr - OID_South_pct*ann_SEWD_sale/2. - OIDcut_S)
+                           *(max(0.,cuaw_531_pag/D531_pag_factor*1.1 + dloss_531_pag - GP530_min_prv_limit - GP530_min_pag_limit)
+                          + min(spill_545b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_532_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_534b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_528a_pag *taf_cfs, cuaw_531_pag/D531_pag_factor))  !spill
+                            *cfs_taf/ann_OID_S)*taf_cfs)  + D530_VAMP}
+
+/*  debugging information - please keep
+define al_limit_D520C {alias max(0., ((OID_South_yr - OID_South_pct*ann_SEWD_sale/2. - OIDcut_S)
+                           *(max(0.,cuaw_531_pag/D531_pag_factor*1.1 + dloss_531_pag - GP530_min_prv_limit - GP530_min_pag_limit)
+                          + min(spill_545b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_532_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_534b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_528a_pag *taf_cfs, cuaw_531_pag/D531_pag_factor))  !spill
+                            *cfs_taf/ann_OID_S)*taf_cfs)  + D530_VAMP kind 'temp' units 'cfs'}
+
+! monthly demand
+define al_lim2_D520C {alias (max(0.,cuaw_531_pag/D531_pag_factor*1.1 + dloss_531_pag - GP530_min_prv_limit - GP530_min_pag_limit)
+                          + min(spill_545b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_532_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_534b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_528a_pag *taf_cfs, cuaw_531_pag/D531_pag_factor))  !spill
+                             kind 'temp' units 'cfs'}
+
+
+define al_ann_D520C {alias OID_South_yr - OID_South_pct*ann_SEWD_sale/2. kind 'temp' units 'taf'}
+
+
+define al_prct_D520C  {alias max(0.,(cuaw_531_pag/D531_pag_factor*1.1 + dloss_531_pag - GP530_min_prv_limit - GP530_min_pag_limit
+                          + min(spill_545b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_532_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_534b_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)  !spill
+                          + min(spill_528a_pag *taf_cfs, cuaw_531_pag/D531_pag_factor)))  !spill
+                            *cfs_taf/ann_OID_S kind 'temp' units 'percent' }
+
+
+define a1_OID_South_yr {alias OID_South_yr kind 'temp' units 'taf'}
+define  a1_OID_South_pct {alias OID_South_pct kind 'temp' units 'percent'}
+define a1_ann_SEWD_sale {alias ann_SEWD_sale kind 'temp' units 'taf'}
+define a1_ann_OID_S {alias ann_OID_S kind 'temp' units 'taf'}
+*/
+
+/*
+Non-District GW Pumping
+*/
+! Define non district consumptive use of applied water for Oakdale ID South
+define cuaw_531_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! Define non district deep percolation for Oakdale ID South
+define dperc_531_nd {value cuaw_531_ND * .3}
+! Set limits on non district demands
+goal set_D531_ND {D531_ND < 1.1*cuaw_531_ND + dperc_531_ND}
+! Set non district demand equal to non district groundwater pumping
+goal set_GP530_ND {GP530_ND = D531_ND}
+
+! Define Oakdale South non district M & I demand (A)
+define demand_D531_mi_A {select dem531_MI_A from urban_demand1 where month = month}
+! Set  Oakdale South non district M & I demand to meet demand_D531_mi_A
+goal meet_D531_mi_A {D531_mi_A = demand_D531_mi_A*taf_cfs}
+! Set non district groundwater equal to Oakdale ID South non district M & I demand
+goal set_GP530_mi_A {GP530_mi_A = D531_mi_A}
+! 0% of non-district deliveries are reused or returned
+!goal set_R528_ {R528_ = D530_MI_A * 0.}
+
+! Define East of Modesto ID and Oakdale ID Total M&I demand (B)
+define demand_D531_mi_B {select dem531_MI_B from urban_demand1 where month = month}
+! Set  East of Modesto ID and Oakdale ID total M & I demand to meet demand_D531_mi_B
+goal meet_D531_mi_B {D531_mi_B = demand_D531_mi_B*taf_cfs}
+! Set groundwater pumping equal East of Modesto ID and Oakdale ID total to M & I demand
+goal set_GP530_mi_B {GP530_mi_B = D531_mi_B}
+! 0% of non-district deliveries are reused or returned
+!goal set_R528_ {R528_ = D530_MI_B * 0.}
+
+/*
+SSJID/OID North non-District MI pumping - all met by GW (A)
+*/
+! Set SSJID North non district M & I demand to meet D523_mi_A
+goal meet_D523_MI_A {D523_MI_A = demand_D523_MI_A}
+! Set groundwater M & I pumping to meet Oakdale ID North non district M & I pumping
+!goal set_GP522_MI_A {GP522_MI_A = D523_MI_A}
+
+/*
+District MI pumping with Oakdale ID Boundaries - all met by GW (B)
+*/
+! Define M & I demand for Oakdale ID boundaries (B)
+define demand_D523_MI_B {select dem523_MI_B from urban_demand1 where month = month}
+! Set D523_ MI to meet Oakdale ID M & I demand
+goal meet_D523_MI_B {D523_MI_B = demand_D523_MI_B*taf_cfs}
+! Set groundwater M & I pumping to meet district M & I demand
+goal set_GP522_MI_B {GP522_MI_B = D523_MI_B}
+
+/*
+Oakdale North / SSJID Deliveries (node 522)
+district loss is a monthly function of surface supply
+order of delivery is 1. min district pumping, 2. min private pumping, 3. surface supply,
+4. max district pumping, and 5. max private pumping
+*/
+!  Woodward Reservoir seepage rates
+goal set_D75_seep {D75_SEEP = S75_seep * taf_cfs}
+! Define SSJID/Oakdale ID North maximum Ag pumping limits
+
+define GP522_max_pag_lim1 {select max522pag from StanGWPUMP where month=month}
+! Define SSJID/Oakdale ID North maximum Ag pumping limits (difference between maximum and minimum pumping)
+define GP522_max_pag_limit {value GP522_max_pag_lim1 - GP522_min_pag_limit}
+! Set limits on SSJID/Oakdale ID North minimum private groundwater pumping
+goal set_GP522_min_prv {GP522_min_prv < GP522_min_prv_limit}
+! Set limits on SSJID/Oakdale ID North minimum Ag groundwater pumping
+goal set_GP522_min_pag {GP522_min_pag < GP522_min_pag_limit}
+! Set limits on SSJID/Oakdale ID North maximum Ag groundwater pumping
+goal set_GP522_max_pag {GP522_max_pag < GP522_max_pag_limit}
+! Canal loss depends on cuaw and groundwater pumping
+
+define dloss_523_pag {value max(0.,min(2.* taf_cfs,(cuaw_523_pag/D523_pag_factor-GP522_min_prv_limit-GP522_min_pag_limit))) }
+
+!define AL_dloss523pag {alias dloss_523_pag kind 'temp' units 'cfs'}
+
+! Define return flow from South San Joaquin ID and Oakdale North to Stanislaus River, depends on SJR water year type
+!define spill_528b_pag {select sp528b_ag from StanSpills where yrtype=WYT_SJR, month=month}
+! Return flow from SSJID/OID North depends on cuaw and spill
+
+goal set_R528b {R528b = min(spill_528b_pag*taf_cfs, (cuaw_523_pag/D523_pag_factor))}
+
+! Define return flow from South San Joaquin ID to areas east, depends on SJR water year type
+!define spill_526_pag {select sp526_ag from StanSpills where yrtype=WYT_SJR, month=month}
+! Return flow from SSJID to areas east depends on cuaw and spill conditions
+
+goal set_R526 {R526 = min(spill_526_pag*taf_cfs, (cuaw_523_pag/D523_pag_factor))}
+
+! Define Oakdale ID North water delivery from Stanislaus River limits
+define D521_lim_OID {value max(0., ((OID_North_yr - (1.-OID_South_pct)*ann_SEWD_sale/2. - OIDcut_N)
+                                   * (cuaw_523OID_pag/D523_pag_factor*1.1 + dloss_523_pag/2.
+                                   + min(spill_528b_pag/2. *taf_cfs, (cuaw_523OID_pag/D523_pag_factor))  !loss
+                                   + min(spill_526_pag/2. *taf_cfs, (cuaw_523OID_pag/D523_pag_factor))  !loss
+                                   - GP522_min_prv_limit/2. - GP522_min_pag_limit/2.))
+                                       *cfs_taf/ann_OID_N)*taf_cfs  }
+
+/*  debugging information - please keep
+
+define al_D521_lim_OID {alias   max(0., ((OID_North_yr - (1.-OID_South_pct)*ann_SEWD_sale/2. - OIDcut_N)
+                                   * (cuaw_523OID_pag/D523_pag_factor*1.1 + dloss_523_pag/2.
+                                   + min(spill_528b_pag/2. *taf_cfs, (cuaw_523OID_pag/D523_pag_factor))  !loss
+                                   + min(spill_526_pag/2. *taf_cfs, (cuaw_523OID_pag/D523_pag_factor))  !loss
+                                   - GP522_min_prv_limit/2. - GP522_min_pag_limit/2.)
+                                       *cfs_taf/ann_OID_N)*taf_cfs)  kind 'temp' units 'cfs'}
+
+define al_D521_prct_OID {alias   max(0.,(cuaw_523OID_pag/D523_pag_factor*1.1 + dloss_523_pag/2.
+                                   + min(spill_528b_pag/2. *taf_cfs, (cuaw_523OID_pag/D523_pag_factor))  !loss
+                                   + min(spill_526_pag/2. *taf_cfs, (cuaw_523OID_pag/D523_pag_factor))  !loss
+                                   - GP522_min_prv_limit/2. - GP522_min_pag_limit/2.)
+                                       *cfs_taf/ann_OID_N)  kind 'temp' units 'percent'}
+
+define al_D521_p1_OID {alias   max(0.,(cuaw_523OID_pag/D523_pag_factor*1.1 + dloss_523_pag/2.
+                                   + min(spill_528b_pag/2. *taf_cfs, (cuaw_523OID_pag/D523_pag_factor))  !loss
+                                   + min(spill_526_pag/2. *taf_cfs, (cuaw_523OID_pag/D523_pag_factor))  !loss
+                                   - GP522_min_prv_limit/2. - GP522_min_pag_limit/2.))
+                                       *cfs_taf  kind 'temp' units 'taf'}
+*/
+
+! Define South San Joaquin ID water delivery from Stanislaus River limits
+define D521_lim_SSJ {value max(0., (((OSSJID_yr/2. - ann_SEWD_sale/2. - ann_S75_seep))
+                                   * (cuaw_523SSJ_pag/D523_pag_factor*1.1  + dloss_523_pag/2. + demand_D523_MI_A
+                                   + min(spill_528b_pag/2. *taf_cfs, (cuaw_523ssj_pag/D523_pag_factor))  !loss
+                                   + min(spill_526_pag/2. *taf_cfs, (cuaw_523ssj_pag/D523_pag_factor))  !loss
+                                   - GP522_min_prv_limit/2. - GP522_min_pag_limit/2.)
+                                        *cfs_taf/ann_SSJ - SSJIDcut)*taf_cfs)  }
+
+!define AL_D521_lim_ssj {alias   max(0., (((OSSJID_yr/2. - ann_SEWD_sale/2. - ann_S75_seep))
+!                                   * (cuaw_523SSJ_pag/D523_pag_factor*1.1  + dloss_523_pag/2. + demand_D523_MI_A
+!                                   + min(spill_528b_pag/2. *taf_cfs, (cuaw_523ssj_pag/D523_pag_factor))  !loss
+!                                   + min(spill_526_pag/2. *taf_cfs, (cuaw_523ssj_pag/D523_pag_factor))  !loss
+!                                   - GP522_min_prv_limit/2. - GP522_min_pag_limit/2.)
+!                                        *cfs_taf/ann_SSJ - SSJIDcut)*taf_cfs) kind 'temp' units 'cfs'  }
+
+!define AL_D521_prct_ssj {alias  max(0.,(cuaw_523SSJ_pag/D523_pag_factor*1.1  + dloss_523_pag/2. + demand_D523_MI_A
+!                                   + min(spill_528b_pag/2. *taf_cfs, (cuaw_523ssj_pag/D523_pag_factor))  !loss
+!                                   + min(spill_526_pag/2. *taf_cfs, (cuaw_523ssj_pag/D523_pag_factor))  !loss
+!                                   - GP522_min_prv_limit/2. - GP522_min_pag_limit/2.))
+!                                        *cfs_taf/ann_SSJ kind 'temp' units 'percent'  }
+
+
+! Set limits on South San Joaquin ID/Oakdale ID North water delivery limits
+goal limit_D521 {D521 < D521_lim_OID + D521_lim_SSJ}
+
+! Set South San Joaquin ID/Oakdale ID North depletion
+goal setD523_pag {D523_pag < 1.1*cuaw_523_pag/D523_pag_factor + dloss_523_pag}
+
+/*
+River Diversion and Returns
+*/
+! Define consumptive use applied water for Stanislaus River riparian diversion
+define cuaw_528A_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! Define canal loss for Stanislaus River riparian delivery
+define dloss_528A_pag {std kind 'local-loss' units 'cfs'}
+! Set loss limits on riparian delivery
+goal set_dloss_528A_pag {dloss_528A_pag = D528 * (1.-(1.1*.75))}
+! Stanislaus River riparian deep percolation
+define dperc_528A_pag {value cuaw_528A_pag * .3}
+! Set limits on Satnislaus River river diversion delivery
+goal set_D528_riv {D528A_riv < 1.1*CUAW_528A_pag + dperc_528A_pag}
+! Set limits on Stanislaus River return flow
+goal set_R637c {R637c = dloss_528A_pag}
+
+/*
+Stanislaus River Diversions M&I pumping- all met by GW (A)
+*/
+! Define Stanislaus River Diversions M&I demand
+define demand_D528A_MI_A {select dem528A_MI_A from urban_demand3 where month = month}
+
+! Set Stanislaus River Diversions M&I delivery to meet demand
+goal meet_D528A_MI_A {D528A_MI_A < demand_D528A_MI_A*taf_cfs}
+
+! Set groundwater M&I pumping to meet Stanislaus River Diversions M&I demand
+goal set_GP528A_MI_A {GP528A_MI_A = D528A_MI_A}

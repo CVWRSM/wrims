@@ -1,0 +1,93 @@
+/*
+B2VampCommon.wresl
+
+Nazrul Islam; DWR; 10/13/2010 
+
+VAMP Export limits during the pulse period: Apr15-May15.
+
+Alternate between 1500 and 3000 cfs for hi flow criteria.
+*/
+
+!This portion of the code deals with EXPORT restrictions during the pulse period.
+define VAMP_reqdv_VAMP {timeseries kind 'flow-requirement' units 'cfs'}
+
+define VAMP_reqdv_VAMP_set {
+    case AprMayDynamic {
+        condition (month==APR .or. month==MAY) .and. int(Dynamic_SJR)==1
+        value VAMP_reqdv[VAMP_AND_DO] }
+    case AprMayTimeseries {
+        condition (month==APR .or. month==MAY) .and. int(Dynamic_SJR)==0
+        value VAMP_reqdv_VAMP }
+    case others  {
+        condition always
+        value 0.0}
+}                     
+
+!This is a counter to keep track of alternating high pulse years
+!define PulseHidv {std kind 'counter' UNITS 'NONE'} !already defined in in "delcar_cvp_south_B2BO.wresl"
+define PulseHi {
+    case Firstyear {
+        condition wateryear==beginWY
+        value 3000.0}
+    case OCT_MAR {
+        condition month>=OCT .and. month<=MAR
+        value 0. }
+    case APRhi1 {
+    condition month == APR .and. VAMP_reqdv_VAMP_set > 5700.1 .and. int(PulseHidv(prevApr))==3000
+        value 1500.0}
+    case APRhi2 {
+    condition month == APR .and. VAMP_reqdv_VAMP_set > 5700.1 .and. int(PulseHidv(prevApr))==1500
+        value 3000.0}
+    case APRlo {
+        condition month == APR
+    value PulseHidv(prevApr)}
+    case others  {
+        condition always
+        value 0.0}
+        }
+goal save_PulseHi {PulseHidv = PulseHi}
+
+
+
+define PulseExpResdv {std kind 'export' UNITS 'CFS'}
+define PulseExpResSV {
+    case VAMP_Exp_Cap_Off {
+        condition int(VAMP_DLTSW)==0
+        value 99999.0}
+    case OCT_MAR {
+        condition month>=OCT .and. month<=MAR
+        value 0. }
+    case APRlo1 {
+        condition month == APR .and. abs(VAMP_reqdv_VAMP_set - 5700.0)<.1
+        value 2250. }
+    case APRlo2 {
+        condition month == APR .and. VAMP_reqdv_VAMP_set<5699.9
+        value 1500. }
+    case APRhi {
+        condition month == APR .and. VAMP_reqdv_VAMP_set>5700.1 .and. AD_SJR_Pulse < 8600.  !Alternates PulseExpRes from 1500 to 3000 every high year.
+        value PulseHi}
+    case VernHi {
+        condition month == APR .or. month == MAY .and. AD_SJR_Pulse >= 8600.0
+        value max(AD_SJR_Pulse*0.5,3000.0) }
+    case MAY {
+        condition month == MAY
+        value     PulseExpResdv(-1)}
+    case others  {
+        condition   always
+        value       0.0}
+}
+
+define PulseExpRes {
+    case VAMPexpCtrlOff {
+        condition    VAMP_DLTSW == 0 .and. range(month,apr,may)
+        value ExportCapacity }
+    case otherwise {
+        condition     always
+        value PulseExpResSV }
+}
+
+goal save_PulseExpRes {PulseExpResdv = PulseExpRes}
+
+
+define PulseVAMPExp {alias PulseExpRes kind 'export' units 'CFS' }
+

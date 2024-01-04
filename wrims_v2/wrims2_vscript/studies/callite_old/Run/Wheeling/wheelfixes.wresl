@@ -1,0 +1,206 @@
+/*************************************
+wheelfixes.wresl
+ 
+Dan Easton (11/12/2010)
+Nancy Parker (12/29/2010)
+
+! fix elements of CVP/SWP operations to facilitate wheeling accounting
+! If exports are to be constrained by BO elements relative to cycle 1
+! solution, then no wheeling should take place.  Otherwise, apply the 
+! same kind of fixes that are applicable to wheeling operation in other
+! regulatory environments.
+
+**************************************/
+
+goal fixSwpPumping1 {
+  lhs     D_Banks_swp
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_Banks_swp[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixSwpPumping2 {
+  lhs     D_Banks_EXP1
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_Banks_EXP1[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixSwpPumping3 {
+  lhs     D_Banks_EXP2
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_Banks_EXP2[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixCvpPumping1 {
+  lhs     D_Jones
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_Jones[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixCvpPumping2 {
+  lhs     D_Jones_EXP1
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_Jones_EXP1[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixCvpPumping3 {
+  lhs     D_Jones_EXP2
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_Jones_EXP2[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixNBPumping {
+  lhs     D_Napa
+  rhs     D_Napa[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fixfeatherinflow {
+  lhs     c_YubFea
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     c_YubFea[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixcvprefuge {
+  lhs     D_CVPJUSWP
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_CVPJUSWP[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixsouthbay {
+  lhs     D_Sbay
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_Sbay[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixONeillFBSWP {
+  lhs     D_ONeillFBSWP
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_ONeillFBSWP[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixSL {
+  lhs     S_SLSWP
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     S_SLSWP[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixSLin {
+  lhs     D_OFBSWP
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     D_OFBSWP[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixterminals {
+  lhs     C_CVC
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     C_CVC[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixUNUSEDFS {
+  lhs     UNUSED_FS
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     UNUSED_FS[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixUNUSEDSS {
+  lhs     UNUSED_SS
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     UNUSED_SS[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixSWPDS {
+  lhs     SWPDS
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     SWPDS[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixSHADS {
+  lhs     SHADS
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     SHADS[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixFOLDS {
+  lhs     FOLDS
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     FOLDS[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+goal fixWHSSW {
+  lhs     WHSSW
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     WHSSW[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixUWFE {
+  lhs     UWFE
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     UWFE[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixIBU {
+  lhs     IBU
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     IBU[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}
+
+goal fixSurplus {
+  lhs     C_Delta_SWP + C_Delta_CVP + Surp1Terms + Surp2Terms
+  case Wheeling {
+  condition wheeling_ctrl > .1 .and. (CVC_ON + JPOD_ON)>.1
+  rhs     C_Delta_SWP[BASE] + C_Delta_CVP[BASE]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999}
+}

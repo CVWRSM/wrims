@@ -1,0 +1,48 @@
+initial {
+
+	const A { 100 }
+	const B { 5 }
+
+}
+
+SEQUENCE CYCLE1 {
+    model   first
+    order   1
+    }
+
+SEQUENCE CYCLE2 {
+    model   second
+    order   2
+    }
+	
+MODEL first { 
+
+  define x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define z { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  goal g1 { x + y + z < A  }
+  goal g2 { x = B  }
+  
+  Objective obj2 {
+	weight 6
+	variable x y z 
+  }
+  
+}
+
+MODEL second { 
+
+  define x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define z { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  goal g1 { x + y + z < A*2  }
+  goal g2 { x = B*2  }
+  
+  Objective obj2 {
+	weight 6
+	variable x y z 
+  }
+  
+}

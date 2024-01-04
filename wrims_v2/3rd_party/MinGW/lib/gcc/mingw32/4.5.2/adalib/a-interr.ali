@@ -1,0 +1,110 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnvnnnvnnnnnnnnnnnnnnnnnnnnn
+
+U ada.interrupts%b	a-interr.adb		f9fac0ca NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_conversion%s
+W system%s		system.ads		system.ali
+
+U ada.interrupts%s	a-interr.ads		060c69dd BN NE OL PK
+W ada%s			ada.ads			ada.ali
+W system%s		system.ads		system.ali
+W system.interrupts%s	s-interr.adb		s-interr.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-interr.ads		20090409150020 efd4d7b2
+D a-interr.adb		20070606101344 47ce8a8a
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-atacco.ads		20090409150020 60789a20
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-interr.ads		20090409150020 75a56d85
+D s-osinte.ads		20090422121236 e19b549f
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stausa.ads		20090429103054 146a8ff1
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-tasinf.ads		20090409150020 ff3904e8
+D s-taspri.ads		20090409150020 f6de4d95
+D s-taskin.ads		20090707124244 78c4deed
+D s-taprob.ads		20090409150020 5e00115c
+D s-tpoben.ads		20090409150020 18aadfe3
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-win32.ads		20100128134454 4b10300f
+X 1 ada.ads
+16K9*Ada 19e8 5|38r9 71r5 6|35r6 37r14 41r30 44r27 125r5
+X 5 a-interr.ads
+38K13*Interrupts 1|16k9 5|71l9 71e19 6|37b18 125l9 125t19
+40I9*Interrupt_ID<18|64I9> 44r38 46r38 49r19 53r21 58r21 60r42 62r36 6|53r21
+. 65r19 75r42 87r21 102r38 111r38 120r36
+42P9*Parameterless_Handler 49r40 52r21 56r25 57r21 6|42r7 45r33 52r21 65r40
+. 85r25 86r21
+44V13*Is_Reserved{boolean} 44>26 65r19 6|111b13 114l8 114t19
+44i26 Interrupt{40I9} 6|111b26 113r47
+46V13*Is_Attached{boolean} 46>26 66r19 6|102b13 105l8 105t19
+46i26 Interrupt{40I9} 6|102b26 104r55
+48V13*Current_Handler{42P9} 49>7 67r19 6|64b13 69l8 69t23
+49i7 Interrupt{40I9} 6|65b7 68r59
+51U14*Attach_Handler 52>7 53>7 68r19 6|51b14 58l8 58t22
+52p7 New_Handler{42P9} 6|52b7 57r21
+53i7 Interrupt{40I9} 6|53b7 57r52
+55U14*Exchange_Handler 56<7 57>7 58>7 70r19 6|84b14 96l8 96t24
+56p7 Old_Handler{42P9} 6|85b7 95m7
+57p7 New_Handler{42P9} 6|86b7 93r24
+58i7 Interrupt{40I9} 6|87b7 94r27
+60U14*Detach_Handler 60>30 69r19 6|75b14 78l8 78t22
+60i30 Interrupt{40I9} 6|75b30 77r43
+62V13*Reference{13|64M9} 62>24 6|120b13 123l8 123t17
+62i24 Interrupt{40I9} 6|120b24 122r45
+X 6 a-interr.adb
+39K12 SI=39:30 42r30 45r7 56r7 57r35 68r22 68r42 77r7 77r26 89r11 92r7 94r10
+. 104r14 104r38 113r14 113r30 122r14 122r28
+41V13 To_System[9|20]{18|73P9} 57r10 93r13
+44V13 To_Ada[9|20]{5|42P9} 68r14 95r22
+89p7 H{18|73P9} 93m10 95r30
+X 9 a-unccon.ads
+20v14*Unchecked_Conversion 6|35w10 41r34 44r31
+X 13 system.ads
+37K9*System 5|36r6 40r29 62r57 6|39r23 120r57 13|197e11
+64M9*Address 5|62r64 6|120r64
+X 18 s-interr.ads
+50K16*Interrupts 5|36w13 40r36 6|39r30 18|276e22
+64I9*Ada_Interrupt_ID<short_short_integer> 5|40r47
+67I9*Interrupt_ID<short_short_integer> 6|57r38 68r45 77r29 94r13 104r41 113r33
+. 122r31
+73P9*Parameterless_Handler 6|42r33 45r10 89r14
+82V13*Is_Reserved{boolean} 6|113r17
+86V13*Is_Handler_Attached{boolean} 6|104r17
+88V13*Current_Handler{73P9} 6|68r25
+96U14*Attach_Handler 6|56r10
+101U14*Exchange_Handler 6|92r10
+107U14*Detach_Handler 6|77r10
+111V13*Reference{13|64M9} 6|122r17
+

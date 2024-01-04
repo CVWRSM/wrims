@@ -1,0 +1,22 @@
+define daysX2_chs {
+     case Udef {
+          condition      X2Udef_Select == 1
+          value 0 }
+     case FebtoJun {
+          condition      month >= FEB .and. month <= JUN
+          select         chs_days
+          from           x2days
+          where          wateryear=wateryear,month=month    }
+     case Aug_FWS_W {
+          condition      month == AUG .and. wyt_SAC <= 1 .and. FallX2 == 1 ! Aug ramped so it is in range of SEP target
+          value          0.    }
+     case Sep_FWS_W {
+          condition      month == SEP .and. wyt_SAC <= 1 .and. FallX2 == 1 ! FWS BO (Dec 08) Action 4 - Fall X2 for Wet Years
+          value          daysin    }
+     case OctNov_FWS_W {
+          condition      month <= NOV .and. wyt_SAC <= 1 .and. FallX2 == 1 ! FWS BO (Dec 08) Action 4 - Fall X2 for Wet Years
+          value          daysin    }
+     case StandardOff {
+          condition      always
+          value          0.    }
+}

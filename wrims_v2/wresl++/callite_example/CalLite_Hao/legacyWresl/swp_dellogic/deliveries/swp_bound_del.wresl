@@ -1,0 +1,109 @@
+! Code by E. Reyes as of 12/16/99
+! Modified by DJE 12/7/00
+! Modified by AD 10/7/03
+! Modified by MZE 10/9/03
+
+! This file checks to see if the SWP Project Diversion Requirement is less than the amount allocated
+! by the Contract Cut Procedure.  If the SWP PDR is less than the allocation, then limit the
+! stream diversions further to match the SWP PDR.
+
+
+
+!DSA 69
+!**************************************************************************
+!First define the Allocated Diversion limits based on contract cuts
+
+define swp_perdel {value (swp_allocation-tableA_loss)/SWP_TableA}
+
+define dem_c216b_prf  {timeseries kind 'demand-rf' units 'taf'} !Gray
+
+!(DJE) Change demand to C221.
+define dem_c221_prf  {timeseries kind 'demand-rf' units 'taf'} !Butte
+
+define ad_d6_pwr    {value dem_d6_pwr*taf_cfs}
+define ad_d7a_pwr   {value dem_d7a_pwr*taf_cfs}
+define ad_d7a_pag   {value perdel_swp_fsc*dem_d7a_pag*taf_cfs}
+!(DJE) d7a_prf supplements water to Butte Sink DC (C221) and is subject to SWP allocation schedule.
+!define ad_d7a_prf   {value perdel_swp_ag1*dem_C221_prf*taf_cfs}
+define ad_d7a_prf   {value swp_perdel*dem_C221_prf*taf_cfs}
+define ad_d7b_pwr   {value dem_d7b_pwr*taf_cfs}
+define ad_d7b_pag   {value perdel_swp_fsc*dem_d7b_pag*taf_cfs}
+!(DJE) d7b_prf provides water to Gray Lodge Refuge (C216b) and is subject to SWP allocation schedule.
+!define ad_d7b_prf   {value perdel_swp_ag1*dem_C216b_prf*taf_cfs}
+define ad_d7b_prf   {value swp_perdel*dem_C216b_prf*taf_cfs}
+define ad_d202_pwr  {value dem_d202_pwr*taf_cfs}
+
+!(DJE) Need to define allocated diversion limits for d201 and d204.
+define ad_d201_pimi  {value swp_perdel*dem_d201_pimi*taf_cfs}
+define ad_d201_pomi  {value swp_perdel*dem_d201_pomi*taf_cfs}
+define ad_d204_pimi  {value swp_perdel*dem_d204_pimi*taf_cfs}
+define ad_d204_pomi  {value swp_perdel*dem_d204_pomi*taf_cfs}
+!Limit all the Project Water Rights arcs to their contract minus any extra for the arc (NOD only).
+! *** For the North of Delta *****************************************************************
+
+define dem_prj_69_init {value max((prj_dr69*taf_cfs - minpump_69_prj*perc_dr69*taf_cfs), 0.0)}
+
+!Now remove outdoor M&I demand for Butte County and the City of Yuba
+define demand_prj_69 {value max(dem_prj_69_init/*-dem_d201_pomi*taf_cfs-dem_d204_pomi*taf_cfs)*/, 0.0)}
+
+
+define con_69_total  {select contract from swpcontract where contractor=16}
+define con_d6_pwr    {select contract from swpcontract where contractor=1}
+define con_d7a_pwr   {select contract from swpcontract where contractor=2}
+define con_d7a_pag   {select contract from swpcontract where contractor=3}
+define con_d7a_prf   {select contract from swpcontract where contractor=4}
+define con_d7b_pwr   {select contract from swpcontract where contractor=5}
+define con_d7b_pag   {select contract from swpcontract where contractor=6}
+define con_d7b_prf   {select contract from swpcontract where contractor=7}
+define con_d206a_pag {select contract from swpcontract where contractor=8}
+define con_d206b_pwr {select contract from swpcontract where contractor=9}
+define con_d206b_pag {select contract from swpcontract where contractor=10}
+define con_d206c_pwr {select contract from swpcontract where contractor=11}
+define con_d206c_pag {select contract from swpcontract where contractor=12}
+!define con_d201_pomi {select contract from swpcontract where contractor=13}   !not used
+define con_d202_pwr  {select contract from swpcontract where contractor=14}
+!define con_d204_pomi {select contract from swpcontract where contractor=15}   !not used
+
+define target_d6_pwr {value min(ad_d6_pwr, demand_prj_69*con_d6_pwr/con_69_total)}
+goal limit_d6_pwr {d6_pwr < target_d6_pwr}
+
+define target_d7a_pwr {value min(ad_d7a_pwr, demand_prj_69*con_d7a_pwr/con_69_total)}
+goal limit_d7a_pwr  {d7a_pwr < target_d7a_pwr}
+
+define target_d7a_pag {value min(ad_d7a_pag, demand_prj_69*con_d7a_pag/con_69_total)}
+goal limit_d7a_pag  {d7a_pag < target_d7a_pag}
+
+define target_d7a_prf {value (ad_d7a_prf)}
+goal limit_d7a_prf {d7a_prf < target_d7a_prf}
+
+define target_d7b_pwr {value min(ad_d7b_pwr, demand_prj_69*con_d7b_pwr/con_69_total)}
+goal limit_d7b_pwr {d7b_pwr < target_d7b_pwr}
+
+! ag delivery is curtailed by Article 55 Transfers in the SDIP step.
+! This impacts to delivery is explicitly zeroed out in steps and cycles
+! where they do not apply.
+define target_d7b_pag {value min(ad_d7b_pag, demand_prj_69*con_d7b_pag/con_69_total)}
+!goal limit_d7b_pag {d7b_pag < target_d7b_pag}
+!!!goal limit_WTS_DSA69 {WTS_DSA69 + EWA_GW69dv + EWA_CI69dv < target_d7b_pag}
+!!!goal limit_d7b_pag {d7b_pag < target_d7b_pag - WTS_DSA69 - EWA_GW69dv - EWA_CI69dv}
+goal limit_d7b_pag {d7b_pag < target_d7b_pag} 
+
+define target_d7b_prf {value (ad_d7b_prf)}
+goal limit_d7b_prf {d7b_prf < target_d7b_prf}
+
+define target_d201_pimi {value ad_d201_pimi}
+goal limit_d201_pimi {d201_pimi < target_d201_pimi}
+
+define target_d201_pomi {value ad_d201_pomi}
+goal limit_d201_pomi {d201_pomi < target_d201_pomi}
+
+define target_d202_pwr {value min(ad_d202_pwr, demand_prj_69*con_d202_pwr/con_69_total)}
+goal limit_d202_pwr {d202_pwr < target_d202_pwr}
+
+define target_d204_pimi {value ad_d204_pimi}
+goal limit_d204_pimi {d204_pimi < target_d204_pimi}
+
+define target_d204_pomi {value ad_d204_pomi}
+goal limit_d204_pomi {d204_pomi < target_d204_pomi}
+
+

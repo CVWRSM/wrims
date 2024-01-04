@@ -1,0 +1,55 @@
+/*************************************
+ncp_relax.wresl
+ 
+Tom FitzHugh BOR 7/7/2010
+
+Sets Navigation Control Point minimum flow with relaxation.  Minimum flow is
+met at Wilkins Slough.  NCP minimum flow is 5000, unless percent delivery
+for Ag is 65% or less, in which case it can be 3250-4500 depending on percent 
+delivery.  Minimum flow can change during Jan-May, and then May value is used 
+during June-Dec.
+*************************************/
+
+define ncp_with_relax {
+    select flow
+    from ncp_with_relax
+    given Ag_alloc = perdel_cvpag_sys * 100
+    use maximum
+       }
+
+define minflow_C_Wilkns {std kind 'flow-min-required' units 'cfs'}
+
+define ncp_relax_final {
+
+     !case yrbeginWY {
+	 case yrbeginWY {
+          condition month <= MAR .and. wateryear == beginWY
+          value     ncp_with_relax
+          }
+     case JanthruMay {
+          condition month >= JAN .and. month <= MAY
+          value     ncp_with_relax
+          }
+     case Rest {
+          condition always
+          value     min(ncp_with_relax, minflow_C_Wilkns(-1))
+          }
+     }
+
+goal set_minflow_C_Wilkns {minflow_C_Wilkns = ncp_relax_final}
+
+goal set_NCP {C_Wilkns_MIF < minflow_C_Wilkns}
+
+goal setncptoMin { !Keeps excess releases from Shasta during dry periods
+    lhs C_Wilkns_EXC
+    case lowshasta {
+        condition S_Shsta(-1) < 1900.
+        rhs 0.
+! this weight is way too high - it will override COA
+!        lhs>rhs penalty 3000 }
+! this weight causes reservoir balancing to shift to Folsom if possible
+        lhs>rhs penalty 10 }
+!        lhs<rhs penalty 0 }
+}
+
+

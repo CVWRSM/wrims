@@ -1,0 +1,37 @@
+/*************************************
+RequiredFlow.wresl
+ 
+Hao Xie DWR (12/30/2010)
+
+Calculate required flow of NDO, Sac, and SJR based on Delta Flow Criteria
+***************************************/
+
+Define unimpaired_NDO {timeseries kind 'unimpaired-flow' units 'cfs'}
+Define unimpaired_Sac {timeseries kind 'unimpaired-flow' units 'cfs'}
+Define unimpaired_SJR {timeseries kind 'unimpaired-flow' units 'cfs'}
+
+define perc_unimpairedNDO {select NDO from perc_UnimparedFlow where month=month}
+define perc_unimpairedSac {select SAC from perc_UnimparedFlow where month=month}
+define perc_unimpairedSJR {select SJR from perc_UnimparedFlow where month=month}
+
+define NDO_SWRCB {value unimpaired_NDO*perc_unimpairedNDO}
+define NDO_SWRCB_DV{alias NDO_SWRCB kind 'DeltaFlowCriteria' units 'cfs'}
+
+define RioVista_SWRCB {value unimpaired_Sac*perc_unimpairedSac}
+define RioVista_SWRCB_DV{alias RioVista_SWRCB kind 'DeltaFlowCriteria' units 'cfs'}
+
+define SJR_SWRCB1 {value unimpaired_SJR*perc_unimpairedSJR}
+
+define SJR_SWRCB2{		!October 10 day pulse flow: monthly average of 1200cfs = 10 day average of 3600 cfs
+	case Oct{
+		condition month==1
+		value 1200
+	}
+	case other{
+		condition always
+		value 0
+	}
+}
+
+define SJR_SWRCB {value max(SJR_SWRCB1, SJR_SWRCB2)}	
+define SJR_SWRCB_DV{alias SJR_SWRCB kind 'DeltaFlowCriteria' units 'cfs'}

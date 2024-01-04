@@ -1,0 +1,25 @@
+/*************************************
+Qwest_constrain.wresl
+ 
+
+Z.Q. Richard Chen DWR  4/20/2011 
+Add User defined Qwestflow (C_SJRVI) requirement
+*************************************/
+!User Defined Qwest ( flow added 4/20/2011, Richard Chen
+define QWest_req   { 
+        case UserDef { condition int(QWEST_DLTSW) == 2
+        select QWESTstd from gui_qwest where wyT_Sac=wyT_Sac,month=month }
+        case Others { condition always
+        value -99999}
+        }
+        
+define Qwest_reqDV {alias QWest_req kind 'FLOW-REQ-QWEST' units 'CFS'} ! for output
+
+goal bound_Qwest { 
+       lhs C_SJRVI 
+          case UserDef { condition int(QWEST_DLTSW) == 2   
+          rhs Qwest_req  
+          lhs>rhs penalty 0}     !Qwest flow should be larger than Qomr_Udef      
+          }
+          
+

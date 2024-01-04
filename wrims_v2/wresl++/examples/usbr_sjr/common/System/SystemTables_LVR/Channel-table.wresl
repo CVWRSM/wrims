@@ -1,0 +1,28 @@
+define C421     {lower 0 upper 430 kind 'FLOW-CHANNEL' units 'CFS'} !Blending Pt#2 to Blending Pt#1, LV Pipeline
+define C422     {lower 0 upper 1000 kind 'FLOW-CHANNEL' units 'CFS'} !Release from LV 
+define C428A    {lower 0 upper 52 kind 'FLOW-CHANNEL' units 'CFS'} !EBMUD Mokelumne Intertie delivery to CCWD
+define C428B    {lower 0 upper 52 kind 'FLOW-CHANNEL' units 'CFS'} !EBMUD Mokelumne Intertie delivery to LV
+define C430A    {lower 0 upper 1000 kind 'FLOW-CHANNEL' units 'CFS'} !Transfer-LV Pipeline
+define C430B    {lower 0 upper 1000 kind 'FLOW-CHANNEL' units 'CFS'} !Direct delivery to SBA/Bethany
+define C431 {lower 0 upper 1000 kind 'FLOW-CHANNEL' units 'CFS'} !Delta-Transfer Pipeline  
+! NOTE: C431 capacity = Old River Pipeline + Delta-Transfer Pipeline, see below for more discussion.
+define C432 {lower 0 upper 320 kind 'FLOW-CHANNEL' units 'CFS'} !Old River Pipeline, downstream of Transfer Pt#1
+define C433A    {lower 0 upper 250 kind 'FLOW-CHANNEL' units 'CFS'} !AIP diversion, delivery to CCWD
+define C433B    {lower 0 upper 250 kind 'FLOW-CHANNEL' units 'CFS'} !AIP diversion, delivery to LV
+define C434A    {lower 0 upper 320 kind 'FLOW-CHANNEL' units 'CFS'} !Old River diversion, delivery to CCWD
+define C434B    {lower 0 upper 420 kind 'FLOW-CHANNEL' units 'CFS'} !Old River diversion, delivery to LV
+
+/*
+NOTE 1: from an engineering stand-point, the capacity of the Delta-Transfer Pipeline (C431) is (Old River Pumping 
+Capacity + AIP Pumping Capacity) - Old River Pipeline Capacity.  It is intended that the existing Old River 
+Pipeline would be used to supply a portion of the conveyance capacity with the addition of a small connection 
+between the OR Pipeline and the Delta-Transfer Pipeline.  Using Old River pipeline capacity for reservoir deliveries 
+and including the small connection between the two pipelines has not been incorporated into the model structure.
+
+NOTE 2: for a connection to Bethany, the existing Trasfer Pipeline would be used for releases only as the pressure
+rating of the existing pipeline is not sufficient to deliver water to a 275 TAF reservoir.  A new Transfer-LV 
+pipeline would be constructed parallel to the exisitng pipeline and used for reservoir filling and releasing.
+The filling capacity would be equal to the Transfer Pumping Plant capacity, and the release cpacity would be
+determined by the design criteria but no greater than the Transfer-Bethany pipeline capacity (assume existing 
+400cfs pipeline used for CCWD deliveries, and new pipeline used for Bethany deliveries).  
+*/

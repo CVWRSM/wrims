@@ -1,0 +1,14 @@
+package system_Orovl 
+
+import reservoirs as S
+import channels as C
+import inflows as I
+
+parameter network {
+
+	external  out_1
+    
+	branch_1 = [ I.Orovl -> S.Orovl -> C.Orovl -> out_1  ] 
+    branch_2 = [            S.Orovl -> C.Orovl 	    	 ]  
+}
+

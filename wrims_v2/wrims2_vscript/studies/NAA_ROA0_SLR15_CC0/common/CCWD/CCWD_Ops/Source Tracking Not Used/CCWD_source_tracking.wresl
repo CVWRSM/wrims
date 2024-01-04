@@ -1,0 +1,98 @@
+!Disaggregate pipelines by source.
+
+!Old River Pipeline
+define C421_CVP {std kind 'flow-channel' units 'cfs'}
+define C421_DS {std kind 'flow-channel' units 'cfs'}
+define C421_TX {std kind 'flow-channel' units 'cfs'}
+goal split_C421 {C421 = C421_CVP + C421_DS + C421_TX}
+
+!Reverse flow in Transfer Pipeline (FILL LV)
+define C422_FILL_CVP {std kind 'flow-channel' units 'cfs'}
+define C422_FILL_DS {std kind 'flow-channel' units 'cfs'}
+define C422_FILL_TX {std kind 'flow-channel' units 'cfs'}
+define C422_FILL_MOK {std kind 'flow-channel' units 'cfs'}
+goal split_C422_FILL {C422_FILL = C422_FILL_CVP + C422_FILL_DS + C422_FILL_TX + C422_FILL_MOK}
+
+!Forward flow in Transfer Pipeline (RELEASE FROM LV)
+define C422_REL_CVP {std kind 'flow-channel' units 'cfs'}
+define C422_REL_DS {std kind 'flow-channel' units 'cfs'}
+define C422_REL_TX {std kind 'flow-channel' units 'cfs'}
+define C422_REL_MOK {std kind 'flow-channel' units 'cfs'}
+define C422_REL_KC {std kind 'flow-channel' units 'cfs'}
+define C422_REL_PPT {std kind 'flow-channel' units 'cfs'}
+goal split_C422_REL {C422_REL = C422_REL_CVP + C422_REL_DS + C422_REL_TX + C422_REL_MOK + C422_REL_KC + C422_REL_PPT}
+
+!Reverse flow in Los Vaqueros Pipeline (FILL LV)
+define C423_FILL_MOK {std kind 'flow-channel' units 'cfs'}
+goal split_C423_FILL {C423_FILL = C423_FILL_MOK}
+
+!Forward flow in Los Vaqueros Pipeline (C423_DEL) (Deliver to CCWD service area)
+define C423_DEL_CVP {std kind 'flow-channel' units 'cfs'}
+define C423_DEL_DS {std kind 'flow-channel' units 'cfs'}
+define C423_DEL_TX {std kind 'flow-channel' units 'cfs'}
+define C423_DEL_MOK {std kind 'flow-channel' units 'cfs'}
+define C423_DEL_KC {std kind 'flow-channel' units 'cfs'}
+define C423_DEL_PPT {std kind 'flow-channel' units 'cfs'}
+goal split_C423_DEL {C423_DEL = C423_DEL_CVP + C423_DEL_DS + C423_DEL_TX + C423_DEL_MOK + C423_DEL_KC + C423_DEL_PPT}
+
+!Forward flow in Los Vaqueros Pipeline 
+define C424_CVP {std kind 'flow-channel' units 'cfs'}
+define C424_DS {std kind 'flow-channel' units 'cfs'}
+define C424_TX {std kind 'flow-channel' units 'cfs'}
+define C424_MOK {std kind 'flow-channel' units 'cfs'}
+define C424_KC {std kind 'flow-channel' units 'cfs'}
+define C424_PPT {std kind 'flow-channel' units 'cfs'}
+goal split_C424 {C424 = C424_CVP + C424_DS + C424_TX + C424_MOK + C424_KC + C424_PPT}
+
+!CCWD Service Area Delivery (D420) 
+define D420_CVP {std kind 'flow-delivery' units 'cfs'}
+define D420_DS {std kind 'flow-delivery' units 'cfs'}
+define D420_TX {std kind 'flow-delivery' units 'cfs'}
+define D420_MOK {std kind 'flow-delivery' units 'cfs'}
+define D420_KC {std kind 'flow-delivery' units 'cfs'}
+define D420_PPT {std kind 'flow-delivery' units 'cfs'}
+goal split_D420 {D420 = D420_CVP + D420_DS + D420_TX + D420_MOK + D420_KC + D420_PPT}
+
+!Los Vaqueros storage
+define S422_CVP {std kind 'storage' units 'taf'}
+define S422_DS {std kind 'storage' units 'taf'}
+define S422_TX {std kind 'storage' units 'taf'}
+define S422_MOK {std kind 'storage' units 'taf'}
+define S422_KC {std kind 'storage' units 'taf'}
+define S422_PPT {std kind 'storage' units 'taf'}
+goal split_S422 {S422 = S422_CVP + S422_DS + S422_TX + S422_MOK + S422_KC + S422_PPT}
+
+!Los Vaqueros evaporation
+define E422_CVP {lower unbounded kind 'evaporation' units 'cfs'}
+define E422_DS {lower unbounded kind 'evaporation' units 'cfs'}
+define E422_TX {lower unbounded kind 'evaporation' units 'cfs'}
+define E422_MOK {lower unbounded kind 'evaporation' units 'cfs'}
+define E422_KC {lower unbounded kind 'evaporation' units 'cfs'}
+define E422_PPT {lower unbounded kind 'evaporation' units 'cfs'}
+goal split_E422 {E422 = E422_CVP + E422_DS + E422_TX + E422_MOK + E422_KC + E422_PPT}
+
+/*
+!Provide flexibility to LV continuity equations
+define F422_CVP {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define F422_DS {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define F422_TX {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define F422_MOK {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define F422_KC {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define F422_PPT {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+
+define X422_CVP {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define X422_DS {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define X422_TX {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define X422_MOK {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define X422_KC {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+define X422_PPT {std kind 'flex-bound' units 'cfs'} !Apply large negative weight
+*/
+
+!Source tracking continuity equations
+
+!CVP contract water
+define frac_422_CVP {value S422(-1)/S422(-1)}
+goal set_E422_CVP {E422_CVP = frac_422_CVP*E422}
+goal set_C422_F_CVP {C422_F_CVP = frac_422_CVP*
+!
+

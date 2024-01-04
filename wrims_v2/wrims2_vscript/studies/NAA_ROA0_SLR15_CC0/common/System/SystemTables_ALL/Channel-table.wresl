@@ -1,0 +1,377 @@
+define C1 {lower 0. upper 1845*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Trinity Lake
+define C100 {lower 0. upper 6000 kind 'FLOW-CHANNEL' units 'CFS'} !Trinity River
+define C100_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C100_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C100total {C100=C100_MIF+C100_EXC}
+define C3 {lower 0. upper 3000 kind 'FLOW-CHANNEL' units 'CFS'} !Clear Creek
+define C3_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C3_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C3total {C3=C3_MIF+C3_EXC}
+define C4 {lower 0. upper 4858*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Shasta Lake
+define C4401 {lower 0. upper 900000 kind 'FLOW-CHANNEL' units 'CFS'} !Enlarged Shasta Fills
+define C4402 {lower 0. upper 900000 kind 'FLOW-CHANNEL' units 'CFS'} !Enlarged Shasta Releases
+define C5 {lower 0. upper 100000 kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Keswick Reservoir
+define C5_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C5_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C5total {C5=C5_MIF+C5_EXC}
+define C103 {lower 0. upper 100000 kind 'FLOW-CHANNEL' units 'CFS'} !Stream - Aquifer Interaction for DSA58
+define C104 {lower 0. upper 100000 kind 'FLOW-CHANNEL' units 'CFS'} !Stream Diversion Requirement for DSA58
+define C105 {lower 0. upper 100000 kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Clear Creek Confluence Sacramento River
+define C10801 {std kind 'FLOW-CHANNEL' units 'CFS'} !Cow Creek (above gauge; eventually add impairment)
+define C10802 {std kind 'FLOW-CHANNEL' units 'CFS'} !Cottonwood Creek (above gauge; eventually add impairment)
+define C10803 {std kind 'FLOW-CHANNEL' units 'CFS'} !Battle Creek (above gauge; eventually add impairment)
+define C108 {lower 0. upper 100000 kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Cow, Cottonwood and Battle Creek Confluence Sacramento River
+define C106 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA58 Diversion Requirement
+define C109 {lower 0. upper 100000 kind 'FLOW-CHANNEL' units 'CFS'} !Flow at Bend Bridge
+define C11001 {std kind 'FLOW-CHANNEL' units 'CFS'} !Paynes Creek (above gauge; eventually add impairment)
+define C110 {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Paynes Creek Confluence
+define C112 {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Red Bluff Diversion Dam
+define C112_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C112_MIF_DAILY {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C112_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C112total {C112=C112_MIF+C112_MIF_DAILY+C112_EXC}
+define C11303 {std kind 'FLOW-CHANNEL' units 'CFS'} !Elder Creek (above gauge; eventually add impairment)
+define C11304 {std kind 'FLOW-CHANNEL' units 'CFS'} !Thomes Creek (above gauge; eventually add impairment)
+define C11307 {std kind 'FLOW-CHANNEL' units 'CFS'} !Antelope Creek (above gauge; eventually add impairment)
+define C11308 {std kind 'FLOW-CHANNEL' units 'CFS'} !Mill Creek (above gauge; eventually add impairment)
+define C11309 {std kind 'FLOW-CHANNEL' units 'CFS'} !Deer Creek (above gauge; eventually add impairment)
+define C113 {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Thomes Creek Confluence
+define C114 {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Glenn-Colusa Canal Diversion
+define C114_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C114_MIF_DAILY {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C114_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C114total {C114=C114_MIF+C114_MIF_DAILY+C114_EXC}
+define C11501 {std kind 'FLOW-CHANNEL' units 'CFS'} !Big Chico Creek (above gauge; eventually add impairment)
+define C115 {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Stoney Creek Confluence
+define C116 {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'} !Stream - Aquifer Interaction for DSA10
+define C117 {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Sutter Bypass Overflow
+define C118 {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'} !
+define C122 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of West Bank Diversions
+define C123 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River
+define C124 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Moulton Weir
+define C125 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Colusa Weir
+define C126 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Tisdale Weir
+define C127 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Stream - Aquifer Interaction for DSA15
+define C128 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Stream Diversion Requirement for DSA15
+define C129 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of DSA15 Returns
+define C129_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C129_MIF_DAILY {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C129_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C129total {C129=C129_MIF+C129_MIF_DAILY+C129_EXC}
+!WBA4 along Thomes Creek
+define C11301 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Thomes Creek flow into Sac River
+!WBA5 along Antelope, Mill, and Deer Creeks
+define C11305 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Antelope, Mill, and Deer Creeks flow into Sac River
+!Tehama-Colusa Canal
+define C171 {lower 0. upper 2530. kind 'FLOW-CHANNEL' units 'CFS'} !Tehama-Colusa Canal
+define C172 {lower 0. upper 2400. kind 'FLOW-CHANNEL' units 'CFS'} !Tehama-Colusa Canal
+define C173B {lower 0. upper upperC173B kind 'FLOW-CHANNEL' units 'CFS'} !Tehama-Colusa Canal
+define C173B_Sac {std kind 'FLOW-CHANNEL' units 'CFS'} !Tehama-Colusa Canal
+define C173B_StCr {std kind 'FLOW-CHANNEL' units 'CFS'} !Tehama-Colusa Canal
+goal C173Btotal {C173B=C173B_Sac + C173B_StCr}
+define C174 {lower 0. upper upperC174 kind 'FLOW-CHANNEL' units 'CFS'} !Tehama-Colusa Canal
+define C17501 {lower 0. upper 1900. kind 'FLOW-CHANNEL' units 'CFS'} !Tehama-Colusa Canal
+define C17502A {lower 0. upper 285. kind 'FLOW-CHANNEL' units 'CFS'} !TC-GC Intertie
+define C17502B {lower 0. upper 65. kind 'FLOW-CHANNEL' units 'CFS'} !Williams Outlet
+!Stony Creek
+define C40 {std kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of East Park Reservoir
+define C40_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C40_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C40total {C40=C40_MIF+C40_EXC}
+define C41 {std kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Stony Gorge Reservoir
+define C41_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C41_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C41total {C41=C41_MIF+C41_EXC}
+define C42 {lower 0.*taf_cfs upper 15000. kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Black Butte Lake
+define C42_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C42_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C42total {C42=C42_MIF+C42_EXC}
+define C17301 {lower 0.*taf_cfs upper 15000. kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of NDD
+define C17301_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C17301_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C17301total {C17301=C17301_MIF+C17301_EXC}
+define C173A {lower 0.*taf_cfs upper 15000. kind 'FLOW-CHANNEL' units 'CFS'} !Stony Creek
+define C173A_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'} !Stony Creek
+define C173A_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'} !Stony Creek
+goal C173Atotal {C173A=C173A_MIF+C173A_EXC} !Stony Creek
+define C142A {lower 0.*taf_cfs upper 15000. kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of GCID Canal
+!Glenn-Colusa Canal
+define C141 {lower 0. upper 3000. kind 'FLOW-CHANNEL' units 'CFS'}
+define C142B {lower 0. upper 3000. kind 'FLOW-CHANNEL' units 'CFS'} !Originally set at 2200 CFS - demands could not be met with 2200 CFS
+define C143 {lower 0. upper 1800. kind 'FLOW-CHANNEL' units 'CFS'}
+define C14401 {lower 0. upper 1200. kind 'FLOW-CHANNEL' units 'CFS'}
+define C14402B {lower 0. upper 1200. kind 'FLOW-CHANNEL' units 'CFS'} !Originally set at 800 CFS - demands could not be met with 800 CFS
+!Colusa Basin Drain
+define C180 {std kind 'FLOW-CHANNEL' units 'CFS'} !Colusa Basin Drain
+define C181 {std kind 'FLOW-CHANNEL' units 'CFS'} !Colusa Basin Drain
+define C182 {std kind 'FLOW-CHANNEL' units 'CFS'} !Colusa Basin Drain
+define C183 {std kind 'FLOW-CHANNEL' units 'CFS'} !Colusa Basin Drain
+define C18302 {std kind 'FLOW-CHANNEL' units 'CFS'} !Colusa Basin Drain LGB
+define C184A {std kind 'FLOW-CHANNEL' units 'CFS'} !Colusa Basin Drain
+define C184B {std kind 'FLOW-CHANNEL' units 'CFS'} !Knights Landing Ridge Cut
+!NODOS
+define C17601 {lower 0. upper upperC17601 kind 'FLOW-CHANNEL' units 'CFS'} !
+define C17602 {lower 0. upper upperC17602 kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS release to TCCA, GCID and Colusa Basin Drain
+define C17502 {lower 0. upper upperC17502 kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS release to GCID and Colusa Basin Drain
+define C14402A {lower 0. upper upperC14402A kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS release to Colusa Basin Drain
+define C17603 {lower 0. upper upperC17603 kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS release to Sac R through New Canal
+define C177A {std kind 'FLOW-CHANNEL' units 'CFS'} ! fill of NODOS Local share
+define C177B {std kind 'FLOW-CHANNEL' units 'CFS'} ! fill of SWP Local share
+define C177C {std kind 'FLOW-CHANNEL' units 'CFS'} ! fill of CVP Local share
+define C177D {std kind 'FLOW-CHANNEL' units 'CFS'} ! fill of EWA Local share
+define C177E {std kind 'FLOW-CHANNEL' units 'CFS'} ! fill of WQ Local share
+define C30 {lower 0. upper 0. kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS Local release to Sac R
+define C31 {std kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS SWP release to Sac R
+define C32 {lower 0. upper upperC32 kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS CVP release to Sac R
+define C33 {std kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS EWA release to Sac R
+define C34 {std kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS WQ release to Sac R
+define C30A {std kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS Local relaese to Colusa Basin
+define C31A {lower 0. upper 0. kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS SWP relaese to Colusa Basin
+define C32A {lower 0. upper 0. kind 'FLOW-CHANNEL' units 'CFS'} ! NODOS CVP relaese to Colusa Basin
+define C30C {std kind 'FLOW-CHANNEL' units 'CFS'} !Rice Decomposition supplies from NODOS - must be specifically routed out elsewhere
+define C32B {lower 0. upper upperC32B kind 'FLOW-CHANNEL' units 'CFS'} !CVP supplies to meet local demands
+define C32C {std kind 'FLOW-CHANNEL' units 'CFS'} !Refuge L4 supplies from NODOS - must be specifically routed out elsewhere
+!
+define C134 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Colusa Basin Drain Return
+define C135 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sutter Bypass Below Moulton Weir
+define C136A {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sutter Bypass Below Colusa Weir
+define C136B {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sutter Bypass Water for Sutter NWR
+define C137 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sutter Bypass Below Tisdale Weir
+define C151 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA65
+define C152A {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA65
+define C152B {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA65
+define C154 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA65 DIVERSION REQUIREMENT
+define C156 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA65 flow to Yolo Bypass
+define C157 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Yolo Bypass
+define C160 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Fremont Weir
+define C162 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Left Bank Diversions
+define C163 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Right Bank Diversions
+define C165 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of West Sacramento Diversion
+define C166 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of American River Confluence
+define C167 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Sac city Diversion
+define C168 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of DSA70 Stream Diversion
+define C169 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of DSA70 Returns
+define C169_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C169_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C169total {C169=C169_MIF+C169_EXC}
+define C6 {lower 0. upper 12913*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River Downstream of Oroville
+define C200A {lower 0. upper 12913*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River Downstream of Themolito Diversion Dam
+!define minflow_C200A {value 600}
+define minflow_C200A {select minflow from minflow where C_arc=200.1,month=month}
+define C200A_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C200A_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C200Atotal {C200A=C200A_MIF+C200A_EXC}
+goal C200Aminflow {C200A_MIF < minflow_C200A}
+define C200B {lower 0. upper 17400*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Power Canal inflow to Themolito
+define C201 {lower 0. upper 12913*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Power Canal inflow to Themolito
+define C202 {lower 0. upper 12913*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Power Canal inflow to Themolito
+define C7 {lower 0. upper 12913*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Thermolito Return to Feather River
+define C203 {lower 0. upper 12913*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River Below Thermolito Return
+define C203_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C203_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C203total {C203=C203_MIF+C203_EXC}
+define C204 {lower 0. upper 19676*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River Below Yuba Confluence
+define C205 {lower 0. upper 19676*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River Below Bear Confluence
+define C206 {lower 0. upper 19676*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River
+define C207 {lower 0. upper 19676*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River
+define C208 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69
+define C209 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69 Diversion Requirement
+define C230 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Yuba River
+define C212 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Yuba and Bear Diversions
+define C282 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Bear River
+define C283 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Bear River
+define C285 {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Bear River
+define C214 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69
+define C215 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69
+define C216A {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69
+define C216B {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69
+define C217A {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Butte Creek Spills
+define C217B {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Butte Creek Diversion
+define C219 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69
+define C220A {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69
+define C220B {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69
+define C221 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69 Duck Clubs
+define C223 {lower 0. upper 19676*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River
+define C223_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C223_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C223total {C223=C223_MIF+C223_EXC}
+define C225 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA69 Export to DSA70
+define C308 {std kind 'FLOW-CHANNEL' units 'CFS'} !DSA70 Imported Spill Arc, occurs when DR not sufficient to take flow
+define C300 {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River Inflow to Folsom
+define C8 {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River Below Folsom Dam
+define C9 {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River Below Natoma
+define C9_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C9_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C9total {C9=C9_MIF+C9_EXC}
+define C301 {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River Below Stream-Aquifer Interaction
+define C302 {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River
+define C303 {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River Inflow to Sacramento River
+define C303_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C303_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C303total {C303=C303_MIF+C303_EXC}
+define C305 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA70
+define C306 {lower 0. upper 999999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA70 DIVERSION REQUIREMENT
+define C400 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento R Isolated Facility Div & Net DICU
+define C401A {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento Downstream of Delta Cross Channel
+define C401B {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Delta Cross Channel
+define C402A {lower 0. upper 25000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Channel Reach to Vallejo & North Bay
+!define C402B {lower 0. upper 25000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !SWP NBA & Yolo Bypass Delta Inflow
+define C402B {lower 0. upper 175 kind 'FLOW-CHANNEL' units 'CFS'} !SWP NBA & Yolo Bypass Delta Inflow
+define C404 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento R AT Rio Vista Delta Precip & Net DICU
+define C405 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento R At Rio Vista
+define C405_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C405_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C405total {C405=C405_MIF+C405_EXC}
+define C406 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Marsh Creek between Rio Vista & Req'd Delta Outflow & Net DICU
+define C407 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Required Delta Outlfow
+define C416A {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}  ! SJR to the confluence with SAC
+define C416B {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}  ! Indian Slough adjustment to OMR
+define C408 {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}  ! Combined Old and Middle River
+define C409 {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}  ! Export Pool & Net DICU
+define C410 {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} ! Net DICU
+define C411 {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define C412 {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} ! SJR Delta Inflow & Net DICU
+define C413 {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} ! Moke and DXC Flows & Net DICU
+define C414 {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define C418 {lower 0. upper 25000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !CVP Tracy Pumping Plant
+define C504 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !
+define C514 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !
+define C417A {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define C417B {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define C446 {lower 0. upper 25000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Part of Isolated Facility channel
+define C644 {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !San Joaquin Inflow to Delta
+define C700 {lower 0. upper 4400 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Upper DMC Project AG Div
+define C700A {lower 0. upper 10000 kind 'FLOW-CHANNEL' units 'CFS'} !Intertie
+define C701 {lower 0. upper 4400 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Upper DMC Exchange Div
+define C702 {lower 0. upper 4200 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Upper DMC Losses
+define C703 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !O'Neill FB Div To CVP San Luis
+define C704 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !CVP San Luis Res Return
+define C705 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !CVP Cross Valley Canal Transfer
+define C706 {lower 0. upper 3500 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Lower DMC Project AG Div
+define C707 {lower 0. upper 3500 kind 'FLOW-CHANNEL' units 'CFS'} !CVP lower DMC Exchange (CCID) Div
+define C710 {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !CVP San Felipe Project - AG Div
+define C800 {lower 0. upper 10300 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Banks Pumping Plants Dummy
+define C801 {lower 0. upper 10000 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Awueduct Downstream of South Bay Aqueduct
+define C802 {lower 0. upper 10000 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 2A  Oak Flat WD
+define C803 {lower 0. upper 10000 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 1-2 Losses
+define C804 {lower 0. upper 10000 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Wheeling for CVP
+define C805 {lower 0. upper 10000 kind 'FLOW-CHANNEL' units 'CFS'} !O'Neill Forebay Diversion to SWP San Luis
+define C806 {lower 0. upper 13100 kind 'FLOW-CHANNEL' units 'CFS'}
+define C807 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'}
+define C808 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'}
+define C809 {lower 0. upper 430. kind 'FLOW-CHANNEL' units 'CFS'} !SWP South Bay Pumping Plants        - 430cfs for upper reachs w/ SBA improvement project
+define C810 {lower 0. upper 430. kind 'FLOW-CHANNEL' units 'CFS'} !SWP South Bay Reach 1-4  Alameda Z7 - 430cfs for upper reachs w/ SBA improvement project
+define C811 {lower 0. upper 430. kind 'FLOW-CHANNEL' units 'CFS'} !Diversion To SWP Lake Del Valle     - 430cfs for upper reachs w/ SBA improvement project
+define C812 {lower 0. upper 363. kind 'FLOW-CHANNEL' units 'CFS'} !SWP Lake Del Valle Return           - 363cfs for Del Valle pipeline/SBA improvement project
+define C813 {lower 0. upper 305. kind 'FLOW-CHANNEL' units 'CFS'} !SWP South Bay Reach 5-6  Alameda Z7 - 305cfs for Sunol pipeline/SBA improvement project
+define C814 {lower 0. upper 184. kind 'FLOW-CHANNEL' units 'CFS'} !SWP South Bay Reach 7-8  Alameda CO - 184cfs for Santa Clara pipeline/SBA improvement project
+define C815 {lower 0. upper 184. kind 'FLOW-CHANNEL' units 'CFS'} !South Bay Reach 9  Santa Clara VWD  - 184cfs for Santa Clara pipeline/SBA improvement project
+define C818 {std kind 'FLOW-CHANNEL' units 'CFS'} !SWP Wheeling for CVP Dummy
+define C820 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'}
+define C821 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'}
+define C822 {std kind 'FLOW-CHANNEL' units 'CFS'} !Surrograte
+define C824 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 3 Losses
+define C825 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Dos Amigos Pumping Plant
+define C826 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 4 Losses
+define C827 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 5 Losses
+define C828 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 6 Losses
+define C829 {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 7 Losses
+define C830 {lower 0. upper 8100 kind 'FLOW-CHANNEL' units 'CFS'} !Return to CA Aqueduct (End Joint)
+define C831 {std kind 'FLOW-CHANNEL' units 'CFS'} !SWP Use of CVP Joint Use Share
+define C832 {std kind 'FLOW-CHANNEL' units 'CFS'} !
+define C833 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Project AG  San Luis WD  Reach 3
+define C834 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Dos Amigos PP  Reach 3 Losses
+define C835 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Project AG  Panoche & Pacheco  Reach 4
+define C836 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Project AG  Westlands + Misc R4
+define C837 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Project AG  Westlands + Misc R4
+define C838 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Reach 4 Losses  Joint-Reach
+define C839 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Project AG   Westlands   Reach 5
+define C840 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Reach 5 Losses  Joint-Reach
+define C841 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Project AG  Westlands  Reach 6
+define C842 {std kind 'FLOW-CHANNEL' units 'CFS'} !CVP Reach 6 Losses  Joint-Reach
+define C843 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Project AG  Westlands  Reach 7
+define C844 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Project M&I  Reach 7
+define C845 {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} !CVP R7 Losses & SWP Joint Use Return
+define C846 {lower 0. upper 8100 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 8C   Empire West Side
+define C847 {lower 0. upper 8100 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 8C  County Of Kings
+define C848 {lower 0. upper 8100 kind 'FLOW-CHANNEL' units 'CFS'} !Reach 8C-8D  Tulare Lake Basin Wsd
+define C849 {lower 0. upper 8100 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 8D  Dudley Ridge WD
+define C850 {lower 0. upper 7300 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Aqueduct Downstream of Bifurcation To Coastal Br
+define C851 {lower 0. upper 5950 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 9-13B  KCWA
+define C852 {lower 0. upper 5950 kind 'FLOW-CHANNEL' units 'CFS'} !KWB  Semitropic Element Diversion
+define C853 {lower 0. upper 5950 kind 'FLOW-CHANNEL' units 'CFS'} !SWP KCWA & KWB  Semitropic Return
+define C854 {lower 0. upper 5950 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 8C-13B Losses
+define C855 {lower 0. upper 5950 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Cross Valley Canal  AG Diversion
+define C856 {lower 0. upper 5950 kind 'FLOW-CHANNEL' units 'CFS'} !CVP Cross Valley  Refuge Diversion
+define C857 {lower 0. upper 5350 kind 'FLOW-CHANNEL' units 'CFS'} !KWB  Fan Element Diversion
+define C858 {lower 0. upper 5350 kind 'FLOW-CHANNEL' units 'CFS'} !KWB  Local Element Diversion
+define C859 {lower 0. upper 5350 kind 'FLOW-CHANNEL' units 'CFS'} !SWP KCWA & KWB Local Elmnt Rtrn
+define C860 {lower 0. upper 5405 kind 'FLOW-CHANNEL' units 'CFS'} !Buena Vista PP
+define C861 {lower 0. upper 5047 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 14A-14C  KCWA
+define C862 {lower 0. upper 4600 kind 'FLOW-CHANNEL' units 'CFS'} !Wheeler Ridge PP & Reach 14 Losses
+define C863 {lower 0. upper 4400 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 15A-16A  KCWA
+define C864 {lower 0. upper 4400 kind 'FLOW-CHANNEL' units 'CFS'} !Chrisman PP & Reach 15A-18A Losses
+define C865 {lower 0. upper 4480 kind 'FLOW-CHANNEL' units 'CFS'} !SWP A.D. Edmondston PP
+define C866 {lower 0. upper 450 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Coastal Branch Inflow
+define C867 {lower 0. upper 450 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Coastal Branch  Reach 31A  KCWA
+define C868 {lower 0. upper 450 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Coast Branch  Reach 31A  Castaic
+define C869 {lower 0. upper 450 kind 'FLOW-CHANNEL' units 'CFS'} !NEW
+define C875A {lower 0. upper 3150 kind 'FLOW-CHANNEL' units 'CFS'} !SWP East Branch Bifurcation
+define C875B {lower 0. upper 3130 kind 'FLOW-CHANNEL' units 'CFS'} !SWP West Branch Bifurcation
+define C876 {lower 0. upper 3150 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Alamo Powerplant
+define C877 {lower 0. upper 2991 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 19-22A  Avek Wa
+define C878 {lower 0. upper 2991 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 20A-20B  Palmdale WD
+define C879 {lower 0. upper 2953 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 21  Littlerock Cr Id
+define C880 {lower 0. upper 2105 kind 'FLOW-CHANNEL' units 'CFS'} !Pearblossom PP & Reach 17-21 Losses
+define C881 {lower 0. upper 2875 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 22B-23  Mojave Wa
+define C882 {lower 0. upper 2160 kind 'FLOW-CHANNEL' units 'CFS'} !Mojave PWP & Reach 22A-23 Losses
+define C883 {lower 0. upper 2810 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 26A Coachella Valley WD
+define C884 {lower 0. upper 2810 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 26A  Desert Wa
+define C885 {lower 0. upper 2810 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 26  MWD
+define C886 {lower 0. upper 2810 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 26A  San Bernardino
+define C887 {lower 0. upper 2810 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 26  San Gabriel Valley
+define C888 {lower 0. upper 2810 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 26 San Gorgonio Pass Wa
+define C889 {lower 0. upper 2810 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 24-28  Rec + Losses
+define C890 {lower 0. upper 3130 kind 'FLOW-CHANNEL' units 'CFS'} !SWP OSO Power Plant
+define C891 {lower 0. upper 3130 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 29A-29F Losses
+define C892 {lower 0. upper 1565 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Warne PWP & Reach 29A-F Losses
+define C893 {lower 0. upper 18000 kind 'FLOW-CHANNEL' units 'CFS'} !Castaic PWP & Reach 29H-29J Losses
+define C894 {lower 0. upper 18000 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 30  Rec + Losses
+define C895 {lower 0. upper 18000 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 30  MWD
+define C899 {lower 0. upper 730 kind 'FLOW-CHANNEL' units 'CFS'} !SWP Reach 28G-28H  MWD
+define C11 {lower 0. upper 8000 kind 'FLOW-CHANNEL' units 'CFS'} !CVP SAN LUIS RESERVOIR
+define C12 {lower 0. upper 8900 kind 'FLOW-CHANNEL' units 'CFS'} !SWP SAN LUIS RESERVOIR
+define C15 {lower 0. upper 363. kind 'FLOW-CHANNEL' units 'CFS'} !LAKE DEL VALLE - 363cfs for Del Valle pipeline/SBA improvement project
+define C25 {lower 0. upper 2600 kind 'FLOW-CHANNEL' units 'CFS'} !SILVERWOOD LAKE
+define C28 {lower 0. upper 18000 kind 'FLOW-CHANNEL' units 'CFS'} !PYRAMID LAKE
+define C29 {lower 0. upper 18000 kind 'FLOW-CHANNEL' units 'CFS'} !CASTAIC LAKE
+define GS60 {lower -999999 upper 999999 kind 'FLOW-CHANNEL' units 'CFS'} !DSA58 Stream - Groundwater Interaction
+define GS61 {lower -999999 upper 999999 kind 'FLOW-CHANNEL' units 'CFS'} !DSA10 Stream - Groundwater Interaction
+define GS62 {lower -999999 upper 999999 kind 'FLOW-CHANNEL' units 'CFS'} !DSA12 Stream - Groundwater Interaction
+define GS63 {lower -999999 upper 999999 kind 'FLOW-CHANNEL' units 'CFS'} !DSA15 Stream - Groundwater Interaction
+define GS64 {lower -999999 upper 999999 kind 'FLOW-CHANNEL' units 'CFS'} !DSA65 Stream - Groundwater Interaction
+define GS65 {lower -999999 upper 999999 kind 'FLOW-CHANNEL' units 'CFS'} !DSA69 Stream - Groundwater Interaction
+define GS66 {lower -999999 upper 999999 kind 'FLOW-CHANNEL' units 'CFS'} !DSA70 Stream - Groundwater Interaction
+define GR60AW {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Deep percolation of AW
+define GR61AW {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Deep percolation of AW
+define GR62AW {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Deep percolation of AW
+define GR63AW {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Deep percolation of AW
+define GR64AW {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Deep percolation of AW
+define GR65AW {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Deep percolation of AW
+define GR66AW {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Deep percolation of AW
+define C22 {lower 0. upper 20*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !EWA GW CAP
+define GP11302 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA4@SR groundwater pumping
+define GP11306 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA5 groundwater pumping
+define GP14301 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA8NN groundwater pumping
+define GP14302 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento Refuge groundwater pumping
+define GP14501 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA8NS groundwater pumping
+define GP17401 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA7N groundwater pumping
+define GP17302 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA6 groundwater pumping
+define GP17801 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA7N groundwater pumping
+define GP17101 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Corning groundwater pumping
+define GP17201 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA4@TCC groundwater pumping
+define GP18201 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Deleavan and Colusa Refuges groundwater pumping
+define GP18301 {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !WBA8S groundwater pumping
+define GP131   {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DSA15 groundwater pumping
+define L17302  {lower 0. upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+

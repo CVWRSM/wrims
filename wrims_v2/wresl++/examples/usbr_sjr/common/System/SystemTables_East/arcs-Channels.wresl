@@ -1,0 +1,344 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-CHANNELS.WRESL
+
+    NAMING TAKES THE FOLLOWING FORMS:
+    C_{FLOW'S ORIGIN NODE}
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Ash Slough  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_ASL013     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Berenda Slough  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_BRS018     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Berenda Creek and Dry Creek  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_DBC024     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Tributary to Fresno River
+define C_DBC014     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Tributary to Fresno River
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear Creek  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_BCK040     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_BCK035     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_BCK033     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_BCK031     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_BCK024     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_BCK017     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_BCK010     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_BCK006     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!UPSTREAM OF CONFLUENCE WITH EASTSIDE BYPASS
+
+define C_ESC000     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Burns Creek  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_BUR005     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Tributary to Bear Creek
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Calaveras River     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_NHGAN      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!NEW HOGAN RESERVOIR
+define C_CLV044     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV043     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV037     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV035     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV028     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV026     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!BELLOTA WEIR
+define C_CLV023     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV016     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV010     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV009     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV006     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CLV004     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla/Eastside Bypass  !!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_EBP001     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!BYPASS OFF SAN JOAQUIN RIVER
+define C_EBP005     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!BYPASS OFF SAN JOAQUIN RIVER
+define C_EBP016     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CROSSING WITH FRESNO RIVER
+define C_EBP019     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_EBP022     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_EBP030     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CROSSING WITH CHOWCHILLA RIVER
+define C_EBP032     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_EBP033     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_EBP041     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_EBP042     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH DEADMAN CREEK
+define C_EBP043     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_EBP048     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH BEAR CREEK
+define C_EBP050     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Bear Ck Blw Eastside Canal
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_ESTMN      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CHW037     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CHW031     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CHW028     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE OF MADERA CANAL,BERENDA, AND ASH SLOUGHS
+define C_CHW024     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CHW021     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CHW017     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CHW011     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_CHW006     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CROSSING WITH EASTSIDE BYPASS
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Cottonwood Creek (btw SJR and Fresno River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_COT033     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Cottonwood Ck inflow to Eastside Bypass
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deadman Creek   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_DED044     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_DED038     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_DED035     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_DED032     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_DED025     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_DED019     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_DED012     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_DED010     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_DED003     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH EASTSIDE BYPASS
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deer Creek (?)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_DCM019     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Tributary to Merced @ 032
+define C_DCM027     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Tributary to Merced @ 032
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Fresno River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_HNSLY      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FRS048     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CROSSING WITH MADERA CANAL?
+define C_FRS046     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CROSSING WITH MADERA CANAL?
+define C_FRS045     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_FRS039     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FRS036     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!FRESNO RIPARIAN DIVERSION
+define C_FRS032     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FRS025     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FRS022     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FRS020     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FRS016     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!ABOVE CHOWCHILLA BYPASS
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Little John Creek   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_UFC000     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Upper Farmington Canal
+define C_LJC022     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!FARMINGTON RESERVOIR
+define C_LJC010     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mariposa Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MPS038         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Contribution to Eastside Bypass
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Madera Canal    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MDC032         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MDC032F        {lower 0 upper 99999 kind 'CHANNEL' units 'cfs' }
+define C_MDC019         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CROSSING WITH FRESNO RIVER
+define C_MDC006         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mendota Pool    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! define C_MDOTA      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!MENDOTA POOL
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Merced River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MCLRE          {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!LAKE MCCLURE, EXCHEQUER DAM
+define C_MCD056         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!blw McSwain Dam
+define C_MCD055         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!blw Merced Falls
+define C_MCD054         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!blw Crocker Huffman Dam
+define C_MCD052         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!blw Crocker Huffman Dam
+define C_MCD050         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD048         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD046         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD042         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD036         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD033         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!USGS 11271290 Merced R at Shaffer Bridge
+define C_MCD032         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD028         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Merced R at Cressey
+define C_MCD021         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD018         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD014         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD009         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MCD005         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!USGS 11272500 Merced R nr Stevinson
+define C_MCD002         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!UPSTREAM OF CONFLUENCE WITH SAN JOAQUIN RIVER
+
+define C_MRS000         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!USGS 11273000 Merced R. Slough nr Newman
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Owens Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_OWN040         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OWN011         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Joaquin River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MLRTN      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Millerton Reservoir
+define C_SJR265     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR263     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR258     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR256     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR249     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR242     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR235     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR227     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR225     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Gravelly Ford
+define C_SJR221     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR214     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Chowchilla Bypass
+define C_SJR213     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR205     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Outflow to Mendota Pool Bypass
+define C_SJR201     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!INFLOW FROM MENDOTA POOL BYPASS
+define C_SJR200     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!DWR #MEN, SAN JOAQUIN RIVER NEAR MENDOTA
+define C_SJR198     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR195     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR192     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR185     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR180     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!SACK DAM, DELIVERY TO SAN LUIS CANAL CO/CENTRAL CA ID (S)
+define C_SJR179     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!San Joaquin River Near Dos Palos
+define C_SJR173     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR166     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Sand Slough
+define C_SJR157     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR152     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR145     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Mariposa Bypass Return
+define C_SJR141     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR134     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CHOWCHILLA BYPASS RETURN
+define C_SJR131     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!DWR #SJS, SAN JOAQUIN RIVER NEAR STEVENSON
+define C_SJR127     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!SALT SLOUGH
+define C_SJR123     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR119     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Mud Slough
+define C_SJR117     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Newman Wasteway
+define C_SJR116     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH MERCED
+define C_SJR115     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!USGS #11274000, SAN JOAQUIN RIVER NEAR NEWMAN
+define C_SJR114     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR111     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR106     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!USGS #11274550, SAN JOAQUIN RIVER NEAR CROWS LANDING
+define C_SJR105     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!USGS 11274550 SJR nr Crows Landing
+define C_SJR101     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_SJR096     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!SJR Nr Patterson
+define C_SJR091     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR090     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR087     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR082     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR081     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH TUOLOMNE
+define C_SJR075     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!DWR #MRB, SAN JOAQUIN RIVER AT MAZE ROAD BRIDGE
+define C_SJR072     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH STANISLAUS, DELIVERY TO RIPARIAN
+define C_SJR070     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!USGS#11303500, SAN JOAQUIN RIVER NEAR VERNALIS
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stanislaus River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MELON      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!NEW MELONES RESERVOIR
+define C_TULOC      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!TULLOCH RESERVOIR
+define C_STS060     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS059     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS058     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS053     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS050     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS048     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS043     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS036     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS030     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS020     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_STS017     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CITY OF RIPON
+define C_STS011     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!UPSTREAM OF CONFLUENCE WITH SAN JOAQUIN RIVER
+
+define C_SSJ001     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OAK001     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stockton Diverting Canal           !!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_SDC001     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!STOCKTON DIVERTING CANAL
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Tuolumne River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_PEDRO      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!NEW DON PEDRO RESERVOIR
+define C_TUO054     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!LA GRANGE DAM
+define C_TUO053     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TUO047     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TUO043     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TUO036     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TUO030     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TUO022     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TUO017     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Modesto, Dry Creek
+define C_TUO015     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CITY OF MERCED
+define C_TUO010     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TUO004     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TUO003     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!UPSTREAM OF CONFLUENCE WITH SAN JOAQUIN RIVER
+
+define C_DCT050     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! 
+define C_TUR001     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_MDS003     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Contra Costa Water District Sub-Model   !!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_RSL001a        {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_RSL001b        {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!{lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}??
+define C_CCC007         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_LOSVQ          {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_TRNSFR         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_ORP000         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! French Camp Slough  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_FCS007     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FCS006     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Old and Middle River Combined
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_OMR039     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR028     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR027     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR024b    {lower 0      upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR024a    {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR021     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR018     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR014     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR013b    {lower 0      upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR013a    {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_OMR002     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}! Negative lower bounds allows for "backwards" flow from Delta
+
+
+

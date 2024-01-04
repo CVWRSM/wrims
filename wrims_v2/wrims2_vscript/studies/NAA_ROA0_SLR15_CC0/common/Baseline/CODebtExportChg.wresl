@@ -1,0 +1,24 @@
+!CODebtExportChg.wresl
+!N. Parker
+!5/24/05
+!
+
+! In the second full system cycle (cycle 7) of baseline studies, switch on or off 
+! the ability to pump into the San Luis Carryover Debt space from delta surplus 
+! and/or NOD storage.  Comment out the "Addl*FromC407" goals to allow export into 
+! Carryover debt space to come from NOD storage.
+
+goal IncBanksToSWPSL {D419_SWP*cfs_taf - D419_SWP[SETUP]*cfs_taf = S12 - S12[SETUP]}
+goal AddlSWPFromC407 {D419_SWP - D419_SWP[SETUP] = C407_SWP[SETUP] - C407_SWP}
+
+goal IncTracyToCVPSL {D418*cfs_taf - D418[SETUP]*cfs_taf = S11 - S11[SETUP]}
+goal AddlCVPFromC407 {D418 - D418[SETUP] = C407_CVP[SETUP] - C407_CVP}
+
+! Interruptible deliveries made in cycle 6 will be repeated in cycle 7.  
+! Also, constrain pumping and San Luis Storage to not decrease.
+goal maintainSWPexp {D419_SWP > D419_SWP[setup] - .1}
+goal maintainCVPexp {D418 > D418[setup] - .1}
+goal maintainSWPSL  {S12 > S12[setup] - .001}
+goal maintainCVPLS  {S11 > S11[setup] - .001}
+
+include 'FixInterruptible.wresl'

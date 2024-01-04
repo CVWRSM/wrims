@@ -1,0 +1,28 @@
+!R Wilbur 3/7/07
+
+!Step 1: Determine SWP allocation (fixed to previous step):
+INCLUDE 'delcar_swp.wresl'
+
+!Step 2: Define delivery parameters for each contractor:
+INCLUDE '..\..\..\common\swp_dellogic\demands\swp_arcsplit.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\demands\swp_demands_s.wresl'
+
+!Step 3: Keep a running account of actual deliveries made to each contractor
+INCLUDE '..\..\..\common\swp_dellogic\deliveries\sumswpdel.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\deliveries\swp_delivery_summary.wresl'
+
+!Step 4: Distribute SWP allocation to each contractor:
+INCLUDE '..\..\..\common\swp_dellogic\allocation\swp_contractor_perdel_A.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\allocation\carryover_allocation.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\allocation\swp_contractor_perdel_B.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\allocation\swp_feather_perdel.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\deliveries\swp_bound_del.wresl'
+
+!Step 5: Set Interruptible Deliveries (fixed to previous step):
+INCLUDE 'FixInterruptible.wresl'
+
+!Misc. code related to SWP facilities:
+  !Seismic concerns have reduced maximum operating capacity at Lake Perris to 74 TAF:
+goal PerrisSeismic {S27 < 74.}
+  !Pumping capacity is not 100% reliable; must take unit outages into account:
+INCLUDE '..\..\..\common\swp_dellogic\conveyance_limits.wresl'

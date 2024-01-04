@@ -1,0 +1,100 @@
+! This file sets up the diversion requirements for each DSA
+! Each Diversion Requirement is split between project and nonproject
+! Non project diversion requirement is not entitled to releases from
+! Project reservoirs
+! see running gain file for more details
+! Logic developed by RAJ 9/99
+
+define acd_SC65dv {std kind 'demand-annual' units 'taf'}
+
+!Total annual demands for AG, MI, and SC for the Mar-Feb demand schedule
+define acd_65_psc {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_dsa65_psc(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_dsa65_psc(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_dsa65_psc(i) }
+
+       case Rest {
+       condition always
+       value acd_SC65dv(-1) }
+
+        }
+
+goal save_acd_SC65dv {acd_SC65dv = acd_65_psc}
+
+!Define Total Annual Contract Demand
+define acd_65 {VALUE acd_65_psc}
+
+! Define project and non project split percentages
+!  2020 Level provided by USBR
+define perc_dr65 {VALUE 0.12 }  ! CVP only
+
+! define prject diversion requirement
+define prj_dr65 {VALUE dr65*perc_dr65 }
+
+! define Nonprject diversion requirement
+define np_dr65 {VALUE dr65 - prj_dr65 }
+
+! split arcs between project and nonproject
+! split C152A, which is the arc containing the gain/GS spill used for project and non-project diversion requirements.
+define C152A_prj {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }
+define C152A_np   {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }
+goal set_C152A_split {C152A = C152A_prj + C152A_np }
+
+define c154_prj     {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}   ! prject Diversion requirement
+define c154_np      {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}   ! non prject diversion requirement
+goal set_C154_split {c154 = c154_prj + c154_np}          ! total diversion requirement
+
+define gp64_prj  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}  ! prject groundwater pumping
+define gp64_np   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}  ! non prject groundwater pumping
+goal set_gp64_3  {gp64 = gp64_prj + gp64_np}             ! Split pumping between prject and non prject
+
+! Split D163 between demands and water needed to meet negative gains
+DEFINE d163_prj  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+DEFINE d163_gain {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+GOAL set_d163    {d163 = d163_prj + d163_gain}
+
+! Split D165 between demands
+DEFINE d165_prj  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+GOAL set_d165    {d165 = d165_prj}
+
+! Restrict the flow arc to the prject diversion requirement
+goal set_c154_prj   {C154_prj = prj_dr65*taf_cfs }   ! Restrict the flow arc to the prject diversion requirement
+goal set_c154_prj_2 {C154_prj = c152A_prj + gp64_prj }  ! restrict flow arc prject supplies
+
+! Restrict the flow arc to the nonprject diversion requirement
+goal set_c154_np   {C154_np = np_dr65*taf_cfs }
+goal set_c154_np_2 {C154_np = c152A_np + gp64_np}
+
+
+! define minimum monthly groundwater pumping (using minimum value from  1980-2002 Historical Level CVGSM run)
+! minimum pumping cannot be more than the diversion requirement
+
+define minpump_65_prj  {VALUE min(mingw_65*perc_dr65,prj_dr65)  }       ! (UNITS = TAF)
+define minpump_65_np   {VALUE min(mingw_65*(1.0-perc_dr65),np_dr65)  }  ! (UNITS = TAF)
+goal set_gp64_prj      {gp64_prj > minpump_65_prj*taf_cfs  }
+goal set_gp64_np       {gp64_np > minpump_65_np*taf_cfs  }
+
+! define additional water needed to satisfy dsa65 negative gains
+!GOAL set_gs64 {gs64 = gs64_taf*taf_cfs }
+define neggain_65 {VALUE max(0.0, -1.0*min(0.0,i152-demand_d152-gs64_taf*taf_cfs)) }
+
+! Set limits on project stream diversion, convert to CFS
+goal set_d163_prj  {d163_prj  < dem_d163_prj*taf_cfs}  ! Settlement Demand
+goal set_d163_gain {d163_gain = neggain_65 }           ! needed to meet negative gains
+goal set_d165_prj  {d165_prj  < dem_d165_prj*taf_cfs } ! Settlement Demand
+
+! Force the stream diversions to be used at the appropriate locations.
+goal force_c152a_prj {!c152a_prj > d163_prj + d165_prj}
+                      lhs c152a_prj
+                      rhs d163_prj + d165_prj
+                      lhs<rhs penalty 999999
+                      lhs>rhs penalty 0}

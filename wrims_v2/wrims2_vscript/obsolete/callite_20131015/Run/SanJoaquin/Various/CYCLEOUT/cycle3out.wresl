@@ -1,0 +1,193 @@
+! cycle3out.wresl
+! Edward Chang
+! 5/01/2000
+! The following WRESL code is used in cycle 6 to write out intermediate solver computations that are made in the SJR module
+! Revised by C. Hsu, 3/7/03, USBR, for review and documentation project
+!################################################################################################################
+
+/* Cycle 3
+The following WRESL code is used in cycle 6 to write out intermediate solver computations
+that are made in the SJR module.  This may be needed to verify output computations that
+are based on cycle3 because the final output is the monthly weighted flows and storages,
+not what may be in each 10, 14, 15, or 16 day period.
+*/
+! Define  New Melones flows for cycle 3 output
+define C_MELONcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones mainstem flows for cycle 3 output
+define C_MELONmcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones water quality flows for cycle 3 output
+define C_MELONWQcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones dissolved oxygen flows for cycle 3 output
+define C_MELONDOcycle3 {std kind 'flow-cycle3' units 'cfs' }
+!define C_MELONVAMPcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones VAMP flows for cycle 3 output
+define C_STANGDWNVAMPcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Mendota Pool/Exchange Contractors flows for cycle 3 output
+define D_MDOTABcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Sack Dam/Exchange Contractors flows for cycle 3 output
+define D608Bcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Lower DMC flow for cycle 3 output
+define C_CVPDMCcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Mendota Pool VAMP flow for cycle 2 output
+define C_MDOTABVAMPcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Delivery to SSJID area cycle 3 output
+define C522cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Merced River below McClure flow for cycle 3 output
+define C_MCLREcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Don Pedro mian channel flow for cycle 3 output
+define C_PEDROcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define McClure main channel flow for cycle 3 output
+define C_MCLREmcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Don Pedro mian channel flow for cycle 3 output
+define C_PEDROmcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define McClure VAMP flow for cycle 3 output
+define C_MCLREvampcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Don Pedro VAMP flow for cycle 3 output
+define C_PEDROvampcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Goodwin flow for cycle 3 output
+define C_STANGDWNcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define flow for Reach C_STANRIPN for cycle 3 output
+define C_STANRIPNcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define flow below Vernalis for cycle 3 output
+define C_SJRVERcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Set New Melones flow for cycle 3output 
+goal outC_MELONcycle3 {C_MELONcycle3 = C_MELON[SJR_PULSE]}
+! Set New Melones main channel flow for cycle 3 output 
+goal outC_MELONmcycle3 {C_MELONMcycle3 = C_MELONM[SJR_PULSE]} 
+! Set New Melones water quality flow for cycle 3 output
+goal outC_MELONWQcycle3 {C_MELONWQcycle3 = C_MELONWQ[SJR_PULSE]}
+! Set New Melones DO flow for cycle 3 output 
+goal outC_MELONDOcycle3 {C_MELONDOcycle3 = C_MELONDO[SJR_PULSE]}
+!goal outC_MELONVAMPcycle3 {C_MELONVAMPcycle3 = C_MELONVAMP[SJR_PULSE]}
+! New Melones Reach C_STANGDWN VAMP cycle 3 output
+goal outC_STANGDWNVAMPcycle3 {C_STANGDWNVAMPcycle3 = C_STANGDWNVAMP[SJR_PULSE]}
+! Mendota Pool/Exchange Contractors cycle 3 output
+goal outD_MDOTABcycle3 {D_MDOTABcycle3 = D_MDOTAB[SJR_PULSE]}
+! Sack Dam/Exchange Contractors cycle 3 output
+goal outD608Bcycle3 {D608Bcycle3 = D608B[SJR_PULSE]}
+! Lower DMC to Mendota Pool cycle 32 output
+goal outC_CVPDMCcycle3 {C_CVPDMCcycle3 = C_CVPDMC[SJR_PULSE]}
+! Mendota Pool VAMP cycle 3 output
+goal outC_MDOTABVAMPcycle3 {C_MDOTABVAMPcycle3 = C_MDOTABVAMP[SJR_PULSE]}
+! Merced River cycle 3 output
+goal outC_MCLREcycle3 {C_MCLREcycle3 = C_MCLRE[SJR_PULSE]}
+! Don Pedro cycle3 output
+goal outC_PEDROcycle3 {C_PEDROcycle3 = C_PEDRO[SJR_PULSE]}
+! McClure cycle 3 output
+goal outC_MCLREmcycle3 {C_MCLREMcycle3 = C_MCLREM[SJR_PULSE]}
+! Don Pedro mainstem cycle 3 output
+goal outC_PEDROmcycle3 {C_PEDROMcycle3 = C_PEDROM[SJR_PULSE]}
+! McClure VAMP cycle 3 output
+goal outC_MCLREvampcycle3 {C_MCLREVAMPcycle3 = C_MCLREVAMP[SJR_PULSE]}
+! Don Pedro VAMP cycle 3 output
+goal outC_PEDROvampcycle3 {C_PEDROVAMPcycle3 = C_PEDROVAMP[SJR_PULSE]}
+! New Melones Reach C_STANGDWN cycle 3 output
+goal outC_STANGDWNcycle3 {C_STANGDWNcycle3 = C_STANGDWN[SJR_PULSE]}
+! New Melones Reach C_STANRIPN cycle 3 output
+goal outC_STANRIPNcycle3 {C_STANRIPNcycle3 = C_STANRIPN[SJR_PULSE]}
+! SJR below Vernalis cycle 3 output
+goal outC_SJRVERcycle3 {C_SJRVERcycle3 = C_SJRVER[SJR_PULSE]}
+! New Melones mainstem VAMP cycle 3 output 
+define C_MELONVAMP_Mcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! New Melones mainstem VAMP transfer cycle 3 output 
+define C_MELONVAMP_Tcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Don Pedro Stanislaus VAMP cycle 3 output
+define C_PEDRO_stan_vampc3 {std kind 'flow-cycle3' units 'cfs' }
+! New Melones VAMP cycle 3 output (Pulse period)
+goal outC_MELONVAMP_Mcycle3 {C_MELONVAMP_Mcycle3 = C_MELONVAMP_M[SJR_PULSE]}
+! New Melones VAMP transfer cycle 3 output (Pulse period)
+goal outC_MELONVAMP_Tcycle3 {C_MELONVAMP_Tcycle3 = C_MELONVAMP_T[SJR_PULSE]}
+! Don Pedro Stanislaus VAMP cycle 3 output (Pulse period)
+goal outC_PEDRO_stan_vampcycle3 {C_PEDRO_STAN_VAMPc3 = C_PEDRO_STAN_VAMP[SJR_PULSE]}
+! Define Don Pedro minflow for cycle 3
+define C_TUOL_MIFcycle3 {std kind 'flowmin-cycle3' units 'cfs'}
+! Don Pedro minflow cycle 3 output
+goal outC_TUOL_MIFc3 {C_TUOL_MIFcycle3 = C_TUOL_MIF[SJR_PULSE]}
+! Define Tuolumne to Modesto turnout in cycle 3
+define D_TUOLB_cycle3 {std kind 'flow-cycle3' units 'cfs'}
+! Tuolumne to Modesto turnout for cycle 3 output
+goal outD_TUOLB_c3 {D_TUOLB_cycle3 = D_TUOLB[SJR_PULSE]}
+
+
+define C_MLRTNM_c3          {std kind 'flow-cycle3' units 'cfs'}
+define C_MLRTNA_c3          {std kind 'flow-cycle3' units 'cfs'}
+define C_MLRTNF_c3          {std kind 'flow-cycle3' units 'cfs'}
+define C_GRAVF_c3          {std kind 'flow-cycle3' units 'cfs'}
+define C_GRAVF_loss_c3     {std kind 'flow-cycle3' units 'cfs'}
+define C_GRAVF_main_c3     {std kind 'flow-cycle3' units 'cfs'}
+define C_GRAVF_mainsjrrc3  {std kind 'flow-cycle3' units 'cfs'}
+define C_GRAVF_mainsmflc3  {std kind 'flow-cycle3' units 'cfs'}
+define C_SJRCB_c3         {std kind 'flow-cycle3' units 'cfs'}
+define C_SJRCB_main_c3    {std kind 'flow-cycle3' units 'cfs'}
+define C_SJRCB_flood_c3   {std kind 'flow-cycle3' units 'cfs'}
+define C_Chowbyp1_c3         {std kind 'flow-cycle3' units 'cfs'}
+define C_SJRREST_c3         {std kind 'flow-cycle3' units 'cfs'}
+
+goal set_c38M_c3            {C_MLRTNM_c3 = C_MLRTNM[SJR_PULSE]}
+goal set_c38A_c3            {C_MLRTNA_c3 = C_MLRTNA[SJR_PULSE]}
+goal set_c38F_c3            {C_MLRTNF_c3 = C_MLRTNF[SJR_PULSE]}
+goal set_C_GRAVF_c3            {C_GRAVF_c3 = C_GRAVF[SJR_PULSE]}
+goal set_C_GRAVF_loss_c3       {C_GRAVF_loss_c3 = C_GRAVF_loss[SJR_PULSE]}
+goal set_C_GRAVF_main_c3       {C_GRAVF_main_c3 = C_GRAVF_main[SJR_PULSE]}
+goal set_C_GRAVF_mainsjrrc3    {C_GRAVF_mainsjrrc3 = C_GRAVF_mainsjrr[SJR_PULSE]}
+goal set_C_GRAVF_mainsmflc3    {C_GRAVF_mainsmflc3 = C_GRAVF_mainsmfl[SJR_PULSE]}
+goal set_C_SJRCB_c3           {C_SJRCB_c3 = C_SJRCB[SJR_PULSE]}
+goal set_C_SJRCB_main_c3      {C_SJRCB_main_c3 = C_SJRCB_main[SJR_PULSE]}
+goal set_C_SJRCB_flood_c3     {C_SJRCB_flood_c3 = C_SJRCB_flood[SJR_PULSE]}
+goal set_C_Chowbyp1_c3           {C_Chowbyp1_c3 = C_Chowbyp1[SJR_PULSE]}
+goal set_C_SJRREST_c3           {C_SJRREST_c3 = C_SJRREST[SJR_PULSE]}
+
+define C_MLRTN_c3 {alias C_MLRTN[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+define C_MDOTA_c3 {alias C_MDOTA[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+define C_SJRSACK_c3 {alias C_SJRSACK[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+define C_SJRLNDR_c3 {alias C_SJRLNDR[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+define C_TUOL_c3 {alias C_TUOL[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+
+define I18_rest_bal_c3 {alias I18_rest_bal[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+
+! Added for GI model testing
+define C_STANGDWNmifcycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outC_STANGDWNmifcycle3 {C_STANGDWNmifcycle3 = C_STANGDWN_mif[SJR_PULSE]}
+define C_STANGDWNexccycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outC_STANGDWNexccycle3 {C_STANGDWNexccycle3 = C_STANGDWN_exc[SJR_PULSE]}
+define C_STANGDWNexcacycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outC_STANGDWNexcacycle3 {C_STANGDWNexcacycle3 = C_STANGDWN_exc_a[SJR_PULSE]}
+define C_MELONfcycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outC_MELONfcycle3 {C_MELONfcycle3 = C_MELONf[SJR_PULSE]}
+define C_STANRIPNmifcycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outC_STANRIPNmifcycle3 {C_STANRIPNmifcycle3 = C_STANRIPN_mif[SJR_PULSE]}
+define C_STANRIPNexccycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outC_STANRIPNexccycle3 {C_STANRIPNexccycle3 = C_STANRIPN_exc[SJR_PULSE]}
+define C_TUOLmifcycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outC_TUOLmifcycle3 {C_TUOLmifcycle3 = C_TUOL_mif[SJR_PULSE]}
+define C_MERCED1mifcycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outC_MERCED1mifcycle3 {C_MERCED1mifcycle3 = C_MERCED1_mif[SJR_PULSE]}
+define D_MERCED2cycle3 {std kind 'flow-cycle3' units 'cfs' }
+goal outD_MERCED2cycle3 {D_MERCED2cycle3 = D_MERCED2[SJR_PULSE]}
+
+define stanyr_c3 {std kind 'flow-cycle3' units 'cfs'}
+goal outstanyr_c3 {
+    lhs stanyr_c3
+    case AprMay {
+        condition   month >= apr .and. month <= may        
+        rhs        stanfish_yrdv[SJR_PULSE]
+        lhs<rhs     penalty 9999990 }        
+    case otherwise {
+        condition   always
+        rhs        0
+        lhs<rhs     penalty 9999990 }        
+        }
+    
+define stanreq_c3 {std kind 'flow-cycle3' units 'cfs'}
+goal outstanreq_c3 {
+    lhs stanreq_c3
+    case AprMay {
+        condition   month >= apr .and. month <= may        
+        rhs        stanpulse_dv[SJR_PULSE]
+        lhs<rhs     penalty 9999990 }        
+    case otherwise {
+        condition   always
+        rhs        0
+        lhs<rhs     penalty 9999990 }        
+        }
+    

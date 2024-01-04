@@ -1,0 +1,18 @@
+!  The Jun-Sep release volume for each level is determined
+!  The release level is selected if forecasted supplies are available
+!  The Jun through Sep releases associated with each release level are defined below
+!    the following values are the Bend Bridge equivalent flows
+!  If the incremental volume (after max diversion reductions) needed exceeds the MaxAddVol,
+!    the level is not considered feasible and not attempted
+!  Minimum flow for Jun through Sep is 6000 cfs
+!
+NODOS_TemperatureOps
+Level  MaxAddVol  JunFlow   JulFlow   AugFlow   SepFlow
+1         500.      6500.     7750.     8500.     7000.
+2         500.      6500.     8250.     9250.     7000.
+3         500.      6500.     8750.    10000.     7500.
+4         500.      7000.     9500.    10750.     8000.
+5         600.      7750.    10250.    11500.     8500.
+6         700.      8250.    10750.    12000.     9000.
+7         800.      9000.    11250.    12500.     9500.
+8	  900.     10000.    11750.    12500.    10000.

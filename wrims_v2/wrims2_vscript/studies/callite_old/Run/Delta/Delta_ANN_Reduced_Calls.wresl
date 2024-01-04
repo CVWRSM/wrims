@@ -1,0 +1,63 @@
+/*************************************
+Delta_ANN_Reduced_Calls.wresl
+ 
+Nazrul Islam DWR (06/27/2010)
+
+Delta Operations and Constraints
+This is the main file which 'includes' all Delta Operations and Constraints code
+***************************************/
+
+!Include external DLL information
+!INCLUDE  'DeltaExtFuncs_7inpANN.wresl'
+
+! Contains files for implementation of Artifical Neural Network's for salinity control.
+INCLUDE 'Ann\AnnCommon.wresl'
+
+!These files establish the standards and parameters for each station:
+INCLUDE 'Ann\JerseyPoint_data_reduced_calls.wresl'
+INCLUDE 'Ann\RockSlough_data_reduced_calls.wresl'
+INCLUDE 'Ann\Emmaton_data_reduced_calls.wresl'
+INCLUDE 'Ann\Collins_data_reduced_calls.wresl'
+if int(CH_DLTSW)==3 {INCLUDE 'Ann\Chipps_data_reduced_calls_D1485.wresl'}
+	       else {INCLUDE 'Ann\Chipps_data_reduced_calls.wresl'}
+INCLUDE 'Ann\CCFB_intake_data_reduced_calls.wresl'
+if int(AN_DLTSW)==3 {INCLUDE 'Ann\Antioch_data_reduced_calls_D1485.wresl'}
+	       else {INCLUDE 'Ann\Antioch_data_reduced_calls.wresl'}
+INCLUDE 'Ann\Victoria_intake_data_reduced_calls.wresl'
+INCLUDE 'Ann\MiddleRiver_data_reduced_calls.wresl'
+INCLUDE 'Ann\LosVaqueros_data_reduced_calls.wresl'
+INCLUDE 'Ann\CVP_intake_data_reduced_calls.wresl'
+
+!INCLUDE 'Ann\ExportEstimate1.wresl'
+INCLUDE 'Ann\ExportEstimate2.wresl'
+
+!These files change delta outflow to reflect each station:
+INCLUDE 'Ann\JerseyPoint_est.wresl'
+INCLUDE 'Ann\RockSlough_est.wresl'
+INCLUDE 'Ann\Emmaton_est.wresl'
+INCLUDE 'Ann\Collins_est.wresl'
+if int(AN_DLTSW)==3 {INCLUDE 'Ann\Antioch_est.wresl'}
+if int(CH_DLTSW)==3 {INCLUDE 'Ann\Chipps_est.wresl'}
+
+INCLUDE 'Ann\AnnSacFlow.wresl'
+
+!These files place Sac-Export constraints for each station:
+INCLUDE 'Ann\JerseyPoint_constrain.wresl'
+INCLUDE 'Ann\RockSlough_constrain.wresl'
+INCLUDE 'Ann\Emmaton_constrain.wresl'
+INCLUDE 'Ann\Collins_constrain.wresl'
+if int(AN_DLTSW)==3 {INCLUDE 'Ann\Antioch_constrain.wresl'}
+if int(CH_DLTSW)==3 {INCLUDE 'Ann\Chipps_constrain.wresl'}
+INCLUDE 'Ann\NegCarriageOpsLimit.wresl'
+
+!These files calculate additional output for analysis:
+INCLUDE 'Ann\JerseyPoint_output.wresl'
+INCLUDE 'Ann\RockSlough_output.wresl'
+INCLUDE 'Ann\Emmaton_output.wresl'
+INCLUDE 'Ann\Collins_output.wresl'
+if int(AN_DLTSW)==3 {INCLUDE 'Ann\Antioch_output.wresl'}
+if int(CH_DLTSW)==3 {INCLUDE 'Ann\Chipps_output.wresl'}
+
+!Tie ANN constraints to outflow for proper coa balance
+INCLUDE 'Ann\ANN_COA_MRDO.wresl'
+

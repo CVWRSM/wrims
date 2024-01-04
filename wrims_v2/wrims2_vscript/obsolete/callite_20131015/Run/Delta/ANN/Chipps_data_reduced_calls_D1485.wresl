@@ -1,0 +1,41 @@
+/*
+ 
+References data from cycle BASE to reduce ANN function calls to reduce runtime.
+
+See the *_data.wresl file for how these parameters are calculated.
+
+Holly Canada, DWR (05/03/2012)
+Added D-1485 code (define standard, slope and intercept, and req. flow)
+
+*/
+
+!****************************************************************************************
+
+! calculate previous month's value of salinity
+define CH_EC_Month {std kind 'SALINITY' units 'UMHOS/CM'}
+define CH_EC_Month_sv {value CH_EC_Month[BASE]}
+goal setCH_EC_MON {CH_EC_Month = CH_EC_Month_sv}
+
+!****************************************************************************************
+
+! define the EC standard for Chipps Island (millimhos/cm)
+define CH_EC_STD {std kind 'SALINITY' units 'UMHOS/CM'}
+define CH_EC_STD_sv {value CH_EC_STD[BASE]}
+goal CHECstandout {CH_EC_STD = CH_EC_STD_sv}
+
+!****************************************************************************************
+
+!get slope and intercept for constraint exp<=m*sac+b
+define CH_m {lower unbounded upper unbounded kind 'SLOPE' units 'NONE'}
+define CH_b {lower unbounded upper unbounded kind 'INTERCEPT' units 'NONE'}
+define CH_m_sv {value CH_m[BASE]}
+define CH_b_sv {value CH_b[BASE]}
+goal setCH_m {CH_m = CH_m_sv}
+goal setCH_b {CH_b = CH_b_sv}
+
+!****************************************************************************************
+
+!Get the required Sac flow for ZERO exports
+define CH_Sac_ZeroExp {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define CH_Sac_ZeroExp_sv2 {value CH_Sac_ZeroExp[BASE]}
+goal setCH_Sac_ZeroExp {CH_Sac_ZeroExp = CH_Sac_ZeroExp_sv2}

@@ -1,0 +1,45 @@
+/*************************************
+Trinity_import.wresl
+
+Tom FitzHugh BOR 4/7/2010
+
+Sets Trinity import into Sac Basin.  Import is adjusted based on comparison of Trinity 
+and Shasta storage levels.  If Shasta storage is higher than Trinity, then generally 
+less water is imported, and vice-versa.  Imports are also restricted so that Trinity 
+release does not exceed powerplant capacity.
+*************************************/
+
+define trinity_level {select    level
+                    from      trinity_level
+                    given     storage=S_Trnty(-1)
+                    use       maximum
+                    where     month=month}
+
+define shasta_level {select   level
+                    from     shasta_level
+                    given    storage=S_Shsta(-1) 
+                    use      maximum
+                    where    month=month}
+
+define trinity_import1 {select    flow   ! Selects flow based on comparison of Trinity and Shasta levels
+                    from      trinity_import
+                    where     month=month, trinity_lev=trinity_level, shasta_lev=shasta_level}
+
+! Sets import to minimum of value calculated above and difference between powerplant capacity (3900) and minflow 
+define trinity_import2 {value min(trinity_import1,max(3900.-minflow_C_Lewiston,0.)) }  
+
+define trinity_importdv {alias trinity_import2 units 'cfs'}
+
+! Split the Clear Creek tunnel into an import arc and an excess arc that can be used to aid Delta and Exports
+define D_ClearTu_import {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_ClearTu_exc    {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal D_ClearTu_split {D_ClearTu = D_ClearTu_import + D_ClearTu_exc}
+
+goal set_import {D_ClearTu_import < trinity_import2}
+
+
+ 
+
+
+
+

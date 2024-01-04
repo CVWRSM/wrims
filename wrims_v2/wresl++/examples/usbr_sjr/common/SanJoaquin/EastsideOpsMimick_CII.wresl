@@ -1,0 +1,22 @@
+!EastsideOpsMimick_CII.wresl
+
+
+ 
+/*
+*************************MISCELLANEOUS*****************************
+*/
+
+goal setC_NMW004          { C_NMW004 < R_RFS71C_NMW004 } != 0.}
+goal setC_FBW001          { C_FBW001 = 0.}
+goal setD_DMC034_WWW001   { D_DMC034_WWW001 = 0.}
+
+define D_SJR116_72_NA1_sv { value 0. } ! timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+define D_SJR090_71_NA2_sv { value 0. } ! timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+
+goal setD_SJR116_72_NA1   { D_SJR116_72_NA1 <  D_SJR116_72_NA1_sv}
+goal setD_SJR090_71_NA2   { D_SJR090_71_NA2 <  D_SJR090_71_NA2_sv}
+ 
+goal setD_SJR096_71_PA4   { D_SJR096_71_PA4 =  0.}
+goal setD_SJR082_71_PA2   { D_SJR082_71_PA2 =  0.}
+ 
+ 

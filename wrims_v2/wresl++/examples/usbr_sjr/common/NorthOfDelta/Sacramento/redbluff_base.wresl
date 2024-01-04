@@ -1,0 +1,12 @@
+! Pre-CVPIA minimum flow requirement
+! see *.table for documentation
+! Dustin Jones 11/22/99 
+! Revised SRS 12/21/99
+! 
+! ==========================================================================
+!
+define RdMin {select RedMin 
+              from   Redbluff_base 
+              where  month=month, ShastaIndx=wyt_SHASTA_cvp
+}
+goal meet_RedBluffQ {C_SAC240_MIF < RdMin}

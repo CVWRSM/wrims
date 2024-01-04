@@ -1,0 +1,82 @@
+! This file sets up the diversion requirements for DSA 69
+! Each Diversion Requirement is split between prject and nonprject
+! Non prject diversion requirement is not entitled to releases from
+! prject reservoirs
+! see running gain file for more details
+! Logic developed by RAJ 9/99
+! Changed by DJE 12/6/00
+
+! see demands_69_defs.wresl for timeseries and constant defines
+
+! define project and nonproject diversion requirement
+! project diversion requirement is decreased by any Crop Idling for
+! Transfers.  This restriction will keep GW pumping from
+! making the diversion req't whole.  The impacts are zeroed
+! out in baseline steps.
+define prj_dr69 {VALUE dr69*perc_dr69 }
+
+define np_dr69  {VALUE dr69*(1.0-perc_dr69) }
+
+! ************************************************************************
+
+!Set Project Arc Splits
+
+!Split Demand arc d6
+define D6           {std kind 'FLOW-DELIVERY' units 'CFS'}
+define d6_prj       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d6_pwr       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal   split_d6     {d6 = d6_prj}      !Palermo Canal
+goal   split_d6_prj {d6_prj = d6_pwr}  !Palermo Canal
+
+goal set_D_Orovl {D_Orovl = d6}
+
+!Split Demand arc d7a
+define D7A {std kind 'FLOW-DELIVERY' units 'CFS'} !Western Canal
+define d7a_pag       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7a_pwr       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7a_prj       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7a_prf       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+GOAL   split_d7a     {d7a = d7a_prj }  ! Western Canal
+GOAL   split_d7a_prj {d7a_prj = d7a_pag + d7a_pwr + d7a_prf}
+
+!Split Demand arc d7b
+define D7B         {std kind 'FLOW-DELIVERY' units 'CFS'} !Joint Canal
+define d7b_pag     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7b_pwr     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7b_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7b_prf     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_d7b     {d7b = d7b_prj}  ! Joint Board Canal
+goal split_d7b_prj {d7b_prj = d7b_pwr + d7b_pag + d7b_prf }
+
+!Split Demand arc d201
+define d201        {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d201_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d201_prj    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d201_pimi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d201_pomi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_201_pmi {d201_pmi = d201_pimi + d201_pomi}
+goal split_201     {d201 = d201_prj}  ! Butte County
+goal split_201_prj {d201_prj = d201_pmi}
+
+!Split Demand arc d202
+define d202         {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d202_pwr     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d202_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_d202     {d202 = d202_prj}  ! Thermalito ID
+goal split_d202_prj {d202_prj = d202_pwr}
+
+goal set_D_Therm {D_Therm = d201+d202+d7a+d7b}
+
+!Split Demand arc d204
+define d204         {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d204_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d204_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d204_pimi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d204_pomi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_204_pmi {d204_pmi = d204_pimi + d204_pomi}
+goal split_d204     {d204 = d204_prj}  ! Yuba City
+goal split_d204_prj {d204_prj = d204_pmi}
+
+goal set_D_YubFea {D_YubFea = d204}
+
+define minpump_69_prj {VALUE min(mingw_69*perc_dr69,prj_dr69)  } 

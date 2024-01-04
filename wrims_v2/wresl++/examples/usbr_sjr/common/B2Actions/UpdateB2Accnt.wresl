@@ -1,0 +1,153 @@
+/*
+B2 Accounting file. Computes B2 metrics, offset, reset. Keeps B2 Account balance.
+
+T. Kyosai 12/30/2002
+Modified B2 accounting to include only release and export metrics.
+S. Pahuja 04/26/2002.
+Corrections for new Wanger decision re B2 accounting.
+A. Munevar 10/12/2001
+Modified B2 Account to update in Jan based on Shasta water year type.
+Modified B2 accounting to measure directly from CVPIA base (D1485).
+WQCP cost only considered when it exceeds 450 taf.
+Moved B2 action cost estimates to B2ActionCostEstimates.wresl.
+*/
+
+!**** Setup Variables for Storing Triggers for Each Action *****
+define B2Action1ShaOndv {std kind 'TRIGGER' units 'NONE'}
+define B2Action1FolOndv {std kind 'TRIGGER' units 'NONE'}
+define B2Action1WhiOndv {std kind 'TRIGGER' units 'NONE'}
+define B2Action2Ondv {std kind 'TRIGGER' units 'NONE'}
+define B2Action3Ondv {std kind 'TRIGGER' units 'NONE'}
+define B2Action4Ondv {std kind 'TRIGGER' units 'NONE'}
+define B2Action5Ondv {std kind 'TRIGGER' units 'NONE'}
+define B2Action6Ondv {std kind 'TRIGGER' units 'NONE'}
+define B2Action7Ondv {std kind 'TRIGGER' units 'NONE'}
+
+
+! Determine change in CVP releases (B2 - D1485)
+define WhiRelChg__b2 {
+          case Oct {
+                    condition month==OCT
+              value                     0.0 }
+          case other {
+                    condition always
+              value     (C3(-1) - C3__z1(-1))*cfs_taf(-1) }
+}
+
+define KesRelChg__b2 {
+          case Oct {
+                    condition month==OCT
+              value                     0.0 }
+          case other {
+                    condition always
+              value     (C5(-1) - C5__z1(-1))*cfs_taf(-1) }
+}
+
+define NatRelChg__b2 {
+          case Oct {
+                    condition month==OCT
+              value                     0.0 }
+          case other {
+                    condition always
+              value     (C9(-1) - C9__z1(-1))*cfs_taf(-1) }
+}
+define GodRelChg__b2 {
+          case Oct {
+                    condition month==OCT
+              value                     0.0 }
+          case NovJan {
+                    condition month >= NOV .and. month <= JAN
+                            value    (C520(-1) - C520__z1(-1))*cfs_taf(-1) - C520INSTREAM(-1)*cfs_taf(-1) }
+          case MayJun {
+                    condition month >= MAY .and. month <= JUN
+              value    (C520(-1) - C520__z1(-1))*cfs_taf(-1) - C520vamp(-1)*cfs_taf(-1) }
+          case other {
+                    condition always
+              value    (C520(-1) - C520__z1(-1))*cfs_taf(-1) }
+}
+
+define WhiRelChg__b2dv {alias WhiRelChg__b2 kind 'RELEASE-CHG' units 'TAF'}
+define KesRelChg__b2dv {alias KesRelChg__b2 kind 'RELEASE-CHG' units 'TAF'}
+define NatRelChg__b2dv {alias NatRelChg__b2 kind 'RELEASE-CHG' units 'TAF'}
+define GodRelChg__b2dv {alias GodRelChg__b2 kind 'RELEASE-CHG' units 'TAF'}
+
+define CvpRelChg__b2 {value WhiRelChg__b2 + KesRelChg__b2 + NatRelChg__b2 + GodRelChg__b2 }
+define CvpRelChg__b2dv {alias CvpRelChg__b2 kind 'RELEASE-CHG' units 'TAF'}
+
+! Determine change in CVP exports (B2 - D1485)
+define TraExpChg__b2 {
+          case Oct {
+          condition month==OCT
+    value                     0.0 }
+          case other {
+          condition always
+    value     (DMC000_cvp(-1) - D418_cvp__z1(-1))*cfs_taf(-1) }
+}
+
+define BCvpExpChg__b2 {
+          case Oct {
+          condition month==OCT
+    value                     0.0 }
+          case other {
+          condition always
+    value     (CAA000_CVP(-1) - CAA000_CVP__z1(-1))*cfs_taf(-1) }
+}
+
+define CvpExpChg__b2 {value TraExpChg__b2 + BCvpExpChg__b2 }
+define CvpExpChg__b2dv {alias CvpExpChg__b2 kind 'EXPORT-CHG' units 'TAF'}
+
+
+! Compute Release Metric
+define CvpRelMtr__b2 {value max(WhiRelChg__b2 + KesRelChg__b2 + NatRelChg__b2,0.) + max(GodRelChg__b2,0.) }
+define CvpRelMtr__b2dv {alias CvpRelMtr__b2 kind 'RELEASE-METRIC' units 'TAF'}
+
+! Compute Export Metric
+define CvpExpMtr__b2 {value max(-1.*(TraExpChg__b2 + BCvpExpChg__b2),0.) }
+define CvpExpMtr__b2dv {alias CvpExpMtr__b2 kind 'EXPORT-METRIC' units 'TAF'}
+
+
+! B2 Cost***********************************
+define CostB2 {value CvpRelMtr__b2 + CvpExpMtr__b2}
+
+define CostB2dv {alias CostB2 kind 'COST' units 'TAF'}
+
+! Running B(2) Account Balance
+! T. Kyosai 12/30/2002  Account adjested in Feb and in Mar.
+! In Oct, last year's water year type.
+! In Feb, current year's water year type.
+! In Mar, current year's water year type and CVP Ag delivery percentage
+define B2AcctInitdv {lower unbounded kind 'ACCOUNT' units 'TAF'}
+define B2AcctInit {select amount from B2AcctInit where wyt_SAC=wyt_SAC}
+
+define B2Acctdv {lower unbounded kind 'ACCOUNT' units 'TAF'}
+define B2Acct {
+  case Oct {
+    condition month==OCT
+    value B2AcctInit - CostB2 } ! AMUNEVAR -
+  case Feb {
+    condition month==FEB
+    value B2Acctdv(-1)-CostB2 + B2AcctInit - B2AcctInitdv(-1)} ! AMUNEVAR -
+    Case Mar {
+        condition month==MAR
+        value B2Acctdv(-1)-CostB2 + max(800.*perdel_cvpag_sys, B2AcctInit) - B2AcctInit}
+  case other {
+    condition always
+    value B2Acctdv(-1)-CostB2 } ! AMUNEVAR -
+}
+
+goal updateB2Acct {B2Acctdv = B2Acct}
+goal updateB2AcctInit {B2AcctInitdv = B2AcctInit}
+
+define CumB2Costsdv {std kind 'Cumulative-B2-Acct' units 'taf'}
+
+define CumB2Costs {
+  case OCT {
+    condition month==OCT
+    value 0.0 }
+  case otherwise {
+    condition always
+    value CumB2Costsdv(-1) + CostB2 }
+}
+
+goal updateCumB2Acct {CumB2Costsdv = CumB2Costs}
+

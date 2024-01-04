@@ -1,0 +1,39 @@
+! Tuol_FERC_pulse.wresl
+
+! Edward Chang
+! USBR Contractor
+! 05/01/00
+! Calculates the FERC pulse flows on the Tuolumne River
+
+/*
+The FERC pulse flows are read as timeseries inputs based on pre-processed
+hydrology. In April and May, a FERC pulse flow requirement is calculated,
+but the pulse flow only applies during the last 16 days in April and the
+first 15 days in May. According to documentation, to ensure a minimum
+throughout the Tuolumne River, it is necessary to impose this
+requirement on reaches C_TUOL1, C542, and C544. However, in this code the
+requirement is not imposed on C542 and C544.  Why?????????????
+*/
+
+/*
+Revised by: T. Crawford, USBR, 03/07/03
+Purpose: Review and comment code
+*/
+
+!############################################################################
+
+! Retrieve April and May FERC pulse flows from predefined timeseries
+define FERCPULSE { timeseries kind 'flow-min-required' units 'cfs' }
+
+! Minimum flow for April and May is the FERC pulse, otherwise it is FERC min
+goal setC_TUOLcycle3 { 
+    lhs C_TUOL_mif
+    case AprilMay {
+        condition   month >= apr .and. month <= may
+        rhs         /*MAX(0.,*/FERCPULSE /*+ I_TUOL)  */  
+        lhs<rhs     penalty 0 }
+    case otherwise {
+        condition   always
+        rhs         C_TUOL_mif[SJR_WQ1]   
+        lhs<rhs     penalty 0 } 
+        }

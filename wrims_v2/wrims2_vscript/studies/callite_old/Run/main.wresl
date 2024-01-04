@@ -1,0 +1,140 @@
+! Main WRESL Files containes the paths to run the model.
+! All variables are local in wresl+ parser 
+
+initial {
+	svar beginWY { value 1922 }
+	svar PBwheel_ON {select Option from GUI_Operations where Index=4} 
+	svar JPOD_ON {select Option from GUI_Operations where Index=2}
+	svar NDO_DLTSW {select Option from gui_Regs where Index = 3}
+	svar AN_DLTSW {select OPTION from gui_Regs where Index = 12}  !D-1485
+	svar CH_DLTSW {select OPTION from gui_Regs where Index = 13}  !D-1485
+	svar DCC_DLTSW {select OPTION from gui_Regs where Index = 1}
+	svar EI_DLTSW {select OPTION from gui_Regs where Index = 2}
+}
+
+SEQUENCE CYCLE1 {
+    model   Upstream
+    order   1
+    }
+
+SEQUENCE CYCLE2 {
+    model   BASE
+    order   2
+    }
+
+SEQUENCE CYCLE3 {
+    model   B2_BO_DailyWeir
+    order   3
+    }
+
+model inc1 {
+	define getFinalMrdo {EXTERNAL f90}  ! OBJ code file must be located in run\external directory for compilation
+	INCLUDE  'Delta\DeltaExtFuncs_7inpANN.wresl'
+	INCLUDE  'swp_dellogic\allocation\co_extfcn.wresl'
+
+	!Swithes applyed to all cycle
+	INCLUDE 'Assumptions\Options_Switches.wresl'
+	INCLUDE 'wytypes\wytypes.wresl'
+	!=====================
+	INCLUDE 'System\System.wresl'
+	INCLUDE 'hydrology\forecast\CVPforecasts.wresl'
+}
+
+model inc2 { 
+	INCLUDE 'Assumptions\assumption.wresl'
+	INCLUDE 'hydrology\demands\demands_defs.wresl'
+	INCLUDE 'swp_dellogic\SwpDeliveryLogic.wresl'
+	INCLUDE 'cvp_dellogic\CVP_delivery_Logic_system.wresl'
+	INCLUDE 'cvp_dellogic\CVP_delivery_Logic_south.wresl' 
+	INCLUDE 'swp_dellogic\conveyance_limits.wresl'
+	INCLUDE 'hydrology\demands\demands.wresl'
+	INCLUDE 'NorthofDelta\NOD.wresl'
+	INCLUDE 'Rulecurve\rulecurve.wresl'
+	INCLUDE 'Rulecurve\cvp_delivery_rule_curve.wresl'
+	INCLUDE 'Rulecurve\San_Luis_Levels.wresl'
+	INCLUDE 'Export_Ops\export_ops.wresl'
+	INCLUDE 'Wheeling\WheelOpsVarDefines.wresl'
+}
+
+model inc3 {
+	INCLUDE 'B2Actions\BaseStudyResults.wresl' 
+	INCLUDE 'B2Actions\B2Action1Repeat.wresl'
+	INCLUDE 'system\weight-table.wresl'
+}
+
+MODEL Upstream {         !CYCLE 1
+	INCLUDE model inc1
+
+	INCLUDE 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+	
+	INCLUDE model inc2
+
+	if int(PBwheel_ON)==1 {INCLUDE 'Wheeling\WheelD1485.wresl'}
+	INCLUDE 'Wheeling\WheelzeroCVC.wresl'
+	INCLUDE 'Wheeling\WheelzeroJPOD.wresl'
+	INCLUDE 'COA\coa_up.wresl'
+	INCLUDE 'Delta\Ann\ExportEstimate1_up.wresl'
+	if int(DCC_DLTSW)==3 {INCLUDE 'Delta\xc-gates_D1485_Up.wresl'}
+	INCLUDE 'Delta\Delta.wresl'
+	INCLUDE 'Delta\X2_BO_WQ.wresl'
+	
+	INCLUDE model inc3
+
+}
+
+MODEL BASE {         !CYCLE 2
+	INCLUDE model inc1
+	INCLUDE model inc2
+	INCLUDE model inc3
+	
+	INCLUDE 'hydrology\WEIRS\weir_steps_monthops.wresl'
+	if int(PBwheel_ON)==1 {INCLUDE 'Wheeling\WheelD1485.wresl'}
+	INCLUDE 'Wheeling\WheelzeroCVC.wresl'
+	INCLUDE 'Wheeling\WheelzeroJPOD.wresl'
+	INCLUDE 'COA\coa.wresl'
+	INCLUDE 'Delta\Ann\ExportEstimate1.wresl'
+	if int(DCC_DLTSW)==3 {INCLUDE 'Delta\xc-gates.wresl'}
+	INCLUDE 'Delta\Delta.wresl'
+	INCLUDE 'Delta\X2_BO_WQ.wresl'
+}
+
+
+MODEL B2_BO_DailyWeir {         !CYCLE 3
+	INCLUDE model inc1
+	INCLUDE model inc2
+	INCLUDE model inc3
+
+	INCLUDE 'hydrology\WEIRS\weir_steps_dailyops_SETUP.wresl'  
+	INCLUDE 'B2Actions\B2SetBaseline.wresl'                    
+	INCLUDE 'B2Actions\B2ActionsDeltaRepeat.wresl'      
+	INCLUDE 'B2Actions\B2BanksFix.wresl' 
+	if int(PBwheel_ON)==1 {INCLUDE 'Wheeling\WheelD1485.wresl'}
+	INCLUDE 'Delta\Ann\ExportEstimate1_B2.wresl'
+	INCLUDE 'Delta\Delta_reduced_calls.wresl'
+	INCLUDE 'Delta\X2_BO_WQ.wresl'
+
+	! BO Code
+	INCLUDE 'Export_Ops\OMR\DELTA_RPA_init.wresl'
+	INCLUDE 'Export_Ops\FWS_SMELT_BO_FallX2check.wresl'
+	INCLUDE 'Export_Ops\NMFS_SALMON_BO_DCC.wresl'
+	INCLUDE 'Export_Ops\NMFS_SALMON_BO_Def.wresl'
+	INCLUDE 'Export_Ops\NMFS_SALMON_BO_SJR.wresl'
+
+	INCLUDE 'Export_Ops\OMR\FWS_SMELT_BO.wresl' 
+	INCLUDE 'Export_Ops\OMR\EXP_constraint.wresl'
+	INCLUDE 'Export_Ops\OMR\OMR_constraint.wresl'
+	INCLUDE 'COA\coa_BO.wresl'
+
+	INCLUDE 'Delta\xc-gates.wresl'                 
+	INCLUDE 'Wheeling\Wheelcap.wresl'
+	
+	if int(PBwheel_ON)==1{INCLUDE 'Wheeling\wheelfixes_D1485.wresl'}
+	else{INCLUDE 'Wheeling\wheelfixes.wresl'}
+
+	INCLUDE 'output\cycle_output.wresl'
+	!INCLUDE 'Shortage\ShortWarning.wresl'
+	INCLUDE 'FlowCriteria\FlowCriteria.wresl'
+
+	INCLUDE 'output\DV_ouput.wresl'
+}
+

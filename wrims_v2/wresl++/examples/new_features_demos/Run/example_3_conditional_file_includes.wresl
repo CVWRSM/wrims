@@ -1,0 +1,48 @@
+
+initial {
+	const option_A { -999 }
+	const totalflow { -999 }
+}
+
+sequence CYCLE1 {
+    model   fiRst
+    order   1
+}
+	
+model first { 
+
+	define X { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define Y { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+	goal g0 { x + y < totalflow }
+  
+	if int(option_A)==1 {
+		
+		include 'includes\goalX1.wresl' 
+		include 'includes\goalY1.wresl' 
+	
+	} 
+	elseif int(option_A)==2 {
+	
+		include 'includes\goalX2.wresl'
+		include 'includes\goalY2.wresl' 
+	
+	}
+	elseif int(option_A)==3 {
+	
+		include 'includes\goalX3.wresl'
+		include 'includes\goalY3.wresl' 
+	
+	}
+	else {	
+		include 'includes\goalX4.wresl'
+		include 'includes\goalY4.wresl'  
+	
+	}
+  
+	objective obj {
+		[x, 5] 
+		[y, 5] 
+	}
+  
+}

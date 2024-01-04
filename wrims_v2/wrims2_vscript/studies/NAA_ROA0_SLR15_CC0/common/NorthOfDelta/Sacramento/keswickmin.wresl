@@ -1,0 +1,12 @@
+define minflow_C5 {timeseries kind 'flow-min-required' units 'CFS'}
+
+define keswick_min {lower -999999.0 upper 999999.0 kind 'alias' units 'CFS'}
+
+define tempCtrl_surrogate {value 3250.}
+
+define effective_C5min { value max(minflow_C5,tempCtrl_surrogate) }
+
+Goal  setkeswick_min { keswick_min =effective_C5min}
+
+! goal meetC5min {C5_MIF < effective_C5min}  ! This goal is set in "setnodminflows.wresl" file in D1641 and D1485 studies and in "b2action1.wresl" file in (b)(2) study.
+

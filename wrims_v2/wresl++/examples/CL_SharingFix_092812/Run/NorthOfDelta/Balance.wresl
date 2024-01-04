@@ -1,0 +1,200 @@
+/*************************************
+Balance.wresl
+ 
+Tom FitzHugh BOR 4/7/2010
+
+Balances storage in Trinity, Shasta, and Folsom Reservoirs.  Balances Shasta vs. 
+Trinity, then Shasta vs. Folsom, for Zones 2, 3, and 4.  Then balances Shasta vs.
+Folsom for Zone 5 (because Shasta and Folsom have one more zone than Trinity).
+*************************************/
+
+define volS_TrntyZone2 {value S_Trntylevel2-S_Trntylevel1 }
+define volS_ShstaZone2 {value S_Shstalevel2-S_Shstalevel1 }
+define volS_FolsmZone2 {value S_Folsmlevel2-S_Folsmlevel1 }
+
+define S_ShstaTrnty_Z2coeff {
+    case Greater {  
+        condition volS_TrntyZone2 >= 0.001 
+        value   min(1.,volS_ShstaZone2/volS_TrntyZone2) }
+    case otherwise {
+        condition always
+        value   0.}
+}
+
+define S_TrntyShsta_Z2coeff {
+    case Greater {
+        condition volS_ShstaZone2 >= 0.001 
+        value   min(1.,volS_TrntyZone2/volS_ShstaZone2)  }
+    case otherwise {
+        condition always
+        value   0.}
+}
+
+goal balS_ShstaTrnty_Zone2 {
+  lhs S_ShstaTrnty_Z2coeff*S_Trnty_2
+  rhs S_TrntyShsta_Z2coeff*S_Shsta_2
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define S_ShstaFolsm_Z2coeff {
+     case Greater {
+         condition volS_FolsmZone2 >= 0.001 
+         value   min(1.,volS_ShstaZone2/volS_FolsmZone2) }
+     case otherwise {
+        condition always
+        value   0. }
+}
+
+define S_FolsmShsta_Z2coeff {
+    case Greater {
+        condition volS_ShstaZone2 >= 0.001 
+        value   min(1.,volS_FolsmZone2/volS_ShstaZone2) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+goal balS_ShstaFolsmZone2 {
+  lhs S_ShstaFolsm_Z2coeff*S_Folsm_2
+  rhs S_FolsmShsta_Z2coeff*S_Shsta_2
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define volS_TrntyZone3 {value S_Trntylevel3adj-S_Trntylevel2 }
+define volS_ShstaZone3 {value S_Shstalevel3adj-S_Shstalevel2 }
+define volS_FolsmZone3 {value S_Folsmlevel3adj-S_Folsmlevel2 }
+
+define S_ShstaTrnty_Z3coeff {
+    case Greater {
+        condition volS_TrntyZone3 >= 0.001 
+        value   min(1.,volS_ShstaZone3/volS_TrntyZone3) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+define S_TrntyShsta_Z3coeff {
+    case Greater {
+        condition volS_ShstaZone3 >= 0.001 
+        value   min(1.,volS_TrntyZone3/volS_ShstaZone3) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+goal balS_ShstaTrnty_Zone3 {
+  lhs S_ShstaTrnty_Z3coeff*S_Trnty_3
+  rhs S_TrntyShsta_Z3coeff*S_Shsta_3
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define S_ShstaFolsm_Z3coeff {
+    case Greater {
+        condition volS_FolsmZone3 >= 0.001 
+        value   min(1.,volS_ShstaZone3/volS_FolsmZone3) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+define S_FolsmShsta_Z3coeff {
+    case Greater {
+        condition volS_ShstaZone3 >= 0.001 
+        value   min(1.,volS_FolsmZone3/volS_ShstaZone3) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+goal balS_ShstaFolsm_Zone3 {
+  lhs S_ShstaFolsm_Z3coeff*S_Folsm_3
+  rhs S_FolsmShsta_Z3coeff*S_Shsta_3
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define volS_TrntyZone4 {value S_Trntylevel4-S_Trntylevel3adj }
+define volS_ShstaZone4 {value S_Shstalevel4-S_Shstalevel3adj }
+define volS_FolsmZone4 {value S_Folsmlevel4-S_Folsmlevel3adj }
+
+define S_ShstaTrnty_Z4coeff {
+    case Greater {
+        condition volS_TrntyZone4 >= 0.001 
+        value   min(1.,volS_ShstaZone4/volS_TrntyZone4) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+define S_TrntyShsta_Z4coeff {
+    case Greater {
+        condition volS_ShstaZone4 >= 0.001 
+        value   min(1.,volS_TrntyZone4/volS_ShstaZone4) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+goal balS_ShstaTrnty_Zone4 {
+  lhs S_ShstaTrnty_Z4coeff*S_Trnty_4
+  rhs S_TrntyShsta_Z4coeff*S_Shsta_4
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define S_ShstaFolsm_Z4coeff {
+    case Greater {
+        condition volS_FolsmZone4 >= 0.001
+        value   min(1.,volS_ShstaZone4/volS_FolsmZone4) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+define S_FolsmShsta_Z4coeff {
+    case Greater {
+        condition volS_ShstaZone4 >= 0.001 
+        value   min(1.,volS_FolsmZone4/volS_ShstaZone4) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+goal balS_ShstaFolsm_Zone4 {
+  lhs S_ShstaFolsm_Z4coeff*S_Folsm_4
+  rhs S_FolsmShsta_Z4coeff*S_Shsta_4
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define volS_ShstaZone5 {value S_Shstalevel5 - S_Shstalevel4}
+define volS_FolsmZone5 {value S_Folsmlevel5 - S_Folsmlevel4}
+
+define S_ShstaFolsm_Z5coeff {
+    case Greater {
+        condition volS_FolsmZone5 >= 0.001 
+        value   min(1.,volS_ShstaZone5/volS_FolsmZone5) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+define S_FolsmShsta_Z5coeff {
+    case Greater {
+        condition volS_ShstaZone5 >= 0.001
+        value   min(1.,volS_FolsmZone5/volS_ShstaZone5) }
+    case otherwise {
+        condition always
+        value   0. }
+}
+
+goal balS_ShstaFolsm_Zone5 {
+  lhs S_ShstaFolsm_Z5coeff*S_Folsm_5
+  rhs S_FolsmShsta_Z5coeff*S_Shsta_5
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+

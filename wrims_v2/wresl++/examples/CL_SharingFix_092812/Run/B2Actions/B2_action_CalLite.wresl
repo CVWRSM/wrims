@@ -1,0 +1,9 @@
+
+    INCLUDE 'BaseStudyResults.wresl'                !Read in results from B2-submodel
+!    INCLUDE '..\..\common\B2Actions\B2VarDefine.wresl'   !Set up for reimplementing B2 actions !CB made local (arc/dvar conflict)
+!    INCLUDE '..\..\common\B2Actions\Repeat\B2ActConditionsFix.wresl'        !Set up for reimplementing B2 actions
+    INCLUDE 'B2Actions\B2ActionsUpstreamRepeat.wresl'   !Add B2Upstream Actions
+    INCLUDE 'B2Actions\B2SetBaseline.wresl'                          !B2 Setup stuff
+    INCLUDE '..\..\common\B2Actions\Repeat\B2ActionsDeltaRepeat.wresl'      !Add B2 Delta Actions
+    INCLUDE 'B2Actions\B2BanksFix.wresl'                             !Set SWP Banks PP cooperation
+

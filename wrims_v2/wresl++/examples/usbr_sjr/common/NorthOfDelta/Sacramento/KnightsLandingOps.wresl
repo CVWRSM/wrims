@@ -1,0 +1,16 @@
+! This wresl file defines Knights Landing Ridge Cut operations.
+!
+! ==========================================================================
+!
+define C_SAC097_1         {std kind 'FLOW' units 'CFS'}  ! segment above 15000
+define C_SAC097_0         {std kind 'FLOW' units 'CFS'}  ! segment from 0 to 15000
+define C_SAC097IntFlow    {INTEGER std kind 'INTEGER' units 'CFS'}
+
+goal C_SAC097SurplusFlow  {C_SAC097 - 15000.0 = C_SAC097_1 - C_SAC097_0}
+goal C_SAC097FlowAbove	  {C_SAC097_1         < 99999.0 - C_SAC097IntFlow*99999.0} ! If C_SAC097 > 15000. then C_SAC097IntFlow = 0
+goal C_SAC097FlowBelow    {C_SAC097_0         < C_SAC097IntFlow*99999.0}           ! If C_SAC097 < 15000. then C_SAC097IntFlow = 1
+
+goal LimitC_CBD005        {C_CBD005 < C_SAC097IntFlow*99999.0}
+
+define maxCBD005_KLR005   {timeseries kind 'FLOW_MAX' units 'TAF'}
+goal LimitD_CBD005_KLR005 {D_CBD005_KLR005 < maxCBD005_KLR005*taf_cfs + 99999.0 - C_SAC097IntFlow*99999.0}

@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>sum</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+<FONT face="Times">
+<B><U><FONT SIZE=4><P>State Variable Sum Value Assignment</P></U></FONT></B></FONT>
+<P>The sum value assignment allows you to specify the definition to be equal to the sum of an expression while using an index. i is the counter, ibeg is the initial value, iend is the stop criteria, and istep is the step size for this "Do Loop" type structure. This is especially powerful for summing values of timeseries variables using the index to represent the time offset:</P>
+</FONT>
+<pre>
+<B>define</B> <i>identifier</i> {
+       sum(i=<i>ibeg</i>,<i>iend</i>[,<i>istep</i>]) <i>expression</i>
+}
+</pre>
+<FONT face="Times">
+<P><b><u>Example:</u></b></P></FONT>
+<pre>
+define acvpdem_pag_n {   ! CVP SOD AG DEMANDS, used in cvpcut_n and cvpmkup_n
+
+       case Oct1922 {   ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_totcvpn_pag(i) }
+
+       case Mar1994 {   ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 1994
+       sum(i=prevOCT,SEP-month,1) dem_totcvpn_pag(i) }
+
+       case March {   ! March for wateryears 1922 - 1993
+       condition month == MAR .and. wateryear < 1994
+       sum(i=0,11,1) dem_totcvpn_pag(i) }
+
+       case Rest { 
+       condition always
+       value acvpdem_pag_ndv(-1) }
+
+}
+</pre>
+</BODY>
+</HTML>

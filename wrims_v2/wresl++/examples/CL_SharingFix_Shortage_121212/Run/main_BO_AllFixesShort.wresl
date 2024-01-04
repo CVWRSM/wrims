@@ -1,0 +1,106 @@
+! Main WRESL Files containes the paths to run the model.
+!Date Modified: 04/23/2010; By: Hao Xie
+! 5/18/10 Added logic for two cycles to accomodate daily weir flows Tom FitzHugh BOR
+! comment out daily weir flows for corroboration study; Richard Chen DWR
+! 4/25/11 Cleanup Codes to remove CS2CL,CL, and change Ave to AVG. Richard Chen, DWR
+! 9/28/12 Add shortage code, Z.Q. Richard Chen, DWR
+
+SEQUENCE CYCLE1 {
+    model   Upstream
+    order   1
+    }
+
+SEQUENCE CYCLE2 {
+    model   BASE
+    order   2
+    }
+
+SEQUENCE CYCLE3 {
+    model   B2_BO_DailyWeir
+    order   3
+    }
+    
+MODEL Upstream {         !CYCLE 1
+!Include external FUNS and DLL information
+define getFinalMrdo {EXTERNAL f90}  ! OBJ code file must be located in run\external directory for compilation
+INCLUDE  'Delta\DeltaExtFuncs_7inpANN.wresl'
+INCLUDE  'swp_dellogic\allocation\co_extfcn.wresl'
+
+!Swithes applyed to all cycle
+INCLUDE 'Assumptions\Options_Switches.wresl'
+INCLUDE 'wytypes\wytypes.wresl'
+!=====================
+INCLUDE 'System\System.wresl'
+INCLUDE 'hydrology\forecast\CVPforecasts.wresl'
+INCLUDE[LOCAL] 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+!INCLUDE 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+INCLUDE 'Assumptions\assumption.wresl'
+INCLUDE 'hydrology\demands\demands_defs.wresl'
+INCLUDE 'swp_dellogic\SwpDeliveryLogic.wresl'
+INCLUDE 'cvp_dellogic\CVP_delivery_Logic_system.wresl'
+INCLUDE 'cvp_dellogic\CVP_delivery_Logic_south.wresl' 
+INCLUDE 'swp_dellogic\conveyance_limits.wresl'
+INCLUDE 'hydrology\demands\demands.wresl'
+INCLUDE 'NorthofDelta\NOD.wresl'
+INCLUDE 'Rulecurve\rulecurve.wresl'
+INCLUDE 'Rulecurve\cvp_delivery_rule_curve.wresl'
+INCLUDE 'Rulecurve\San_Luis_Levels.wresl'
+INCLUDE 'Export_Ops\export_ops.wresl'
+INCLUDE 'Wheeling\WheelOpsVarDefines.wresl'
+INCLUDE [LOCAL] 'Wheeling\WheelzeroCVC.wresl'
+INCLUDE [LOCAL] 'Wheeling\WheelzeroJPOD.wresl' 
+INCLUDE [LOCAL]'COA\coa_Up.wresl'
+INCLUDE[LOCAL]'Delta\Ann\ExportEstimate1_up.wresl'
+INCLUDE [LOCAL] 'Delta\Delta.wresl'
+INCLUDE [LOCAL] 'Delta\X2_BO_WQ.wresl'
+INCLUDE 'B2Actions\BaseStudyResults.wresl' 
+INCLUDE 'B2Actions\B2Action1Repeat.wresl'
+
+INCLUDE 'Shortage\shortage.wresl'
+
+INCLUDE 'system\weight-table.wresl'
+}
+
+MODEL BASE {         !CYCLE 2
+INCLUDE[LOCAL] 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+INCLUDE [LOCAL] 'Wheeling\WheelzeroCVC.wresl'
+INCLUDE [LOCAL] 'Wheeling\WheelzeroJPOD.wresl' 
+INCLUDE [LOCAL]'COA\coa.wresl'
+INCLUDE[LOCAL]'Delta\Ann\ExportEstimate1.wresl'
+INCLUDE [LOCAL] 'Delta\Delta.wresl'
+INCLUDE [LOCAL] 'Delta\X2_BO_WQ.wresl'
+}
+
+
+MODEL B2_BO_DailyWeir {         !CYCLE 3
+
+INCLUDE[LOCAL] 'hydrology\WEIRS\weir_steps_dailyops_SETUP.wresl'  
+INCLUDE[LOCAL] 'B2Actions\B2SetBaseline.wresl'                    
+INCLUDE[LOCAL] 'B2Actions\B2ActionsDeltaRepeat.wresl'      
+INCLUDE[LOCAL] 'B2Actions\B2BanksFix.wresl' 
+INCLUDE[LOCAL] 'Delta\Ann\ExportEstimate1_B2.wresl'
+INCLUDE[LOCAL] 'Delta\Delta_reduced_calls.wresl'
+INCLUDE[LOCAL] 'Delta\X2_BO_WQ.wresl'
+
+! BO Code
+INCLUDE[LOCAL] 'Export_Ops\OMR\DELTA_RPA_init.wresl'
+INCLUDE [LOCAL] 'Export_Ops\FWS_SMELT_BO_FallX2check.wresl'
+INCLUDE [LOCAL] 'Export_Ops\NMFS_SALMON_BO_DCC.wresl'
+INCLUDE [LOCAL] 'Export_Ops\NMFS_SALMON_BO_Def.wresl'
+INCLUDE [LOCAL] 'Export_Ops\NMFS_SALMON_BO_SJR.wresl'
+
+INCLUDE[LOCAL] 'Export_Ops\OMR\FWS_SMELT_BO.wresl' 
+INCLUDE[LOCAL] 'Export_Ops\OMR\EXP_constraint.wresl'
+INCLUDE[LOCAL] 'Export_Ops\OMR\OMR_constraint.wresl'
+INCLUDE[LOCAL]'COA\coa_BO.wresl'
+
+INCLUDE[LOCAL] 'Delta\xc-gates.wresl'                 
+INCLUDE[LOCAL] 'Wheeling\Wheelcap.wresl'
+INCLUDE[LOCAL] 'Wheeling\wheelfixes.wresl'
+INCLUDE[LOCAL] 'output\cycle_output.wresl'
+INCLUDE[LOCAL] 'Shortage\ShortWarning.wresl'
+INCLUDE[LOCAL] 'FlowCriteria\FlowCriteria.wresl'
+
+INCLUDE 'output\DV_ouput.wresl'
+}
+

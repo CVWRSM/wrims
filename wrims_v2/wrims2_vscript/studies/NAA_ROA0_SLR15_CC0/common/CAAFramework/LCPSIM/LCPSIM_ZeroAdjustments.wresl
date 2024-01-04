@@ -1,0 +1,66 @@
+! LCPSIM_ZeroAdjustments.wresl
+
+!Undelivered Allocations in CALSIM
+!define NB_DEL_ADJ {value 0.}    !North Bay Aqueduct adjustment
+define SB_DEL_SWP_ADJ {value 0.} !South Bay SWP adjustment
+define SB_DEL_CVP_ADJ {value 0.} !South Bay CVP adjustment
+define SC_DEL_ADJ {value 0.}     !South Coast Adjustment
+
+!Groundwater Storage Adjustments in CALSIM
+define SB_SJVGW_ADJ_DV {value 0.}   !South Bay adjustment
+define SC_SJVGW_ADJ_DV {value 0.}   !South Coast Adjustment
+define SC_MWAGW_ADJ_DV {value 0.}   !South Coast Adjustment
+
+!Region adjustments
+!define NB_ADJ_DV {value 0.}     !North Bay Aqueduct adjustment
+define SB_ADJ_SWP_DV {value 0.}  !South Bay SWP adjustment
+define SB_ADJ_CVP_DV {value 0.}  !South Bay CVP adjustment
+define SC_ADJ_DV {value 0.}      !South Coast Adjustment
+
+! south bay arcs
+goal setD810_LCP {D810_LCP = 0.} !LCPSIM Adjustment to ACFC
+goal setD810_LCP_Err {D810_LCP_Err = 0.} !LCPSIM Adjustment Error to ACFC
+goal setD813_LCP {D813_LCP = 0.} !LCPSIM Adjustment to ACFC
+goal setD813_LCP_Err {D813_LCP_Err = 0.} !LCPSIM Adjustment Error to ACFC
+goal setD814_LCP {D814_LCP = 0.} !LCPSIM Adjustment to ACWD
+goal setD814_LCP_Err {D814_LCP_Err = 0.} !LCPSIM Adjustment Error to ACWD
+goal setD815_LCP {D815_LCP = 0.} !LCPSIM Adjustment to SCV
+goal setD815_LCP_Err {D815_LCP_Err = 0.} !LCPSIM Adjustment Error to SCV
+goal setD711_LCP {D711_LCP = 0.} !LCPSIM Adjustment to San Felipe SCV
+goal setD711_LCP_Err {D711_LCP_Err = 0.} !LCPSIM Adjustment Error to San Felipe SCV
+
+! south coast arcs
+goal setD896_LCP {D896_LCP = 0.} !LCPSIM Adjustment to CLWA2
+goal setD896_LCP_Err {D896_LCP_Err = 0.} !LCPSIM Adjustment Error to CLWA2
+goal setD27_LCP  {D27_LCP  = 0.} !LCPSIM Adjustment to MWD
+goal setD27_LCP_Err  {D27_LCP_Err  = 0.} !LCPSIM Adjustment Error to MWD
+goal setD885_LCP {D885_LCP = 0.} !LCPSIM Adjustment to MWD
+goal setD885_LCP_Err {D885_LCP_Err = 0.} !LCPSIM Adjustment Error to MWD
+goal setD895_LCP {D895_LCP = 0.} !LCPSIM Adjustment to MWD
+goal setD895_LCP_Err {D895_LCP_Err = 0.} !LCPSIM Adjustment Error to MWD
+goal setD899_LCP {D899_LCP = 0.} !LCPSIM Adjustment to MWD
+goal setD899_LCP_Err {D899_LCP_Err = 0.} !LCPSIM Adjustment Error to MWD
+goal setD886_LCP {D886_LCP = 0.} !LCPSIM Adjustment to SBV
+goal setD886_LCP_Err {D886_LCP_Err = 0.} !LCPSIM Adjustment Error to SBV
+goal setD887_LCP {D887_LCP = 0.} !LCPSIM Adjustment to SGV
+goal setD887_LCP_Err {D887_LCP_Err = 0.} !LCPSIM Adjustment Error to SGV
+goal setD888_LCP {D888_LCP = 0.} !LCPSIM Adjustment to SGP
+goal setD888_LCP_Err {D888_LCP_Err = 0.} !LCPSIM Adjustment Error to SGP
+goal setD28_LCP  {D28_LCP  = 0.} !LCPSIM Adjustment to VC
+goal setD28_LCP_Err  {D28_LCP_Err  = 0.} !LCPSIM Adjustment Error to VC
+goal setD29_LCP  {D29_LCP  = 0.} !LCPSIM Adjustment to VC
+goal setD29_LCP_Err  {D29_LCP_Err  = 0.} !LCPSIM Adjustment Error to VC
+
+! SJV GW storage arcs
+goal setD852_SB_LCP {D852_SB_LCP = 0.} !LCPSIM Adjustment to SJV Groundwater Storage for South Bay
+goal setD852_SB_LCP_Err {D852_SB_LCP_Err = 0.} !LCPSIM Adjustment Error to SJV Groundwater Storage for South Bay
+goal setD852_SC_LCP {D852_SC_LCP = 0.} !LCPSIM Adjustment to SJV Groundwater Storage for South Coast
+goal setD852_SC_LCP_Err {D852_SC_LCP_Err = 0.} !LCPSIM Adjustment Error to SJV Groundwater Storage for South Coast
+goal setD852_LCP {D852_LCP = 0.} !LCPSIM Adjustment to SJV Groundwater Storage
+goal setD852_LCP_Err {D852_LCP_Err = 0.} !LCPSIM Adjustment Error to SJV Groundwater Storage
+
+! MWA GW storage arcs
+goal setD881_SC_LCP {D881_SC_LCP = 0.} !LCPSIM Adjustment to MWA Groundwater Storage for South Coast
+goal setD881_SC_LCP_Err {D881_SC_LCP_Err = 0.} !LCPSIM Adjustment Error to MWA Groundwater Storage for South Coast
+goal setD881_LCP {D881_LCP = 0.} !LCPSIM Adjustment to MWA Groundwater Storage
+goal setD881_LCP_Err {D881_LCP_Err = 0.} !LCPSIM Adjustment Error to MWA Groundwater Storage

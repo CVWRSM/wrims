@@ -1,0 +1,50 @@
+! Rich Juricich & Ajay Dev 10/19/1999
+
+! delcar_cvp_sys
+! Copied by Dustin Jones 12/21/1999 for use in CVP NOD
+
+/*
+ Once the DI value is estimated, a contract year based delivery target is determined
+ by splitting the DI estimate into Delivery target and estimated Carryover values.
+
+ A delivery target is set in March and can be increased (but NOT decreased) in
+ April and May.  Delivery targets in June through the next February will be equal
+ to the value used in the previous May.
+*/
+
+define del_first_cvp_sys {               ! Delivery targets are picked
+    case MarToMay {                          ! from the delivery-carryover
+            condition month >=MAR .and. month <=MAY  ! curve in March through May.
+                select del
+                from   delcar_cvp_sys
+                given  di=di_cvp_sys
+                use    linear }
+    case otherwise {
+                condition always
+                value     0 }
+}
+
+define deltar_cvpsys1dv {alias del_first_cvp_sys kind 'DEL-TARGET' units 'TAF'}
+
+define del_second_cvp_sys {value min(del_first_cvp_sys, acvpdem_tot_sys)}
+
+define deltar_cvp_sysdv {std kind 'DEL-TARGET' units 'taf'}    ! This saves deltar_cvp_sys to access past values - See goal statement.
+
+define del_third_cvp_sys {
+    case      initialdel {
+        condition month <= FEB .and. wateryear == 1922   ! Use the total annual
+        value     acvpdem_tot_sys }                  ! contract amount until
+                                                         ! the first delivery
+                                                     ! target is assigned.
+        case      march {
+        condition month == MAR
+        value     del_second_cvp_sys }
+
+        case      otherwise {
+        condition always
+        value     max(deltar_cvp_sysdv(-1), del_second_cvp_sys) }
+}
+
+define deltar_cvp_sys {value min(del_third_cvp_sys, acvpdem_tot_sys) }  ! This is the final value that is passed to cvpcut logic
+
+goal save_deltar_cvp_sysdv {deltar_cvp_sysdv = deltar_cvp_sys} ! Sets DECISION VARIABLE deltar_cvp_sysdv equal to STATE VARIABLE  deltar_cvp

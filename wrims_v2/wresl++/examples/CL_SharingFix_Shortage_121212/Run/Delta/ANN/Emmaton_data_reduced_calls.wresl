@@ -1,0 +1,38 @@
+/*
+ 
+References data from cycle BASE to reduce ANN function calls to reduce runtime.
+
+See the *_data.wresl file for how these parameters are calculated.
+
+*/
+
+!*************************************************************************************************************
+
+! calculate previous month's value of salinity
+define EM_EC_Month {lower -999999 upper 999999 kind 'SALINITY' units 'UMHOS/CM'}
+define EM_EC_Month_sv {value EM_EC_Month[BASE]}
+goal setEMMonprv {EM_EC_Month = EM_EC_Month_sv}
+
+!*************************************************************************************************************
+
+! define the EC standard
+define EM_EC_STD {std kind 'SALINITY' units 'UMHOS/CM'}
+define EM_EC_std_sv {value EM_EC_std[BASE]}
+goal EMECstandout {EM_EC_std = EM_EC_std_sv}
+
+!*************************************************************************************************************
+
+!get slope and intercept for constraint exp<=m*sac+b
+define EM_m {lower unbounded upper unbounded kind 'SLOPE' units 'NONE'}
+define EM_b {lower unbounded upper unbounded kind 'INTERCEPT' units 'NONE'}
+define EM_m_sv {value EM_m[BASE]}
+define EM_b_sv {value EM_b[BASE]}
+goal setEM_m {EM_m = EM_m_sv}
+goal setEM_b {EM_b = EM_b_sv}
+
+!********************************************************************
+
+!Get the required Sac flow for ZERO exports
+define EM_Sac_ZeroExp {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define EM_Sac_ZeroExp_sv2 {value EM_Sac_ZeroExp[BASE]}
+goal setEM_Sac_ZeroExp {EM_Sac_ZeroExp = EM_Sac_ZeroExp_sv2}

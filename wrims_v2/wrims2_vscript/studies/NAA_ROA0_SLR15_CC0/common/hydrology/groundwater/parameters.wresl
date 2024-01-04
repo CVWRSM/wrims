@@ -1,0 +1,319 @@
+/*  This file contains parameters for all modeled groundwater basins.
+    Conductivity, leakance and specific yield is from calibration with historic
+    CVGSM basin average groundwater elevations performed by RAJ August, 1999.
+    Other variables are derrived from CVGSM input and output data or ArcView GIS
+    Original Logic by RAJ 9/99
+    Extensively modified by AJD 03/99
+*/
+
+! Width of DSA to DSA interface  (units = feet)
+! values from FullMod_012301 less 8,000ft where strip aquifer exists
+! adjusted w58_10, w10_15, w69_70
+define w58_10 {value 124800.0 }
+define w10_12 {value 156000.0 }
+define w10_15 {value  46800.0 }
+define w10_69 {value  31200.0 }
+define w12_15 {value 343200.0 }
+define w12_65 {value 140400.0 }
+define w15_69 {value 343200.0 }
+define w15_65 {value  15600.0 }
+define w69_70 {value 124800.0 }
+define w69_65 {value  15600.0 }
+define w70_65 {value  78000.0 }
+define w65_55 {value 390000.0 }
+define w70_59 {value 109200.0 }
+define w70_55 {value   7800.0 }
+
+! Width of DSA to DSA strip interface  (units = feet)
+define w58s_10s {value 8000.0 }
+define w10s_15s {value 8000.0 }
+define w15s_70s {value 8000.0 }
+define w69s_70s {value 8000.0 }
+define w70s_55s {value 8000.0 }
+
+! Width of DSA to DSA strip to basin interface  (units = feet)
+define w58_58s {value 156000.0 }
+define w10_10s {value 234000.0 }
+define w15_15s {value 327600.0 }
+define w69_69s {value 234000.0 }
+define w70_70s {value 218400.0 }
+
+! Distance between DSA centroids (units = feet)
+define l58_10 {value 140400.0 }
+define l10_12 {value 218400.0 }
+define l10_15 {value 280800.0 }
+define l10_69 {value 280800.0 }
+define l12_15 {value  62400.0 }
+define l12_65 {value 280800.0 }
+define l15_69 {value  93600.0 }
+define l15_65 {value 265200.0 }
+define l69_70 {value 171600.0 }
+define l69_65 {value 280800.0 }
+define l70_65 {value 187200.0 }
+define l65_55 {value 124800.0 }
+define l70_59 {value 202800.0 }
+define l70_55 {value 171600.0 }
+
+! distance between DSA strip centroids (units = feet)
+! assumed to be the same as main basins
+! these values should be updated based on actual position of stream centroids
+define l58s_10s {value 187200.0 }
+define l10s_15s {value 265200.0 }
+define l69s_70s {value 140400.0 }
+define l15s_70s {value 202800.0 }
+define l70s_55s {value 140400.0 }
+
+! distance between DSA strip and basin centroids (units = feet)
+! calculated as width of DSA/4 + 2500ft
+!width of basin estimated as total area divided by stream length
+define l58_58s {value 62400.0 }
+define l10_10s {value 93600.0 }
+define l15_15s {value 31200.0 }
+define l69_69s {value 78000.0 }
+define l70_70s {value 62400.0 }
+
+! define DSA surface area (units = acres)
+!FullMod_012301 values less strip area
+define area_58 {value 299615.0 }
+define area_10 {value 655094.0 }
+define area_12 {value 689188.0 }
+define area_15 {value 291416.0 }
+define area_69 {value 570826.0 }
+define area_70 {value 309798.0 }
+define area_65 {value 657938.0 }
+
+! define DSA strip surface area (units = acres)
+! 8,000ft * stream length
+define area_58s {value 28700.0 }
+define area_10s {value 43000.0 }
+define area_15s {value 60200.0 }
+define area_69s {value 43000.0 }
+define area_70s {value 40100.0 }
+
+!  define aquifer average hydraulic head (units = feet)
+define h_58 {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_10 {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_12 {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_15 {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_69 {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_70 {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_65 {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_59 {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+!
+define h_59_inp {timeseries kind 'ELEVATION' units 'FEET'}
+goal set_h_59 {h_59 = h_59_inp}
+
+!  define aquifer strip average hydraulic head (units = feet)
+define h_58s {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_10s {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_15s {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_69s {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+define h_70s {LOWER -10000.0 UPPER 10000.0 kind 'ELEVATION' units 'FEET' }
+
+!  branch Hydraulic Conductivities (units = feet/month)
+! Values from Tariq Kadir's 04/01 PEP run
+define k58_10 {value 986.0}
+define k10_12 {value 1980.0}
+define k10_15 {value 1690.0}
+define k10_69 {value 1960.0}
+define k12_15 {value 50.0}
+define k12_65 {value 2050.0}
+define k15_69 {value 1650.0}
+define k15_65 {value 2010.0}
+define k69_70 {value 2020.0}
+define k69_65 {value 2010.0}
+define k70_65 {value 2010.0}
+define k65_55 {value 1.0}
+define k70_59 {value 1.0}
+define k70_55 {value 1.0}
+
+! branch strip Hydraulic Conductivities (units = feet/month)
+! Values from Tariq Kadir's 04/01 PEP run
+define k58s_10s {value 3970.0}
+define k10s_15s {value 1990.0}
+define k15s_70s {value 2000.0}
+define k69s_70s {value 2000.0}
+define k70s_55s {value 1.0}
+
+! branch strip-basin Hydraulic Conductivities (units = feet/month)
+! Values from Tariq Kadir's 04/01 PEP run
+define k58_58s {value 739.0}
+define k10_10s {value 672.0}
+define k15_15s {value 1550.0}
+define k69_69s {value 2030.0}
+define k70_70s {value 758.0}
+
+! aquifer specific yield (units = percent)
+! Values from Tariq Kadir's 04/01 PEP run
+define sy_58 {value 0.18 }
+define sy_10 {value 0.12 }
+define sy_12 {value 0.13 }
+define sy_15 {value 0.15 }
+define sy_69 {value 0.12 }
+define sy_70 {value 0.13 }
+define sy_65 {value 0.12 }
+
+! aquifer strip specific yield (units = percent)
+! Values from Tariq Kadir's 04/01 PEP run
+define sy_58s {value 0.12 }
+define sy_10s {value 0.10 }
+define sy_15s {value 0.10 }
+define sy_69s {value 0.12 }
+define sy_70s {value 0.12 }
+
+! define aquifer bottom elevation (units = feet)
+! values calculated by John Dogrul from CVGSM 01/19/01
+define b_58 {value  -156.0 }
+define b_10 {value  -759.0 }
+define b_12 {value -1033.0 }
+define b_15 {value -1638.0 }
+define b_69 {value  -956.0 }
+define b_70 {value -1254.0 }
+define b_65 {value -1481.0 }
+define b_55 {value -1992.0 }
+define b_59 {value -1175.0 }
+
+! define aquifer strip bottom elevation (units = feet)
+! values calculated by John Dogrul from CVGSM 01/19/01
+define b_58s {value -614.0 }
+define b_10s {value -1286.0 }
+define b_15s {value -1648.0 }
+define b_69s {value -1152.0 }
+define b_70s {value -1648.0 }
+define b_55s {value -1954.0 }
+
+! define average ground surface elevation for each DSA  (used to calculate max groundwater storage)
+! values calculated by John Dogrul from CVGSM 01/19/01
+define gse_58 {value 658.0 }
+define gse_10 {value 455.0 }
+define gse_12 {value 228.0 }
+define gse_15 {value  88.0 }
+define gse_69 {value 119.0 }
+define gse_70 {value 107.0 }
+define gse_65 {value 117.0 }
+
+! define average ground surface elevation for each DSA strip (used to calculate max groundwater storage)
+! values calculated by John Dogrul from CVGSM 01/19/01
+define gse_58s {value 440.0 }
+define gse_10s {value 320.0 }
+define gse_15s {value 103.0 }
+define gse_69s {value  62.0 }
+define gse_70s {value  81.0 }
+
+! define boundary term (units = TAF)
+define bnd_58 {timeseries kind 'flow' units 'taf'}
+define bnd_10 {timeseries kind 'flow' units 'taf'}
+define bnd_12 {timeseries kind 'flow' units 'taf'}
+define bnd_15 {timeseries kind 'flow' units 'taf'}
+define bnd_69 {timeseries kind 'flow' units 'taf'}
+define bnd_70 {timeseries kind 'flow' units 'taf'}
+define bnd_65 {timeseries kind 'flow' units 'taf'}
+
+! define stream bed hydraulic conductivity (units = feet/month)
+! Values from Tariq Kadir's 04/01 PEP run
+define kmstream_58 {value 0.87 }
+define kmstream_10 {value 1.10 }
+define kmstream_15 {value 0.85 }
+define kmstream_69 {value 0.90 }
+define kmstream_70 {value 0.90 }
+
+! define stream bed thickness (units = feet/month)
+! Values from Tariq Kadir's 04/01 PEP run
+define mstream_58 {value 1.0 }
+define mstream_10 {value 1.0 }
+define mstream_15 {value 1.0 }
+define mstream_69 {value 1.0 }
+define mstream_70 {value 1.0 }
+
+! define Stream length (units = feet)
+define lstream_58 {value 156000.0 }
+define lstream_10 {value 234000.0 }
+define lstream_15 {value 327600.0 }
+define lstream_69 {value 234000.0 }
+define lstream_70 {value 218400.0 }
+
+! define stream width term (units = feet)
+define wstream_58 {value 327.0 }
+define wstream_10 {value 360.0 }
+define wstream_15 {value 394.0 }
+define wstream_69 {value 195.0 }
+define wstream_70 {value 298.0 }
+
+! define average stream bed elevation (units = feet)
+! Values from Tariq Kadir's 04/01 PEP run
+define rbot_58 {value 260.0 }
+define rbot_10 {value 205.0 }
+define rbot_15 {value  49.0 }
+define rbot_69 {value  12.0 }
+define rbot_70 {value  22.0 }
+
+! define alpha  (units = feet/month)
+!Removed dividion by two see formula for phi
+define alpha58_10 { value (k58_10*w58_10)/(l58_10*43560.0*1000.0) }
+define alpha10_12 { value (k10_12*w10_12)/(l10_12*43560.0*1000.0) }
+define alpha10_15 { value (k10_15*w10_15)/(l10_15*43560.0*1000.0) }
+define alpha10_69 { value (k10_69*w10_69)/(l10_69*43560.0*1000.0) }
+define alpha12_15 { value (k12_15*w12_15)/(l12_15*43560.0*1000.0) }
+define alpha12_65 { value (k12_65*w12_65)/(l12_65*43560.0*1000.0) }
+define alpha15_69 { value (k15_69*w15_69)/(l15_69*43560.0*1000.0) }
+define alpha15_65 { value (k15_65*w15_65)/(l15_65*43560.0*1000.0) }
+define alpha69_70 { value (k69_70*w69_70)/(l69_70*43560.0*1000.0) }
+define alpha69_65 { value (k69_65*w69_65)/(l69_65*43560.0*1000.0) }
+define alpha70_65 { value (k70_65*w70_65)/(l70_65*43560.0*1000.0) }
+define alpha70_55 { value (k70_55*w70_55)/(l70_55*43560.0*1000.0) }
+define alpha65_55 { value (k65_55*w65_55)/(l65_55*43560.0*1000.0) }
+define alpha70_59 { value (k70_59*w70_59)/(l70_59*43560.0*1000.0) }
+
+! define phi  (units = feet)
+! phi modified by dividing by two so as to be equal to average saturated thickness
+! groundwater table in Delta is assumed to be 0
+define phi58_10 {value (h_58(-1)+h_10(-1) - b_58 - b_10)/2. }
+define phi10_12 {value (h_10(-1)+h_12(-1) - b_10 - b_12)/2. }
+define phi10_15 {value (h_10(-1)+h_15(-1) - b_10 - b_15)/2. }
+define phi10_69 {value (h_10(-1)+h_69(-1) - b_10 - b_69)/2. }
+define phi12_15 {value (h_12(-1)+h_15(-1) - b_12 - b_15)/2. }
+define phi12_65 {value (h_12(-1)+h_65(-1) - b_12 - b_65)/2. }
+define phi15_69 {value (h_15(-1)+h_69(-1) - b_15 - b_69)/2. }
+define phi15_65 {value (h_15(-1)+h_65(-1) - b_15 - b_65)/2. }
+define phi69_70 {value (h_69(-1)+h_70(-1) - b_69 - b_70)/2. }
+define phi69_65 {value (h_69(-1)+h_65(-1) - b_69 - b_65)/2. }
+define phi70_65 {value (h_70(-1)+h_65(-1) - b_70 - b_65)/2. }
+define phi65_55 {value (h_65(-1)+0        - b_65 - b_55)/2. }
+define phi70_59 {value (h_70(-1)+h_59(-1) - b_70 - b_59)/2. }
+define phi70_55 {value (h_70(-1)+0        - b_70 - b_55)/2. }
+
+! define alpha for strip  (units = feet/month  )
+define alpha58s_10s { value (k58s_10s*w58s_10s)/(l58s_10s*43560.0*1000.0) }
+define alpha10s_15s { value (k10s_15s*w10s_15s)/(l10s_15s*43560.0*1000.0) }
+define alpha15s_70s { value (k15s_70s*w15s_70s)/(l15s_70s*43560.0*1000.0) }
+define alpha69s_70s { value (k69s_70s*w69s_70s)/(l69s_70s*43560.0*1000.0) }
+define alpha70s_55s { value (k70s_55s*w70s_55s)/(l70s_55s*43560.0*1000.0) }
+
+! define phi for strip (units = feet)
+define phi58s_10s {value (h_58s(-1)+h_10s(-1) - b_58s - b_10s)/2. }
+define phi10s_15s {value (h_10s(-1)+h_15s(-1) - b_10s - b_15s)/2. }
+define phi15s_70s {value (h_15s(-1)+h_70s(-1) - b_15s - b_70s)/2. }
+define phi69s_70s {value (h_69s(-1)+h_70s(-1) - b_69s - b_70s)/2. }
+define phi70s_55s {value (h_70s(-1)+0         - b_70s - b_55s)/2. }
+
+! define alpha for strip & basin (units = feet/month  )
+! factor of two to account for flow through two faces included in input parameters
+define alpha58_58s { value (k58_58s*w58_58s)/(l58_58s*43560.0*1000.0) }
+define alpha10_10s { value (k10_10s*w10_10s)/(l10_10s*43560.0*1000.0) }
+define alpha15_15s { value (k15_15s*w15_15s)/(l15_15s*43560.0*1000.0) }
+define alpha69_69s { value (k69_69s*w69_69s)/(l69_69s*43560.0*1000.0) }
+define alpha70_70s { value (k70_70s*w70_70s)/(l70_70s*43560.0*1000.0) }
+
+! define phi for strip & basin (units = feet)
+define phi58_58s {value (h_58(-1)+h_58s(-1) - b_58 - b_58s)/2. }
+define phi10_10s {value (h_10(-1)+h_10s(-1) - b_10 - b_10s)/2. }
+define phi15_15s {value (h_15(-1)+h_15s(-1) - b_15 - b_15s)/2. }
+define phi69_69s {value (h_69(-1)+h_69s(-1) - b_69 - b_69s)/2. }
+define phi70_70s {value (h_70(-1)+h_70s(-1) - b_70 - b_70s)/2. }
+
+! define stream-aquifer interaction term (units = thousand acres/month)
+define lamda_10 {value (kmstream_10*lstream_10*wstream_10)/(mstream_10*43560.0*1000.0) }
+define lamda_15 {value (kmstream_15*lstream_15*wstream_15)/(mstream_15*43560.0*1000.0) }
+define lamda_58 {value (kmstream_58*lstream_58*wstream_58)/(mstream_58*43560.0*1000.0) }
+define lamda_69 {value (kmstream_69*lstream_69*wstream_69)/(mstream_69*43560.0*1000.0) }
+define lamda_70 {value (kmstream_70*lstream_70*wstream_70)/(mstream_70*43560.0*1000.0) }

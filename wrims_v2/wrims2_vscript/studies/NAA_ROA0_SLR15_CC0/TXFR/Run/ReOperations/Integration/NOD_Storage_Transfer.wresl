@@ -1,0 +1,35 @@
+! Code approximates NOD Accounting Adjustments in SDIP Integrated Operation Proposition
+! A. Munevar 7/30/03
+
+! Required modifications:
+!  create account (this file - ok),
+!  split Keswick release arc to include SWP portion (wheelcap - ok),
+!  adjust coa such that swp release from shasta is treated as swp water (coa - ok)
+!  modify wsi for SWP for allocation adjustments (need to bring SWP allocation procedure into this cycle)
+!  weight to prefer over oroville release (weight file - ok)
+
+! *************************************************************************************
+
+
+!define C5_SWP {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+! SWP Account in Shasta
+define S4_SWPdv {lower unbounded kind 'STORAGE' units 'TAF' }
+
+!Use the May allocation and start using it in June.
+define S4_SWP {
+  case Oct1922 {
+    condition month==OCT .and. wateryear==1922
+    value     0. }
+  case Aug {
+    condition month==AUG
+    value     min(perdel_cvpag_s*100.,37.5)*SWPShastaSwitch }
+  case Other {
+    condition always
+    value     S4_SWPdv(-1) - C5_SWP(-1)*cfs_taf(-1) }
+}
+
+goal setS4_SWPdv {S4_SWPdv = S4_SWP  }
+
+goal maxC5_SWP {C5_SWP < max(S4_SWP*taf_cfs,0.) }
+

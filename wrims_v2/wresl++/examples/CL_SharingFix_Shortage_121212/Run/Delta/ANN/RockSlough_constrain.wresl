@@ -1,0 +1,114 @@
+/*************************************
+RockSlough_constrain.wresl
+
+Nazrul Islam; DWR; (06/27/2010)
+Set constraints for exports not to exceed the limit
+**************************/
+!*****Linearization #1***************************************************************
+goal meetRS_1 {
+  lhs D_ExpTD - exp_ann_relax
+                 case D1641Off{
+                   condition RS_DLTSW == 0
+                   rhs ExportCapacity
+                   lhs<rhs penalty 0}  
+  case LowCL{
+    condition C_Hood_ANN(-1) >=40000.
+    rhs 999999.
+    lhs<rhs penalty 0}
+   case NoSalinityControlPossible{
+    condition abs(RS_m_1_sv) <= 0.001 .and. int(RS_b_1_sv) == 0
+    rhs 999999
+    lhs<rhs penalty 0}
+  case NegSlope{
+    condition RS_m_1_sv <= 0.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case HighCost{
+    condition RS_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case LargeNegInt{
+!    condition abs(RS_m_1_sv) >= 1.0
+    condition RS_b_1_sv < -10000.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case Normal {
+    condition always
+    rhs RS_m_1_sv*C_Hood_ANN + RS_m_1_sv*C_YoloBP + RS_b_1_sv
+    lhs<rhs penalty 0}
+}
+
+!*****Linearization #2***************************************************************
+goal meetRS_2 {
+  lhs D_ExpTD - exp_ann_relax
+                   case D1641Off{
+                     condition RS_DLTSW == 0
+                     rhs ExportCapacity
+                     lhs<rhs penalty 0}    
+  case LowCL{
+    condition C_Hood_ANN(-1) >=40000.
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case NoSalinityControlPossible{
+    condition abs(RS_m_2_sv) <= 0.001 .and. int(RS_b_2_sv) == 0
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case NegSlope{
+    condition RS_m_2_sv <= 0.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case HighCost{
+    condition RS_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case LargeNegInt{
+    condition RS_b_2_sv < -10000.0
+    rhs 999999.
+  	lhs<rhs penalty 0}
+  case NegCarriage{
+    condition RS_m_2_sv >= 1.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case Normal {
+    condition always
+    rhs RS_m_2_sv*C_Hood_ANN + RS_m_2_sv*C_YoloBP + RS_b_2_sv
+    lhs<rhs penalty 0}
+}
+
+!*****Linearization #3***************************************************************
+goal meetRS_3 {
+  lhs D_ExpTD - exp_ann_relax
+                     case D1641Off{
+                       condition RS_DLTSW == 0
+                       rhs ExportCapacity
+                     lhs<rhs penalty 0}  
+  case LowCL{
+    condition C_Hood_ANN(-1) >=40000.
+    rhs 999999.
+    lhs<rhs penalty 0}
+
+  case NoSalinityControlPossible{
+    condition abs(RS_m_3_sv) <= 0.001 .and. int(RS_b_3_sv) == 0
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case NegSlope{
+    condition RS_m_3_sv <= 0.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case HighCost{
+    condition RS_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case LargeNegInt{
+    condition RS_b_3_sv < -10000.0
+    rhs 999999.
+    lhs<rhs penalty 0}  
+  case NegCarriage{
+    condition RS_m_3_sv >= 1.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case Normal {
+    condition always
+    rhs RS_m_3_sv*C_Hood_ANN + RS_m_3_sv*C_YoloBP + RS_b_3_sv
+    lhs<rhs penalty 0}
+}

@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>long</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<FONT face="Times">
+<B><U><FONT SIZE=4><P>Goal Statement: Long Form</P>
+</B></U></FONT><P>This is where objectives and constraints on the underlying model are specified. We are presently using an LP solver, meaning that every goal must be a linear expression of decision variables.</P>
+<P>Here is the long format of a goal.</P>
+</FONT>
+<PRE>
+<b>goal</b> <I>goalIdentifier </I>{
+     <b>lhs</b>     <I>expression1</I>
+     <b>case</b>    <I>conditionIdentifier1 </I>{
+             <b>condition</b>    <I>conditionalExpression1</I> | <b>always</b>
+             <b>rhs</b>          <I>expression1</I>
+             [<b>lhs &gt rhs     penalty</b> <I>penaltyExpr1</I> | <b>never</b> | <b>constrain</b>]
+             [<b>lhs &lt rhs     penalty</b> <I>penaltyExpr2</I> | <b>never</b> | <b>constrain</b>]
+     }
+     <b>case</b>   <I>conditionIdentifier2 </I>{
+             <b>condition</b>    <I>conditionalExpression2</I> | <b>always</b>
+             <b>rhs</b>          <I>expression2</I>
+             [<b>lhs &gt rhs     penalty</b> <I>penaltyExpr3</I> | <b>never</b> | <b>constrain</b>]
+             [<b>lhs &lt rhs     penalty</b> <I>penaltyExpr4</I> | <b>never</b> | <b>constrain</b>]
+     }... 
+}
+</pre>
+<FONT face="Times">
+<P>The same restrictions are in force for the <I>expression</I> terms here as for the <I>alias define </I>statement.  The parser will forbid inappropriate use of decision variables.</P>
+
+<P>Conditions will be evaluated in the order they are presented until the program reaches one that evaluates to true, similar to the <I>value define</I> statement. The keyword <B>always</B> is equivalent to Fortran <B>.true.</B></P>
+
+<P>If the <B>lhs &gt rhs</B> or <B>lhs &lt rhs</B> statement is omitted, or <B>never</B> or <B>constrain</B> is specified instead of <B>penalty</B>, the specified constraint will be a <I>hard</I> constraint. There will be a bound applied, and the solver will not be allowed to violate it. Note that "&lt;" means "&lt;=" and "&gt;" means "&gt;=" in LP lingo. Penalty values are generally expressed using constant values and are often zero.</P>
+
+<P>There is a shorthand form, similar to the define shorthand form.  If there are no associated conditionals, then you can omit the <I>conditionIdentifier</I>s and the attached baggage, and simply write,</P>
+</FONT>
+<pre>
+<b>goal</b> <I>goalIdentifier </I>{
+     <b>lhs</b>         <I>expression1</I>
+     <b>rhs</b>         <I>expression2</I>
+     [<b>lhs &gt rhs    penalty</b> <I>penaltyExpr1</I> | <b>never</b> | <b>constrain</b>]
+     [<b>lhs &lt rhs    penalty</b> <I>penaltyExpr2</I> | <b>never</b> | <b>constrain</b>]
+}
+</pre>
+<P><FONT face="Times"><b><u>Example:</u></b></FONT></P>
+<pre>
+goal setQsac_cap_AN {
+    lhs  C400
+    case maxSacFlow {    ! this occurs when ANN parameters say salinity cannot be achieved
+        condition     abs(ANslope) &le 0.001 .and. int(ANintcpt)==0
+        rhs           Qsac_cap
+        lhs &gt rhs     penalty 999999
+        lhs &lt rhs     penalty 0
+    }
+    case overcap {    ! this occurs when ANN asks for more water than the Qsac_cap for low exports
+        condition     Qsac1kAN &ge Qsac_cap
+        rhs           Qsac_cap
+        lhs &gt rhs     penalty 999999
+        lhs &lt rhs     penalty 0
+    }
+}
+
+</pre>
+</BODY>
+</HTML>

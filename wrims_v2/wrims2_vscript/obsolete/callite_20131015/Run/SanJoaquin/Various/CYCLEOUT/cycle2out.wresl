@@ -1,0 +1,168 @@
+! cycle2out.wresl
+! Edward Chang
+! 5/01/2000
+! The following WRESL code is used in cycle 6 to write out intermediate solver computations that are made in the SJR module
+! Revised by C. Hsu, 3/7/03, USBR, for review and documentation project
+!######################################################################################
+
+/* Cycle 2
+The following WRESL code is used in cycle 6 to write out intermediate solver computations
+that are made in the SJR module.  This may be needed to verify output computations that
+are based on cycle2 because the final output is the monthly weighted flows and storage,
+not what may be in each 10, 14, 15, or 16 day period.
+*/
+! Define New Melones flows for cycle 2 output
+define C_MELONcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define New Melones mainstem flows for cycle 2 output
+define C_MELONmcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define New Melones water quality flows for cycle 2 output
+define C_MELONWQcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define New Melones dissolved oxygen flows for cycle 2 output
+define C_MELONDOcycle2 {std kind 'flow-cycle2' units 'cfs' }
+!define C_MELONVAMPcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define New Melones VAMP flows for cycle 2 output
+define C_STANGDWNVAMPcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define Mendota Pool/Exchange Contractors flows for cycle 2 output
+define D_MDOTABcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define Sack Dam/Exchange Contractors flows for cycle 2 output
+define D608Bcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define Lower DMC flow for cycle 2 output
+define C_CVPDMCcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define Mendota Pool VAMP flow for cycle 2 output
+define C_MDOTABVAMPcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Delivery to SSJID area cycle 2 output
+define C522cycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define Merced River below McClure flow for cycle 2 output
+define C_MCLREcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define Don Pedro main channel flow for cycle 2 output
+define C_PEDROcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define McClure mainstem flow for cycle 2 output
+define C_MCLREmcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define New Don Pedro main channel flow for cycle 2 output
+define C_PEDROmcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define McClure VAMP flow for cycle 2 output
+define C_MCLREvampcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define New Don Pedro VAMP flow for cycle 2 output
+define C_PEDROvampcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define flow in Reach C_STANGDWN for cycle 2 output
+define C_STANGDWNcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define flow in Reach C_STANRIPN for cycle 2 output
+define C_STANRIPNcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define flow below Vernalis for cycle 2 output
+define C_SJRVERcycle2 {std kind 'flow-cycle2' units 'cfs' }
+
+
+! Set New Melones flow for cycle 2 output (water quality)
+goal outC_MELONcycle2 {C_MELONcycle2 = C_MELON[SJR_WQ1]}
+! New Melones main channel flow for cycle 2 output (water quality) 
+goal outC_MELONmcycle2 {C_MELONMcycle2 = C_MELONM[SJR_WQ1]} 
+! Set New Melones water quality flow for cycle 2 output (water quality)
+goal outC_MELONWQcycle2 {C_MELONWQcycle2 = C_MELONWQ[SJR_WQ1]}
+! Set New Melones DO flow for cycle 2 output (water quality)  
+goal outC_MELONDOcycle2 {C_MELONDOcycle2 = C_MELONDO[SJR_WQ1]}
+!goal outC_MELONVAMPcycle2 {C_MELONVAMPcycle2 = C_MELONVAMP[SJR_WQ1]}
+! New Melones Reach C_STANGDWN VAMP cycle 2 output (water quality)
+goal outC_STANGDWNVAMPcycle2 {C_STANGDWNVAMPcycle2 = C_STANGDWNVAMP[SJR_WQ1]}
+! Mendota Pool/Exchange Contractors cycle 2 output (water quality)
+goal outD_MDOTABcycle2 {D_MDOTABcycle2 = D_MDOTAB[SJR_WQ1]}
+! Sack Dam/Exchange Contractors cycle 2 output (water quality)
+goal outD608Bcycle2 {D608Bcycle2 = D608B[SJR_WQ1]}
+! Lower DMC to Mendota Pool cycle 2 output
+goal outC_CVPDMCcycle2 {C_CVPDMCcycle2 = C_CVPDMC[SJR_WQ1]}
+! Pool Exchange donation to VAMP cycle 2 output
+goal outC_MDOTABVAMPcycle2 {C_MDOTABVAMPcycle2 = C_MDOTABVAMP[SJR_WQ1]}
+! Set Merced River cycle 2 output
+goal outC_MCLREcycle2 {C_MCLREcycle2 = C_MCLRE[SJR_WQ1]}
+! Don Pedro cycle 2 output
+goal outC_PEDROcycle2 {C_PEDROcycle2 = C_PEDRO[SJR_WQ1]}
+! McClure mainstem cycle 2 output
+goal outC_MCLREmcycle2 {C_MCLREMcycle2 = C_MCLREM[SJR_WQ1]}
+! Don Pedro mainstem cycle 2 output
+goal outC_PEDROmcycle2 {C_PEDROMcycle2 = C_PEDROM[SJR_WQ1]}
+! McClure VAMP cycle 2 output
+goal outC_MCLREvampcycle2 {C_MCLREVAMPcycle2 = C_MCLREVAMP[SJR_WQ1]}
+! Don Pedro VAMP cycle 2 output
+goal outC_PEDROvampcycle2 {C_PEDROVAMPcycle2 = C_PEDROVAMP[SJR_WQ1]}
+! New Melones Reach C_STANGDWN cycle 2 output
+goal outC_STANGDWNcycle2 {C_STANGDWNcycle2 = C_STANGDWN[SJR_WQ1]}
+! New Melones Reach C_STANRIPN cycle 2 output
+goal outC_STANRIPNcycle2 {C_STANRIPNcycle2 = C_STANRIPN[SJR_WQ1]}
+! SJR below Vernalis  cycle 2 output
+goal outC_SJRVERcycle2 {C_SJRVERcycle2 = C_SJRVER[SJR_WQ1]}
+! Define New Melones mainstem VAMP cycle 2 flow for output
+define C_MELONVAMP_Mcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define New Melones VAMP transfer cycle 2 flow
+define C_MELONVAMP_Tcycle2 {std kind 'flow-cycle2' units 'cfs' }
+! Define Don Pedro Stanislaus VAMP cycle 2 for output
+define C_PEDRO_stan_vampc2 {std kind 'flow-cycle2' units 'cfs' }
+! New Melones mainstem VAMP cycle 2 for output 
+goal outC_MELONVAMP_Mcycle2 {C_MELONVAMP_Mcycle2 = C_MELONVAMP_M[SJR_WQ1]}
+! New Melones mainstem VAMP transfer cycle 2 for output 
+goal outC_MELONVAMP_Tcycle2 {C_MELONVAMP_Tcycle2 = C_MELONVAMP_T[SJR_WQ1]}
+! Don Pedro Stanislaus VAMP cycle 2 for output
+goal outC_PEDRO_stan_vampcycle2 {C_PEDRO_STAN_VAMPc2 = C_PEDRO_STAN_VAMP[SJR_WQ1]}
+! Define Don Pedro minflow for cycle 2
+define C_TUOL_MIFcycle2 {std kind 'flowmin-cycle2' units 'cfs'}
+! Set Don Pedro minflow cycle 2 for output 
+goal outC_TUOL_MIFc2 {C_TUOL_MIFcycle2 = C_TUOL_MIF[SJR_WQ1]}
+! Define Don Pedro minflow in cycle 2 for output 
+define D_TUOLB_cycle2 {std kind 'flow-cycle2' units 'cfs'}
+! Set Tuolumne to Modesto turnout in cycle 2 for output
+goal outD_TUOLB_c2 {D_TUOLB_cycle2 = D_TUOLB[SJR_wq1]}
+
+
+define C_MLRTNM_c2          {std kind 'flow-cycle2' units 'cfs'}
+define C_MLRTNA_c2          {std kind 'flow-cycle2' units 'cfs'}
+define C_MLRTNF_c2          {std kind 'flow-cycle2' units 'cfs'}
+define C_GRAVF_c2          {std kind 'flow-cycle2' units 'cfs'}
+define C_GRAVF_loss_c2     {std kind 'flow-cycle2' units 'cfs'}
+define C_GRAVF_main_c2     {std kind 'flow-cycle2' units 'cfs'}
+define C_GRAVF_mainsjrrc2  {std kind 'flow-cycle2' units 'cfs'}
+define C_GRAVF_mainsmflc2  {std kind 'flow-cycle2' units 'cfs'}
+define C_SJRCB_c2         {std kind 'flow-cycle2' units 'cfs'}
+define C_SJRCB_main_c2    {std kind 'flow-cycle2' units 'cfs'}
+define C_SJRCB_flood_c2   {std kind 'flow-cycle2' units 'cfs'}
+define C_Chowbyp1_c2         {std kind 'flow-cycle2' units 'cfs'}
+define C_SJRREST_c2         {std kind 'flow-cycle2' units 'cfs'}
+
+goal set_c28M_c2            {C_MLRTNM_c2 = C_MLRTNM[SJR_WQ1]}
+goal set_c28A_c2            {C_MLRTNA_c2 = C_MLRTNA[SJR_WQ1]}
+goal set_c28F_c2            {C_MLRTNF_c2 = C_MLRTNF[SJR_WQ1]}
+goal set_C_GRAVF_c2            {C_GRAVF_c2 = C_GRAVF[SJR_WQ1]}
+goal set_C_GRAVF_loss_c2       {C_GRAVF_loss_c2 = C_GRAVF_loss[SJR_WQ1]}
+goal set_C_GRAVF_main_c2       {C_GRAVF_main_c2 = C_GRAVF_main[SJR_WQ1]}
+goal set_C_GRAVF_mainsjrrc2    {C_GRAVF_mainsjrrc2 = C_GRAVF_mainsjrr[SJR_WQ1]}
+goal set_C_GRAVF_mainsmflc2    {C_GRAVF_mainsmflc2 = C_GRAVF_mainsmfl[SJR_WQ1]}
+goal set_C_SJRCB_c2           {C_SJRCB_c2 = C_SJRCB[SJR_WQ1]}
+goal set_C_SJRCB_main_c2      {C_SJRCB_main_c2 = C_SJRCB_main[SJR_WQ1]}
+goal set_C_SJRCB_flood_c2     {C_SJRCB_flood_c2 = C_SJRCB_flood[SJR_WQ1]}
+goal set_C_Chowbyp1_c2           {C_Chowbyp1_c2 = C_Chowbyp1[SJR_WQ1]}
+goal set_C_SJRREST_c2           {C_SJRREST_c2 = C_SJRREST[SJR_WQ1]}
+
+define C_MLRTN_c2 {alias C_MLRTN[SJR_WQ1] kind 'flow-cycle2' units 'cfs'}
+define C_MDOTA_c2 {alias C_MDOTA[SJR_WQ1] kind 'flow-cycle2' units 'cfs'}
+define C_SJRSACK_c2 {alias C_SJRSACK[SJR_WQ1] kind 'flow-cycle2' units 'cfs'}
+define C_SJRLNDR_c2 {alias C_SJRLNDR[SJR_WQ1] kind 'flow-cycle2' units 'cfs'}
+define C_TUOL_c2 {alias C_TUOL[SJR_WQ1] kind 'flow-cycle2' units 'cfs'}
+
+define I18_rest_bal_c2 {alias I18_rest_bal[SJR_WQ1] kind 'flow-cycle2' units 'cfs'}
+
+! Added for GI model testing
+define C_STANGDWNmifcycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outC_STANGDWNmifcycle2 {C_STANGDWNmifcycle2 = C_STANGDWN_mif[SJR_WQ1]}
+define C_STANGDWNexccycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outC_STANGDWNexccycle2 {C_STANGDWNexccycle2 = C_STANGDWN_exc[SJR_WQ1]}
+define C_STANGDWNexcacycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outC_STANGDWNexcacycle2 {C_STANGDWNexcacycle2 = C_STANGDWN_exc_a[SJR_WQ1]}
+define C_MELONfcycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outC_MELONfcycle2 {C_MELONfcycle2 = C_MELONf[SJR_WQ1]}
+define C_STANRIPNmifcycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outC_STANRIPNmifcycle2 {C_STANRIPNmifcycle2 = C_STANRIPN_mif[SJR_WQ1]}
+define C_STANRIPNexccycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outC_STANRIPNexccycle2 {C_STANRIPNexccycle2 = C_STANRIPN_exc[SJR_WQ1]}
+define C_TUOLmifcycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outC_TUOLmifcycle2 {C_TUOLmifcycle2 = C_TUOL_mif[SJR_WQ1]}
+define C_MERCED1mifcycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outC_MERCED1mifcycle2 {C_MERCED1mifcycle2 = C_MERCED1_mif[SJR_WQ1]}
+define D_MERCED2cycle2 {std kind 'flow-cycle2' units 'cfs' }
+goal outD_MERCED2cycle2 {D_MERCED2cycle2 = D_MERCED2[SJR_WQ1]}

@@ -1,0 +1,45 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-CONTRACTS.WRESL
+
+NAMING TAKES THE FOLLOWING FORMS:
+
+NAMING TAKES THE FOLLOWING FORMS:
+CL_{ORIGIN PREFIX}_{DESTINATION}    - limitation on specific contractors diversion from particular source
+
+
+Edited ajdraper, MWH, November 28, 2007
+Edited nlparker, BOR, 2009
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! CVP Annual Contract Amounts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! Each contractor has a "code", which enables all contract info to be in the same table
+! The contractor code can be parsed as AABC.d where:
+! AA = WBA #
+! B = 1 for Ag, 2 for RF, 3 for MI, and 4 for EX
+! C = the count of the particular contract type in the WBA
+! d = used if a contractor has more than one contract
+! Example: 7214 would be 72_PA4
+
+! CL variables are annual contract limits
+! CLM variables are monthly contract limits
+! These values are in TAF
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Demand Unit 63 Refuge Contracts   !!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  CL_63_PR1   {select contract from CVP_SOD_Contracts where contractor=6331}  ! Merced Unit, Arena Unit
+define  CL_63_PR2   {select contract from CVP_SOD_Contracts where contractor=6332}  ! East Bear Unit
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Demand Unit 64_XA
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  CL_64_XA    {select contract from CVP_SOD_Contracts where contractor=6441} ! Annual contract amount from lookup table
+define  CLM_64_XA   {value CL_64_XA * MDP_EX_Dist}
+
+

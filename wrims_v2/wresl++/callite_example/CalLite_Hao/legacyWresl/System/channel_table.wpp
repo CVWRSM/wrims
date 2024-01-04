@@ -1,0 +1,28 @@
+package channel_table
+
+channel Orovl ( ) {
+
+	parameter node {
+	
+		downstream = [  direction = out   coordinate = [x  y]   ] 
+		upstream  =  [  direction = in    coordinate = [x  y]   ]	
+	
+	}	
+
+	parameter geometry {
+	
+		length = 
+		coordinate = [ node.upstream.coord [ -122.365662  37.826988  ]  [x2  y2 ]  [x3  y3 ]  [x4  y4 ]  [x5  y5 ]  ] 
+	
+	}
+	
+	parameter upperbound = 50000
+	
+
+	
+
+} 
+
+
+
+

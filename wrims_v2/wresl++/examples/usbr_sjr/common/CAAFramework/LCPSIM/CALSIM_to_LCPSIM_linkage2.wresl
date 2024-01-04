@@ -1,0 +1,56 @@
+! CALSIM_to_LCPSIM_linkage2.wresl
+
+!Stage 2 Transfer Deliveries in CALSIM
+goal split_SJR_TRANS2   {I839_WTS + I852_WTS = SBSJR_TRANS2_DEL + SCSJR_TRANS2_DEL}
+goal pushSBSJR_TRANS2 {                                                              ! assume DMC/CA Stg2 goes first to SB
+     lhs SCSJR_TRANS2_DEL
+     rhs 0.
+     lhs>rhs penalty 10. }
+
+goal set_SBSAC_TRANS2   {SBSAC_TRANS2_DEL = D815_WTS - SBSJR_TRANS2_DEL}             ! assume SAC sources the balance
+goal set_SCSAC_TRANS2   {SCSAC_TRANS2_DEL = D885_WTS + D895_WTS - SCSJR_TRANS2_DEL}  ! assume SAC sources the balance
+
+!Stage 2 Transfer Delivery as a fraction of Acquisitions
+define SAC_TRANS2_MET {value max(D815_STG2_Met + D885_STG2_Met + D895_STG2_Met - SJRAcq_Stg2_Met,0.)}
+define SAC_TRANS2_RAT {value SAC_TRANS2_MET/max(SACAcq_Stg2_Met-SPILLED_Stg2,1.)}
+define SAC_TRANS2_EFF {value min(SAC_TRANS2_RAT,1.)*100.}
+define SJR_TRANS2_EFF {value 100.-SJRExchLossFact*100.}
+
+!Stage 2 Transfer Acquisitions in CALSIM
+goal setSJR_TRANS2_ACQ {SJR_TRANS2_ACQ =
+                             WTS_DMC_Stg2/SJR_TRANS2_EFF*100.
+                           + WTS_CA_Stg2/SJR_TRANS2_EFF*100.}
+goal setSAC_TRANS2_ACQ {SAC_TRANS2_ACQ =
+                             WTS_Yuba_Stg2
+                           + WTS_DSA12_Stg2
+                           + WTS_DSA15_Stg2
+                           + WTS_DSA69_Stg2
+                           + WTS_DSA70_Stg2}
+
+!Deliveries to LCPSIM regions - not including transfers
+! Does not include WTS values - these are handled separately above
+/*define NB_PMI_DEL_SWP {alias SWP_TA_NBay kind 'Delivery-LCPSIM' units 'cfs'}    !Total SWP Table A M&I delivery to North Bay not adjusted with LCPSIM values
+define NB_PMI_ADJ_SWP {alias NB_PMI_DEL_SWP
+                           + NB_ADJ_DV
+                           + NB_GW_ADJ_DV kind 'Adj-Delivery-LCPSIM' units 'cfs'} !Total SWP Table A M&I delivery to North Bay adjusted with LCPSIM values
+define NB_PMI_DEL_CVP {alias 0. kind 'Delivery-LCPSIM' units 'cfs'}               !Total CVP M&I delivery to North Bay
+*/
+
+define SB_PMI_ADJ_SWP {alias SB_PMI_DEL_SWP
+                           + SB_ADJ_SWP_DV
+                           + SB_GW_ADJ_DV kind 'Adj-Delivery-LCPSIM' units 'cfs'} !Total SWP Table A M&I delivery to South Bay adjusted with LCPSIM values
+define SB_PMI_ADJ_CVP {alias SB_PMI_DEL_CVP
+                           + SB_ADJ_CVP_DV kind 'Adj-Delivery-LCPSIM' units 'cfs'}!Total CVP M&I delivery to South Bay adjusted with LCPSIM values
+
+define SC_PMI_ADJ_SWP {alias SC_PMI_DEL_SWP
+                           + SC_ADJ_DV
+                           + SC_GW_ADJ_DV kind 'Adj-Delivery-LCPSIM' units 'cfs'} !Total CVP & SWP Table A M&I delivery to South Coast adjusted with LCPSIM values
+define SC_PMI_DEL_CVP {alias 0. kind 'Delivery-LCPSIM' units 'cfs'}               !Total CVP M&I delivery to South Coast
+define SC_PMI_ADJ_CVP {alias 0. kind 'Adj-Delivery-LCPSIM' units 'cfs'}           !Total CVP M&I delivery to South Coast
+
+/*define NB_PIN_DEL {alias SWP_IN_NBay kind 'Delivery-LCPSIM' units 'cfs'}        !Total SWP Article 21 M&I delivery to North Bay
+*/
+
+! Information for Semitropic operations
+define KCWA_TABLEA_PCT {alias perdel_swp_ag1*100. kind 'SWP-allocation-LCPSIM' units 'percent'}
+!define KCWA_TABLEA     {alias SWP_TA_KERN         kind 'Delivery-LCPSIM'       units 'cfs'}

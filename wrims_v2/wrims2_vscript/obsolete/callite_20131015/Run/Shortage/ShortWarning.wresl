@@ -1,0 +1,19 @@
+define ShortWarning {EXTERNAL f90} 
+define Waring_ON { case FirstMonth {condition wateryear==beginWY .and. Month==1
+                  value 1.0}  !Warning for shortages over 0.01 cfs
+                  case others {condition always
+                  value shortwarning(wateryear,month,short_AD_kswck(-1),short_AD_RedBlf(-1), 
+                        short_AD_Wilkns(-1),short_AD_SacFea(-1),short_AD_SacAme(-1),
+                        short_AD_YoloBP(-1),short_AD_Therm(-1),short_AD_YubFea(-1),  
+                        short_AD_Nimbus(-1),short_AD_Hst(-1),
+                        mrdo_ann_relax(-1),exp_ann_relax(-1))}
+                 }
+                                  
+/*                  
+                  value ShortWarning(wateryear, month, short_AD_kswck(-1),AD_RedBlf(-1), !for testing
+                        short_AD_Wilkns(-1),short_AD_SacFea(-1),short_AD_SacAme(-1),
+                        AD_YoloBP(-1),short_AD_Therm(-1),AD_YubFea(-1),  
+                        short_AD_Nimbus(-1),short_AD_Hst(-1)) }
+                }
+*/
+                 

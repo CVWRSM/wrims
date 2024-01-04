@@ -1,0 +1,9 @@
+!This varaible is needed in OrovilleRule Curve calucualtion
+!define swp_allocation {timeseries kind 'SWP-DELIVERY' units 'TAF'}
+!define swp_alloc_final{std kind 'swp-delivery' UNITS 'TAF'}
+!goal setswp_allocation{ swp_alloc_final=swp_allocation}
+
+
+! These are realted to FVB and D_SacSJR
+!define int_IBU_UWFE {value 1.0}
+define WQ408_RS {timeseries kind 'salinity' units 'mg/L'}

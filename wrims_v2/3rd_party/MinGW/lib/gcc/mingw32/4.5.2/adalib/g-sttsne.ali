@@ -1,0 +1,99 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U gnat.sockets.thin.task_safe_netdb%s  g-sttsne.ads  d3418a5b NE OL PK
+W gnat.sockets.thin%s	g-socthi.adb		g-socthi.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D gnat.ads		20050905075126 96410e68
+D g-socket.ads		20091201095252 37ffb9fb
+D g-socthi.ads		20091130093128 853ff10f
+D g-sttsne.ads		20071213104058 567e7b54
+D g-sothco.ads		20091130103824 88e0be01
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cpoint.ads		20090409150020 2ed052b5
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-oscons.ads		20110107202130 b5e9bbe8
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 9 gnat.ads
+36K9*GNAT 39e9 12|41r9 83r5
+X 10 g-socket.ads
+60K14*Sockets 9|36k9 10|1229e17 12|41r14 83r10
+X 11 g-socthi.ads
+46K22*Thin 10|60k14 11|247e22 12|41r22 83r18
+50K12*C=50:33 12|48r18 51r18 52r34 52r48 56r19 57r19 60r19 61r35 61r49 64r18
+. 65r18 68r18 68r32 71r18 72r18 75r18 75r32
+X 12 g-sttsne.ads
+41K27*Task_Safe_NetDB 11|46k22 12|83l23 83e38
+47V13*Safe_Gethostbyname{15|35I9} 48>7 49^7 50>7 51>7 52^7 78b<c,__gnat_safe_gethostbyname>22
+48a7 Name{15|79A9}
+49p7 Ret(13|258R9)
+50m7 Buf{18|64M9}
+51i7 Buflen{15|35I9}
+52p7 H_Errnop(15|35I9)
+54V13*Safe_Gethostbyaddr{15|35I9} 55>7 56>7 57>7 58^7 59>7 60>7 61^7 79b<c,__gnat_safe_gethostbyaddr>22
+55m7 Addr{18|64M9}
+56i7 Addr_Len{15|35I9}
+57i7 Addr_Type{15|35I9}
+58p7 Ret(13|258R9)
+59m7 Buf{18|64M9}
+60i7 Buflen{15|35I9}
+61p7 H_Errnop(15|35I9)
+63V13*Safe_Getservbyname{15|35I9} 64>7 65>7 66^7 67>7 68>7 80b<c,__gnat_safe_getservbyname>22
+64a7 Name{15|79A9}
+65a7 Proto{15|79A9}
+66p7 Ret(13|215A9)
+67m7 Buf{18|64M9}
+68i7 Buflen{15|35I9}
+70V13*Safe_Getservbyport{15|35I9} 71>7 72>7 73^7 74>7 75>7 81b<c,__gnat_safe_getservbyport>22
+71i7 Port{15|35I9}
+72a7 Proto{15|79A9}
+73p7 Ret(13|215A9)
+74m7 Buf{18|64M9}
+75i7 Buflen{15|35I9}
+X 13 g-sothco.ads
+215A9*Servent<28|70A9><28|54I9> 12|66r34 73r34
+258R9*Hostent 12|49r34 58r35 13|264e14
+X 15 i-c.ads
+35I9*int<integer> 12|51r20 52r36 52r50 56r21 57r21 60r21 61r37 61r51 68r20
+. 68r34 71r20 75r20 75r34
+72E9*char<character>
+79A9*char_array(72E9)<60M9> 12|48r20 64r20 65r20 72r20
+X 18 system.ads
+37K9*System 12|50r18 55r19 59r19 67r18 74r18 18|197e11
+64M9*Address 12|50r25 55r26 59r26 67r25 74r25
+X 28 s-stoele.ads
+64M9*Storage_Element
+70A9*Storage_Array(64M9)<54I9>
+

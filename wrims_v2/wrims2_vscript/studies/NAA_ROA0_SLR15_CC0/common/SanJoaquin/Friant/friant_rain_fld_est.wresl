@@ -1,0 +1,48 @@
+! Friant_rain_fl_est.wresl
+! Created for the Upper San Joaquin River Basin Storage Investigation Project
+! This file estimates rainflood release, used to determine 215 water allocation
+! Revised by Claire Hsu, USBR, 02/25/03    for review and documentation project
+!######################################################################
+/*
+Estimate total flood control release, total delivery and maximum of rainflood and snowmelt releases
+*/
+! Estimate Friant evaporation amount
+define Friant_est_evap {
+        select inc
+        from Friant_Evap
+        where contract_month = contract_month }
+
+define TF_est_evap {value A17last*Friant_est_evap/A18last}
+
+! Total delivery from Friant for current month (Friant-Kern and Madera Canal Class 1 and 2 deliveries plus losses)
+define curr_fr_del {
+    value  Madera_c1_del + Madera_c2_del + Madera_loss  + tot_und_D18B_C1_*Mad_C1_frc + tot_und_D18B_C2_*Mad_tot_frc
+           + FK_c1_del + FK_c2_del + FK_loss }
+
+! Estimate the rainflood release that will be required from Friant this month
+
+! use an average monthly value for the restoration flow release
+
+goal compute_rain_rel {
+    lhs Fr_rain_rel
+    case initialize {
+        condition month == sep .and. wateryear == 1921
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs max ( 0.0, SIO_FWUA(-1) + I18*cfs_taf - curr_Fr_del - Friant_est_evap - TF_est_evap
+                     - S18level5 - S17level3 - mam_fc_credit  + Friant_fs_req - SJRR_mon*cfs_taf)  } }
+
+! Estimated total flood control release, maximum of rainflood and snowmelt releases
+define Fr_fc_rel {value max ( 0.0, SIO_FWUA(-1) + I18*cfs_taf - curr_Fr_del - Friant_est_evap - TF_est_evap
+                     - S18level5 - S17level3 - mam_fc_credit  + Friant_fs_req - SJRR_mon*cfs_taf,
+                     fr_for_spill_cor * Fr_srp / 100. ) }
+
+! used for debugging
+define fr_for_spill_chk {alias fr_for_spill kind 'temp' units 'taf'}
+define Fr_srp_chk {alias Fr_srp kind 'temp' units 'taf'}
+define curr_fr_del_chk {alias curr_fr_del kind 'temp' units 'taf'}
+define Fr_est_e_chk {alias Friant_est_evap kind 'temp' units 'taf'}
+define s18level4_chk {alias s18level4 kind 'temp' units 'taf'}
+define fr_fc_rel_ {alias fr_fc_rel kind 'temp' units 'taf'}
+

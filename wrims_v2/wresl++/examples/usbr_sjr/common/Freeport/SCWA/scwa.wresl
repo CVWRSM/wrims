@@ -1,0 +1,38 @@
+!SCWA.wresl
+!04/10/02
+!Edward Chang (EBMUD)
+!Edited ajdraper 09/08/06
+
+!Sets up Requested Diversions from Freeport for Sacramento County (WTPVNY)
+!This information is based on correspondance with Tad Berkebile at SacCo as of Jan 2002
+
+!priorities:
+!1)  cvp Freeport at meets Freeport demands
+!2)  exc at Freeport meets total demands unmet by sum of
+!    cvp freeport and SCWA Fazio.  This logic nees to be in cycle 7
+
+!exc taken as last priority (i.e. below wheeling, and interruptibles)
+!Unmet shortage calculated for post-processing at node 305)
+
+define CL_SCWA_total   {timeseries kind 'ALLOC-CVP-MI' units 'TAF' convert 'CFS'}      !Total allocation amount for cvp iu SCWA
+define CL_FPT_SCWA_CVP {timeseries kind 'ALLOC-CVP-MI' units 'TAF' convert 'CFS'}      !allocation amount for cvp iu SCWA Freeport
+define CL_FPT_SCWA_oth {timeseries kind 'ALLOC-OTH-MI' units 'TAF' convert 'CFS'}      !allocation amount for "oth" iu SCWA Freeport
+
+!sub-arcs to account for indoor and outdoor components of CVP and exc water
+define D_WTPSAC_SCMTO   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D_WTPSAC_SCWA    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+
+define D_WTPVNY_SCWA {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define FPT_SCWA_CVP  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define FPT_SCWA_exc  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define FPT_SCWA_oth  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+
+!split diversions from Sacramento WTP
+goal splitD_WTPSAC_26   {D_WTPSAC_26N_NU3 + D_WTPSAC_26S_NU1 + D_WTPSAC_26S_PU4 = D_WTPSAC_SCMTO + D_WTPSAC_SCWA}
+!split diversions from Freeport WTP
+goal splitD_WTPVNY_26   {D_WTPVNY_26S_PU4 + D_WTPVNY_26S_PU5 + D_WTPVNY_26S_PU6 + D_WTPVNY_26S_PU1 = D_WTPVNY_SCWA}
+goal splitWTPVNY_SC  	{D_WTPVNY_SCWA   = FPT_SCWA_CVP + FPT_SCWA_exc + FPT_SCWA_oth}
+
+goal limitWTPSAC_SCWA   {D_WTPSAC_SCWA + FPT_SCWA_CVP + FPT_SCWA_exc + FPT_SCWA_oth < CL_SCWA_total}
+goal setFPT_SC_CVP      {FPT_SCWA_CVP < CL_FPT_SCWA_CVP*perdel_cvpmi_sys}
+goal setFPT_SC_oth      {FPT_SCWA_oth < CL_FPT_SCWA_oth}

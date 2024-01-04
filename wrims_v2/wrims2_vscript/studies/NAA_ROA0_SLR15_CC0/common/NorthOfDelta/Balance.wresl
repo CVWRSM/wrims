@@ -1,0 +1,277 @@
+define volS1Zone2 {value S1level2-S1level1 }
+define volS4Zone2 {value S4level2-S4level1 }
+define volS8Zone2 {value S8level2-S8level1 }
+
+define S1_2_coeff {
+  case Greater {
+    condition volS1Zone2 >= 0.001 .and. volS1Zone2 >= volS4Zone2
+    value   volS4Zone2/volS1Zone2
+  }
+  case Less {
+    condition volS1Zone2 < volS4Zone2
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+define S1_2_4coeff {
+  case Greater {
+    condition volS4Zone2 >= 0.001 .and. volS4Zone2 >= volS1Zone2
+    value   volS1Zone2/volS4Zone2
+  }
+  case Less {
+    condition volS4Zone2 < volS1Zone2
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+goal balS1S4Zone2 {
+  lhs S1_2_coeff*S1_2
+  rhs S1_2_4coeff*S4_2
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define S8_2_coeff {
+  case Greater {
+    condition volS8Zone2 >= 0.001 .and. volS8Zone2 >= volS4Zone2
+    value   volS4Zone2/volS8Zone2
+  }
+  case Less {
+    condition volS8Zone2 < volS4Zone2
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+define S8_2_4coeff {
+  case Greater {
+    condition volS4Zone2 >= 0.001 .and. volS4Zone2 >= volS8Zone2
+    value   volS8Zone2/volS4Zone2
+  }
+  case Less {
+    condition volS4Zone2 < volS8Zone2
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+goal balS8S4Zone2 {
+  lhs S8_2_coeff*S8_2
+  rhs S8_2_4coeff*S4_2
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define volS1Zone3 {value S1level3adj-S1level2 }
+define volS4Zone3 {value S4level3adj-S4level2 }
+define volS8Zone3 {value S8level3adj-S8level2 }
+
+define S1_3_coeff {
+  case Greater {
+    condition volS1Zone3 >= 0.001 .and. volS1Zone3 >= volS4Zone3
+    value   volS4Zone3/volS1Zone3
+  }
+  case Less {
+    condition volS1Zone3 < volS4Zone3
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+define S1_3_4coeff {
+  case Greater {
+    condition volS4Zone3 >= 0.001 .and. volS4Zone3 >= volS1Zone3
+    value   volS1Zone3/volS4Zone3
+  }
+  case Less {
+    condition volS4Zone3 < volS1Zone3
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+goal balS1S4Zone3 {
+  lhs S1_3_coeff*S1_3
+  rhs S1_3_4coeff*S4_3
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define S8_3_coeff {
+  case Greater {
+    condition volS8Zone3 >= 0.001 .and. volS8Zone3 >= volS4Zone3
+    value   volS4Zone3/volS8Zone3
+  }
+  case Less {
+    condition volS8Zone3 < volS4Zone3
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+define S8_3_4coeff {
+  case Greater {
+    condition volS4Zone3 >= 0.001 .and. volS4Zone3 >= volS8Zone3
+    value   volS8Zone3/volS4Zone3
+  }
+  case Less {
+    condition volS4Zone3 < volS8Zone3
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+
+
+goal balS8S4Zone3 {
+  lhs S8_3_coeff*S8_3
+  rhs S8_3_4coeff*S4_3
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define volS1Zone4 {value S1level4-S1level3adj }
+define volS4Zone4 {value S4level4-S4level3adj }
+define volS8Zone4 {value S8level4-S8level3adj }
+
+define S1_4_coeff {
+  case Greater {
+    condition volS1Zone4 >= 0.001 .and. volS1Zone4 >= volS4Zone4
+    value   volS4Zone4/volS1Zone4
+  }
+  case Less {
+    condition volS1Zone4 < volS4Zone4
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+define S1_4_4coeff {
+  case Greater {
+    condition volS4Zone4 >= 0.001 .and. volS4Zone4 >= volS1Zone4
+    value   volS1Zone4/volS4Zone4
+  }
+  case Less {
+    condition volS4Zone4 < volS1Zone4
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+goal balS1S4Zone4 {
+  lhs S1_4_coeff*S1_4
+  rhs S1_4_4coeff*S4_4
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define S8_4_coeff {
+  case Greater {
+    condition volS8Zone4 >= 0.001 .and. volS8Zone4 >= volS4Zone4
+    value   volS4Zone4/volS8Zone4
+  }
+  case Less {
+    condition volS8Zone4 < volS4Zone4
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+define S8_4_4coeff {
+  case Greater {
+    condition volS4Zone4 >= 0.001 .and. volS4Zone4 >= volS8Zone4
+    value   volS8Zone4/volS4Zone4
+  }
+  case Less {
+    condition volS4Zone4 < volS8Zone4
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+goal balS8S4Zone4 {
+  lhs S8_4_coeff*S8_4
+  rhs S8_4_4coeff*S4_4
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+
+define volS4Zone5 {value S4level5 - S4level4}
+define volS8Zone5 {value S8level5 - S8level4}
+
+define S8_5_coeff {
+  case Greater {
+    condition volS8Zone5 >= 0.001 .and. volS8Zone5 >= volS4Zone5
+    value   volS4Zone5/volS8Zone5
+  }
+  case Less {
+    condition volS8Zone5 < volS4Zone5
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+define S8_5_4coeff {
+  case Greater {
+    condition volS4Zone5 >= 0.001 .and. volS4Zone5 >= volS8Zone5
+    value   volS8Zone5/volS4Zone5
+  }
+  case Less {
+    condition volS4Zone5 < volS8Zone5
+    value   1.
+  }
+  case otherwise {
+    condition always
+    value   0.
+  }
+}
+
+
+goal balS8S4Zone5 {
+  lhs S8_5_coeff*S8_5
+  rhs S8_5_4coeff*S4_5
+  lhs>rhs penalty 2*taf_cfs
+  lhs<rhs penalty 2*taf_cfs
+}
+

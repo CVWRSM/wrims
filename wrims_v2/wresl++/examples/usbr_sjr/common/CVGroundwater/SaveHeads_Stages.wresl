@@ -1,0 +1,724 @@
+!*********************************************************************
+!*********************************************************************
+!***  Conversion factor from CFS to CF/MONTH
+!*********************************************************************
+!*********************************************************************
+define  cfs_cfm  {value daysin * 86400.0}
+
+
+
+
+!************************************* 
+!**       Save Stream Stages        **
+!*************************************
+define  H_AMR028_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}                           
+define  H_NTOMA_dv    {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_AMR020_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_AMR017_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_AMR009_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_AMR004_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_ANT010_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTL006_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BRR017_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+!define  H_BRR016_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BRR011_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BRR004_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}                                                               
+define  H_BCC012_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BCC006_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BCC004_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC045_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC036_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC032_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC029_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC024_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC018_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC012_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC007_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_BTC003_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}          
+define  H_BSL001_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}                                                               
+define  H_CCH030_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CCH023_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CCH017_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CCH012_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CCH006_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CCH003_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD049_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD044_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD041_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD038_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD031_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD028_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD023_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD018_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD012_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_CBD005_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}                                                               
+define  H_CWD004_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_COW017_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_COW007_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_COW003_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_DRC010_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_DRC005_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_ELD027_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_ELD022_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_ELD017_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}  
+define  H_ELD012_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_ELD005_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR068_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR063_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}  
+define  H_FTR059_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR053_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR048_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR045_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR036_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR031_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR025_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR021_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR016_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR012_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR008_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_FTR003_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC010_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC015_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC022_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC027_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+!define  H_GCC032_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC036_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC039_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+!define  H_GCC042_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC046_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+!define  H_GCC050_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC056_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+!define  H_GCC060_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_GCC065_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_MLC006_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_MLC004_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_PYN001_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_PTH024_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_PTH020_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_PTH015_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_PTH011_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_PTH007_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_KSWCK_dv    {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC294_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC289_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC287_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC281_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC277_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC275_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC269_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC265_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC259_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC257_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC250_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC247_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC240_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC232_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC228_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC224_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC218_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC214_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC207_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC196_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC193_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC185_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC182_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC178_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC174_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC168_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC162_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC154_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC148_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC141_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC134_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC129_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC122_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC115_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC106_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC097_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC093_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC085_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC083_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC082_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC078_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC075_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC074_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC066_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC063_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC057_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC050_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC048_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC041_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC036_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC030_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC022_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC017_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC011_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC003_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SAC000_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_STN026_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_STN021_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_STN014_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_STN009_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_STN004_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SBP031_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SBP028_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SBP024_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SBP021_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SBP018_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_SBP014_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_THM026_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_THM021_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_THM017_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_THM012_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_THM005_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YBP032_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YBP026_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YBP023_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YBP020_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}  
+define  H_YBP016_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YBP014_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YBP011_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YBP007_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YBP002_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YUB011_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+define  H_YUB006_dv   {upper unbounded lower unbounded kind 'STREAM-STAGE' units 'FEET'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!   GOALS:  GetStrm_H is called with the corresponding C2VSIM stream node !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal setH_AMR028_dv   {H_AMR028_dv = GetStrm_H(374)}
+goal setH_NTOMA_dv    {H_NTOMA_dv  = GetStrm_H(375)}
+goal setH_AMR020_dv   {H_AMR020_dv = GetStrm_H(376)}
+goal setH_AMR017_dv   {H_AMR017_dv = GetStrm_H(377)}
+goal setH_AMR009_dv   {H_AMR009_dv = GetStrm_H(378)}
+goal setH_AMR004_dv   {H_AMR004_dv = GetStrm_H(379)}
+goal setH_ANT010_dv   {H_ANT010_dv = GetStrm_H(233)}
+goal setH_BTL006_dv   {H_BTL006_dv = GetStrm_H(220)}
+goal setH_BRR017_dv   {H_BRR017_dv = GetStrm_H(357)}
+!goal setH_BRR016_dv   {H_BRR016_dv = GetStrm_H(358)}
+goal setH_BRR011_dv   {H_BRR011_dv = GetStrm_H(359)}
+goal setH_BRR004_dv   {H_BRR004_dv = GetStrm_H(360)}
+goal setH_BCC012_dv   {H_BCC012_dv = GetStrm_H(269)}
+goal setH_BCC006_dv   {H_BCC006_dv = GetStrm_H(270)}
+goal setH_BCC004_dv   {H_BCC004_dv = GetStrm_H(271)}
+goal setH_BTC045_dv   {H_BTC045_dv = GetStrm_H(283)}
+goal setH_BTC036_dv   {H_BTC036_dv = GetStrm_H(284)}
+goal setH_BTC032_dv   {H_BTC032_dv = GetStrm_H(285)}
+goal setH_BTC029_dv   {H_BTC029_dv = GetStrm_H(286)}
+goal setH_BTC024_dv   {H_BTC024_dv = GetStrm_H(287)}
+goal setH_BTC018_dv   {H_BTC018_dv = GetStrm_H(288)}
+goal setH_BTC012_dv   {H_BTC012_dv = GetStrm_H(289)}
+goal setH_BTC007_dv   {H_BTC007_dv = GetStrm_H(290)}
+goal setH_BTC003_dv   {H_BTC003_dv = GetStrm_H(291)}
+goal setH_BSL001_dv   {H_BSL001_dv = GetStrm_H(292)}
+goal setH_CCH030_dv   {H_CCH030_dv = GetStrm_H(390)}
+goal setH_CCH023_dv   {H_CCH023_dv = GetStrm_H(391)}
+goal setH_CCH017_dv   {H_CCH017_dv = GetStrm_H(392)}
+goal setH_CCH012_dv   {H_CCH012_dv = GetStrm_H(393)}
+goal setH_CCH006_dv   {H_CCH006_dv = GetStrm_H(394)}
+goal setH_CCH003_dv   {H_CCH003_dv = GetStrm_H(395)}
+goal setH_CBD049_dv   {H_CBD049_dv = GetStrm_H(318)}
+goal setH_CBD044_dv   {H_CBD044_dv = GetStrm_H(319)}
+goal setH_CBD041_dv   {H_CBD041_dv = GetStrm_H(320)}
+goal setH_CBD038_dv   {H_CBD038_dv = GetStrm_H(321)}
+goal setH_CBD031_dv   {H_CBD031_dv = GetStrm_H(317)}
+goal setH_CBD028_dv   {H_CBD028_dv = GetStrm_H(324)}
+goal setH_CBD023_dv   {H_CBD023_dv = GetStrm_H(325)}
+goal setH_CBD018_dv   {H_CBD018_dv = GetStrm_H(326)}
+goal setH_CBD012_dv   {H_CBD012_dv = GetStrm_H(327)}
+goal setH_CBD005_dv   {H_CBD005_dv = GetStrm_H(328)}
+goal setH_CWD004_dv   {H_CWD004_dv = GetStrm_H(218)}
+goal setH_COW017_dv   {H_COW017_dv = GetStrm_H(211)}
+goal setH_COW007_dv   {H_COW007_dv = GetStrm_H(212)}
+goal setH_COW003_dv   {H_COW003_dv = GetStrm_H(213)}
+goal setH_DRC010_dv   {H_DRC010_dv = GetStrm_H(256)}
+goal setH_DRC005_dv   {H_DRC005_dv = GetStrm_H(257)}
+goal setH_ELD027_dv   {H_ELD027_dv = GetStrm_H(237)}
+goal setH_ELD022_dv   {H_ELD022_dv = GetStrm_H(238)}
+goal setH_ELD017_dv   {H_ELD017_dv = GetStrm_H(239)}
+goal setH_ELD012_dv   {H_ELD012_dv = GetStrm_H(240)}
+goal setH_ELD005_dv   {H_ELD005_dv = GetStrm_H(241)}
+goal setH_FTR068_dv   {H_FTR068_dv = GetStrm_H(341)}
+goal setH_FTR063_dv   {H_FTR063_dv = GetStrm_H(342)}
+goal setH_FTR059_dv   {H_FTR059_dv = GetStrm_H(343)}
+goal setH_FTR053_dv   {H_FTR053_dv = GetStrm_H(344)}
+goal setH_FTR048_dv   {H_FTR048_dv = GetStrm_H(345)}
+goal setH_FTR045_dv   {H_FTR045_dv = GetStrm_H(346)}
+goal setH_FTR036_dv   {H_FTR036_dv = GetStrm_H(347)}
+goal setH_FTR031_dv   {H_FTR031_dv = GetStrm_H(348)}
+goal setH_FTR025_dv   {H_FTR025_dv = GetStrm_H(353)}
+goal setH_FTR021_dv   {H_FTR021_dv = GetStrm_H(354)}
+goal setH_FTR016_dv   {H_FTR016_dv = GetStrm_H(355)}
+goal setH_FTR012_dv   {H_FTR012_dv = GetStrm_H(356)}
+goal setH_FTR008_dv   {H_FTR008_dv = GetStrm_H(363)}
+goal setH_FTR003_dv   {H_FTR003_dv = GetStrm_H(365)}
+goal setH_GCC010_dv   {H_GCC010_dv = GetStrm_H(304)}
+goal setH_GCC015_dv   {H_GCC015_dv = GetStrm_H(305)}
+goal setH_GCC022_dv   {H_GCC022_dv = GetStrm_H(306)}
+goal setH_GCC027_dv   {H_GCC027_dv = GetStrm_H(307)}
+!goal setH_GCC032_dv   {H_GCC032_dv = GetStrm_H(308)}
+goal setH_GCC036_dv   {H_GCC036_dv = GetStrm_H(309)}
+goal setH_GCC039_dv   {H_GCC039_dv = GetStrm_H(310)}
+!goal setH_GCC042_dv   {H_GCC042_dv = GetStrm_H(311)}
+goal setH_GCC046_dv   {H_GCC046_dv = GetStrm_H(312)}
+!goal setH_GCC050_dv   {H_GCC050_dv = GetStrm_H(313)}
+goal setH_GCC056_dv   {H_GCC056_dv = GetStrm_H(314)}
+!goal setH_GCC060_dv   {H_GCC060_dv = GetStrm_H(315)}
+goal setH_GCC065_dv   {H_GCC065_dv = GetStrm_H(316)}
+goal setH_MLC006_dv   {H_MLC006_dv = GetStrm_H(243)}
+goal setH_MLC004_dv   {H_MLC004_dv = GetStrm_H(244)}
+goal setH_PYN001_dv   {H_PYN001_dv = GetStrm_H(225)}
+goal setH_PTH024_dv   {H_PTH024_dv = GetStrm_H(400)}
+goal setH_PTH020_dv   {H_PTH020_dv = GetStrm_H(401)}
+goal setH_PTH015_dv   {H_PTH015_dv = GetStrm_H(402)}
+goal setH_PTH011_dv   {H_PTH011_dv = GetStrm_H(403)}
+goal setH_PTH007_dv   {H_PTH007_dv = GetStrm_H(404)}
+goal setH_KSWCK_dv    {H_KSWCK_dv = GetStrm_H(205)}
+goal setH_SAC294_dv   {H_SAC294_dv = GetStrm_H(206)}
+goal setH_SAC289_dv   {H_SAC289_dv = GetStrm_H(207)}
+goal setH_SAC287_dv   {H_SAC287_dv = GetStrm_H(208)}
+goal setH_SAC281_dv   {H_SAC281_dv = GetStrm_H(209)}
+goal setH_SAC277_dv   {H_SAC277_dv = GetStrm_H(210)}
+goal setH_SAC275_dv   {H_SAC275_dv = GetStrm_H(216)}
+goal setH_SAC269_dv   {H_SAC269_dv = GetStrm_H(217)}
+goal setH_SAC265_dv   {H_SAC265_dv = GetStrm_H(223)}
+goal setH_SAC259_dv   {H_SAC259_dv = GetStrm_H(224)}
+goal setH_SAC257_dv   {H_SAC257_dv = GetStrm_H(228)}
+goal setH_SAC250_dv   {H_SAC250_dv = GetStrm_H(229)}
+goal setH_SAC247_dv   {H_SAC247_dv = GetStrm_H(230)}
+goal setH_SAC240_dv   {H_SAC240_dv = GetStrm_H(231)}
+goal setH_SAC232_dv   {H_SAC232_dv = GetStrm_H(232)}
+goal setH_SAC228_dv   {H_SAC228_dv = GetStrm_H(236)}
+goal setH_SAC224_dv   {H_SAC224_dv = GetStrm_H(247)}
+goal setH_SAC218_dv   {H_SAC218_dv = GetStrm_H(255)}
+goal setH_SAC214_dv   {H_SAC214_dv = GetStrm_H(260)}
+goal setH_SAC207_dv   {H_SAC207_dv = GetStrm_H(261)}
+goal setH_SAC196_dv   {H_SAC196_dv = GetStrm_H(262)}
+goal setH_SAC193_dv   {H_SAC193_dv = GetStrm_H(274)}
+goal setH_SAC185_dv   {H_SAC185_dv = GetStrm_H(275)}
+goal setH_SAC182_dv   {H_SAC182_dv = GetStrm_H(276)}
+goal setH_SAC178_dv   {H_SAC178_dv = GetStrm_H(277)}
+goal setH_SAC174_dv   {H_SAC174_dv = GetStrm_H(278)}
+goal setH_SAC168_dv   {H_SAC168_dv = GetStrm_H(279)}
+goal setH_SAC162_dv   {H_SAC162_dv = GetStrm_H(280)}
+goal setH_SAC154_dv   {H_SAC154_dv = GetStrm_H(281)}
+goal setH_SAC148_dv   {H_SAC148_dv = GetStrm_H(282)}
+goal setH_SAC141_dv   {H_SAC141_dv = GetStrm_H(294)}
+goal setH_SAC134_dv   {H_SAC134_dv = GetStrm_H(295)}
+goal setH_SAC129_dv   {H_SAC129_dv = GetStrm_H(296)}
+goal setH_SAC122_dv   {H_SAC122_dv = GetStrm_H(297)}
+goal setH_SAC115_dv   {H_SAC115_dv = GetStrm_H(298)}
+goal setH_SAC106_dv   {H_SAC106_dv = GetStrm_H(299)}
+goal setH_SAC097_dv   {H_SAC097_dv = GetStrm_H(300)}
+goal setH_SAC093_dv   {H_SAC093_dv = GetStrm_H(301)}
+goal setH_SAC085_dv   {H_SAC085_dv = GetStrm_H(331)}
+goal setH_SAC083_dv   {H_SAC083_dv = GetStrm_H(332)}
+goal setH_SAC082_dv   {H_SAC082_dv = GetStrm_H(368)}
+goal setH_SAC078_dv   {H_SAC078_dv = GetStrm_H(369)}
+goal setH_SAC075_dv   {H_SAC075_dv = GetStrm_H(370)}
+goal setH_SAC074_dv   {H_SAC074_dv = GetStrm_H(371)}
+goal setH_SAC066_dv   {H_SAC066_dv = GetStrm_H(372)}
+goal setH_SAC063_dv   {H_SAC063_dv = GetStrm_H(373)}
+goal setH_SAC057_dv   {H_SAC057_dv = GetStrm_H(382)}
+goal setH_SAC050_dv   {H_SAC050_dv = GetStrm_H(383)}
+goal setH_SAC048_dv   {H_SAC048_dv = GetStrm_H(384)}
+goal setH_SAC041_dv   {H_SAC041_dv = GetStrm_H(385)}
+goal setH_SAC036_dv   {H_SAC036_dv = GetStrm_H(386)}
+goal setH_SAC030_dv   {H_SAC030_dv = GetStrm_H(387)}
+goal setH_SAC022_dv   {H_SAC022_dv = GetStrm_H(388)}
+goal setH_SAC017_dv   {H_SAC017_dv = GetStrm_H(389)}
+goal setH_SAC011_dv   {H_SAC011_dv = GetStrm_H(414)}
+goal setH_SAC003_dv   {H_SAC003_dv = GetStrm_H(415)}
+goal setH_SAC000_dv   {H_SAC000_dv = GetStrm_H(416)}
+goal setH_STN026_dv   {H_STN026_dv = GetStrm_H(263)}
+goal setH_STN021_dv   {H_STN021_dv = GetStrm_H(264)}
+goal setH_STN014_dv   {H_STN014_dv = GetStrm_H(265)}
+goal setH_STN009_dv   {H_STN009_dv = GetStrm_H(266)}
+goal setH_STN004_dv   {H_STN004_dv = GetStrm_H(267)}
+goal setH_SBP031_dv   {H_SBP031_dv = GetStrm_H(334)}
+goal setH_SBP028_dv   {H_SBP028_dv = GetStrm_H(335)}
+goal setH_SBP024_dv   {H_SBP024_dv = GetStrm_H(336)}
+goal setH_SBP021_dv   {H_SBP021_dv = GetStrm_H(337)}
+goal setH_SBP018_dv   {H_SBP018_dv = GetStrm_H(338)}
+goal setH_SBP014_dv   {H_SBP014_dv = GetStrm_H(339)}
+goal setH_THM026_dv   {H_THM026_dv = GetStrm_H(248)}
+goal setH_THM021_dv   {H_THM021_dv = GetStrm_H(249)}
+goal setH_THM017_dv   {H_THM017_dv = GetStrm_H(250)}
+goal setH_THM012_dv   {H_THM012_dv = GetStrm_H(251)}
+goal setH_THM005_dv   {H_THM005_dv = GetStrm_H(252)}
+goal setH_YBP032_dv   {H_YBP032_dv = GetStrm_H(396)}
+goal setH_YBP026_dv   {H_YBP026_dv = GetStrm_H(397)}
+goal setH_YBP023_dv   {H_YBP023_dv = GetStrm_H(398)}
+goal setH_YBP020_dv   {H_YBP020_dv = GetStrm_H(399)}
+goal setH_YBP016_dv   {H_YBP016_dv = GetStrm_H(407)}
+goal setH_YBP014_dv   {H_YBP014_dv = GetStrm_H(408)}
+goal setH_YBP011_dv   {H_YBP011_dv = GetStrm_H(409)}
+goal setH_YBP007_dv   {H_YBP007_dv = GetStrm_H(410)}
+goal setH_YBP002_dv   {H_YBP002_dv = GetStrm_H(411)}
+goal setH_YUB011_dv   {H_YUB011_dv = GetStrm_H(349)}
+goal setH_YUB006_dv   {H_YUB006_dv = GetStrm_H(350)}
+
+
+!************************************* 
+!**       Save Groundwater Heads    **
+!*************************************
+define  H_GW_AMR028_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}                           
+define  H_GW_NTOMA_dv    {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_AMR020_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_AMR017_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_AMR009_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_AMR004_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_ANT010_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTL006_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BRR017_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+!define  H_GW_BRR016_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BRR011_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BRR004_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}                                                               
+define  H_GW_BCC012_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BCC006_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BCC004_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC045_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC036_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC032_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC029_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC024_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC018_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC012_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC007_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_BTC003_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}          
+define  H_GW_BSL001_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}                                                               
+define  H_GW_CCH030_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CCH023_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CCH017_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CCH012_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CCH006_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CCH003_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD049_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD044_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD041_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD038_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD031_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD028_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD023_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD018_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD012_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_CBD005_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}                                                               
+define  H_GW_CWD004_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_COW017_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_COW007_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_COW003_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_DRC010_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_DRC005_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_ELD027_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_ELD022_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_ELD017_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}  
+define  H_GW_ELD012_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_ELD005_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR068_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR063_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}  
+define  H_GW_FTR059_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR053_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR048_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR045_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR036_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR031_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR025_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR021_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR016_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR012_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR008_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_FTR003_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC010_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC015_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC022_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC027_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+!define  H_GW_GCC032_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC036_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC039_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+!define  H_GW_GCC042_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC046_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+!define  H_GW_GCC050_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC056_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+!define  H_GW_GCC060_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_GCC065_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_MLC006_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_MLC004_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_PYN001_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_PTH024_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_PTH020_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_PTH015_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_PTH011_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_PTH007_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_KSWCK_dv    {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC294_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC289_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC287_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC281_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC277_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC275_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC269_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC265_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC259_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC257_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC250_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC247_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC240_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC232_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC228_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC224_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC218_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC214_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC207_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC196_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC193_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC185_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC182_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC178_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC174_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC168_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC162_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC154_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC148_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC141_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC134_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC129_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC122_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC115_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC106_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC097_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC093_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC085_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC083_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC082_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC078_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC075_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC074_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC066_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC063_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC057_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC050_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC048_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC041_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC036_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC030_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC022_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC017_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC011_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC003_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SAC000_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_STN026_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_STN021_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_STN014_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_STN009_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_STN004_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SBP031_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SBP028_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SBP024_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SBP021_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SBP018_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_SBP014_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_THM026_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_THM021_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_THM017_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_THM012_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_THM005_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YBP032_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YBP026_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YBP023_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YBP020_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}  
+define  H_GW_YBP016_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YBP014_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YBP011_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YBP007_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YBP002_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YUB011_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+define  H_GW_YUB006_dv   {upper unbounded lower unbounded kind 'GW-ELEV' units 'FEET'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!   GOALS:  GetGW_H is called with the corresponding C2VSIM groundwater node and layer number   !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal setH_GW_AMR028_dv   {H_GW_AMR028_dv = GetGW_H(389,1)}      
+goal setH_GW_NTOMA_dv    {H_GW_NTOMA_dv  = GetGW_H(385,1)}      
+goal setH_GW_AMR020_dv   {H_GW_AMR020_dv = GetGW_H(384,1)}      
+goal setH_GW_AMR017_dv   {H_GW_AMR017_dv = GetGW_H(380,1)}      
+goal setH_GW_AMR009_dv   {H_GW_AMR009_dv = GetGW_H(375,1)}      
+goal setH_GW_AMR004_dv   {H_GW_AMR004_dv = GetGW_H(374,1)}      
+goal setH_GW_ANT010_dv   {H_GW_ANT010_dv = GetGW_H(073,1)}      
+goal setH_GW_BTL006_dv   {H_GW_BTL006_dv = GetGW_H(038,1)}      
+goal setH_GW_BRR017_dv   {H_GW_BRR017_dv = GetGW_H(334,1)}      
+!goal setH_GW_BRR016_dv   {H_GW_BRR016_dv = GetGW_H(333,1)}      
+goal setH_GW_BRR011_dv   {H_GW_BRR011_dv = GetGW_H(332,1)}      
+goal setH_GW_BRR004_dv   {H_GW_BRR004_dv = GetGW_H(331,1)}      
+goal setH_GW_BCC012_dv   {H_GW_BCC012_dv = GetGW_H(132,1)}      
+goal setH_GW_BCC006_dv   {H_GW_BCC006_dv = GetGW_H(131,1)}      
+goal setH_GW_BCC004_dv   {H_GW_BCC004_dv = GetGW_H(130,1)}      
+goal setH_GW_BTC045_dv   {H_GW_BTC045_dv = GetGW_H(143,1)}      
+goal setH_GW_BTC036_dv   {H_GW_BTC036_dv = GetGW_H(147,1)}      
+goal setH_GW_BTC032_dv   {H_GW_BTC032_dv = GetGW_H(157,1)}      
+goal setH_GW_BTC029_dv   {H_GW_BTC029_dv = GetGW_H(173,1)}      
+goal setH_GW_BTC024_dv   {H_GW_BTC024_dv = GetGW_H(188,1)}      
+goal setH_GW_BTC018_dv   {H_GW_BTC018_dv = GetGW_H(204,1)}      
+goal setH_GW_BTC012_dv   {H_GW_BTC012_dv = GetGW_H(223,1)}      
+goal setH_GW_BTC007_dv   {H_GW_BTC007_dv = GetGW_H(242,1)}      
+goal setH_GW_BTC003_dv   {H_GW_BTC003_dv = GetGW_H(255,1)}      
+goal setH_GW_BSL001_dv   {H_GW_BSL001_dv = GetGW_H(263,1)}      
+goal setH_GW_CCH030_dv   {H_GW_CCH030_dv = GetGW_H(335,1)}      
+goal setH_GW_CCH023_dv   {H_GW_CCH023_dv = GetGW_H(336,1)}      
+goal setH_GW_CCH017_dv   {H_GW_CCH017_dv = GetGW_H(347,1)}      
+goal setH_GW_CCH012_dv   {H_GW_CCH012_dv = GetGW_H(348,1)}      
+goal setH_GW_CCH006_dv   {H_GW_CCH006_dv = GetGW_H(358,1)}      
+goal setH_GW_CCH003_dv   {H_GW_CCH003_dv = GetGW_H(359,1)}      
+goal setH_GW_CBD049_dv   {H_GW_CBD049_dv = GetGW_H(220,1)}      
+goal setH_GW_CBD044_dv   {H_GW_CBD044_dv = GetGW_H(239,1)}      
+goal setH_GW_CBD041_dv   {H_GW_CBD041_dv = GetGW_H(253,1)}      
+goal setH_GW_CBD038_dv   {H_GW_CBD038_dv = GetGW_H(260,1)}      
+goal setH_GW_CBD031_dv   {H_GW_CBD031_dv = GetGW_H(268,1)}      
+goal setH_GW_CBD028_dv   {H_GW_CBD028_dv = GetGW_H(275,1)}      
+goal setH_GW_CBD023_dv   {H_GW_CBD023_dv = GetGW_H(289,1)}      
+goal setH_GW_CBD018_dv   {H_GW_CBD018_dv = GetGW_H(302,1)}      
+goal setH_GW_CBD012_dv   {H_GW_CBD012_dv = GetGW_H(314,1)}      
+goal setH_GW_CBD005_dv   {H_GW_CBD005_dv = GetGW_H(326,1)}      
+goal setH_GW_CWD004_dv   {H_GW_CWD004_dv = GetGW_H(036,1)}      
+goal setH_GW_COW017_dv   {H_GW_COW017_dv = GetGW_H(012,1)}      
+goal setH_GW_COW007_dv   {H_GW_COW007_dv = GetGW_H(011,1)}      
+goal setH_GW_COW003_dv   {H_GW_COW003_dv = GetGW_H(017,1)}      
+goal setH_GW_DRC010_dv   {H_GW_DRC010_dv = GetGW_H(096,1)}      
+goal setH_GW_DRC005_dv   {H_GW_DRC005_dv = GetGW_H(100,1)}      
+goal setH_GW_ELD027_dv   {H_GW_ELD027_dv = GetGW_H(081,1)}      
+goal setH_GW_ELD022_dv   {H_GW_ELD022_dv = GetGW_H(082,1)}      
+goal setH_GW_ELD017_dv   {H_GW_ELD017_dv = GetGW_H(083,1)}      
+goal setH_GW_ELD012_dv   {H_GW_ELD012_dv = GetGW_H(084,1)}      
+goal setH_GW_ELD005_dv   {H_GW_ELD005_dv = GetGW_H(085,1)}      
+goal setH_GW_FTR068_dv   {H_GW_FTR068_dv = GetGW_H(162,1)}      
+goal setH_GW_FTR063_dv   {H_GW_FTR063_dv = GetGW_H(161,1)}      
+goal setH_GW_FTR059_dv   {H_GW_FTR059_dv = GetGW_H(177,1)}      
+goal setH_GW_FTR053_dv   {H_GW_FTR053_dv = GetGW_H(192,1)}      
+goal setH_GW_FTR048_dv   {H_GW_FTR048_dv = GetGW_H(208,1)}      
+goal setH_GW_FTR045_dv   {H_GW_FTR045_dv = GetGW_H(232,1)}      
+goal setH_GW_FTR036_dv   {H_GW_FTR036_dv = GetGW_H(246,1)}      
+goal setH_GW_FTR031_dv   {H_GW_FTR031_dv = GetGW_H(283,1)}      
+goal setH_GW_FTR025_dv   {H_GW_FTR025_dv = GetGW_H(295,1)}      
+goal setH_GW_FTR021_dv   {H_GW_FTR021_dv = GetGW_H(307,1)}      
+goal setH_GW_FTR016_dv   {H_GW_FTR016_dv = GetGW_H(318,1)}      
+goal setH_GW_FTR012_dv   {H_GW_FTR012_dv = GetGW_H(330,1)}      
+goal setH_GW_FTR008_dv   {H_GW_FTR008_dv = GetGW_H(329,1)}      
+goal setH_GW_FTR003_dv   {H_GW_FTR003_dv = GetGW_H(340,1)}      
+goal setH_GW_GCC010_dv   {H_GW_GCC010_dv = GetGW_H(139,1)}       
+goal setH_GW_GCC015_dv   {H_GW_GCC015_dv = GetGW_H(154,1)}      
+goal setH_GW_GCC022_dv   {H_GW_GCC022_dv = GetGW_H(169,1)}      
+goal setH_GW_GCC027_dv   {H_GW_GCC027_dv = GetGW_H(183,1)}      
+!goal setH_GW_GCC032_dv   {H_GW_GCC032_dv = GetGW_H(198,1)}      
+goal setH_GW_GCC036_dv   {H_GW_GCC036_dv = GetGW_H(211,1)}      
+goal setH_GW_GCC039_dv   {H_GW_GCC039_dv = GetGW_H(216,1)}      
+!goal setH_GW_GCC042_dv   {H_GW_GCC042_dv = GetGW_H(227,1)}      
+goal setH_GW_GCC046_dv   {H_GW_GCC046_dv = GetGW_H(236,1)}      
+!goal setH_GW_GCC050_dv   {H_GW_GCC050_dv = GetGW_H(250,1)}      
+goal setH_GW_GCC056_dv   {H_GW_GCC056_dv = GetGW_H(258,1)}      
+!goal setH_GW_GCC060_dv   {H_GW_GCC060_dv = GetGW_H(266,1)}      
+goal setH_GW_GCC065_dv   {H_GW_GCC065_dv = GetGW_H(267,1)}      
+goal setH_GW_MLC006_dv   {H_GW_MLC006_dv = GetGW_H(088,1)}      
+goal setH_GW_MLC004_dv   {H_GW_MLC004_dv = GetGW_H(087,1)}      
+goal setH_GW_PYN001_dv   {H_GW_PYN001_dv = GetGW_H(046,1)}      
+goal setH_GW_PTH024_dv   {H_GW_PTH024_dv = GetGW_H(428,1)}      
+goal setH_GW_PTH020_dv   {H_GW_PTH020_dv = GetGW_H(410,1)}      
+goal setH_GW_PTH015_dv   {H_GW_PTH015_dv = GetGW_H(411,1)}      
+goal setH_GW_PTH011_dv   {H_GW_PTH011_dv = GetGW_H(412,1)}      
+goal setH_GW_PTH007_dv   {H_GW_PTH007_dv = GetGW_H(413,1)}      
+goal setH_GW_KSWCK_dv    {H_GW_KSWCK_dv  = GetGW_H(001,1)}      
+goal setH_GW_SAC294_dv   {H_GW_SAC294_dv = GetGW_H(005,1)}      
+goal setH_GW_SAC289_dv   {H_GW_SAC289_dv = GetGW_H(009,1)}      
+goal setH_GW_SAC287_dv   {H_GW_SAC287_dv = GetGW_H(015,1)}      
+goal setH_GW_SAC281_dv   {H_GW_SAC281_dv = GetGW_H(022,1)}      
+goal setH_GW_SAC277_dv   {H_GW_SAC277_dv = GetGW_H(023,1)}      
+goal setH_GW_SAC275_dv   {H_GW_SAC275_dv = GetGW_H(029,1)}      
+goal setH_GW_SAC269_dv   {H_GW_SAC269_dv = GetGW_H(037,1)}      
+goal setH_GW_SAC265_dv   {H_GW_SAC265_dv = GetGW_H(045,1)}      
+goal setH_GW_SAC259_dv   {H_GW_SAC259_dv = GetGW_H(056,1)}      
+goal setH_GW_SAC257_dv   {H_GW_SAC257_dv = GetGW_H(055,1)}      
+goal setH_GW_SAC250_dv   {H_GW_SAC250_dv = GetGW_H(067,1)}      
+goal setH_GW_SAC247_dv   {H_GW_SAC247_dv = GetGW_H(068,1)}      
+goal setH_GW_SAC240_dv   {H_GW_SAC240_dv = GetGW_H(072,1)}      
+goal setH_GW_SAC232_dv   {H_GW_SAC232_dv = GetGW_H(079,1)}      
+goal setH_GW_SAC228_dv   {H_GW_SAC228_dv = GetGW_H(086,1)}      
+goal setH_GW_SAC224_dv   {H_GW_SAC224_dv = GetGW_H(094,1)}      
+goal setH_GW_SAC218_dv   {H_GW_SAC218_dv = GetGW_H(099,1)}      
+goal setH_GW_SAC214_dv   {H_GW_SAC214_dv = GetGW_H(105,1)}      
+goal setH_GW_SAC207_dv   {H_GW_SAC207_dv = GetGW_H(113,1)}      
+goal setH_GW_SAC196_dv   {H_GW_SAC196_dv = GetGW_H(129,1)}      
+goal setH_GW_SAC193_dv   {H_GW_SAC193_dv = GetGW_H(140,1)}      
+goal setH_GW_SAC185_dv   {H_GW_SAC185_dv = GetGW_H(144,1)}      
+goal setH_GW_SAC182_dv   {H_GW_SAC182_dv = GetGW_H(155,1)}      
+goal setH_GW_SAC178_dv   {H_GW_SAC178_dv = GetGW_H(171,1)}      
+goal setH_GW_SAC174_dv   {H_GW_SAC174_dv = GetGW_H(186,1)}      
+goal setH_GW_SAC168_dv   {H_GW_SAC168_dv = GetGW_H(202,1)}      
+goal setH_GW_SAC162_dv   {H_GW_SAC162_dv = GetGW_H(221,1)}      
+goal setH_GW_SAC154_dv   {H_GW_SAC154_dv = GetGW_H(240,1)}      
+goal setH_GW_SAC148_dv   {H_GW_SAC148_dv = GetGW_H(254,1)}      
+goal setH_GW_SAC141_dv   {H_GW_SAC141_dv = GetGW_H(262,1)}      
+goal setH_GW_SAC134_dv   {H_GW_SAC134_dv = GetGW_H(269,1)}      
+goal setH_GW_SAC129_dv   {H_GW_SAC129_dv = GetGW_H(277,1)}      
+goal setH_GW_SAC122_dv   {H_GW_SAC122_dv = GetGW_H(291,1)}      
+goal setH_GW_SAC115_dv   {H_GW_SAC115_dv = GetGW_H(303,1)}      
+goal setH_GW_SAC106_dv   {H_GW_SAC106_dv = GetGW_H(315,1)}      
+goal setH_GW_SAC097_dv   {H_GW_SAC097_dv = GetGW_H(327,1)}      
+goal setH_GW_SAC093_dv   {H_GW_SAC093_dv = GetGW_H(339,1)}      
+goal setH_GW_SAC085_dv   {H_GW_SAC085_dv = GetGW_H(349,1)}      
+goal setH_GW_SAC083_dv   {H_GW_SAC083_dv = GetGW_H(350,1)}      
+goal setH_GW_SAC082_dv   {H_GW_SAC082_dv = GetGW_H(351,1)}      
+goal setH_GW_SAC078_dv   {H_GW_SAC078_dv = GetGW_H(363,1)}      
+goal setH_GW_SAC075_dv   {H_GW_SAC075_dv = GetGW_H(362,1)}      
+goal setH_GW_SAC074_dv   {H_GW_SAC074_dv = GetGW_H(361,1)}      
+goal setH_GW_SAC066_dv   {H_GW_SAC066_dv = GetGW_H(372,1)}      
+goal setH_GW_SAC063_dv   {H_GW_SAC063_dv = GetGW_H(373,1)}      
+goal setH_GW_SAC057_dv   {H_GW_SAC057_dv = GetGW_H(416,1)}      
+goal setH_GW_SAC050_dv   {H_GW_SAC050_dv = GetGW_H(435,1)}      
+goal setH_GW_SAC048_dv   {H_GW_SAC048_dv = GetGW_H(451,1)}      
+goal setH_GW_SAC041_dv   {H_GW_SAC041_dv = GetGW_H(463,1)}      
+goal setH_GW_SAC036_dv   {H_GW_SAC036_dv = GetGW_H(475,1)}      
+goal setH_GW_SAC030_dv   {H_GW_SAC030_dv = GetGW_H(476,1)}      
+goal setH_GW_SAC022_dv   {H_GW_SAC022_dv = GetGW_H(493,1)}      
+goal setH_GW_SAC017_dv   {H_GW_SAC017_dv = GetGW_H(492,1)}      
+goal setH_GW_SAC011_dv   {H_GW_SAC011_dv = GetGW_H(527,1)}      
+goal setH_GW_SAC003_dv   {H_GW_SAC003_dv = GetGW_H(526,1)}      
+goal setH_GW_SAC000_dv   {H_GW_SAC000_dv = GetGW_H(525,1)}      
+goal setH_GW_STN026_dv   {H_GW_STN026_dv = GetGW_H(124,1)}      
+goal setH_GW_STN021_dv   {H_GW_STN021_dv = GetGW_H(125,1)}      
+goal setH_GW_STN014_dv   {H_GW_STN014_dv = GetGW_H(126,1)}      
+goal setH_GW_STN009_dv   {H_GW_STN009_dv = GetGW_H(127,1)}      
+goal setH_GW_STN004_dv   {H_GW_STN004_dv = GetGW_H(128,1)}      
+goal setH_GW_SBP031_dv   {H_GW_SBP031_dv = GetGW_H(270,1)}      
+goal setH_GW_SBP028_dv   {H_GW_SBP028_dv = GetGW_H(278,1)}      
+goal setH_GW_SBP024_dv   {H_GW_SBP024_dv = GetGW_H(281,1)}      
+goal setH_GW_SBP021_dv   {H_GW_SBP021_dv = GetGW_H(293,1)}      
+goal setH_GW_SBP018_dv   {H_GW_SBP018_dv = GetGW_H(305,1)}      
+goal setH_GW_SBP014_dv   {H_GW_SBP014_dv = GetGW_H(317,1)}      
+goal setH_GW_THM026_dv   {H_GW_THM026_dv = GetGW_H(108,1)}      
+goal setH_GW_THM021_dv   {H_GW_THM021_dv = GetGW_H(101,1)}      
+goal setH_GW_THM017_dv   {H_GW_THM017_dv = GetGW_H(091,1)}      
+goal setH_GW_THM012_dv   {H_GW_THM012_dv = GetGW_H(092,1)}      
+goal setH_GW_THM005_dv   {H_GW_THM005_dv = GetGW_H(093,1)}      
+goal setH_GW_YBP032_dv   {H_GW_YBP032_dv = GetGW_H(360,1)}      
+goal setH_GW_YBP026_dv   {H_GW_YBP026_dv = GetGW_H(401,1)}      
+goal setH_GW_YBP023_dv   {H_GW_YBP023_dv = GetGW_H(407,1)}      
+goal setH_GW_YBP020_dv   {H_GW_YBP020_dv = GetGW_H(414,1)}      
+goal setH_GW_YBP016_dv   {H_GW_YBP016_dv = GetGW_H(433,1)}      
+goal setH_GW_YBP014_dv   {H_GW_YBP014_dv = GetGW_H(432,1)}      
+goal setH_GW_YBP011_dv   {H_GW_YBP011_dv = GetGW_H(448,1)}      
+goal setH_GW_YBP007_dv   {H_GW_YBP007_dv = GetGW_H(460,1)}      
+goal setH_GW_YBP002_dv   {H_GW_YBP002_dv = GetGW_H(473,1)}      
+goal setH_GW_YUB011_dv   {H_GW_YUB011_dv = GetGW_H(285,1)}      
+goal setH_GW_YUB006_dv   {H_GW_YUB006_dv = GetGW_H(284,1)}   
+
+!*********************************************************************
+!*********************************************************************
+!***  Print out pumping shortage
+!*********************************************************************
+!*********************************************************************
+define	PUMP_SHORT	        {lower unbounded upper unbounded kind 'PUMP_SHORT' units 'CFS'}						
+define	PRCNT_PUMP_SHORT	{lower unbounded upper unbounded kind 'PRCNT_PUMP_SHORT' units 'PERCENT'}						
+
+goal setPump_Short       {PUMP_SHORT       = GetPumpShort(0)  /  cfs_cfm}
+goal setPump_Prcnt_Short {PRCNT_PUMP_SHORT = GetPercentPumpShort(0)     }    
+
+                                                               

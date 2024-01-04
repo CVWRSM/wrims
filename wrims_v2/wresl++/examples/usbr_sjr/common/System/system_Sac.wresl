@@ -1,0 +1,51 @@
+/*
+CALSIM III SYSTEM FILE
+SYSTEM_SAC.WRESL
+
+! THIS FILE CONTAINS THE NAMES OF ALL INCLUDE FILES FOR THE SYSTEM DESCRIPTION
+! FOR THE SACRAMENTO VALLEY AS UPDATED FOR CALSIM III
+
+
+Edited ajdraper, MWH, November 15, 2006
+*/
+
+! included in cycle 1 to allow modeling of nod delivery allocation for use 
+! in operations on the westside of the San Joaquin
+!INCLUDE 'systemtables_Sac\arcs-Deliveries.wresl'
+!INCLUDE 'systemtables_Sac\arcs-WUFactors.wresl'
+
+! included in cycle 1 to allow groundwater simulation for the whole system
+!INCLUDE 'systemtables_Sac\arcs-Channels.wresl'
+!INCLUDE 'systemtables_Sac\arcs-Inflows.wresl'
+!INCLUDE 'systemtables_Sac\arcs-Seepage.wresl'
+!INCLUDE 'systemtables_Sac\arcs-Returns.wresl'
+
+INCLUDE 'systemtables_Sac\arcs-Spills.wresl'
+INCLUDE 'systemtables_Sac\arcs-Diversions.wresl'
+INCLUDE 'systemtables_Sac\arcs-Contracts.wresl'
+INCLUDE 'systemtables_Sac\arcs-Errors.wresl'
+INCLUDE 'systemtables_Sac\arcs-Preoperations.wresl'
+INCLUDE 'systemtables_Sac\arcs-Reservoirs.wresl'
+INCLUDE 'systemtables_Sac\arcs-MinFlows.wresl'
+
+INCLUDE 'systemtables_Sac\constraints-Runoff.wresl'
+INCLUDE 'systemtables_Sac\constraints-Reservoirs.wresl'
+INCLUDE 'systemtables_Sac\constraints-Returns.wresl'
+INCLUDE 'systemtables_Sac\constraints-WUFactors.wresl'
+INCLUDE 'systemtables_Sac\constraints-Deliveries.wresl'
+INCLUDE 'systemtables_Sac\constraints-Connectivity.wresl'
+INCLUDE 'systemtables_Sac\constraints-MinFlows.wresl'
+INCLUDE 'systemtables_Sac\constraints-Contracts.wresl'
+INCLUDE 'systemtables_Sac\constraints-Weirs.wresl'
+INCLUDE 'systemtables_Sac\constraints-Preoperations.wresl'
+INCLUDE 'systemtables_Sac\constraints-GWPumping.wresl'
+
+
+define C_SAC041_ANN {std kind 'FLOW-ANN' units 'CFS'}
+!define C_SAC041_WQ {std kind 'FLOW-WQ' units 'CFS'}
+goal C400total_ann {C_SAC041=C_SAC041_ANN /*+C_SAC041_WQ*/}
+
+
+
+
+

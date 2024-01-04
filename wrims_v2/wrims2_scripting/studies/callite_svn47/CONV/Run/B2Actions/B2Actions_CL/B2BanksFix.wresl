@@ -1,0 +1,55 @@
+goal fixBanksDuringB2Actions {
+  lhs     D_Banks_swp
+  case fixBanks_B2Action2On {
+    condition int(B2Action2On)==1
+    rhs   D_Banks_swp[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action3On {
+    condition month>=APR .and. month<=MAY .and. int(B2Action3On)==1
+    rhs   D_Banks_swp[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action4On {
+    condition month==MAY .and. int(B2Action4On)==1
+    rhs   D_Banks_swp[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action5On {
+    condition month==JUN .and. int(B2Action5On)==1
+    rhs   D_Banks_swp[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action6On {
+    condition month==APR .and. int(B2Action6On)==1
+    rhs   D_Banks_swp[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action7On {
+    condition month>=FEB .and. month<=MAR .and. int(B2Action7On)==1
+    rhs   D_Banks_swp[Base]
+    lhs<rhs penalty 0 }
+}
+goal fixBanksOroDuringB2Actions {
+  lhs     D_Banks_EXP2
+  case fixBanks_B2Action2On {
+    condition int(B2Action2On)==1
+    rhs   D_Banks_EXP2[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action3On {
+    condition month>=APR .and. month<=MAY .and. int(B2Action3On)==1
+    rhs   D_Banks_EXP2[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action4On {
+    condition month==MAY .and. int(B2Action4On)==1
+    rhs   D_Banks_EXP2[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action5On {
+    condition month==JUN .and. int(B2Action5On)==1
+    rhs   D_Banks_EXP2[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action6On {
+    condition month==APR .and. int(B2Action6On)==1
+    rhs   D_Banks_EXP2[Base]
+    lhs<rhs penalty 0 }
+  case fixBanks_B2Action7On {
+    condition month>=FEB .and. month<=MAR .and. int(B2Action7On)==1
+    rhs   D_Banks_EXP2[Base]
+    lhs<rhs penalty 0 }
+}
+

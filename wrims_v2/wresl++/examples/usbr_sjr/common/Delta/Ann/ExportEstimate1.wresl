@@ -1,0 +1,52 @@
+/*
+This file defines export levels for each project (SWP,CVP).
+Estimates are based on current month delivery and San Luis rule-curve.
+*/
+
+!*********************************************************************************************
+! SWP exports:
+
+! export for south-of-delta SWP: demand
+define EstSWPSodDem {value swp_total_demand - I860 } !Ryan 8/9/2005
+define exp_est_SWPDem {alias EstSWPSodDem kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta SWP: rulecurve
+define EstSWPSodRC {value SWPRULEcalc1*taf_cfs - (S_SLUIS_SWP(-1)+S_SLUIS_SWPmod)*taf_cfs}
+define exp_est_SWPRC {alias EstSWPSodRC kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta SWP: demand + rulecurve
+define EstSWPSodExp {value min(BanksMaxAllow, max(300.0, EstSWPSodDem + EstSWPSodRC))}
+define exp_est_SWP {alias EstSWPSodExp kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+!*********************************************************************************************
+! CVP exports:
+
+! export for south-of-delta CVP: demand
+define EstCVPSodDem {value
+  dem_totcvps_pag*taf_cfs*perdel_cvpag_s - CLM_91_PA*taf_cfs*perdel_cvpag_s +
+  dem_totcvps_pmi*taf_cfs*perdel_cvpmi_s  +
+  dem_totcvps_pex*taf_cfs*perdel_cvpex_s - (CLM_64_XA + CLM_72_XA1 + CLM_72_XA2 + CLM_72_XA3 + CLM_73_XA)*taf_cfs*perdel_cvpex_s +
+  dem_totcvps_prf*taf_cfs*perdel_cvprf_s - CLM_91_PR*taf_cfs*perdel_cvprf_s +
+  max(0.0, CLM_91_PA*taf_cfs*perdel_cvpag_s  
+        + (CLM_64_XA + CLM_72_XA1 + CLM_72_XA2 + CLM_72_XA3 + CLM_73_XA)*taf_cfs*perdel_cvpex_s
+        + CLM_91_PR*taf_cfs*perdel_cvprf_s - C_SJR205[SJR_WQ1] - I_FSL012 - I_JBP006)}
+define exp_est_CVPDem {alias EstCVPSodDem kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta CVP: rulecurve
+define EstCVPSodRC {value CvpRuleCalc1*taf_cfs - (S_SLUIS_CVP(-1)+S_SLUIS_CVPmod)*taf_cfs}
+define exp_est_CVPRC {alias EstCVPSodRC kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! minimum Tracy pumping
+define TracyMinPumpLevel {
+        case TracyShastaLow {
+                condition S_SHSTA(-1) /*+ S44(-1)*/ + S_SHSTAmod < 1500.0  ! without Shasta enlargement (S44)
+                value 600.0 }
+        case TracyShastaHigh {
+                condition always
+                value 800.0 }
+}
+! export for south-of-delta CVP: demand + rulecurve
+define CVPexportcap {value maxTracycalc+ CVPDedBanksSwitch*BanksMaxAllowCVP}
+define EstCVPSodExp {value min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC))}
+
+define exp_est_CVP {alias EstCVPSodExp kind 'EXPORT-ESTIMATE' units 'CFS'}

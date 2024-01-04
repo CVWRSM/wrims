@@ -1,0 +1,208 @@
+! wq_defs.wresl
+
+! The following code contains definitions and goals which are common to the pulse 
+! and non-pulse Water Quality cycles.  
+!*****************************************************************************************
+
+! In March, define the annual cap on releases from New Melones for water quality.
+! The cap is based on New Melones forecast.  
+define WQRelCapdv   {std kind 'WQ-REL-CAP' units 'TAF'}
+define WQRelCap {          
+        case March  {condition   month == mar select NMWQcap from stan_yr given NMF = NMforecast1 use linear }
+        case other  {condition always value WQRelCapdv(-1) } }   
+        
+goal set_WQRelCap {WQRelCapdv = WQRelCap }   
+define remWQrelCap         { std kind 'storage' units 'TAF' }   !remaining WQ cap calculated in Cycle 6       
+
+! define the monthly water quality standard at Vernalis
+define VernWQstd           {select WQstd from Vern_WQ_std where month = month }
+
+!*****************************************************************************************
+! Define EC for each inflow stream into the San Joaquin basin - accretions, groundwater seepage,
+! return flows, surface runoff.  
+
+! Assumptions used in the original wq disaggregation were as follows:
+!   EC of local inflows and accretions - 100
+!   EC of Stanislaus Accretions and Returns - 380 Oct-Feb, 190 Mar-Sep
+!   EC of New Melones Release - 85
+!   EC of DMC flows to Mendota Pool - varies by month and year type (EC_Table_MPool.table)
+!   EC of many eastside returns - 380 Oct-Feb, 190 Mar-Sep
+!   EC of local creek inflow (Newman to Vernalis) - regression equation with monthly coefficients
+!   EC of Mud and Salt Slough and Grassland Refuge Returns - monthly lookup
+
+! Upstream basin flows
+define EC_SJR221 {select SJR221 from EC_US_Lander where month=month} !SJR at Gravelly Ford
+define EC_FRS046 {select FRS016 from EC_US_Lander where month=month} !Fresno River
+define EC_CHW028 {select CHW017 from EC_US_Lander where month=month} !Chowchilla River
+define EC_CDMOBB {select CDMOBB from EC_US_Lander where month=month} !Cottonwood,Deadman,Mariposa,Owens,Bear,Burns
+define EC_FSL012 {select FSL012 from EC_US_Lander where month=month} !Fresno Slough
+define EC_JBP006 {select JBP006 from EC_US_Lander where month=month} !James Bypass
+define EC_TUO054 {select TUO054 from EC_Eastside  where month=month} !Tuolumne River
+define EC_TRLCH  {select TRLCH  from EC_Eastside  where month=month} !Turloch Reservoir
+define EC_MDSTO  {select MDSTO  from EC_Eastside  where month=month} !Modesto Reservoir
+define EC_MOWWTP {select WWTP   from EC_Eastside  where month=month}
+define EC_MDWWTP {select WWTP   from EC_Eastside  where month=month}
+define EC_AWWWTP {select WWTP   from EC_Eastside  where month=month}
+define EC_TKWWTP {select WWTP   from EC_Eastside  where month=month}
+define EC_BANOS  {select BANOS  from EC_WestsideI where month=month} !Banos Creek
+define EC_QNT005 {select QNT005 from EC_WestsideI where month=month} !Quinto Creek
+define EC_GRZ012 {select GRZ012 from EC_WestsideI where month=month} !Garzas Creek
+define EC_ORT009 {select ORT009 from EC_WestsideI where month=month} !Orestimba Creek
+define EC_DPC008 {select DPC008 from EC_WestsideI where month=month} !Del Puerto Creek
+define EC_ISLUIS {select ISLUIS from EC_WestsideI where month=month} !San Luis Inflow
+define EC_ING008 {select ING008 from EC_WestsideI where month=month} !Ingram Creek
+
+define EC_SJR214 {value EC_SJR221} !chowchilla bypass bifurcation -- assume equal to SJR221
+define EC_SJR205 {value EC_SJR221} !mendota pool bypass bifurcation -- assume equal to SJR221
+
+define EC_Tracy  {timeseries kind 'SALINITY' units 'mS/cm'} ! {value 750.0}
+define EC_Banks  {timeseries kind 'SALINITY' units 'mS/cm'} ! {value 750.0}   
+
+! define EC_Mendota_Pool {select EC_Mendota_Pool from EC_Table_MPool where wyt_SAC_cvp=wyt_SAC_cvp, month=month}
+! define EC_MP_Ag_Return {value EC_Mendota_Pool + 500.0}
+! define EC_SWR642 {value 1000.} !timeseries kind 'EC-SWR' units 'none' }    !RM121
+! define EC_MP_RF_Return {value EC_SWR642}
+
+define EC_MLRTN   {value 75.0}
+define EC_IDBC024 {value 75.0}
+  
+
+!Stanislaus River
+define EC_Goodwin {select EC_Goodwin from EC_Table_Stan where month = month}
+
+! Surface Runoff arcs
+define EC_SR_64_SJR180 {value 75.0}
+define EC_SR_64_EBP005 {value 75.0}
+define EC_SR_64_EBP019 {value 75.0}
+define EC_SR_64_EBP030 {value 75.0}
+define EC_SR_64_EBP032 {value 75.0}
+define EC_SR_64_EBP050 {value 75.0}
+define EC_SR_63_EBP030 {value 75.0}
+define EC_SR_63_EBP032 {value 75.0}
+define EC_SR_63_EBP050 {value 75.0}
+define EC_SR_63_MCD021 {value 75.0}
+define EC_SR_63_SJR134 {value 75.0}
+define EC_SR_63_SJR117 {value 75.0}
+define EC_SR_62_MCD021 {value 75.0}
+define EC_SR_62_SJR081 {value 75.0}
+define EC_SR_62_TUO017 {value 75.0}
+define EC_SR_61_SJR075 {value 75.0}
+define EC_SR_61_SJR070 {value 75.0}
+define EC_SR_61_TUO017 {value 75.0}
+define EC_SR_61_STS017 {value 75.0}
+define EC_SR_71_MSN004 {value 75.0}
+define EC_SR_71_SJR117 {value 75.0}
+define EC_SR_71_SJR106 {value 75.0}
+define EC_SR_71_SJR091 {value 75.0}
+define EC_SR_71_SJR075 {value 75.0}
+define EC_SR_71_SJR070 {value 75.0}
+define EC_SR_72_MSN004 {value 75.0}
+define EC_SR_72_SAL006 {value 75.0}
+define EC_SR_72_SJR117 {value 75.0}
+define EC_SR_72_SJR106 {value 75.0}
+define EC_SR_72_SJR091 {value 75.0}
+define EC_SR_73_MSN004 {value 75.0}
+define EC_SR_73_SLD027 {value 75.0}
+
+! Seepage arcs (used for for seepage GAINS)
+define EC_SG_DMC070 {value 200.0}
+define EC_SG_FSL012 {value 200.0}
+define EC_SG_FSL005 {value 200.0}
+define EC_SG_MDOTA  {value 200.0}
+define EC_SG_SJR201 {value 200.0}
+define EC_SG_SJR198 {value 200.0}
+define EC_SG_SJR192 {value 200.0}
+define EC_SG_SJR185 {value 200.0}
+define EC_SG_SJR180 {value 200.0}
+define EC_SG_SJR173 {value 200.0}
+define EC_SG_SJR166 {value 200.0}
+define EC_SG_EBP016 {value 200.0}
+define EC_SG_EBP030 {value 200.0}
+define EC_SG_EBP048 {value 200.0}
+define EC_SG_SJR157 {value 200.0}
+define EC_SG_SJR152 {value 200.0}
+define EC_SG_SJR145 {value 200.0}
+define EC_SG_SJR141 {value 200.0}
+define EC_SG_SJR134 {value 200.0}
+define EC_SG_SJR123 {value 200.0}
+define EC_SG_SJR116 {value 200.0}
+define EC_SG_SJR111 {value 200.0}
+define EC_SG_SJR106 {value 200.0}
+define EC_SG_SJR096 {value 200.0}
+define EC_SG_SJR090 {value 200.0}
+define EC_SG_SJR081 {value 200.0}
+define EC_SG_STS058 {value 200.0}
+define EC_SG_STS053 {value 200.0}
+define EC_SG_STS050 {value 200.0}
+define EC_SG_STS043 {value 200.0}
+define EC_SG_STS036 {value 200.0}
+define EC_SG_STS030 {value 200.0}
+define EC_SG_STS020 {value 200.0}
+define EC_SG_SJR072 {value 200.0}
+define EC_SG_STS011 {value 200.0}
+define EC_SG_TUO022 {value 200.0}
+define EC_SG_TUO015 {value 200.0}
+define EC_SG_TUO010 {value 200.0}
+
+! Groundwater pumping arcs
+define EC_GP_61 {value 200.0}
+define EC_GP_62 {value 200.0}
+define EC_GP_63 {value 200.0}
+define EC_GP_64 {value 200.0}
+define EC_GP_71 {value 200.0}
+define EC_GP_72 {value 200.0}
+define EC_GP_73 {value 200.0}
+define EC_GP_91 {value 200.0}
+
+! Field degredation factors
+define dEC_61_PA1 {value 150.0}
+define dEC_61_PA2 {value 150.0}
+define dEC_61_NA2 {value 150.0}
+define dEC_61_NA3 {value 150.0}
+define dEC_61_NA4 {value 150.0}
+define dEC_61_NA5 {value 150.0}
+
+define dEC_62_NA3 {value 150.0}
+define dEC_62_NA4 {value 150.0}
+define dEC_62_NA5 {value 150.0}
+
+define dEC_63_PR1 {value 150.0}
+define dEC_63_PR2 {value 150.0}
+define dEC_63_PR3 {value 150.0}
+define dEC_63_NA4 {value 150.0}
+
+define dEC_64_PA1 {value 150.0}
+define dEC_64_PA2 {value 150.0}
+define dEC_64_PA3 {value 150.0}
+define dEC_64_XA  {value 150.0}
+define dEC_64_NA2 {value 150.0}
+
+define dEC_71_PA1 {value 200.0}
+define dEC_71_PA2 {value 200.0}
+define dEC_71_PA3 {value 200.0}
+define dEC_71_PA4 {value 200.0}
+define dEC_71_PA5 {value 200.0}
+define dEC_71_PA6 {value 200.0}
+define dEC_71_PA7 {value 200.0}
+define dEC_71_NA1 {value 200.0}
+define dEC_71_NA2 {value 200.0}
+
+define dEC_72_PA  {value 200.0}
+define dEC_72_PR1 {value 250.0}
+define dEC_72_PR2 {value 250.0}
+define dEC_72_PR3 {value 250.0}
+define dEC_72_PR4 {value 250.0}
+define dEC_72_PR5 {value 250.0}
+define dEC_72_PR6 {value 250.0}
+define dEC_72_XA1 {value 200.0}
+define dEC_72_XA2 {value 200.0}
+define dEC_72_XA3 {value 200.0}
+define dEC_72_NA1 {value 200.0}
+
+define dEC_73_PA1 {value 200.0}
+define dEC_73_PA2 {value 200.0}
+define dEC_73_PA3 {value 200.0}
+define dEC_73_XA  {value 200.0}
+
+define dEC_91_PA  {value 200.0}
+define dEC_91_PR  {value 250.0}

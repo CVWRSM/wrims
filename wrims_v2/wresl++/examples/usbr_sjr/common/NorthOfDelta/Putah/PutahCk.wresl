@@ -1,0 +1,40 @@
+/*
+CALSIM III
+PUTAHCK.WRESL
+
+Edited ajdraper, MWH, November 15, 2006
+*/
+
+! Placerholder for allocation logic for Solano ID contract allocations
+
+define ALLOC_SID {value 1.0} 
+goal setalloc_SID_dv {alloc_SID_dv = alloc_SID}
+
+! Determine water year type for Putah Creek Minimum Flows
+define Putah_WYT_sv {std kind 'WATER-YEAR-TYPE' units 'NONE'}
+
+define Putah_WYT       {
+	case Oct1921 {
+        	condition month == OCT .and. wateryear ==1922
+        	value     1.
+            }
+      	case APR_Normal {
+            	condition month == APR .and. S_BRYSA(-1)>750.
+           	value     1.	
+            }
+         case APR_Dry {
+            	condition month == APR .and. S_BRYSA(-1)<750.
+            	value     2.
+            }
+      	case otherwise  {
+        	condition always
+        	value     Putah_WYT_sv(-1)  
+            } }       
+
+goal setPutah_WYT_sv {Putah_WYT_sv = Putah_WYT}
+
+! Minimum instream flow requirements
+define	Qmin_PTH024	{select PDDflow from putah_minflow where wytype = Putah_WYT, month = month}
+define	Qmin_PTH007	{select I80flow from putah_minflow where wytype = Putah_WYT, month = month}
+goal setC_C_PTH024_MIF {C_PTH024_MIF < Qmin_PTH024}
+goal setC_C_PTH007_MIF {C_PTH007_MIF < Qmin_PTH007}

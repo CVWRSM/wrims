@@ -1,0 +1,84 @@
+! This file sets Wheeling to zero in cycle 6.
+
+define C_WKYTN_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'} 
+define D_WKYTN_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'} 
+define C_KSWCK_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_NTOMA_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+!define C32_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_WKYTN_m {std kind 'FLOW' UNITS 'CFS'}  
+define D_WKYTN_m {std kind 'FLOW' UNITS 'CFS'}  
+define C_KSWCK_m {std kind 'FLOW' UNITS 'CFS'}
+define C_NTOMA_m {std kind 'FLOW' UNITS 'CFS'}
+!define C32_m {std kind 'FLOW' UNITS 'CFS'}
+
+!define C5_S32SWP {std kind 'FLOW-CHANNEL' units 'CFS'}   ! NODOS related
+!define C5_S32OTH {std kind 'FLOW-CHANNEL' units 'CFS'}   ! NODOS related
+!goal zeroC5_S32SWP {C5_S32SWP = 0.}
+!goal zeroC5_S32OTH {C5_S32OTH = 0.}
+
+define C_NDO_whlcv {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+define C_SAC041_reop {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+define C_SAC041_whlcv {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+goal splitC400_reop {C_SAC041_reop = C_SAC041_whlcv}
+
+goal ClrcrkWhl { C_WKYTN = C_WKYTN_m + C_WKYTN_whlcv }  
+goal SprcrkWhl { D_WKYTN_SPT003 = D_WKYTN_m + D_WKYTN_whlcv }  
+goal ShastaWhl { C_KSWCK = C_KSWCK_m + C_KSWCK_whlcv }
+goal FolsomWhl { C_NTOMA = C_NTOMA_m + C_NTOMA_whlcv }
+!goal NODOSCVPWhl { C32 = C32_m + C32_whlcv }
+
+! Compute the maximum flow that Tracy can pump due to channel capacity restrictions.
+define UpperDMCdems1 {value (CLM_50_PA + CLM_50_PU + CLM_71_PA8)*taf_cfs}
+define UpperDMCdems2 {value (CLM_71_PA1 + CLM_71_PA2 + CLM_71_PA3 + CLM_71_PA4
+                     + CLM_71_PA5 + CLM_71_PA6 + CLM_71_PA7)*taf_cfs}
+define maxTracycalc1 {value min(TracyMaxAllow,
+                     4400+perdel_cvpag_s*UpperDMCdems1,
+                     4200+perdel_cvpag_s*UpperDMCdems1+perdel_cvpag_s*UpperDMCdems2) }
+define maxTracycalc {value min(maxTracycalc1 + Intertie_Cap, TracyMaxAllow)}
+
+goal wheeling1 {C_NDO_whlcv = 0.0}
+goal wheeling2 {C_WKYTN_whlcv = 0.0}
+goal wheeling3 {D_WKYTN_whlcv = 0.0}
+goal wheeling4 {C_KSWCK_whlcv = 0.0}
+goal wheeling5 {C_NTOMA_whlcv = 0.0}
+!goal wheeling2c2 {C32_whlcv = 0.0}
+goal wheeling7 {D859_GWRECH_CVPB = 0.0}
+
+! Making unavailable the arcs for filling NODOS CVP exchange bucket
+!goal zero_D14401_EXOP    {D14401_EXOP = 0.}
+!goal zero_D17501_EXOP    {D17501_EXOP = 0.}
+!goal zero_D124A_EXOP     {D124A_EXOP = 0.}
+!goal zero_C177C_EXOP     {C177C_EXOP = 0.}
+
+!Placeholder inflow above BanksPP
+goal CapForCVC {I_CAA000 = 0.0}
+goal wheeling9 {CAA000_cvc= 0.0}
+goal wheeling11 {D855=CAA000_cvc}
+
+
+!Zero out Sac Flow Reop adjustment
+goal zeroC400_whlcv {C_SAC041_whlcv = 0.0}
+
+! identify cvp water in C_CAA067 
+
+define C_CAA067_CVP {std kind 'flow-channel' units 'cfs'}
+goal setC_CAA067_CVP {C_CAA067_CVP = D_DMC007_CAA009 + CAA000_CVP}
+! limit delivery from oneill forbay to the dmc to intertie, wheeling, and SL release
+goal ONFB1 {D_CAA069_DMC070 < C_SLUIS_CVP + C_CAA067_CVP - CAA000_CVC }
+
+! sum of cvp joint use branch deliveries
+define CVP_JUB_delivs {std kind 'delivery' units 'cfs'}
+goal setCVP_JUB_delivs {CVP_JUB_delivs = D_CAA087_73_PA1 + D_CAA095_72_PU + D_CAA109_73_PA3
+                        + D_CAA109_90_PA1 + D_CAA143_90_PA1 + D_CAA155_90_PA1 + D_CAA172_90_PA1
+                        + D_CAA143_90_PA2 + D_CAA143_90_PU  + D_CAA156_90_PU  + D_CAA165_90_PU}
+
+! limit CVP deliv to San Luis to be less than intertie, wheeling, and deliberate dmc diversion
+goal ONFB2 {D_CAA069_SLUIS_F < D_DMC070_CAA069 + C_CAA067_CVP - CAA000_CVC }
+
+! balance of cvp water in the caa
+! cvp water in the CAA and diversion from the dmc has to go to either san luis
+! or to cvp delivery in the joint use branch
+goal cvp_to_swp {D_DMC070_CAA069 + C_CAA067_CVP = D_CAA069_SLUIS_F + CVP_JUB_delivs + D855}
+
+

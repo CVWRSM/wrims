@@ -1,0 +1,9 @@
+
+define D859_GWRECHARGE    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D859_GWRECH_SWP    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D859_GWRECH_CVP    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D859_GWRECH_CVPA    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D859_GWRECH_CVPB    {std kind 'FLOW-DELIVERY' units 'CFS' }
+
+goal totalD859_GWRech { D859_GWRECHARGE = D859_GWRECH_CVP + D859_GWRECH_SWP}
+goal CVPD859_GWRech { D859_GWRECH_CVP = D859_GWRECH_CVPA + D859_GWRECH_CVPB}

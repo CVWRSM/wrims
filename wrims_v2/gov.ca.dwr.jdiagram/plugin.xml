@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="gov.ca.dwr"
+            name="DWR">
+      </category>
+      <view
+            category="gov.ca.dwr"
+            class="gov.ca.dwr.jdiagram.views.SchematicView"
+            id="gov.ca.dwr.jdiagram.views.SchematicView"
+            name="Schematic View">
+      </view>
+      <view
+            category="gov.ca.dwr"
+            class="gov.ca.dwr.jdiagram.views.SchematicOverview"
+            id="gov.ca.dwr.jdiagram.views.SchematicOverview"
+            name="Schematic Overview">
+      </view>
+      <view
+            category="gov.ca.dwr"
+            class="gov.ca.dwr.jdiagram.views.SchematicEditorViewA"
+            id="gov.ca.dwr.jdiagram.views.SchematicEditorViewA"
+            name="Schematic Editor A">
+      </view>
+      <view
+            category="gov.ca.dwr"
+            class="gov.ca.dwr.jdiagram.views.SchematicEditorViewB"
+            id="gov.ca.dwr.jdiagram.views.SchematicEditorViewB"
+            name="Schematic Editor B">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="gov.ca.dwr.jdiagram.views.SchematicView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.TaskList">
+         </view>
+         <view
+               id="gov.ca.dwr.jdiagram.views.SchematicOverview"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.TaskList">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="gov.ca.dwr.jdiagram.PerspectiveFactory"
+            fixed="true"
+            id="gov.ca.dwr.jdiagram.perspective"
+            name="Schematic">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="gov.ca.dwr.jdiagram.SchematicEditorPerspectiveFactory"
+            id="gov.ca.dwr.jdiagram.schematiceditorperspective"
+            name="Schematic Editor"/>
+   </extension> 
+   <extension
+         point="org.eclipse.search.textSearchQueryProvider">
+      <textSearchQueryProvider
+            class="gov.ca.dwr.jdiagram.TextSearchQueryProvider"
+            id="gov.ca.dwr.jdiagram.textSearchQueryProvider1"
+            label="gov.ca.dwr.jdiagram.textSearchQueryProvider1">
+      </textSearchQueryProvider>
+   </extension>
+
+</plugin>

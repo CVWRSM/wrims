@@ -1,0 +1,6 @@
+!INCLUDE '..\..\..\common\cvp_dellogic\cvp_dellogic_s\demands_s\cvp_demands_s.wresl'
+INCLUDE '..\..\..\common\cvp_dellogic\cvp_dellogic_s\exp_based\export_index_cvp.wresl'
+INCLUDE '..\..\..\common\cvp_dellogic\cvp_dellogic_s\exp_based\exp_based_del_cvp_s.wresl'
+INCLUDE 'delcar_cvp_s.wresl'
+INCLUDE 'cvpcut_s.wresl' ! Changed cut logic to allocate Stage 1 Transfers to CVP_S, this file used to specify the common\..\cvpcut_s.wresl LGB
+INCLUDE '..\..\..\common\cvp_dellogic\cvp_dellogic_s\deliveries_s\cvp_arcsplit_s_cyc1.wresl'

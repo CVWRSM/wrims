@@ -1,0 +1,708 @@
+! cycle4out.wresl
+! Edward Chang
+! 12/14/99
+! The following WRESL code is used in cycle 6 to write out intermediate solver computations that are made in the SJR module
+! Revised by C. Hsu, 3/10/03, USBR, for review and documentation project
+!######################################################################################
+
+/* Cycle 4
+The following WRESL code is used in cycle 6 to write out intermediate solver computations
+that are made in the SJR module.  This may be needed to verify output computations that
+are based on cycle2 because the final output is the monthly weighted flows and storage,
+not what may be in each 10, 14, 15, or 16 day period.
+*/
+! Define New Melones flows for cycle 4 output
+define C_MELONcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones mainstem flows for cycle 4 output
+define C_MELONmcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones water quality flows for cycle 4 output
+define C_MELONWQcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones dissolved oxygen flows for cycle 4 output
+define C_MELONDOcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones VAMP flows for cycle 4 output
+define C_STS059VAMPcyc4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Lower DMC flow for cycle 4 output
+define C_DMC116cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Delivery to SSJID area cycle 4 output
+define C522cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Merced River below McClure flow for cycle 4 output
+define C_MCLREcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Don Pedro main channel flow for cycle 4 output
+define C_PEDROcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define McClure mainstem flow for cycle 4 output
+define C_MCLREmcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Don Pedro mainstem flow for cycle 4 output
+define C_PEDROmcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define McClure VAMP flow for cycle 4 output
+define C_MCLREvampcyc4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Don Pedro VAMP flow for cycle 4 output
+define C_PEDROvampcyc4 {std kind 'flow-cycle4' units 'cfs' }
+! Define flow in Reach C_STS059 for cycle 4 output
+define C_STS059cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define flow in Reach C_STS017 for cycle 4 output
+define C_STS017cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define flow below Vernalis for cycle 4 output
+define C_SJR070cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Set New Melones flow for cycle 4 output (water quality)
+goal outC_MELONcycle4 {C_MELONcycle4 = C_MELON[SJR_WQ2]}
+! New Melones main channel flow for cycle 4 output (water quality) 
+goal outC_MELONmcycle4 {C_MELONMcycle4 = C_MELONM[SJR_WQ2]} 
+! Set New Melones water quality flow for cycle 4 output 
+goal outC_MELONWQcycle4 {C_MELONWQcycle4 = C_MELONWQ[SJR_WQ2]}
+! Set New Melones DO flow for cycle 4 output (water quality)  
+goal outC_MELONDOcycle4 {C_MELONDOcycle4 = C_MELONDO[SJR_WQ2]}
+! New Melones Reach C_STS059 VAMP cycle 4 output (water quality) 
+goal outC_STS059VAMPcyc4 {C_STS059VAMPcyc4 = C_STS059VAMP[SJR_WQ2]}
+! Lower DMC to Mendota Pool cycle 4 output (water quality)
+goal outC_DMC116cycle4 {C_DMC116cycle4 = C_DMC116[SJR_WQ2]}
+! Merced River cycle 4 output (water quality)
+goal outC_MCLREcycle4 {C_MCLREcycle4 = C_MCLRE[SJR_WQ2]}
+! Don Pedro cycle 4 output (water quality)
+goal outC_PEDROcycle4 {C_PEDROcycle4 = C_PEDRO[SJR_WQ2]}
+! McClure mainstem cycle 4 output (water quality)
+goal outC_MCLREmcycle4 {C_MCLREMcycle4 = C_MCLREM[SJR_WQ2]}
+! Don Pedro mainstem cycle 4 output (water quality)
+goal outC_PEDROmcycle4 {C_PEDROMcycle4 = C_PEDROM[SJR_WQ2]}
+! McClure VAMP cycle 4 output (water quality)
+goal outC_MCLREvampcyc4 {C_MCLREVAMPcyc4 = C_MCLREVAMP[SJR_WQ2]}
+! Don Pedro VAMP cycle 4 output (water quality)
+goal outC_PEDROvampcyc4 {C_PEDROVAMPcyc4 = C_PEDROVAMP[SJR_WQ2]}
+! New Melones Reach C_STS059 cycle 4 output (water quality)
+goal outC_STS059cycle4 {C_STS059cycle4 = C_STS059[SJR_WQ2]}
+! New Melones Reach C_STS017 cycle 4 output (water quality)
+goal outC_STS017cycle4 {C_STS017cycle4 = C_STS017[SJR_WQ2]}
+! SJR below Vernalis cycle 4 output (water quality)
+goal outC_SJR070cycle4 {C_SJR070cycle4 = C_SJR070[SJR_WQ2]}
+! Define New Melones mainstem VAMP cycle 4 flow
+define C_MELONVAMP_Mcy4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones VAMP transfer cycle 4 flow
+define C_MELONVAMP_Tcy4 {std kind 'flow-cycle4' units 'cfs' }
+! Don Pedro Stanislaus VAMP cycle 4 output
+define C_PEDROstsvampc4 {std kind 'flow-cycle4' units 'cfs' }
+! New Melones mainstem VAMP cycle 4 output 
+goal outC_MELONVAMP_Mcy4 {C_MELONVAMP_Mcy4 = C_MELONVAMP_M[SJR_WQ2]}
+! New Melones transfer VAMP cycle 5 output
+goal outC_MELONVAMP_Tcy4 {C_MELONVAMP_Tcy4 = C_MELONVAMP_T[SJR_WQ2]}
+! Don Pedro Stanislaus VAMP cycle 4 output
+goal outC_PEDRO_STS_VAMPcycle4 {C_PEDROstsvampc4 = C_PEDRO_STS_VAMP[SJR_WQ2]}
+! Define Don Pedro minflow for cycle 4
+define C_TUO054_MIFcyc4 {std kind 'flowmin-cycle4' units 'cfs'}
+! Set Don Pedro minflow cycle 4 for output
+goal outC_TUO054_MIFcyc4 {C_TUO054_MIFcyc4 = C_TUO054_MIF[SJR_WQ2]}
+
+
+!********************************************************************
+! Additional flows @ cycle 4 ... for use with EC output
+define C_SJR205_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR205_C4             { C_SJR205_C4 = C_SJR205[SJR_WQ2] }
+define C_SJR201_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR201_C4             { C_SJR201_C4 = C_SJR201[SJR_WQ2] }
+define C_SJR200_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR200_C4             { C_SJR200_C4 = C_SJR200[SJR_WQ2] }
+define C_SJR198_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR198_C4             { C_SJR198_C4 = C_SJR198[SJR_WQ2] }
+define C_SJR195_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR195_C4             { C_SJR195_C4 = C_SJR195[SJR_WQ2] }
+define C_SJR192_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR192_C4             { C_SJR192_C4 = C_SJR192[SJR_WQ2] }
+define C_SJR185_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR185_C4             { C_SJR185_C4 = C_SJR185[SJR_WQ2] }
+define C_SJR180_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR180_C4             { C_SJR180_C4 = C_SJR180[SJR_WQ2] }
+define C_SJR179_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR179_C4             { C_SJR179_C4 = C_SJR179[SJR_WQ2] }
+define C_SJR173_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR173_C4             { C_SJR173_C4 = C_SJR173[SJR_WQ2] }
+define C_SJR166_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR166_C4             { C_SJR166_C4 = C_SJR166[SJR_WQ2] }
+define C_SJR157_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR157_C4             { C_SJR157_C4 = C_SJR157[SJR_WQ2] }
+define C_SJR152_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR152_C4             { C_SJR152_C4 = C_SJR152[SJR_WQ2] }
+define C_SJR145_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR145_C4             { C_SJR145_C4 = C_SJR145[SJR_WQ2] }
+define C_SJR141_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR141_C4             { C_SJR141_C4 = C_SJR141[SJR_WQ2] }
+define C_SJR134_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR134_C4             { C_SJR134_C4 = C_SJR134[SJR_WQ2] }
+define C_SJR131_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR131_C4             { C_SJR131_C4 = C_SJR131[SJR_WQ2] }
+define C_SJR127_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR127_C4             { C_SJR127_C4 = C_SJR127[SJR_WQ2] }
+define C_SJR123_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR123_C4             { C_SJR123_C4 = C_SJR123[SJR_WQ2] }
+define C_SJR119_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR119_C4             { C_SJR119_C4 = C_SJR119[SJR_WQ2] }
+define C_SJR117_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR117_C4             { C_SJR117_C4 = C_SJR117[SJR_WQ2] }
+define C_SJR116_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR116_C4             { C_SJR116_C4 = C_SJR116[SJR_WQ2] }
+define C_SJR115_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR115_C4             { C_SJR115_C4 = C_SJR115[SJR_WQ2] }
+define C_SJR114_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR114_C4             { C_SJR114_C4 = C_SJR114[SJR_WQ2] }
+define C_SJR111_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR111_C4             { C_SJR111_C4 = C_SJR111[SJR_WQ2] }
+define C_SJR106_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR106_C4             { C_SJR106_C4 = C_SJR106[SJR_WQ2] }
+define C_SJR105_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR105_C4             { C_SJR105_C4 = C_SJR105[SJR_WQ2] }
+define C_SJR101_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR101_C4             { C_SJR101_C4 = C_SJR101[SJR_WQ2] }
+define C_SJR096_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR096_C4             { C_SJR096_C4 = C_SJR096[SJR_WQ2] }
+define C_SJR091_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR091_C4             { C_SJR091_C4 = C_SJR091[SJR_WQ2] }
+define C_SJR090_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR090_C4             { C_SJR090_C4 = C_SJR090[SJR_WQ2] }
+define C_SJR087_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR087_C4             { C_SJR087_C4 = C_SJR087[SJR_WQ2] }
+define C_SJR082_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR082_C4             { C_SJR082_C4 = C_SJR082[SJR_WQ2] }
+define C_SJR081_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR081_C4             { C_SJR081_C4 = C_SJR081[SJR_WQ2] }
+define C_SJR075_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR075_C4             { C_SJR075_C4 = C_SJR075[SJR_WQ2] }
+define C_SJR072_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR072_C4             { C_SJR072_C4 = C_SJR072[SJR_WQ2] }
+define C_SJR070_C4              { std kind 'CHANNEL' units 'CFS' }
+goal setC_SJR070_C4             { C_SJR070_C4 = C_SJR070[SJR_WQ2] }
+! SAC -- define C_SJR062_C4              { std kind 'CHANNEL' units 'CFS' }
+! SAC -- goal setC_SJR062_C4             { C_SJR062_C4 = C_SJR062[SJR_WQ2] }
+! SAC -- define C_SJR056_C4              { std kind 'CHANNEL' units 'CFS' }
+! SAC -- goal setC_SJR056_C4             { C_SJR056_C4 = C_SJR056[SJR_WQ2] }
+
+define R_50_PA_C4               {std kind 'RETURN-FLOW' units 'CFS'}
+define R_50_PU_C4               {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_PA1_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_PA2_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_PA3_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_PA4_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_PA5_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_PA6_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_PA7_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_PA8_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_NA1_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_71_NA2_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_PA_C4               {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_XA1_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_XA2_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_XA3_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_PR1_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_PR2_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_PR3_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_PR4_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_PR5_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_PR6_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_72_NA1_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_73_PA1_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_73_PA2_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_73_PA3_C4              {std kind 'RETURN-FLOW' units 'CFS'}
+define R_73_XA_C4               {std kind 'RETURN-FLOW' units 'CFS'}
+define R_91_PA_C4               {std kind 'RETURN-FLOW' units 'CFS'}
+define R_91_PR_C4               {std kind 'RETURN-FLOW' units 'CFS'}
+goal setR_50_PA_C4              { R_50_PA_C4  = R_50_PA[SJR_WQ2] }
+goal setR_50_PU_C4              { R_50_PU_C4  = R_50_PU[SJR_WQ2] }
+goal setR_71_PA1_C4             { R_71_PA1_C4 = R_71_PA1[SJR_WQ2] }
+goal setR_71_PA2_C4             { R_71_PA2_C4 = R_71_PA2[SJR_WQ2] }
+goal setR_71_PA3_C4             { R_71_PA3_C4 = R_71_PA3[SJR_WQ2] }
+goal setR_71_PA4_C4             { R_71_PA4_C4 = R_71_PA4[SJR_WQ2] }
+goal setR_71_PA5_C4             { R_71_PA5_C4 = R_71_PA5[SJR_WQ2] }
+goal setR_71_PA6_C4             { R_71_PA6_C4 = R_71_PA6[SJR_WQ2] }
+goal setR_71_PA7_C4             { R_71_PA7_C4 = R_71_PA7[SJR_WQ2] }
+goal setR_71_PA8_C4             { R_71_PA8_C4 = R_71_PA8[SJR_WQ2] }
+goal setR_71_NA1_C4             { R_71_NA1_C4 = R_71_NA1[SJR_WQ2] }
+goal setR_71_NA2_C4             { R_71_NA2_C4 = R_71_NA2[SJR_WQ2] }
+goal setR_72_PA_C4              { R_72_PA_C4  = R_72_PA[SJR_WQ2] }
+goal setR_72_XA1_C4             { R_72_XA1_C4 = R_72_XA1[SJR_WQ2] }
+goal setR_72_XA2_C4             { R_72_XA2_C4 = R_72_XA2[SJR_WQ2] }
+goal setR_72_XA3_C4             { R_72_XA3_C4 = R_72_XA3[SJR_WQ2] }
+goal setR_72_PR1_C4             { R_72_PR1_C4 = R_72_PR1[SJR_WQ2] }
+goal setR_72_PR2_C4             { R_72_PR2_C4 = R_72_PR2[SJR_WQ2] }
+goal setR_72_PR3_C4             { R_72_PR3_C4 = R_72_PR3[SJR_WQ2] }
+goal setR_72_PR4_C4             { R_72_PR4_C4 = R_72_PR4[SJR_WQ2] }
+goal setR_72_PR5_C4             { R_72_PR5_C4 = R_72_PR5[SJR_WQ2] }
+goal setR_72_PR6_C4             { R_72_PR6_C4 = R_72_PR6[SJR_WQ2] }
+goal setR_72_NA1_C4             { R_72_NA1_C4 = R_72_NA1[SJR_WQ2] }
+goal setR_73_PA1_C4             { R_73_PA1_C4 = R_73_PA1[SJR_WQ2] }
+goal setR_73_PA2_C4             { R_73_PA2_C4 = R_73_PA2[SJR_WQ2] }
+goal setR_73_PA3_C4             { R_73_PA3_C4 = R_73_PA3[SJR_WQ2] }
+goal setR_73_XA_C4              { R_73_XA_C4  = R_73_XA[SJR_WQ2] }
+goal setR_91_PA_C4              { R_91_PA_C4  = R_91_PA[SJR_WQ2] }
+goal setR_91_PR_C4              { R_91_PR_C4  = R_91_PR[SJR_WQ2] }
+
+
+define C_MCD002_C4              { std kind 'CHANNEL' units 'cfs' }
+goal setC_MCD002_C4             { C_MCD002_C4 = C_MCD002[SJR_WQ2]}
+define C_TUO003_C4              { std kind 'CHANNEL' units 'cfs' }
+goal setC_TUO003_C4             { C_TUO003_C4 = C_TUO003[SJR_WQ2]}
+define C_STS011_C4              { std kind 'CHANNEL' units 'cfs' }
+goal setC_STS011_C4             { C_STS011_C4 = C_STS011[SJR_WQ2]}
+define C_MDOTA_C4               { std kind 'CHANNEL' units 'cfs' }
+goal setC_MDOTA_C4              { C_MDOTA_C4 = C_MDOTA[SJR_WQ2]}
+define C_SAL006_C4              { std kind 'CHANNEL' units 'cfs' }
+goal setC_SAL006_C4             { C_SAL006_C4 = C_SAL006[SJR_WQ2]}
+define C_MSN004_C4              { std kind 'CHANNEL' units 'cfs' }
+goal setC_MSN004_C4             { C_MSN004_C4 = C_MSN004[SJR_WQ2]}
+define C_MRS000_C4              { std kind 'CHANNEL' units 'cfs' }
+goal setC_MRS000_C4             { C_MRS000_C4 = C_MRS000[SJR_WQ2]}
+define C_NMW004_C4              { std kind 'CHANNEL' units 'cfs' }
+goal setC_NMW004_C4             { C_NMW004_C4 = C_NMW004[SJR_WQ2]}
+define C_EBP050_C4              { std kind 'CHANNEL' units 'cfs' }
+goal setC_EBP050_C4             { C_EBP050_C4 = C_EBP050[SJR_WQ2]}
+
+define EC_SJR201_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_SJR201_C4     { EC_SJR201_C4 = EC_SJR201dv[SJR_WQ2] }
+define EC_SJR195_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_SJR195_C4     { EC_SJR195_C4 = EC_SJR195dv[SJR_WQ2] }
+define EC_SJR185_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_SJR185_C4     { EC_SJR185_C4 = EC_SJR185dv[SJR_WQ2] }
+define EC_SJR180_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR180_C4     { EC_SJR180_C4 = EC_SJR180dv[SJR_WQ2] }
+define EC_SJR166_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR166_C4     { EC_SJR166_C4 = EC_SJR166dv[SJR_WQ2] }
+define EC_SJR145_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR145_C4     { EC_SJR145_C4 = EC_SJR145dv[SJR_WQ2] }
+define EC_SJR134_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR134_C4     { EC_SJR134_C4 = EC_SJR134dv[SJR_WQ2] }
+define EC_SJR127_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR127_C4     { EC_SJR127_C4 = EC_SJR127dv[SJR_WQ2] }
+define EC_SJR119_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR119_C4     { EC_SJR119_C4 = EC_SJR119dv[SJR_WQ2] }
+define EC_SJR116_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR116_C4     { EC_SJR116_C4 = EC_SJR116dv[SJR_WQ2] }
+define EC_SJR114_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR114_C4     { EC_SJR114_C4 = EC_SJR114dv[SJR_WQ2] }
+define EC_SJR106_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR106_C4     { EC_SJR106_C4 = EC_SJR106dv[SJR_WQ2] }
+define EC_SJR096_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR096_C4     { EC_SJR096_C4 = EC_SJR096dv[SJR_WQ2] }
+define EC_SJR091_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR091_C4     { EC_SJR091_C4 = EC_SJR091dv[SJR_WQ2] }
+define EC_SJR082_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR082_C4     { EC_SJR082_C4 = EC_SJR082dv[SJR_WQ2] }
+define EC_SJR081_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR081_C4     { EC_SJR081_C4 = EC_SJR081dv[SJR_WQ2] }
+define EC_SJR075_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR075_C4     { EC_SJR075_C4 = EC_SJR075dv[SJR_WQ2] }
+define EC_SJR072_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR072_C4     { EC_SJR072_C4 = EC_SJR072dv[SJR_WQ2] }
+define EC_SJR070_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR070_C4     { EC_SJR070_C4 = EC_SJR070dv[SJR_WQ2] }
+
+define EC_FSL005_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_FSL005_C4     { EC_FSL005_C4 = EC_FSL005dv[SJR_WQ2] }
+define EC_MDOTA_C4       { std kind 'salinity' units 'mS/cm' }
+goal setEC_MDOTA_C4      { EC_MDOTA_C4 = EC_MDOTAdv[SJR_WQ2] }
+define EC_R_64_XA_C4     { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_XA_C4    { EC_R_64_XA_C4 = EC_R_64_XAdv[SJR_WQ2] }
+define EC_R_64_PA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_PA1_C4   { EC_R_64_PA1_C4 = EC_R_64_PA1dv[SJR_WQ2] }
+define EC_R_64_PA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_PA3_C4   { EC_R_64_PA3_C4 = EC_R_64_PA3dv[SJR_WQ2] }
+define EC_EBP016_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_EBP016_C4     { EC_EBP016_C4 = EC_EBP016dv[SJR_WQ2] }
+define EC_R_64_PA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_PA2_C4   { EC_R_64_PA2_C4 = EC_R_64_PA2dv[SJR_WQ2] }
+define EC_R_64_NA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_NA2_C4   { EC_R_64_NA2_C4 = EC_R_64_NA2dv[SJR_WQ2] }
+define EC_EBP041_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_EBP041_C4     { EC_EBP041_C4 = EC_EBP041dv[SJR_WQ2] }
+define EC_EBP048_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_EBP048_C4     { EC_EBP048_C4 = EC_EBP048dv[SJR_WQ2] }
+define EC_EBP050_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_EBP050_C4     { EC_EBP050_C4 = EC_EBP050dv[SJR_WQ2] }
+define EC_R_73_XA_C4     { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_73_XA_C4    { EC_R_73_XA_C4 = EC_R_73_XAdv[SJR_WQ2] }
+define EC_R_73_PA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_73_PA1_C4   { EC_R_73_PA1_C4 = EC_R_73_PA1dv[SJR_WQ2] }
+define EC_R_73_PA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_73_PA2_C4   { EC_R_73_PA2_C4 = EC_R_73_PA2dv[SJR_WQ2] }
+define EC_R_73_PA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_73_PA3_C4   { EC_R_73_PA3_C4 = EC_R_73_PA3dv[SJR_WQ2] }
+define EC_R_72_PR1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR1_C4   { EC_R_72_PR1_C4 = EC_R_72_PR1dv[SJR_WQ2] }
+define EC_LBN025_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_LBN025_C4     { EC_LBN025_C4 = EC_LBN025dv[SJR_WQ2] }
+define EC_LBN012_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_LBN012_C4     { EC_LBN012_C4 = EC_LBN012dv[SJR_WQ2] }
+define EC_R_72_PR6_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR6_C4   { EC_R_72_PR6_C4 = EC_R_72_PR6dv[SJR_WQ2] }
+define EC_XCC054_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_XCC054_C4     { EC_XCC054_C4 = EC_XCC054dv[SJR_WQ2] }
+define EC_R_72_PR5_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR5_C4   { EC_R_72_PR5_C4 = EC_R_72_PR5dv[SJR_WQ2] }
+define EC_R_72_PR4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR4_C4   { EC_R_72_PR4_C4 = EC_R_72_PR4dv[SJR_WQ2] }
+define EC_R_72_PR3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR3_C4   { EC_R_72_PR3_C4 = EC_R_72_PR3dv[SJR_WQ2] }
+define EC_R_72_PR2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR2_C4   { EC_R_72_PR2_C4 = EC_R_72_PR2dv[SJR_WQ2] }
+define EC_R_72_PA_C4     { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PA_C4    { EC_R_72_PA_C4 = EC_R_72_PAdv[SJR_WQ2] }
+define EC_R_72_XA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_XA1_C4   { EC_R_72_XA1_C4 = EC_R_72_XA1dv[SJR_WQ2] }
+define EC_R_72_XA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_XA2_C4   { EC_R_72_XA2_C4 = EC_R_72_XA2dv[SJR_WQ2] }
+define EC_R_72_XA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_XA3_C4   { EC_R_72_XA3_C4 = EC_R_72_XA3dv[SJR_WQ2] }
+define EC_SAL006_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SAL006_C4     { EC_SAL006_C4 = EC_SAL006dv[SJR_WQ2] }
+define EC_MSN004_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_MSN004_C4     { EC_MSN004_C4 = EC_MSN004dv[SJR_WQ2] }
+define EC_R_71_PA6_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA6_C4   { EC_R_71_PA6_C4 = EC_R_71_PA6dv[SJR_WQ2] }
+define EC_NMW004_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_NMW004_C4     { EC_NMW004_C4 = EC_NMW004dv[SJR_WQ2] }
+define EC_R_63_NA4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_63_NA4_C4   { EC_R_63_NA4_C4 = EC_R_63_NA4dv[SJR_WQ2] }
+define EC_R_72_NA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_NA1_C4   { EC_R_72_NA1_C4 = EC_R_72_NA1dv[SJR_WQ2] }
+define EC_R_71_PA4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA4_C4   { EC_R_71_PA4_C4 = EC_R_71_PA4dv[SJR_WQ2] }
+define EC_R_71_NA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_NA1_C4   { EC_R_71_NA1_C4 = EC_R_71_NA1dv[SJR_WQ2] }
+define EC_WWW001_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_WWW001_C4     { EC_WWW001_C4 = EC_WWW001dv[SJR_WQ2] }
+define EC_R_62_NA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_62_NA3_C4   { EC_R_62_NA3_C4 = EC_R_62_NA3dv[SJR_WQ2] }
+define EC_R_62_NA5_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_62_NA5_C4   { EC_R_62_NA5_C4 = EC_R_62_NA5dv[SJR_WQ2] }
+define EC_R_71_PA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA1_C4   { EC_R_71_PA1_C4 = EC_R_71_PA1dv[SJR_WQ2] }
+define EC_R_71_PA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA2_C4   { EC_R_71_PA2_C4 = EC_R_71_PA2dv[SJR_WQ2] }
+define EC_R_71_PA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA3_C4   { EC_R_71_PA3_C4 = EC_R_71_PA3dv[SJR_WQ2] }
+define EC_R_71_PA5_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA5_C4   { EC_R_71_PA5_C4 = EC_R_71_PA5dv[SJR_WQ2] }
+define EC_R_71_NA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_NA2_C4   { EC_R_71_NA2_C4 = EC_R_71_NA2dv[SJR_WQ2] }
+define EC_R_RFS61A_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_RFS61A_C4   { EC_R_RFS61A_C4 = EC_R_RFS61Adv[SJR_WQ2] }
+define EC_R_61_PA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_PA1_C4   { EC_R_61_PA1_C4 = EC_R_61_PA1dv[SJR_WQ2] }
+define EC_R_61_PA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_PA2_C4   { EC_R_61_PA2_C4 = EC_R_61_PA2dv[SJR_WQ2] }
+define EC_R_61_NA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_NA2_C4   { EC_R_61_NA2_C4 = EC_R_61_NA2dv[SJR_WQ2] }
+define EC_STS036_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_STS036_C4     { EC_STS036_C4 = EC_STS036dv[SJR_WQ2] }
+define EC_STS030_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_STS030_C4     { EC_STS030_C4 = EC_STS030dv[SJR_WQ2] }
+define EC_STS017_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_STS017_C4     { EC_STS017_C4 = EC_STS017dv[SJR_WQ2] }
+define EC_R_61_NA5_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_NA5_C4   { EC_R_61_NA5_C4 = EC_R_61_NA5dv[SJR_WQ2] }
+define EC_R_61_NA4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_NA4_C4   { EC_R_61_NA4_C4 = EC_R_61_NA4dv[SJR_WQ2] }
+define EC_TUO022_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO022_C4     { EC_TUO022_C4 = EC_TUO022dv[SJR_WQ2] }
+define EC_TUO017_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO017_C4     { EC_TUO017_C4 = EC_TUO017dv[SJR_WQ2] }
+define EC_TUO010_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO010_C4     { EC_TUO010_C4 = EC_TUO010dv[SJR_WQ2] }
+define EC_R_61_NA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_NA3_C4   { EC_R_61_NA3_C4 = EC_R_61_NA3dv[SJR_WQ2] }
+define EC_R_62_NA4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_62_NA4_C4   { EC_R_62_NA4_C4 = EC_R_62_NA4dv[SJR_WQ2] }
+define EC_TUO003calc_C4  { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO003calc_C4 { EC_TUO003calc_C4 = EC_TUO003calcdv[SJR_WQ2] }
+
+define EC_Banks_C4       { std kind 'salinity' units 'mS/cm' }
+goal setEC_Banks_C4      { EC_Banks_C4  = EC_BanksDV[SJR_WQ2] }
+define EC_Tracy_C4       { std kind 'salinity' units 'mS/cm' }
+goal setEC_Tracy_C4      { EC_Tracy_C4  = EC_TracyDV[SJR_WQ2] }
+define EC_TUO003_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO003_C4     { EC_TUO003_C4 = EC_TUO003dv[SJR_WQ2] }
+define EC_MCD002_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_MCD002_C4     { EC_MCD002_C4 = EC_MCD002dv[SJR_WQ2] }
+
+define EC_SLUIS_C4       { std kind 'salinity' units 'mS/cm'}
+goal setEC_SLUIS_C4      { EC_SLUIS_C4 = EC_SLUISdv[SJR_WQ2] }
+define EC_R_71_PA7_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_71_PA7_C4   { EC_R_71_PA7_C4 = EC_R_71_PA7dv[SJR_WQ2] }
+define EC_R_63_PR3_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_63_PR3_C4   { EC_R_63_PR3_C4 = EC_R_63_PR3dv[SJR_WQ2] }
+define EC_R_63_PR2_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_63_PR2_C4   { EC_R_63_PR2_C4 = EC_R_63_PR2dv[SJR_WQ2] }
+define EC_R_63_PR1_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_63_PR1_C4   { EC_R_63_PR1_C4 = EC_R_63_PR1dv[SJR_WQ2] }
+define EC_OWN011_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_OWN011_C4     { EC_OWN011_C4 = EC_OWN011dv[SJR_WQ2] }
+define EC_ESC000_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_ESC000_C4     { EC_ESC000_C4 = EC_ESC000dv[SJR_WQ2] }
+define EC_EBP030_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_EBP030_C4     { EC_EBP030_C4 = EC_EBP030dv[SJR_WQ2] }
+define EC_DMC070_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_DMC070_C4     { EC_DMC070_C4 = EC_DMC070dv[SJR_WQ2] }
+define EC_CAA069_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_CAA069_C4     { EC_CAA069_C4 = EC_CAA069dv[SJR_WQ2] }
+define EC_CAA067_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_CAA067_C4     { EC_CAA067_C4 = EC_CAA067dv[SJR_WQ2] }
+define EC_CAA009_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_CAA009_C4     { EC_CAA009_C4 = EC_CAA009dv[SJR_WQ2] }
+
+! define EC_MP_Ag_Return_C4  { std kind 'salinity' units 'mS/cm' }
+! goal setEC_MP_Ag_Return_C4 { EC_MP_Ag_Return_C4 = EC_MP_Ag_ReturnDV[SJR_WQ2] }
+! define EC_MP_RF_Return_C4  { std kind 'salinity' units 'mS/cm' }
+! goal setEC_MP_RF_Return_C4 { EC_MP_RF_Return_C4 = EC_MP_RF_ReturnDV[SJR_WQ2] }
+
+define EC_R_91_PA_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_91_PA_C4   { EC_R_91_PA_C4 = EC_R_91_PAdv[SJR_WQ2] }
+define EC_R_91_PR_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_91_PR_C4   { EC_R_91_PR_C4 = EC_R_91_PRdv[SJR_WQ2] }
+        
+   
+
+!********************************************************************
+! FROM EC CALCULATIONS
+define WQ_pulse_def_C4    {lower -99999 upper 99999 kind 'flow-required' units 'cfs'}
+goal setWQ_pulse_def_C4   { 
+     lhs  WQ_pulse_def_C4
+     case AprilMay {
+          condition month==apr .or. month==may  
+          rhs       WQ_pulse_defDV[SJR_WQ2] }
+     case otherwise {
+          condition always
+          rhs       -99}
+}      
+
+define WQ_reduced_pulse_def_C4    {lower -99999 upper 99999 kind 'flow-required' units 'cfs'}
+goal setWQ_reduced_pulse_def_C4   { 
+     lhs  WQ_reduced_pulse_def_C4
+     case AprilMay {
+          condition month==apr .or. month==may  
+          rhs       WQ_reduced_pulse_defDV[SJR_WQ2] }
+     case otherwise {
+          condition always
+          rhs       -99}
+}    
+  
+define Goodwin_Req_Pulse1_C4    {lower -99999 upper 99999 kind 'flow-required' units 'cfs'}
+goal setGoodwin_Req_Pulse1_C4   { 
+     lhs  Goodwin_Req_Pulse1_C4
+     case AprilMay {
+          condition month==apr .or. month==may  
+          rhs       Goodwin_Req_Pulse1DV[SJR_WQ2] }
+     case otherwise {
+          condition always
+          rhs       -99}
+}    
+  
+define Goodwin_Req_Pulse2_C4    {lower -99999 upper 99999 kind 'flow-required' units 'cfs'}
+goal setGoodwin_Req_Pulse2_C4   { 
+     lhs  Goodwin_Req_Pulse2_C4
+     case AprilMay {
+          condition month==apr .or. month==may  
+          rhs       Goodwin_Req_Pulse2DV[SJR_WQ2] }
+     case otherwise {
+          condition always
+          rhs       -99}
+}    
+
+define Goodwin_Req_Pulse_C4     {lower -99999 upper 99999 kind 'flow-required' units 'cfs'}
+goal setGoodwin_Req_Pulse_C4    { 
+     lhs  Goodwin_Req_Pulse_C4
+     case AprilMay {
+          condition month==apr .or. month==may  
+          rhs       Goodwin_Req_PulseDV[SJR_WQ2] }
+     case otherwise {
+          condition always
+          rhs       -99}
+}    
+
+
+/*
+define EC_FSL005_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_FSL005_C4     { EC_FSL005_C4 = EC_FSL005dv[SJR_WQ2] }
+define EC_MDOTA_C4       { std kind 'salinity' units 'mS/cm' }
+goal setEC_MDOTA_C4      { EC_MDOTA_C4 = EC_MDOTAdv[SJR_WQ2] }
+define EC_R_64_XA_C4     { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_XA_C4    { EC_R_64_XA_C4 = EC_R_64_XAdv[SJR_WQ2] }
+define EC_SJR180_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR180_C4     { EC_SJR180_C4 = EC_SJR180dv[SJR_WQ2] }
+define EC_SJR166_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR166_C4     { EC_SJR166_C4 = EC_SJR166dv[SJR_WQ2] }
+define EC_R_64_PA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_PA1_C4   { EC_R_64_PA1_C4 = EC_R_64_PA1dv[SJR_WQ2] }
+define EC_R_64_PA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_PA3_C4   { EC_R_64_PA3_C4 = EC_R_64_PA3dv[SJR_WQ2] }
+define EC_EBP016_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_EBP016_C4     { EC_EBP016_C4 = EC_EBP016dv[SJR_WQ2] }
+define EC_R_64_PA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_PA2_C4   { EC_R_64_PA2_C4 = EC_R_64_PA2dv[SJR_WQ2] }
+define EC_R_64_NA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_64_NA2_C4   { EC_R_64_NA2_C4 = EC_R_64_NA2dv[SJR_WQ2] }
+define EC_EBP041_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_EBP041_C4     { EC_EBP041_C4 = EC_EBP041dv[SJR_WQ2] }
+define EC_EBP048_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_EBP048_C4     { EC_EBP048_C4 = EC_EBP048dv[SJR_WQ2] }
+define EC_EBP050_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_EBP050_C4     { EC_EBP050_C4 = EC_EBP050dv[SJR_WQ2] }
+define EC_SJR145_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR145_C4     { EC_SJR145_C4 = EC_SJR145dv[SJR_WQ2] }
+define EC_SJR134_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR134_C4     { EC_SJR134_C4 = EC_SJR134dv[SJR_WQ2] }
+define EC_R_73_XA_C4     { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_73_XA_C4    { EC_R_73_XA_C4 = EC_R_73_XAdv[SJR_WQ2] }
+define EC_R_73_PA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_73_PA1_C4   { EC_R_73_PA1_C4 = EC_R_73_PA1dv[SJR_WQ2] }
+define EC_R_73_PA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_73_PA2_C4   { EC_R_73_PA2_C4 = EC_R_73_PA2dv[SJR_WQ2] }
+define EC_R_73_PA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_73_PA3_C4   { EC_R_73_PA3_C4 = EC_R_73_PA3dv[SJR_WQ2] }
+define EC_R_72_PR1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR1_C4   { EC_R_72_PR1_C4 = EC_R_72_PR1dv[SJR_WQ2] }
+define EC_LBN025_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_LBN025_C4     { EC_LBN025_C4 = EC_LBN025dv[SJR_WQ2] }
+define EC_LBN012_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_LBN012_C4     { EC_LBN012_C4 = EC_LBN012dv[SJR_WQ2] }
+define EC_R_72_PR6_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR6_C4   { EC_R_72_PR6_C4 = EC_R_72_PR6dv[SJR_WQ2] }
+define EC_XCC054_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_XCC054_C4     { EC_XCC054_C4 = EC_XCC054dv[SJR_WQ2] }
+define EC_R_72_PR5_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR5_C4   { EC_R_72_PR5_C4 = EC_R_72_PR5dv[SJR_WQ2] }
+define EC_R_72_PR4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR4_C4   { EC_R_72_PR4_C4 = EC_R_72_PR4dv[SJR_WQ2] }
+define EC_R_72_PR3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR3_C4   { EC_R_72_PR3_C4 = EC_R_72_PR3dv[SJR_WQ2] }
+define EC_R_72_PR2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PR2_C4   { EC_R_72_PR2_C4 = EC_R_72_PR2dv[SJR_WQ2] }
+define EC_R_72_PA_C4     { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_PA_C4    { EC_R_72_PA_C4 = EC_R_72_PAdv[SJR_WQ2] }
+define EC_R_72_XA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_XA1_C4   { EC_R_72_XA1_C4 = EC_R_72_XA1dv[SJR_WQ2] }
+define EC_R_72_XA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_XA2_C4   { EC_R_72_XA2_C4 = EC_R_72_XA2dv[SJR_WQ2] }
+define EC_R_72_XA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_XA3_C4   { EC_R_72_XA3_C4 = EC_R_72_XA3dv[SJR_WQ2] }
+define EC_SAL006_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SAL006_C4     { EC_SAL006_C4 = EC_SAL006dv[SJR_WQ2] }
+define EC_MSN004_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_MSN004_C4     { EC_MSN004_C4 = EC_MSN004dv[SJR_WQ2] }
+define EC_SJR127_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR127_C4     { EC_SJR127_C4 = EC_SJR127dv[SJR_WQ2] }
+define EC_SJR119_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR119_C4     { EC_SJR119_C4 = EC_SJR119dv[SJR_WQ2] }
+define EC_R_71_PA6_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA6_C4   { EC_R_71_PA6_C4 = EC_R_71_PA6dv[SJR_WQ2] }
+define EC_NMW004_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_NMW004_C4     { EC_NMW004_C4 = EC_NMW004dv[SJR_WQ2] }
+define EC_R_63_NA4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_63_NA4_C4   { EC_R_63_NA4_C4 = EC_R_63_NA4dv[SJR_WQ2] }
+define EC_SJR116_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR116_C4     { EC_SJR116_C4 = EC_SJR116dv[SJR_WQ2] }
+define EC_SJR114_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR114_C4     { EC_SJR114_C4 = EC_SJR114dv[SJR_WQ2] }
+define EC_R_72_NA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_72_NA1_C4   { EC_R_72_NA1_C4 = EC_R_72_NA1dv[SJR_WQ2] }
+define EC_SJR106_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR106_C4     { EC_SJR106_C4 = EC_SJR106dv[SJR_WQ2] }
+define EC_SJR096_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR096_C4     { EC_SJR096_C4 = EC_SJR096dv[SJR_WQ2] }
+define EC_R_71_PA4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA4_C4   { EC_R_71_PA4_C4 = EC_R_71_PA4dv[SJR_WQ2] }
+define EC_R_71_NA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_NA1_C4   { EC_R_71_NA1_C4 = EC_R_71_NA1dv[SJR_WQ2] }
+define EC_SJR091_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR091_C4     { EC_SJR091_C4 = EC_SJR091dv[SJR_WQ2] }
+define EC_WWW001_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_WWW001_C4     { EC_WWW001_C4 = EC_WWW001dv[SJR_WQ2] }
+define EC_R_62_NA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_62_NA3_C4   { EC_R_62_NA3_C4 = EC_R_62_NA3dv[SJR_WQ2] }
+define EC_R_62_NA5_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_62_NA5_C4   { EC_R_62_NA5_C4 = EC_R_62_NA5dv[SJR_WQ2] }
+define EC_SJR082_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR082_C4     { EC_SJR082_C4 = EC_SJR082dv[SJR_WQ2] }
+define EC_SJR081_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR081_C4     { EC_SJR081_C4 = EC_SJR081dv[SJR_WQ2] }
+define EC_R_71_PA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA1_C4   { EC_R_71_PA1_C4 = EC_R_71_PA1dv[SJR_WQ2] }
+define EC_R_71_PA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA2_C4   { EC_R_71_PA2_C4 = EC_R_71_PA2dv[SJR_WQ2] }
+define EC_R_71_PA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA3_C4   { EC_R_71_PA3_C4 = EC_R_71_PA3dv[SJR_WQ2] }
+define EC_R_71_PA5_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_PA5_C4   { EC_R_71_PA5_C4 = EC_R_71_PA5dv[SJR_WQ2] }
+define EC_R_71_NA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_71_NA2_C4   { EC_R_71_NA2_C4 = EC_R_71_NA2dv[SJR_WQ2] }
+define EC_R_RFS61A_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_RFS61A_C4   { EC_R_RFS61A_C4 = EC_R_RFS61Adv[SJR_WQ2] }
+define EC_SJR075_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR075_C4     { EC_SJR075_C4 = EC_SJR075dv[SJR_WQ2] }
+define EC_R_61_PA1_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_PA1_C4   { EC_R_61_PA1_C4 = EC_R_61_PA1dv[SJR_WQ2] }
+define EC_R_61_PA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_PA2_C4   { EC_R_61_PA2_C4 = EC_R_61_PA2dv[SJR_WQ2] }
+define EC_R_61_NA2_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_NA2_C4   { EC_R_61_NA2_C4 = EC_R_61_NA2dv[SJR_WQ2] }
+define EC_STS036_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_STS036_C4     { EC_STS036_C4 = EC_STS036dv[SJR_WQ2] }
+define EC_STS030_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_STS030_C4     { EC_STS030_C4 = EC_STS030dv[SJR_WQ2] }
+define EC_STS017_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_STS017_C4     { EC_STS017_C4 = EC_STS017dv[SJR_WQ2] }
+define EC_R_61_NA5_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_NA5_C4   { EC_R_61_NA5_C4 = EC_R_61_NA5dv[SJR_WQ2] }
+define EC_R_61_NA4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_NA4_C4   { EC_R_61_NA4_C4 = EC_R_61_NA4dv[SJR_WQ2] }
+define EC_SJR072_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR072_C4     { EC_SJR072_C4 = EC_SJR072dv[SJR_WQ2] }
+define EC_SJR070_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_SJR070_C4     { EC_SJR070_C4 = EC_SJR070dv[SJR_WQ2] }
+define EC_TUO022_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO022_C4     { EC_TUO022_C4 = EC_TUO022dv[SJR_WQ2] }
+define EC_TUO017_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO017_C4     { EC_TUO017_C4 = EC_TUO017dv[SJR_WQ2] }
+define EC_TUO010_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO010_C4     { EC_TUO010_C4 = EC_TUO010dv[SJR_WQ2] }
+define EC_R_61_NA3_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_61_NA3_C4   { EC_R_61_NA3_C4 = EC_R_61_NA3dv[SJR_WQ2] }
+define EC_R_62_NA4_C4    { std kind 'salinity' units 'mS/cm' }
+goal setEC_R_62_NA4_C4   { EC_R_62_NA4_C4 = EC_R_62_NA4dv[SJR_WQ2] }
+define EC_TUO003calc_C4  { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO003calc_C4 { EC_TUO003calc_C4 = EC_TUO003calcdv[SJR_WQ2] }
+
+define EC_TUO003_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_TUO003_C4     { EC_TUO003_C4 = EC_TUO003dv[SJR_WQ2] }
+define EC_MCD002_C4      { std kind 'salinity' units 'mS/cm' }
+goal setEC_MCD002_C4     { EC_MCD002_C4 = EC_MCD002dv[SJR_WQ2] }
+
+! define EC_SLUIS_C4       { std kind 'salinity' units 'mS/cm'}
+! goal setEC_SLUIS_C4      { EC_SLUIS_C4 = EC_SLUISdv[SJR_WQ2] }
+define EC_SJR201_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_SJR201_C4     { EC_SJR201_C4 = EC_SJR201dv[SJR_WQ2] }
+define EC_SJR195_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_SJR195_C4     { EC_SJR195_C4 = EC_SJR195dv[SJR_WQ2] }
+define EC_SJR185_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_SJR185_C4     { EC_SJR185_C4 = EC_SJR185dv[SJR_WQ2] }
+define EC_R_71_PA7_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_71_PA7_C4   { EC_R_71_PA7_C4 = EC_R_71_PA7dv[SJR_WQ2] }
+define EC_R_63_PR3_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_63_PR3_C4   { EC_R_63_PR3_C4 = EC_R_63_PR3dv[SJR_WQ2] }
+define EC_R_63_PR2_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_63_PR2_C4   { EC_R_63_PR2_C4 = EC_R_63_PR2dv[SJR_WQ2] }
+define EC_R_63_PR1_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_63_PR1_C4   { EC_R_63_PR1_C4 = EC_R_63_PR1dv[SJR_WQ2] }
+define EC_OWN011_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_OWN011_C4     { EC_OWN011_C4 = EC_OWN011dv[SJR_WQ2] }
+define EC_ESC000_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_ESC000_C4     { EC_ESC000_C4 = EC_ESC000dv[SJR_WQ2] }
+define EC_EBP030_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_EBP030_C4     { EC_EBP030_C4 = EC_EBP030dv[SJR_WQ2] }
+define EC_DMC070_C4      { std kind 'salinity' units 'mS/cm'}
+goal setEC_DMC070_C4     { EC_DMC070_C4 = EC_DMC070dv[SJR_WQ2] }
+! define EC_CAA069_C4      { std kind 'salinity' units 'mS/cm'}
+! goal setEC_CAA069_C4     { EC_CAA069_C4 = EC_CAA069dv[SJR_WQ2] }
+! define EC_CAA067_C4      { std kind 'salinity' units 'mS/cm'}
+! goal setEC_CAA067_C4     { EC_CAA067_C4 = EC_CAA067dv[SJR_WQ2] }
+! define EC_CAA009_C4      { std kind 'salinity' units 'mS/cm'}
+! goal setEC_CAA009_C4     { EC_CAA009_C4 = EC_CAA009dv[SJR_WQ2] }
+
+define EC_R_91_PA_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_91_PA_C4   { EC_R_91_PA_C4 = EC_R_91_PAdv[SJR_WQ2] }
+define EC_R_91_PR_C4    { std kind 'salinity' units 'mS/cm'}
+goal setEC_R_91_PR_C4   { EC_R_91_PR_C4 = EC_R_91_PRdv[SJR_WQ2] }
+*/

@@ -1,0 +1,13 @@
+! IMF @@@
+! Fix values/rules for SJW stand-alone
+
+
+! Fix seepage from SJR from Millerton to Gravelly Ford (L603 from CSII)
+define L603 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+
+
+! Set flows in ASL and BRS to zero
+! (these weren't represented in CSII...
+!  need to zero these so we can reproduce CSII output)
+goal limitASL013 {C_ASL013 = 0.0}
+goal limitBRS018 {C_BRS018 = 0.0}

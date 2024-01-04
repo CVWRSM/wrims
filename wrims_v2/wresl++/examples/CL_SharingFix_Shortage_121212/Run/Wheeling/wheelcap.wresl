@@ -1,0 +1,177 @@
+/*************************************
+wheelcap.wresl
+! This file sets the cap on Wheeling. Originated from Dan Easton (11/12/2010)
+
+Z.Q. Richard Chen DWR (12/8/2010)
+**************************************/
+!define CVC_ON {select Option from options where Index=7}
+!define JPOD_ON {select Option from options where Index=8}
+
+! define three values to use as condition flags for wheeling 
+! If any of the values are false (0.0), then the BO actions control
+! and wheeling cannot occur. The flags can be used as multipliers
+! for wheeling limits and conditions for goals.
+
+! BO actions control Banks pumping (reduce it relative to non-BO control)
+! if MaxExp_RPA_SWP is less than the previous cycle solution for pumping
+define BO_Ctrl {
+	case controlling {
+		condition	D_EXPTD[BASE] > MaxExp_RPA
+		value		0.
+	}
+	case otherwise {
+		condition	always
+		value		1.
+	}
+}
+define BO_Banks_Ctrl {
+    case controlling {
+        condition D_Banks[BASE] > MaxExp_RPA_SWP
+        value 0.}
+    case otherwise {
+        condition always
+        value 1.}
+}
+! BO actions control Jones pumping (reduce it relative to non-BO control)
+! if MaxExp_RPA_CVP is less than the previous cycle solution for pumping
+define BO_Jones_Ctrl {
+    case controlling {
+        condition D_Jones[BASE] - .5 > MaxExp_RPA_CVP
+        value 0.}
+    case otherwise {
+        condition always
+        value 1.}
+}
+! BO actions control OMR flow (limit it to be less negative relative to non-BO control)
+! if C408_limit is greater than the previous cycle solution for OMR
+define OMR_Ctrl {
+    case controlling {
+        condition C_OMR[BASE] < C408_limit
+        value 0.}
+    case otherwise {
+        condition always
+        value 1.}
+}
+define B2Action3_Ctrl {
+	case controlling {
+		condition	range(month,apr,may) .and. int(B2Action3On)==1 .and. VAMP_DLTSW == 1
+		value		0.
+	}
+	case otherwise {
+		condition	always
+		value		1.
+	}
+}
+
+!define wheeling_ctrl {value min(BO_Banks_Ctrl, BO_Jones_Ctrl, OMR_Ctrl)}
+define wheeling_ctrl {value min(BO_Ctrl, OMR_Ctrl, B2Action3_Ctrl)}
+define whlctrl_dv {alias wheeling_ctrl kind 'output' units 'cfs'}
+define BOCtrl_dv {alias BO_Ctrl kind 'output' units 'cfs'}
+define BOBanksCtrl_dv {alias BO_Banks_Ctrl kind 'output' units 'cfs'}
+define BOJonesCtrl_dv {alias BO_Jones_Ctrl kind 'output' units 'cfs'}
+define BOOMRCtrl_dv {alias OMR_Ctrl kind 'output' units 'cfs'}
+define B2Action3_ctrl_ {alias B2Action3_Ctrl kind 'output' units 'none'}
+
+! Banks will wheel for Cross Valley Canal up to their allocation.  Wheeling for CVC will be done in July, Aug, Sep, Oct, Nov and Dec.
+define CVC_Alloc {value perdel_cvpag_s*128.0}  ! This is CVC's allocation
+
+! Compute amount of water that is already wheeled this year (taf)
+ define WheeledCVCamtdv {std kind 'Alias' units 'TAF'}
+ define WheeledCVCamt{
+       case Oct1922 {
+            condition month == Oct .and. wateryear == 1922 ! First year of simulation, compute the amount of wheeling that has occurred since Oct.
+            value 0.0}
+       case Oct_Dec {
+            condition month >= Oct .and. month <= Dec  ! Compute the amount of wheeling that has occurred from July of previous WY to current month
+            value WheeledCVCamtdv(-1) + D_Banks_cvc(-1)*cfs_taf(-1)}
+       case Aug_Sep {
+            condition month >= Aug .and. month <=Sep   ! Compute the amount of wheeling that has occurred from July of current WY
+            value WheeledCVCamtdv(-1) + D_Banks_cvc(-1)*cfs_taf(-1)}
+       case all_others {
+            condition always
+            value 0.0 }
+            }
+
+goal setWheeledCVCamt {WheeledCVCamtdv = WheeledCVCamt}
+
+! Remaining Wheeling
+define RemainWheelCVC {
+       case JulDec {
+            condition month <= Dec .or. month >= Jul  ! Wheel for CVC in Oct-Dec or Jul-Sep up to the remaining amount of previous year's allocation (Mar - Feb)
+              value max(0.0,CVC_Alloc - WheeledCVCamt)}
+         case All_others {
+            condition always                           ! Do not wheel water for Cross Valley Canal in the rest of the months
+              value 0.0}
+             }
+
+goal Wheeling2 {
+     lhs D_Banks_cvc
+       case OctDec {
+           condition month <= Dec .or. month >= Jul  ! Wheel for CVC in Oct-Dec or Jul-Sep up to the remaining amount of previous year's allocation (Mar - Feb)
+             rhs  RemainWheelCVC*taf_cfs*CVC_ON*wheeling_ctrl
+             lhs<rhs penalty 0.0}
+       case All_others {
+           condition always                           ! Do not wheel water in the rest of the months
+             rhs 0.0}
+             }
+
+goal Wheeling3 {D_CVP_CVC=D_Banks_cvc}
+
+
+goal CVCReleaseCont {C_Wkytn_whlcv + C_Kswck_whlcv + C_Nimbus_whlcv = C_Delta_whlcv + D_Banks_cvcrels}  
+
+! For output only
+define CVC_AllocDv {alias CVC_Alloc Units 'taf'}
+define remaincvc_dv {alias RemainWheelCVC kind 'output' units 'taf'}
+define maxJonescalcDV {alias maxJonescalc Units 'cfs'}
+
+!---------------------- JPOD ----------------------
+! Determine JPOD Wheeling limits in TAF (values in table are typically 99999)
+define wheelCap {select cap from WheelCap where year=wateryear }
+
+! Allow JPOD Wheeling only when Tracy is running at its capacity
+define Jones_int {
+    case JonesMax {
+      condition D_Jones[BASE] + 0.5 > maxJonesCalc
+      value 1.0}
+    case Rest {
+      condition always
+      value 0.0}
+      }
+
+! Amount of CVP water Wheeled to CVP San Luis this year (TAF)
+define usedWheelAmt {
+  case OCT {
+    condition month==OCT
+    value     0.0 }
+  case Rest {
+    condition always
+    sum(i=-1,prevOCT,-1) D_Banks_cvpwhl(i)*cfs_taf(i) }
+}
+
+! Remaining Wheeling under cap
+define remWheelCap {value max(0.0,wheelCap - usedWheelAmt) }
+define remWheelCap_ {alias remWheelCap units 'TAF'}
+
+! Restrict wheeling to be less than remaining cap
+goal wheelingCVP1 {D_Banks_cvpwhl < remWheelCap*taf_cfs*JPOD_ON*wheeling_ctrl } 
+
+! Determine available JPOD capacity
+define CVPWHLcap {value max(BanksMaxAllow - D_Banks[BASE],0.)}
+
+! Allow JPOD up to the cap if no B2 action is on
+goal maxJPOD_CVP {D_Banks_cvpwhl < min(CVPWHLcap*Jones_int, remWheelCap*taf_cfs) }
+
+! Releases for JPOD go to wheeling or carriage water
+goal JPODReleaseCont {C_Wkytn_whljp + C_Kswck_whljp + C_Nimbus_whljp = C_Delta_whljp + D_Banks_whlrels}
+
+/* Similar code was added in WheelFix file with additional codition */
+! Surplus Delta Outflow to cvc and/or jpod wheeling must balance with reductions in projects' abandoned water
+/*goal setSurplusCont {
+    lhs  D_Banks_whlsurp + D_Banks_cvcsurp + C_Delta_cvp + C_Delta_swp
+    case Wheeling {
+    condition wheeling_ctrl > .1
+    rhs  C_Delta_cvp[BASE] + C_Delta_swp[BASE]
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999}
+}*/

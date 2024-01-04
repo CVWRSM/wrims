@@ -1,0 +1,92 @@
+! Estimated Channel Losses in Lower Stony Creek
+
+! define monthly loss coefficient and max loss flow
+define loss_coef1 {SELECT slope1 FROM loss_per where month=month }
+define loss_coef2 {SELECT slope2 FROM loss_per where month=month }
+define loss_bound1 {SELECT Qmaxloss1 FROM loss_per where month=month }
+define loss_bound2 {SELECT Qmaxloss2 FROM loss_per where month=month }
+
+! define slopes of loss functions by reach
+define rslope0 {value 0.0}
+define r1slope1 {value loss_coef1*0.204}
+define r2slope1 {value loss_coef1*0.335}
+define r3slope1 {value loss_coef1-r1slope1-r2slope1}
+define r1slope2 {value loss_coef2*0.204}
+define r2slope2 {value loss_coef2*0.335}
+define r3slope2 {value loss_coef2-r1slope2-r2slope2}
+
+! *******************************************************************************
+! Reach 1 Losses
+
+define C42_0 {lower 0. upper loss_bound1 kind 'flow-channel' units 'cfs'}
+define C42_1 {lower 0. upper loss_bound2 kind 'flow-channel' units 'cfs'}
+define C42_2 {lower 0. upper loss_bound1 kind 'flow-channel' units 'cfs'}
+define C42_3 {lower 0. upper loss_bound2 kind 'flow-channel' units 'cfs'}
+define C42_4 {lower 0. upper unbounded kind 'flow-channel' units 'cfs'}
+goal Reach1 {C42 = C42_0 + C42_1 + C42_2 + C42_3 + C42_4}
+
+! loss will be a sum of all the segment's linearized functions
+goal reach1loss {L17301 = r1slope1*C42_0 + r1slope2*C42_1 - r1slope1*C42_2 - r1slope2*C42_3 + rslope0*C42_4}
+
+! integer variable to bound segments for proper filling step by step
+define int_reach1 {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC42_0 {C42_0 > int_reach1 * loss_bound1}
+goal boundC42Other {C42_1 + C42_2 + C42_3 + C42_4 < int_reach1 * 9999999.}
+
+! penalize each segment successively more to ensure proper filling
+goal r1segment1 {lhs C42_1 rhs 0 lhs>rhs penalty 0}
+goal r1segment2 {lhs C42_2 rhs 0 lhs>rhs penalty 50}
+goal r1segment3 {lhs C42_3 rhs 0 lhs>rhs penalty 100}
+goal r1segment4 {lhs C42_4 rhs 0 lhs>rhs penalty 141}
+
+! *******************************************************************************
+! Reach 2 Losses
+
+define C17301_0 {lower 0. upper loss_bound1 kind 'flow-channel' units 'cfs'}
+define C17301_1 {lower 0. upper loss_bound2 kind 'flow-channel' units 'cfs'}
+define C17301_2 {lower 0. upper loss_bound1 kind 'flow-channel' units 'cfs'}
+define C17301_3 {lower 0. upper loss_bound2 kind 'flow-channel' units 'cfs'}
+define C17301_4 {lower 0. upper unbounded kind 'flow-channel' units 'cfs'}
+goal Reach2 {C17301 = C17301_0 + C17301_1 + C17301_2 + C17301_3 + C17301_4}
+
+! loss will be a sum of all the segment's linearized functions
+goal reach2loss {L173 = r2slope1*C17301_0 + r2slope2*C17301_1 - r2slope1*C17301_2 - r2slope2*C17301_3 + rslope0*C17301_4}
+
+! integer variable to bound segments for proper filling step by step
+define int_reach2 {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC17301_0 {C17301_0 > int_reach2 * loss_bound1}
+goal boundC17301Other {C17301_1 + C17301_2 + C17301_3 + C17301_4 < int_reach2 * 9999999.}
+
+! penalize each segment successively more to ensure proper filling
+goal r2segment1 {lhs C17301_1 rhs 0 lhs>rhs penalty 0}
+goal r2segment2 {lhs C17301_2 rhs 0 lhs>rhs penalty 41}
+goal r2segment3 {lhs C17301_3 rhs 0 lhs>rhs penalty 100}
+goal r2segment4 {lhs C17301_4 rhs 0 lhs>rhs penalty 141}
+
+! *******************************************************************************
+! Reach 3 Losses
+
+define C173A_0 {lower 0. upper loss_bound1 kind 'flow-channel' units 'cfs'}
+define C173A_1 {lower 0. upper loss_bound2 kind 'flow-channel' units 'cfs'}
+define C173A_2 {lower 0. upper loss_bound1 kind 'flow-channel' units 'cfs'}
+define C173A_3 {lower 0. upper loss_bound2 kind 'flow-channel' units 'cfs'}
+define C173A_4 {lower 0. upper unbounded kind 'flow-channel' units 'cfs'}
+goal Reach3 {C173A = C173A_0 + C173A_1 + C173A_2 + C173A_3 + C173A_4}
+
+! loss will be a sum of all the segment's linearized functions
+goal reach3loss {L142 = r3slope1*C173A_0 + r3slope2*C173A_1 - r3slope1*C173A_2 - r3slope2*C173A_3 + rslope0*C173A_4}
+
+! integer variable to bound segments for proper filling step by step
+define int_reach3 {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC173A_0 {C173A_0 > int_reach3 * loss_bound1}
+goal boundC173AOther {C173A_1 + C173A_2 + C173A_3 + C173A_4 < int_reach3 * 9999999.}
+
+! penalize each segment successively more to ensure proper filling
+goal r3segment1 {lhs C173A_1 rhs 0 lhs>rhs penalty 0}
+goal r3segment2 {lhs C173A_2 rhs 0 lhs>rhs penalty 41}
+goal r3segment3 {lhs C173A_3 rhs 0 lhs>rhs penalty 100}
+goal r3segment4 {lhs C173A_4 rhs 0 lhs>rhs penalty 141}
+
+! *******************************************************************************
+
+define TOTLOSSES { alias L17301 + L173 + L142 KIND 'FLOW-DELIVERY' UNITS 'CFS' }

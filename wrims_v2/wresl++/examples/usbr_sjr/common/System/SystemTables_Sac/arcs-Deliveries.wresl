@@ -1,0 +1,1133 @@
+/*
+ARCS-DELIVERIES.WRESL
+CALSIM III SYSTEM FILE
+
+Purpose: Define arcs associated with delivery of water
+
+
+NAMING TAKES THE FOLLOWING FORMS:
+DG_{Demand Unit}        - Total (Gross) Surface diversion
+DN_{Demand Unit}        - Net Surface Delivery, reduced by conveyance losses and spills
+GP_{Demand Unit}        - Total Groundwater Pumping
+GPmin_{Demand Unit} - Minimum Groundwater Pumping
+RU_{Demand Unit}        - Reuse of return flow from field/farm and lateral seepage from canal system to toe drains
+RP_{Demand Unit}        - Evaporative and evapotranspiration losses from riparian vegetation and miscellaneous on-farm/field losses 
+AW_{Demand Unit}        - Total Applied Water
+UD_{Demand Unit}        - Urban demand
+GP_WBATotal_{WBA}   - Total groundwater pumping within a water budget area
+
+Edited ADraper, MWH, 05/11/08
+Edited DJones, DWR, 04/21/08
+Edited ADraper, MWH, 11/15/06
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 1       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*define    DN_1_NA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_1_NA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_1_NA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_1_NA  {select  fraction from AgMingw where id = 1}
+define  RU_1_NA     {std kind 'REUSE' units 'CFS'}
+define  RP_1_NA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}   
+define  AW_1_NA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 2_NU
+define  UD_1_NU     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+define  GP_1_NU     {std kind 'GW-PUMPING' units 'CFS'} 
+
+define GP_WBATotal_1    {std kind 'GW-PUMPING' units 'CFS'}*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 2       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_2_NA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_2_NA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_2_NA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_2_NA  {select  fraction from AgMingw where id = 2}
+define  RU_2_NA     {std kind 'REUSE' units 'CFS'}
+define  RP_2_NA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}   
+define  AW_2_NA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_2_SA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_2_SA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_2_SA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_2_SA  {select  fraction from AgMingw where id = 4}
+define  RU_2_SA     {std kind 'REUSE' units 'CFS'}
+define  RP_2_SA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}   
+define  AW_2_SA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_2_SU     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_2_SU     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_2_SU     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_2_SU  {select  fraction from UrbanMingw where id = 44}
+define  UD_2_SU     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_2_PA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_2_PA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_2_PA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_2_PA  {select  fraction from AgMingw where id = 3}
+define  RU_2_PA     {std kind 'REUSE' units 'CFS'}
+define  RP_2_PA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}   
+define  AW_2_PA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_2_PU {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_2_PU {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_2_PU {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_2_PU  {select  fraction from UrbanMingw where id = 2}
+define  UD_2_PU {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+! no surface deliveries to 2_NU
+define  GP_2_NU     {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_2_NU     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_2    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 3       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_3_NA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_3_NA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_3_NA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_3_NA  {select  fraction from AgMingw where id = 5}
+define  RU_3_NA     {std kind 'REUSE' units 'CFS'}
+define  RP_3_NA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}   
+define  AW_3_NA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_3_SA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_3_SA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_3_SA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_3_SA  {select  fraction from AgMingw where id = 7}
+define  RU_3_SA     {std kind 'REUSE' units 'CFS'}
+define  RP_3_SA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}   
+define  AW_3_SA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_3_SU     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_3_SU     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_3_SU     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_3_SU  {select  fraction from UrbanMingw where id = 7}
+define  UD_3_SU     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_3_PA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_3_PA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_3_PA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_3_PA  {select  fraction from AgMingw where id = 6}
+define  RU_3_PA     {std kind 'REUSE' units 'CFS'}
+define  RP_3_PA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}   
+define  AW_3_PA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_3_PU1    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_3_PU1    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_3_PU1    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_3_PU1 {select  fraction from UrbanMingw where id = 5}
+define  UD_3_PU1    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_3_PU2    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_3_PU2    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_3_PU2    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_3_PU2 {select  fraction from UrbanMingw where id = 6}
+define  UD_3_PU2    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_3_PU3    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_3_PU3    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_3_PU3    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_3_PU3 {select  fraction from UrbanMingw where id = 3}
+define  UD_3_PU3    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+! no surface deliveries to 3_NU
+define  GP_3_NU     {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_3_NU     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_3    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 4       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_4_NA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_4_NA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_4_NA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_4_NA  {select  fraction from AgMingw where id = 8}
+define  RU_4_NA     {std kind 'REUSE' units 'CFS'}
+define  RP_4_NA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_4_NA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_4_PA1    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_4_PA1    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_4_PA1    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_4_PA1 {select  fraction from AgMingw where id = 9}
+define  RU_4_PA1    {std kind 'REUSE' units 'CFS'}
+define  RP_4_PA1    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_4_PA1    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_4_PA2    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_4_PA2    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_4_PA2    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_4_PA2 {select  fraction from AgMingw where id = 10}
+define  RU_4_PA2    {std kind 'REUSE' units 'CFS'}
+define  RP_4_PA2    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_4_PA2    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+! no surface deliveries to 4_NU1
+define  GP_4_NU1        {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_4_NU1        {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 4_NU2
+define  GP_4_NU2        {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_4_NU2        {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+
+define GP_WBATotal_4    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 5       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_5_NA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_5_NA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_5_NA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_5_NA  {select  fraction from AgMingw where id = 11}
+define  RU_5_NA     {std kind 'REUSE' units 'CFS'}
+define  RP_5_NA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_5_NA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 2_NU
+define  UD_5_NU     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+define  GP_5_NU     {std kind 'GW-PUMPING' units 'CFS'} 
+
+define GP_WBATotal_5    {std kind 'GW-PUMPING' units 'CFS'}                 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 6       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! no surface deliveries to 6_NA
+define  GP_6_NA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_6_NA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_6_PA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_6_PA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_6_PA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_6_PA  {select  fraction from AgMingw where id = 13}
+define  RU_6_PA     {std kind 'REUSE' units 'CFS'}
+define  RP_6_PA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_6_PA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+! no surface deliveries to 6_NU
+define  GP_6_NU     {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_6_NU     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_6    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 7-NORTH     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!no surface deliveries to 7N_NA
+define  GP_7N_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_7N_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+!no surface deliveries to 7N_NU
+define  GP_7N_NU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_7N_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_7N_PA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_7N_PA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_7N_PA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_7N_PA {select  fraction from AgMingw where id = 15}
+define  RU_7N_PA    {std kind 'REUSE' units 'CFS'}
+define  RP_7N_PA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_7N_PA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define GP_WBATotal_7N    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 7-SOUTH     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!no surface deliveries to 7S_NA
+define  GP_7S_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_7S_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+!no surface deliveries to 7S_NU
+define  GP_7S_NU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_7S_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_7S_PA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_7S_PA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_7S_PA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_7S_PA {select  fraction from AgMingw where id = 17}
+define  RU_7S_PA    {std kind 'REUSE' units 'CFS'}
+define  RP_7S_PA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_7S_PA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define GP_WBATotal_7S    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8-NORTH     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!no surface deliveries to 8N_NA
+define  GP_8N_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_8N_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_8N_PA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8N_PA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8N_PA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8N_PA {select  fraction from AgMingw where id = 19}
+define  RU_8N_PA    {std kind 'REUSE' units 'CFS'}
+define  RP_8N_PA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8N_PA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_8N_SA1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8N_SA1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8N_SA1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8N_SA1    {select  fraction from AgMingw where id = 20}
+define  RU_8N_SA1   {std kind 'REUSE' units 'CFS'}
+define  RP_8N_SA1   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8N_SA1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_8N_SA2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8N_SA2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8N_SA2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8N_SA2    {select  fraction from AgMingw where id = 21}
+define  RU_8N_SA2   {std kind 'REUSE' units 'CFS'}
+define  RP_8N_SA2   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8N_SA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_8N_PR1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8N_PR1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8N_PR1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8N_PR1    {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  RU_8N_PR1   {std kind 'REUSE' units 'CFS'}
+define  RP_8N_PR1   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8N_PR1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_8N_PR2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8N_PR2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8N_PR2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8N_PR2    {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  RU_8N_PR2   {std kind 'REUSE' units 'CFS'}
+define  RP_8N_PR2   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8N_PR2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 8N_NU
+define  GP_8N_NU    {std kind 'GW-PUMPING' units 'CFS'} 
+define  UD_8N_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_8N    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8-NORTH/SOUTH   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!no surface deliveries to 8NS_NA
+/*
+define  GP_8NS_NA   {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_8NS_NA   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+! no surface deliveries to 8NS_NU
+define  GP_8NS_NU   {std kind 'GW-PUMPING' units 'CFS'} 
+define  UD_8NS_NU   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_8NS    {std kind 'GW-PUMPING' units 'CFS'}
+*/
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8-SOUTH     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!no surface deliveries to 8S_NA
+define  GP_8S_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_8S_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_8S_SA1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8S_SA1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8S_SA1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8S_SA1    {select  fraction from AgMingw where id = 24}
+define  RU_8S_SA1   {std kind 'REUSE' units 'CFS'}
+define  RP_8S_SA1   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8S_SA1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_8S_SA2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8S_SA2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8S_SA2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8S_SA2    {select  fraction from AgMingw where id = 25}
+define  RU_8S_SA2   {std kind 'REUSE' units 'CFS'}
+define  RP_8S_SA2   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8S_SA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_8S_SA3   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8S_SA3   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8S_SA3   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8S_SA3    {select  fraction from AgMingw where id = 27}
+define  RU_8S_SA3   {std kind 'REUSE' units 'CFS'}
+define  RP_8S_SA3   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8S_SA3   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_8S_PR    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8S_PR    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8S_PR    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8S_PR {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  RU_8S_PR    {std kind 'REUSE' units 'CFS'}
+define  RP_8S_PR    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8S_PR    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_8S_PA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_8S_PA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_8S_PA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_8S_PA {select  fraction from AgMingw where id = 23}
+define  RU_8S_PA    {std kind 'REUSE' units 'CFS'}
+define  RP_8S_PA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_8S_PA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 8S_NU
+define  GP_8S_NU    {std kind 'GW-PUMPING' units 'CFS'} 
+define  UD_8S_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_8S    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 9       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_9_NA     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_9_NA     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_9_NA     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_9_NA  {select  fraction from AgMingw where id = 28}
+define  RU_9_NA     {std kind 'REUSE' units 'CFS'}
+define  RP_9_NA     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_9_NA     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+!no surface deliveries to 9_NU
+define  GP_9_NU     {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_9_NU     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_9_SA1    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_9_SA1    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_9_SA1    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_9_SA1 {select  fraction from AgMingw where id = 29}
+define  RU_9_SA1    {std kind 'REUSE' units 'CFS'}
+define  RP_9_SA1    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_9_SA1    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_9_SA2    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_9_SA2    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_9_SA2    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_9_SA2 {select  fraction from AgMingw where id = 30}
+define  RU_9_SA2    {std kind 'REUSE' units 'CFS'}
+define  RP_9_SA2    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_9_SA2    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_9_PR     {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_9_PR     {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_9_PR     {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_9_PR  {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  RU_9_PR     {std kind 'REUSE' units 'CFS'}
+define  RP_9_PR     {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_9_PR     {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_9    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 10      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_10_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_10_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_10_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_10_NA {select  fraction from AgMingw where id = 31}
+define  RU_10_NA    {std kind 'REUSE' units 'CFS'}
+define  RP_10_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_10_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+!no surface deliveries to 10_NU1
+define  GP_10_NU1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_10_NU1   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+!no surface deliveries to 10_NU2
+define  GP_10_NU2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_10_NU2   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define GP_WBATotal_10    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 11      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_11_NU1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_11_NU1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_11_NU1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_11_NU1    {select  fraction from UrbanMingw where id = 19}
+define  UD_11_NU1   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+!no surface deliveries to 11_NU2
+define  GP_11_NU2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_11_NU2   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_11_SA1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_11_SA1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_11_SA1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_11_SA1    {select  fraction from AgMingw where id = 33}
+define  RU_11_SA1   {std kind 'REUSE' units 'CFS'}
+define  RP_11_SA1   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_11_SA1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_11_SA2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_11_SA2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_11_SA2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_11_SA2    {select  fraction from AgMingw where id = 34}
+define  RU_11_SA2   {std kind 'REUSE' units 'CFS'}
+define  RP_11_SA2   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_11_SA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_11_SA3   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_11_SA3   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_11_SA3   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_11_SA3    {select  fraction from AgMingw where id = 75}
+define  RU_11_SA3   {std kind 'REUSE' units 'CFS'}
+define  RP_11_SA3   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_11_SA3   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_11_SA4   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_11_SA4   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_11_SA4   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_11_SA4    {select  fraction from AgMingw where id = 76}
+define  RU_11_SA4   {std kind 'REUSE' units 'CFS'}
+define  RP_11_SA4   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_11_SA4   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_11_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_11_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_11_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_11_NA {select  fraction from AgMingw where id = 32}
+define  RU_11_NA    {std kind 'REUSE' units 'CFS'}
+define  RP_11_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_11_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_11_PR    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_11_PR    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_11_PR    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_11_PR {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  RU_11_PR    {std kind 'REUSE' units 'CFS'}
+define  RP_11_PR    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_11_PR    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define GP_WBATotal_11    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 12      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_12_NU1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_12_NU1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_12_NU1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_12_NU1    {select  fraction from UrbanMingw where id = 21}
+define  UD_12_NU1   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+!no surface deliveries to 12_NU2
+define  GP_12_NU2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_12_NU2   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_12_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_12_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_12_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_12_NA {select  fraction from AgMingw where id = 35}
+define  RU_12_NA    {std kind 'REUSE' units 'CFS'}
+define  RP_12_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_12_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_12_SA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_12_SA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_12_SA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_12_SA {select  fraction from AgMingw where id = 69}
+define  RU_12_SA    {std kind 'REUSE' units 'CFS'}
+define  RP_12_SA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_12_SA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_12    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 13      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_13_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_13_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_13_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_13_NA {select  fraction from AgMingw where id = 36}
+define  RU_13_NA    {std kind 'REUSE' units 'CFS'}
+define  RP_13_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_13_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_13_NU1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_13_NU1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_13_NU1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_13_NU1    {select  fraction from UrbanMingw where id = 22}
+define  UD_13_NU1   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_13_NU2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_13_NU2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_13_NU2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_13_NU2    {select  fraction from UrbanMingw where id = 23}
+define  UD_13_NU2   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_13    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 14      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_14_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_14_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_14_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_14_NA {select  fraction from AgMingw where id = 37}
+define  RU_14_NA    {std kind 'REUSE' units 'CFS'}
+define  RP_14_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_14_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_14_NU1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_14_NU1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_14_NU1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_14_NU1    {select  fraction from UrbanMingw where id = 24}
+define  UD_14_NU1   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+!NO SURFACE DELIVERY TO 14_NU2
+define  GP_14_NU2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_14_NU2   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define GP_WBATotal_14    {std kind 'GW-PUMPING' units 'CFS'}
+                        
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 15-NORTH    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!NO SURFACE DELIVERY TO 15N_NA1
+define  GP_15N_NA1  {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_15N_NA1  {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_15N_NA2  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_15N_NA2  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_15N_NA2  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_15N_NA2   {select  fraction from AgMingw where id = 39}
+define  RU_15N_NA2  {std kind 'REUSE' units 'CFS'}
+define  RP_15N_NA2  {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_15N_NA2  {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_15N_SA   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_15N_SA   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_15N_SA   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_15N_SA    {select  fraction from AgMingw where id = 70}
+define  RU_15N_SA   {std kind 'REUSE' units 'CFS'}
+define  RP_15N_SA   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_15N_SA   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_15N_NU   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_15N_NU   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_15N_NU   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_15N_NU    {select  fraction from UrbanMingw where id = 26}
+define  UD_15N_NU   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define GP_WBATotal_15N    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 15-SOUTH    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!NO SURFACE DELIVERY TO 15S_NA1
+define  GP_15S_NA1  {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_15S_NA1  {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+
+define  DN_15S_NA2  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_15S_NA2  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_15S_NA2  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_15S_NA2   {select  fraction from AgMingw where id = 41}
+define  RU_15S_NA2  {std kind 'REUSE' units 'CFS'}
+define  RP_15S_NA2  {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_15S_NA2  {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+!NO SURFACE DELIVERY TO 15S_NU
+define  GP_15S_NU   {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_15S_NU   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_15S_SA   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_15S_SA   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_15S_SA   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_15S_SA    {select  fraction from AgMingw where id = 42}
+define  RU_15S_SA   {std kind 'REUSE' units 'CFS'}
+define  RP_15S_SA   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_15S_SA   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define GP_WBATotal_15S    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 16      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_16_PU    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_16_PU    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_16_PU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_16_PU {select  fraction from UrbanMingw where id = 28}
+define  UD_16_PU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+!NO SURFACE DELIVERY TO 16_NA1
+define  GP_16_NA1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_16_NA1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_16_NA2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_16_NA2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_16_NA2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_16_NA2    {select  fraction from AgMingw where id = 43}
+define  RU_16_NA2   {std kind 'REUSE' units 'CFS'}
+define  RP_16_NA2   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_16_NA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_16_PA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_16_PA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_16_PA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_16_PA {select  fraction from AgMingw where id = 44}
+define  RU_16_PA    {std kind 'REUSE' units 'CFS'}
+define  RP_16_PA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_16_PA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_16_SA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_16_SA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_16_SA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_16_SA {select  fraction from AgMingw where id = 45}
+define  RU_16_SA    {std kind 'REUSE' units 'CFS'}
+define  RP_16_SA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_16_SA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+!NO SURFACE DELIVERY TO 16_NU
+define  GP_16_NU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_16_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define GP_WBATotal_16    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 17-NORTH    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!NO SURFACE DELIVERY TO 17N_NA
+define  GP_17N_NA   {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_17N_NA   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_17N_NR   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_17N_NR   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_17N_NR   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_17N_NR    {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  RU_17N_NR   {std kind 'REUSE' units 'CFS'}
+define  RP_17N_NR   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_17N_NR   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_17N_PR   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_17N_PR   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_17N_PR   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_17N_PR    {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  RU_17N_PR   {std kind 'REUSE' units 'CFS'}
+define  RP_17N_PR   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_17N_PR   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define GP_WBATotal_17N    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 17-SOUTH    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_17S_NA   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_17S_NA   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}  
+define  GP_17S_NA   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_17S_NA    {select  fraction from AgMingw where id = 48}
+define  RU_17S_NA   {std kind 'REUSE' units 'CFS'}
+define  RP_17S_NA   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_17S_NA   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_17S_SA   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_17S_SA   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}  
+define  GP_17S_SA   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_17S_SA    {select  fraction from AgMingw where id = 71}
+define  RU_17S_SA   {std kind 'REUSE' units 'CFS'}
+define  RP_17S_SA   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_17S_SA   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_17S_PR   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_17S_PR   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}  
+define  GP_17S_PR   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_17S_PR    {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  RU_17S_PR   {std kind 'REUSE' units 'CFS'}
+define  RP_17S_PR   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_17S_PR   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define GP_WBATotal_17S    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 18      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_18_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_18_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_18_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_18_NA {select  fraction from AgMingw where id = 49}
+define  RU_18_NA    {std kind 'REUSE' units 'CFS'}
+define  RP_18_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_18_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+!NO SURFACE DELIVERY TO 18_NU
+define  GP_18_NU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_18_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_18_SA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_18_SA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_18_SA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_18_SA {select  fraction from AgMingw where id = 50}
+define  RU_18_SA    {std kind 'REUSE' units 'CFS'}
+define  RP_18_SA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_18_SA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define GP_WBATotal_18    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 19      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!no surface deliveries to 19_NA
+!define DN_19_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+!define DG_19_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_19_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define GPmin_19_NA {select  fraction from AgMingw where id = 51}
+!define RU_19_NA    {std kind 'REUSE' units 'CFS'}
+!define RP_19_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_19_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_19_SA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_19_SA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_19_SA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_19_SA {select  fraction from AgMingw where id = 52}
+define  RU_19_SA    {std kind 'REUSE' units 'CFS'}
+define  RP_19_SA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_19_SA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+!NO SURFACE DELIVERY TO 18_NU
+define  GP_19_NU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_19_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define GP_WBATotal_19    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 20      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! no surface deliveries to 20_NU
+define  GP_20_NU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_20_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+! no surface deliveries to 20_NA2
+define  GP_20_NA2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_20_NA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_20_NA1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_20_NA1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_20_NA1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_20_NA1    {select  fraction from AgMingw where id = 53}
+define  RU_20_NA1   {std kind 'REUSE' units 'CFS'}
+define  RP_20_NA1   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_20_NA1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_20_PA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_20_PA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_20_PA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_20_PA {select  fraction from AgMingw where id = 72}
+define  RU_20_PA    {std kind 'REUSE' units 'CFS'}
+define  RP_20_PA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_20_PA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define GP_WBATotal_20    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 21      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! no surface deliveries to 21_NA
+define  GP_21_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_21_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_21_PU    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_21_PU    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_21_PU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_21_PU {select  fraction from UrbanMingw where id = 35}
+define  UD_21_PU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_21_SA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_21_SA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_21_SA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_21_SA {select  fraction from AgMingw where id = 56}
+define  RU_21_SA    {std kind 'REUSE' units 'CFS'}
+define  RP_21_SA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_21_SA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_21_PA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_21_PA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_21_PA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_21_PA {select  fraction from AgMingw where id = 73}
+define  RU_21_PA    {std kind 'REUSE' units 'CFS'}
+define  RP_21_PA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_21_PA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 21_NU
+define  GP_21_NU    {std kind 'GW-PUMPING' units 'CFS'} 
+define  UD_21_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_21    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 22      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! no surface deliveries to 22_NU
+define  GP_22_NU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_22_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define  DN_22_SA1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_22_SA1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_22_SA1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_22_SA1    {select  fraction from AgMingw where id = 58}
+define  RU_22_SA1   {std kind 'REUSE' units 'CFS'}
+define  RP_22_SA1   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_22_SA1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_22_SA2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_22_SA2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_22_SA2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_22_SA2    {select  fraction from AgMingw where id = 68}
+define  RU_22_SA2   {std kind 'REUSE' units 'CFS'}
+define  RP_22_SA2   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_22_SA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 22_NA
+define  GP_22_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  AW_22_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_22    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 23      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_23_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_23_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_23_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_23_NA {select  fraction from AgMingw where id = 59}
+define  RU_23_NA    {std kind 'REUSE' units 'CFS'}
+define  RP_23_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_23_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+! no surface deliveries to 23_NU
+define  GP_23_NU    {std kind 'GW-PUMPING' units 'CFS'}
+define  UD_23_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  
+
+define GP_WBATotal_23    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 24      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_24_NA1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_24_NA1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_24_NA1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_24_NA1    {select  fraction from AgMingw where id = 60}
+define  RU_24_NA1   {std kind 'REUSE' units 'CFS'}
+define  RP_24_NA1   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_24_NA1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 24_NA2
+!define GP_24_NA2   {std kind 'GW-PUMPING' units 'CFS'} 
+!define AW_24_NA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}     
+
+define  DN_24_NA2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_24_NA2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_24_NA2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_24_NA2    {select  fraction from AgMingw where id = 62}
+define  RU_24_NA2   {std kind 'REUSE' units 'CFS'}
+define  RP_24_NA2   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_24_NA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_24_NA3   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_24_NA3   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_24_NA3   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_24_NA3    {select  fraction from AgMingw where id = 62}
+define  RU_24_NA3   {std kind 'REUSE' units 'CFS'}
+define  RP_24_NA3   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_24_NA3   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_24_NU2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_24_NU2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_24_NU2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_24_NU2    {select  fraction from UrbanMingw where id = 38}
+define  UD_24_NU2   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_24_NU1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_24_NU1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_24_NU1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_24_NU1    {select  fraction from UrbanMingw where id = 39}
+define  UD_24_NU1   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+                                            ! CHANGED BY D.JONES 04/21/08. DELETE AFTER VERIFICATION
+define  DN_24_NU3   {std kind 'SW-DELIVERY-NET' units 'CFS'}            ! define    DN_24_PU    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_24_NU3   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}          ! define    DG_24_PU    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_24_NU3   {std kind 'GW-PUMPING' units 'CFS'}             ! define    GP_24_PU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_24_NU3    {select  fraction from UrbanMingw where id = 40}        ! define    GPmin_24_PU {select  fraction from UrbanMingw where id = 40}
+define  UD_24_NU3   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}  ! define    UD_24_PU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 24_NU4
+define  GP_24_NU4   {std kind 'GW-PUMPING' units 'CFS'}
+define  UD_24_NU4   {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_24   {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 25      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_25_PA2   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_25_PA2   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}  
+define  GP_25_PA2   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_25_PA2    {select  fraction from AgMingw where id = 63}
+define  RU_25_PA2   {std kind 'REUSE' units 'CFS'}
+define  RP_25_PA2   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_25_PA2   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_25_NA    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_25_NA    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_25_NA    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_25_NA {select  fraction from AgMingw where id = 64}
+define  RU_25_NA    {std kind 'REUSE' units 'CFS'}
+define  RP_25_NA    {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_25_NA    {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'} 
+
+define  DN_25_PA1   {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_25_PA1   {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_25_PA1   {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_25_PA1    {select  fraction from AgMingw where id = 65}
+define  RU_25_PA1   {std kind 'REUSE' units 'CFS'}
+define  RP_25_PA1   {std kind 'RIPARIAN-MISC-ET' units 'CFS'}
+define  AW_25_PA1   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define  DN_25_PU    {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_25_PU    {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_25_PU    {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_25_PU {select  fraction from UrbanMingw where id = 38}
+define  UD_25_PU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  UD_CSPSO    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+define  UD_SUISN    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+define  UD_FRFLD    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+!define UD_VLLJO    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+!define UD_BNCIA    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+!define UD_NAPA     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+!define UD_AMCYN    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+!define UD_TAFB     {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 25_NU
+define  GP_25_NU    {std kind 'GW-PUMPING' units 'CFS'} 
+define  UD_25_NU    {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_25  {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 26N     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_26N_PU1  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26N_PU1  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26N_PU1  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26N_PU1   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26N_PU1  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26N_PU2  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26N_PU2  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26N_PU2  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26N_PU2   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26N_PU2  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26N_PU3  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26N_PU3  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26N_PU3  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26N_PU3   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26N_PU3  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26N_NU1  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26N_NU1  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26N_NU1  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26N_NU1   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26N_NU1  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26N_NU2  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26N_NU2  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26N_NU2  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26N_NU2   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26N_NU2  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26N_NU3  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26N_NU3  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26N_NU3  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26N_NU3   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26N_NU3  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26N_NU4  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26N_NU4  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26N_NU4  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26N_NU4   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26N_NU4  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 26N_NU5
+define  GP_26N_NU5  {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_26N_NU5  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 26N_NA
+define  GP_26N_NA       {std kind 'GW-PUMPING' units 'CFS'} 
+define  AW_26N_NA       {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_26N    {std kind 'GW-PUMPING' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 26S     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  DN_26S_PU1  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_PU1  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_PU1  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26S_PU1   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_PU1  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26S_PU2  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_PU2  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_PU2  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26S_PU2   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_PU2  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26S_NU1  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_NU1  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_NU1  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26S_NU1   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_NU1  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26S_PU4  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_PU4  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_PU4  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26S_PU4   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_PU4  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26S_NU2  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_NU2  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_NU2  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26S_NU2   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_NU2  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26S_PU5  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_PU5  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_PU5  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26S_PU5   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_PU5  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26S_NU4  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_NU4  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_NU4  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26S_NU4   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_NU4  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26S_PU3  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_PU3  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_PU3  {std kind 'GW-PUMPING' units 'CFS'}             
+define  GPmin_26S_PU3   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_PU3  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 26S_NU3
+define  GP_26S_NU3  {std kind 'GW-PUMPING' units 'CFS'}             
+define  UD_26S_NU3  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+define  DN_26S_PU6  {std kind 'SW-DELIVERY-NET' units 'CFS'}            
+define  DG_26S_PU6  {std kind 'SW-DELIVERY-GROSS' units 'CFS'}
+define  GP_26S_PU6  {std kind 'GW-PUMPING' units 'CFS'}
+define  GPmin_26S_PU6   {timeseries kind 'GW-PUMPING-MIN' units 'TAF' convert 'CFS'}
+define  UD_26S_PU6  {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+
+! no surface deliveries to 26S_NA
+define  GP_26S_NA   {std kind 'GW-PUMPING' units 'CFS'} 
+define  AW_26S_NA   {timeseries kind 'APPLIED-WATER' units 'TAF' convert 'CFS'}
+
+define GP_WBATotal_26S    {std kind 'GW-PUMPING' units 'CFS'}
+
+!Bear River Model demand
+define DMD_TARR         {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define DMD_BRR050_BEC000    {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define DMD_CMBIE_CBC000     {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}

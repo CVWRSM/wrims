@@ -1,0 +1,8 @@
+!Turn conveyance facilities on or off using Conv_Control file.
+goal set_switch_TVC {C848_TVC = 0}
+goal set_switch_SW {C851_SW = 0}
+goal set_switch_CVC {C855_CVC = 0}
+goal set_switch_AEI {C861_AEI = 0}
+
+goal turn_off_GWR {D931_GWR + D936_GWR + D950_GWR < 0}
+goal turn_off_GWP {D933_GWP + D938_GWP + D952_GWP < 0}

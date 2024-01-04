@@ -1,0 +1,48 @@
+/*************************************
+WSI_CVP_system.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+Defines the Water Supply Index (WSI) and Demand Index (DI) during Mar, Apr, and May.
+
+WSI for the CVP SYS is the sum of the beginning of month storages (BOM) for Trinity Lake, 
+Shasta Lake, Folsom Lake, and the CVP-San Luis Reservoir, the forecasts of Sacramento River 
+runoff into Shasta and American River runoff into Folsom for the remainder of the water 
+year, and any available inflow from James Bypass.
+
+DI is the sum of CVP-SYS Annual Delivery and System Carryover and is estimated from the 
+WSI versus DI Curve. 
+*************************************/
+
+!Sum of CVP storages
+define WSI_CVP_Storage { std kind 'storage' units 'TAF' }
+
+goal setWSI_CVP_Storage { WSI_CVP_Storage = S_Trnty + S_Shsta + S_Folsm + S_SLCVP }
+
+! Water Supply Index for Central Valley Project
+define WSI_CVP_sys  {
+    case MarToMay {
+           condition  month >= MAR .and. month <= MAY
+           value      WSI_CVP_Storage(-1) + frcst_sac + frcst_amr + jbypass_del  ! Previous month storage plus forecast inflow
+               }
+    case JunToFeb {
+           condition  always
+           value      0 }
+               }
+
+define WSI_CVP_sysdv {alias WSI_CVP_sys kind 'water-supply-index' units 'taf'}
+
+define DI_CVP_sys {
+    case MarToMay {
+           condition  month >= MAR .and. month <= MAY 
+           select     di
+           from       wsi_di_cvp_sys
+           given      wsi=wsi_cvp_sys
+           use        linear }      
+                               
+    case JunToFeb { 
+           condition  always 
+           value      0 }                  
+              }
+
+define DI_CVP_sysdv {alias DI_CVP_sys kind 'demand-index' units 'taf'}  

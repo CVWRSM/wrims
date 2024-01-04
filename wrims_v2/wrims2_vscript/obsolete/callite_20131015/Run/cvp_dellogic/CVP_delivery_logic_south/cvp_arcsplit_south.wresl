@@ -1,0 +1,185 @@
+/*************************************
+cvp_arcsplit_south.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+This file splits any South of Delta CVP delivery arcs (ie. PMI, PAG, PEX, PLS)
+The file 'cvp_bound_del_south.wresl' actually applies the proper bounds.
+The weights for the subarcs are specified in the weights-table.wresl file.
+In general, 'PLS' subarcs should have a weight greater than the 'PMI', 'PAG', or 'PEX'
+subarcs.  This helps to ensure that losses are always met before MI, PAG, and PEX demands.
+*************************************/
+
+if int(Dynamic_SJR)==0 {define D_MDOTAA    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D_MDOTAA_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D_MDOTAA_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD_MDOTAA     { D_MDOTAA = D_MDOTAA_PRJ }
+goal totalD_MDOTAA_prj { D_MDOTAA_prj = D_MDOTAA_PAG }
+
+if int(Dynamic_SJR)==0 {define D700    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D700_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D700_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD700     { D700 = D700_PRJ }
+goal totalD700_prj { D700_prj = D700_PAG }
+
+define D701    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D701_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D701_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD701     { D701 = D701_PRJ }
+goal totalD701_prj { D701_prj = D701_PAG }
+
+define D710    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D710_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D710_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD710     { D710 = D710_PRJ }
+goal totalD710_prj { D710_prj = D710_PAG }
+
+define D706    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D706_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D706_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD706     { D706 = D706_PRJ }
+goal totalD706_prj { D706_prj = D706_PAG }
+
+if int(Dynamic_SJR)==0 {define D833    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D833_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D833_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD833     { D833 = D833_PRJ }
+goal totalD833_prj { D833_prj = D833_PAG }
+
+if int(Dynamic_SJR)==0 {define D835    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D835_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D835_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD835     { D835 = D835_PRJ }
+goal totalD835_prj { D835_prj = D835_PAG }
+
+define D839    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D839_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D839_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD839     { D839 = D839_PRJ }
+goal totalD839_prj { D839_prj = D839_PAG }
+
+define D841    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D841_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D841_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD841     { D841 = D841_PRJ }
+goal totalD841_prj { D841_prj = D841_PAG }
+
+define D855    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D855_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D855_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD855     { D855 = D855_PRJ }
+goal totalD855_prj { D855_prj = D855_PAG }
+
+define D836    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D836_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D836_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD836     { D836 = D836_PRJ }
+goal totalD836_prj { D836_prj = D836_PAG }
+
+define D837    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D837_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D837_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD837     { D837 = D837_PRJ }
+goal totalD837_prj { D837_prj = D837_PAG }
+
+define D843    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D843_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D843_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD843     { D843 = D843_PRJ }
+goal totalD843_prj { D843_prj = D843_PAG }
+
+define D711    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D711_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D711_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD711     { D711 = D711_PRJ }
+goal totalD711_prj { D711_prj = D711_PMI }
+
+define D844    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D844_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D844_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD844     { D844 = D844_PRJ }
+goal totalD844_prj { D844_prj = D844_PMI }
+
+if int(Dynamic_SJR)==0 { define D_MDOTAB    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D_MDOTAB_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D_MDOTAB_PEX    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD_MDOTAB     { D_MDOTAB = D_MDOTAB_PRJ }
+goal totalD_MDOTAB_prj { D_MDOTAB_prj = D_MDOTAB_PEX }
+
+if int(Dynamic_SJR)==0 { define D608B    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D608B_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D608B_PEX    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD608B     { D608B = D608B_PRJ }
+goal totalD608B_prj { D608B_prj = D608B_PEX }
+
+define D707    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D707_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D707_PEX    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD707     { D707 = D707_PRJ }
+goal totalD707_prj { D707_prj = D707_PEX }
+
+if int(Dynamic_SJR)==0 {define D_MDOTAD    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D_MDOTAD_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D_MDOTAD_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD_MDOTAD     { D_MDOTAD = D_MDOTAD_PRJ }
+goal totalD_MDOTAD_prj { D_MDOTAD_prj = D_MDOTAD_PLS }
+
+if int(Dynamic_SJR)==0 {define D_MDOTAc    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D_MDOTAc_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D_MDOTAc_PRF    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD_MDOTAc     { D_MDOTAc = D_MDOTAc_PRJ }
+goal totalD_MDOTAc_prj { D_MDOTAc_prj = D_MDOTAc_PRF }
+
+if int(Dynamic_SJR)==0 {define D608c    {std kind 'FLOW-DELIVERY' units 'CFS' }}
+define D608c_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D608c_PRF    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD608c     { D608c = D608c_PRJ}
+goal totalD608c_prj { D608c_prj = D608c_PRF }
+
+define D708    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D708_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D708_PRF    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD708     { D708 = D708_PRJ }
+goal totalD708_prj { D708_prj = D708_PRF }
+
+define D856    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D856_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D856_PRF    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD856     { D856 = D856_PRJ }
+goal totalD856_prj { D856_prj = D856_PRF }
+
+define D702    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D702_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D702_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD702     { D702 = D702_PRJ }
+goal totalD702_prj { D702_prj = D702_PLS }
+
+define D834    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D834_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D834_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD834     { D834 = D834_PRJ }
+goal totalD834_prj { D834_prj = D834_PLS }
+
+define D838    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D838_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D838_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD838     { D838 = D838_PRJ }
+goal totalD838_prj { D838_prj = D838_PLS }
+
+define D840    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D840_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D840_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD840     { D840 = D840_PRJ }
+goal totalD840_prj { D840_prj = D840_PLS }
+
+define D842    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D842_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D842_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD842     { D842 = D842_PRJ }
+goal totalD842_prj { D842_prj = D842_PLS }
+
+define D845    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D845_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D845_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD845     { D845 = D845_PRJ }
+goal totalD845_prj { D845_prj = D845_PLS }

@@ -1,0 +1,4 @@
+!Subdivide Banks exports into base and FMP
+define d419_base {std kind 'flow-delivery' units 'cfs'}
+define d419_io	{std kind 'flow-delivery' units 'cfs'}
+goal split_D419 {D419 = D419_base + D419_io}

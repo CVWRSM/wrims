@@ -1,0 +1,139 @@
+/*************************************
+OMR_constraint.wresl
+ 
+FWS BO actions implementations
+Z.Q. Richard Chen DWR  9/14/2010
+             corrected  1/5/2011
+Add User defined OMR flow requirement, Richard Chen 4/20/2011
+Hao Xie 9/22/2011 change D408_limit caculation
+*************************************/
+!include 'OMR\OMR_constraint.wresl'
+/*
+Set maximum intake capacities.  Intakes can be turned off by setting capacity to zero.
+*/
+!Rock Slough Intake capacity [D408_RS_max, units cfs]
+define D408_RS_max {value 350.} !cfs
+
+!Old River Intake capacity [D408_OR_max, units cfs]
+define D408_OR_max {value 250.} !cfs
+
+!Victoria Canal (Alternative) Intake capacity [D408_VC_max, units cfs]
+!define LOD_Future {select Option from options where Index=9}
+define D408_VC_max {
+    case CCWD_Future{
+        condition int(LOD_Future) == 1 
+        value 250.} !cfs
+    case otherwise{
+        condition always
+        value 0.}
+}        
+
+
+define OMR_RPA {value  OMR_RPA_FWS }!{value max(OMR_RPA_FWS,OMR_RPA_LF)}
+
+! How much of CCWD estimated demand will impact OMR flows?
+define CCWDFraction {value (D408_OR_max + D408_VC_max)/(D408_RS_max + D408_OR_max + D408_VC_max)}
+define Qsod_noExp { value 0. + D408D416_est*CCWDFraction + netDICU_SOD}
+
+
+! Action triggers
+define C408_limit_init {
+     case DEC_MAR{
+          condition month>=DEC .and. month<=MAR .and. OMR_RPA >= -12000.
+          value OMR_RPA}
+     case Apr{
+          condition month==APR .and. OMR_RPA >= -12000.
+!  doing full 60 day NMFS Action at the pumps so this calc does not matter
+!          value OMR_RPA*14./daysin + max(Qomr_VAMPperiod,OMR_RPA)*(daysin-14.)/daysin}
+          value OMR_RPA}
+     case May{
+          condition month==MAY .and. OMR_RPA >= -12000.
+!  doing full 60 day NMFS Action at the pumps so this calc does not matter
+!          value max(Qomr_VAMPperiod,OMR_RPA)*15./daysin + OMR_RPA*(daysin-15.)/daysin}
+          value OMR_RPA}
+     case Jun{
+          condition month==JUN .and. OMR_RPA >= -12000.
+          value OMR_RPA}
+     case otherwise{
+          condition always
+          value -99999.}
+}
+!
+
+!
+! **********************************************************************************************
+!
+define Qsod_HandS { value max(jonesminpump + banksminpump,HandS_minpump) + D408D416_est*CCWDFraction + netDICU_SOD}
+define Qomr_HandS { value coefA*AD_SJR_VAMP+coefb*Qsod_HandS+coefc}
+define Qomr_HandSdv {alias Qomr_HandS kind 'FLOW-CHANNEL' units 'CFS'}
+define Qomr_noExp { value coefA*AD_SJR_VAMP+coefb*Qsod_noExp+coefc}
+define Qomr_noExpdv {alias Qomr_noExp kind 'FLOW-CHANNEL' units 'CFS'}
+!define C408_limit {value min(C408_limit_init,Qomr_HandS)} 
+define C408_limit {value min(C408_limit_init,Qomr_noExp)}
+define C408_LBound  {alias C408_limit kind 'FLOW-LBOUND' units 'CFS'}
+
+! User Defined OMR flow added 4/20/2011, Richard Chen
+define Qomr_Udef   { 
+       case UserDef { condition int(QOMR_DLTSW) == 2
+       select QOMRstd from gui_qomr where wyT_Sac=wyT_Sac,month=month }
+       case Others { condition always
+       value 0}
+       }
+
+!goal bound_Qomr { C_OMR > C408_limit } !C408 = C_OMR
+    goal bound_Qomr { 
+      lhs C_OMR 
+         case UserDef { condition int(QOMR_DLTSW) == 2   
+         rhs Qomr_Udef  
+         lhs>rhs penalty 0}     !OMR flow should be larger than Qomr_Udef      
+         case BOSWITCHON {
+         condition int(OMRBOON) == 1  
+         rhs C408_limit  
+         lhs>rhs penalty 0}
+         }
+/******/
+!
+! Split arcs and Goals to force impacts of actions at pumps
+!*********************************************************************************************
+! C408_Base represents the OMR flow not including COA related pumping at Banks or jones
+/***
+define D_Banks_CVPDEDEX1TD {std kind 'FLOW-DELIVERY' UNITS 'CFS'}  !it orginally defined in Split_IFTD.wresl
+goal setD_Banks_CVP_TD  {                                          !it is used in OMR_constraint_CL.wresl
+    lhs D_Banks_CVP 
+    case BOSWITCHON {
+    condition int(OMRBOON) == 1  
+    rhs D_Banks_CVC + D_Banks_CVPDEDEX1TD
+    }
+    }
+**/
+
+define C408_NoEXP1  {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+
+goal set_C408NoEXP1 {                        
+     lhs C408_NoEXP1 
+    case BOSWITCHON {
+    condition int(OMRBOON) == 1  
+     rhs C_OMR + D_Banks_EXP1 + D_Jones_EXP1 !+ D_Banks_CVPDEDEX1TD
+     }
+     }
+!
+goal bound_D419 {
+  lhs     D_Banks_EXP1
+  case FWSBOActions {
+  condition   month>=dec .and.  month<=jun .and. int(OMRBOON)==1 
+    rhs     0.5*C408_NoEXP1 - 0.5*C408_limit
+    lhs>rhs    penalty 1285
+    lhs<rhs penalty    0}
+}
+
+goal bound_D418 {
+  lhs     D_Jones_EXP1 !+ D_Banks_CVPDEDEX1TD
+  case FWSBOActionsJo {
+    condition   month>=dec .and.  month<=jun .and. int(OMRBOON)==1     
+    rhs     0.5*C408_NoEXP1 - 0.5*C408_limit
+    lhs>rhs    penalty 1285
+    lhs<rhs penalty    0}
+}
+
+ 
+

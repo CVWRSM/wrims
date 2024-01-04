@@ -1,0 +1,67 @@
+! TransfersPreOps.wresl
+
+! Make the reservoirs release as if delivering full supply to
+! NOD demands.  Divert the intended transfer to pre-transfer demands.
+
+! Set Yuba inflow increment
+goal zeroI204_WTS {I204_WTS < 0.}
+! Set SOD inflow increments
+goal setI607_WTS {I607_WTS < 0.}
+goal setI839_WTS {I839_WTS < 0.}
+goal setI852_WTS {I852_WTS < 0.}
+! Zero out the DSA diversion placerholderss of the intended transfers
+goal setD143A_WTS {D143A_WTS = frac_GC_N_DSA12*WTS_DSA12}
+goal setD145A_WTS {D145A_WTS = frac_GC_S_DSA12*WTS_DSA12}
+goal setD122A_WTS {D122A_WTS = frac_SC_N_DSA12*WTS_DSA12}
+goal setD122B_WTS {D122B_WTS = frac_SC_S_DSA12*WTS_DSA12}
+goal setD128_WTS {D128_WTS = WTS_DSA15}
+goal setD7b_WTS  {D7b_WTS = WTS_DSA69}
+goal setD168A_WTS {D168A_WTS = WTS_DSA70}
+
+! Do not yet export, store, or spill any Transfers.
+goal zeroC407_WTS {C407_WTS  < 0.}
+goal zeroD418_WTS {D418_WTS  < 0.}
+goal zeroD419_WTS {D419_WTS  < 0.}
+
+!******************************************************************************
+goal setS4_WTS {S4_WTS = S4_WTS(-1)}
+goal setS4_WTS_Stg1 {S4_WTS_Stg1 = S4_WTS_Stg1(-1)}
+goal setS4_WTS_Stg2 {S4_WTS_Stg2 < 0.} !S4_WTS_Stg2(-1)}
+goal zeroI4_WTS {I4_WTS < 0.}
+goal zeroC5_WTS   {C5_WTS < 0.}
+goal zeroSP4_WTS {SP4_WTS < 0.}
+
+goal setS6_WTS {S6_WTS = S6_WTS(-1)}
+goal setS6_WTS_Stg1 {S6_WTS_Stg1 = S6_WTS_Stg1(-1)}
+goal setS6_WTS_Stg2 {S6_WTS_Stg2 < 0.} !S6_WTS_Stg2(-1)}
+goal zeroI6_WTS {I6_WTS < 0.}
+goal zeroC6_WTS {C6_WTS < 0.}
+goal zeroSP6_WTS {SP6_WTS < 0.}
+! COA adjustment
+goal zeroC203_WTS {C203_WTS < 0.}
+
+!******************************************************************************
+goal zero_BUFF12_Stg2 {WTS_BUFF12_Stg2 = 0.}
+goal zero_INC12_Stg2 {WTS_INC12_Stg2 = 0.}
+goal zero_DEC12_Stg2 {WTS_DEC12_Stg2 = 0.}
+
+goal zero_BUFF15_Stg2 {WTS_BUFF15_Stg2 = 0.}
+goal zero_INC15_Stg2 {WTS_INC15_Stg2 = 0.}
+goal zero_DEC15_Stg2 {WTS_DEC15_Stg2 = 0.}
+
+goal zero_BUFF69_Stg2 {WTS_BUFF69_Stg2 = 0.}
+goal zero_INC69_Stg2 {WTS_INC69_Stg2 = 0.}
+goal zero_DEC69_Stg2 {WTS_DEC69_Stg2 = 0.}
+
+goal zero_BUFF70_Stg2 {WTS_BUFF70_Stg2 = 0.}
+goal zero_INC70_Stg2 {WTS_INC70_Stg2 = 0.}
+goal zero_DEC70_Stg2 {WTS_DEC70_Stg2 = 0.}
+
+!******************************************************************************
+goal zeroD815_WTS {D815_WTS < 0.}
+goal zeroD885_WTS {D885_WTS < 0.}
+goal zeroD895_WTS {D895_WTS < 0.}
+
+!Zero out Sac Flow Reop adjustment
+goal zeroC400_WTS {C400_WTS < 0.0}
+

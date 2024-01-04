@@ -1,0 +1,32 @@
+!SCWA_excess_last_TRANSFERS_STAGE2.wresl
+!Sets up Requested Diversions from Freeport for Sacramento County
+
+define ReqSacANN { value max(0.0,RSReqSacDV[TRANSFERS_STAGE2],
+                                 JPReqSacDV[TRANSFERS_STAGE2],
+                                 EMReqSacDV[TRANSFERS_STAGE2],
+                                 COReqSacDV[TRANSFERS_STAGE2])  }
+
+!priorities:
+!1)  cvp Freeport at D168C_cvp meets Freeport demands
+!2)  Excess at Freeport (D167c_excess) meets total demands unmet by sum of
+!    cvp freeport (D168C_cvp) and SCWA Fazio (D167b).  This logic nees to be in cycle 7
+
+!Excess taken as last priority (i.e. below wheeling, and interruptibles)
+
+goal setD168c_excess_pmi7 {D168c_excess_pmi < dem_scwa_total_pmi - D167b_pmi[TRANSFERS_STAGE2] - D168C_frwp_pmi[TRANSFERS_STAGE2] - D168C_other_pmi[TRANSFERS_STAGE2] + 0.0001}
+
+define C407_divertable {
+    case yes{
+    condition C407[TRANSFERS_STAGE2] >= 500.
+    value C407[TRANSFERS_STAGE2]}
+    case no{
+    condition always
+    value 0.0001}
+}
+define C407_divrtble_dv {alias C407_divertable kind 'FLOW' units 'TAF'}
+
+!Excess amount taken limited by max Sac flow requirement from the four ANN stations
+define C169_EXC_estim {value max(c400_ANN[TRANSFERS_STAGE2] - ReqSacANN,0.)}
+define C169_EXC_est_dv {alias C169_EXC_estim kind 'FLOW' units 'TAF'}
+
+goal limitD168C_exc {D168C_excess < min(C407_divertable,C169_EXC_estim)}

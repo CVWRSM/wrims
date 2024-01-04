@@ -1,0 +1,89 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnvnnnnnnnnvnnnnnnnnnvnnnnnnnnnnnnnnnn
+
+U ada.finalization.list_controller%b  a-filico.adb  4be846ff NE OL PK
+W ada.finalization%s	a-finali.adb		a-finali.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+
+U ada.finalization.list_controller%s  a-filico.ads  e42a19e8 EB EE OL PK
+W ada.finalization%s	a-finali.adb		a-finali.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-filico.adb		20090409150020 94e5f429
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 4|34r9 43r39 89r32 102r5 5|33r14 80r5
+X 3 a-finali.ads
+42K13*Finalization 1|16k9 3|71e21 4|34r13 43r43 89r36 102r9 5|33r18 80r9
+53H9*Limited_Controlled 69e55 4|43r56 89r49
+56U14*Initialize<12|58p14>
+X 4 a-filico.ads
+34K26*List_Controller 3|42k13 4|102l22 102e37 5|33b31 80l22 80t37
+37K12*SFR=37:31 45r13 91r17 93r24 5|42r16 44r27
+43R9*Simple_List_Controller<3|53R9> 3|56P14 4|46e16 53P25 53r51 5|63r40 12|60p14
+45p9*F{12|42P9} 5|65r33 66m14
+53U25*Finalize<3|57p14> 53=35 5|63b14 67l8 67t16
+53r35 Object{43R9} 5|63b24 65r26 66m7
+89R9*List_Controller<3|53R9> 94e16 99P25 99r53 100P25 100r53 5|41r40 73r42
+. 12|60p14
+91p9*F{12|42P9} 5|50m14 75m14
+92r9*First{12|53R9} 5|58r20 59r35 75m35 76m14 77m35
+93r9*Last{12|53R9} 5|44m57 76m35 77m14
+99U25*Initialize<3|56p14> 99=37 5|73b14 78l8 78t18
+99r37 Object{89R9} 5|73b26 75m7 75m28 76m7 76m28 77m7 77m28
+100U25*Finalize<3|57p14> 100=37 5|41b14 61l8 61t16
+100r37 Object{89R9} 5|41b24 44m50 50m7 58r13 59r28
+X 5 a-filico.adb
+35K12 SFI=35:31 50r19 59r10 65r7
+44p7 Last_Ptr{12|42P9} 58r34
+X 9 system.ads
+37K9*System 4|32r6 37r24 5|32r6 35r24 9|197e11
+X 11 s-finimp.ads
+37K16*Finalization_Implementation 5|32w13 35r31 11|158e39
+50p4*Collection_Finalization_Started{12|42P9} 5|50r23
+102U14*Finalize_List 5|65r11
+105U14*Finalize_One 5|59r14
+X 12 s-finroo.ads
+37K16*Finalization_Root 4|32w13 37r31 12|85e29
+40R9*Root_Controlled 4|93r28
+42P9*Finalizable_Ptr(53R9) 4|45r17 91r21 5|42r20 44r31
+54p7*Prev{42P9} 5|77m19
+54p13*Next{42P9} 5|58r26 59r41 76m20
+60U14*Adjust
+

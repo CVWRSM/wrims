@@ -1,0 +1,39 @@
+! This file sets up the timeseries needed for demands DSA 58
+
+!Define Individual Contract Types
+define dem_d104a_PSC {timeseries kind 'DEMAND-CVP-SC' units 'TAF'}
+define dem_d104b_PAG {timeseries kind 'DEMAND-CVP-AG' units 'TAF'}
+define dem_d104b_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_d104c_PAG {timeseries kind 'DEMAND-CVP-AG' units 'TAF'}
+define dem_d104c_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_d104d_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_d104f_PSC {timeseries kind 'DEMAND-CVP-SC' units 'TAF'}
+define dem_d104g_PSC {timeseries kind 'DEMAND-CVP-SC' units 'TAF'}
+define dem_d104h_PAG {timeseries kind 'DEMAND-CVP-AG' units 'TAF'}
+define dem_d104h_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_d104i_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_d104j_PAG {timeseries kind 'DEMAND-CVP-AG' units 'TAF'}
+define dem_d104j_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_d104k_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+
+! Define Project percent of Diversion Requirements
+define per_dr58 {VALUE 0.90 }  ! CVP only
+
+!Define Minimum Groundwater Pumping
+define mingw_58 {timeseries kind 'GW-PUMPING-MIN' units 'TAF'}
+
+!Define Total Contract Demand for each type (AG, MI, or SC)
+define dem_d104_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_d104_PAG {timeseries kind 'DEMAND-CVP-AG' units 'TAF'}
+define dem_d104_PSC {timeseries kind 'DEMAND-CVP-SC' units 'TAF'}
+
+!Define Total Demand for Delivery arc D104
+define dem_d104_PRJ {timeseries kind 'DEMAND-CVP-TOTAL' units 'TAF'}
+
+! Define diversion requirement
+define dr58 { timeseries kind 'demand' units 'taf'}
+
+! define the MAR-FEB delivery pattern for the diversion requirement
+define perdem_58 {timeseries kind 'DELIVERY-PATTERN' units 'NONE'}  ! dr58 changes every month
+
+

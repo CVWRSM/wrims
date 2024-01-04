@@ -1,0 +1,202 @@
+!Transfer accounting
+goal route_CV_IO_F_SWP {CV_IO_F_SWP = DIO_F_S}
+goal route_CV_IO_F_CVP {CV_IO_F_CVP = DIO_F_C}
+goal route_CV_IO_R_SWP {D18A_SWP = CV_IO_R_SWP}
+goal route_CV_IO_R_CVP {D18A_CVP = CV_IO_R_CVP}
+goal trans_CVP_to_SWP {DIO_SL_C_S = CV_IO_F_CVP}
+goal trans_SWP_to_CVP {DIO_SL_S_C = CV_IO_R_CVP}
+
+!Reduce Millerton releases by same amount exchanged.
+define slk_D18A_FWUA {std kind 'flex-bound' units 'cfs'}
+define sur_D18A_FWUA {std kind 'flex-bound' units 'cfs'}
+!goal reduce_D18A_FWUA {D18A_FWUA + slk_D18A_FWUA - sur_D18A_FWUA = D18A_FWUA[SJR_WQ1] - DIO_F_S - DIO_F_C}
+goal reduce_D18A_FWUA {/*D18A_FWUA +*/ slk_D18A_FWUA - sur_D18A_FWUA = /*D18A_FWUA[SJR_WQ1]*/ - DIO_F_S - DIO_F_C}
+
+!Allow either forward or reverse flow in one month based on highest objective value.
+define int_CV_f {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal lim_CV_f {CV_IO_F_SWP + CV_IO_F_CVP < int_CV_f*10000.}
+goal lim_CV_r {CV_IO_R_SWP + CV_IO_R_CVP < 10000. - int_CV_f*10000.}
+
+!define S6_base {timeseries kind 'storage' units 'taf'}
+!define S4_base {timeseries kind 'storage' units 'taf'}
+
+
+!Is there space in USJRS for SWP or CVP storage
+define Fr_for_spill_io {
+    case Febthrujun {
+         condition   month >= Feb .and. month <= jun
+         value max(0.0, I18_mon_thru_jun - Fr_del_est_jun - SJRR_mon_jun - FR_losses_jun
+                 - Fr_Evap_jun + SIO(-1) - S18level5 - S17level3) }
+    case otherwise {
+        condition always
+        value 0.0 } }
+
+define  IO_cap_avail {
+        case    available {
+                condition       Fr_for_spill_io < 0.1 .and. S17(-1) + S18(-1) < 0.9*(S18level5 + S17level3 + mam_fc_credit  - Friant_fs_req) .and. fk_add <0.01
+                value           1.
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+
+define IO_draw_SWPSL {
+        case    critical {
+                condition       wyt_sac==critical .and. range(month,jan,sep)
+                value           0.
+        }
+        case    dry {
+                condition       wyt_sac==dry .and. range(month,may,sep)
+                value           0.
+        }
+        case    OctNovCandD {
+                condition       wyt_sac > BelowNormal .and. range(month,oct,nov) .and. S12(-1) < SWPRuleCalc1
+                value           0.
+        }
+        case    Increase_alloc {
+                condition       swp_alloc_io - swp_alloc > 10 .and. range(month, may, nov)
+                value           0.
+        }
+        case    otherwise {
+                condition       always
+                value           1.
+        }
+}
+
+
+define io_cap_avail_ {alias IO_cap_avail kind 'ops-switch' units 'none'}
+define IO_draw_SWPSL_ {alias IO_draw_SWPSL kind 'ops-switch' units 'none'}
+
+!define CV_IO_F_SWP_SLR {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_F_SWP_ORO {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_F_SWP_SLS {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_F_SWP_SUR {std kind 'flow-channel' units 'cfs'}
+!goal split_cv_io_f_swp {cv_io_f_swp = cv_io_f_swp_slr + cv_io_f_swp_oro + cv_io_f_swp_sls + cv_io_f_swp_sur}
+
+!define CV_IO_F_CVP_SLR {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_F_CVP_SHA {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_F_CVP_SLS {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_F_CVP_SUR {std kind 'flow-channel' units 'cfs'}
+!goal split_cv_io_f_CVP {cv_io_f_CVP = cv_io_f_CVP_slr + cv_io_f_CVP_sha + cv_io_f_CVP_sls + cv_io_f_CVP_sur}
+
+define transfer_ub {value MAX(0.,min(0.9*(S18level5 + S17level3 + mam_fc_credit  - Friant_fs_req)-(S17(-1) + S18(-1)),
+                0.20*(SWPRULEcalc - init_SWPRuleDrainTar)-io_swp_dr_tot))*TAF_CFS}
+
+define lim_F_SWP {value IO_cap_avail*IO_draw_SWPSL*transfer_ub}
+
+define lim_F_SWP_ {alias lim_F_SWP kind 'IO-limit' units 'cfs'}
+
+goal set_lim_F_SWP {CV_IO_F_SWP < lim_F_SWP}
+
+!Keep track of return.
+define swp_return_ {std kind 'USJRS-RETURN' units 'taf'}
+
+define swp_return {
+        case January {
+                condition       month == jan
+                value           0.
+        }
+        case otherwise {
+                condition       always
+                value           cv_io_R_swp(-1)*cfs_taf + swp_return_(-1)
+        }
+}
+goal save_swp_return {swp_return_ = swp_return}
+
+define lim_R_SWP_SLR {
+        case    MaytoNov {
+                condition       range(month,may,nov)
+                value           max(0., swp_alloc_io - swp_alloc - swp_return)*taf_cfs
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+/*      case    June {
+                condition       month == jun
+                value max(0., swpdemfinal_jun + swpdemfinal_jul + swpdemfinal_aug + swpdemfinal_sep - S12(-1) + 100. - 1094.)/4. * taf_cfs
+        }
+        case    July {
+                condition       month == jul
+                value max(0., swpdemfinal_jul + swpdemfinal_aug + swpdemfinal_sep - S12(-1) + 100. - 878.)/3. * taf_cfs
+        }
+        case    August {
+                condition       month == aug
+                value max(0., swpdemfinal_aug + swpdemfinal_sep - S12(-1) + 100. - 568.)/2. * taf_cfs
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+*/
+define lim_R_SWP_SLR_ {alias lim_R_SWP_SLR kind 'IO-limit' units 'cfs'}
+
+define lim_R_SWP_SLS {
+        case    CritOrDry {
+                condition       wyt_sac > BelowNormal .and. range(month,may,nov)
+                value           max(0., swp_alloc_io - swp_alloc - swp_return)*taf_cfs
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+define lim_R_SWP_SLS_ {alias lim_R_SWP_SLS kind 'IO-limit' units 'cfs'}
+
+define lim_R_SWP_SLR_M {
+        case    MaytoNov {
+                condition       range(month,may,nov) .and. S17(-1) < S17level1 + 1
+                value           max(0., swp_alloc_io - swp_alloc - swp_return)*taf_cfs
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+define lim_R_SWP_SLRM_ {alias lim_R_SWP_SLR_M kind 'IO-limit' units 'cfs'}
+
+define lim_R_SWP_SLS_M {
+        case    CritOrDry {
+                condition       wyt_sac > BelowNormal .and. range(month,may,nov) .and.  S17(-1) < S17level1 + 1
+                value           max(0., swp_alloc_io - swp_alloc - swp_return)*taf_cfs
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+
+define lim_R_SWP_SLSM_ {alias lim_R_SWP_SLS_M kind 'IO-limit' units 'cfs'}
+
+define CV_IO_R_SWP_SLR {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_R_SWP_ORO {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_R_SWP_SLS {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_SWP_SH {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_SWP_SLS {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_SWP_SLRM {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_SWP_SLSM {std kind 'flow-channel' units 'cfs'}
+
+goal split_cv_io_r_swp {cv_io_r_swp = cv_io_r_swp_slr + cv_io_r_swp_sls + cv_io_r_swp_sh + cv_io_r_swp_slrm + cv_io_r_swp_slsm}
+
+!define CV_IO_R_CVP_SLR {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_R_CVP_SHA {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_R_CVP_SLS {std kind 'flow-channel' units 'cfs'}
+!define CV_IO_R_CVP_SH {std kind 'flow-channel' units 'cfs'}
+!goal split_cv_io_r_CVP {cv_io_r_cvp = cv_io_r_cvp_slr + cv_io_r_cvp_sha + cv_io_r_cvp_sls + cv_io_r_cvp_sh}
+
+goal set_lim_R_SWP_SLR {CV_IO_R_SWP_SLR < lim_R_SWP_SLR}
+goal set_lim_R_SWP_SLS {CV_IO_R_SWP_SLS < lim_R_SWP_SLS}
+goal set_lim_R_SWP_SLRm {CV_IO_R_SWP_SLRM < lim_R_SWP_SLR_M}
+goal set_lim_R_SWP_SLSm {CV_IO_R_SWP_SLSM < lim_R_SWP_SLS_M}
+
+!Don't allow loss exchange.
+goal no_loss_exchange {CV_IO_F_SWP + CV_IO_F_CVP < D910_C1 + D920_C1 + D932_C1 + D937_C1 + D950_C1 + D910_C2 + D920_C2 + D932_C2 + D937_C2 + D950_C2}
+
+
+
+
+

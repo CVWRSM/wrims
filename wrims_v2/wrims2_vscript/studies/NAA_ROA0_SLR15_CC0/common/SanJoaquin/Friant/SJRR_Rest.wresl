@@ -1,0 +1,37 @@
+define REST_REQ_NP {timeseries kind 'release-hydrograph' units 'taf'} !April release corresponds to Apr1-Apr14
+define REST_REQ_P {timeseries kind 'release-hydrograph' units 'taf'} !April release corresponds to Apr15-Apr30
+!define SJRR_mon {select release from SJRR_Reqs where month=month, yt=wyt_SJRRest}
+!define SJRR_mon_jun {select thruJun from SJRR_Reqs where month=month, YT=wyt_SJRRest}
+!define SJRR_mon_sep {select thruSep from SJRR_Reqs where month=month, YT=wyt_SJRRest}
+
+define SJRR_mon {
+	case April {
+		condition	month == apr
+		value		(rest_req_np + rest_req_p)*taf_cfs
+	}
+	case otherwise {
+		condition	always
+		value		rest_req_np*taf_cfs
+	}
+}
+
+define SJRR_mon_jun {
+    case MarthruSep {
+        condition   month >= feb .and. month <= jun
+        sum(i=0,Jun-month,1) REST_REQ_NP(i) + REST_REQ_P(i) }
+    case otherwise  {
+        condition   always
+        value 0.0 } }
+
+define SJRR_mon_sep {
+    case MarthruSep {
+        condition   month >= mar .and. month <= sep
+        sum(i=0,Sep-month,1) REST_REQ_NP(i) + REST_REQ_P(i) }
+    case otherwise  {
+        condition   always
+        value 0.0 } }
+        
+define SJRR_mon_jun_ {alias SJRR_mon_jun kind 'restoration-sum' units 'taf'}
+define SJRR_mon_sep_ {alias SJRR_mon_sep kind 'restoration-sum' units 'taf'}
+        
+	

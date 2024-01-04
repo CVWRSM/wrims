@@ -1,0 +1,85 @@
+! LVE_Wheelcap.wresl
+!
+! This file sets up changes to the placeholder CC export that was used in 
+! previous cycles.  The changes are cast as associated changes to each of the
+! affected COA elements and system facilities.  This logic works in concert 
+! with the LVE_wheelfixes.wresl and coa.wresl files.
+
+! *****************************************************************************
+! LVE Operations changes after the jpod wheeling cycle    
+
+! The C#_LV values are releases for LVE or backing up LVE export reductions
+! (in the case of C203_LV, it's only release to make up reduction in swp export
+! of unused federal share if LVE export is taking that water over.)  Make sure
+! the release changes correspond to the associated change in coa storage 
+! withdrawal definitions.
+goal setC3_LV1 {C3_LV = C3 - C3[WHEELJPOD]}
+goal setC5_LV1 {C5_LV = C5 - C5[WHEELJPOD]}
+goal setC9_LV1 {C9_LV = C9 - C9[WHEELJPOD]}
+goal setC203_LV1 {C203_LV = C203 - C203[WHEELJPOD]}
+
+goal setC3_LV2 {
+    lhs C3_LV
+    rhs WHSSW - WHSSW[WHEELJPOD]
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+    }
+goal setC5_LV2 {
+    lhs C5_LV
+    rhs SHADS - SHADS[WHEELJPOD]
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+    }
+goal setC9_LV2 {
+    lhs C9_LV
+    rhs FOLDS - FOLDS[WHEELJPOD]
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+    }
+goal setC203_LV2 {
+    lhs C203_LV
+    rhs SWPDS - SWPDS[WHEELJPOD]
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+    }
+
+! to keep equations clean, define changes to CVP delta outflow and unused fed share;
+! values are + if they increase with LVE ops, - if they decrease with LVE ops
+define UNUSED_FS_CHG {lower -9999 upper 9999 kind 'EXPORT-CHANGE' units 'CFS'}
+goal setUNUSED_FS_CHG {UNUSED_FS_CHG = UNUSED_FS - UNUSED_FS[WHEELJPOD]}
+define C407_CVP_CHG {lower -9999 upper 9999 kind 'DS-CHANGE' units 'CFS'}
+goal setC407_CVP_CHG {C407_CVP_CHG = C407_CVP - C407_CVP[WHEELJPOD]}
+
+! Overall change in D408 is reflected in the elements of this equation
+! Increases come from cvp delta surplus, previously unused_fs, and addl nod release
+! Decreases become unused_fs, delta surplus, or back up to nod storage
+goal D408_change {
+    lhs D408 - D408[WHEELJPOD]
+    rhs C3_LV + C5_LV + C9_LV + C407_CVP_CHG - UNUSED_FS_CHG
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+    }
+
+! SWP export at Banks may decrease if D408 takes over some unused fed share
+! and Oroville releases don't make up the difference, and it could increase 
+! if D408 decreases and creates addl unused fed share that swp can pick up.  
+! Unused fed share changes are seen at D419_EXP2, while any additional storage
+! release from Oroville goes to D419_EXP1.
+goal SwpPumpingChg1 {
+  lhs     D419_swp - D419_swp[WHEELJPOD]
+  rhs     UNUSED_FS_CHG + C203_LV
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal SwpPumpingChg2 {
+  lhs     D419_EXP1 - D419_EXP1[WHEELJPOD]
+  rhs     C203_LV
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal SwpPumpingChg3 {
+  lhs   D419_EXP2 - D419_EXP2[WHEELJPOD]
+  rhs   UNUSED_FS_CHG
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}

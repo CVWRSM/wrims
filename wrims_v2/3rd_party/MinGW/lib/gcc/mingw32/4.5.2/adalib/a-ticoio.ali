@@ -1,0 +1,125 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnvnnvnnvvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.text_io.complex_io%b  a-ticoio.adb	a840693b NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W ada.text_io.complex_aux%s  a-ticoau.adb	a-ticoau.ali
+
+U ada.text_io.complex_io%s  a-ticoio.ads	8e0978f1 BN NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.numerics%s	a-numeri.ads		a-numeri.ali
+W ada.numerics.generic_complex_types%s
+W ada.text_io%s		a-textio.adb		a-textio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-numeri.ads		20080324174808 1cf3e608
+D a-ngcoty.ads		20090409150020 1dba9865
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-textio.ads		20091028140912 7065b2f2
+D a-ticoau.ads		20090409150020 509dc199
+D a-ticoio.ads		20090409150020 e3d65266
+D a-ticoio.adb		20090409150020 6b6e4836
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-wchcon.ads		20090417130712 30c48dc1
+X 1 ada.ads
+16K9*Ada 19e8 12|36r6 39r38 41r9 84r5 13|32r6 34r6 36r14 40r24 140r5
+X 6 a-numeri.ads
+16K13*Numerics 32e17 12|36r10 39r42
+X 7 a-ngcoty.ads
+37F9 Real 12|44r42[39] 13|54r19[12|39] 55r19[12|39] 86r19[12|39] 87r19[12|39]
+39k22*Generic_Complex_Types 157e39 12|36w19 39r51
+42R9 Complex 12|49r33[39] 53r33[39] 58r28[39] 64r28[39] 71r32[39] 76r28[39]
+. 13|51r33[12|39] 70r33[12|39] 83r32[12|39] 103r28[12|39] 117r28[12|39] 132r28[12|39]
+54V13 Re 13|109r27[12|39] 137r26[12|39]
+55V13 Im 13|109r44[12|39] 137r43[12|39]
+X 10 a-textio.ads
+49K13*Text_IO 1|16k9 10|472e16 12|41r13 84r9 13|32w10 34r10 36r18 40r28 140r9
+52P9*File_Type(370R9) 12|48r15 57r14 13|50r15 102r14
+74I12*Field{integer} 12|43r19 44r19 45r19 50r15 54r15 59r14 60r14 61r14 65r14
+. 66r14 67r14 77r14 78r14 13|52r15 71r15 104r14 105r14 106r14 118r14 119r14
+. 120r14 133r14 134r14
+299X4*Data_Error 13|62r38 94r12
+456p4 Current_In{52P9} 13|74r12
+457p4 Current_Out{52P9} 13|123r12
+X 11 a-ticoau.ads
+40K21*Complex_Aux 69e28 13|34w18 40r36
+42U14*Get 13|58r11
+48U14*Put 13|109r11
+56U14*Gets 13|90r11
+62U14*Puts 13|137r11
+X 12 a-ticoio.ads
+39K17 Complex_Types[7|39] 44r28 49r19 53r19 58r14 64r14 71r18 76r14 13|38r8
+. 51r19 70r19 83r18 103r14 117r14 132r14
+41k21*Complex_IO 10|49k13 12|39z17 84l17 84e27 13|36b26 140l17 140t27
+43i4*Default_Fore{10|74I12} 59r23 65r23 13|104r23 118r23
+44i4*Default_Aft{10|74I12} 60r23 66r23 77r23 13|105r23 119r23 133r23
+45i4*Default_Exp{10|74I12} 61r23 67r23 78r23 13|106r23 120r23 134r23
+47U14*Get 48>7 49<7 50>7 13|49b14 63l8 63t11 74r7
+48p7 File{10|52P9} 13|50b7 58r16
+49r7 Item{7|42R9[39]} 13|51b7 59m7
+50i7 Width{10|74I12} 13|52b7 58r56
+52U14*Get 53<7 54>7 13|69b14 75l8 75t11
+53r7 Item{7|42R9[39]} 13|70b7 74m24
+54i7 Width{10|74I12} 13|71b7 74r30
+56U14*Put 57>7 58>7 59>7 60>7 61>7 13|101b14 110l8 110t11 123r7
+57p7 File{10|52P9} 13|102b7 109r16
+58r7 Item{7|42R9[39]} 13|103b7 109r31 109r48
+59i7 Fore{10|74I12} 13|104b7 109r56
+60i7 Aft{10|74I12} 13|105b7 109r62
+61i7 Exp{10|74I12} 13|106b7 109r67
+63U14*Put 64>7 65>7 66>7 67>7 13|116b14 124l8 124t11
+64r7 Item{7|42R9[39]} 13|117b7 123r25
+65i7 Fore{10|74I12} 13|118b7 123r31
+66i7 Aft{10|74I12} 13|119b7 123r37
+67i7 Exp{10|74I12} 13|120b7 123r42
+69U14*Get 70>7 71<7 72<7 13|81b14 95l8 95t11
+70s7 From{string} 13|82b7 90r17
+71r7 Item{7|42R9[39]} 13|83b7 91m7
+72i7 Last{positive} 13|84b7 90m57
+74U14*Put 75<7 76>7 77>7 78>7 13|130b14 138l8 138t11
+75s7 To{string} 13|131b7 137m17
+76r7 Item{7|42R9[39]} 13|132b7 137r30 137r47
+77i7 Aft{10|74I12} 13|133b7 137r55
+78i7 Exp{10|74I12} 13|134b7 137r60
+X 13 a-ticoio.adb
+40K12 Aux=40:36 58r7 90r7 109r7 137r7
+42F12 LLF{long_long_float} 58r22 58r39 90r23 90r40 109r22 109r39 137r21 137r38
+54*7 Real_Item 58m27 59r16
+55*7 Imag_Item 58m44 59r27
+86*7 Real_Item 90m28 91r16
+87*7 Imag_Item 90m45 91r27
+

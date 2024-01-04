@@ -1,0 +1,42 @@
+! TransfersAcquisitions_Max2.wresl
+!
+!******************************************************************************
+! Compute new Max NOD Acquisitions for this year type - This represents the upper bound of acquisitions in
+! Sac, Feather and Yuba Basins. These are the limits for Stage2, L4 and EWA acquisitions
+!
+! Yuba maximum
+define Yuba_Max2 {value max(Yuba_Max1 - Yuba_Stg1,0.)}
+!
+! Feather GW Substitution and Crop Idling/Shifting maximums
+define FeathGW_Max2 {value max(FeathGW_Max1 - FeathGW_Stg1,0.)}
+define FeathCI_Max2 {value max(FeathCI_Max1 - FeathCI_Stg1,0.)}
+!
+! Sac Valley GW Substitution and Crop Idling/Shifting maximums
+define SacGW_Max2 {value max(SacGW_Max1 - SacGW_Stg1,0.)}
+define SacCI_Max2 {value max(SacCI_Max1 - SacCI_Stg1,0.)}
+define SacOthGW_Max2 {value max(SacOthGW_Max1 - SacOthGW_Stg1,0.)}
+define SacOthCI_Max2 {value max(SacOthCI_Max1 - SacOthCI_Stg1,0.)}
+! American R
+define AmerRGW_Max2 {value max(AmerRGW_Max1 - AmerRGW_Stg1,0.)}
+!
+define TOTAL_NOD_Max2 {value Yuba_Max2 + FeathGW_Max2 + FeathCI_Max2 + SacGW_Max2 + SacCI_Max2 + SacOthCI_Max2}
+define WTS_NOD_Max2 {alias TOTAL_NOD_Max2 kind 'Stage2-Max-Acquisition' units 'taf'}
+!
+!******************************************************************************
+! Compute new Max SOD Acquisitions for this year type - This represents the upper bound of acquisitions
+! from regions along the DMC and CA. These are the limits for Stage2, L4 and EWA acquisitions
+!
+! Mendota Pool/DMC region GW Substitution and Crop Idling/Shifting maximums
+define DMCGW_Max2 {value max(DMCGW_Max1 - DMCGW_Stg1,0.)}
+define DMCCI_Max2 {value max(DMCCI_Max1 - DMCCI_Stg1,0.)}
+!
+! California Aqueduct region GW Substitution and Crop Idling/Shifting maximums
+define CAGW_Max2 {value max(CAGW_Max1 - CAGW_Stg1,0.)}
+define CACI_Max2 {value max(CACI_Max1 - CACI_Stg1,0.)}
+!
+define TOTAL_SOD_Max2 {value DMCGW_Max2 + DMCCI_Max2 + CAGW_Max2 + CACI_Max2}
+define WTS_SOD_Max2 {alias TOTAL_SOD_Max2 kind 'Stage2-Max-Acquisition' units 'taf'}
+!
+!******************************************************************************
+! This is the total Max overall
+define TOTAL_Max2 {value TOTAL_NOD_Max2 + TOTAL_SOD_Max2}

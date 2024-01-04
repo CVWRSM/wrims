@@ -1,0 +1,21 @@
+/*
+Subaccount file to keep track of the cumulative export change from Feb-Aug.
+
+J. Wilde 10/19/2001.
+*/
+
+!Modified to remove Feb-Aug export cut  T. Kyosai 12/30/2002
+
+!the following variable is 480 or 640
+!define maxB2cutFebAug {select maxexp from B2AcctInit where wateryear=wateryear}
+
+define B2Expdv { lower unbounded kind 'EXPORT-METRIC' units 'TAF'}
+define B2Exp {
+  case FebtoAug {
+    condition month >= Mar .and. month <= Sep
+    value B2Expdv(-1)-CvpExpChg__b2 }
+  case other {
+    condition always
+    value     0.0 }
+}
+goal setB2expdv {B2Expdv = B2Exp}

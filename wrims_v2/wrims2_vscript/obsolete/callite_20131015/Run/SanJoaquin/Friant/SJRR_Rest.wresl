@@ -1,0 +1,69 @@
+
+
+define REST_REQ_NP_F {timeseries kind 'release-hydrograph' units 'taf'} !April release corresponds to Apr1-Apr14 --full restoration
+define REST_REQ_P_F {timeseries kind 'release-hydrograph' units 'taf'} !April release corresponds to Apr15-Apr30 --full restoration
+define REST_REQ_NP_I {timeseries kind 'interim-release-hydrograph'units 'taf'} !April release corresponds to Apr1-Apr14 --Interim restoration
+define REST_REQ_P_I {timeseries kind 'interim-release-hydrograph' units 'taf'} !April release corresponds to Apr15-Apr30 --Interim restoration
+
+
+!define SJRR_mon {select release from SJRR_Reqs where month=month, yt=wyt_SJRRest}
+!define SJRR_mon_jun {select thruJun from SJRR_Reqs where month=month, YT=wyt_SJRRest}
+!define SJRR_mon_sep {select thruSep from SJRR_Reqs where month=month, YT=wyt_SJRRest}
+
+
+   
+define SJRR_mon {
+
+	case April_F {
+		condition	month == apr .and. REST_REQ == 1
+		value		(rest_req_np_F + rest_req_p_F)*taf_cfs
+	}
+	case April_I {
+		condition	month == apr .and. REST_REQ == 0
+		value		(rest_req_np_I + rest_req_p_I)*taf_cfs
+	}
+	
+	case otherwise_F {
+		condition	REST_REQ == 1
+		value		rest_req_np_F*taf_cfs
+	}
+	case otherwise_I {
+			condition	REST_REQ == 0
+			value		rest_req_np_I*taf_cfs
+	}
+}
+
+define SJRR_mon_jun {
+
+    case MarthruSep_F {
+    
+        condition   month >= feb .and. month <= jun .and. REST_REQ == 1
+        sum(i=0,Jun-month,1) REST_REQ_NP_F(i) + REST_REQ_P_F(i) }
+    case MarthruSep_I {
+	    
+	        condition   month >= feb .and. month <= jun .and. REST_REQ == 0
+        sum(i=0,Jun-month,1) rest_req_np_I(i) + rest_req_p_I(i) }
+    case otherwise  {
+        condition   always
+        value 0.0 } 
+        
+ }
+
+define SJRR_mon_sep {
+
+    case MarthruSep_F {
+        condition   month >= mar .and. month <= sep .and. REST_REQ == 1
+        sum(i=0,Sep-month,1) REST_REQ_NP_F(i) + REST_REQ_P_F(i) }
+        case MarthruSep_FI {
+	        condition   month >= mar .and. month <= sep .and. REST_REQ == 0
+        sum(i=0,Sep-month,1) rest_req_np_I(i) + rest_req_p_I(i) }
+        
+    case otherwise  {
+        condition   always
+        value 0.0 } 
+ }
+        
+define SJRR_mon_jun_ {alias SJRR_mon_jun kind 'restoration-sum' units 'taf'}
+define SJRR_mon_sep_ {alias SJRR_mon_sep kind 'restoration-sum' units 'taf'}
+        
+	

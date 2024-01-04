@@ -1,0 +1,30 @@
+
+
+define del_first_cvp_s {value Exp_Idx_CVP_adj/0.694}
+
+define deltar_cvps1dv {alias del_first_cvp_s kind 'DEL-TARGET' units 'TAF'}
+!
+define del_second_cvp_s {value min(del_first_cvp_s, acvpdem_total_s)}
+
+define max_return_swp2 {value 0.}
+define deltar_cvp_sdv {std kind 'DEL-TARGET' units 'taf'}
+
+define del_third_cvp_s {
+
+    case      initialdel {
+        condition month <= FEB .and. wateryear == 1922   ! Use the total annual
+        value     acvpdem_total_s }                    ! contract amount until
+                                                         ! the first delivery
+                                                     ! target is assigned.
+        case      march {
+        condition month >= MAR .and. month <= MAY
+        value     del_second_cvp_s }
+
+        case      otherwise {
+        condition always
+        value     max(deltar_cvp_sdv(-1), del_second_cvp_s) }
+}
+
+define deltar_cvp_s {value min(del_third_cvp_s, acvpdem_total_s) }
+!
+goal save_deltar_cvp_s {deltar_cvp_sdv = deltar_cvp_s}   ! sets DECISION VARIABLE del_tar_cvp_sdv equal to STATE VARIABLE del_target_cvp_s

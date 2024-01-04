@@ -1,0 +1,40 @@
+! SJR Section
+define[local] C520mif_SJRBASE  {alias C520_mif[SJRBASE]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C520mif_SJR_WQ1  {alias C520_mif[SJR_WQ1]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C520mif_SPULSE  {alias C520_mif[SJR_PULSE]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C520mif_SJRWQ2  {alias C520_mif[SJR_WQ2]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C520mif_VAMPDO  {alias C520_mif[VAMP_AND_DO]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C520mif_MOWEI  {alias C520_mif[MONTHLYWEIGHTED]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] stanfyr2SJRBASE  {alias stanfish_yr2DV[SJRBASE]      kind 'STORAGE'  units 'TAF'}
+
+define[local] stanpulse_c3dv {alias stanpulse_dv[sjr_pulse] kind 'output-cfs' units 'cfs'}
+define[local] stanmin_c1dv {alias stanmin2DV[sjrbase] kind 'output-cfs' units 'cfs'}
+
+define Stan_C520FW_dv {alias Stan_C520FW kind 'output-cfs' units 'cfs'}
+define Stan_C528FW_dv {alias Stan_C520FW kind 'output-cfs' units 'cfs'}
+
+! SJR_WQ1
+define[local] C605a_SJRWQ1 {alias C605a[SJR_WQ1]     kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C708_SJRWQ1  {alias C708[SJR_WQ1]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] D607B_SJRWQ1 {alias D607B[SJR_WQ1]     kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D608B_SJRWQ1 {alias D608B[SJR_WQ1]     kind 'FLOW-DELIVERY' units 'CFS'}
+!define[local] C639_SJRWQ1  {alias C639[SJR_WQ1]      kind 'FLOW-CHANNEL'  units 'CFS'}
+! SJR_WQ2
+define[local] C639_SJRWQ2  {alias C639[SJR_WQ2]      kind 'FLOW-CHANNEL'  units 'CFS'}
+! VAMP_AND_DO
+define[local] C501_VAMPDO  {alias C501[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+!define[local] C503_VAMPDO  {alias C503[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C508_VAMPDO  {alias C508[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C605a_VAMPDO {alias C605a[VAMP_AND_DO]     kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C639_VAMPDO  {alias C639[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C708_VAMPDO  {alias C708[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] D607B_VAMPDO {alias D607B[VAMP_AND_DO] kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D608B_VAMPDO {alias D608B[VAMP_AND_DO] kind 'FLOW-DELIVERY' units 'CFS'}
+
+! Outputs for US FWS RPA Verification
+define NDO_cyc_MW {alias NDO[monthlyweighted] kind 'flow-ndo' units 'cfs'}
+define D418_cyc_MW {alias D418[monthlyweighted] kind 'flow-delivery' units 'cfs'}
+define D419_cyc_MW {alias D419[monthlyweighted] kind 'flow-delivery' units 'cfs'}
+define D408_cyc_MW {alias D408[monthlyweighted] kind 'flow-delivery' units 'cfs'}
+define D409_cyc_MW {alias D409[monthlyweighted] kind 'flow-delivery' units 'cfs'}
+

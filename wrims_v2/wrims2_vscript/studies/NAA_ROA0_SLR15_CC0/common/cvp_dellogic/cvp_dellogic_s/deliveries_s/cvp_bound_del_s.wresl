@@ -1,0 +1,45 @@
+!  This file sets the upper bounds for SOD Delivieries based on the SOD Percent Delivery.
+!  Edited by Erik Reyes as of 09/28/00
+
+
+
+!**************  GOALS for SOD with SOD percent deliveries  *************
+
+!  AG Demands    Reduce demands from maximum to reflect cut back
+goal s_reduce_D700_pag {D700_pag < perdel_cvpag_s*dem_D700_pag*taf_cfs}
+goal s_reduce_D701_pag {D701_pag < perdel_cvpag_s*dem_D701_pag*taf_cfs}
+goal s_reduce_D706_pag {D706_pag < perdel_cvpag_s*dem_D706_pag*taf_cfs}
+goal s_reduce_D607A_pag {D607A_pag < perdel_cvpag_s*dem_D607A_pag*taf_cfs}
+goal s_reduce_D833_pag {D833_pag < perdel_cvpag_s*dem_D833_pag*taf_cfs}
+goal s_reduce_D835_pag {D835_pag < perdel_cvpag_s*dem_D835_pag*taf_cfs}
+goal s_reduce_D836_pag {D836_pag < perdel_cvpag_s*dem_D836_pag*taf_cfs}
+goal s_reduce_D837_pag {D837_pag < perdel_cvpag_s*dem_D837_pag*taf_cfs}
+goal s_reduce_D839_pag {D839_pag < perdel_cvpag_s*dem_D839_pag*taf_cfs}
+goal s_reduce_D841_pag {D841_pag < perdel_cvpag_s*dem_D841_pag*taf_cfs}
+goal s_reduce_D843_pag {D843_pag < perdel_cvpag_s*dem_D843_pag*taf_cfs}
+goal s_reduce_D710_pag {D710_pag < perdel_cvpag_s*dem_D710_pag*taf_cfs}
+!goal s_reduce_D855_pag {D855_pag < perdel_cvpag_s*dem_D855_pag*taf_cfs}
+
+!  MI demands    Reduce demands from maximum to reflect cut back
+goal s_reduce_D711_pmi {D711_pmi < perdel_cvpmi_s*dem_D711_pmi*taf_cfs}
+goal s_reduce_D844_pmi {D844_pmi < perdel_cvpmi_s*dem_D844_pmi*taf_cfs}
+
+!  Exchange Demands   Reduce demands from maximum to reflect cut back
+goal s_reduce_D707_pex {D707_pex < perdel_cvpex_s*dem_D707_pex*taf_cfs}
+goal s_reduce_D607B_pex {D607B_pex < perdel_cvpex_s*dem_D607B_pex*taf_cfs}
+goal s_reduce_D608B_pex {D608B_pex < perdel_cvpex_s*dem_D608B_pex*taf_cfs}
+
+!  Refuge Demands   Reduce demands from maximum to reflect cut back
+goal s_reduce_D708_prf {D708_prf < perdel_cvprf_s*dem_D708_prf*taf_cfs}
+goal s_reduce_D607C_prf {D607C_prf < perdel_cvprf_s*dem_D607C_prf*taf_cfs}
+goal s_reduce_D608C_prf {D608C_prf < perdel_cvprf_s*dem_D608C_prf*taf_cfs}
+goal s_reduce_D856_prf {D856_prf < perdel_cvprf_s*dem_D856_prf*taf_cfs}
+
+!  Losses
+goal   set_d702_pls  {d702_pls < dem_d702_pls*taf_cfs}
+goal   set_d834_pls  {d834_pls < dem_d834_pls*taf_cfs}
+goal   set_d838_pls  {d838_pls < dem_d838_pls*taf_cfs}
+goal   set_d840_pls  {d840_pls < dem_d840_pls*taf_cfs}
+goal   set_d842_pls  {d842_pls < dem_d842_pls*taf_cfs}
+goal   set_d845_pls  {d845_pls < dem_d845_pls*taf_cfs}
+goal   set_d607D_pls {d607d_pls < dem_d607d_pls*taf_cfs}

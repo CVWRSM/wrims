@@ -1,0 +1,323 @@
+! This file calculates the sum of the actual deliveries for each type (AG, MI,
+! Refuge and Exchange) from March to the month prior to the current model month.
+! Only values for model month March - August are used.
+
+! This file is used to calculate the Actual DI to be used in the curve generation procedure.
+
+
+! ================================= AG Deliveries ================================
+
+define cvpdel_d700 {  ! Actual Deliveries for Node 700
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D700(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d701 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D701(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d706 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D706(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d607A {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D607A(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d833 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D833(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d835 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D835(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+       
+define cvpdel_d836 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D836(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }       
+
+define cvpdel_d837 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D837(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d839 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D839(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d841 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D841(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d843 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D843(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d710 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D710(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+! Actual Ag Deliveries
+define cvpdel_d_ag_s {value cvpdel_d700 + cvpdel_d701 + cvpdel_d706 + cvpdel_d607A + cvpdel_d833 + cvpdel_d835 + cvpdel_d836 + cvpdel_d837 + cvpdel_d839 + cvpdel_d841 + cvpdel_d843 + cvpdel_d710 }
+
+
+! ============================== MI Deliveries =================================
+
+define cvpdel_d711 { ! Actual MI Deliveries at node 711
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D711(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d844 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D844(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d_mi_s {value cvpdel_d711 + cvpdel_d844 }  ! Actual MI deliveries
+
+
+! =============================== Exchange Deliveries ============================
+
+define cvpdel_d707 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D707(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d607B {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D607B(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+! Actual Exchange Deliveries
+define cvpdel_d_ex_s {value cvpdel_d707 + cvpdel_d607B }
+
+! ================================= Refuge Deliveries =============================
+
+define cvpdel_d708 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D708(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d607C {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D607C(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d856 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D856(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+! Actual Refuge Deliveries
+define cvpdel_d_ref_s { value cvpdel_d708 + cvpdel_d607C + cvpdel_d856 }
+
+
+! ======================== Loss Deliveries =================================
+
+define cvpdel_d702 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D702(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+       
+define cvpdel_d607D {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D607D(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d834 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D834(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d838 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D838(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+       
+define cvpdel_d840 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D840(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d842 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D842(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define cvpdel_d845 {
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) D845(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+       
+! Actual Total Losses
+define cvpdel_d_ls_s { value cvpdel_d702 + cvpdel_d607D + cvpdel_d834 + cvpdel_d838 + cvpdel_d840 + cvpdel_d842 + cvpdel_d845}
+       
+
+! ======================== Actual Total Deliveries =================================
+define tot_del_cvp_s { value cvpdel_d_ag_s + cvpdel_d_mi_s + cvpdel_d_ex_s + cvpdel_d_ref_s + cvpdel_d_ls_s}

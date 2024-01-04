@@ -1,0 +1,39 @@
+!include statements directly from cycle 1 of the mainCCWD.wresl fil of the LV module.
+!Model CCWD system given WQ at intakes.  This information will be used
+!for source tracking in cycle 6 and water quality calcs in cycle 7.
+
+!Define Sac Index wytype using March as start of year.
+INCLUDE 'CCWD_Ops\CCWD_LV_wytype.wresl'
+
+!Define pipelines, intakes, inflows, and LV reservoir, and deliveries
+INCLUDE 'system\CCWD_system.wresl'
+
+!Enter user input.
+INCLUDE 'UserInput.wresl'
+
+!Disaggregate flow arcs for operational controls and to color water.
+INCLUDE 'CCWD_Ops\CCWD_flow_disaggregation.wresl'
+
+!Limit intake and pipe capacities according to user input.
+INCLUDE 'CCWD_Ops\CCWD_Size_Pipes_Intakes.wresl'
+
+
+!Set CCWD delivery demands
+INCLUDE 'CCWD_Ops\CCWD_Demands.wresl'
+
+!Define Water Quality Conditions
+INCLUDE '..\Delta\ANN\Intake_WQ_estimates.wresl'
+INCLUDE 'CCWD_Ops\CCWD_WQ_SV.wresl'
+
+!Define Mallard Slough operation
+INCLUDE 'CCWD_Ops\CCWD_MallardSlough.wresl'
+
+!
+INCLUDE 'CCWD_Ops\CCWD_LosVaqueros.wresl'
+INCLUDE 'CCWD_Ops\CCWD_Delta_Diversions.wresl'
+INCLUDE 'CCWD_Ops\CCWD_WQ_ops.wresl'
+
+!
+INCLUDE 'system\connectivity-table.wresl'
+INCLUDE 'system\weight-table.wresl'
+

@@ -1,0 +1,84 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnn
+
+U gnat.io%b		g-io.adb		51283ab9 NE OL PK
+W gnat%s		gnat.ads		gnat.ali
+
+U gnat.io%s		g-io.ads		e799a3c1 BN NE OL PR PK
+W gnat%s		gnat.ads		gnat.ali
+
+D gnat.ads		20050905075126 96410e68
+D g-io.ads		20050905080700 71d8ada9
+D g-io.adb		20060215092844 20f09710
+D system.ads		20090410155748 b8eb58c3
+X 1 gnat.ads
+36K9*GNAT 39e9 2|43r9 93r5 3|34r14 193r5
+X 2 g-io.ads
+43K14*IO 1|36k9 2|93l10 93e12 3|34b19 193l10 193t12
+46E9*File_Type 51r36 52r36 60r26 65r26 69r26 73r31 78r31 82r33 87c9 87e38
+. 3|36r18 85r31 106r26 125r26 144r26 160r31 170r33 179r36 188r35
+51V13*Standard_Output{46E9} 91r19 3|179b13 182l8 182t23
+52V13*Standard_Error{46E9} 90r19 3|188b13 191l8 191t22
+55U14*Get 55<19 3|44b14 49l8 49t11
+55i19 X{integer} 3|44b19 48m7
+56U14*Get 56<19 3|51b14 56l8 56t11 67r10
+56e19 C{character} 3|51b19 55m7
+57U14*Get_Line 57<24 57<43 3|62b14 79l8 79t16
+57s24 Item{string} 3|62b24 66r21 74m13 78r15
+57i43 Last{natural} 3|62b43 70m13 78m7
+60U14*Put 60>19 60>37 3|103r7 106b14 118l8 118t11
+60e19 File{46E9} 3|106b19 114r12
+60i37 X{integer} 3|106b37 115r34 116r41
+61U14*Put 61>19 3|101b14 104l8 104t11
+61i19 X{integer} 3|101b19 103r25
+65U14*Put 65>19 65>37 3|88r10 122r7 125b14 137l8 137t11 147r10
+65e19 File{46E9} 3|125b19 133r12
+65e37 C{character} 3|125b37 134r35 135r42
+66U14*Put 66>19 3|120b14 123l8 123t11
+66e19 C{character} 3|120b19 122r25
+69U14*Put 69>19 69>37 3|141r7 144b14 149l8 149t11 162r7
+69e19 File{46E9} 3|144b19 147r15
+69s37 S{string} 3|144b37 146r16 147r21
+70U14*Put 70>19 3|139b14 142l8 142t11
+70s19 S{string} 3|139b19 141r25
+73U14*Put_Line 73>24 73>42 3|157r7 160b14 164l8 164t16
+73e24 File{46E9} 3|160b24 162r12 163r17
+73s42 S{string} 3|160b42 162r18
+74U14*Put_Line 74>24 3|155b14 158l8 158t16
+74s24 S{string} 3|155b24 157r30
+78U14*New_Line 78>24 78>42 3|85b14 90l8 90t16 94r7 163r7
+78e24 File{46E9} 3|85b24 88r15
+78i42 Spacing{positive} 3|85b42 87r21
+79U14*New_Line 79>24 3|92b14 95l8 95t16
+79i24 Spacing{positive} 3|92b24 94r30
+82U14*Set_Output 82>26 3|170b14 173l8 173t18
+82e26 File{46E9} 3|170b26 172r22
+87n23 Stdout{46E9} 3|36r31 115r15 134r15 181r14
+87n31 Stderr{46E9} 3|116r15 135r15 190r14
+X 3 g-io.adb
+36e4 Current_Out{2|46E9} 37r19 94r17 103r12 122r12 141r12 157r17 172m7
+45V16*Get_Int{integer} 46b<c,get_int>25 48r12
+52V16*Get_Char{character} 53b<c,get_char>25 55r12
+63e7 C{character} 67m15 69r13 74r30
+66i11 Nstore{integer} 70r21 74r19
+87i11 J{integer}
+107U17*Put_Int 107>26 108b<c,put_int>25 115r25
+107i26 X{integer}
+110U17*Put_Int_Stderr 110>33 111b<c,put_int_stderr>25 116r25
+110i33 X{integer}
+126U17*Put_Char 126>27 127b<c,put_char>25 134r25
+126e27 C{character}
+129U17*Put_Char_Stderr 129>34 130b<c,put_char_stderr>25 135r25
+129e34 C{character}
+146i11 J{integer} 147r24
+

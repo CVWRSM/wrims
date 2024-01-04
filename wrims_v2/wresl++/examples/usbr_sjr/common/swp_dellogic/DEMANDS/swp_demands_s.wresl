@@ -1,0 +1,169 @@
+! R.Wilbur 7/27/04
+
+! This file defines all the SWP demands for the South of Delta and North Bay.
+
+! Annual demands, along with their monthly distributions, are provided to SWPAO
+! by the contractors for three allocation levels (100, 50 and 30%).
+
+/*
+Demand & contractor ID's:
+
+ IDD    DemArc       IDC Type Contractor
+  1     D810             1    MI   ALAMEDA COUNTY FC&WCD-ZONE 7
+  2     D813             1    MI   ALAMEDA COUNTY FC&WCD-ZONE 7
+  3     D814             2    MI   ALAMEDA COUNTY WD
+  4     D877             3    MI   ANTELOPE VALLEY-EAST KERN WA
+  5     D868             4    AG*  CASTAIC LAKE WA
+  6     D896             4    MI*  CASTAIC LAKE WA
+  7     D204         5    MI   CITY OF YUBA CITY
+  8     D883         6    MI   COACHELLA VALLEY WD
+  9     D201         7    MI   COUNTY OF BUTTE
+  10    D847         8    AG   COUNTY OF KINGS
+  11    D25          9    MI   CRESTLINE-LAKE ARROWHEAD WA
+  12    D884         10   MI   DESERT WA
+  13    D849         11   AG   DUDLEY RIDGE WD
+  14    D846         12   AG   EMPIRE WEST SIDE ID
+  15    D851A        13   MI   KERN COUNTY WA
+  16    D851         13   AG   KERN COUNTY WA
+  17    D859         13   AG   KERN COUNTY WA
+  18    D863         13   AG   KERN COUNTY WA
+  19    D867         13   AG   KERN COUNTY WA
+  20    D879         14   MI   LITTLEROCK CREEK ID
+  21    D27          15   MWD  METROPOLITAN WDSC
+  22    D851B        15   MWD  METROPOLITAN WDSC
+  23    D885         15   MWD  METROPOLITAN WDSC
+  24    D895         15   MWD  METROPOLITAN WDSC
+  25    D899             15   MWD  METROPOLITAN WDSC
+  26    D881             16   MI   MOJAVE WA
+  27    D_BRK004_NBA009_N   17   MI   NAPA COUNTY FC&WCD
+  28    D802A        18   AG   OAK FLAT WD
+  29    D878         19   MI   PALMDALE WD
+  30    D886         20   MI   SAN BERNARDINO VALLEY MWD
+  31    D887         21   MI   SAN GABRIEL VALLEY MWD
+  32    D888         22   MI   SAN GORGONIO PASS WA
+  33    D869         23   MI   SAN LUIS OBISPO COUNTY FC&WCD
+  34    D870         24   MI   SANTA BARBARA COUNTY FC&WCD
+  35    D815         25   MI   SANTA CLARA VALLEY WD
+  36    D_BRK004_NBA009_S   26   MI   SOLANO COUNTY WA
+  37    D848         27   AG   TULARE LAKE BASIN WSD
+  38    D28          28   MI   VENTURA COUNTY WPD
+  39    D29          28   MI   VENTURA COUNTY WPD
+*/
+
+
+define dem_D810_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=1, month=month}
+define dem_D813_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=2, month=month}
+define dem_D814_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=3, month=month}
+define dem_D877_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=4, month=month}
+define dem_D868_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=5, month=month}
+define dem_D896_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=6, month=month}
+define dem_D883_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=8, month=month}
+define dem_D847_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=10,month=month}
+define dem_D25_PMI   {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=11,month=month}
+define dem_D884_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=12,month=month}
+define dem_D849_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=13,month=month}
+define dem_D846_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=14,month=month}
+define dem_D851A_PMI {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=15,month=month}
+define dem_D851_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=16,month=month}
+define dem_D859_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=17,month=month}
+define dem_D863_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=18,month=month}
+define dem_D867_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=19,month=month}
+define dem_D879_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=20,month=month}
+define dem_D27_PMI   {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=21,month=month}
+define dem_D851B_PMI {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=22,month=month}
+define dem_D885_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=23,month=month}
+define dem_D895_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=24,month=month}
+define dem_D899_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=25,month=month}
+define dem_D881_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=26,month=month}
+define dem_D_BRK004_NBA_N {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=27,month=month}
+!define dem_D802A_PAG {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=28,month=month}
+define dem_D878_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=29,month=month}
+define dem_D886_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=30,month=month}
+define dem_D887_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=31,month=month}
+define dem_D888_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=32,month=month}
+define dem_D869_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=33,month=month}
+define dem_D870_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=34,month=month}
+define dem_D815_PMI  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=35,month=month}
+define dem_D_BRK004_NBA_S {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=36,month=month}
+define dem_D848_PAG  {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=37,month=month}
+define dem_D28_PMI   {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=38,month=month}
+define dem_D29_PMI   {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=39,month=month}
+
+!define out_D25_PMI   {alias dem_D25_PMI    kind 'debug' units 'taf'}
+!define out_D27_PMI   {alias dem_D27_PMI    kind 'debug' units 'taf'}
+!define out_D28_PMI   {alias dem_D28_PMI    kind 'debug' units 'taf'}
+!define out_D29_PMI   {alias dem_D29_PMI    kind 'debug' units 'taf'}
+!define out_D802A_PAG {alias dem_D802A_PAG  kind 'debug' units 'taf'}
+!define out_D810_PMI  {alias dem_D810_PMI   kind 'debug' units 'taf'}
+!define out_D813_PMI  {alias dem_D813_PMI   kind 'debug' units 'taf'}
+!define out_D814_PMI  {alias dem_D814_PMI   kind 'debug' units 'taf'}
+!define out_D815_PMI  {alias dem_D815_PMI   kind 'debug' units 'taf'}
+!define out_D846_PAG  {alias dem_D846_PAG   kind 'debug' units 'taf'}
+!define out_D847_PAG  {alias dem_D847_PAG   kind 'debug' units 'taf'}
+!define out_D848_PAG  {alias dem_D848_PAG   kind 'debug' units 'taf'}
+!define out_D849_PAG  {alias dem_D849_PAG   kind 'debug' units 'taf'}
+!define out_D851_PAG  {alias dem_D851_PAG   kind 'debug' units 'taf'}
+!define out_D851_PMI  {alias dem_D851_PMI   kind 'debug' units 'taf'}
+!define out_D859_PAG  {alias dem_D859_PAG   kind 'debug' units 'taf'}
+!define out_D863_PAG  {alias dem_D863_PAG   kind 'debug' units 'taf'}
+!define out_D867_PAG  {alias dem_D867_PAG   kind 'debug' units 'taf'}
+!define out_D868_PAG  {alias dem_D868_PAG   kind 'debug' units 'taf'}
+!define out_D869_PMI  {alias dem_D869_PMI   kind 'debug' units 'taf'}
+!define out_D870_PMI  {alias dem_D870_PMI   kind 'debug' units 'taf'}
+!define out_D877_PMI  {alias dem_D877_PMI   kind 'debug' units 'taf'}
+!define out_D878_PMI  {alias dem_D878_PMI   kind 'debug' units 'taf'}
+!define out_D879_PMI  {alias dem_D879_PMI   kind 'debug' units 'taf'}
+!define out_D881_PMI  {alias dem_D881_PMI   kind 'debug' units 'taf'}
+!define out_D883_PMI  {alias dem_D883_PMI   kind 'debug' units 'taf'}
+!define out_D884_PMI  {alias dem_D884_PMI   kind 'debug' units 'taf'}
+!define out_D885_PMI  {alias dem_D885_PMI   kind 'debug' units 'taf'}
+!define out_D886_PMI  {alias dem_D886_PMI   kind 'debug' units 'taf'}
+!define out_D887_PMI  {alias dem_D887_PMI   kind 'debug' units 'taf'}
+!define out_D888_PMI  {alias dem_D888_PMI   kind 'debug' units 'taf'}
+!define  out_D895_PMI  {alias dem_D895_PMI   kind 'debug' units 'taf'}
+!define out_D896_PMI  {alias dem_D896_PMI   kind 'debug' units 'taf'}
+!define out_D899_PMI  {alias dem_D899_PMI   kind 'debug' units 'taf'}
+!define out_D403B_PMI {alias dem_D403B_PMI  kind 'debug' units 'taf'}
+!define out_D403C_PMI {alias dem_D403C_PMI  kind 'debug' units 'taf'}
+
+
+!***********************************************************************************
+
+!losses - constant pattern, never reduced.
+!define dem_D403B_PLS {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'} ! NBA_Losses defined in constraints-Contracts.wresl
+!define dem_D803_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+!define dem_D824_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+!define dem_D826_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+!define dem_D827_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+!define dem_D828_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+!define dem_D829_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D854_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D862_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D864_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D880_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D882_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D889_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D891_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D893_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D894_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+define dem_D816_PLS  {timeseries kind 'demand-swp-ls' units 'taf' convert 'cfs'}
+
+!interruptable - full request, weights determine if water is delivered.
+define dem_D27_PIN   {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D821_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D846_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D848_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D849_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D868_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D859_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D877_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D883_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D884_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D885_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D899_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D895_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D810_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D814_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+define dem_D815_PIN  {timeseries kind 'demand-swp-in' units 'taf' convert 'cfs'}
+
+

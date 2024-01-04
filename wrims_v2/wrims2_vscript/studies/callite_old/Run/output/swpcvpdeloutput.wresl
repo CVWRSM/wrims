@@ -1,0 +1,39 @@
+! Output of Results
+
+
+/** SWP output  **/
+define SwpTotalDel {alias D_Napa+ D_Solano+ D_Sbay+D_ONeillFBSWP+ D_DosAmigosSWP + D_Emp2Dud + D_CoastAqdct + D_KCWA + D_CVC2Chris + D_OSO + D_WarnePP + D_Alamo + D_PearBlPP kind 'FLOW-DELIVERY' units 'CFS' }  !includes losses!
+define SWP_SOD_Del_wLoss {alias SwpTotalDel + D854_PLS kind 'FLOW-DELIVERY' units 'CFS' }  !add other loss associated with moving CVP water from Banks to Cross Valley Canal to get total SWP SOD Deliveries with losses.
+define SWP_SOD_Del_NoLoss {alias SWP_SOD_Del_wLoss - swp_loss kind 'DELIVERY-SWP' units 'CFS' }  !subtract total losses in aquaduct
+define SWP_NOD_Del {alias D_Therm_p + D_YubFea_p + D_Orovl_p kind 'DELIVERY-SWP' units 'CFS' }
+define Total_SWP_Del_NoLoss {alias SWP_SOD_Del_NoLoss + SWP_NOD_Del kind 'DELIVERY-SWP' units 'CFS' }  !add total SWP SOD (no loss) and SWP NOD deliveries to get total SWP Deliveries (without losses)
+
+define Total_SWP_Del_wLoss {alias SWP_SOD_Del_wLoss + SWP_NOD_Del kind 'DELIVERY-SWP' units 'CFS' }  !add total SWP SOD (with losses) and SWP NOD deliveries to get total SWP Deliveries (with losses)
+
+define SWP_Del_Contractor_NoLoss {alias swp_TA_total + SWP_CO_total + SWP_IN_total kind 'swp_delivery' units 'CFS'}
+define SWP_Del_Contractor_wLoss {alias SWP_Del_Contractor_NoLoss + swp_loss kind 'swp_delivery' units 'CFS'}  !add total losses is aquaduct
+
+
+/* CVP output **/
+!!!add summaries of south of delta CVP delivery in terms of demand type:
+define del_cvp_pag_s {alias D_UpDMC_pag + D_CVPJU_LDMC_pag + D_MendotaPl_pag + D_SLCVP_pag + D_DsAmgosCVP_pag
+                      kind  'delivery-cvp'
+                      units 'cfs'}
+define del_cvp_pmi_s {alias D_SLCVP_pmi + D_DsAmgosCVP_pmi kind 'delivery-cvp' units 'cfs'}
+define del_cvp_pex_s {alias D_CVPJU_LDMC_pex + D_MendotaPl_pex kind 'delivery-cvp' units 'cfs'}
+define del_cvp_prf_s {alias D_CVPJU_LDMC_prf + D_MendotaPl_prf + D_CVPRfg_854_prf kind 'delivery-cvp' units 'cfs'}
+define del_cvp_pls_s {alias D_UpDMC_pls + D_MendotaPl_pls + D_DsAmgosCVP_pls 
+                      kind 'delivery-cvp' 
+                      units 'cfs'}
+! + D_CVPRfg_854_pls  !D_CVPRfg_854_pls should not be included in CVP delivery since D854_PLS is a SWP delivery
+
+define del_cvp_total_s {alias del_cvp_pag_s + del_cvp_pmi_s + del_cvp_pex_s + del_cvp_prf_s + del_cvp_pls_s kind 'delivery-cvp' units 'cfs'}
+
+define CvpTotalDel {alias D_UpDMC_pag + D_CVPJU_LDMC_pag + D_MendotaPl_pag + D_SLCVP_pag + D_DsAmgosCVP_pag + D_CVP_CVC_pag +! AG
+                          D_CVPJU_LDMC_pex + D_MendotaPl_pex+ ! EX
+                          D_SLCVP_pmi + D_DsAmgosCVP_pmi+ ! MI
+                          D_CVPJU_LDMC_prf + D_MendotaPl_prf + D_CVPRfg_854_prf+ ! RF
+                          D_UpDMC_pls + D_MendotaPl_pls + D_DsAmgosCVP_pls  ! LS
+                          kind 'FLOW-DELIVERY' units 'CFS' }
+
+define del_cvp_total_n {alias D_RedBlf_p + D_Wilkns_p + D_SacAme_p + D_Nimbus_p + D_Folsm_p kind 'DELIVERY-CVP' units 'CFS' }

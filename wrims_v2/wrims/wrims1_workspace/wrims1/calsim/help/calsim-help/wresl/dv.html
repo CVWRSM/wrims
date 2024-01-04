@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<STYLE type="text/css">
+<!--
+P.indent1 {left-margin: 1.5cm}
+P.indent2 {left-margin: 3.0cm}
+-->
+</STYLE>
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>dv</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<B><U><FONT SIZE=4><P>Continuous Decision Variable Declarations</P>
+</B></U></FONT><P>This form is used to add continuous (non-integer) LP <I>decision variables</I> to the solver's formulation. Decision variables are defined using the options below.</P>
+
+<pre>
+<b>define</b> <i>yourIdentifier</i> {
+       <b>std</b> | boundSpec
+       <b>kind</b>  'kindspec' ! DSS C-part
+       <b>units</b> 'unitspec' ! DSS units
+}
+</pre>
+
+<P>The <B>Std</B> indicates that the variable will have the standard LP nonnegativity bounds and 1.0e38 upper bound. Most variables used will be in this category. The boundSpec, used in lieu of the keyword <B>Std</B>, refers to explicit setting of the variable’s lower and upper bounds (numeric constants only) and follows the syntax below:</P>
+<pre>
+       <b>upper</b> <I>constant </I>| <b>unbounded</b>
+       <b>lower</b> <I>constant </I>| <b>unbounded</b>
+</pre>
+<P>where Unbounded indicates -1.0e38 or 1.0e38.</P>
+
+<pre>
+define D109 {
+       upper demand_D109
+       kind  'FLOW-DELIVERY'  ! DSS C-part
+       units 'cfs'            ! DSS units
+}
+</pre>
+</BODY>
+</HTML>

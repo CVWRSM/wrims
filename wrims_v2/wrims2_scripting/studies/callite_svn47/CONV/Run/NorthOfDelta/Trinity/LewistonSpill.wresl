@@ -1,0 +1,16 @@
+/*************************************
+LewistonSpill.wresl
+
+Dan Easton MBK 9/15/2010
+
+*************************************/
+
+!Define two Trinity River excess flow subarcs.  One will have higher priority than Delta Surplus (C_Lwstn_EXC1) thereby
+!reducing Trinity Imports in times of excess.  The other will have lower priority than Delta surplus (C_Lwstn_EXC2) thereby
+!encouraging Trinity Imports in times of excess.
+define C_Lwstn_EXC1 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+define C_Lwstn_EXC2 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal split_C_Lwstn_EXC {C_Lwstn_EXC = C_Lwstn_EXC1 + C_Lwstn_EXC2}
+
+define int_cweir {timeseries kind 'integer' units 'none'}
+goal boundC100_EXC1 {C_Lwstn_EXC1 < int_cweir * 9999999.}

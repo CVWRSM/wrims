@@ -1,0 +1,301 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnvnnnnvnnnnnnvvnvnnnnvnnnnvnnnnnnnnnnnnvnnnnnnnnvvvnnvnvvnvnnnnnnnnnnnnnnnn
+
+U ada.streams.stream_io%b  a-ststio.adb		8cfc9d4e NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.streams%s		a-stream.ads		a-stream.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_conversion%s
+W ada.unchecked_deallocation%s
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c_streams%s  i-cstrea.adb		i-cstrea.ali
+W system%s		system.ads		system.ali
+W system.communication%s  s-commun.adb		s-commun.ali
+W system.crtl%s		s-crtl.ads		s-crtl.ali
+W system.file_io%s	s-fileio.adb		s-fileio.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+
+U ada.streams.stream_io%s  a-ststio.ads		0f9178c7 EE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.finalization.list_controller%s  a-filico.adb  a-filico.ali
+W ada.io_exceptions%s	a-ioexce.ads		a-ioexce.ali
+W ada.streams%s		a-stream.ads		a-stream.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.file_control_block%s  s-ficobl.ads	s-ficobl.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+W system.unsigned_types%s  s-unstyp.ads		s-unstyp.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-ststio.ads		20090409150020 958fe54e
+D a-ststio.adb		20100125162420 129eee58
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-commun.ads		20100126094204 43bf4d22
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-fileio.ads		20091027141444 42b99b37
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 7|36r6 39r9 212r18 213r18 218r14 221r5 8|40r6 41r6 43r14 50r27
+. 51r27 92r29 306r18 307r18 475r14 481r5
+X 5 a-ioexce.ads
+18K13*IO_Exceptions 30e22 7|36w10 136r37 137r37 138r37 139r37 140r37 141r37
+. 142r37
+21X4*Status_Error 7|136r51
+22X4*Mode_Error 7|137r51
+23X4*Name_Error 7|138r51
+24X4*Use_Error 7|139r51
+25X4*Device_Error 7|140r51
+26X4*End_Error 7|141r51
+27X4*Data_Error 7|142r51
+X 6 a-stream.ads
+36K13*Streams 1|16k9 6|69e16 7|39r13 212r22 213r22 218r18 221r9 8|43r18 306r22
+. 307r22 475r18 481r9
+39H9*Root_Stream_Type 67e64 7|41r37
+42M9*Stream_Element
+44I9*Stream_Element_Offset<integer> 7|56r22 57r17 99r18 105r18 188r19 213r30
+. 8|255r18 266r18 307r30 405r28
+51A9*Stream_Element_Array(42M9)<44I9> 7|98r18 104r18 109r14 114r14 212r30
+. 218r26 8|254r18 265r18 306r30 427r14 437r14 475r26
+X 7 a-ststio.ads
+39K21*Stream_IO 6|36k13 7|221l17 221e26 8|43b26 481l17 481t26
+41P9*Stream_Access(6|39R9) 90r46 8|415r46 418r14
+43P9*File_Type(184R9) 67r21 73r21 78r36 79r36 80r36 81r36 83r26 84r26 85r26
+. 87r33 88r33 90r28 97r14 103r14 108r14 113r14 120r32 122r27 123r27 125r38
+. 130r28 163r27 168r27 203c9 8|59r35 102r35 112r21 138r36 147r33 157r28 166r26
+. 175r27 185r29 194r26 203r26 213r21 253r14 264r14 317r35 328r35 337r32 348r38
+. 380r35 394r26 415r28 426r14 436r14
+45E9*File_Mode 45e54 51r8 68r14 74r14 80r54 83r44 125r56 168r38 8|50r53 51r68
+. 113r14 194r44 214r14 317r53 348r56
+45n23*In_File{45E9} 52r7 8|357r48
+45n32*Out_File{45E9} 53r7 68r27 8|113r27 245r34
+45n42*Append_File{45E9} 54r7
+56I9*Count<6|44I9> 59r30 59r47 123r45 185r15 8|150r14 178r14 296r34 340r21
+. 370r24 394r44 408r14
+59I12*Positive_Count{56I9} 100r14 110r14 120r48 122r45 8|175r45 256r14 337r48
+. 428r14
+66U14*Create 67=7 68>7 69>7 70>7 8|111b14 132l8 132t14
+67p7 File{43P9} 8|112b7 123m34 131r7
+68e7 Mode{45E9} 8|113b7 125r38
+69s7 Name{string} 8|114b7 126r30
+70s7 Form{string} 8|115b7 127r30
+72U14*Open 73=7 74>7 75>7 76>7 8|212b14 246l8 246t12
+73p7 File{43P9} 8|213b7 224m34 235m14 245r7
+74e7 Mode{45E9} 8|214b7 226r38 235r20 245r27
+75s7 Name{string} 8|215b7 227r30
+76s7 Form{string} 8|216b7 228r30
+78U14*Close 78=22 153r20 8|102b14 105l8 105t13
+78p22 File{43P9} 8|102b21 104r22
+79U14*Delete 79=22 157r20 8|138b14 141l8 141t14
+79p22 File{43P9} 8|138b22 140r23
+80U14*Reset 80=22 80>47 8|235r7 317b14 326l8 326t13 330r7
+80p22 File{43P9} 8|317b21 319r32 324r7 325m17
+80e47 Mode{45E9} 8|317b46 325r23
+81U14*Reset 81=22 8|328b14 331l8 331t13
+81p22 File{43P9} 8|328b21 330m14 330r28
+83V13*Mode{45E9} 83>19 8|194b13 197l8 197t12
+83p19 File{43P9} 8|194b19 196r36
+84V13*Name{string} 84>19 8|203b13 206l8 206t12
+84p19 File{43P9} 8|203b19 205r28
+85V13*Form{string} 85>19 8|166b13 169l8 169t12
+85p19 File{43P9} 8|166b19 168r28
+87V13*Is_Open{boolean} 87>26 8|185b13 188l8 188t15
+87p26 File{43P9} 8|185b22 187r31
+88V13*End_Of_File{boolean} 88>26 8|147b13 151l8 151t19
+88p26 File{43P9} 8|147b26 149r34 150r21 150r41
+90V13*Stream{41P9} 90>21 8|415b13 419l8 419t14
+90p21 File{43P9} 8|415b21 417r32 418r29
+96U14*Read 97>7 98<7 99<7 100>7 8|252b14 261l8 261t12
+97p7 File{43P9} 8|253b7 259r18 260r13
+98a7 Item{6|51A9} 8|254b7 260m19
+99i7 Last{6|44I9} 8|255b7 260m25
+100i7 From{59I12} 8|256b7 259r24
+102U14*Read 103>7 104<7 105<7 8|260r7 263b14 299l8 299t12 310r7
+103p7 File{43P9} 8|264b7 271r34 277r10 278r17 282r27 283r31 293r28 296r7
+. 296r21 297r7
+104a7 Item{6|51A9} 8|265b7 283m38 283r52 293m35 293r49 298r27
+105i7 Last{6|44I9} 8|266b7 298m7
+107U14*Write 108>7 109>7 110>7 8|425b14 433l8 433t13
+108p7 File{43P9} 8|426b7 431r18 432r14
+109a7 Item{6|51A9} 8|427b7 432r20
+110i7 To{59I12} 8|428b7 431r24
+112U14*Write 113>7 114>7 8|432r7 435b14 468l8 468t13 478r7
+113p7 File{43P9} 8|436b7 440r35 446r10 447r17 451r27 452r32 462r29 465r7
+. 465r21 466r7 467r7
+114a7 Item{6|51A9} 8|437b7 452r39 452r53 462r36 462r50 465r34
+120U14*Set_Index 120>25 120>43 8|259r7 337b14 342l8 342t17 431r7
+120p25 File{43P9} 8|337b25 339r32 340r7 341r7
+120i43 To{59I12} 8|337b43 340r28
+122V13*Index{59I12} 122>20 8|175b13 179l8 179t13
+122p20 File{43P9} 8|175b20 177r32 178r21
+123V13*Size{56I9} 123>20 8|150r35 394b13 409l8 409t12
+123p20 File{43P9} 8|394b19 396r32 398r10 399r10 401r20 405r10 405r58 408r21
+125U14*Set_Mode 125=24 125>49 171r20 8|325r7 348b14 374l8 374t16
+125p24 File{43P9} 8|348b24 350r32 357r12 358r22 360r25 361r10 366r7 367r27
+. 369r10 370r10 370r38 373r7
+125e49 Mode{45E9} 8|348b49 357r41 366r28
+130U14*Flush 130>21 8|157b14 160l8 160t13
+130p21 File{43P9} 8|157b21 159r22
+136X4*Status_Error
+137X4*Mode_Error
+138X4*Name_Error
+139X4*Use_Error 8|386r16
+140X4*Device_Error 8|402r19
+141X4*End_Error
+142X4*Data_Error
+175K12 FCB=175:31 184r28 205r64 8|48r18 50r64 51r53 52r13 53r13 66r64 278r38
+. 357r24 360r52 369r22 447r38
+181E9 Operation 181e51 193r17
+181n23 Op_Read{181E9} 8|245r62 277r26 297r23
+181n32 Op_Write{181E9} 8|131r23 245r48 446r26 466r23
+181n42 Op_Other{181E9} 193r30 8|341r23 373r23 399r26
+184R9 Stream_AFCB<18|82R9> 201e14 203r33 205P13 205r44 207P14 207r49 208P14
+. 208r49 210P14 211r21 216P14 217r21 8|66r44 69r18 78r49 88r48 89r34 92r57
+. 117r34 218r34 305r21 474r21
+185i7*Index{56I9} 8|150r26 178r26 296m12 296r26 324m12 340m12 370m15 384r40
+. 465m12 465r26
+188i7*File_Size{6|44I9} 8|398r15 405m15 408r26 467m12
+193e7*Last_Op{181E9} 8|131m12 245m12 277r15 297m12 341m12 373m12 399m15 446r15
+. 466m12
+197b7*Update_Mode{boolean} 8|358r27 361m15
+205V13 AFCB_Allocate{18|80P9}<18|142p13> 205>28 8|66b13 70l8 70t21
+205r28 Control_Block{184R9} 8|66b28 67r29
+207U14 AFCB_Close<18|148p14> 207^26 8|78b14 82l8 82t18
+207p26 File(184R9) 8|78b26 79r29
+208U14 AFCB_Free<18|154p14> 208^26 8|88b14 96l8 96t17
+208p26 File(184R9) 8|88b25 90r32
+210U14 Read<6|54p14> 211=7 212<7 213<7 8|304b14 311l8 311t12
+211r7 File{184R9} 8|305b7 310m13
+212a7 Item{6|51A9} 8|306b7 310m36
+213i7 Last{6|44I9} 8|307b7 310m42
+216U14 Write<6|60p14> 217=7 218>7 8|473b14 479l8 479t13
+217r7 File{184R9} 8|474b7 478m14
+218a7 Item{6|51A9} 8|475b7 478r37
+X 8 a-ststio.adb
+45K12 FIO=45:31 104r7 123r7 140r7 149r7 159r7 168r14 177r7 187r14 196r22
+. 205r14 224r7 271r7 283r13 293r10 319r7 339r7 350r7 360r10 367r7 396r7 417r7
+. 440r7 452r13 462r10
+46K12 SSL=46:31 281r13 284r13 288r16 450r13 453r13 457r16
+48P12 AP{18|80P9} 104r18 123r30 140r19 149r30 159r18 168r24 177r28 187r27
+. 196r32 205r24 224r30 271r30 283r27 293r24 319r28 339r28 350r28 360r21 367r23
+. 396r28 417r28 440r31 452r28 462r25
+50V13 To_FCB[10|20]{18|62E9} 125r30 226r30 366r20
+51V13 To_SIO[10|20]{7|45E9} 196r14 330r20
+59U14 Set_Position 59>28 282r13 380b14 388l8 388t20 451r13
+59p28 File{7|43P9} 380b28 383r17 384r35
+89P12 FCB_Ptr(7|184R9) 90r12 90r23 92r70
+90p7 FT{89P12} 95m13
+92U17 Free[11|20] 95r7
+117r7 Dummy_File_Control_Block{7|184R9} 118r29 124r30
+218r7 Dummy_File_Control_Block{7|184R9} 219r29 225r30
+268m7 Nread{13|44M12} 283m65 293m62 296r41 298r39
+280q10 Locked_Processing 290l14 290e31
+449q10 Locked_Processing 459l14 459e31
+X 10 a-unccon.ads
+20v14*Unchecked_Conversion 8|40w10 50r31 51r31
+X 11 a-uncdea.ads
+20u15*Unchecked_Deallocation 8|41w10 92r33
+X 12 interfac.ads
+36K9*Interfaces 8|32r6 32r32 12|171e15
+X 13 i-cstrea.ads
+37K20*C_Streams 8|32w17 32r43 13|274e25
+41M12*FILEs{16|50M12}
+42I12*int{16|53I12}
+44M12*size_t{16|60M9} 8|268r15
+66i4*SEEK_END{42I12} 8|401r36
+67i4*SEEK_SET{42I12} 8|384r52
+150V13*fseek=154:26{16|53I12} 8|383r10 401r13
+156V13*ftell=157:26{16|55I9} 8|370r31 405r51
+X 14 system.ads
+37K9*System 7|37r6 175r24 8|34w6 34r32 35r6 35r32 36r6 37r6 38r6 45r24 46r24
+. 381r16 384r17 14|197e11
+64M9*Address
+X 15 s-commun.ads
+37K16*Communication 8|35w13 35r39 15|49e25
+39V13*Last_Index{6|44I9} 8|298r15
+X 16 s-crtl.ads
+38K16*CRTL 8|38w13 381r23 384r24 16|196e16
+50M12*FILEs{14|64M9}
+53I12*int{integer}
+55I9*long<integer> 8|381r28 384r29
+60M9*size_t
+X 18 s-ficobl.ads
+42K16*File_Control_Block 7|37w13 175r31 18|160e30
+62E9*File_Mode 8|50r68 51r57 52r17 18|62e66
+62n23*In_File{62E9} 8|357r28
+62n32*Inout_File{62E9} 8|360r56
+62n54*Append_File{62E9} 8|369r26
+67E9*Shared_Status_Type 8|53r17 18|67e46
+67n32*Yes{67E9} 8|278r42 447r42
+79R9*AFCB 7|184r32
+80P9*AFCB_Ptr(82R9) 7|205r68 8|48r22 66r68
+84m7*Stream{13|41M12} 8|370r43 383r22 401r25 405r63
+100e7*Mode{62E9} 8|330r33 357r17 366m12 369r15
+120e7*Shared_Status{67E9} 8|278r22 447r22
+X 19 s-fileio.ads
+39K16*File_IO 8|36w13 45r31 19|254e19
+48U14*Open 8|123r11 224r11
+49p7 File_Ptr{18|80P9} 8|123r17 224r17
+50c7 Dummy_FCB<18|82R9> 8|124r17 225r17
+51e7 Mode{18|62E9} 8|125r17 226r17
+52s7 Name{string} 8|126r17 227r17
+53s7 Form{string} 8|127r17 228r17
+54e7 Amethod{character} 8|128r17 229r17
+55b7 Creat{boolean} 8|129r17 230r17
+56b7 Text{boolean} 8|130r17 231r17
+101U14*Close 8|104r11
+111U14*Delete 8|140r11
+114U14*Reset 8|360r14
+120V13*Mode{18|62E9} 8|196r26
+123V13*Name{string} 8|205r18
+127V13*Form{string} 8|168r18
+131V13*Is_Open{boolean} 8|187r18
+151U14*Check_File_Open 8|177r11 319r11 339r11 350r11 396r11 417r11
+156U14*Check_Read_Status 8|149r11 271r11
+162U14*Check_Write_Status 8|440r11
+173U14*Flush 8|159r11
+217U14*Read_Buf 8|283r17 293r14
+227U14*Append_Set 8|367r11
+231U14*Write_Buf 8|452r17 462r14
+X 24 s-soflin.ads
+45K16*Soft_Links 8|37w13 46r31 24|397e22
+60P9*No_Param_Proc
+185p4*Lock_Task{60P9} 8|281r17 450r17
+195p4*Unlock_Task{60P9} 8|284r17 288r20 453r17 457r20
+

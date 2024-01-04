@@ -1,0 +1,130 @@
+! Armin Munevar 11/20/99
+
+! G-MODEL BELOW IS FOR ANTIOCH WATER WORKS (AWW)
+! ****************************************************************************
+! ****************************************************************************
+! Coefficients for Antioch  
+define g_So_aww     {value 27.0     }        ! millimhos/cm
+define g_Sb_aww     {value 0.220    }        ! millimhos/cm
+define g_alpha_aww  {value 0.00041  }        ! 1/cfs
+define g_beta_aww   {value 500.0    }        ! ft^3
+define g_n_aww      {value 1.0      }        ! no units
+
+! define Dvars needed for this station's G model
+
+define Go_aww {std kind 'GMODEL-PARAM' units 'CFS'}
+
+! **************************************************************************************
+! Calculate Go for the current period. This is the beginning of period G value based upon
+! last month's flow and beginning of last month's G value, Go(-1). Units are cfs
+
+define Go_hist_aww {value	NDO(-1)/(1 + (NDO(-1)/Go_aww(-1) - 1)
+                          *EXP(-NDO(-1)*g_delT/g_beta_aww))           }
+
+goal setGo_aww {Go_aww = Go_hist_aww}
+
+
+! *************************************************************************************
+! Get salinity standard for this particular station.
+! Standard may specify two salinity requirements for different days of the month. In 
+! this case, 2 standards are read from the table along with their corresponding dates.
+
+! first standard
+define EC_std_aww1 {
+       case APR_thru_May {
+         condition         month ==APR .and. month ==MAY
+         select            ECstandard1
+         from              salinity_std_aww 
+         where             month=month }
+       case no_standard {                       ! dummy value when standard not in effect
+         condition         always
+         value             g_So_aww }  }        ! this makes the req'mt = 0
+
+! get the dates for this standard
+define begday_aww1 {
+       case APR_thru_May {
+        condition         month ==APR .and. month ==MAY
+        select          beginday1
+        from            salinity_std_aww
+        where           month=month }
+       case no_standard {
+         condition        always
+         value            0 }
+}
+define endday_aww1 {
+       case APR_thru_May {
+         condition         month ==APR .and. month ==MAY
+        select          endday1
+        from            salinity_std_aww
+        where           month=month }
+       case no_standard {
+         condition        always
+         value            0 }
+}
+
+! second standard
+define EC_std_aww2 {
+       case APR_thru_May {
+         condition         month ==APR .and. month ==MAY
+         select            ECstandard2
+         from              salinity_std_aww 
+         where             month=month }
+       case no_standard {                       ! dummy value when standard not in effect
+         condition         always
+         value             g_So_aww }  }        ! this makes the req'mt = 0
+
+! get the dates for this standard
+define begday_aww2 {
+       case APR_thru_May {
+         condition         month ==APR .and. month ==MAY
+        select          beginday2
+        from            salinity_std_aww
+        where           month=month }
+       case no_standard {
+         condition        always
+         value            0 }
+}
+define endday_aww2 {
+       case APR_thru_May {
+         condition         month ==APR .and. month ==MAY
+        select          endday2
+        from            salinity_std_aww
+        where           month=month }
+       case no_standard {
+         condition        always
+         value            0 }
+}
+
+! *************************************************************************************
+! Get required Delta Outflow to meet this salinity standard
+
+define DO_req_aww1 {
+     case standardON {
+         condition         month ==APR .and. month ==MAY
+          value          min(flowcap_salt, GET_REQ_DO(Go_hist_aww,EC_std_aww1,g_So_aww,
+          											  g_Sb_aww,g_alpha_aww,g_beta_aww,g_n_aww) ) }
+     case standardOFF {
+          condition      always
+          value          0.0      }    }
+
+define DO_req_aww2 {
+     case standardON {
+         condition         month ==APR .and. month ==MAY
+          value          min(flowcap_salt, GET_REQ_DO(Go_hist_aww,EC_std_aww2,g_So_aww,
+          											  g_Sb_aww,g_alpha_aww,g_beta_aww,g_n_aww) ) }
+     case standardOFF {
+          condition      always
+          value          0.0      }    }
+  
+
+! *****************************************************************************************
+! Get Salinity at this location at the end of last period (beginning of this period).  
+! This is for output purposes only.
+
+define salinity_prv_aww {std kind 'SALINITY-PREV-COL' units 'MMHOS/CM'}
+
+define Gavg_prv_aww {value	NDO(-1) + (g_beta_aww/g_delT)*log((1+(NDO(-1)/Go_aww(-1) - 1)*
+                         		EXP(-NDO(-1)*g_delT/g_beta_aww))/(NDO(-1)/Go_aww(-1)))   }
+
+goal salinity_prv_aww {salinity_prv_aww = (g_So_aww - g_Sb_aww)*EXP(-g_alpha_aww*POW(Gavg_prv_aww,g_n_aww)) 
+                                    + g_Sb_aww}

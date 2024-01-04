@@ -1,0 +1,557 @@
+! E. Reyes 12/12/00
+
+! This file sums the monthly maximum stream diversion requirements into annual diversion requirements
+
+!  NORTH OF DELTA
+!=====================================================================================================
+!=====================================================================================================
+
+!Define Annual Demands
+define AWann_2_PA{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_2_PA(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_2_PA(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_2_PA(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+!Define Annual Demands
+define AWann_3_PA{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_3_PA(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_3_PA(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_3_PA(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_4_PA1{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_4_PA1(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_4_PA1(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_4_PA1(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_4_PA2{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_4_PA2(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_4_PA2(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_4_PA2(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+ 
+ define AWann_7N_PA{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_7N_PA(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_7N_PA(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_7N_PA(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+       			value 0.0 } }
+        			
+ define AWann_7S_PA{   
+         case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+         		condition month == OCT .and. wateryear == 1922
+         			sum(i=0,11,1)  AW_7S_PA(i)*cfs_taf(i)}
+         case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+         		condition month == MAR .and. wateryear == 2006
+         			sum(i=prevOCT,SEP-month,1) AW_7S_PA(i)*cfs_taf(i)}
+         case March { ! March for wateryears 1923 - 2002
+         		condition month == MAR .and. wateryear < 2006
+         			sum(i=0,11,1)  AW_7S_PA(i)*cfs_taf(i)}
+         case Rest { 
+         		condition always
+       			value 0.0 } }
+        			
+ !Define Annual Demands
+ define AWann_16_PA{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_16_PA(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_16_PA(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_16_PA(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+        			value 0.0 } }
+        			
+ define UDann_2_PU{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  UD_2_PU(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) UD_2_PU(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  UD_2_PU(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+       			value 0.0 } }
+       			
+define UDann_3_PU3{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  UD_3_PU3(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) UD_3_PU3(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  UD_3_PU3(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define UDann_3_PU1{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  UD_3_PU1(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) UD_3_PU1(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  UD_3_PU1(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+       			value 0.0 } }
+       			
+define UDann_3_PU2{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  UD_3_PU2(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) UD_3_PU2(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  UD_3_PU2(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+!Define Annual Demands
+define AWann_2_SA{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_2_SA(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_2_SA(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_2_SA(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_3_SA{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_3_SA(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_3_SA(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_3_SA(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define UDann_3_SU{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  UD_3_SU(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) UD_3_SU(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  UD_3_SU(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define UDann_2_SU{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  UD_2_SU(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) UD_2_SU(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  UD_2_SU(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }       			
+       			
+define AWann_8N_SA1{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_8N_SA1(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_8N_SA1(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_8N_SA1(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_8N_SA2{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_8N_SA2(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_8N_SA2(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_8N_SA2(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+ 
+ define AWann_8S_SA1{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_8S_SA1(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_8S_SA1(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_8S_SA1(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+        			value 0.0 } }
+        			
+ define AWann_8S_SA2{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_8S_SA2(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_8S_SA2(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_8S_SA2(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+        			value 0.0 } }
+        			
+ define AWann_8S_SA3{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_8S_SA3(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_8S_SA3(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_8S_SA3(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+        			value 0.0 } }
+        			
+ define AWann_9_SA1{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_9_SA1(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_9_SA1(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_9_SA1(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+       			value 0.0 } }
+       			
+define AWann_9_SA2{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_9_SA2(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_9_SA2(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_9_SA2(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_18_SA{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_18_SA(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_18_SA(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_18_SA(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_19_SA{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_19_SA(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_19_SA(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_19_SA(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_21_SA{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_21_SA(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_21_SA(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_21_SA(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_22_SA1{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_22_SA1(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_22_SA1(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_22_SA1(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			
+define AWann_8N_PR1{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_8N_PR1(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_8N_PR1(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_8N_PR1(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+       			     			
+define AWann_8N_PR2{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_8N_PR2(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_8N_PR2(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_8N_PR2(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }
+ 
+ define AWann_8S_PR{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_8S_PR(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_8S_PR(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_8S_PR(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+        			value 0.0 } }
+        			
+define AWann_9_PR{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_9_PR(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_9_PR(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_9_PR(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }        			
+       			
+define AWann_11_PR{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			sum(i=0,11,1)  AW_11_PR(i)*cfs_taf(i)}
+       case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+       		condition month == MAR .and. wateryear == 2006
+       			sum(i=prevOCT,SEP-month,1) AW_11_PR(i)*cfs_taf(i)}
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR .and. wateryear < 2006
+       			sum(i=0,11,1)  AW_11_PR(i)*cfs_taf(i)}
+       case Rest { 
+       		condition always
+       			value 0.0 } }        			       			
+ 
+ /*
+ define AWann_17N_PR{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_17N_PR(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_17N_PR(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_17N_PR(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+        			value 0.0 } }
+        			
+ define AWann_17S_PR{   
+        case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+        		condition month == OCT .and. wateryear == 1922
+        			sum(i=0,11,1)  AW_17S_PR(i)*cfs_taf(i)}
+        case Mar2006 {  ! special case for last wateryear, Sum Oct-Sep
+        		condition month == MAR .and. wateryear == 2006
+        			sum(i=prevOCT,SEP-month,1) AW_17S_PR(i)*cfs_taf(i)}
+        case March { ! March for wateryears 1923 - 2002
+        		condition month == MAR .and. wateryear < 2006
+        			sum(i=0,11,1)  AW_17S_PR(i)*cfs_taf(i)}
+        case Rest { 
+        		condition always
+        			value 0.0 } }
+ */  
+
+! Define diversion requirement
+! CVP Agricultural Water Service Contractors
+define DR_2_PA  	{value  	MAX(0.0,MIN(CL_WKYTN_2_PA,		AWann_2_PA   * (1+ RPF_2_PA)  * (1+ RUF_2_PA)	*(1-GPmin_2_PA  )	*(1 + EVF_WKYTN_2_PA  + DPF_WKYTN_2_PA + LFF_WKYTN_2_PA + SPF_WKYTN_2_PA	)))}
+define DR_3_PA  	{value  	MAX(0.0,MIN(CL_SAC294_3_PA,		AWann_3_PA   * (1+ RPF_3_PA)  * (1+ RUF_3_PA)	*(1-GPmin_3_PA  )	*(1 + EVF_SAC294_3_PA  + DPF_SAC294_3_PA + LFF_SAC294_3_PA + SPF_SAC294_3_PA	)))}
+define DR_4_PA1  	{value  	MAX(0.0,MIN(CL_CCL005_4_PA1,		AWann_4_PA1  * (1+ RPF_4_PA1) * (1+ RUF_4_PA1)	*(1-GPmin_4_PA1  )	*(1 + EVF_CCL005_4_PA1  + DPF_CCL005_4_PA1 + LFF_CCL005_4_PA1 + SPF_CCL005_4_PA1	)))}
+define DR_4_PA2  	{value  	MAX(0.0,MIN(CL_TCC022_4_PA2,		AWann_4_PA2  * (1+ RPF_4_PA2) * (1+ RUF_4_PA2)	*(1-GPmin_4_PA2  )	*(1 + EVF_TCC022_4_PA2  + DPF_TCC022_4_PA2 + LFF_TCC022_4_PA2 + SPF_TCC022_4_PA2	)))}			
+define DR_7N_PA  	{value  	MAX(0.0,MIN(CL_TCC036_7N_PA,		AWann_7N_PA  * (1+ RPF_7N_PA) * (1+ RUF_7N_PA)	*(1-GPmin_7N_PA  )	*(1 + EVF_TCC036_7N_PA  + DPF_TCC036_7N_PA + LFF_TCC036_7N_PA + SPF_TCC036_7N_PA	)))}
+define DR_7S_PA  	{value  	MAX(0.0,MIN(CL_TCC081_7S_PA,		AWann_7S_PA  * (1+ RPF_7S_PA) * (1+ RUF_7S_PA)	*(1-GPmin_7S_PA  )	*(1 + EVF_TCC081_7S_PA  + DPF_TCC081_7S_PA + LFF_TCC081_7S_PA + SPF_TCC081_7S_PA	)))}
+define DR_16_PA  	{value  	MAX(0.0,MIN(CL_FTR021_16_PA,		AWann_16_PA * (1+ RPF_16_PA)* (1+ RUF_16_PA)	*(1-GPmin_16_PA  )	*(1 + EVF_FTR021_16_PA  + DPF_FTR021_16_PA + LFF_FTR021_16_PA + SPF_FTR021_16_PA	)))}
+
+define anncvpDR_pag_n {value DR_2_PA + DR_3_PA + DR_4_PA1 + DR_4_PA2 + DR_7N_PA + DR_7S_PA + DR_16_PA}
+
+! CVP Urban Water Service Contractors
+define DR_2_PU  	{value  	MAX(0.0,MIN(CL_WTPCSD_2_PU + CL_WKYTN_2_PU,			UDann_2_PU		*(1-GPmin_2_PU  )	*(1 + EF_WTPCSD_2_PU + SF_WTPCSD_2_PU)))}				
+define DR_3_PU3 	{value  	MAX(0.0,MIN(CL_WTPBUK_3_PU3,  								UDann_3_PU3 		*(1-GPmin_3_PU3 )	*(1 + EF_WTPBUK_3_PU3 + SF_WTPBUK_3_PU3 	)))}		
+define DR_3_PU1 	{value  	MAX(0.0,MIN(CL_SHSTA_3_PU1,   								UDann_3_PU1 		*(1-GPmin_3_PU1 )	*(1 + EF_WTPJMS_3_PU1  + SF_WTPJMS_3_PU1	)))}		
+define DR_3_PU2 	{value  	MAX(0.0,MIN(CL_SAC294_3_PU2,  								UDann_3_PU2 		*(1-GPmin_3_PU2 )	*(1 + EF_SAC_3_PU2 	+ SF_SAC_3_PU2	)))}
+
+define anncvpDR_pmi_n {value DR_2_PU + DR_3_PU3 + DR_3_PU1 + DR_3_PU2 }
+
+! CVP Settlement Contractors (for multiple diversions assume losses the same to simplify code)
+define DR_2_SA 		{value  	MAX(0.0,MIN(CL_SAC296_2_SA,		AWann_2_SA   * (1+ RPF_2_SA)*   (1+ RUF_2_SA)	*(1-GPmin_2_SA )	*(1 + EVF_SAC296_2_SA  + DPF_SAC296_2_SA + LFF_SAC296_2_SA + SPF_SAC296_2_SA	)))}		
+define DR_3_SA 		{value  	MAX(0.0,MIN(CL_SAC289_3_SA,		AWann_3_SA   * (1+ RPF_3_SA)*   (1+ RUF_3_SA)	*(1-GPmin_3_SA )	*(1 + EVF_SAC289_3_SA  + DPF_SAC289_3_SA + LFF_SAC289_3_SA + SPF_SAC289_3_SA	)))}
+define DR_8N_SA1_A 	{value  	MAX(0.0,MIN(CL_SAC178_8N_SA1,		AWann_8N_SA1 * (1+ RPF_8N_SA1)* (1+ RUF_8N_SA1)	*(1-GPmin_8N_SA1 )	*(1 + EVF_SAC178_8N_SA1  + DPF_SAC178_8N_SA1 + LFF_SAC178_8N_SA1 + SPF_SAC178_8N_SA1	)))}
+define DR_8N_SA1_B 	{value  	MAX(0.0,MIN(CL_SAC159_8N_SA1,		AWann_8N_SA1 * (1+ RPF_8N_SA1)* (1+ RUF_8N_SA1)	*(1-GPmin_8N_SA1 )	*(1 + EVF_SAC159_8N_SA1  + DPF_SAC159_8N_SA1 + LFF_SAC159_8N_SA1 + SPF_SAC159_8N_SA1	)))}
+define DR_8N_SA2 	{value  	MAX(0.0,MIN(CL_GCC027_8N_SA2,		AWann_8N_SA2 * (1+ RPF_8N_SA2)* (1+ RUF_8N_SA2)	*(1-GPmin_8N_SA2 )	*(1 + EVF_GCC027_8N_SA2  + DPF_GCC027_8N_SA2 + LFF_GCC027_8N_SA2 + SPF_GCC027_8N_SA2	)))}
+define DR_8S_SA1 	{value  	MAX(0.0,MIN(CL_SAC159_8S_SA1,		AWann_8S_SA1* (1+ RPF_8S_SA1)*(1+ RUF_8S_SA1)*(1-GPmin_8S_SA1 )	*(1 + EVF_SAC159_8S_SA1  + DPF_SAC159_8S_SA1 + LFF_SAC159_8S_SA1 + SPF_SAC159_8S_SA1	)))}
+define DR_8S_SA2 	{value  	MAX(0.0,MIN(CL_GCC046_8S_SA2,		AWann_8S_SA2* (1+ RPF_8S_SA2)*(1+ RUF_8S_SA2)*(1-GPmin_8S_SA2 )	*(1 + EVF_GCC046_8S_SA2  + DPF_GCC046_8S_SA2 + LFF_GCC046_8S_SA2 + SPF_GCC046_8S_SA2	)))}
+define DR_8S_SA3_A 	{value  	MAX(0.0,MIN(CL_SAC121_8S_SA3,		AWann_8S_SA3 *  (1+ RPF_8S_SA3)*  (1+ RUF_8S_SA3)	*(1-GPmin_8S_SA3 )	*(1 + EVF_SAC121_8S_SA3  + DPF_SAC121_8S_SA3 + LFF_SAC121_8S_SA3 + SPF_SAC121_8S_SA3	)))}
+define DR_8S_SA3_B 	{value  	MAX(0.0,MIN(CL_SAC109_8S_SA3,		AWann_8S_SA3 *  (1+ RPF_8S_SA3)*  (1+ RUF_8S_SA3)	*(1-GPmin_8S_SA3 )	*(1 + EVF_SAC109_8S_SA3  + DPF_SAC109_8S_SA3 + LFF_SAC109_8S_SA3 + SPF_SAC109_8S_SA3	)))}
+define DR_9_SA1 	{value  	MAX(0.0,MIN(CL_SAC196_9_SA1,		AWann_9_SA1 *  (1+ RPF_9_SA1)*  (1+ RUF_9_SA1)	*(1-GPmin_9_SA1 )	*(1 + EVF_SAC196_9_SA1  + DPF_SAC196_9_SA1 + LFF_SAC196_9_SA1 + SPF_SAC196_9_SA1	)))}
+define DR_9_SA2 	{value  	MAX(0.0,MIN(CL_SAC162_9_SA2,		AWann_9_SA2 *  (1+ RPF_9_SA2)*  (1+ RUF_9_SA2)	*(1-GPmin_9_SA2 )	*(1 + EVF_SAC162_9_SA2  + DPF_SAC162_9_SA2 + LFF_SAC162_9_SA2 + SPF_SAC162_9_SA2	)))}
+define DR_18_SA 	{value  	MAX(0.0,MIN(CL_SAC141_18_SA,		AWann_18_SA *  (1+ RPF_18_SA)*  (1+ RUF_18_SA)	*(1-GPmin_18_SA )	*(1 + EVF_SAC141_18_SA  + DPF_SAC141_18_SA + LFF_SAC141_18_SA + SPF_SAC141_18_SA	)))}
+define DR_19_SA_A 	{value  	MAX(0.0,MIN(CL_SAC122_19_SA,		AWann_19_SA *  (1+ RPF_19_SA)*  (1+ RUF_19_SA)	*(1-GPmin_19_SA )	*(1 + EVF_SAC122_19_SA  + DPF_SAC122_19_SA + LFF_SAC122_19_SA + SPF_SAC122_19_SA	)))}
+define DR_19_SA_B 	{value  	MAX(0.0,MIN(CL_SAC115_19_SA,    	AWann_19_SA *  (1+ RPF_19_SA)*  (1+ RUF_19_SA)	*(1-GPmin_19_SA )	*(1 + EVF_SAC115_19_SA  + DPF_SAC115_19_SA + LFF_SAC115_19_SA + SPF_SAC115_19_SA	)))}
+define DR_19_SA_C 	{value  	MAX(0.0,MIN(CL_SAC099_19_SA,    	AWann_19_SA *  (1+ RPF_19_SA)*  (1+ RUF_19_SA)	*(1-GPmin_19_SA )	*(1 + EVF_SAC099_19_SA  + DPF_SAC099_19_SA + LFF_SAC099_19_SA + SPF_SAC099_19_SA	)))}
+define DR_19_SA_D 	{value  	MAX(0.0,MIN(CL_SAC091_19_SA,    	AWann_19_SA *  (1+ RPF_19_SA)*  (1+ RUF_19_SA)	*(1-GPmin_19_SA )	*(1 + EVF_SAC091_19_SA  + DPF_SAC091_19_SA + LFF_SAC091_19_SA + SPF_SAC091_19_SA	)))}
+define DR_21_SA_A 	{value  	MAX(0.0,MIN(CL_SAC083_21_SA,		AWann_21_SA *  (1+ RPF_21_SA)*  (1+ RUF_21_SA)	*(1-GPmin_21_SA )	*(1 + EVF_SAC083_21_SA  + DPF_SAC083_21_SA + LFF_SAC083_21_SA + SPF_SAC083_21_SA	)))}
+define DR_21_SA_B 	{value  	MAX(0.0,MIN(CL_SAC074_21_SA,		AWann_21_SA *  (1+ RPF_21_SA)*  (1+ RUF_21_SA)	*(1-GPmin_21_SA )	*(1 + EVF_SAC074_21_SA  + DPF_SAC074_21_SA + LFF_SAC074_21_SA + SPF_SAC074_21_SA	)))}
+define DR_22_SA1_A 	{value  	MAX(0.0,MIN(CL_SAC082_22_SA1,		AWann_22_SA1 *  (1+ RPF_22_SA1)*  (1+ RUF_22_SA1)	*(1-GPmin_22_SA1 )	*(1 + EVF_SAC082_22_SA1  + DPF_SAC082_22_SA1 + LFF_SAC082_22_SA1 + SPF_SAC082_22_SA1	)))}
+define DR_22_SA1_B 	{value  	MAX(0.0,MIN(CL_SAC078_22_SA1,		AWann_22_SA1 *  (1+ RPF_22_SA1)*  (1+ RUF_22_SA1)	*(1-GPmin_22_SA1 )	*(1 + EVF_SAC078_22_SA1  + DPF_SAC078_22_SA1 + LFF_SAC078_22_SA1 + SPF_SAC078_22_SA1	)))}
+define DR_3_SU 		{value  	MAX(0.0,MIN(CL_WTPFTH_3_SU,  								UDann_3_SU 		*(1-GPmin_3_SU )	*(1 + EF_WTPFTH_3_SU  + SF_WTPFTH_3_SU	)))}
+define DR_2_SU 		{value  	MAX(0.0,MIN(CL_WTPFTH_2_SU,  								UDann_2_SU 		*(1-GPmin_2_SU )	*(1 + EF_WTPFTH_2_SU  + SF_WTPFTH_2_SU	)))}
+
+define anncvpDR_psc_n {value DR_2_SA + DR_3_SA + DR_8N_SA1_A + DR_8N_SA1_B + DR_8N_SA2 + DR_8S_SA1 +  DR_8S_SA2 + DR_8S_SA3_A + DR_8S_SA3_B +  DR_9_SA1 + DR_9_SA2 + DR_18_SA + DR_19_SA_A + DR_19_SA_B + DR_19_SA_C + DR_19_SA_D + DR_21_SA_A + DR_21_SA_B + DR_22_SA1_A + DR_22_SA1_B + DR_3_SU + DR_2_SU}
+
+! Refuges
+define DR_8N_PR1 	{value  	MAX(0.0,MIN(CL_GCC027_8N_PR1,		AWann_8N_PR1 * (1+ RPF_8N_PR1)* (1+ RUF_8N_PR1)	*(1-GPmin_8N_PR1 )	*(1 + EVF_GCC027_8N_PR1  + DPF_GCC027_8N_PR1 + LFF_GCC027_8N_PR1 + SPF_GCC027_8N_PR1	)))}
+define DR_8N_PR2 	{value  	MAX(0.0,MIN(CL_GCC039_8N_PR2,		AWann_8N_PR2* (1+ RPF_8N_PR2)*(1+ RUF_8N_PR2)*(1-GPmin_8N_PR2 )	*(1 + EVF_GCC039_8N_PR2  + DPF_GCC039_8N_PR2 + LFF_GCC039_8N_PR2 + SPF_GCC039_8N_PR2	)))}
+define DR_8S_PR_A 	{value  	MAX(0.0,MIN(CL_GCC046_8S_PR,		AWann_8S_PR* (1+ RPF_8S_PR)*(1+ RUF_8S_PR)*(1-GPmin_8S_PR )	*(1 + EVF_GCC046_8S_PR  + DPF_GCC046_8S_PR + LFF_GCC046_8S_PR + SPF_GCC046_8S_PR	)))}
+define DR_8S_PR_B 	{value  	MAX(0.0,MIN(CL_CBD037_8S_PR,		AWann_8S_PR* (1+ RPF_8S_PR)*(1+ RUF_8S_PR)*(1-GPmin_8S_PR )	*(1 + EVF_CBD037_8S_PR  + DPF_CBD037_8S_PR + LFF_CBD037_8S_PR + SPF_CBD037_8S_PR	)))}
+define DR_9_PR 		{value  	MAX(0.0,MIN(CL_SAC196_9_PR,		AWann_9_PR* (1+ RPF_9_PR)*(1+ RUF_9_PR)*(1-GPmin_9_PR )	*(1 + EVF_SAC196_9_PR  + DPF_SAC196_9_PR + LFF_SAC196_9_PR + SPF_SAC196_9_PR	)))}
+define DR_11_PR_A 	{value  	MAX(0.0,MIN(CL_WEC000_11_PR,		AWann_11_PR* (1+ RPF_11_PR)*(1+ RUF_11_PR)*(1-GPmin_11_PR )	*(1 + EVF_WEC000_11_PR  + DPF_WEC000_11_PR + LFF_WEC000_11_PR + SPF_WEC000_11_PR	)))}
+define DR_11_PR_B 	{value  	MAX(0.0,MIN(CL_RVC005_11_PR,		AWann_11_PR* (1+ RPF_11_PR)*(1+ RUF_11_PR)*(1-GPmin_11_PR )	*(1 + EVF_RVC005_11_PR  + DPF_RVC005_11_PR + LFF_RVC005_11_PR + SPF_RVC005_11_PR	)))}
+
+! Excluded since constraints-Contracts.wresl indicates CL_JBC002_17N_PR is SWP contract.
+!define DR_17N_PR	{value  	MAX(0.0,MIN(CL_JBC002_17N_PR, 								AWann_17N_PR  	*(1-GPmin_17N_PR)*(1 + EF_JBC_17N_PR 	+ SF_JBC_17N_PR	)))}
+! Excluded since diversion appears to be from SBP031 rather than JBC002 but constraints-Contracts shows SBP031 as WR rather than CL.
+!define DR_17S_PR	{value  	MAX(0.0,MIN(CL_JBC002_17N_PR, 								AWann_17S_PR  	*(1-GPmin_17N_PR)*(1 + EF_SBP_17S_PR 	+ SF_SBP_17S_PR	)))}
+
+define anncvpDR_prf_n {value  DR_8N_PR1 + DR_8N_PR2 + DR_8S_PR_A + DR_8S_PR_B + DR_9_PR + DR_11_PR_A + DR_11_PR_B/*+ DR_17N_PR + DR_17S_PR*/}
+
+! Water Forum
+define anncvpDR_wf_n {value CLWF_ANN_PCWA_A+CLWF_ANN_FOLSM+CLWF_ANN_SJWD_S+CLWF_ANN_ELDOR+CLWF_ANN_SMUD+CLWF_ANN_SCWA+ CLWF_ANN_ROSEV+CLWF_ANN_CAREC+CL_ANN_SCWA_FRPT+CL_ANN_EBMD_FRPT }
+
+define anncvpDR_sysdv {std kind 'DIV-RQMENT' units 'taf'}
+
+! Total system
+define anncvpDR_sys{   
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       		condition month == OCT .and. wateryear == 1922
+       			value min(anncvpDR_pag_n + anncvpDR_pmi_n +  anncvpDR_psc_n + anncvpDR_prf_n + anncvpDR_wf_n, anncvpCL_tot_n) + anncvpCL_tot_s }
+       case March { ! March for wateryears 1923 - 2002
+       		condition month == MAR
+       			value min(anncvpDR_pag_n + anncvpDR_pmi_n +  anncvpDR_psc_n + anncvpDR_prf_n + anncvpDR_wf_n, anncvpCL_tot_n) + anncvpCL_tot_s }
+       case Rest { 
+       		condition always
+       			value anncvpDR_sysdv(-1) } }
+
+goal set_annual_dr_sys {anncvpDR_sysdv = anncvpDR_sys}
+ 

@@ -1,0 +1,299 @@
+/*
+SEEPAGE ARCS
+
+The sign of GetSeep is with respect to groundwater; i.e.
+
+  positive seepage (GetSeep) = loosing stream
+  negative seepage (GetSeep) = gaining stream
+
+When multiplied by -1, it reflects stream's perspective.  
+
+Original formulation _ AJD, jtpayne July 2006
+updated _ Can Dogrul June 2007
+*/
+
+
+!*********************************************************************
+!*********************************************************************
+!***  Conversion factor from CFS to CF/MONTH
+!*********************************************************************
+!*********************************************************************
+define  cfs_cfm  {value daysin * 86400.0}
+define  cfs_cfmp {case first{
+                     condition wateryear == 1922 .and. month == Oct
+                          value daysin * 86400.0}
+                  case other{
+                     condition always
+                          value  daysindv(-1) * 86400.0 }}
+ 
+ 
+!*********************************************************************
+!*********************************************************************
+!***  Groundwater simulation
+!*********************************************************************
+!*********************************************************************
+! INCLUDE '..\..\CVGroundwater\CVGroundwater_SJR\CVGroundwater_First.wresl'
+INCLUDE '..\..\CVGroundwater\CVGroundwater_First.wresl'
+
+ 
+!*********************************************************************
+!*********************************************************************
+!***  Define goals
+!*********************************************************************
+!********************************************************************* 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear Creek      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+goal setBCK040_741 { SG_BCK040_741 = - GetSeep(105)  /  cfs_cfm }
+goal setBCK035_740 { SG_BCK035_740 = - GetSeep(106)  /  cfs_cfm }
+goal setBCK031_739 { SG_BCK031_739 = - GetSeep(107)  /  cfs_cfm }
+goal setBCK024_738 { SG_BCK024_738 = - GetSeep(108)  /  cfs_cfm }
+goal setBCK017_737 { SG_BCK017_737 = - GetSeep(109)  /  cfs_cfm }
+goal setBCK010_736 { SG_BCK010_736 = - GetSeep(110)  /  cfs_cfm }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Calaveras River     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+goal setCLV035_564 { SG_CLV035_564 = - GetSeep(161)  /  cfs_cfm }
+goal setCLV028_563 { SG_CLV028_563 = - GetSeep(162)  /  cfs_cfm }
+goal setCLV023_562 { SG_CLV023_562 = - GetSeep(163)  /  cfs_cfm }
+goal setCLV016_561 { SG_CLV016_561 = - GetSeep(164)  /  cfs_cfm }
+goal setCLV010_560 { SG_CLV010_560 = - GetSeep(165)  /  cfs_cfm }
+goal setCLV004_559 { SG_CLV004_559 = - GetSeep(166)  /  cfs_cfm }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla Bypass/Eastside Bypass   !!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+goal setEBP016_819 { SG_EBP016_819 = - GetSeep(76)   /  cfs_cfm }
+goal setEBP030_785 { SG_EBP030_785 = - GetSeep(87)   /  cfs_cfm }
+goal setEBP042_750 { SG_EBP042_750 = - GetSeep(100)  /  cfs_cfm }
+goal setEBP048_729 { SG_EBP048_729 = - GetSeep(111)  /  cfs_cfm }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setCHW031_792 { SG_CHW031_792 = - GetSeep(80)   /  cfs_cfm }
+goal setCHW028_791 { SG_CHW028_791 = - GetSeep(81)   /  cfs_cfm }
+goal setCHW024_790 { SG_CHW024_790 = - GetSeep(82)   /  cfs_cfm }
+goal setCHW021_789 { SG_CHW021_789 = - GetSeep(83)   /  cfs_cfm }
+goal setCHW017_788 { SG_CHW017_788 = - GetSeep(84)   /  cfs_cfm }
+goal setCHW011_787 { SG_CHW011_787 = - GetSeep(85)   /  cfs_cfm }
+goal setCHW006_786 { SG_CHW006_786 = - GetSeep(86)   /  cfs_cfm }
+
+/* FIXED SEEPAGE LOSSES FOR COMPARISON TO CSII
+define SG_CHW_UPPER {timeseries kind 'RIVER-LOSS' units 'CFS'}
+define SG_CHW_LOWER {timeseries kind 'RIVER-LOSS' units 'CFS'}
+goal setCHW031_792 { SG_CHW031_792 = -SG_CHW_UPPER * (3.0/17.0) } ! - GetSeep(80)  /  cfs_cfm }
+goal setCHW028_791 { SG_CHW028_791 = -SG_CHW_UPPER * (3.0/17.0) } ! - GetSeep(81)  /  cfs_cfm }
+goal setCHW024_790 { SG_CHW024_790 = -SG_CHW_UPPER * (4.0/17.0) } ! - GetSeep(82)  /  cfs_cfm }
+goal setCHW021_789 { SG_CHW021_789 = -SG_CHW_UPPER * (3.0/17.0) } ! - GetSeep(83)  /  cfs_cfm }
+goal setCHW017_788 { SG_CHW017_788 = -SG_CHW_UPPER * (4.0/17.0) } ! - GetSeep(84)  /  cfs_cfm }
+goal setCHW011_787 { SG_CHW011_787 = 0.0 } ! -SG_CHW_LOWER * (6.0/11.0) } ! - GetSeep(85)  /  cfs_cfm }
+goal setCHW006_786 { SG_CHW006_786 = 0.0 } ! -SG_CHW_LOWER * (5.0/11.0) } ! - GetSeep(86)  /  cfs_cfm }
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deadman Creek   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setDED044_757 { SG_DED044_757 = - GetSeep(93)   /  cfs_cfm }
+goal setDED038_756 { SG_DED038_756 = - GetSeep(94)   /  cfs_cfm }
+goal setDED035_755 { SG_DED035_755 = - GetSeep(95)   /  cfs_cfm }
+goal setDED032_754 { SG_DED032_754 = - GetSeep(96)   /  cfs_cfm }
+goal setDED025_753 { SG_DED025_753 = - GetSeep(97)   /  cfs_cfm }
+goal setDED019_752 { SG_DED019_752 = - GetSeep(98)   /  cfs_cfm }
+goal setDED010_751 { SG_DED010_751 = - GetSeep(99)   /  cfs_cfm }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Fresno River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal setFRS045_826 { SG_FRS045_826 = - GetSeep(69)   /  cfs_cfm }
+goal setFRS039_825 { SG_FRS039_825 = - GetSeep(70)   /  cfs_cfm }
+goal setFRS036_824 { SG_FRS036_824 = - GetSeep(71)   /  cfs_cfm }
+goal setFRS032_823 { SG_FRS032_823 = - GetSeep(72)   /  cfs_cfm }
+goal setFRS025_822 { SG_FRS025_822 = - GetSeep(73)   /  cfs_cfm }
+goal setFRS020_821 { SG_FRS020_821 = - GetSeep(74)   /  cfs_cfm }
+goal setFRS016_820 { SG_FRS016_820 = - GetSeep(75)   /  cfs_cfm }
+
+/* FIXED SEEPAGE LOSSES FOR COMPARISON TO CSII
+! Force losses to equal CSII losses...
+! Assume 2 river miles from HNSLY release to FRS045...
+! Assume 6 river miles from FRS045 to FRS039...
+! Assume 3 river miles from FRS039 to FRS036...
+! Assume 4 river miles from FRS036 to FRS032...
+! Assume 6 river miles from FRS032 to FRS025...
+! Assume 6 river miles from FRS025 to FRS020...
+! Assume 4 river miles from FRS016 to FRS020...
+define SG_FRS_UPPER {timeseries kind 'RIVER-LOSS' units 'CFS'}
+define SG_FRS_LOWER {timeseries kind 'RIVER-LOSS' units 'CFS'}
+goal setFRS045_826 { SG_FRS045_826 = -SG_FRS_UPPER * (2.0/11.0) } ! - GetSeep(69)  /  cfs_cfm }
+goal setFRS039_825 { SG_FRS039_825 = -SG_FRS_UPPER * (6.0/11.0) } ! - GetSeep(70)  /  cfs_cfm }
+goal setFRS036_824 { SG_FRS036_824 = -SG_FRS_UPPER * (3.0/11.0) } ! - GetSeep(71)  /  cfs_cfm }
+goal setFRS032_823 { SG_FRS032_823 = -SG_FRS_LOWER * (4.0/20.0) } ! - GetSeep(72)  /  cfs_cfm }
+goal setFRS025_822 { SG_FRS025_822 = -SG_FRS_LOWER * (6.0/20.0) } ! - GetSeep(73)  /  cfs_cfm }
+goal setFRS020_821 { SG_FRS020_821 = -SG_FRS_LOWER * (6.0/20.0) } ! - GetSeep(74)  /  cfs_cfm }
+goal setFRS016_820 { SG_FRS016_820 = -SG_FRS_LOWER * (4.0/20.0) } ! - GetSeep(75)  /  cfs_cfm }
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Merced River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setMCD052_701 { SG_MCD052_701 = - GetSeep(116)  /  cfs_cfm }
+goal setMCD048_700 { SG_MCD048_700 = - GetSeep(117)  /  cfs_cfm }
+goal setMCD042_699 { SG_MCD042_699 = - GetSeep(118)  /  cfs_cfm }
+goal setMCD036_698 { SG_MCD036_698 = - GetSeep(119)  /  cfs_cfm }
+goal setMCD028_697 { SG_MCD028_697 = - GetSeep(120)  /  cfs_cfm }
+goal setMCD021_696 { SG_MCD021_696 = - GetSeep(121)  /  cfs_cfm }
+goal setMCD014_695 { SG_MCD014_695 = - GetSeep(122)  /  cfs_cfm }
+goal setMCD009_694 { SG_MCD009_694 = - GetSeep(123)  /  cfs_cfm }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Joaquin River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setSJR263_880 { SG_SJR263_880 = - GetSeep(54)/cfs_cfm }
+goal setSJR256_879 { SG_SJR256_879 = - GetSeep(55)/cfs_cfm }
+goal setSJR249_878 { SG_SJR249_878 = - GetSeep(56)/cfs_cfm }
+goal setSJR242_877 { SG_SJR242_877 = - GetSeep(57)/cfs_cfm }
+goal setSJR235_876 { SG_SJR235_876 = - GetSeep(58)/cfs_cfm }
+goal setSJR227_875 { SG_SJR227_875 = - GetSeep(59)/cfs_cfm }
+goal setSJR221_874 { SG_SJR221_874 = - GetSeep(60)/cfs_cfm }
+goal setSJR214_873 { SG_SJR214_873 = - GetSeep(61)/cfs_cfm }
+goal setSJR198_858 { SG_SJR198_858 = - GetSeep(64)/cfs_cfm }
+goal setSJR192_843 { SG_SJR192_843 = - GetSeep(65)/cfs_cfm }
+goal setSJR185_829 { SG_SJR185_829 = - GetSeep(66)/cfs_cfm }
+goal setSJR180_818 { SG_SJR180_818 = - GetSeep(67)/cfs_cfm }
+goal setSJR173_798 { SG_SJR173_798 = - GetSeep(77)/cfs_cfm - GetSeep(78)/cfs_cfm }
+goal setSJR166_784 { SG_SJR166_784 = - GetSeep(79)/cfs_cfm - GetSeep(88)/cfs_cfm - GetSeep(89)/cfs_cfm }
+goal setSJR157_769 { SG_SJR157_769 = - GetSeep(90)/cfs_cfm }
+goal setSJR152_768 { SG_SJR152_768 = - GetSeep(91)/cfs_cfm }
+goal setSJR145_749 { SG_SJR145_749 = - GetSeep(92)/cfs_cfm - GetSeep(101)/cfs_cfm - GetSeep(102)/cfs_cfm }
+goal setSJR141_728 { SG_SJR141_728 = - GetSeep(103)/cfs_cfm }
+goal setSJR134_715 { SG_SJR134_715 = - GetSeep(104)/cfs_cfm - GetSeep(112)/cfs_cfm - GetSeep(113)/cfs_cfm }
+goal setSJR123_702 { SG_SJR123_702 = - GetSeep(114)/cfs_cfm }
+goal setSJR116_693 { SG_SJR116_693 = - GetSeep(115)/cfs_cfm - GetSeep(124)/cfs_cfm - GetSeep(125)/cfs_cfm }
+goal setSJR111_683 { SG_SJR111_683 = - GetSeep(126)/cfs_cfm }
+goal setSJR106_671 { SG_SJR106_671 = - GetSeep(127)/cfs_cfm - GetSeep(130)/cfs_cfm - GetSeep(131)/cfs_cfm }
+goal setSJR096_660 { SG_SJR096_660 = - GetSeep(132)/cfs_cfm }
+goal setSJR090_649 { SG_SJR090_649 = - GetSeep(133)/cfs_cfm }
+goal setSJR081_633 { SG_SJR081_633 = - GetSeep(134)/cfs_cfm - GetSeep(143)/cfs_cfm - GetSeep(144)/cfs_cfm }
+goal setSJR072_615 { SG_SJR072_615 = - GetSeep(145)/cfs_cfm - GetSeep(154)/cfs_cfm - GetSeep(155)/cfs_cfm }
+goal setSJR062_605 { SG_SJR062_605 = - GetSeep(156)/cfs_cfm }
+goal setSJR056_592 { SG_SJR056_592 = - GetSeep(157)/cfs_cfm }
+goal setSJR048_576 { SG_SJR048_576 = - GetSeep(158)/cfs_cfm }
+goal setSJR042_567 { SG_SJR042_567 = - GetSeep(159)/cfs_cfm }
+goal setSJR038_558 { SG_SJR038_558 = - GetSeep(160)/cfs_cfm - GetSeep(167)/cfs_cfm - GetSeep(168)/cfs_cfm }
+goal setSJR033_553 { SG_SJR033_553 = - GetSeep(169)/cfs_cfm }
+goal setSJR028_543 { SG_SJR028_543 = - GetSeep(170)/cfs_cfm }
+goal setSJR023_540 { SG_SJR023_540 = - GetSeep(171)/cfs_cfm }
+goal setSJR022_520 { SG_SJR022_520 = - GetSeep(172)/cfs_cfm - GetSeep(199)/cfs_cfm - GetSeep(200)/cfs_cfm }
+goal setSJR013_534 { SG_SJR013_534 = - GetSeep(201)/cfs_cfm }
+goal setSJR009_533 { SG_SJR009_533 = - GetSeep(202)/cfs_cfm }
+goal setSJR006_532 { SG_SJR006_532 = - GetSeep(203)/cfs_cfm }
+
+
+/* FIXED SEEPAGE LOSSES FOR COMPARISON TO CSII
+define SG_UpperSJR_1     {timeseries kind 'RIVER-LOSS' units 'CFS'}
+define SG_UpperSJR_2     {timeseries kind 'RIVER-LOSS' units 'CFS'}
+define SG_SJR_SackDam    {timeseries kind 'RIVER-LOSS' units 'CFS'}
+define SG_SJR_SandSlough {timeseries kind 'RIVER-LOSS' units 'CFS'}
+define SG_SJR_MBP        {timeseries kind 'RIVER-LOSS' units 'CFS'}
+define SG_SJR_EBP        {timeseries kind 'RIVER-LOSS' units 'CFS'}
+
+goal setSJR263_880 { SG_SJR263_880 = -SG_UpperSJR_1 * (2.0/38.0) } !0.0 } ! - GetSeep(54)/cfs_cfm }
+goal setSJR256_879 { SG_SJR256_879 = -SG_UpperSJR_1 * (7.0/38.0) } !0.0 } ! - GetSeep(55)/cfs_cfm }
+goal setSJR249_878 { SG_SJR249_878 = -SG_UpperSJR_1 * (7.0/38.0) } !0.0 } ! - GetSeep(56)/cfs_cfm }
+goal setSJR242_877 { SG_SJR242_877 = -SG_UpperSJR_1 * (7.0/38.0) } !0.0 } ! - GetSeep(57)/cfs_cfm }
+goal setSJR235_876 { SG_SJR235_876 = -SG_UpperSJR_1 * (7.0/38.0) } !0.0 } ! - GetSeep(58)/cfs_cfm }
+goal setSJR227_875 { SG_SJR227_875 = -SG_UpperSJR_1 * (8.0/38.0) } !0.0 } ! - GetSeep(59)/cfs_cfm }
+goal setSJR221_874 { SG_SJR221_874 = -SG_UpperSJR_2 * (6.0/13.0) } !0.0 } ! - GetSeep(60)/cfs_cfm }
+goal setSJR214_873 { SG_SJR214_873 = -SG_UpperSJR_2 * (7.0/13.0) } !0.0 } ! - GetSeep(61)/cfs_cfm }
+goal setSJR198_858 { SG_SJR198_858 = 0.0 } ! - GetSeep(64)/cfs_cfm }
+goal setSJR192_843 { SG_SJR192_843 = 0.0 } ! - GetSeep(65)/cfs_cfm }
+goal setSJR185_829 { SG_SJR185_829 = 0.0 } ! - GetSeep(66)/cfs_cfm }
+goal setSJR180_818 { SG_SJR180_818 = -SG_SJR_SackDam }    ! 0.0 } ! - GetSeep(67)/cfs_cfm }
+goal setSJR173_798 { SG_SJR173_798 = 0.0 } ! - GetSeep(68)/cfs_cfm - GetSeep(77)/cfs_cfm - GetSeep(78)/cfs_cfm }
+goal setSJR166_784 { SG_SJR166_784 = -SG_SJR_SandSlough } ! 0.0 } ! - GetSeep(79)/cfs_cfm - GetSeep(88)/cfs_cfm - GetSeep(89)/cfs_cfm }
+goal setSJR157_769 { SG_SJR157_769 = 0.0 } ! - GetSeep(90)/cfs_cfm }
+goal setSJR152_768 { SG_SJR152_768 = 0.0 } ! - GetSeep(91)/cfs_cfm }
+goal setSJR145_749 { SG_SJR145_749 = -SG_SJR_MBP } ! 0.0 } ! - GetSeep(92)/cfs_cfm - GetSeep(101)/cfs_cfm - GetSeep(102)/cfs_cfm }
+goal setSJR141_728 { SG_SJR141_728 = 0.0 } ! - GetSeep(103)/cfs_cfm }
+goal setSJR134_715 { SG_SJR134_715 = -SG_SJR_EBP } ! 0.0 } ! - GetSeep(104)/cfs_cfm - GetSeep(112)/cfs_cfm - GetSeep(113)/cfs_cfm }
+goal setSJR123_702 { SG_SJR123_702 = 0.0 } ! - GetSeep(114)/cfs_cfm }
+goal setSJR116_693 { SG_SJR116_693 = 0.0 } ! - GetSeep(115)/cfs_cfm - GetSeep(124)/cfs_cfm - GetSeep(125)/cfs_cfm }
+goal setSJR111_683 { SG_SJR111_683 = 0.0 } ! - GetSeep(126)/cfs_cfm }
+goal setSJR106_671 { SG_SJR106_671 = 0.0 } ! - GetSeep(127)/cfs_cfm - GetSeep(130)/cfs_cfm - GetSeep(131)/cfs_cfm }
+goal setSJR096_660 { SG_SJR096_660 = 0.0 } ! - GetSeep(132)/cfs_cfm }
+goal setSJR090_649 { SG_SJR090_649 = 0.0 } ! - GetSeep(133)/cfs_cfm }
+goal setSJR081_633 { SG_SJR081_633 = 0.0 } ! - GetSeep(134)/cfs_cfm - GetSeep(143)/cfs_cfm - GetSeep(144)/cfs_cfm }
+goal setSJR072_615 { SG_SJR072_615 = 0.0 } ! - GetSeep(145)/cfs_cfm - GetSeep(154)/cfs_cfm - GetSeep(155)/cfs_cfm }
+goal setSJR062_605 { SG_SJR062_605 = 0.0 } ! - GetSeep(156)/cfs_cfm }
+goal setSJR056_592 { SG_SJR056_592 = 0.0 } ! - GetSeep(157)/cfs_cfm }
+goal setSJR048_576 { SG_SJR048_576 = 0.0 } ! - GetSeep(158)/cfs_cfm }
+goal setSJR042_567 { SG_SJR042_567 = 0.0 } ! - GetSeep(159)/cfs_cfm }
+goal setSJR038_558 { SG_SJR038_558 = 0.0 } ! - GetSeep(160)/cfs_cfm - GetSeep(167)/cfs_cfm - GetSeep(168)/cfs_cfm }
+goal setSJR033_553 { SG_SJR033_553 = 0.0 } ! - GetSeep(169)/cfs_cfm }
+goal setSJR028_543 { SG_SJR028_543 = 0.0 } ! - GetSeep(170)/cfs_cfm }
+goal setSJR023_540 { SG_SJR023_540 = 0.0 } ! - GetSeep(171)/cfs_cfm }
+goal setSJR022_520 { SG_SJR022_520 = 0.0 } ! - GetSeep(172)/cfs_cfm - GetSeep(199)/cfs_cfm - GetSeep(200)/cfs_cfm }
+goal setSJR013_534 { SG_SJR013_534 = 0.0 } ! - GetSeep(201)/cfs_cfm }
+goal setSJR009_533 { SG_SJR009_533 = 0.0 } ! - GetSeep(202)/cfs_cfm }
+goal setSJR006_532 { SG_SJR006_532 = 0.0 } ! - GetSeep(203)/cfs_cfm }
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stanislaus River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+goal setSTS058_623 { SG_STS058_623 = - GetSeep(146)  /  cfs_cfm }
+goal setSTS053_622 { SG_STS053_622 = - GetSeep(147)  /  cfs_cfm }
+goal setSTS050_621 { SG_STS050_621 = - GetSeep(148)  /  cfs_cfm }
+goal setSTS043_620 { SG_STS043_620 = - GetSeep(149)  /  cfs_cfm }
+goal setSTS036_619 { SG_STS036_619 = - GetSeep(150)  /  cfs_cfm }
+goal setSTS030_618 { SG_STS030_618 = - GetSeep(151)  /  cfs_cfm }
+goal setSTS020_617 { SG_STS020_617 = - GetSeep(152)  /  cfs_cfm }
+goal setSTS011_616 { SG_STS011_616 = - GetSeep(153)  /  cfs_cfm }
+! SG_WDWRD_seep is a TS in TAF - convert to cfs and set Woodward seepage
+goal set_SG_WDWRD   {SG_WDWRD = SG_WDWRD_seep*taf_cfs}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Tuolumne River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setTUO053_657 { SG_TUO053_657 = - GetSeep(135)  /  cfs_cfm }
+goal setTUO047_656 { SG_TUO047_656 = - GetSeep(136)  /  cfs_cfm }
+goal setTUO043_655 { SG_TUO043_655 = - GetSeep(137)  /  cfs_cfm }
+goal setTUO036_654 { SG_TUO036_654 = - GetSeep(138)  /  cfs_cfm }
+goal setTUO030_653 { SG_TUO030_653 = - GetSeep(139)  /  cfs_cfm }
+goal setTUO022_652 { SG_TUO022_652 = - GetSeep(140)  /  cfs_cfm }
+goal setTUO015_651 { SG_TUO015_651 = - GetSeep(141)  /  cfs_cfm }
+goal setTUO010_650 { SG_TUO010_650 = - GetSeep(142)  /  cfs_cfm }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! define values to be used for seepage in the southern sjr ops code
+define UpperSJRSeep     {value  (-GetSeep(54)-GetSeep(55)-GetSeep(56)
+                                 -GetSeep(57)-GetSeep(58)-GetSeep(59))/cfs_cfm }
+define UpperFresnoSeep  {value  (-GetSeep(69)-GetSeep(70)-GetSeep(71))/cfs_cfm }
+
+/* FIXED SEEPAGE LOSSES FOR COMPARISON TO CSII
+! Values fixed to be consistent with the above setup...
+! Revert to the setup above when we start running with dynamic GW
+define UpperSJRSeep      {value  -L603 } 
+define UpperFresnoSeep   {value  0.0 } 
+*/
+
+! IMF -- (alias lumped seepage terms)
+define UpperSJRSeep_A    {alias UpperSJRSeep        kind 'SEEPAGE' units 'CFS' }
+define UpperFresnoSeep_A {alias UpperFresnoSeep     kind 'SEEPAGE' units 'CFS' } 
+
+
+
+
+

@@ -1,0 +1,187 @@
+! E. Reyes 12/12/00
+
+! This file sums the monthly demands, by Diversion Requirement, into annual demands
+
+!  NORTH OF DELTA
+!=====================================================================================================
+!=====================================================================================================
+
+!******************* CUMULATIVE YEARLY DEMANDS  ****************************
+! This section calculates the ANNUAL CVP NOD demands based on Diversion Requirement
+
+! DSA 58
+define acvpdem_dr58dv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_dr58 {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dr58(i)*per_dr58 - mingw_58(i)*per_dr58 }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dr58(i)*per_dr58 - mingw_58(i)*per_dr58 }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dr58(i)*per_dr58 - mingw_58(i)*per_dr58 }
+
+       case Rest {
+       condition always
+       value acvpdem_dr58dv(-1) }
+
+       }
+
+goal setannual_demdr58 {acvpdem_dr58dv = acvpdem_dr58}
+
+! DSA 10, 12, and 15
+define acvpdem_drCB1dv {std kind 'demand-annual' units 'taf'}
+define acvpdem_drCB2dv {std kind 'demand-annual' units 'taf'}
+define acvpdem_drCB {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_drCB1 {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) (cuaw_17101(i)/OnFarmEff_17101*(1.0-ReuseFact_17101)*(1.0+ConvLs_17101))*cfs_taf(i) +
+             (cuaw_17201(i)/OnFarmEff_17201*(1.0-ReuseFact_17201)*(1.0+ConvLs_17201))*cfs_taf(i) +
+             (cuaw_17401PAG(i)/OnFarmEff_17401*(1.0-ReuseFact_17401)*(1.0+ConvLs_17401))*cfs_taf(i) +
+             (cuaw_17801PAG(i)/OnFarmEff_17801*(1.0-ReuseFact_17801)*(1.0+ConvLs_17801))*cfs_taf(i) +
+             (cuaw_14301SC(i)/OnFarmEff_14301*(1.0-ReuseFact_14301)*(1.0+ConvLs_14301))*cfs_taf(i)
+           }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1)
+                     (cuaw_17101(i)/OnFarmEff_17101*(1.0-ReuseFact_17101)*(1.0+ConvLs_17101))*cfs_taf(i) +
+             (cuaw_17201(i)/OnFarmEff_17201*(1.0-ReuseFact_17201)*(1.0+ConvLs_17201))*cfs_taf(i) +
+             (cuaw_17401PAG(i)/OnFarmEff_17401*(1.0-ReuseFact_17401)*(1.0+ConvLs_17401))*cfs_taf(i) +
+             (cuaw_17801PAG(i)/OnFarmEff_17801*(1.0-ReuseFact_17801)*(1.0+ConvLs_17801))*cfs_taf(i) +
+             (cuaw_14301SC(i)/OnFarmEff_14301*(1.0-ReuseFact_14301)*(1.0+ConvLs_14301))*cfs_taf(i)
+       }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) (cuaw_17101(i)/OnFarmEff_17101*(1.0-ReuseFact_17101)*(1.0+ConvLs_17101))*cfs_taf(i) +
+             (cuaw_17201(i)/OnFarmEff_17201*(1.0-ReuseFact_17201)*(1.0+ConvLs_17201))*cfs_taf(i) +
+             (cuaw_17401PAG(i)/OnFarmEff_17401*(1.0-ReuseFact_17401)*(1.0+ConvLs_17401))*cfs_taf(i) +
+             (cuaw_17801PAG(i)/OnFarmEff_17801*(1.0-ReuseFact_17801)*(1.0+ConvLs_17801))*cfs_taf(i) +
+             (cuaw_14301SC(i)/OnFarmEff_14301*(1.0-ReuseFact_14301)*(1.0+ConvLs_14301))*cfs_taf(i)
+       }
+
+       case Rest {
+       condition always
+       value acvpdem_drCB1dv(-1) }
+
+       }
+
+define acvpdem_drCB2 {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) (cuaw_14301GCID(i)/OnFarmEff_14301*(1.0-ReuseFact_14301)*(1.0+ConvLs_14301))*cfs_taf(i) +
+             (cuaw_14501SC(i)/OnFarmEff_14501*(1.0-ReuseFact_14501)*(1.0+ConvLs_14501))*cfs_taf(i) +
+             (cuaw_14501GCID(i)/OnFarmEff_14501GCID*(1.0-ReuseFact_14501GCID)*(1.0+ConvLs_14501GCID))*cfs_taf(i) +
+             (cuaw_18301SC(i)/OnFarmEff_18301*(1.0-ReuseFact_18301)*(1.0+ConvLs_18301))*cfs_taf(i) +
+             (cuaw_131SC(i)/OnFarmEff_131*(1.0-ReuseFact_131)*(1.0+ConvLs_131))*cfs_taf(i) +
+             dem_D14302_prf(i) + dem_D18201A_prf(i) + dem_D18201B_prf(i) !these terms already include losses
+       }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1)
+             (cuaw_14301GCID(i)/OnFarmEff_14301*(1.0-ReuseFact_14301)*(1.0+ConvLs_14301))*cfs_taf(i) +
+             (cuaw_14501SC(i)/OnFarmEff_14501*(1.0-ReuseFact_14501)*(1.0+ConvLs_14501))*cfs_taf(i) +
+             (cuaw_14501GCID(i)/OnFarmEff_14501GCID*(1.0-ReuseFact_14501GCID)*(1.0+ConvLs_14501GCID))*cfs_taf(i) +
+             (cuaw_18301SC(i)/OnFarmEff_18301*(1.0-ReuseFact_18301)*(1.0+ConvLs_18301))*cfs_taf(i) +
+             (cuaw_131SC(i)/OnFarmEff_131*(1.0-ReuseFact_131)*(1.0+ConvLs_131))*cfs_taf(i) +
+             dem_D14302_prf(i) + dem_D18201A_prf(i) + dem_D18201B_prf(i) !these terms already include losses
+       }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) (cuaw_14301GCID(i)/OnFarmEff_14301*(1.0-ReuseFact_14301)*(1.0+ConvLs_14301))*cfs_taf(i) +
+             (cuaw_14501SC(i)/OnFarmEff_14501*(1.0-ReuseFact_14501)*(1.0+ConvLs_14501))*cfs_taf(i) +
+             (cuaw_14501GCID(i)/OnFarmEff_14501GCID*(1.0-ReuseFact_14501GCID)*(1.0+ConvLs_14501GCID))*cfs_taf(i) +
+             (cuaw_18301SC(i)/OnFarmEff_18301*(1.0-ReuseFact_18301)*(1.0+ConvLs_18301))*cfs_taf(i) +
+             (cuaw_131SC(i)/OnFarmEff_131*(1.0-ReuseFact_131)*(1.0+ConvLs_131))*cfs_taf(i) +
+             dem_D14302_prf(i) + dem_D18201A_prf(i) + dem_D18201B_prf(i) !these terms already include losses
+       }
+
+       case Rest {
+       condition always
+       value acvpdem_drCB2dv(-1) }
+
+       }
+
+
+goal setannual_demdrCB1 {acvpdem_drCB1dv = acvpdem_drCB1}
+goal setannual_demdrCB2 {acvpdem_drCB2dv = acvpdem_drCB2}
+
+goal setannual_demdrCB {acvpdem_drCB = acvpdem_drCB1dv }
+
+! DSA 65
+define acvpdem_dr65dv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_dr65 {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dr65(i)*per_dr65 - mingw_65(i)*per_dr65 }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dr65(i)*per_dr65 - mingw_65(i)*per_dr65 }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dr65(i)*per_dr65 - mingw_65(i)*per_dr65 }
+
+       case Rest {
+       condition always
+       value acvpdem_dr65dv(-1) }
+
+       }
+
+goal setannual_demdr65 {acvpdem_dr65dv = acvpdem_dr65}
+
+
+! DSA 70
+define acvpdem_70dv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_70 {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_DSA70_psc(i) + dem_DSA70_pmi(i)}
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_DSA70_psc(i) + dem_DSA70_pmi(i)}
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_DSA70_psc(i) + dem_DSA70_pmi(i)}
+
+       case Rest {
+       condition always
+       value acvpdem_70dv(-1) }
+
+       }
+
+goal setannual_demdr70 {acvpdem_70dv = acvpdem_70}
+
+
+
+!***   TOTAL  NORTH *************************************************************************************
+define acvpdem_dr_n {value acvpdem_dr58 + acvpdem_drCB1 + acvpdem_drCB2 + acvpdem_dr65 + acvpdem_70}
+
+define acvpdem_dr_ndv {alias acvpdem_dr_n kind 'demand-annual' units 'taf'}
+
+
+!   TOTAL SYSTEM
+!=======================================================================================================
+!=======================================================================================================
+define acvpdem_dr_sys {value min(acvpdem_dr_n, acvpdem_total_n) + acvpdem_total_s}
+
+define acvpdem_dr_sysdv {alias acvpdem_dr_sys kind 'demand-annual' units 'taf'}

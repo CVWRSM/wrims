@@ -1,0 +1,42 @@
+define S18level1 {value 131}
+define S18_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S18Zone1 {S18_1 < S18level1}
+define S18_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S18_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S18_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S18level5 {value 507}
+define S18_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S18 {std kind 'STORAGE' units 'TAF'} !Millerton
+goal storage18 {S18=S18_1+S18_2+S18_3+S18_4+S18_5}
+define F18 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E18 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A18 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S18 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A18last {select area from res_info_TF279 given storage=1000*S18(-1) use linear where res_num=18}
+define A18forward {select area from res_info_TF279 given storage=1050*S18(-1) use linear where res_num=18}
+define A18back {select area from res_info_TF279 given storage=950*S18(-1) use linear where res_num=18}
+define coefev18 {value (A18forward - A18back)/(100*max(0.01,S18(-1)))}
+goal area18 {A18=A18last+1000*coefev18*S18-1000*coefev18*S18(-1)}
+goal evap18 {E18*cfs_af=(evap_S18/24)*A18last+(evap_S18/24)*A18}
+define relcap18 {select discharge from res_info_TF279 given storage=1000*S18(-1) use linear where res_num=18}
+goal maxrelease18 {C18<relcap18}
+define S17level1 {value 50}
+define S17_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S17Zone1 {S17_1 < S17level1}
+define S17_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S17level3 {value 705}
+define S17_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S17 {std kind 'STORAGE' units 'TAF'} !Temperance Flat
+goal storage17 {S17=S17_1+S17_2+S17_3}
+define F17 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E17 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A17 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S17 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A17last {select area from res_info_TF279 given storage=1000*S17(-1) use linear where res_num=17}
+define A17forward {select area from res_info_TF279 given storage=1050*S17(-1) use linear where res_num=17}
+define A17back {select area from res_info_TF279 given storage=950*S17(-1) use linear where res_num=17}
+define coefev17 {value (A17forward - A17back)/(100*max(0.01,S17(-1)))}
+goal area17 {A17=A17last+1000*coefev17*S17-1000*coefev17*S17(-1)}
+goal evap17 {E17*cfs_af=(evap_S17/24)*A17last+(evap_S17/24)*A17}
+define relcap17 {select discharge from res_info_TF279 given storage=1000*S17(-1) use linear where res_num=17}
+goal maxrelease17 {C17<relcap17}

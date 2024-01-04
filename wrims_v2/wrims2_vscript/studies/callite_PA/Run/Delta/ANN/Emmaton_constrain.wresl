@@ -1,0 +1,33 @@
+/*************************************
+Emmaton_constrain.wresl
+
+Nazrul Islam; DWR; (06/27/2010)
+
+Add a switch to turn off D1641/D1485 constrain at Emmaton
+Z.Q. Richard Chen; DWR; (02/07/2011)
+**************************/
+
+goal meetEM {
+  lhs D_ExpTD - exp_ann_relax
+  case DRegsOff{
+                   condition EM_DLTSW == 0
+                   rhs ExportCapacity
+                   lhs<rhs penalty 0}     
+  case NoSalinityControlPossible{
+    condition abs(EM_m_sv) <= 0.001 .and. int(EM_b_sv) == 0  
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case NegSlope{
+    condition EM_m_sv <= 0.0  
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case HighCost{
+    condition EM_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case Normal {
+    condition always
+    rhs EM_m_sv*C_Hood_ANN + EM_m_sv*C_YoloBP + EM_b_sv
+    lhs<rhs penalty 0}
+}
+

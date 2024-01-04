@@ -1,0 +1,109 @@
+! NMFS_SALMON_BO_DCC.wresl
+!
+! get D1641 days open
+define D1641_days_open   {select days_open from xchanneldays where month=month}
+
+! check Wilkins Slough flow for likelihood of flushing flows > 7500 cfs on a daily basis
+define WlknSlFlush_prob {value min( max( 0.0064 * C129[UPSTREAM] / daysin - 36.175 / daysin, 0.), 1.) }
+
+! Action 4.1.2
+! Determine target number of days in each month that the DXC gate is open under NMFS action
+define NMFSdaysopentarg {
+    case OCTNOV {
+        condition month == OCT .or. month == NOV
+        value int(D1641_days_open * (1. - WlknSlFlush_prob)) }
+    case DEC {
+        condition month == DEC
+        value int(min(D1641_days_open, 14.) * (1. - WlknSlFlush_prob)) }
+    case JAN {
+        condition month == JAN
+        value 0. }
+    case otherwise {
+        condition always
+        value D1641_days_open }   ! no added restrictions
+}
+define NMFSdaysopentgdv  {alias NMFSdaysopentarg kind 'DCC-DAYS-OPEN' UNITS 'NONE'}  !for output only
+
+define maxdaysofftarget {value max(0.,D1641_days_open - NMFSdaysopentarg)}
+define NMFSMaxExpDCCest {value min(pr_cyc_D409,FWS_MaxExp_X2) * (daysin - maxdaysofftarget)/daysin +  min(2000.,pr_cyc_D409,FWS_MaxExp_X2) * maxdaysofftarget/daysin}
+define NMFSMaxExDCCest_ {alias NMFSMaxExpDCCest kind 'Export-Limit' units 'cfs'} !for output only
+
+
+! check Rock Slough salinity conditions if the DXC was closed this month
+define RS_estEC_noDXC {
+    value AnnEC(C400(-4),C400(-3),C400(-2),C400(-1),pr_cyc_C400,
+           D409(-4),D409(-3),D409(-2),D409(-1),pr_cyc_D409,
+           C639(-4),C639(-3),C639(-2),C639(-1),pr_cyc_C639,
+           DXC(-4),DXC(-3),DXC(-2),DXC(-1),NMFSdaysopentarg,
+           net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),pr_cyc_net_DICU,
+           sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),pr_cyc_sac_oth,
+           exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),pr_cyc_exp_oth,
+           VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),pr_cyc_VernWQ,
+           int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),daysin,
+           int(2),int(monthly_ave),month,wateryear)}  ! 2 is for RS
+
+define RSestECnoDXCmE {
+    value AnnEC(C400(-4),C400(-3),C400(-2),C400(-1),pr_cyc_C400,
+           D409(-4),D409(-3),D409(-2),D409(-1),NMFSMaxExpDCCest,
+           C639(-4),C639(-3),C639(-2),C639(-1),pr_cyc_C639,
+           DXC(-4),DXC(-3),DXC(-2),DXC(-1),NMFSdaysopentarg,
+           net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),pr_cyc_net_DICU,
+           sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),pr_cyc_sac_oth,
+           exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),pr_cyc_exp_oth,
+           VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),pr_cyc_VernWQ,
+           int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),daysin,
+           int(2),int(monthly_ave),month,wateryear)}  ! 2 is for RS
+
+! This is CCWD's first approximation (Matt Moses, July 2006)
+! Use Maximum of the following two equations:
+!   Cl = 0.285*EC - 50    (this is the 'seawater' line)
+!   Cl = 0.15*EC - 12      (this is the 'ag. drainage' line)
+! These two equations intercept at Cl=30.222... and EC=281.481481481...
+define RS_estCL_noDXC {value max(0.285*RS_estEC_noDXC - 50.,
+                                 0.150*RS_estEC_noDXC - 12.)}
+define RS_estCL_noDXCdv {alias RS_estCL_noDXC kind 'SALINITY' units 'MG/L'}
+define RSestCLnoDXCmE {value max(0.285*RSestECnoDXCmE - 50.,
+                                 0.150*RSestECnoDXCmE - 12.)}
+define RSestCLnoDXCmEdv {alias RSestCLnoDXCmE kind 'SALINITY' units 'MG/L'}
+
+! Get Rock Slough salinity standard for Chloride
+define RS_CL_STD_TEST {select CLstandard1
+                       from   salinity_std_rsl
+                       where  month=month,wyt=wyt_SAC}          !no shift required since this is a current month test
+
+
+! Determine final number of days in each month that the DXC gate is open under NMFS action
+define NMFS_days_open {
+    case OCTtoDEC {
+        condition range(month,OCT,DEC) .and. RS_estCL_noDXC <= RS_CL_STD_TEST + 5.
+        value NMFSdaysopentarg }
+    case OCTtoDEC2 {
+        condition range(month,OCT,DEC) .and. RSestCLnoDXCmE <= RS_CL_STD_TEST + 5.
+        value NMFSdaysopentarg }
+    case otherwiseDEC {
+        condition month == DEC                                         ! otherwise DEC back to no more than 14 days (next condition)
+        value min(D1641_days_open, 14.) }
+    case JAN {
+        condition month == JAN                                         ! never relax JAN
+        value NMFSdaysopentarg }
+    case otherwiseALL {
+        condition always
+        value D1641_days_open }
+}
+define NMFSdaysopendv  {alias NMFS_days_open kind 'DCC-DAYS-OPEN' UNITS 'NONE'}  !for output only
+
+
+! If not going to meet target, drop exports to 2000 cfs max
+define daysofftarget {value NMFS_days_open - NMFSdaysopentarg}
+define NMFS_MaxExp_DCC {
+	case MeetWQReq {
+		condition	range(month,oct,dec) .and. daysofftarget < 0.5 .and. RS_estCL_noDXC > RS_CL_STD_TEST + 5. .and. RSestCLnoDXCmE < RS_CL_STD_TEST + 5.
+		value		NMFSMaxExpDCCest
+	}
+	case otherwise{
+        	condition always
+        	value 999999.
+        }
+}
+define NMFS_MaxExpDCCdv {alias NMFS_MaxExp_DCC kind 'Export-Limit' units 'cfs'} !for output only
+

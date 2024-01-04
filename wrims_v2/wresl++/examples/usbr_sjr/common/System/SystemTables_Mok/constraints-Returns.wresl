@@ -1,0 +1,133 @@
+/*
+RETURN FLOWS FROM DEMAND UNITS
+
+NAMING TAKES THE FOLLOWING FORMS:
+R_{DEMAND UNIT}     - return flow from specific demand unit
+R_{WBA}_{DESTINATION}   - aggregated return from WBA to specific location
+
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DIVERSIONS TO WBAS, AND SUB-ARCS
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60N     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 60N_NA1 - Jackson Valley ID - Ag
+!============================== 
+define R_60N_NA1        {std kind 'RETURN-FLOW' units 'CFS'}
+goal setR_60N_NA1       {R_60N_NA1        = TW_60N_NA1 + LF_60N_NA1 + OS_60N_NA1 - RU_60N_NA1}
+goal setR_60N_DSC026    {R_60N_NA1_DSC026 = R_60N_NA1}
+
+! OLD...
+! define R_60N_NA1        {std kind 'RETURN-FLOW' units 'CFS'}
+! define Rfactor_60N_NA1  {select AG from EastSideRF where month=month}
+! goal setR_60N_NA1       {R_60N_NA1        = D_AMADR_60N_NA1 * Rfactor_60N_NA1}
+! goal setR_60N_DSC026    {R_60N_NA1_DSC026 = R_60N_NA1}
+
+
+!==============================
+! 60N_NA2 - Omochumne-Hartnell WD, Galt ID, Clay WD - Ag
+!============================== 
+define R_60N_NA2        {std kind 'RETURN-FLOW' units 'CFS'}
+goal setR_60N_NA2       {R_60N_NA2        = TW_60N_NA2 + LF_60N_NA2 + OS_60N_NA2 - RU_60N_NA2}
+goal setR_60N_CSM005    {R_60N_NA2_CSM005 = R_60N_NA2}
+
+! OLD...
+! define R_60N_NA2        {std kind 'RETURN-FLOW' units 'CFS'}
+! define Rfactor_60N_NA2  {select AG from EastSideRF where month=month}
+! goal setR_60N_NA2       {R_60N_NA2        = D_FSC015_60N_NA2 * Rfactor_60N_NA2}
+! goal setR_60N_CSM005    {R_60N_NA2_CSM005 = R_60N_NA2}
+
+
+!==============================
+! 60N_NA3 - North San Joaquin WCD - Ag
+!============================== 
+define R_60N_NA3        {std kind 'RETURN-FLOW' units 'CFS'}
+goal setR_60N_NA3       {R_60N_NA3        = TW_60N_NA3 + LF_60N_NA3 + OS_60N_NA3 - RU_60N_NA3}
+goal setR_60N_SJR028    {R_60N_NA3_SJR028 = R_60N_NA3}
+
+! OLD...
+! define R_60N_NA3        {std kind 'RETURN-FLOW' units 'CFS'}
+! define Rfactor_60N_NA3  {select AG from EastSideRF where month=month}
+! goal setR_60N_NA3       {R_60N_NA3        = D_MOK050_60N_NA3 * Rfactor_60N_NA3}
+! goal setR_60N_SJR028    {R_60N_NA3_SJR028 = R_60N_NA3}
+
+
+!==============================
+! 60N_NA4 - Woodbridge ID - Ag
+!============================== 
+define R_60N_NA4        {std kind 'RETURN-FLOW' units 'CFS'}
+goal setR_60N_NA4       {R_60N_NA4        = TW_60N_NA4 + LF_60N_NA4 + OS_60N_NA4 - RU_60N_NA4}
+goal setR_60N_SJR022    {R_60N_NA4_SJR022 = R_60N_NA4}
+
+! OLD...
+! define R_60N_NA4        {std kind 'RETURN-FLOW' units 'CFS'}
+! define Rfactor_60N_NA4  {select AG from EastSideRF where month=month}
+! goal setR_60N_NA4       {R_60N_NA4        = D_MOK035_60N_NA4 * Rfactor_60N_NA4}
+! goal setR_60N_SJR022    {R_60N_NA4_SJR022 = R_60N_NA4}
+
+
+! No return flows from 60N_NA5 (Non-district)
+! No return flows from 60N_NU1 (Galt, Lodi, small communities)
+! No return flows from 60N_NU2 (Rancho Murieta)
+! No return flows from 60N_PU  (Rancho Seco PowerPlant)
+! No return flows from EBMUD
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60S     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 60S_PA1 - Stockton East WD - Ag
+!============================== 
+define R_60S_PA1        {std kind 'RETURN-FLOW' units 'CFS'}
+goal setR_60S_PA1       {R_60S_PA1        = TW_60S_PA1 + LF_60S_PA1 + OS_60S_PA1 - RU_60S_PA1}
+goal setR_60S_SCD001    {R_60S_PA1_SDC001 = R_60S_PA1}
+
+! OLD...
+! define R_60S_PA1        {std kind 'RETURN-FLOW' units 'CFS'}
+! define Rfactor_60S_PA1  {select AG from EastSideRF where month=month}
+! goal setR_60S_PA1       {R_60S_PA1        = D_CLV023_60S_PA1 * Rfactor_60S_PA1}
+! goal setR_60S_PA1_SCD001{R_60S_PA1_SDC001 = R_60S_PA1}
+
+
+!==============================
+! 60S_PA2 - CSJWCD - Ag
+!============================== 
+define R_60S_PA2        {std kind 'RETURN-FLOW' units 'CFS'}
+goal setR_60S_PA2       {R_60S_PA2        = TW_60S_PA2 + LF_60S_PA2 + OS_60S_PA2 - RU_60S_PA2}
+goal setR_60N_FSC007    {R_60S_PA2_FCS007 = R_60S_PA2}
+
+! OLD...
+! goal setR_60S_FCS007    {R_60S_PA2_FCS007 = R_60S_PA2}
+! define R_60S_PA2        {std kind 'RETURN-FLOW' units 'CFS'}
+! define Rfactor_60S_PA2  {select AG from EastSideRF where month=month}
+! goal setR_60S_PA2_FCS007{R_60S_PA2_FCS007 = D_LJC010_60S_PA2 * Rfactor_60S_PA2}
+
+
+!==============================
+! 60S_NU1 - City of Stockton via SEWD - M&I 
+!============================== 
+define R_60S_NU1        {std kind 'RETURN-FLOW' units 'CFS'}
+goal setR_60S_NU1       {R_60S_NU1        = WW_60S_NU1}
+goal setR_60S_STWWTP    {R_60S_NU1_STWWTP = R_60S_NU1}
+
+! OLD
+! goal setR_60S_NU1_SRWWTP{R_60S_NU1_STWWTP = R_60S_NU1}
+! define R_60S_NU1        {std kind 'RETURN-FLOW' units 'CFS'}
+! define Rfactor_60S_NU1  {select MI from EastSideRF where month=month}
+! goal setR_60S_NU1_STWWTP{R_60S_NU1_STWWTP = D_WTPWDH_60S_NU1 * Rfactor_60S_NU1
+!                                           + D_WTPDWS_60S_NU1 * Rfactor_60S_NU1}
+                                          
+                                          
+                                          
+                                          

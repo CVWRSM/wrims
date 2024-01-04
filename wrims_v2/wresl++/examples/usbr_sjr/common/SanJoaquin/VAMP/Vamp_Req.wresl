@@ -1,0 +1,90 @@
+! VAMP_REQ.wresl
+
+! Edward Chang
+! DWR
+! 05/01/2000
+! WRESL code defining the VAMP pulse flow requirement.
+
+/*
+ The code computes the required Vernalis flow during the pulse period.
+
+ These are the defines and goals for cycle 5, which calculates and implements the VAMP requirement
+ for the pulse period (April 15 - May 15).  The VAMP requirement is computed from a step-function
+ look-up table based on the base or pre-existing flow (from the previous cycle) and water year type.
+ The deficiencies are imposed on the following San Joaquin River Group Authority as reservoir
+ releases and/or reductions in demands (in "VAMPalloc.wresl"):
+    1)  Merced ID (McClure)
+    2)  Oakdale Irrigation district (New Melones)
+    3)  Mendota Pool Exchange Contractors (DMC)
+    4)  Modesto and Turlock ID (Don Pedro)
+
+ The following is the table
+ VAMP_REQ
+ Base    requirement DoubleStep
+ 0      2000        3200
+ 1999   2000        3200
+ 3199   3200        4450
+ 4449   4450        5700
+ 5699   5700        7000
+ 99999  7000        7000
+
+ Current plus last year's water year type (wyt_SJR_prv1) used in
+ determining if double step applies.
+ Current plus last two year's water year type (wyt_SJR_prv2) used in
+ determining if dry year relaxation applies.
+
+ Source: The San Joaquin River Agreement, April 1998.  Appendix B Planning and Operation
+ Coordination for the Vernalis Adaptive Management Plan.
+*/
+
+/*
+ Revised by: R. Field, 03/13/2003
+ Purpose: Review and comment file.
+*/
+!#####################################################################################################
+
+! VAMP flow requirement decision variable for output.
+define VAMP_reqdv {std kind 'flow-requirement' units 'cfs'}
+/*
+ VAMP flow requirement:
+ April triggers a pulse flow for the VAMP requirement.
+ In April during wet years a increase in the requirement or "Double step" is activated.
+ Reciprically, during sequential dry years a requirement relaxation is allowed (no requirement).
+ In "normal" years the requirement is based cycle 4 (SJR_WQ2) inflows from the San Joaquin River
+ to the Delta.
+ May will assume the April value.
+ All other months do not require a VAMP pulse flow requirement.
+*/
+define VAMP_Req {
+    case AprDoubleStep {
+        condition    month == apr .and. wyt_SJR + wyt_SJR_prv1 <= 5.
+        select       DoubleStep from VAMP_req given Base=C_SJR070[SJR_WQ2] use maximum }
+    case AprRelax {
+        condition    month == apr .and. wyt_SJR + wyt_SJR_prv1 + wyt_SJR_prv2 >= 14.
+        value        0. }
+    case AprNormal {
+        condition    month == apr
+        select        requirement from VAMP_req given Base=C_SJR070[SJR_WQ2] use maximum }
+    case May {
+        condition    month == may
+        value        VAMP_reqdv(-1) }
+    case JunthruMar {
+        condition    always
+        value        0. }
+        }
+! Set VAMP flow requirement equal to the decision variable.
+goal setVAMP_reqdv { VAMP_reqdv = VAMP_Req }
+
+!VAMP deficiency to be imposed on the San Joaquin River Group Authority members
+define VAMP_deficiency {
+    case AprMay {
+        condition    month >= Apr .and. month <= May
+        value        max(0.,VAMP_Req-C_SJR070[SJR_WQ2]) }
+     case otherwise {
+          condition always
+          value          0.  }
+        }
+! VAMP flow deficiency decision variable.
+define VAMP_defdv { std kind 'flow-deficiency' units 'cfs'}
+! Set VAMP flow deficiency equal to the decsion variable.
+goal setVAMP_defdv { VAMP_defdv = VAMP_deficiency }

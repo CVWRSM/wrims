@@ -1,0 +1,209 @@
+/*
+B2 Action 1: Upstream Minimum Instream Flow Requirement Actions
+
+08/12/03 Hilts: Re-instituted Nov 20th TRIG tables.  The more parsimonious October 2001 Hilts/Lubas-Williams criteria commented out for this run.
+10/30/03 Hilts: Changed sacStorTrigger to be previous month's storage rather than carryover storage in Nov & Dec
+        FYI:  effective_C5min currently = max (inputted TS (SV.DSS) of 3250 cfs, temp ctrl flow)
+        Changed amerAFRPTrigger to be previous month's storage rather than carryover storage in Nov & Dec
+11/13/03 Hilts/Fenolio:  Added 0.1 to StabLimit in case last month's flow was exactly equal to StabLimit.  Lookup tables intended to be used this way.
+*/
+
+!**** Get AFRP Flows from Clear Creek, Keswick and Nimbus ********
+
+! Inputted lookup table of Minimum Instream Flow values
+define minflowAFRPClear {select flow from AFRP_CLEAR given trigger=S1(-1)+S1mod use minimum where month=month}
+
+! Compute the storage trigger value
+define sacStorTrigger {
+  case Oct {
+    condition   month == OCT
+    value       S4(prevSEP) + S44(prevSEP) + S4_mod_dv(prevSep) }
+  case other  {
+    condition   always
+    value       S4(-1) + S44(-1) + S4mod }
+}
+
+! Inputted lookup table of Minimum Instream Flow values
+define minflowAFRPSac {select flow from AFRP_SAC given trigger=sacStorTrigger use linear where month=month}
+
+! Calculate the forecasted inflow into Folsom
+define amerForecast {
+  case MAR_SEP {
+    condition   month >= MAR .and. month <= SEP
+    sum(i=0,SEP-month)  I8(i)*cfs_taf(i) + I300(i)*cfs_taf(i) }  ! sum of the remaining year's inflow
+  case other {
+    condition   always
+    value       0.0   }
+}
+
+! Compute Folsom trigger storage for inputted lookup table of Minimum Instream Flow values
+define amerAFRPTrigger {
+  case Oct {
+    condition   month == OCT
+    value       S8(prevSEP) + S8_mod_dv(prevSep) }
+  case NovFeb {
+    condition   month>=NOV .and. month<=FEB
+    value       S8(-1) + S8mod }
+  case MarSep {
+    condition   always
+    value       S8(-1) + S8mod + frcst_amr}!amerForecast - remDemand_D300 }
+}
+
+define  amerpreCVPIAtrigger {
+  case Oct_Feb {
+    condition   month >= OCT .and. month <= FEB
+    value       S8(-1) + S8mod }
+  case Mar_Sep {
+    condition   always
+    value       S8(-1) + S8mod + frcst_amr}        !amerForecast - remDemand_D300 }
+}
+
+! Inputted lookup table of Minimum Instream Flow values
+define minflowAFRPAmer {select flow from AFRP_AMER given trigger=amerAFRPTrigger use linear where month=month}
+
+!Calculate projected Jan Cost for AFRP Flows
+define AFRPCostJanEst {
+  case Jan {
+    condition month == Jan
+    value max(minflowAFRPClear + minflowAFRPSac + minflowAFRPAmer - (C3__z1 + C5__z1 + C9__z1),0.0)*cfs_taf }
+  case other {
+    condition always
+    value 0.0 }
+}
+
+define AFRPCostJanEstdv {alias AFRPCostJanEst kind 'Cost' units 'taf'}
+
+!AFRP Flow Governor in Dec and Jan for Keswick and Nimbus AFRP Flows to try and stay under 200 TAF Oct-Jan Target.
+!1 = On (Reduce MIF to Stability Flows Criteria) 0 = Off (Allow AFRP MIF)
+define AFRPGov {
+  case Dec {
+    condition month == DEC .and. CumB2Costs > 50.0
+    value 1.0 }
+  case JanHiCum {
+    condition month == JAN .and. CumB2Costs > 150.0
+    value 1.0 }
+  case JanHiEst {
+    condition month == JAN .and. (CumB2Costs + AFRPCostJanEst) > 200.0
+    value 1.0 }
+  case other {
+    condition always
+    value 0.0 }
+}
+
+define AFRPGovdv {alias AFRPGov kind 'Governor' units 'none'}
+
+!**** Clear Creek Below Whiskeytown ****************
+
+! Flow limit over which stability is not enforced
+define ClearStabLimit {select StabFlow from ClearStability where month=month}
+
+! Fraction of previous month's flow to maintain in current month
+define ClearStabFract {select fraction from ClearStability where month=month}
+
+! Minflow is either the inputted lookup table's Minimum Instream Flow value or the stability target
+define minflow_C3b2 {
+  case UnderStabLim {
+    condition   C3(-1) < ClearStabLimit + 0.1
+        value       max(minflowAFRPClear, ClearStabFract*C3(-1),clear_min) }
+  case OverStabLim {
+    condition   always
+    value       max( minflowAFRPClear,clear_min)  }
+}
+define minflow_C3b2dv {alias minflow_C3b2 kind 'FLOW-MIN-INSTREAM' units 'CFS'}     !MZEJETA
+
+! Meet the controlling requirement
+goal b2action1Whi_1 {
+  lhs C3_MIF
+  case Action1WhiOn {
+    condition   int(B2Action1WhiOn)==1
+    rhs     minflow_C3b2
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+  case Action1WhiOff {
+    condition   int(B2Action1WhiOn)==0
+    rhs     clear_min
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+}
+
+!**** Sac River Below Keswick ****************
+
+! Flow limit over which stability is not enforced
+define SacStabLimit {select StabFlow from SacStability where month=month}
+
+! Fraction of previous month's flow to maintain in current month
+define SacStabFract {select fraction from SacStability where month=month}
+
+! Minflow is either the inputted lookup table's Minimum Instream Flow value or the stability target
+define minflow_C5b2 {
+  case GovernorOn {
+    condition   AFRPGov > .9 ! == 1.0
+        value       min(minflowAFRPSac,max(SacStabFract*C5(-1),effective_C5min))}
+  case UnderStabLim {
+    condition   C5(-1) < SacStabLimit + 0.1
+        value       max(minflowAFRPSac,SacStabFract*C5(-1),effective_C5min)}
+  case OverStabLim {
+    condition   always
+    value       max(minflowAFRPSac,effective_C5min)}
+}
+define minflow_C5b2dv {alias minflow_C5b2 kind 'FLOW-MIN-INSTREAM' units 'CFS'}     !MZEJETA
+
+! Meet the controlling requirement
+goal b2action1Sha_2 {
+  lhs   C5_MIF
+  case Action1ShaOn {
+    condition int(B2Action1ShaOn)==1
+    rhs         minflow_C5b2
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+  case Action1ShaOff {
+    condition int(B2Action1ShaOn)==0
+    rhs         effective_C5min
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+}
+!
+! needed for NODOS flows if used
+goal set_C114_NCP {C114_MIF < ERP_C114MIF}
+goal set_C169_MIF {C169_MIF < ERP_C169MIF}
+
+!**** American River Below Nimbus ****************
+
+! Flow limit over which stability is not enforced
+define AmerStabLimit {select StabFlow from AmerStability where month=month}
+
+! Fraction of previous month flow to maintain in current month
+define AmerStabFract {select fraction from AmerStability where month=month}
+
+! Minflow is either the inputted lookup table's Minimum Instream Flow value or the stability target
+define minflow_C9b2 {
+  case Oct {
+    condition   month==OCT .and. wateryear == 1922
+    value       nimbus_hist_std }
+  case GovernorOn {
+    condition   AFRPGov > .9 ! == 1.0
+    value       min(minflowAFRPAmer,max(AmerStabFract*C9(-1),nimbus_hist_std))}
+  case UnderStabLim {
+    condition   C9(-1) < AmerStabLimit + 0.1
+    value       max(minflowAFRPAmer,AmerStabFract*C9(-1),nimbus_hist_std)}
+  case OverStabLim {
+    condition   always
+    value       max(minflowAFRPAmer,nimbus_hist_std)}
+}
+
+define minflow_C9b2dv {alias minflow_C9b2 kind 'FLOW-MIN-INSTREAM' units 'CFS'}     !MZEJETA
+
+! Meet the controlling minflow target
+goal b2action1Fol_3 {
+  lhs   C9_MIF
+  case Action1FolOn {
+    condition   int(B2Action1FolOn)==1
+    rhs     minflow_C9b2
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+  case Action1FolOff {
+    condition   int(B2Action1FolOn)==0
+    rhs         nimbus_hist_std
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+}

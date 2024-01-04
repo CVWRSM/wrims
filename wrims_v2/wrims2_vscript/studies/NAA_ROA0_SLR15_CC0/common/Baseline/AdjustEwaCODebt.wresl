@@ -1,0 +1,70 @@
+!AdjustEwaCODebt.wresl
+!N. Parker
+!8/11/05
+!
+
+! In the final cycle of a baseline step, compute the Cycle7-Cycle6 differences
+! in SL storage, delta outflow, pumping, and NOD storage for each project.  
+! This is the amount by which the perceived CO debt at San Luis can then be
+! reduced (erased or re-located in the EWA step).  In baseline steps, this
+! reduction in debt changes the limitation on filling San Luis for the next
+! month's cycle 6 solution.
+
+! BLCoDebt's are the "baseline" steps' understanding of the remaining SL CO debt.
+! Project ability to fill SL does not erase debt - it displaces it to either be
+! reduced by Delta Surplus pumping or relocated to NOD storage.  (code in file
+! CODebtExportChg.wresl currently limits this displacement to only be reduced by 
+! delta surplus pumping - not relocated to NOD storage.)
+
+define BLCoDebtSwpdv {std kind 'debt' units 'taf'}
+define BLCoDebtCvpdv {std kind 'debt' units 'taf'}
+
+! how much more did SL fill in cycle 7 than in cycle 6?
+! did the water come from surplus or from storage?
+define SwpFillIntoCODebt {value S12[monthlyweighted] - S12[setup]}
+define SwpSurpChg {value C407_SWP[monthlyweighted] - C407_SWP[setup]}
+define SwpStorChg {value S6[monthlyweighted] - S6[setup]}
+define SwpPumpChg {value D419_SWP[monthlyweighted] - D419_SWP[setup]}
+goal set_BLCoDebtSwp {BLCoDebtSwpdv = max(0., BLCoDebtSwpdv[setup] - SwpFillIntoCODebt)}
+
+define CvpFillIntoCODebt {value S11[monthlyweighted] - S11[setup]}
+define CvpSurpChg {value C407_CVP[monthlyweighted] - C407_CVP[setup]}
+define CvpStorChg {value S4[monthlyweighted] - S4[setup]
+                        +S8[monthlyweighted] - S8[setup] }
+define CvpRelsChg {value C5[monthlyweighted] - C5[setup]
+                        +C9[monthlyweighted] - C9[setup] }
+define CvpPumpChg {value D418[monthlyweighted] - D418[setup]}
+goal set_BLCoDebtCvp {BLCoDebtCvpdv = max(0., BLCoDebtCvpdv[setup] - CvpFillIntoCODebt)}
+
+define SwpSurpChgdv {alias SwpSurpChg kind 'ewa-baseline-cfs' units 'cfs'}
+define SwpStorChgdv {alias SwpStorChg kind 'ewa-baseline-taf' units 'taf'}
+define SwpPumpChgdv {alias SwpPumpChg kind 'ewa-baseline-cfs' units 'cfs'}
+define SwpBLDebtChgdv {alias SwpFillIntoCODebt kind 'ewa-baseline-taf' units 'taf'}
+
+define CvpSurpChgdv {alias CvpSurpChg kind 'ewa-baseline-cfs' units 'cfs'}
+define CvpStorChgdv {alias CvpStorChg kind 'ewa-baseline-taf' units 'taf'}
+define CvpPumpChgdv {alias CvpPumpChg kind 'ewa-baseline-cfs' units 'cfs'}
+define CvpBLDebtChgdv {alias CvpFillIntoCODebt kind 'ewa-baseline-taf' units 'taf'}
+
+! calculate the running total of fill into the carryover debt spaces
+define SwpCODebtRedDV {std kind 'EWA-BASELINE-TAF' units 'taf'}
+define CvpCODebtRedDV {std kind 'EWA-BASELINE-TAF' units 'taf'}
+
+define SWPCODebtRed {
+    case October {
+        condition month==Oct
+        value SwpFillIntoCODebt }
+    case otherwise {
+        condition always 
+        value SwpCODebtRedDV(-1) + SwpFillIntoCODebt }
+}
+define CVPCODebtRed {
+    case October {
+        condition month==Oct
+        value CvpFillIntoCODebt }
+    case otherwise {
+        condition always 
+        value CvpCODebtRedDV(-1) + CvpFillIntoCODebt }
+}
+goal setSwpCODebtRedDV {SwpCODebtRedDV = max(0.,SWPCODebtRed)}
+goal setCvpCODebtRedDV {CvpCODebtRedDV = max(0.,CVPCODebtRed)}

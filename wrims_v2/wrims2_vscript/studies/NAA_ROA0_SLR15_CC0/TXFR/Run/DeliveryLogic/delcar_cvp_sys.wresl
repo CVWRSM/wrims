@@ -1,0 +1,28 @@
+/*
+File fixes CVP SYS delivery target to that of D1641.
+
+*/
+
+define del_first_cvp_sys {value deltar_cvp_sys1__z4}
+define deltar_cvpsys1dv {alias del_first_cvp_sys kind 'DEL-TARGET' units 'TAF'}
+
+define del_second_cvp_sys {value min(del_first_cvp_sys, acvpdem_tot_sys)}
+
+define deltar_cvp_sysdv {std kind 'DEL-TARGET' units 'taf'}
+
+define del_third_cvp_sys {
+    case      initialdel {
+        condition month <= FEB .and. wateryear == 1922
+        value     acvpdem_tot_sys }
+   case      march {
+        condition month == MAR
+        value     del_second_cvp_sys }
+
+        case      otherwise {
+        condition always
+        value     max(deltar_cvp_sysdv(-1), del_second_cvp_sys) }
+}
+
+define deltar_cvp_sys {value min(del_third_cvp_sys, acvpdem_tot_sys) }  ! This is the final value that is passed to cvpcut logic
+
+goal save_deltar_cvp_sysdv {deltar_cvp_sysdv = deltar_cvp_sys}

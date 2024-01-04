@@ -1,0 +1,76 @@
+! SJR_restrict.wresl
+! Nancy Parker
+! 11/02, USBR
+! This code restricts regulated flows in various arcs within the SJR system
+! Revised by C. Hsu, 3/3/03, USBR, for review and documentation project
+! ###############################################################################
+/*
+Restrict Millerton, Hensley, and Eastman regulated releases to deliveries and losses
+The balance of release will be flood-releted
+*/
+! Restrict Millerton regulated release to losses and diversions from Friant to Gravelly Ford, and Settlement flows
+!goal boundC_MLRTNMain { C_MLRTNM < SJRR_rel  }
+!define SJRR_L605 {value max(0., min(SJRR_rel - C18_min*taf_cfs, 0.05*(SJRR_rel - C18_min*taf_cfs) + 95.))}
+!goal setC_GRAVF_mainSJRR {C_GRAVF_mainSJRR < max(0.,SJRR_rel - C18_min*taf_cfs - SJRR_L605)}
+!Snow releases and ibu releases from Millerton must come from FWUA account.
+goal FWUA_rel_MINandSNOW {C_MLRTNM + C_MLRTNA < C_MLRTN_FWUA}
+! Restrict Hensley regulated release to Fresno River losses, Fresno River delivery and Fresno River minimum instream flow
+goal boundC52main { C_HNSLY_M < L_FRSNO + D_FRSNO + C_FRSNO_MIF }
+! Restrict Eastman regulated release to Chowchilla River delivery, Chowchilla River losses and Madera River flow
+goal boundC_ESTMNmain { C_ESTMN_M < D_CHOWR1 + L_CHOWR1 - C_Mdrcnl}
+
+/*
+The following codes define maximum permissible regulated flows at Goodwin (node 16)
+per USBR operations within SANJASM and STANMOD.
+
+MAXPERMISSIBLE
+Node   MaxLimit
+16     1500.001
+528    1500.001
+*/
+! Regulated releases from Goodwin Dam (Tulloch Reservoir) < user defined capacity (i.e. 1500 cfs)
+define maxGoodwin { select MaxLimit from MaxPermissible where INDEX=16 }
+! Set limits on Goodwin release
+goal RestrGoodwin{ C_STANGDWN - C_STANGDWNF < maxGoodwin }
+
+/*
+Water released from New Melones for WQ, VAMP, and DO must flow past Goodwin (if below channel capacity)
+*/
+! Water released from New Melones for water quality route past Goodwin
+goal routeC_STANGDWNWQ {C_STANGDWNWQ = C_MELONWQ}
+! Water released from New Melones for VAMP route past Goodwin
+goal routeC_STANGDWNVAMP {C_STANGDWNVAMP = C_MELONVAMP_M}
+! Water released from New Melones for DO route past Goodwin
+goal routeC_STANGDWNDO {C_STANGDWNDO = C_MELONDO}
+! Water released from New Melones for minimum flow (?) route past Goodwin
+goal routeC_STANGDWNMIN {C_STANGDWNMIN = C_MELONMIN}
+! Water released from New Melones for Stan NMFS RPA routed past Goodwin
+goal routeC_STANGDWNRPA {C_STANGDWNRPA = C_MELONRPA}
+! Water released from New Melones for instream flow route past Goodwin
+!goal routeC_STANGDWNINSTREAM {C_STANGDWNINSTREAM = C_MELONINSTREAM}
+
+/*
+Chowchilla Bypass operations
+The Chowchilla Bypass splits Millerton flood flows that flow past Gravelly Ford
+(Millerton does not release water for demands past Gravelly Ford).
+The Bypass structure allows 2000 cfs to flow into the Mendota Pool before routing water
+through the Chowchilla Bypass (in order to protect the Riparian land around the Mendota
+Pool.  The Bypass has a channel capacity of 6500 cfs which if exceeded will flood
+back into the Mendota Pool.  Therefore, the operations are as follows:
+   1)up to 2000 cfs through C_SJRCB_main
+   2)the next 6500 cfs through C_Chowbyp1
+   3)any flows above 8500 cfs through C_SJRCB_flood
+System defined restrictions on C_Chowbyp1 give it an upper limit of 6500 and a negative weight
+C_SJRCB_flood needs to have a larger negative weight than C_Chowbyp1 for a correct order of filling
+*/
+! Set limits on Chowchilla Bypass main channel capacity flow
+goal restrictC_SJRCB_main { C_SJRCB_main < 2000. }
+
+!Route Settlement flow to Sack Dam.
+goal setC_SJRREST {C_SJRREST = C_GRAVF_mainsjrr}
+!goal setC_SJRREST {C_SJRREST = max(0.,minflow_C_GRAVF - (minflow_C_GRAVF * 0.05 + 100. - 100.* 0.05))}
+
+!Route Settlement flow beyond Sack Dam
+!L_SJRREST is intended to represent losses in restored channel, not channel connecting Mendota Pool with Sack Dam.
+goal setC_SJRSACK {C_SJRSACK > C_SJRREST - L_SJRREST}
+

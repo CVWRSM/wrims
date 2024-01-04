@@ -1,0 +1,58 @@
+/*
+ ASSURE MINIMUM FLOW REQUIREMENTS ARE MET
+ 
+  NAMING TAKES THE FOLLOWING FORMS:
+  C_{location}_MIF - minflow requirement for 'location'
+  C_{location}_EXC - flow exceeding requirement at 'location'
+  
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+!==============================
+! Stanislaus River below Goodwin
+!==============================
+define C_STS059_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_STS059_EXC  {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal   C_STS059total {C_STS059 = C_STS059_MIF + C_STS059_EXC}
+
+!==============================
+! Stanislaus River below Ripon
+!==============================
+define C_STS017_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_STS017_EXC  {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal   C_STS017total {C_STS017 = C_STS017_MIF + C_STS017_EXC}
+
+!==============================
+! Tuolumne River below Modesto and Turlock IDs
+!==============================
+define C_TUO054_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_TUO054_EXC  {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal   C_TUO054total {C_TUO054 = C_TUO054_MIF + C_TUO054_EXC}
+
+!==============================
+! Merced River at POD to Merced ID
+!==============================
+define minflow_C_MCD052 {timeseries kind 'FLOW-MIN-REQUIRED' units 'TAF' convert 'CFS'}
+define C_MCD052_MIF     {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_MCD052_EXC     {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal   C_MCD052minflow  {C_MCD052_MIF < minflow_C_MCD052}
+goal   C_MCD052total    {C_MCD052     = C_MCD052_MIF + C_MCD052_EXC}
+
+!==============================
+! Merced River from Merced ID to Snelling
+!==============================
+define minflow_C_MCD042 {timeseries kind 'FLOW-MIN-REQUIRED' units 'TAF' convert 'CFS'}
+define C_MCD042_MIF     {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_MCD042_EXC     {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_MCD042minflow    {C_MCD042_MIF < minflow_C_MCD042}
+goal C_MCD042total      {C_MCD042     = C_MCD042_MIF + C_MCD042_EXC}
+
+!==============================
+! Fresno River
+!==============================
+define C_FRS036_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_FRS036_EXC  {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal   C_FRS036total {C_FRS036 = C_FRS036_MIF + C_FRS036_EXC}
+
+
+

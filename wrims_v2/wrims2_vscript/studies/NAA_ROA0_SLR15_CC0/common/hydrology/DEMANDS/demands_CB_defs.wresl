@@ -1,0 +1,236 @@
+! demands_CB_defs.wresl
+! define input time series and lookup values for all areas of the Colusa Basin
+
+! Refuges within CB
+define dem_D14302_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Sacramento - includes losses
+define dem_D18201A_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Delevan - includes losses
+define dem_D18201B_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Colusa - includes losses
+
+define con_D14302_prf {timeseries kind 'demand-cvp-rf' units 'taf' convert 'cfs'} !Sacramento
+define con_D18201A_prf {timeseries kind 'demand-cvp-rf' units 'taf' convert 'cfs'} !Delevan
+define con_D18201B_prf {timeseries kind 'demand-cvp-rf' units 'taf' convert 'cfs'} !Colusa
+
+define Sac_Ref_RtnFact {timeseries kind 'demand-cvp-rf' units 'taf'} !Colusa
+
+! NOT USED - originally used to calculate return flow coefficients
+! return coefficients now specified through input timeseries
+define sacramento_lp {SELECT sacramento FROM refuge WHERE type=2 }
+define delevan_lp {SELECT delevan FROM refuge WHERE type=2 }
+define colusa_lp {SELECT colusa FROM refuge WHERE type=2 }
+
+
+! Corning  -----------------------------------------------------------------------------
+! According to historical record, CVP deliveries through Corning canal is limited.
+
+define OnFarmEff_17101 {value 0.75}
+define ReuseFact_17101 {value 0.05}
+define DpercFact_17101 {value 0.15}
+define nrlFact_17101 {value 0.05}
+define ConvLs_17101 {value 0.15}
+
+define con_D171_pag {timeseries kind 'DEMAND' units 'taf' convert 'cfs'} !Monthly contract amount, this must be updated if min gw is greater than 0.0
+define cuaw_17101 {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define minpump_17101 {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA4 along Tehama-Colusa Canal  -----------------------------------------------------------------------------
+
+define OnFarmEff_17201 {value 0.75}
+define ReuseFact_17201 {value 0.05}
+define DpercFact_17201 {value 0.15}
+define nrlFact_17201 {value 0.05}
+define ConvLs_17201 {value 0.01}
+
+define con_D172_pag {timeseries kind 'DEMAND' units 'taf' convert 'cfs'} !Monthly contract amount, this must be updated if min gw is greater than 0.0
+define cuaw_17201 {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define minpump_17201 {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA4 Non-project demands
+!Includes demands met from GW, along Thomes and Elder Creeks ----------------------------------------------------------
+! Model priority 1) Min groundwater pumping, 2) Sac River up to 0.0 taf/mo and Creek flows,  3) More groundwater pumping
+! There is currently no logic to prioritize Sac River or Creek flows.
+
+define OnFarmEff_11302 {value 0.78}
+define ReuseFact_11302 {value 0.05}
+define DpercFact_11302 {value 0.12}
+define nrlFact_11302 {value 0.05}
+define ConvLs_11302 {value 0.15}
+
+define demand_D113A {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'} !max diversion from Sac River
+define demand_D11301 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'} !Max diversion from Elder plus Thomas Creeks
+define cuaw_11302 {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define minpump_11302 {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA5----------------------------------------------------------------------------------------------------------------------
+! Model priority 1) Min groundwater pumping, 2) Sac River up to 2 taf/mo and Creek flows,  3) More groundwater pumping
+! There is currently no logic to prioritize Sac River or Creek flows.
+
+define OnFarmEff_11306 {value 0.78}
+define ReuseFact_11306 {value 0.05}
+define DpercFact_11306 {value 0.12}
+define nrlFact_11306 {value 0.05}
+define ConvLs_11306 {value 0.35}
+
+define demand_D113B {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}    !max diversion from Sac River
+define cuaw_11306 {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}  !from CU model
+define minpump_11306 {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA6 ---------------------------------------------------------------------------------------------------------------------------------
+! Model priority 1) Min groundwater pumping, 2) Sac River up to 2 taf/mo and Creek flows,  3) More groundwater pumping
+! There is currently no logic to prioritize Sac River or Creek flows.
+
+define OnFarmEff_17302P {value 0.65}
+define ReuseFact_17302P {value 0.02}
+define DpercFact_17302P {value 0.20}
+define nrlFact_17302P   {value 0.05}
+!define RFlowFact_17302P {value (1/OnFarmEff_17302P)*(1-ReuseFact_17302P)-(1+nrlFact_17302P+DpercFact_17302P)}
+define RFlowFact_17302P {value 0.15}  !WB030706
+define ConvLs_17302PN   {value 0.36}
+define ConvLs_17302PS   {value 0.36}
+define ConvLs_17302P    {value 0.32*ConvLs_17302PN + 0.68*ConvLs_17302PS}
+
+define OnFarmEff_17302NP {value 0.65}
+define ReuseFact_17302NP {value 0.02}
+define DpercFact_17302NP {value 0.20}
+define nrlFact_17302NP   {value 0.05}
+define RFlowFact_17302NP {value (1/OnFarmEff_17302NP)*(1-ReuseFact_17302NP)-(1+nrlFact_17302NP+DpercFact_17302NP)}
+define ConvLs_17302NP    {value 0.00}
+
+define cuaw_17302P  {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}  !OUWUA project demand
+define cuaw_17302NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}  !Non-project demand
+define minpump_17302P  {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA7N ------------------------------------------------------------------------------------------------
+
+define OnFarmEff_17401 {value 0.73}
+define ReuseFact_17401 {value 0.05}
+define DpercFact_17401 {value 0.15}
+define nrlFact_17401 {value 0.05}
+define ConvLs_17401 {value 0.01}
+
+define con_D174_pag {timeseries kind 'DEMAND' units 'taf' convert 'cfs'} !Monthly contract amount, this must be updated if min gw is greater than 0.0
+define cuaw_17401PAG {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}   !TCCA project demand
+define cuaw_17401NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}  !Non-project demand
+define minpump_17401 {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA7S ------------------------------------------------------------------------------------------------
+
+define OnFarmEff_17801 {value 0.73}
+define ReuseFact_17801 {value 0.05}
+define DpercFact_17801 {value 0.15}
+define nrlFact_17801 {value 0.05}
+define ConvLs_17801 {value 0.01}
+
+define con_D178_pag {timeseries kind 'DEMAND' units 'taf' convert 'cfs'} !Monthly contract amount, this must be updated if min gw is greater than 0.0
+define cuaw_17801PAG {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}   !TCCA project demand
+define cuaw_17801NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}  !Non-project demand
+define minpump_17801 {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA8NN ------------------------------------------------------------------------------------------------
+
+define OnFarmEff_14301 {value 0.59}
+define ReuseFact_14301 {value 0.10}
+define DpercFact_14301 {value 0.15}
+define nrlFact_14301 {value 0.05}
+define ConvLs_14301 {value 0.10}
+
+define OnFarmEff_14301NP {value 0.69}
+define ReuseFact_14301NP {value 0.05}
+define DpercFact_14301NP {value 0.15}
+
+!Need to have a logic to split sources
+!define con_14301_psc {value 9999.} !Monthly contract amount (timeseries, WY-based lookup, etc.)
+define con_14301SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define con_114GCID {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+
+!define Rice decomp demand and return flow
+define rdcmp_14301_GCID {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdcmp_14301_SC   {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdcmp_14301_NP   {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdrf_181A_GCID {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+define rdrf_181A_SC   {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+define rdrf_181A_NP   {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+
+define cuaw_14301GCID {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define cuaw_14301NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}  !Non-Project is met from GW only
+define cuaw_14301SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define minpump_14301GCID {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+define minpump_14301SC {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA8NS ------------------------------------------------------------------------------------------------
+
+define OnFarmEff_14501 {value 0.59}
+define ReuseFact_14501 {value 0.05}
+define DpercFact_14501 {value 0.15}
+define nrlFact_14501 {value 0.05}
+define ConvLs_14501 {value 0.15}
+
+define OnFarmEff_14501NP {value 0.69}
+define ReuseFact_14501NP {value 0.05}
+define DpercFact_14501NP {value 0.15}
+
+define OnFarmEff_14501GCID {value 0.59}
+define ReuseFact_14501GCID {value 0.10}
+define ConvLs_14501GCID {value 0.15}
+
+define con_14501SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'} !
+
+!define Rice decomp demand and return flow
+define rdcmp_14501_GCID {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdcmp_14501_SC   {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdcmp_14501_NP   {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdrf_184A_GCID {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+define rdrf_184A_SC   {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+define rdrf_184A_NP   {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+
+define cuaw_14501GCID {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define cuaw_14501NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}  !Non-Project is met from GW only
+define cuaw_14501SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define minpump_14501GCID {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+define minpump_14501SC {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA8S ------------------------------------------------------------------------------------------------
+
+define OnFarmEff_18301 {value 0.65}
+define ReuseFact_18301 {value 0.05}
+define DpercFact_18301 {value 0.15}
+define nrlFact_18301 {value 0.05}
+define ConvLs_18301 {value 0.1}
+
+define OnFarmEff_18301NP {value 0.70}
+define ReuseFact_18301NP {value 0.05}
+define DpercFact_18301NP {value 0.15}
+
+define con_18301SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'} !
+
+define rdcmp_18301_SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdcmp_18301_NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdrf_WBA8S_SC {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+define rdrf_WBA8S_NP {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+
+define cuaw_18301SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define cuaw_18301NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define minpump_18301SC {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+
+! WBA 9, 18, 19  East side of DSA 15 ------------------------------------------------------------------------------------------------
+
+define OnFarmEff_131 {value 0.70}
+define ReuseFact_131 {value 0.05}
+define DpercFact_131 {value 0.15}
+define nrlFact_131 {value 0.05}
+define ConvLs_131 {value 0.1}
+
+define OnFarmEff_131NP {value 0.70}
+define ReuseFact_131NP {value 0.05}
+define DpercFact_131NP {value 0.15}
+
+define con_131SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'} !
+
+define rdcmp_131_SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdcmp_131_NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define rdrf_160_SC {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+define rdrf_160_NP {timeseries kind 'FLOW-RETURN' units 'taf' convert 'cfs'}
+
+define cuaw_131SC {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define cuaw_131NP {timeseries kind 'DEMAND' units 'taf' convert 'cfs'}
+define minpump_131SC {timeseries kind 'minpump' units 'taf' convert 'cfs'}
+define minpump_131NP {timeseries kind 'minpump' units 'taf' convert 'cfs'}

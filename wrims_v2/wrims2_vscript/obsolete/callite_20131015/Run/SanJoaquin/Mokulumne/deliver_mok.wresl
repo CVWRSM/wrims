@@ -1,0 +1,88 @@
+! deliver_mok.wresl
+
+! Author unknown
+! Date Unknown
+! Determines percent deliveries and reduced demands along the Mokelumne River.
+
+
+/*
+  Determine percent deliveries (delivery cuts) and reduced demands along the Mokelumne River.
+  Mokelumne River minimum flows are based on month and wateryear type.
+*/
+
+/*
+ Revised by: R. Field, USBR, 03/31/03
+ Purpose: Review and comment file.
+*/
+
+!##########################################################################################
+
+! Mokelumne River Non-Project Demands
+define demand_D503A_NP {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+
+! East Bay Municipal Utility District (EBMUD) AG (JVID) Project Demand
+define demand_D90_PAG {timeseries  kind 'DEMAND' units 'TAF' convert 'CFS'}
+! EBMUD M&I Project Demand
+define demand_D90_PMI {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+! North San Joaquin Water Conservation District (NSJWCD) Project Demand
+define demand_D502_PAG {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+! EB MUNI District NSJ M&I
+define demand_D502_PMI {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+! Woodbridge Irrigation District Project Demand
+define demand_D503A_PAG {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+! EBMUD WID Project Demand
+define demand_D503A_PMI {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+
+! Depletion at Camanche 91
+!define demand_D91 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+
+! Minimum Mokulumne Instream Flow Requirements
+define minflow_C91 {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=month}
+! Minimum Mokulumne Instream Flow Requirements
+define minflow_C502 {select minflow from minflow_EastSide where C_arc=502,wateryear=wyt_SJR,month=month}
+! Minimum Mokulumne Instream Flow Requirements
+define minflow_C503 {select minflow from minflow_EastSide where C_arc=503,wateryear=wyt_SJR,month=month}
+
+! Sum minflow requirement for Mar
+define minflow_C91_MAR {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=MAR}
+! Sum minflow requirement for Apr
+define minflow_C91_APR {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=APR}
+! Sum minflow requirement for May
+define minflow_C91_MAY {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=MAY}
+! Sum minflow requirement for Jun
+define minflow_C91_JUN {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=JUN}
+! Sum minflow requirement for Jul
+define minflow_C91_JUL {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=JUL}
+! Sum minflow requirement for Aug
+define minflow_C91_AUG {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=AUG}
+! Sum minflow requirement for Sep
+define minflow_C91_SEP {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=SEP}
+! Total Mokulumne minflow requirement for Mar-Sep
+define minflow_C91_sum {value minflow_C91_MAR + minflow_C91_APR + minflow_C91_MAY + minflow_C91_JUN
+                        +minflow_C91_JUL + minflow_C91_AUG + minflow_C91_SEP }
+
+! Set EBMUD AG deliveries to less than or equal to demand
+goal maxD90_PAG {D90_PAG < demand_D90_PAG}
+! Set EBMUD M&I deliveries to less than or equal to demand
+goal maxD90_PMI {D90_PMI < demand_D90_PMI}
+
+! Set NSJWCD AG deliveries to less than or equal to demand
+goal maxD502_PAG {D502_PAG < demand_D502_PAG }
+! Set NSJWCD M&I deliveries to less than or equal to demand
+goal maxD502_PMI {D502_PMI < demand_D502_PMI }
+
+! Set Woodbridge Irrigation District AG deliveries to less than or equal to demand
+goal maxD503A_PAG {D503A_PAG < demand_D503A_PAG }
+! Set EBMUD WID deliveries to less than or equal to demand
+goal maxD503A_PMI {D503A_PMI <  demand_D503A_PMI }
+! Set Mokelumne River Non-Project deliveries to less than or equal to demand
+goal maxD503A_NP {D503A_NP < demand_D503A_NP}
+
+! Ensure that wildlife and fish minimum flow requirements at C91 will be met
+goal maxC91_MIF {C91_MIF < minflow_C91*taf_cfs  }
+! Ensure that wildlife and fish minimum flow requirements at C502 will be met
+goal maxC502_MIF {C502_MIF < minflow_C502*taf_cfs }
+! Ensure that wildlife and fish minimum flow requirements at C503 will be met
+goal maxC503_MIF {C503_MIF < minflow_C503*taf_cfs }
+
+

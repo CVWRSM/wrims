@@ -1,0 +1,14 @@
+
+! THIS FILE CONTAINS THE NAMES OF ALL INCLUDE FILES FOR THE SYSTEM DESCRIPTION
+
+INCLUDE 'systemtables_all\inflow-table.wresl'
+INCLUDE 'systemtables_all\channel-table.wresl'
+INCLUDE 'systemtables_all\delivery-table.wresl'
+INCLUDE 'systemtables_all\return-table.wresl'
+INCLUDE 'systemtables_all\reservoir-table.wresl'
+INCLUDE 'systemtables_all\connectivity-table.wresl'
+
+define C400_ANN {std kind 'FLOW-ANN' units 'CFS'}
+define C400_WQ {std kind 'FLOW-WQ' units 'CFS'}
+goal C400total_ann {C400=C400_ANN+C400_WQ}
+

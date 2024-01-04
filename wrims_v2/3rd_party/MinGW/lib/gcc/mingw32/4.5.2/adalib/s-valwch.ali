@@ -1,0 +1,89 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnvnnvnnvnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnn
+
+U system.val_wchar%b	s-valwch.adb		9f88ee80 NE OL PK
+W ada.exceptions%s	a-except.adb		a-except.ali
+W interfaces%s		interfac.ads		interfac.ali
+W system%s		system.ads		system.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.val_char%s	s-valcha.adb		s-valcha.ali
+W system.val_util%s	s-valuti.adb		s-valuti.ali
+W system.wch_cnv%s	s-wchcnv.adb		s-wchcnv.ali
+W system.wch_con%s	s-wchcon.adb		s-wchcon.ali
+
+U system.val_wchar%s	s-valwch.ads		ea86fbf6 NE OL PU PK
+W system%s		system.ads		system.ali
+W system.wch_con%s	s-wchcon.adb		s-wchcon.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D system.ads		20090410155748 b8eb58c3
+D s-parame.ads		20091130110856 6cdeed25
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-traent.ads		20090417130712 a66ef260
+D s-valcha.ads		20090409150020 b1746131
+D s-valuti.ads		20090409150020 5a2e7d6c
+D s-valwch.ads		20090409150020 62a92ef4
+D s-valwch.adb		20090713083928 9ab7da6e
+D s-wchcnv.ads		20090417130712 abe047eb
+D s-wchcnv.adb		20090619105436 be6dd858
+D s-wchcon.ads		20090417130712 30c48dc1
+D s-wchjis.ads		20090417130712 13b78c90
+X 4 interfac.ads
+36K9*Interfaces 171e15 16|32w6 32r27
+57M9*Unsigned_32 16|48r21 140r17
+X 5 system.ads
+37K9*System 197e11 15|34r6 36r9 41r13 48r13 53r5 16|33r6 33r27 34r6 34r27
+. 35r6 35r27 37r14 45r13 64r13 176r5
+78V13*"="{boolean} 16|136r24
+X 14 s-valuti.ads
+34K16*Val_Util 113e20 16|33w13 33r34
+37U14*Normalize_String 16|71r7
+X 15 s-valwch.ads
+36K16*Val_WChar 5|37k9 15|53l12 53e21 16|37b21 176l12 176t21
+39V13*Value_Wide_Character{wide_character} 40>7 41>7 16|43b13 56l8 56t28
+40s7 Str{string} 16|44b7 47r71
+41i7 EM{19|94I9} 16|45b7 47r76
+46V13*Value_Wide_Wide_Character{wide_wide_character} 47>7 48>7 16|47r44 62b13
+. 174l8 174t33
+47s7 Str{string} 16|63b7 68r19 68r33 105r26 109r26 136r13 137r18 137r23 137r36
+. 143r22 143r39 144r45 146r19 148r22 150r22 168r69
+48i7 EM{19|94I9} 16|64b7 123r68
+X 16 s-valwch.adb
+47e7 WC{wide_wide_character} 48r69
+48m7 WV{4|57M9} 50r10 54r37
+66i7 F{natural} 71m28 75r13 79r17 84r20 85r63 116r21 120r22 123r60
+67i7 L{natural} 71m31 75r34 79r13 84r16 126r24
+68a7 S{string} 71m25 75r10 75r31 85r60 120r19 123r57
+91i16 P{natural} 103m19 103r24 105r22 109r31 116m16 126r19
+92e16 W{wide_wide_character} 121m19 123m19 130r23
+94V25 In_Char{character} 101b25 110l20 110t27 113r47
+112V25 UTF_32[17|83]{17|53I9} 121r49 123r49 18|44b13
+140m13 W{4|57M9} 144m16 144r21 147m19 147r24 149m19 149r24 151m19 151r24
+. 157r16 160r48
+143i17 J{integer} 144r50 146r24 148r27 150r27
+X 17 s-wchcnv.ads
+50K16*WCh_Cnv 16|34w13 34r34 17|116e19
+53I9*UTF_32_Code<integer>
+83v13*Char_Sequence_To_UTF_32 16|113r22
+X 19 s-wchcon.ads
+41K16*WCh_Con 15|34w13 41r20 48r20 16|35w13 35r34 45r20 64r20 19|220e19
+94I9*WC_Encoding_Method<short_short_integer> 15|41r28 48r28 16|45r28 64r28
+156i4*WCEM_Brackets{94I9} 16|121r62
+

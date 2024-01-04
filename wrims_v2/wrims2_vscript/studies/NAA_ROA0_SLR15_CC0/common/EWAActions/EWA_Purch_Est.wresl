@@ -1,0 +1,62 @@
+! EWA_Purch_Est.wresl
+! This file defines the annual purchase target and the north-south split.
+! SOD purchases are made from several sources, mostly following a demand
+! distribution pattern.  LVE will need to know an approximate pattern, so
+! we will use an approximate distribution of SOD purchases made in the Long
+! Term EWA EIS runs, rounded and skewed to get more water in the early part
+! of the season to anticipate delivery debt.  This is May-Sept 15/24/24/24/13.
+
+! The total EWA purchase target (in TAF) is year-type dependent,
+! based on the Sac40-30-30 Index.
+!   wyt   Total
+!   1     250
+!   2     250
+!   3     250
+!   4     230
+!   5     210
+
+define EwaPurchTgtEstDV {std kind 'EWA-PURCH-TAF' units 'taf'}
+!In the next define, case April is different from EWA step's similar
+!variable definition.  In the latter, the target is updated in May rather than April.
+!This matters little during simulation - the step-to-step change made here is
+!convenient here for defining LVE-EWA exchange created Apr-Dec.  In this sense, the
+!annual EWA purchase target that could limit demand is updated at beginning of April
+!and affects LVE release for April-Dec.  Updating the decision in May would have linked
+!this April's LVE release to last May's EWA purchase target, which makes less sense.
+define EwaPurchTgtEst {
+    case first_year {
+        condition wateryear == 1922 .and. month < APR
+        select Target from EwaPurchase where wyt=1 }
+    case April {
+        condition month == APR
+        select Target from EwaPurchase where wyt=wyt_SAC }
+    case otherwise {
+        condition always
+        value EwaPurchTgtEstDV(-1) }
+}
+goal setEwaPurchEstDV {EwaPurchTgtEstDV = EwaPurchTgtEst}
+
+! The NOD/SOD purchase split is decided by the potential for Banks to move NOD
+! purchase - a function of SWP allocation.  NOD target purchase is a function of
+! the allocation, and the SOD target is then the balance of the overall target.
+
+define EwaNODPctEst {
+    case first_year {
+        condition wateryear == 1922 .and. month < APR
+        select   NOD
+        from     EwaAllocPurch
+        given    alloc=1.0
+        use      linear}
+    case otherwise {
+        condition always
+        select   NOD
+        from     EwaAllocPurch
+        given    alloc=perdv_swp_ag1(prevMar)
+        use      linear}
+}
+define EwaNODPurchEst {value EwaPurchTgtEst*EwaNODPctEst/100.}
+define EwaNODPurchTgtEst {value 1.2*EwaNODPurchEst} !Inflate for anticipated carriage water cost = 20% of what's wheeled
+define EwaNODPurchEstDV {alias EwaNODPurchTgtEst kind 'EWA-PURCH-TAF' units 'taf'}
+
+define EwaSODPurchEst {value max(0.,EwaPurchTgtEst-EwaNODPurchEst)}
+define EwaSODPurchEstDV {alias EwaSODPurchEst kind 'EWA-PURCH-TAF' units 'taf'}

@@ -1,0 +1,52 @@
+/* This file sets up the diversion requirements for DSA 70
+   Each Diversion Requirement is split between project and nonproject
+   Non project diversion requirement is not entitled to releases from
+   Project reservoirs.
+   water right demands are part of the project demand but without deficiencies
+   see running gain file for more details
+
+   Logic developed by RAJ 9/99
+   Edited by Russ Yaworsky and Dustin Jones 12/02/99
+*/
+
+!Monthly delivery pattern for each of the water purveyors
+define perdem_70       {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !AG monthly distribution--DSA 70
+define perdem_70smud   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--SMUD Folsom South Canal
+define perdem_70Sac    {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--City of Sacramento
+define perdem_70Fol    {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Folsom City
+define perdem_70SJWDS  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--San Juan WD (Sac County)
+define perdem_70SJWDP  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--San Juan WD (Placer County)
+define perdem_70Rose   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Roseville City
+define perdem_70ArcWD  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Arcade WD
+define perdem_70NRWD   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Northridge WD
+define perdem_70Carm   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Carmichael WD
+define perdem_70PCWA   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Placer County WA
+define perdem_70FolP   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Folsom Prison
+define perdem_70ElDor  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--El Dorado ID
+define perdem_70ElDorCo {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--El Dorado County WA
+define perdem_70CARec  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--CA Parks & Rec
+define perdem_70SCWC   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--SCWC/ACWC
+define perdem_70SCWA   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Sac County WA
+
+!The following are annual demands on the American River and include Water Forum reductions
+define dem_D300_pmi_ann  {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--PCWA (American Pump Station abv Folsom)
+define dem_D300_wr_ann   {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--PCWA (American Pump Station abv Folsom)
+define dem_D8a_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Sac Suburban (American)
+define dem_D8b_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Folsom City
+define dem_D8b_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Folsom City
+define dem_D8c_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Folsom Prison
+define dem_D8d_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--SJWD Placer County
+define dem_D8e_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--SJWD Sac County
+define dem_D8e_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--SJWD Sac County
+define dem_D8f_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--El Dorado ID
+define dem_D8f_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--El Dorado ID
+define dem_D8g_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Roseville City (American)
+define dem_D8g_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Roseville City (American)
+define dem_D8h_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--PCWA at Folsom
+define dem_D8i_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--El Dorado County PL 101-514
+define dem_D9aa_wr_ann   {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--SCWC/ACWC
+define dem_D9ab_pmi_ann  {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Cal Parks & Rec
+define dem_D9b_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--SMUD Folsom South Canal
+define dem_D9b_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--SMUD Folsom South Canal
+!The following are monthly losses on Folsom South Canal
+define dem_D9a_pls     {timeseries kind 'DEMAND-CVP-LS' units 'TAF' convert 'CFS'} !Project losses on Folsom South Canal

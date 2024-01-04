@@ -1,0 +1,84 @@
+Working Directory `d:\dudley\heclib\Nt\Dss'
+E:\LF9040\BIN\lf90.exe "d:\dudley\heclib\Nt\Dss\Zcat.for" -nwrap -win -ml msvc -trace -wisk -g
+Lahey Fortran 90 Compiler Release 4.00c  S/N: F9364077
+Copyright (C) 1994-1998 Lahey Computer Systems.  All rights reserved.
+Copyright (C) 1985-1998 Intel Corp.  All rights reserved.
+Registered to:	Dudley McFadden
+		DWR
+Options:
+-nap           -nbind         -nc            -nchk          -co
+-ndal          -ndbl          -ndll          -nf90          -fix
+-g             -hed           -nin           -ninln         -nlisk
+-nlst          -maxfatals 50  -ml msvc       -mod .;E:\LF9040\lib
+-o0            -no            -out d:\dudley\heclib\Nt\Dss\Zcat.exe
+-pca           -sav           -stack 20000h  -stchk         -nswm
+-nsyn          -tpp           -trace         -ntrap         -nvax
+-vm            -w             -win           -wisk          -nwo
+-nwrap         -nxref
+
+Compiling file d:\dudley\heclib\Nt\Dss\Zcat.for.
+Compiling program unit ZCAT at line 2.
+Line 19, file d:\dudley\heclib\Nt\Dss\Zcat.for
+      CHARACTER CSCRAT*80                                               M
+                |
+WARNING -- CHARACTER scalar (CSCRAT) is never used.
+
+Line 20, file d:\dudley\heclib\Nt\Dss\Zcat.for
+      CHARACTER CINST*132, CSCRAT2*80
+                           |
+WARNING -- CHARACTER scalar (CSCRAT2) is never used.
+
+Line 80, file d:\dudley\heclib\Nt\Dss\Zcat.for
+      LGNUSORT = .FALSE.                                                M
+      |
+WARNING -- LOGICAL scalar (LGNUSORT) is set but never used.
+
+Encountered 0 errors, 3 warnings in file d:\dudley\heclib\Nt\Dss\Zcat.for.
+
+386|LINK: 8.03-Lahey -- Copyright (C) 1986-97 Phar Lap Software, Inc.
+Error LINK.3230: Undefined symbol "CHRLNB" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00011182.
+Error LINK.3230: Undefined symbol "UPCASE" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00011199.
+Error LINK.3230: Undefined symbol "ZERROR" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 0001137C.
+Error LINK.3230: Undefined symbol "GETHOL" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 0001151D.
+Error LINK.3230: Undefined symbol "GETNAM" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 000115F8.
+Error LINK.3230: Undefined symbol "CHRLNB" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00011677.
+Error LINK.3230: Undefined symbol "TEMPNAME" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00011C05.
+Error LINK.3230: Undefined symbol "TEMPNAME" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00011D82.
+Error LINK.3230: Undefined symbol "TEMPNAME" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00011F0B.
+Error LINK.3230: Undefined symbol "ZSETCA" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00011FD3.
+Error LINK.3230: Undefined symbol "GETNAM" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 000120CA.
+Error LINK.3230: Undefined symbol "CHRLNB" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00012149.
+Error LINK.3230: Undefined symbol "ZCATIT" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 0001231F.
+Error LINK.3230: Undefined symbol "ZCATFI" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00012373.
+Error LINK.3230: Undefined symbol "ZORDPN" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00012390.
+Error LINK.3230: Undefined symbol "ZCATIT" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00012703.
+Error LINK.3230: Undefined symbol "ZCATIT" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00012809.
+Error LINK.3230: Undefined symbol "ZCAOUT" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00012836.
+Error LINK.3230: Undefined symbol "CHRLNB" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00012A81.
+Error LINK.3230: Undefined symbol "CHRLNB" in module
+                 "d:\dudley\heclib\Nt\Dss\Zcat.for" at location 00012C6A.
+Error LINK.3230: Undefined symbol "_lc__FLG2RT" in module "LFINITWC.C" at
+                 location 00012F77.
+Error LINK.3230: Undefined symbol "_lf_main" in module "LFINITWC.C" at
+                 location 00013030.
+
+DOS Task finished

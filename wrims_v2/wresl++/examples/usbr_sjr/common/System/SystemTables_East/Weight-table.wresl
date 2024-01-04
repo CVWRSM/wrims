@@ -1,0 +1,602 @@
+ 
+Objective obj = {
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!CALSIM-III WEIGHTS for East Side San Joaquin Valley
+!Original Formulation: C. Olson (MWH) April 2007
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!====================================================
+!Instream Flow Requirement Weights
+!====================================================
+[C_TUO054_MIF,    50000],   !C540_MIF
+[C_MCD052_MIF,    50000],   !C561_MIF
+[C_MCD042_MIF,    50000],   !C562_MIF
+[C_STS059_MIF,    50000],   !C520_MIF
+[C_STS017_MIF,    50000],   !C528_MIF
+
+!====================================================
+!Flood Arc Weights
+!====================================================
+[C_MELONF,     -1000000],   !C10F
+[C_MLRTNF,     -1000000],   !C18F
+[C_MCLREF,     -1000000],   !C20F
+[C_HNSLYF,     -1000000],   !C52F
+[C_ESTMNF,     -1000000],   !C53F
+[C_PEDROF,     -1000000],   !C81F
+
+!====================================================
+!Other Arc Weights
+!====================================================
+[C_MELONDO,       18500],   !C10DO
+[C_MELONINSTREAM, 20100],   !C10INSTREAM
+[C_MELONRPA,      18000],   !C10RPA
+[C_MELONMIN,      18000],   !C10MIN
+[C_MELONVAMP_M,  100000],   !C10VAMP_M
+[C_MELONVAMP_T,  100000]    !19000],   !C10VAMP_T
+[C_MELONWQ,       20000],   !C10WQ
+[C_MLRTNA,      9999999],   !C18A
+[C_MLRTNM,        -2000],   !C18M
+[C_MDC032F,      -10000],   !C590F IMF -- Increased from -1000 to -10000
+[C_MDC032,        -1000],   !IMF -- Added to discourage excessive transfer from MLRTN->MDC->CHW
+[C_MCLREMIN,      18500],   !C20MIN
+[C_MCLREVAMP,    100000],   !19000],   !C20VAMP
+! [C_EBP038,        -1000],   !C589
+[C_SJR205_flood, -200000],   !C605A_flood
+[D_SJR214_EBP001, -50000],   !C605B
+[D_SJR205_SJR201,-200500],  !C605C
+[D_XCC054_VAMP,  100000],   !19000],   !C607BVAMP
+! [C_DMC116,       -78435],   !C708
+[C_PEDRO_STS_VAMP,100000],   !19000],   !C81_STAN_VAMP
+[C_PEDROVAMP,     100000],   !19000],   !C81VAMP
+
+
+!====================================================
+!Diversion Weights
+!====================================================
+
+!***********WBA 60***************
+[D_CLV043_WTPJYL,     40000],   !
+[D_CLV037_CACWD,      40000],   ! D506C
+[D_CLV026_WTPWDH,     10000],   ! to 60S_NU1 (D506B)
+[D_CLV023_60S_PA1,    29900],   ! D507
+[D_LJC010_60S_PA2,    40000],   ! Central San Joaquin WD
+[D_LJC022_WTPWDHa,    40000],   ! to 60S_NU1 - Stockton East WD delivery
+[D_LJC022_WTPWDHb,    50000],   ! to 60S_NU1 - Sale of OID water to Stockton East WD
+![D_STS059_UFC000,     39800],   ! to 60S_PA2 (D520A)
+
+!***********WBA 61***************
+![D_STS059_SSJ001,     50000],   ! IMF -- commented...we should only weight deliveries that meet demands (along with storage), not routing...
+[D_WDWRD_61_PA1,      39800],   !OIDnorth and SSJID Ag
+[D_WTPDGT_61_NU2,     50000],   ! 
+[D_OAK020_61_PA2,     39800],   !OIDsouth
+[D_RFS61B_61_NA2,     50000],   !return flow from OID south useable by Modesto ID
+[D_OAK020_61_NA2,     39900],   !OID delivery of vamp exchange to Modesto ID (D530_VAMP)
+[D_MDSTO_61_NA2,      39800],   !Modesto ID diversion from Modesto Lake
+[D_TUO017_61_NA3,     41000],   !Tuolumne River Riparian North
+[D_STS030_61_NA4,     41000],   !Stanislaus River Riparian demands
+[D_RFS61D_61_NA5,     49900],   !return flow from Modesto ID useable by San Joaquin River Riparian demands
+[D_SJR081_61_NA5,     40000],   !San Joaquin River Riparian demands between Tuolumne and Stanislaus
+[D_SJR070_61_NA6,     50000],   !Non-District demands at Vernalis
+[D_WTPMOD_61_NU1,     40000],   !City of Modesto
+
+[DL_61_NA2,           39900],   !weight the loss more than the delivery, so that if there is any delivery there will be loss
+[OS_61_NA5_b,        -40001],   !this element of the spill is to capture any amount of the OS from Modesto ID North that is not needed for the 61_NA5 demand
+
+!***********WBA 62***************
+[D_MCD050_62_NA2,     40000],   !Merced Riparian North
+[D_TRLCH_62_NA3,      39800],   !Turlock ID
+[D_TUO017_62_NA4,     41000],   !Tuolumne River Riparian South
+[D_SJR114_62_NA5,     40000],   !San Joaquin Riparian between Merced and Tuolumne
+[D_MCD055_62_NA6,     40200],   !Merced ID North
+[DL_62_NA3,           39900],   !weight the loss more than the delivery, so that if there is any delivery there will be loss
+
+!***********WBA 63***************
+[D_MID021_63_NA3,     40200],   !Merced ID South
+[D_MID021_DED012,     41000],   !Merced ID delivery to Refuge
+[D_MID021_63_NA4,     40100],   !Stevinson, El Nido, etc...
+[D_MCD042_63_NA2,     40000],   !Merced Riparian South
+[D_MCD021_63_NA4,     39900],   !Diversion to Riparian demands in 63_NA4?
+[D_MCD002_63_NA4,     39900],   !Merced River Diversion to Stevinson WD
+[D_ESC000_63_PR1,     40000],   !Arena Unit of Merced NWR
+[D_DED010_63_PR2,     40000],   !Merced and Lone Tree Units of Merced NWR
+[D_EBP048_63_PR3,     40000],   !Bear Unit of San Luis NWR
+
+[SP_EBP041_SJR145,    -1000],   !IMF -- add small penalty to keep water in EBP instead of spilling to Mariposa Bypass
+
+!***********WBA 64***************
+[D_MLRTN_FRK000,      400000],  !D18A
+[D_MLRTN_MDC_215,     500000],  !D18B_215
+[D_MLRTN_MDC_F,       9999900], !D18F
+[D_MLRTN_MDC_loss,    600000],  !D18b_loss
+[D_MLRTN_MDC_main,    100000],  !D18B_main
+[SP_MDC019_FRS045,    -1000],   !IMF -- Put small penalty on spill (was +1000, changed to -1000)
+
+[D_FRS036_64_PA1,     39000],   !Madera ID
+[D_MDC006_64_PA1,     40001],   !
+[D_MDC032_64_PA1,     40000],   !
+[D_DBC014_64_PA1,     39500],   !
+
+[D_ASL013_64_PA2,     38900],   !Chowchilla WD  (IMF: was 39900)
+[D_BRS018_64_PA2,     38902],   !               (IMF: was 39900)
+[D_CHW017_64_PA2,     38905],   !               (IMF: was 39900) 
+
+[D_SJR227_64_PA3,     49970],   !Gravelly Ford
+[D_MDC006_64_PA3,     39850],   !
+
+[D_EBP016_64_NA2,     38000],   !
+[D_RFS64_64_NA2,      40000],   !
+[D_MDOTA_64_XA,       79700],   !
+
+
+!====================================================
+!Storage/Reservoir Weights
+!====================================================
+[S_MELON_1,  2000000*taf_cfs],
+[S_MELON_2,     5004*taf_cfs],
+[S_MELON_3,     5002*taf_cfs],
+[S_MELON_4,     5000*taf_cfs],
+[S_MELON_5,-10000000*taf_cfs],
+
+[S_MLRTN_1,  2000000*taf_cfs],
+[S_MLRTN_2,     5004*taf_cfs],
+[S_MLRTN_3,     5002*taf_cfs],
+[S_MLRTN_4,     5000*taf_cfs],
+[S_MLRTN_5,-10000000*taf_cfs],
+
+[S_MCLRE_1,  2000000*taf_cfs],
+[S_MCLRE_2,     5004*taf_cfs],
+[S_MCLRE_3,     5002*taf_cfs],
+[S_MCLRE_4,     5000*taf_cfs],
+[S_MCLRE_5,-10000000*taf_cfs],
+
+[S_HNSLY_1,  2000000*taf_cfs],
+[S_HNSLY_2,     5004*taf_cfs],
+[S_HNSLY_3,     5002*taf_cfs],
+[S_HNSLY_4,     5000*taf_cfs],
+[S_HNSLY_5,-10000000*taf_cfs],
+
+[S_ESTMN_1,  2000000*taf_cfs],
+[S_ESTMN_2,     5004*taf_cfs],
+[S_ESTMN_3,     5002*taf_cfs],
+[S_ESTMN_4,     5000*taf_cfs],
+[S_ESTMN_5,-10000000*taf_cfs],
+
+[S_WDWRD_1,  2000000*taf_cfs],
+[S_WDWRD_2,     5010*taf_cfs], 
+[S_WDWRD_3,     5000*taf_cfs], 
+[S_WDWRD_4,  -100000*taf_cfs],
+[ErrPos_WDWRD,     -99999999],
+[ErrNeg_WDWRD,     -99999999],
+
+[S_TULOC_1,  2000000*taf_cfs],
+[S_TULOC_2,     6014*taf_cfs],
+[S_TULOC_3,     6012*taf_cfs],
+[S_TULOC_4,     6010*taf_cfs],
+[S_TULOC_5,-10000000*taf_cfs],
+
+[S_MDSTO_1,  2000000*taf_cfs],
+[S_MDSTO_2,   100010*taf_cfs],
+[S_MDSTO_3,   100000*taf_cfs],
+[S_MDSTO_4,  -100000*taf_cfs],
+
+[S_TRLCH_1,  2000000*taf_cfs],
+[S_TRLCH_2,   100010*taf_cfs],
+[S_TRLCH_3,   100000*taf_cfs],
+[S_TRLCH_4,  -100000*taf_cfs],
+
+[S_PEDRO_1,  2000000*taf_cfs],
+[S_PEDRO_2,     5004*taf_cfs],
+[S_PEDRO_3,     5002*taf_cfs],
+[S_PEDRO_4,     5000*taf_cfs],
+[S_PEDRO_5,-10000000*taf_cfs],
+
+[S_NHGAN_1,  2000000*taf_cfs],
+[S_NHGAN_2,    29000*taf_cfs],
+[S_NHGAN_3,     6000*taf_cfs],
+[S_NHGAN_4,     2000*taf_cfs],
+[S_NHGAN_5, -1000000*taf_cfs]
+
+
+!====================================================
+!Miscellaneous weights
+!====================================================
+
+! IMF -- Add small penalty on spills from MCD to MRS...
+!        (otherwise MCD goes dry at confluence with SJR, 
+!         which goofs up EC regression calculations)
+[SP_MCD002_MRS000, -1000],
+
+! IMF -- Add small penalty on flows down Ash Slough and Brenda Slough
+!        (don't think these flows really have a benefit, so water should
+!         stay in the river until EBP unless the river is constricted)
+[C_ASL013,     -1000],
+[C_BRS018,     -1000],
+
+
+! IMF -- Add penalties for pumping from project units
+!        (no penalty for pumping from non-project units)
+
+[GP_60S_PA1,   -1000],   
+[GP_60S_PA2,   -1000],        
+! [GP_60S_NU1,    -1],   
+[GP_61_PA1,    -1000],   
+[GP_61_PA2,    -1000],   
+! [GP_61_NA1,     -1],   
+! [GP_61_NA2,     -1],   
+[GP_61_NA3,    -1000],   
+[GP_61_NA4,    -1000],   
+[GP_61_NA5,    -1000],   
+[GP_61_NA6,    -1000],   
+! [GP_61_NU1,     -1],   
+! [GP_61_NU2,     -1],   
+! [GP_61_NU3,     -1],   
+! [GP_62_NA1,     -1],   
+[GP_62_NA2,    -1000],   
+! [GP_62_NA3,     -1], 
+[GP_62_NA4,    -1000], 
+[GP_62_NA5,    -1000], 
+! [GP_62_NA6,     -1], 
+! [GP_62_NU,      -1], 
+! [GP_63_NA1,     -1], 
+[GP_63_NA2,    -1000], 
+! [GP_63_NA3,     -1], 
+! [GP_63_NA4,     -1], 
+[GP_63_PR1,    -1000], 
+[GP_63_PR2,    -1000], 
+[GP_63_PR3,    -1000], 
+! [GP_63_NU,      -1], 
+! [GP_64_NA1,     -1], 
+! [GP_64_NA2,     -1], 
+[GP_64_PA1,    -1000], 
+[GP_64_PA2,    -1000], 
+[GP_64_PA3,    -1000], 
+[GP_64_XA,     -1000], 
+! [GP_64_NU,      -1], 
+
+
+!====================================================
+!Error Term Weights
+!====================================================
+/*
+! ErrPos ---
+[ErrPos_ASL013,  -999999],
+[ErrPos_ARY010,  -999999],
+[ErrPos_BCK040,  -999999],
+[ErrPos_BCK035,  -999999],
+[ErrPos_BCK033,  -999999],
+[ErrPos_BCK031,  -999999],
+[ErrPos_BCK024,  -999999],
+[ErrPos_BCK017,  -999999],
+[ErrPos_BCK010,  -999999],
+[ErrPos_BCK006,  -999999],
+[ErrPos_BRS018,  -999999],
+[ErrPos_BUR005,  -999999],
+[ErrPos_NHGAN,   -999999],
+[ErrPos_CLV044,  -999999],
+[ErrPos_CLV043,  -999999],
+[ErrPos_CLV037,  -999999],
+[ErrPos_CLV035,  -999999],
+[ErrPos_CLV028,  -999999],
+[ErrPos_CLV026,  -999999],
+[ErrPos_CLV023,  -999999],
+[ErrPos_CLV016,  -999999],
+[ErrPos_CLV010,  -999999],
+[ErrPos_CLV009,  -999999],
+[ErrPos_CLV006,  -999999],
+[ErrPos_CLV004,  -999999],
+[ErrPos_STWWTP,  -999999],
+[ErrPos_WTPWDH,  -999999],
+[ErrPos_EBP001,  -999999],
+[ErrPos_EBP005,  -999999],
+[ErrPos_EBP016,  -999999],
+[ErrPos_EBP019,  -999999],
+[ErrPos_EBP022,  -999999],
+[ErrPos_EBP030,  -999999],
+[ErrPos_EBP032,  -999999],
+[ErrPos_EBP033,  -999999],
+[ErrPos_EBP041,  -999999],
+[ErrPos_EBP042,  -999999],
+[ErrPos_EBP043,  -999999],
+[ErrPos_EBP048,  -999999],
+[ErrPos_EBP050,  -999999],
+[ErrPos_ESTMN,   -999999],
+[ErrPos_CHW031,  -999999],
+[ErrPos_CHW028,  -999999],
+[ErrPos_CHW024,  -999999],
+[ErrPos_CHW021,  -999999],
+[ErrPos_CHW017,  -999999],
+[ErrPos_CHW011,  -999999],
+[ErrPos_CHW006,  -999999],
+[ErrPos_COT033,  -999999],
+[ErrPos_DBC024,  -999999],
+[ErrPos_DBC014,  -999999],
+[ErrPos_DED044,  -999999],
+[ErrPos_DED038,  -999999],
+[ErrPos_DED035,  -999999],
+[ErrPos_DED032,  -999999],
+[ErrPos_DED025,  -999999],
+[ErrPos_DED019,  -999999],
+[ErrPos_DED012,  -999999],
+[ErrPos_DED010,  -999999],
+[ErrPos_DED003,  -999999],
+[ErrPos_FCS007,  -999999],
+[ErrPos_FCS006,  -999999],
+[ErrPos_HNSLY,   -999999],
+[ErrPos_FRS046,  -999999],
+[ErrPos_FRS045,  -999999],
+[ErrPos_FRS039,  -999999],
+[ErrPos_FRS036,  -999999],
+[ErrPos_FRS032,  -999999],
+[ErrPos_FRS025,  -999999],
+[ErrPos_FRS022,  -999999],
+[ErrPos_FRS020,  -999999],
+[ErrPos_FRS016,  -999999],
+[ErrPos_JBP006,  -999999],
+[ErrPos_FSL012,  -999999],
+[ErrPos_MDC006,  -999999],
+[ErrPos_MDC019,  -999999],
+[ErrPos_MDC032,  -999999],
+[ErrPos_MPS038,  -999999],
+[ErrPos_MCLRE,   -999999],
+[ErrPos_MCD056,  -999999],
+[ErrPos_MCD055,  -999999],
+[ErrPos_MCD052,  -999999],
+[ErrPos_MCD050,  -999999],
+[ErrPos_MCD048,  -999999],
+[ErrPos_MCD042,  -999999],
+[ErrPos_MCD036,  -999999],
+[ErrPos_MCD033,  -999999],
+[ErrPos_MCD032,  -999999],
+[ErrPos_MCD028,  -999999],
+[ErrPos_MCD020,  -999999],
+[ErrPos_MCD014,  -999999],
+[ErrPos_MCD009,  -999999],
+[ErrPos_MCD005,  -999999],
+[ErrPos_MCD002,  -999999],
+[ErrPos_MID021,  -999999],
+[ErrPos_MRS000,  -999999],
+[ErrPos_DCM027,  -999999],
+[ErrPos_MLRTN,   -999999],
+[ErrPos_SJR213,  -999999],
+[ErrPos_SJR205,  -999999],
+[ErrPos_SJR201,  -999999],
+[ErrPos_SJR200,  -999999],
+[ErrPos_SJR198,  -999999],
+[ErrPos_SJR195,  -999999],
+[ErrPos_SJR192,  -999999],
+[ErrPos_SJR185,  -999999],
+[ErrPos_SJR180,  -999999],
+[ErrPos_SJR179,  -999999],
+[ErrPos_SJR173,  -999999],
+[ErrPos_SJR166,  -999999],
+[ErrPos_SJR157,  -999999],
+[ErrPos_SJR152,  -999999],
+[ErrPos_SJR145,  -999999],
+[ErrPos_SJR141,  -999999],
+[ErrPos_SJR134,  -999999],
+[ErrPos_SJR131,  -999999],
+[ErrPos_SJR127,  -999999],
+[ErrPos_SJR123,  -999999],
+[ErrPos_SJR119,  -999999],
+[ErrPos_SJR117,  -999999],
+[ErrPos_SJR116,  -999999],
+[ErrPos_SJR115,  -999999],
+[ErrPos_SJR114,  -999999],
+[ErrPos_SJR111,  -999999],
+[ErrPos_SJR106,  -999999],
+[ErrPos_SJR105,  -999999],
+[ErrPos_SJR096,  -999999],
+[ErrPos_SJR091,  -999999],
+[ErrPos_SJR090,  -999999],
+[ErrPos_SJR087,  -999999],
+[ErrPos_SJR082,  -999999],
+[ErrPos_SJR081,  -999999],
+[ErrPos_SJR075,  -999999],
+[ErrPos_SJR072,  -999999],
+[ErrPos_SJR070,  -999999],
+[ErrPos_SLD027,  -999999],
+[ErrPos_MELON,   -999999],
+[ErrPos_TULOC,   -999999],
+[ErrPos_STS053,  -999999],
+[ErrPos_STS050,  -999999],
+[ErrPos_STS043,  -999999],
+[ErrPos_STS036,  -999999],
+[ErrPos_STS030,  -999999],
+[ErrPos_STS020,  -999999],
+[ErrPos_STS017,  -999999],
+[ErrPos_STS011,  -999999],
+[ErrPos_WDWRD,   -999999],
+[ErrPos_SDC001,  -999999],
+[ErrPos_PEDRO,   -999999],
+[ErrPos_TUO054,  -999999],
+[ErrPos_MDS003,  -999999],
+[ErrPos_MDSTO,   -999999],
+[ErrPos_WTPMOD,  -999999],
+[ErrPos_TUR001,  -999999],
+[ErrPos_TRLCH,   -999999],
+[ErrPos_TUO053,  -999999],
+[ErrPos_TUO047,  -999999],
+[ErrPos_TUO043,  -999999],
+[ErrPos_TUO036,  -999999],
+[ErrPos_TUO030,  -999999],
+[ErrPos_TUO022,  -999999],
+[ErrPos_TUO017,  -999999],
+[ErrPos_TUO015,  -999999],
+[ErrPos_TUO010,  -999999],
+[ErrPos_TUO003,  -999999],
+[ErrPos_MOWWTP,  -999999],
+[ErrPos_RFS61D,  -999999],
+
+! ErrNeg ---
+[ErrNeg_ASL013,  -999999],
+[ErrNeg_ARY010,  -999999],
+[ErrNeg_BCK040,  -999999],
+[ErrNeg_BCK035,  -999999],
+[ErrNeg_BCK033,  -999999],
+[ErrNeg_BCK031,  -999999],
+[ErrNeg_BCK024,  -999999],
+[ErrNeg_BCK017,  -999999],
+[ErrNeg_BCK010,  -999999],
+[ErrNeg_BCK006,  -999999],
+[ErrNeg_BRS018,  -999999],
+[ErrNeg_BUR005,  -999999],
+[ErrNeg_NHGAN,   -999999],
+[ErrNeg_CLV044,  -999999],
+[ErrNeg_CLV043,  -999999],
+[ErrNeg_CLV037,  -999999],
+[ErrNeg_CLV035,  -999999],
+[ErrNeg_CLV028,  -999999],
+[ErrNeg_CLV026,  -999999],
+[ErrNeg_CLV023,  -999999],
+[ErrNeg_CLV016,  -999999],
+[ErrNeg_CLV010,  -999999],
+[ErrNeg_CLV009,  -999999],
+[ErrNeg_CLV006,  -999999],
+[ErrNeg_CLV004,  -999999],
+[ErrNeg_STWWTP,  -999999],
+[ErrNeg_WTPWDH,  -999999],
+[ErrNeg_EBP001,  -999999],
+[ErrNeg_EBP005,  -999999],
+[ErrNeg_EBP016,  -999999],
+[ErrNeg_EBP019,  -999999],
+[ErrNeg_EBP022,  -999999],
+[ErrNeg_EBP030,  -999999],
+[ErrNeg_EBP032,  -999999],
+[ErrNeg_EBP033,  -999999],
+[ErrNeg_EBP041,  -999999],
+[ErrNeg_EBP042,  -999999],
+[ErrNeg_EBP043,  -999999],
+[ErrNeg_EBP048,  -999999],
+[ErrNeg_EBP050,  -999999],
+[ErrNeg_ESTMN,   -999999],
+[ErrNeg_CHW031,  -999999],
+[ErrNeg_CHW028,  -999999],
+[ErrNeg_CHW024,  -999999],
+[ErrNeg_CHW021,  -999999],
+[ErrNeg_CHW017,  -999999],
+[ErrNeg_CHW011,  -999999],
+[ErrNeg_CHW006,  -999999],
+[ErrNeg_COT033,  -999999],
+[ErrNeg_DBC024,  -999999],
+[ErrNeg_DBC014,  -999999],
+[ErrNeg_DED044,  -999999],
+[ErrNeg_DED038,  -999999],
+[ErrNeg_DED035,  -999999],
+[ErrNeg_DED032,  -999999],
+[ErrNeg_DED025,  -999999],
+[ErrNeg_DED019,  -999999],
+[ErrNeg_DED012,  -999999],
+[ErrNeg_DED010,  -999999],
+[ErrNeg_DED003,  -999999],
+[ErrNeg_FCS007,  -999999],
+[ErrNeg_FCS006,  -999999],
+[ErrNeg_HNSLY,   -999999],
+[ErrNeg_FRS046,  -999999],
+[ErrNeg_FRS045,  -999999],
+[ErrNeg_FRS039,  -999999],
+[ErrNeg_FRS036,  -999999],
+[ErrNeg_FRS032,  -999999],
+[ErrNeg_FRS025,  -999999],
+[ErrNeg_FRS022,  -999999],
+[ErrNeg_FRS020,  -999999],
+[ErrNeg_FRS016,  -999999],
+[ErrNeg_JBP006,  -999999],
+[ErrNeg_FSL012,  -999999],
+[ErrNeg_MDC006,  -999999],
+[ErrNeg_MDC019,  -999999],
+[ErrNeg_MDC032,  -999999],
+[ErrNeg_MPS038,  -999999],
+[ErrNeg_MCLRE,   -999999],
+[ErrNeg_MCD056,  -999999],
+[ErrNeg_MCD055,  -999999],
+[ErrNeg_MCD052,  -999999],
+[ErrNeg_MCD050,  -999999],
+[ErrNeg_MCD048,  -999999],
+[ErrNeg_MCD042,  -999999],
+[ErrNeg_MCD036,  -999999],
+[ErrNeg_MCD033,  -999999],
+[ErrNeg_MCD032,  -999999],
+[ErrNeg_MCD028,  -999999],
+[ErrNeg_MCD020,  -999999],
+[ErrNeg_MCD014,  -999999],
+[ErrNeg_MCD009,  -999999],
+[ErrNeg_MCD005,  -999999],
+[ErrNeg_MCD002,  -999999],
+[ErrNeg_MID021,  -999999],
+[ErrNeg_MRS000,  -999999],
+[ErrNeg_DCM027,  -999999],
+[ErrNeg_MLRTN,   -999999],
+[ErrNeg_SJR213,  -999999],
+[ErrNeg_SJR205,  -999999],
+[ErrNeg_SJR201,  -999999],
+[ErrNeg_SJR200,  -999999],
+[ErrNeg_SJR198,  -999999],
+[ErrNeg_SJR195,  -999999],
+[ErrNeg_SJR192,  -999999],
+[ErrNeg_SJR185,  -999999],
+[ErrNeg_SJR180,  -999999],
+[ErrNeg_SJR179,  -999999],
+[ErrNeg_SJR173,  -999999],
+[ErrNeg_SJR166,  -999999],
+[ErrNeg_SJR157,  -999999],
+[ErrNeg_SJR152,  -999999],
+[ErrNeg_SJR145,  -999999],
+[ErrNeg_SJR141,  -999999],
+[ErrNeg_SJR134,  -999999],
+[ErrNeg_SJR131,  -999999],
+[ErrNeg_SJR127,  -999999],
+[ErrNeg_SJR123,  -999999],
+[ErrNeg_SJR119,  -999999],
+[ErrNeg_SJR117,  -999999],
+[ErrNeg_SJR116,  -999999],
+[ErrNeg_SJR115,  -999999],
+[ErrNeg_SJR114,  -999999],
+[ErrNeg_SJR111,  -999999],
+[ErrNeg_SJR106,  -999999],
+[ErrNeg_SJR105,  -999999],
+[ErrNeg_SJR096,  -999999],
+[ErrNeg_SJR091,  -999999],
+[ErrNeg_SJR090,  -999999],
+[ErrNeg_SJR087,  -999999],
+[ErrNeg_SJR082,  -999999],
+[ErrNeg_SJR081,  -999999],
+[ErrNeg_SJR075,  -999999],
+[ErrNeg_SJR072,  -999999],
+[ErrNeg_SJR070,  -999999],
+[ErrNeg_SLD027,  -999999],
+[ErrNeg_MELON,   -999999],
+[ErrNeg_TULOC,   -999999],
+[ErrNeg_STS053,  -999999],
+[ErrNeg_STS050,  -999999],
+[ErrNeg_STS043,  -999999],
+[ErrNeg_STS036,  -999999],
+[ErrNeg_STS030,  -999999],
+[ErrNeg_STS020,  -999999],
+[ErrNeg_STS017,  -999999],
+[ErrNeg_STS011,  -999999],
+[ErrNeg_WDWRD,   -999999],
+[ErrNeg_SDC001,  -999999],
+[ErrNeg_PEDRO,   -999999],
+[ErrNeg_TUO054,  -999999],
+[ErrNeg_MDS003,  -999999],
+[ErrNeg_MDSTO,   -999999],
+[ErrNeg_WTPMOD,  -999999],
+[ErrNeg_TUR001,  -999999],
+[ErrNeg_TRLCH,   -999999],
+[ErrNeg_TUO053,  -999999],
+[ErrNeg_TUO047,  -999999],
+[ErrNeg_TUO043,  -999999],
+[ErrNeg_TUO036,  -999999],
+[ErrNeg_TUO030,  -999999],
+[ErrNeg_TUO022,  -999999],
+[ErrNeg_TUO017,  -999999],
+[ErrNeg_TUO015,  -999999],
+[ErrNeg_TUO010,  -999999],
+[ErrNeg_TUO003,  -999999],
+[ErrNeg_MOWWTP,  -999999],
+[ErrNeg_RFS61D,  -999999],
+
+*/
+
+}

@@ -1,0 +1,100 @@
+! Instream flow requirements
+define C_LWSTN_MIF   {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_LWSTN_ADD   {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_KSWCK_MIF   {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_KSWCK_ADD   {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_SAC240_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'} ! Red Bluff Diversion Dam
+define C_SAC240_ADD  {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_SAC097_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'} ! Navigation Control Point
+define C_SAC097_ADD  {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+!define C_SAC041_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'} ! Hood
+!define C_SAC041_ADD  {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_SAC017_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'} ! Rio Vista
+define C_SAC017_ADD  {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_FTR039_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_FTR039_ADD  {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_FTR059_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_FTR059_ADD  {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_FTR068_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'} ! Low Flow Channel
+define C_FTR068_ADD  {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_AMR004_MIF  {std kind 'FLOW-MIN-INSTREAM' units 'CFS'} ! Lower American River
+define C_AMR004_ADD  {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_WKYTN_MIF   {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_WKYTN_ADD   {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_NTOMA_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_NTOMA_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_EPARK_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_EPARK_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_SGRGE_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_SGRGE_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_BLKBT_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_BLKBT_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_STN021_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_STN021_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_STN014_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_STN014_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_PTH007_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_PTH007_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_PTH024_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_PTH024_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! Yuba River's Smartsville gage flow requirement
+define	C_YUB024_MIF	{std kind 'FLOW-MIN-INSTREAM' units 'CFS'}	
+define	C_YUB024_ADD	{std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! Yuba River's Marysville gage flow requirement
+define	C_YUB006_MIF	{std kind 'FLOW-MIN-INSTREAM' units 'CFS'}	
+define	C_YUB006_ADD	{std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! Bear River above Rollins Reservoir
+define MF_C_BRR060 {value 0.1*taf_cfs}
+define C_BRR060_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_BRR060_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! Bear River Canal Diversion Dam
+define MF_C_BRR050 {timeseries kind 'FLOW-MIN-REQUIRED' units 'TAF' convert 'CFS'}
+define C_BRR050_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_BRR050_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! Camp Far West Reservoir release
+define MF_C_CMPFW {select minflow from minflow where C_arc=286,month=month}
+define C_CMPFW_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_CMPFW_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! Bear River below Camp Far West near Wheatland	gage
+define MF_C_BRR017 {select minflow from minflow where C_arc=283,month=month}
+define C_BRR017_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_BRR017_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! North Fork Cache Creek below Indian Valley Reservoir
+define MF_C_INDVL {value max(0., min(10.,(S_INDVL(-1) - 10.)*taf_cfs))}
+define C_INDVL_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_INDVL_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! Cache Creek operational spill below Capay Diversion Dam
+! estimated diversion demand at Capay Diversion Dam (99% of 20_NA1 demand)
+define estdvrdmd {value max(0.,.99*AW_20_NA1*(1. + RPF_20_NA1 - GPmin_20_NA1)*(1. + EVF_CCH030_20_NA1 + DPF_CCH030_20_NA1 + LFF_CCH030_20_NA1 + SPF_CCH030_20_NA1 - RUF_20_NA1))}
+define estdvrdmddv {alias estdvrdmd kind 'estimated-demand' units 'cfs'}
+
+define MF_C_CCH030 {value .05*estdvrdmd}
+define C_CCH030_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_CCH030_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+

@@ -1,0 +1,817 @@
+! Main WRESL Files containes the paths to run the model.
+!Date Modified: 04/23/2010; By: Hao Xie
+! 5/18/10 Added logic for two cycles to accomodate daily weir flows Tom FitzHugh BOR
+! comment out daily weir flows for corroboration study; Richard Chen DWR
+! 4/25/11 Cleanup Codes to remove CS2CL,CL, and change Ave to AVG. Richard Chen, DWR
+! 9/28/12 Add shortage code, Z.Q. Richard Chen, DWR
+! 2/01/13 Changed all includes to local and added dynamic SJR Tom FitzHugh BOR
+! 9/16/13 Added D-1485 code. Holly Canada DWR
+
+! All variables are local in wresl+ parser 
+
+initial {
+	svar beginWY { value 2013 }  ! water year 2013 oct is calendar year 2012 oct
+	svar JPOD_ON {select Option from GUI_Operations where Index=2}
+	svar PBwheel_ON {select Option from GUI_Operations where Index=4}  !D-1485 
+	svar DCC_DLTSW {select OPTION from GUI_Regs where Index = 1}
+	svar EI_DLTSW {select OPTION from GUI_Regs where Index = 2}
+	svar NDO_DLTSW {select Option from GUI_Regs where Index = 3}
+	svar AN_DLTSW {select OPTION from GUI_Regs where Index = 12}  !D-1485
+	svar CH_DLTSW {select OPTION from GUI_Regs where Index = 13}  !D-1485
+    svar Dynamic_SJR {select Option from GUI_SJR where Index=7} !Turns on dynamic SJR       
+    svar LOD_Future {select Option from GUI_HydroClimate where Index=1}
+}
+ 
+SEQUENCE CYCLE1 {
+    model   SJRBASE
+    condition int(Dynamic_SJR)==1
+    order   1
+    }
+SEQUENCE CYCLE2 {
+    model   SJR_WQ1
+    condition int(Dynamic_SJR)==1
+    order   2
+    }
+SEQUENCE CYCLE3 {
+    model   SJR_PULSE
+    condition (month==APR .or. month==MAY) .and. int(Dynamic_SJR)==1
+    order   3
+    }
+SEQUENCE CYCLE4 {
+    model   SJR_WQ2
+     condition (month==APR .or. month==MAY) .and. int(Dynamic_SJR)==1
+    order   4
+    }
+SEQUENCE CYCLE5 {
+    model   VAMP_AND_DO
+    condition month>=APR .and. month<=SEP .and. int(Dynamic_SJR)==1
+    order   5
+    }   
+SEQUENCE CYCLE6 {
+    model   Upstream
+    order   6
+    }
+SEQUENCE CYCLE7 {
+    model   BASE
+    order   7
+    }
+SEQUENCE CYCLE8 {
+    model   B2_BO_DailyWeir
+    order   8
+    }    
+
+MODEL SJRBASE {         !CYCLE 1
+
+    INCLUDE '\Assumptions\Options_Switches.wresl'
+    
+    INCLUDE '\sanjoaquin\Dynamic_SJR_Setup.wresl'
+
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_GWPumpingSplits.wresl'
+    INCLUDE '\Restoration\AprPartInflow.wresl'
+    INCLUDE '\System_SJR\System_SJR.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon1.wresl'
+
+    INCLUDE 'wytypes\wytypes.wresl'
+    
+    INCLUDE '\System\Cycle1thru5SystemDefsLocal.wresl'       
+    INCLUDE '\hydrology\forecast\CVPforecasts.wresl'
+    INCLUDE '\cvp_dellogic\CvpSysDeliveryLogicCycle1.wresl'            
+
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_ChannelSplits.wresl'
+
+    INCLUDE '\cvp_dellogic\CvpSDeliveryLogicCycle1.wresl'        
+    
+!    INCLUDE '\sanjoaquin\Friant\SJRR_Rest_off.wresl'
+    INCLUDE '\sanjoaquin\Friant\SJRR_Rest.wresl'                     !Turns on SJRR Operations
+
+    INCLUDE '\sanjoaquin\SanJoaquinCoreA.wresl'
+        
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_dmd.wresl' 
+    } 
+
+    INCLUDE '\sanjoaquin\SanJoaquinCoreB.wresl'
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems_StocktonDWSP.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems.wresl' 
+    }   
+
+    INCLUDE '\sanjoaquin\Delta\DWSP_arc_split.wresl' 
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Delta\cosma_restrict.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_zeroset.wresl'
+    }   
+    
+!    INCLUDE 'sanjoaquin\Friant\SJR_Rest_Req_Off_Local.wresl'
+    INCLUDE '\sanjoaquin\Friant\SJR_Rest_Req_Local.wresl'     !Turns on SJRR Operations
+    INCLUDE '\SanJoaquin\Delta\ZeroAOWater.wresl'
+
+    INCLUDE '\sanjoaquin\various\SetWSReturns\SetWSRetcycle1thru5.wresl' !fixing return flows into SJR by fixing associated deliveries
+
+    INCLUDE '\sanjoaquin\PurchasedWater\InstreamFromOID.wresl'
+    INCLUDE '\sanjoaquin\Stanislaus\stan_FW_min.wresl'
+    INCLUDE '\sanjoaquin\Tuolumne\tuol_FERC_min.wresl'
+    INCLUDE '\sanjoaquin\various\bounds_cycles\bounds_cycle1.wresl'
+    INCLUDE '\System_SJR\SystemTables_SJR\weight-table.wresl'
+
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon2.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc1.wresl'
+    
+    !Below added to implement interim SJR Restoration
+    define REST_Q{
+          case REST_F {
+               condition REST_REQ == 1
+               value 99999999.0
+                }
+          case REST_I {
+               condition REST_REQ == 0
+               value    1300.
+                }
+    }
+    goal cap2B {C_SJRCB_main + C_SJRREST <REST_Q}   
+    goal cap3B {C_SJRREST-C_SJRSackBC + C607X < REST_Q}   
+  
+  }
+
+MODEL SJR_WQ1 {         !CYCLE 2
+
+    INCLUDE '\Assumptions\Options_Switches.wresl'
+    
+    INCLUDE '\sanjoaquin\Dynamic_SJR_Setup.wresl'
+        
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_GWPumpingSplits.wresl'
+    INCLUDE '\Restoration\AprPartInflow.wresl'
+    INCLUDE '\System_SJR\System_SJR.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon1.wresl'
+    INCLUDE 'wytypes\wytypes.wresl'
+      
+    INCLUDE '\System\Cycle1thru5SystemDefsLocal.wresl'
+    INCLUDE '\hydrology\forecast\CVPforecasts.wresl'
+    INCLUDE '\cvp_dellogic\CvpSysDeliveryLogicCycle1.wresl'        
+
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_ChannelSplits.wresl'
+
+    INCLUDE '\cvp_dellogic\CvpSDeliveryLogicCycle1.wresl'        
+    
+!    INCLUDE '\sanjoaquin\Friant\SJRR_Rest_off.wresl'    
+    INCLUDE '\sanjoaquin\Friant\SJRR_Rest.wresl'                     !Turns on SJRR Operations
+  
+    INCLUDE '\sanjoaquin\SanJoaquinCoreA.wresl'
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_dmd.wresl' 
+    } 
+
+    INCLUDE '\sanjoaquin\SanJoaquinCoreB.wresl'
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems_StocktonDWSP.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems.wresl' 
+    }   
+
+    INCLUDE '\sanjoaquin\Delta\DWSP_arc_split.wresl' 
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Delta\cosma_restrict.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_zeroset.wresl'
+    }   
+    
+    INCLUDE '\System_SJR\SystemTables_SJR\weight-table.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon2.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc1.wresl'
+
+    !Below added to implement interim SJR Restoration
+    define REST_Q{
+          case REST_F {
+               condition REST_REQ == 1
+               value 99999999.0
+                }
+          case REST_I {
+               condition REST_REQ == 0
+               value    1300.
+                }
+    }
+    goal cap2B {C_SJRCB_main + C_SJRREST <REST_Q}   
+    goal cap3B {C_SJRREST-C_SJRSackBC + C607X < REST_Q}   
+
+    
+!    INCLUDE 'sanjoaquin\Friant\SJR_Rest_Req_Off_Local.wresl'
+    INCLUDE '\sanjoaquin\Friant\SJR_Rest_Req_Local.wresl'     !Turns on SJRR Operations
+    INCLUDE '\SanJoaquin\Delta\ZeroAOWater.wresl'
+    INCLUDE '\sanjoaquin\various\SetWSReturns\SetWSRetcycle1thru5.wresl' !fixing return flows into SJR by fixing associated deliveries
+    INCLUDE '\sanjoaquin\WaterQuality\disaggregation\WestsideReturns\WSReturnC1_stub.wresl'
+    INCLUDE '\sanjoaquin\WaterQuality\Vernalis_WQmin_Disag.wresl'
+    INCLUDE '\sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+    INCLUDE '\sanjoaquin\various\bounds_cycles\bounds_cycle2.wresl'
+}
+
+MODEL SJR_PULSE {            !CYCLE 3
+
+    INCLUDE '\Assumptions\Options_Switches.wresl'
+    
+    INCLUDE '\sanjoaquin\Dynamic_SJR_Setup.wresl'
+
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_GWPumpingSplits.wresl'
+    INCLUDE '\Restoration\AprPartInflow.wresl'
+    INCLUDE '\System_SJR\System_SJR.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon1.wresl'
+    INCLUDE 'wytypes\wytypes.wresl'
+      
+    INCLUDE '\System\Cycle1thru5SystemDefsLocal.wresl'
+    INCLUDE '\hydrology\forecast\CVPforecasts.wresl'
+    INCLUDE '\cvp_dellogic\CvpSysDeliveryLogicCycle1.wresl'        
+
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_ChannelSplits.wresl'
+
+    INCLUDE '\cvp_dellogic\CvpSDeliveryLogicCycle1.wresl' 
+           
+!    INCLUDE '\sanjoaquin\Friant\SJRR_Rest_off.wresl'
+    INCLUDE '\sanjoaquin\Friant\SJRR_Rest.wresl'                     !Turns on SJRR Operations
+  
+    INCLUDE '\sanjoaquin\SanJoaquinCoreA.wresl'
+
+    if int(LOD_Future)==1 {
+            INCLUDE '\sanjoaquin\Delta\COSMA_dmd.wresl' 
+    } 
+
+    INCLUDE '\sanjoaquin\SanJoaquinCoreB.wresl'
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems_StocktonDWSP.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems.wresl' 
+    }   
+
+    INCLUDE '\sanjoaquin\Delta\DWSP_arc_split.wresl' 
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Delta\cosma_restrict.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_zeroset.wresl'
+    }   
+    
+    INCLUDE '\System_SJR\SystemTables_SJR\weight-table.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon2.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc1.wresl'
+    
+    define REST_Q{
+          case REST_F {
+                condition REST_REQ == 1
+                value 99999999.0
+               }
+          case REST_I {
+             condition REST_REQ == 0
+                 value  1300.
+               }
+    }
+        
+    goal cap2B {C_SJRCB_main + C_SJRREST <REST_Q}   
+    goal cap3B {C_SJRREST-C_SJRSackBC + C607X < REST_Q}
+
+
+!    INCLUDE 'sanjoaquin\Friant\SJR_Rest_Req_Off_Local.wresl'   
+    INCLUDE '\sanjoaquin\Friant\SJR_Rest_Pulse_Local.wresl'     !Turns on SJRR Operations
+    INCLUDE '\SanJoaquin\Delta\ZeroAOWater.wresl'
+    INCLUDE '\sanjoaquin\various\SetWSReturns\SetWSRetcycle1thru5.wresl' !fixing return flows into SJR by fixing associated deliveries
+    INCLUDE '\sanjoaquin\Stanislaus\stan_FW_pulse.wresl'
+    INCLUDE '\sanjoaquin\Tuolumne\tuol_FERC_pulse.wresl'
+    INCLUDE '\sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+    INCLUDE '\sanjoaquin\various\bounds_cycles\bounds_cycle3.wresl'
+}
+
+MODEL SJR_WQ2 {         !CYCLE 4
+
+    INCLUDE '\Assumptions\Options_Switches.wresl'
+    
+    INCLUDE '\sanjoaquin\Dynamic_SJR_Setup.wresl'
+
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_GWPumpingSplits.wresl'
+    INCLUDE '\Restoration\AprPartInflow.wresl'
+    INCLUDE '\System_SJR\System_SJR.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon1.wresl'
+    INCLUDE 'wytypes\wytypes.wresl'
+      
+    INCLUDE '\System\Cycle1thru5SystemDefsLocal.wresl'
+    INCLUDE '\hydrology\forecast\CVPforecasts.wresl'
+    INCLUDE '\cvp_dellogic\CvpSysDeliveryLogicCycle1.wresl'        
+ 
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_ChannelSplits.wresl'
+ 
+    INCLUDE '\cvp_dellogic\CvpSDeliveryLogicCycle1.wresl' 
+        
+!    INCLUDE '\sanjoaquin\Friant\SJRR_Rest_off.wresl'
+    INCLUDE '\sanjoaquin\Friant\SJRR_Rest.wresl'                     !Turns on SJRR Operations
+
+     INCLUDE '\sanjoaquin\SanJoaquinCoreA.wresl'
+
+     if int(LOD_Future)==1 {
+            INCLUDE '\sanjoaquin\Delta\COSMA_dmd.wresl' 
+     } 
+
+     INCLUDE '\sanjoaquin\SanJoaquinCoreB.wresl'
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems_StocktonDWSP.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems.wresl' 
+    }   
+
+    INCLUDE '\sanjoaquin\Delta\DWSP_arc_split.wresl' 
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Delta\cosma_restrict.wresl' 
+    } 
+    elseif int(LOD_Future)==0{
+        INCLUDE '\sanjoaquin\Delta\COSMA_zeroset.wresl'
+    }   
+         
+    INCLUDE '\System_SJR\SystemTables_SJR\weight-table.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon2.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc1.wresl'
+    
+    define REST_Q{
+          case REST_F {
+                condition REST_REQ == 1
+                value 99999999.0
+               }
+          case REST_I {
+             condition REST_REQ == 0
+                 value  1300.
+               }
+    }
+            
+     goal cap2B {C_SJRCB_main + C_SJRREST <REST_Q}   
+     goal cap3B {C_SJRREST-C_SJRSackBC + C607X < REST_Q}
+
+
+!    INCLUDE 'sanjoaquin\Friant\SJR_Rest_Req_Off_Local.wresl'   
+    INCLUDE '\sanjoaquin\Friant\SJR_Rest_Pulse_Local.wresl'     !Turns on SJRR Operations
+    INCLUDE '\SanJoaquin\Delta\ZeroAOWater.wresl'
+    INCLUDE '\sanjoaquin\various\SetWSReturns\SetWSRetcycle1thru5.wresl' !fixing return flows into SJR by fixing associated deliveries
+    INCLUDE '\sanjoaquin\WaterQuality\disaggregation\WestsideReturns\WSReturnC3_stub.wresl'
+    INCLUDE '\sanjoaquin\WaterQuality\Vernalis_WQpulse_Disag.wresl'
+    INCLUDE '\sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+    INCLUDE '\sanjoaquin\various\bounds_cycles\bounds_cycle4.wresl'
+}
+
+MODEL VAMP_AND_DO {           !CYCLE 5
+
+    INCLUDE '\Assumptions\Options_Switches.wresl'
+    
+    INCLUDE '\sanjoaquin\Dynamic_SJR_Setup.wresl'
+
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_GWPumpingSplits.wresl'
+    INCLUDE '\Restoration\AprPartInflow.wresl'
+    INCLUDE '\System_SJR\System_SJR.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon1.wresl'
+    INCLUDE 'wytypes\wytypes.wresl'
+    
+    INCLUDE '\System\Cycle1thru5SystemDefsLocal.wresl'
+
+    INCLUDE '\hydrology\forecast\CVPforecasts.wresl'
+    INCLUDE '\cvp_dellogic\CvpSysDeliveryLogicCycle1.wresl'        
+
+    INCLUDE '\sanjoaquin\Various\definitions\SJR_ChannelSplits.wresl'
+
+    INCLUDE '\cvp_dellogic\CvpSDeliveryLogicCycle1.wresl' 
+        
+!    INCLUDE '\sanjoaquin\Friant\SJRR_Rest_off.wresl'    
+    INCLUDE '\sanjoaquin\Friant\SJRR_Rest.wresl'                     !Turns on SJRR Operations
+       
+    INCLUDE '\sanjoaquin\SanJoaquinCoreA.wresl'
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_dmd.wresl' 
+    } 
+
+    INCLUDE '\sanjoaquin\SanJoaquinCoreB.wresl'
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems_StocktonDWSP.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems.wresl' 
+    }   
+
+    INCLUDE '\sanjoaquin\Delta\DWSP_arc_split.wresl' 
+
+    if int(LOD_Future)==1 {
+        INCLUDE '\sanjoaquin\Delta\cosma_restrict.wresl' 
+    } 
+    elseif int(LOD_Future)==0 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_zeroset.wresl'
+    }   
+           
+    INCLUDE '\System_SJR\SystemTables_SJR\weight-table.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon2.wresl'
+    INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc1.wresl'
+   
+    define REST_Q{
+          case REST_F {
+                condition REST_REQ == 1
+                value 99999999.0
+               }
+          case REST_I {
+             condition REST_REQ == 0
+                 value  1300.
+               }
+    }
+        
+   goal cap2B {C_SJRCB_main + C_SJRREST <REST_Q}   
+   goal cap3B {C_SJRREST-C_SJRSackBC + C607X < REST_Q}   
+   
+
+!    INCLUDE 'sanjoaquin\Friant\SJR_Rest_Req_Off_Local.wresl'  
+    INCLUDE '\sanjoaquin\Friant\SJR_Rest_Pulse_Local.wresl'     !Turns on SJRR Operations
+    INCLUDE '\SanJoaquin\Delta\ZeroAOWater.wresl'
+    INCLUDE '\sanjoaquin\various\SetWSReturns\SetWSRetcycle1thru5.wresl' !fixing return flows into SJR by fixing associated deliveries
+    INCLUDE '\SANJOAQUIN\VAMP\VAMP_REQ.WRESL'
+    INCLUDE '\SANJOAQUIN\VAMP\VAMP_ALLOC.WRESL'
+    INCLUDE '\SANJOAQUIN\STANISLAUS\DO.WRESL'
+    INCLUDE '\sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+    INCLUDE '\sanjoaquin\various\bounds_cycles\bounds_cycle5.wresl'
+}
+    
+MODEL Upstream {         !CYCLE 6
+
+    INCLUDE '\Assumptions\Options_Switches.wresl'
+    
+    if int(Dynamic_SJR)==0 { INCLUDE '\sanjoaquin\Timeseries_SJR_Setup.wresl' }     
+
+    if int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Dynamic_SJR_Setup_cyc6.wresl'
+        INCLUDE '\sanjoaquin\Various\definitions\SJR_GWPumpingSplits.wresl'
+        INCLUDE '\Restoration\AprPartInflow.wresl'
+        INCLUDE '\System_SJR\System_SJR.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon1.wresl'
+    }
+
+    INCLUDE 'wytypes\wytypes.wresl'  
+
+    if int(Dynamic_SJR)==1 {   
+        INCLUDE '\sanjoaquin\Various\definitions\SJR_ChannelSplits.wresl'
+!        INCLUDE '\sanjoaquin\Friant\SJRR_Rest_off.wresl'    
+        INCLUDE '\sanjoaquin\Friant\SJRR_Rest.wresl'                     !Turns on SJRR Operations
+        INCLUDE '\sanjoaquin\SanJoaquinCoreA.wresl'
+    }
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_dmd.wresl' 
+    } 
+
+    if int(Dynamic_SJR)==1 {    INCLUDE '\sanjoaquin\SanJoaquinCoreB.wresl'}
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems_StocktonDWSP.wresl' 
+    } 
+    elseif int(LOD_Future)==0 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems.wresl' 
+    }   
+
+    if int(Dynamic_SJR)==1 {    INCLUDE '\sanjoaquin\Delta\DWSP_arc_split.wresl' }
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\cosma_restrict.wresl' 
+    } 
+    elseif int(LOD_Future)==0 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_zeroset.wresl'
+    }   
+
+    if int(Dynamic_SJR)==1 {          
+        INCLUDE '\System_SJR\SystemTables_SJR\weight-table.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon2.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc1.wresl'
+
+        define REST_Q{
+            case REST_F {
+                condition REST_REQ == 1
+                value 99999999.0
+               }
+            case REST_I {
+                condition REST_REQ == 0
+                value  1300.
+               }               
+        }
+        
+        goal cap2B {C_SJRCB_main + C_SJRREST <REST_Q}   
+        goal cap3B {C_SJRREST-C_SJRSackBC + C607X < REST_Q}
+   
+        INCLUDE '\sanjoaquin\IntegratedOperations\SanLuisTransfers.wresl'
+        INCLUDE '\SanJoaquin\Delta\ZeroAOWater.wresl'
+        INCLUDE '\SanJoaquin\Delta\COSMA_restrict_c6_c7.wresl'
+!        INCLUDE '\sanjoaquin\Friant\SJR_Rest_Req_Off_Local.wresl'
+        INCLUDE '\sanjoaquin\Friant\SJR_Rest_Full.wresl'     !Turns on SJRR Operations
+    }  ! end of dynamic SJR includes
+
+!Include external FUNCTIONS and DLL information
+    define getFinalMrdo {EXTERNAL f90}  ! OBJ code file must be located in run\external directory for compilation
+    INCLUDE  'Delta\DeltaExtFuncs_7inpANN.wresl'
+    INCLUDE  'swp_dellogic\allocation\co_extfcn.wresl'
+
+    INCLUDE 'System\System.wresl'
+    INCLUDE 'hydrology\forecast\CVPforecasts.wresl'
+    INCLUDE 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+    INCLUDE 'Assumptions\assumption.wresl'
+    INCLUDE 'hydrology\demands\demands_defs.wresl'
+    INCLUDE 'swp_dellogic\SwpDeliveryLogic.wresl'
+    INCLUDE 'cvp_dellogic\CVP_delivery_Logic_system.wresl'
+    INCLUDE 'cvp_dellogic\CVP_delivery_Logic_south.wresl' 
+    INCLUDE 'swp_dellogic\conveyance_limits.wresl'
+    INCLUDE 'hydrology\demands\demands.wresl'
+    INCLUDE 'NorthofDelta\NOD.wresl'
+    INCLUDE 'Rulecurve\rulecurve.wresl'
+    INCLUDE 'Rulecurve\cvp_delivery_rule_curve.wresl'
+    INCLUDE 'Delta\Chips_days.wresl'
+
+    if int(Dynamic_SJR)==1  {
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc6.wresl'
+        INCLUDE '\sanjoaquin\SanJoaquinAddCyc6.wresl'
+    }
+
+    INCLUDE 'Rulecurve\San_Luis_Levels.wresl'
+    INCLUDE 'Export_Ops\export_ops.wresl'
+    INCLUDE 'Wheeling\WheelOpsVarDefines.wresl'
+	if int(PBwheel_ON)==1 {INCLUDE 'Wheeling\WheelD1485.wresl'}
+    INCLUDE 'Wheeling\WheelzeroCVC.wresl'
+    INCLUDE 'Wheeling\WheelzeroJPOD.wresl' 
+    INCLUDE 'COA\coa_Up.wresl'
+    INCLUDE 'Delta\Ann\ExportEstimate1_up.wresl'
+	if int(DCC_DLTSW)==3 {INCLUDE 'Delta\xc-gates_D1485_Up.wresl'}
+    INCLUDE 'Delta\Delta.wresl'
+    INCLUDE 'Delta\X2_BO_WQ.wresl'
+    INCLUDE 'B2Actions\BaseStudyResults.wresl' 
+    INCLUDE 'B2Actions\B2Action1Repeat.wresl'
+    INCLUDE 'Shortage\shortage.wresl'
+    INCLUDE 'System\Connectivity-table.wresl'
+    INCLUDE 'system\weight-table.wresl'
+}
+
+MODEL BASE {         !CYCLE 7
+
+    INCLUDE '\Assumptions\Options_Switches.wresl'
+    
+    if int(Dynamic_SJR)==0 { INCLUDE '\sanjoaquin\Timeseries_SJR_Setup.wresl' }     
+
+    if int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Dynamic_SJR_Setup_cyc6.wresl'    
+        INCLUDE '\sanjoaquin\Various\definitions\SJR_GWPumpingSplits.wresl'
+        INCLUDE '\Restoration\AprPartInflow.wresl'
+        INCLUDE '\System_SJR\System_SJR.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon1.wresl'
+    }
+
+    INCLUDE 'wytypes\wytypes.wresl'
+
+    if int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Various\definitions\SJR_ChannelSplits.wresl'
+!       INCLUDE '\sanjoaquin\Friant\SJRR_Rest_off.wresl'    
+        INCLUDE '\sanjoaquin\Friant\SJRR_Rest.wresl'                     !Turns on SJRR Operations
+        INCLUDE '\sanjoaquin\SanJoaquinCoreA.wresl'
+    }
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_dmd.wresl' 
+    } 
+
+    if int(Dynamic_SJR)==1 {    INCLUDE '\sanjoaquin\SanJoaquinCoreB.wresl'}
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems_StocktonDWSP.wresl' 
+    } 
+    elseif int(LOD_Future)==0 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems.wresl' 
+    }   
+
+    if int(Dynamic_SJR)==1 {    INCLUDE '\sanjoaquin\Delta\DWSP_arc_split.wresl' }
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\cosma_restrict.wresl' 
+    } 
+    elseif int(LOD_Future)==0 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_zeroset.wresl'
+    }   
+
+    if int(Dynamic_SJR)==1 {         
+        INCLUDE '\System_SJR\SystemTables_SJR\weight-table.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon2.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc1.wresl'
+
+        define REST_Q{
+            case REST_F {
+                condition REST_REQ == 1
+                value 99999999.0
+               }
+            case REST_I {
+                condition REST_REQ == 0
+                value  1300.
+               }               
+        }
+        
+        goal cap2B {C_SJRCB_main + C_SJRREST <REST_Q}   
+        goal cap3B {C_SJRREST-C_SJRSackBC + C607X < REST_Q}
+    
+    INCLUDE '\sanjoaquin\IntegratedOperations\SanLuisTransfers.wresl'
+    INCLUDE '\SanJoaquin\Delta\ZeroAOWater.wresl'
+    INCLUDE '\SanJoaquin\Delta\COSMA_restrict_c6_c7.wresl'
+!    INCLUDE '\sanjoaquin\Friant\SJR_Rest_Req_Off_Local.wresl'
+    INCLUDE '\sanjoaquin\Friant\SJR_Rest_Full.wresl'     !Turns on SJRR Operations
+    }
+
+
+    define getFinalMrdo {EXTERNAL f90}  ! OBJ code file must be located in run\external directory for compilation
+    INCLUDE  'Delta\DeltaExtFuncs_7inpANN.wresl'
+    INCLUDE  'swp_dellogic\allocation\co_extfcn.wresl'
+
+    INCLUDE 'System\System.wresl'
+    INCLUDE 'hydrology\forecast\CVPforecasts.wresl'
+!    INCLUDE 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+    INCLUDE 'Assumptions\assumption.wresl'
+    INCLUDE 'hydrology\demands\demands_defs.wresl'
+    INCLUDE 'swp_dellogic\SwpDeliveryLogic.wresl'
+    INCLUDE 'cvp_dellogic\CVP_delivery_Logic_system.wresl'
+    INCLUDE 'cvp_dellogic\CVP_delivery_Logic_south.wresl' 
+    INCLUDE 'swp_dellogic\conveyance_limits.wresl'
+    INCLUDE 'hydrology\demands\demands.wresl'
+    INCLUDE 'NorthofDelta\NOD.wresl'
+    INCLUDE 'Rulecurve\rulecurve.wresl'
+    INCLUDE 'Rulecurve\cvp_delivery_rule_curve.wresl'
+    INCLUDE 'Delta\Chips_days.wresl'
+
+    if int(Dynamic_SJR)==1  {
+        INCLUDE '\sanjoaquin\SanJoaquinAddCyc6.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc6.wresl'
+    }    
+
+    INCLUDE 'Rulecurve\San_Luis_Levels.wresl'
+    INCLUDE 'Export_Ops\export_ops.wresl'
+    INCLUDE 'Wheeling\WheelOpsVarDefines.wresl'
+    INCLUDE 'B2Actions\BaseStudyResults.wresl' 
+    INCLUDE 'B2Actions\B2Action1Repeat.wresl'
+    INCLUDE 'Shortage\shortage.wresl'
+    INCLUDE 'System\Connectivity-table.wresl'
+    INCLUDE 'system\weight-table.wresl'
+    INCLUDE'hydrology\WEIRS\weir_steps_monthops.wresl' 
+	if int(PBwheel_ON)==1 {INCLUDE 'Wheeling\WheelD1485.wresl'}
+    INCLUDE 'Wheeling\WheelzeroCVC.wresl'
+    INCLUDE 'Wheeling\WheelzeroJPOD.wresl' 
+    INCLUDE 'COA\coa.wresl'
+    INCLUDE 'Delta\Ann\ExportEstimate1.wresl'
+	if int(DCC_DLTSW)==3 {INCLUDE 'Delta\xc-gates.wresl'}
+    INCLUDE 'Delta\Delta.wresl'
+    INCLUDE 'Delta\X2_BO_WQ.wresl'
+}
+
+MODEL B2_BO_DailyWeir {         !CYCLE 8
+
+    INCLUDE '\Assumptions\Options_Switches.wresl'
+    
+    if int(Dynamic_SJR)==0 { INCLUDE '\sanjoaquin\Timeseries_SJR_Setup.wresl' }     
+
+    if int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Dynamic_SJR_Setup_cyc6.wresl'    
+        INCLUDE '\sanjoaquin\Various\definitions\SJR_GWPumpingSplits.wresl'
+        INCLUDE '\Restoration\AprPartInflow.wresl'
+        INCLUDE '\System_SJR\System_SJR.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon1.wresl'
+    }
+
+    INCLUDE 'wytypes\wytypes.wresl'
+
+    if int(Dynamic_SJR)==1 {   
+        INCLUDE '\sanjoaquin\Various\definitions\SJR_ChannelSplits.wresl'
+!        INCLUDE '\sanjoaquin\Friant\SJRR_Rest_off.wresl'       
+        INCLUDE '\sanjoaquin\Friant\SJRR_Rest.wresl'                     !Turns on SJRR Operations
+        INCLUDE '\sanjoaquin\SanJoaquinCoreA.wresl'
+    }
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_dmd.wresl' 
+    } 
+
+    if int(Dynamic_SJR)==1 {    INCLUDE '\sanjoaquin\SanJoaquinCoreB.wresl'}
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems_StocktonDWSP.wresl' 
+    } 
+    elseif int(LOD_Future)==0 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Calaveras\Calaveras_Dems.wresl' 
+    }   
+
+    if int(Dynamic_SJR)==1 {    INCLUDE '\sanjoaquin\Delta\DWSP_arc_split.wresl' }
+
+    if int(LOD_Future)==1 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\cosma_restrict.wresl' 
+    } 
+    elseif int(LOD_Future)==0 .and. int(Dynamic_SJR)==1 {
+        INCLUDE '\sanjoaquin\Delta\COSMA_zeroset.wresl'
+    }   
+
+    if int(Dynamic_SJR)==1 {      
+        INCLUDE '\System_SJR\SystemTables_SJR\weight-table.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCommon2.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc1.wresl'
+
+        define REST_Q{
+            case REST_F {
+                condition REST_REQ == 1
+                value 99999999.0
+               }
+            case REST_I {
+                condition REST_REQ == 0
+                value  1300.
+               }              
+        }
+        goal cap2B {C_SJRCB_main + C_SJRREST <REST_Q}   
+        goal cap3B {C_SJRREST-C_SJRSackBC + C607X < REST_Q}
+    
+        INCLUDE '\sanjoaquin\IntegratedOperations\SanLuisTransfers.wresl'
+        INCLUDE '\SanJoaquin\Delta\ZeroAOWater.wresl'
+        INCLUDE '\SanJoaquin\Delta\COSMA_restrict_c6_c7.wresl'
+!        INCLUDE '\sanjoaquin\Friant\SJR_Rest_Req_Off_Local.wresl'
+        INCLUDE '\sanjoaquin\Friant\SJR_Rest_Full.wresl'     !Turns on SJRR Operations
+    }
+
+    define getFinalMrdo {EXTERNAL f90}  ! OBJ code file must be located in run\external directory for compilation
+    INCLUDE  'Delta\DeltaExtFuncs_7inpANN.wresl'
+    INCLUDE  'swp_dellogic\allocation\co_extfcn.wresl'
+
+    INCLUDE 'System\System.wresl'
+    INCLUDE 'hydrology\forecast\CVPforecasts.wresl'
+    !INCLUDE 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+    INCLUDE 'Assumptions\assumption.wresl'
+    INCLUDE 'hydrology\demands\demands_defs.wresl'
+    INCLUDE 'swp_dellogic\SwpDeliveryLogic.wresl'
+    INCLUDE 'cvp_dellogic\CVP_delivery_Logic_system.wresl'
+    INCLUDE 'cvp_dellogic\CVP_delivery_Logic_south.wresl' 
+    INCLUDE 'swp_dellogic\conveyance_limits.wresl'
+    INCLUDE 'hydrology\demands\demands.wresl'
+    INCLUDE 'NorthofDelta\NOD.wresl'
+    INCLUDE 'Rulecurve\rulecurve.wresl'
+    INCLUDE 'Rulecurve\cvp_delivery_rule_curve.wresl'
+    INCLUDE 'Delta\Chips_days.wresl'
+
+    if int(Dynamic_SJR)==1  {
+        INCLUDE '\sanjoaquin\SanJoaquinAddCyc6.wresl'
+        INCLUDE '\sanjoaquin\IntegratedOperations\IntegratedOperationsCyc6.wresl'
+    }
+
+    INCLUDE 'Rulecurve\San_Luis_Levels.wresl'
+    INCLUDE 'Export_Ops\export_ops.wresl'
+    INCLUDE 'Wheeling\WheelOpsVarDefines.wresl'
+    INCLUDE 'B2Actions\BaseStudyResults.wresl' 
+    INCLUDE 'B2Actions\B2Action1Repeat.wresl'
+    INCLUDE 'Shortage\shortage.wresl'
+    INCLUDE 'System\Connectivity-table.wresl'
+    INCLUDE 'system\weight-table.wresl'
+
+    if int(Dynamic_SJR)==1  {
+        INCLUDE '\output\SJR_cycle_output.wresl'
+    }
+
+
+    INCLUDE'hydrology\WEIRS\weir_steps_dailyops_SETUP.wresl'  
+    INCLUDE'B2Actions\B2SetBaseline.wresl'                    
+    INCLUDE'B2Actions\B2ActionsDeltaRepeat.wresl'      
+    INCLUDE'B2Actions\B2BanksFix.wresl' 
+	if int(PBwheel_ON)==1 {INCLUDE 'Wheeling\WheelD1485.wresl'}
+    INCLUDE'Delta\Ann\ExportEstimate1_B2.wresl'
+    INCLUDE'Delta\Delta_reduced_calls.wresl'
+    INCLUDE'Delta\X2_BO_WQ.wresl'
+
+! BO Code
+    INCLUDE'Export_Ops\OMR\DELTA_RPA_init.wresl'
+    INCLUDE 'Export_Ops\FWS_SMELT_BO_FallX2check.wresl'
+    INCLUDE 'Export_Ops\NMFS_SALMON_BO_DCC.wresl'
+    INCLUDE 'Export_Ops\NMFS_SALMON_BO_Def.wresl'
+    INCLUDE 'Export_Ops\NMFS_SALMON_BO_SJR.wresl'
+    
+    INCLUDE'Export_Ops\OMR\FWS_SMELT_BO.wresl' 
+    INCLUDE'Export_Ops\OMR\EXP_constraint.wresl'
+    INCLUDE'Export_Ops\OMR\OMR_constraint.wresl'
+    INCLUDE'COA\coa_BO.wresl'
+
+    INCLUDE'Delta\xc-gates.wresl'                 
+    INCLUDE'Wheeling\Wheelcap.wresl'
+	
+	if int(PBwheel_ON)==1{INCLUDE 'Wheeling\wheelfixes_D1485.wresl'}
+	else{INCLUDE 'Wheeling\wheelfixes.wresl'}
+	
+    INCLUDE'output\cycle_output.wresl'
+    INCLUDE'Shortage\ShortWarning.wresl'
+    INCLUDE'FlowCriteria\FlowCriteria.wresl'
+
+    INCLUDE 'output\DV_ouput.wresl'
+}

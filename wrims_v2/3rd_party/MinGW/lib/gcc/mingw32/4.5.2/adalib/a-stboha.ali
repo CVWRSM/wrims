@@ -1,0 +1,63 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.strings.bounded.hash%b  a-stboha.adb	432b9389 NE OL SU GE
+W ada.strings.bounded%s	a-strbou.adb		a-strbou.ali
+W system%s		system.ads		system.ali
+W system.string_hash%s	s-strhas.adb		s-strhas.ali
+
+U ada.strings.bounded.hash%s  a-stboha.ads	3d275f08 BN NE OL PR GE
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+W ada.strings.bounded%s	a-strbou.adb		a-strbou.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-charac.ads		20070912115822 506ce725
+D a-chlat1.ads		20070912115822 e9ee6d0a
+D a-contai.ads		20070406091342 7b35f559
+D a-string.ads		20070406091342 87b4230b
+D a-strbou.ads		20090409150020 1d1962a8
+D a-stboha.ads		20070406091342 5b0bc8f9
+D a-stboha.adb		20090622122458 70c5f666
+D a-strmap.ads		20090409150020 5253a637
+D a-strsup.ads		20090409150020 9dd84fea
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-strhas.ads		20090623093900 68e5ad16
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 7|16r6 20r10 22r10 25r22 8|32r10 35r8 40r5
+X 4 a-contai.ads
+16K13*Containers 22e19 7|16w10 23r12 8|33r10 35r12
+19M9*Hash_Type 7|23r23 8|33r21 37r26
+X 5 a-string.ads
+16K13*Strings 35e16 7|20r14 22r14 25r26 8|32r14 40r9
+X 6 a-strbou.ads
+39K21*Bounded 896e24 7|20r22 22r22 25r34 8|32r22 40r17
+46k12*Generic_Bounded_Length 894e30 7|20r30
+50R12 Bounded_String 7|22r50[19] 8|32r50[7|19]
+67V16 To_String{string} 8|39r29[7|19]
+X 7 a-stboha.ads
+19K17 Bounded[6|46] 22r42 8|32r42 39r21
+22v30*Hash 6|39k21 7|22>36 25r42 8|32b30 40l25 40t29
+22r36 Key{6|50R12[19]} 8|32b36 39r40
+X 8 a-stboha.adb
+36V13 Hash_Fun[15|56]{4|19M9} 39r11
+X 12 system.ads
+37K9*System 8|30r6 36r29 12|197e11
+X 15 s-strhas.ads
+41K16*String_Hash 8|30w13 36r36 15|60e23
+56v13*Hash 8|36r48
+

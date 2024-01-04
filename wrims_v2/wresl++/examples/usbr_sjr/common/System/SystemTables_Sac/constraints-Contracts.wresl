@@ -1,0 +1,608 @@
+/*
+LIMIT DIVERSIONS TO CONTRACT-LIMIT AMOUNTS AND CHANNEL CAPACITY CONSTRAINTS
+
+NAMING TAKES THE FOLLOWING FORMS:
+CL_{ORIGIN PREFIX}_{DESTINATION}	- limitation on specific contractors extraction from general source
+
+
+ Original formulation: jtpayne  August 2006
+*/
+! define CVP allocations 
+define perdv_cvpag_sys {std kind 'percent-delivery' units 'none'}
+define perdv_cvpmi_sys {std kind 'percent-delivery' units 'none'}
+define perdv_cvpex_sys {std kind 'percent-delivery' units 'none'}
+define perdv_cvpsc_sys {std kind 'percent-delivery' units 'none'}
+define perdv_cvprf_sys {std kind 'percent-delivery' units 'none'}
+
+! define Orland Unit allocations - near Stony Creek
+define alloc_ouwua_ndv {std kind 'percent-delivery' units 'none'}
+define alloc_ouwua_sdv {std kind 'percent-delivery' units 'none'}
+
+! define YCWA Member Unit allocations
+define alloc_YCWAMU_dv {std kind 'percent-delivery' units 'none'}
+
+! define Solano ID allocations
+define alloc_SID_dv    {std kind 'percent-delivery' units 'none'}
+
+! define SWP allocations 
+!define perdv_swp_ag    {std kind 'percent-delivery' units 'none'}
+!define perdv_swp_mwd   {std kind 'percent-delivery' units 'none'}
+!define perdv_swp_oth   {std kind 'percent-delivery' units 'none'}
+define perdv_swp_fsc   {std kind 'percent-delivery' units 'none'}
+define perdv_swp_oth1 {std kind 'PERCENT-DELIVERY' units 'none'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 1		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	WR_CWD032_1_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_CWD032_1_NA		{D_CWD032_1_NA	< WR_CWD032_1_NA}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 2		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal limitD_WKYTN_2_PA		{D_WKYTN_2_PA	 < CLM_WKYTN_2_PA *taf_cfs* perdv_cvpag_sys}
+
+goal limitD_WKYTN_WTPCSD	{D_WKYTN_WTPCSD	 < CLM_WTPCSD_2_PU *taf_cfs* perdv_cvpmi_sys + WRM_WTPCSD_2_PU*taf_cfs}
+
+goal limitD_WKYTN_2_PU		{D_WKYTN_2_PU < CLM_WKYTN_2_PU *taf_cfs* perdv_cvpmi_sys}
+
+define	WR_SAC296_2_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC296_2_SA		{D_SAC296_2_SA	 < CLM_SAC296_2_SA*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC296_2_SA}
+
+define	WR_CWD009_2_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CWD009_2_NA		{D_CWD009_2_NA	 < WR_CWD009_2_NA}
+
+define	WR_CLR009_2_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CLR009_2_NA		{D_CLR009_2_NA	 < WR_CLR009_2_NA}
+
+define	WR_WTPFTH_2_SU		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_WTPFTH_2_SU	{D_WTPFTH_2_SU < CLM_WTPFTH_2_SU*taf_cfs*perdv_cvpsc_sys + 1.0*WR_WTPFTH_2_SU}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 3		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal limitD_SHSTA_WTPJMS	{D_SHSTA_WTPJMS   < CLM_SHSTA_3_PU1 *taf_cfs* perdv_cvpmi_sys}
+
+!define	CL_WTPFTH_3_SU		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_WTPFTH_3_SU		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_WTPFTH_3_SU	{D_WTPFTH_3_SU < CLM_WTPFTH_3_SU*taf_cfs*perdv_cvpsc_sys + 1.0*WR_WTPFTH_3_SU}
+
+!define	CL_SAC294_3_PU2		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC294_3_PU2	{D_SAC294_3_PU2  < CLM_SAC294_3_PU2 *taf_cfs* perdv_cvpmi_sys}
+
+goal limitD_WKYTN_WTPBUK	{D_WKYTN_WTPBUK	 < CLM_WTPBUK_3_PU3 *taf_cfs* perdv_cvpmi_sys}
+
+!define	CL_SAC294_3_PA		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC294_3_PA		{D_SAC294_3_PA	< CLM_SAC294_3_PA *taf_cfs* perdv_cvpag_sys }
+
+!define	CL_SAC289_3_SA		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_SAC289_3_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC289_3_SA		{D_SAC289_3_SA	< CLM_SAC289_3_SA*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC289_3_SA}
+
+define	WR_BTL006_3_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BTL006_3_NA		{D_BTL006_3_NA	< WR_BTL006_3_NA}
+
+define	WR_COW014_3_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_COW014_3_NA		{D_COW014_3_NA	< WR_COW014_3_NA}
+
+define	WR_BCN005_3_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BCN005_3_NA		{D_BCN005_3_NA	< WR_BCN005_3_NA}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 4		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_CCL005_4_PA1		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CCL005_4_PA1	{D_CCL005_4_PA1	< CLM_CCL005_4_PA1 *taf_cfs* perdv_cvpag_sys}
+
+!define	CL_TCC022_4_PA2		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_TCC022_4_PA2	{D_TCC022_4_PA2	< CLM_TCC022_4_PA2 *taf_cfs* perdv_cvpag_sys}
+
+define	WR_ELD012_4_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_ELD012_4_NA		{D_ELD012_4_NA	< WR_ELD012_4_NA}
+
+define	WR_THM012_4_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_THM012_4_NA		{D_THM012_4_NA	< WR_THM012_4_NA}
+
+!define	WR_SAC224_4_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC224_4_NA		{D_SAC224_4_NA	< WRM_SAC224_4_NA*taf_cfs}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 5		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define	WR_ANT010_5_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_ANT010_5_NA		{D_ANT010_5_NA	< WR_ANT010_5_NA}
+
+define	WR_MLC006_5_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_MLC006_5_NA		{D_MLC006_5_NA	< WR_MLC006_5_NA}
+
+define	WR_DRC010_5_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_DRC010_5_NA		{D_DRC010_5_NA	< WR_DRC010_5_NA}
+
+!define	WR_SAC240_5_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC240_5_NA		{D_SAC240_5_NA	< WRM_SAC240_5_NA*taf_cfs}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 6		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_STN026_6_PA		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_STN026_6_PA		{D_STN026_6_PA	< CLM_STN026_6_PA *taf_cfs* alloc_ouwua_sdv}
+
+!define	CL_STN021_6_PA		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_STN021_6_PA		{D_STN021_6_PA	< CLM_STN021_6_PA *taf_cfs* alloc_ouwua_ndv}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 7-North		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_TCC036_7N_PA		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_TCC036_7N_PA	{D_TCC036_7N_PA	< CLM_TCC036_7N_PA *taf_cfs* perdv_cvpag_sys}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 7-South		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_TCC081_7S_PA		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_TCC081_7S_PA	{D_TCC081_7S_PA	< CLM_TCC081_7S_PA *taf_cfs* perdv_cvpag_sys}
+goal limitD_TCC111_7S_PA	{D_TCC111_7S_PA	< CLM_TCC111_7S_PA *taf_cfs* perdv_cvpag_sys}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8-North		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_SAC178_8N_SA1	{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_SAC178_8N_SA1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC178_8N_SA1	{D_SAC178_8N_SA1 < CLM_SAC178_8N_SA1*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC178_8N_SA1}
+
+define	WR_SAC159_8N_SA1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC159_8N_SA1	{D_SAC159_8N_SA1 < CLM_SAC159_8N_SA1*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC159_8N_SA1}
+
+define	WR_CBD049_8N_PA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CBD049_8N_PA	{D_CBD049_8N_PA < WR_CBD049_8N_PA}
+
+define	WR_CBD049_8N_SA1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CBD049_8N_SA1	{D_CBD049_8N_SA1 < WR_CBD049_8N_SA1}
+
+!define	CL_GCC027_8N_SA2	{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_GCC027_8N_SA2	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_GCC027_8N_SA2	{D_GCC027_8N_SA2 < CLM_GCC027_8N_SA2*taf_cfs*perdv_cvpsc_sys + 1.0*WR_GCC027_8N_SA2}
+
+!define	CL_GCC027_8N_PR1	{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_GCC027_8N_PR1	{D_GCC027_8N_PR1 < CLM_GCC027_8N_PR1 *taf_cfs* perdv_cvprf_sys}
+
+goal limitD_GCC039_8N_PR2	{D_GCC039_8N_PR2 < CLM_GCC039_8N_PR2 *taf_cfs* perdv_cvprf_sys}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8-South		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_SAC159_8S_SA1	{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_SAC159_8S_SA1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC159_8S_SA1	{D_SAC159_8S_SA1 < CLM_SAC159_8S_SA1*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC159_8S_SA1}
+
+define	WR_CBD041_8S_SA1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CBD041_8S_SA1	{D_CBD041_8S_SA1 < WR_CBD041_8S_SA1}
+
+define	WR_CBD041_8S_SA2	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CBD041_8S_SA2	{D_CBD041_8S_SA2 < WR_CBD041_8S_SA2}
+
+!define	CL_GCC046_8S_SA2	{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_GCC046_8S_SA2	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_GCC046_8S_SA2	{D_GCC046_8S_SA2 < CLM_GCC046_8S_SA2*taf_cfs*perdv_cvpsc_sys + 1.0*WR_GCC046_8S_SA2}
+
+!define	CL_SAC121_8S_SA3	{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_SAC121_8S_SA3	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC121_8S_SA3	{D_SAC121_8S_SA3 < CLM_SAC121_8S_SA3*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC121_8S_SA3}
+
+define	WR_SAC109_8S_SA3	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC109_8S_SA3	{D_SAC109_8S_SA3 < CLM_SAC109_8S_SA3*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC109_8S_SA3}
+
+!define	CL_GCC046_8S_PR		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_GCC046_8S_PR	{D_GCC046_8S_PR  < CLM_GCC046_8S_PR *taf_cfs* perdv_cvprf_sys}
+
+!define	CL_CBD037_8S_PR		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CBD037_8S_PR	{D_CBD037_8S_PR  < CLM_CBD037_8S_PR *taf_cfs* perdv_cvprf_sys }
+
+define	WR_CBD028_8S_PA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CBD028_8S_PA	{D_CBD028_8S_PA  < WR_CBD028_8S_PA}
+
+! Limit diversions to GCID at Hamilton City to meet contract requirements
+
+define sacramento_lp 		{SELECT sacramento FROM refuge WHERE type=2 }
+define delevan_lp    		{SELECT delevan FROM refuge WHERE type=2 }
+define WestSacRfgDelTar		{value CLM_GCC027_8N_PR1 *taf_cfs* (1.0 + sacramento_lp) + CLM_GCC039_8N_PR2 *taf_cfs* (1.0 + delevan_lp) + CLM_GCC046_8S_PR *taf_cfs* (1.0 + delevan_lp)}
+
+goal limitD_SAC207_GCC007	{D_SAC207_GCC007 + D_TCC062_GCC036 + D_TCC085_GCC056 < CLM_GCC027_8N_SA2*taf_cfs*perdv_cvpsc_sys + CLM_GCC046_8S_SA2*taf_cfs*perdv_cvpsc_sys 
+					+ WR_GCC027_8N_SA2 + WR_GCC046_8S_SA2
+					+ WestSacRfgDelTar * perdv_cvprf_sys}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 9		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_SAC196_9_SA1		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_SAC196_9_SA1		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC196_9_SA1	{D_SAC196_9_SA1	< CLM_SAC196_9_SA1*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC196_9_SA1}
+
+!define	CL_SAC162_9_SA2		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define	WR_SAC162_9_SA2		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC162_9_SA2	{D_SAC162_9_SA2	< CLM_SAC162_9_SA2*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC162_9_SA2}
+
+define	WR_ESL008_9_SA1		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_ESL008_9_SA1	{D_ESL008_9_SA1	< WR_ESL008_9_SA1}
+
+define	WR_BTC012_9_SA2		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BTC012_9_SA2	{D_BTC012_9_SA2	< WR_BTC012_9_SA2}
+
+goal limitD_SAC196_9_PR		{D_SAC196_9_PR	< CLM_SAC196_9_PR *taf_cfs* perdv_cvprf_sys}
+
+define	WR_SAC196_9_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC196_9_NA		{D_SAC196_9_NA	< WR_SAC196_9_NA}
+
+!define	WR_LCC024_9_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_LCC024_9_NA		{D_LCC024_9_NA	< WRM_LCC024_9_NA*taf_cfs}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 10		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define	WR_BTC043_10_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BTC043_10_NA	{D_BTC043_10_NA	< WR_BTC043_10_NA}
+
+define	WR_BTC036_10_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BTC036_10_NA	{D_BTC036_10_NA	< WR_BTC036_10_NA}
+
+define	CL_MIO023_10_NA		{timeseries kind 'PGE-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_MIO023_10_NA	{D_MIO023_10_NA	< CL_MIO023_10_NA}
+
+!define	WR_WBF030_TTC011 	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_WBF030_TTC011	{D_WBF030_TTC011 < WR_WBF030_TTC011}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 11		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! delivery SWP NOD M&I Longterm Contractors (see WBA 16 for Yuba City)
+! Butte County has a Table A amount of 27.5 TAF. The county acts as a wholesaler to other entities
+define CL_ButteC        	{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+define CL_ButteC_11_NU1 	{std kind 'CONTRACT-SPLIT' units 'CFS'} ! units changed from 'FRACTION' to 'CFS' AFO
+define CL_ButteC_12_NU1  	{std kind 'CONTRACT-SPLIT' units 'CFS'} ! units changed from 'FRACTION' to 'CFS' AFO
+
+goal limit_ButteC    	        {CL_ButteC_11_NU1 + CL_ButteC_12_NU1 = perdv_swp_oth1*CL_ButteC}
+
+!define	CL_WEC000_11_SA1	{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!define	WR_WEC000_11_SA1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_WEC000_11_SA1       {D_WEC000_11_SA1  < perdv_swp_fsc*CLM_WEC000_11_SA1*taf_cfs + 1.0*WRM_WEC000_11_SA1*taf_cfs}
+
+!define	CL_JBC004_11_SA3	{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!define	WR_JBC004_11_SA3	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_JBC004_11_SA3       {D_JBC004_11_SA3  < perdv_swp_fsc*CLM_JBC004_11_SA3*taf_cfs + 1.0*WRM_JBC004_11_SA3*taf_cfs}
+
+!define	CL_RVC005_11_SA2	{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_RVC005_11_SA2       {D_RVC005_11_SA2  < perdv_swp_fsc*CLM_RVC005_11_SA2*taf_cfs + 1.0*WRM_RVC005_11_SA2*taf_cfs}
+
+!define	WR_LDC007_11_SA2	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_LDC007_11_SA2       {D_LDC007_11_SA2  < 1.0*WRM_LDC007_11_SA2*taf_cfs}
+
+!define	CL_FTR039_11_SA2	{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SEC009_11_SA4       {D_SEC009_11_SA4  < perdv_swp_fsc*CLM_FTR039_11_SA4*taf_cfs + perdv_swp_fsc*CLM_C_JBC008*taf_cfs + 1.0*WRM_C_JBC008*taf_cfs}
+
+define	WR_PCL000_11_NU1 	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'} 
+goal limitD_PCL000_11_NU1       {D_PCL000_11_NU1  < 1.0*WR_PCL000_11_NU1 + CL_ButteC_11_NU1}
+
+define	WR_DWRPS2_11_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_DWRPS2_11_NA	{D_DWRPS2_11_NA	< WR_DWRPS2_11_NA}
+
+goal limitD_WEC000_11_PR	{D_WEC000_11_PR	< CLM_WEC000_11_PR *taf_cfs* perdv_cvprf_sys}
+goal limitD_RVC005_11_PR	{D_RVC005_11_PR	< CLM_RVC005_11_PR *taf_cfs* perdv_cvprf_sys}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 12		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define	CL_MIO023_12_NU1 	{timeseries kind 'PGE-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_MIO023_12_NU1	{D_MIO023_12_NU1 < CL_MIO023_12_NU1}
+
+!define	WR_FTR059_12_NU1		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_FTR059_12_NU1       {D_FTR059_12_NU1 < WR_FTR059_12_NU1 + CL_ButteC_12_NU1}
+
+define	WR_FTR059_12_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR059_12_SA	{D_FTR059_12_SA	< WR_FTR059_12_SA}
+
+define	WR_RFS13_12_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_RFS13_12_NA		{D_RFS13_12_NA	< WR_RFS13_12_NA}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 13		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_OROVL_OWC000		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_OROVL_OWC000        {D_OROVL_OWC000  < CLM_OROVL_OWC000*taf_cfs}
+
+define	WR_OWC000_13_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_OWC000_13_NA        {D_OWC000_13_NA  < WR_OWC000_13_NA}
+
+define	WR_MNRRH_13_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_MNRRH_13_NA         {D_MNRRH_13_NA  < WR_MNRRH_13_NA}
+
+define	WR_MNRRH_13_NU2		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_MNRRH_13_NU2         {D_MNRRH_13_NU2  < WR_MNRRH_13_NU2}
+
+define	WR_MNRRH_WTPMNR		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_MNRRH_WTPMNR	{D_MNRRH_WTPMNR	 < WR_MNRRH_WTPMNR}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 14		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define	WR_FDC006_14_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FDC006_14_NA	{D_FDC006_14_NA < WR_FDC006_14_NA}
+
+!define ERROR1P  {std kind 'Error-TERM' units 'CFS'}
+!define ERROR2P  {std kind 'Error-TERM' units 'CFS'}
+!define ERROR3P  {std kind 'Error-TERM' units 'CFS'}
+!define ERROR4P  {std kind 'Error-TERM' units 'CFS'}
+!define ERROR1N  {std kind 'Error-TERM' units 'CFS'}
+!define ERROR2N  {std kind 'Error-TERM' units 'CFS'}
+!define ERROR3N  {std kind 'Error-TERM' units 'CFS'}
+!define ERROR4N  {std kind 'Error-TERM' units 'CFS'}
+
+
+
+
+define	WR_YUB013_14_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_YUB013_14_NA	{D_YUB013_14_NA - YCWA_Alloc*demand_D230*0.34=ERROR1P-ERROR1N}
+goal limitD_YUB013_14_NA	{D_YUB013_14_NA < 1.0*WR_YUB013_14_NA+YCWA_Alloc*CLM_YUB013_14_NA*taf_cfs}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 15-North	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define	WR_YUB011_15N_NA2 	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_YUB011_15N_NA2	{D_YUB011_15N_NA2 - YCWA_Alloc*demand_D230*0.29=ERROR2P-ERROR2N}
+goal limitD_YUB011_15N_NA2	{D_YUB011_15N_NA2 < 1.0*WR_YUB011_15N_NA2+YCWA_Alloc*CLM_YUB011_15N_NA2*taf_cfs}
+
+define	WR_YUB003_15N_NU  	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_YUB003_15N_NU	{D_YUB003_15N_NU - YCWA_Alloc*demand_D230*0.05=ERROR3P-ERROR3N}
+goal limitD_YUB003_15N_NU	{D_YUB003_15N_NU < 1.0*WR_YUB003_15N_NU+YCWA_Alloc*CLM_YUB003_15N_NU*taf_cfs}
+
+define	WR_FTR045_15N_SA  	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR045_15N_SA	{D_FTR045_15N_SA < WR_FTR045_15N_SA}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 15-South	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define	WR_YUB011_15S_NA2 	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_YUB011_15S_NA2	{D_YUB011_15S_NA2 - YCWA_Alloc*demand_D230*0.32=ERROR4P-ERROR4N}
+goal limitD_YUB011_15S_NA2	{D_YUB011_15S_NA2 < 1.0*WR_YUB011_15S_NA2+YCWA_Alloc*CLM_YUB011_15S_NA2*taf_cfs}
+
+!define	CL_FTR018_15S_SA 	{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!define	WR_FTR018_15S_SA 	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR018_15S_SA       {D_FTR018_15S_SA < perdv_swp_fsc*CLM_FTR018_15S_SA*taf_cfs + 1.0*WRM_FTR018_15S_SA*taf_cfs}
+
+!define	WR_FTR028_15S_SA  	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR028_15S_SA	{D_FTR028_15S_SA < WRM_FTR028_15S_SA*taf_cfs}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 16		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_FTR021_16_PA		{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR021_16_PA	{D_FTR021_16_PA < CLM_FTR021_16_PA *taf_cfs* perdv_cvpag_sys}
+
+!define	CL_FTR014_16_SA		{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!define	WR_FTR014_16_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR014_16_SA       	{D_FTR014_16_SA < perdv_swp_fsc*CLM_FTR014_16_SA*taf_cfs + 1.0*WRM_FTR014_16_SA*taf_cfs}
+
+!define	CL_FTR018_16_SA		{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!define	WR_FTR018_16_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR018_16_SA       	{D_FTR018_16_SA < perdv_swp_fsc*CLM_FTR018_16_SA*taf_cfs + 1.0*WRM_FTR018_16_SA*taf_cfs}
+
+goal limitD_FTR021_16_SA       	{D_FTR021_16_SA < perdv_swp_fsc*CLM_FTR021_16_SA*taf_cfs}
+
+!define	WR_FTR008_16_SA  	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR008_16_SA	{D_FTR008_16_SA < WRM_FTR008_16_SA*taf_cfs}
+
+define	WR_DWRPS2_16_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_DWRPS2_16_SA	{D_DWRPS2_16_SA < WR_DWRPS2_16_SA}
+
+!define	CL_WTPCYC_16_PU		{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'} ! Yuba City
+goal limitD_WTPCYC_16_PU        {D_WTPCYC_16_PU  < perdv_swp_oth1*CLM_WTPCYC_16_PU}
+
+define 	WR_DWRPS1_16_NA2		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_DWRPS1_16_NA2	{D_DWRPS1_16_NA2	 < WR_DWRPS1_16_NA2}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 17-North	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define	CL_JBC002_17N_PR	{timeseries kind 'SWP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_JBC002_17N_PR	{D_JBC002_17N_PR < CLM_JBC002_17N_PR}
+
+define	WR_BGD000_17N_PR	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BGD000_17N_PR	{D_BGD000_17N_PR < WR_BGD000_17N_PR}
+
+define	WR_CRK005_17N_NR	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CRK005_17N_NR	{D_CRK005_17N_NR < WR_CRK005_17N_NR}
+
+!define	WR_BTC012_17N_NR	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_BTC012_17N_NR	{D_BTC012_17N_NR < WR_BTC012_17N_NR}
+
+define	WR_WEC000_BTC032	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_WEC000_BTC032	{D_WEC000_BTC032 < WR_WEC000_BTC032}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 17-South	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define WR_SBP028_17S_PR		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SBP028_17S_PR	{D_SBP028_17S_PR  < WR_SBP028_17S_PR}
+
+define WR_SBP014_17S_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SBP014_17S_NA	{D_SBP014_17S_NA < WR_SBP014_17S_NA}
+
+define	WR_FTR003_17S_SA  	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR003_17S_SA	{D_FTR003_17S_SA < WR_FTR003_17S_SA}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 18		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define WR_BSL001_18_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BSL001_18_NA	{D_BSL001_18_NA	< WR_BSL001_18_NA}
+
+define WR_SBP031_18_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SBP031_18_NA	{D_SBP031_18_NA	< WR_SBP031_18_NA}
+
+define WR_SAC141_18_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC141_18_SA	{D_SAC141_18_SA	< CLM_SAC141_18_SA*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC141_18_SA}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 19		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define WR_SAC122_19_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC122_19_SA	{D_SAC122_19_SA	< CLM_SAC122_19_SA*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC122_19_SA}
+
+define WR_SAC115_19_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC115_19_SA	{D_SAC115_19_SA	< CLM_SAC115_19_SA*taf_cfs*perdv_cvpsc_sys +1.0*WR_SAC115_19_SA}
+
+define WR_SAC099_19_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC099_19_SA	{D_SAC099_19_SA	< CLM_SAC099_19_SA*taf_cfs*perdv_cvpsc_sys +1.0*WR_SAC099_19_SA}
+
+define WR_SAC091_19_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC091_19_SA	{D_SAC091_19_SA	< CLM_SAC091_19_SA*taf_cfs*perdv_cvpsc_sys +1.0*WR_SAC091_19_SA}
+
+!define WR_SAC097_19_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_SAC097_19_NA	{D_SAC097_19_NA	< WR_SAC097_19_NA}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 20		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define WR_CCH052_20_NA1		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CCH052_20_NA1	{D_CCH052_20_NA1 < WR_CCH052_20_NA1}
+
+define WR_CCH030_20_NA1		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CCH030_20_NA1	{D_CCH030_20_NA1 < WR_CCH030_20_NA1}
+
+define WR_PSC003_20_PA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_PSC003_20_PA	{D_PSC003_20_PA < WR_PSC003_20_PA}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 21		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define WR_SAC083_21_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC083_21_SA	{D_SAC083_21_SA	< CLM_SAC083_21_SA*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC083_21_SA}
+
+define WR_SAC074_21_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC074_21_SA	{D_SAC074_21_SA	< CLM_SAC074_21_SA*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC074_21_SA}
+
+define WR_YBP023_21_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_YBP023_21_SA	{D_YBP023_21_SA	< WR_YBP023_21_SA * perdv_cvpsc_sys}
+
+!define WR_CCH003_21_SA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_CCH003_21_SA	{D_CCH003_21_SA	< WR_CCH003_21_SA}
+
+define WR_SAC065_21_PU		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC065_21_PU	{D_SAC065_WTPBTB	< WR_SAC065_21_PU}
+
+define WR_KLR005_21_PA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_KLR005_21_PA	{D_KLR005_21_PA < WR_KLR005_21_PA}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 22		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define WR_CRC002_22_SA1		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CRC002_22_SA1	{D_CRC002_22_SA1	< WR_CRC002_22_SA1}
+
+define WR_FTR008_22_SA2		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FTR008_22_SA2	{D_FTR008_22_SA2	< WR_FTR008_22_SA2}
+
+define WR_SAC082_22_SA1		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC082_22_SA1	{D_SAC082_22_SA1	< CLM_SAC082_22_SA1*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC082_22_SA1}
+
+define WR_SAC078_22_SA1		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_SAC078_22_SA1	{D_SAC078_22_SA1	< CLM_SAC078_22_SA1*taf_cfs*perdv_cvpsc_sys + 1.0*WR_SAC078_22_SA1}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 23		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define	WR_BRR017_23_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BRR017_23_NA	{D_BRR017_23_NA	< WR_BRR017_23_NA}
+/*
+define	WR_BRR016_23_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_BRR016_23_NA	{D_BRR016_23_NA	< WR_BRR016_23_NA}
+*/
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 24		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! define  WR_ABN060_24_NA1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+! goal limitD_ABN060_24_NA1	{D_ABN060_24_NA1 < WR_ABN060_24_NA1}
+
+define  WR_ABN024_24_NA1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_ABN024_24_NA1	{D_ABN024_24_NA1 < WR_ABN024_24_NA1}
+
+define  WR_ABN010_24_NA2	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_ABN010_24_NA2	{D_ABN010_24_NA2 < WR_ABN010_24_NA2}
+
+define  WR_STH004_24_NA3	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_STH004_24_NA3	{D_STH004_24_NA3 < WR_STH004_24_NA3}
+
+define  WR_LBC049_24_NA3	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_LBC049_24_NA3	{D_LBC049_24_NA3 < WR_LBC049_24_NA3}
+
+!define  WR_STH004_24_NU2	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_STH004_WTPFSS	{D_STH004_WTPFSS < WR_STH004_24_NU2}
+
+!define  WR_AMRPS_24_NU2		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_AMRPS_WTPFSS	{D_AMRPS_WTPFSS  < WR_AMRPS_24_NU2}
+
+define  CL_SAC075_24_NU2	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_WTPSRW_24_NU2	{D_WTPSRW_24_NU2 < CL_SAC075_24_NU2}
+
+!define  WR_BEC022_24_NU1	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_BEC022_WTPBWM	{D_BEC022_WTPBWM < WR_BEC022_24_NU1}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 25		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal limitD_PSC003_25_PA1	{D_PSC003_25_PA1	< CLM_PSC003_25_PA1 *taf_cfs* 1.0}
+goal limitD_PSC006_25_PA2	{D_PSC006_25_PA2	< CLM_PSC006_25_PA2 *taf_cfs* 1.0}
+
+!define WR_PTH024_25_PA2	{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+!goal limitD_PTH024_25_PA2	{D_PSC006_25_PA2 < CLM_PSC006_25_PA2 *taf_cfs* perdv_cvpag_sys}
+
+define WR_RFS25_25_PA2		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_RFS25_25_PA2	{D_RFS25_25_PA2 < WR_RFS25_25_PA2}
+
+define WR_CSL005_25_NA		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_CSL005_25_NA	{D_CSL005_25_NA < WR_CSL005_25_NA}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 26		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Diversion constraints for WBA 26 are in WaterForum.wresl
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60N		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Diversion constraints for 60N_NU2 (SMUD) are in WaterForum.wresl
+define  CL_FSC015_60N_NA2	{timeseries kind 'CVP-CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_FSC015_60N_NA2	{D_FSC015_60N_NA2 = 0.0} ! < CL_FSC015_60N_NA2 * perdv_cvpag_sys}
+
+define  WR_EBA100_EBMUD		{timeseries kind 'CONTRACT-LIMIT' units 'TAF' convert 'CFS'}
+goal limitD_EBA100_EBMUD 	{D_EBA100_EBMUD < WR_EBA100_EBMUD}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! NBA		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!goal limitD_BRK004_NBA_N	{D_BRK004_NBA_N < CL_BRK004_NBA_N*perdv_swp_oth}
+
+!goal limitD_BRK004_NBA_S	{D_BRK004_NBA_S < CL_BRK004_NBA_S*perdv_swp_oth}
+
+! This is not a contract amount but is included here
+define NBA_Losses		{timeseries kind 'SEEPAGE' units 'TAF' convert 'CFS'}
+goal limitD_BRK004_NBA_PLS	{D_BRK004_NBA_PLS < NBA_Losses}
+

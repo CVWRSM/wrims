@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>main</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+<FONT FACE="Times New Roman">
+<B><U><FONT SIZE=4><P>The Main WRESL File</P></B></U></FONT>
+<P>The main WRESL file should simply contain <b>Include</b> statements pointing to the location of the system and other files that contain statements to be modeled in the current run. The name of this file should be descriptive of the current model as an executable file of the same name will be produced. For each <b>Sequence</b> statement, there must be exactly one <b>Model</b> statement.  For the most basic system the main WRESL file contains the following statements.</P></FONT>
+<pre>
+<b>sequence</b> <i>CycleOne</i> {
+         <b>model</b>    <i>mod1</i>
+         <b>order</b>    1
+}
+
+<b>model</b> <i>mod1</i> {
+      <b>include</b> 'system\system.wresl'
+       }
+<P></P>
+</pre>
+<FONT FACE="Times New Roman"><P><B><U>Example:</U></B></P></FONT>
+<pre>
+sequence CYCLE1 {
+         model       SJRBASE
+         order       1
+}
+
+sequence Cycle2 {
+         model       SJR_WQ1
+         order       2
+}
+
+sequence CYCLE3 {
+         model       SJR_PULSE
+         condition   month==APR .or. month==MAY
+         order       3
+}
+
+model SJRBASE {     !CYCLE 1
+      include 'wytypes\wytypes.wresl'
+      include 'System\System_SJR.wresl'
+      include 'hydrology\forecast\forecast.wresl'
+      include 'cvp_dellogic\cvp_dellogic_sys\cvp_dellogic_sys_cycle1.wresl'
+      include 'cvp_dellogic\cvp_dellogic_s\cvp_dellogic_s_cycle1.wresl'
+      include 'sanjoaquin\Various\definitions\SJR_arc_split.wresl'
+      include 'sanjoaquin\Various\definitions\SJR_aggreg.wresl'
+      include 'sanjoaquin\Various\definitions\previous_wyt_SJR.wresl'
+      include 'sanjoaquin\ProjectDemands\ProjectDemands.wresl'
+      include 'sanjoaquin\ReturnFlows\MudSaltBase.wresl'
+      include 'sanjoaquin\ReturnFlows\WestSideAnnual.wresl'
+      include 'sanjoaquin\ReturnFlows\WestSideReturns.wresl'
+      include 'sanjoaquin\ReturnFlows\MendotaPoolReturns.wresl'
+      include 'sanjoaquin\ReturnFlows\SJRreturns.wresl'
+      include [local] 'sanjoaquin\various\bounds_cycles\bounds_cycle1.wresl'
+      include 'System\SystemTables_SJR\weight-table.wresl'
+}
+
+model SJR_WQ1 {     !CYCLE 2
+      include [local] 'sanjoaquin\various\SetWSReturns\SetWSRetcycle1thru5.wresl' !fixing return flows into SJR by fixing associated deliveries
+      include [local]  'sanjoaquin\WaterQuality\Vernalis_WQmin.wresl'
+      include [local]  'sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+      include [local]  'sanjoaquin\various\bounds_cycles\bounds_cycle2.wresl'
+}
+
+model SJR_PULSE {   !CYCLE 3
+      include [local] 'sanjoaquin\various\SetWSReturns\SetWSRetcycle1thru5.wresl' !fixing return flows into SJR by fixing associated deliveries
+      include [local] 'sanjoaquin\Stanislaus\stan_FW_pulse.wresl'
+      include [local] 'sanjoaquin\Tuolumne\tuol_FERC_pulse.wresl'
+      include [local] 'sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+      include [local] 'sanjoaquin\various\bounds_cycles\bounds_cycle3.wresl'         
+}
+</pre>
+</FONT>
+</BODY>
+</HTML>

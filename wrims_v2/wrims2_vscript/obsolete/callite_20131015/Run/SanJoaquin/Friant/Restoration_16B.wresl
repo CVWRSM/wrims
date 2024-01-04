@@ -1,0 +1,7 @@
+define D_FKCNL_16B_A {std kind 'flow-delivery' units 'cfs'}
+define D_FKCNL_16B_F {std kind 'flow-delivery' units 'cfs'}
+define D_MDRCNL_16B_A {std kind 'flow-delivery' units 'cfs'}
+define D_MDRCNL_16B_F {std kind 'flow-delivery' units 'cfs'}
+
+goal split_D_FKCNL_16B {D_FKCNL_16B = D_FKCNL_16B_A + D_FKCNL_16B_F}
+goal split_D_MDRCNL_16B {D_MDRCNL_16B = D_MDRCNL_16B_A + D_MDRCNL_16B_F}

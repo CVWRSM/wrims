@@ -1,0 +1,7 @@
+define C1 {lower 0 upper 50000 kind 'FLOW-CHANNEL' units 'CFS'} !Shasta Release
+define C1_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C1_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C1total {C1=C1_MIF+C1_EXC}
+define C2 {lower 0 upper 80000 kind 'FLOW-CHANNEL' units 'CFS'} !Sac Flow Below Red Bluff
+define C3 {lower 0 upper 80000 kind 'FLOW-CHANNEL' units 'CFS'} !Sac Flow Below Colusa
+define C4 {lower 0 upper 80000 kind 'FLOW-CHANNEL' units 'CFS'} !Sac Flow Below Verona

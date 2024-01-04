@@ -1,0 +1,79 @@
+! TransferOps_Bounds.wresl
+
+!******************************************************************************
+! This section sets bounds on key water transfer variables
+! This code is the complement of the corresponding goals in the TransfersPreOps.wresl file
+
+! Set Yuba inflow increment
+goal setI204_WTS {I204_WTS = WTS_YubaGW + WTS_YubaSW}    !Both GW and SW components
+
+! Set SOD inflow increments
+goal setI607_WTS {I607_WTS < WTS_DMC}
+goal setI839_WTS {I839_WTS < WTS_CACI}
+goal setI852_WTS {I852_WTS < WTS_CAGW}
+! Zero out the DSA diversion placerholderss of the intended transfers
+goal zeroD143A_WTS {D143A_WTS = frac_GC_N_DSA12*WTS_INC12_Stg2 - frac_GC_N_DSA12*WTS_DEC12_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD145A_WTS {D145A_WTS = frac_GC_S_DSA12*WTS_INC12_Stg2 - frac_GC_S_DSA12*WTS_DEC12_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD122A_WTS {D122A_WTS = frac_SC_N_DSA12*WTS_INC12_Stg2 - frac_SC_N_DSA12*WTS_DEC12_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD122B_WTS {D122B_WTS = frac_SC_S_DSA12*WTS_INC12_Stg2 - frac_SC_S_DSA12*WTS_DEC12_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD128_WTS {D128_WTS = WTS_INC15_Stg2 - WTS_DEC15_Stg2}
+goal zeroD7b_WTS  {D7b_WTS = WTS_INC69_Stg2 - WTS_DEC69_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD168A_WTS {D168A_WTS = WTS_INC70_Stg2 - WTS_DEC70_Stg2}
+
+!******************************************************************************
+! The following codes are limitations on conveyance of transfered water - specific to all transfer programs
+! There will be many other reasons that conveyance may not happen - EI ratio, etc - please review all applicable codes for D419 constraints
+
+! Don't allow conveyence for water transfers if B2 Actions are already being taken on CVP exports
+! This follows the structure used in B2BanksFix files
+goal zeroTransfers_DuringB2Actions {
+  lhs     D419_WTS_TD + D418_WTS_TD
+  case zeroTransfer_B2Action2On {
+    condition month>=DEC .and. month<=JAN .and. int(B2Action2On)==1
+    rhs   0. }
+  case zeroTransfer_B2Action7On {
+    condition month>=FEB .and. month<=MAR .and. int(B2Action7On)==1
+    rhs   0. }
+  case zeroTransfer_B2Action6On {
+    condition month==APR .and. int(B2Action6On)==1
+    rhs   0. }
+  case zeroTransfer_B2Action3On {
+    condition month>=APR .and. month<=MAY .and. int(B2Action3On)==1
+    rhs   0. }
+  case zeroTransfer_B2Action4On {
+    condition month==MAY .and. int(B2Action4On)==1
+    rhs   0. }
+  case zeroTransfer_B2Action5On {
+    condition month==JUN .and. int(B2Action5On)==1
+    rhs   0. }
+}
+
+! Don't allow conveyance for water transfers in April or May
+goal limitD418_WTS_AprMay {
+  lhs     D418_WTS_TD
+  case limitTransfer_AprMay {
+    condition month>=APR .and. month<=MAY
+    rhs   0. }
+}
+goal limitD419_WTS_AprMay {
+  lhs     D419_WTS_TD
+  case limitTransfer_AprMay {
+    condition month>=APR .and. month<=MAY
+    rhs   0. }
+}
+
+! Also cut out June - may want to do some computation to recognize ramping
+goal limitD418_WTS_DuringJune {
+  lhs     D418_WTS_TD
+  case limitTransfer_June {
+    condition month==JUN
+    rhs   0. }
+}
+goal limitD419_WTS_DuringJune {
+  lhs     D419_WTS_TD
+  case limitTransfer_June {
+    condition month==JUN
+    rhs   max((BanksMaxAllow-D419_TD[MONTHLYWEIGHTED])*.5,0.)
+!    rhs   max((BanksMaxAllow-D419_TD[DELTA])*.5,0.)
+    lhs<rhs    penalty 0}
+}

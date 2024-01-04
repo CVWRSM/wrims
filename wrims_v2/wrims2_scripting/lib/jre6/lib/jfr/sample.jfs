@@ -1,0 +1,11 @@
+// Additional settings for enabling hotspot sampling
+{
+        "http://www.oracle.com/jrockit/jvm/" : {
+
+                // Snapshot of a thread's state (hotspot sampling)
+                "vm/prof/execution_sample" : {
+		    "enable" : true,
+                    "period" : 30ms
+		}                
+	}
+}

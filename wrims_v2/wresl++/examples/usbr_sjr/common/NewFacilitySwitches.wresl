@@ -1,0 +1,11 @@
+! This is the attempt to have on-off operation for the new facilitie
+
+define IntertieSwitch {
+      select OnOff from   NewFacSwitch where  Facility = 1}
+
+define CVPDedBanksSwitch {
+      select OnOff from   NewFacSwitch where  Facility = 2}
+
+define SWPShastaSwitch {
+      select OnOff from   NewFacSwitch where  Facility = 3}
+

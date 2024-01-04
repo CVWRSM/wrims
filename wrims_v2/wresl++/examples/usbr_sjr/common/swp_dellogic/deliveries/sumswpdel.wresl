@@ -1,0 +1,1234 @@
+! A. Dev 10/19/99
+! R.Wilbur 7/27/04
+
+! This file calculates the sum of the actual deliveries for each type (PAG, MWD-MI, and OTH-MI)
+! from January to the month prior to the current model month.
+
+! Define the conversion factor for past reference
+!define xfactor {alias cfs_taf}
+
+
+
+! Note: PINerruptible deliveries and losses are not included since this would affect makeup
+
+! ********************************* DEFINES *******************************************
+
+! PAG Deliveries
+
+/*
+define swpdel_PAG802A {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D802A_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D802A_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+*/
+define swpdel_PAG846 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D846_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D846_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PAG847 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D847_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D847_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PAG848 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D848_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D848_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PAG849 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D849_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D849_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PAG867 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D867_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D867_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PAG868 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D868_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D868_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PAG851 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D851_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D851_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PAG859 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D859_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D859_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PAG863 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D863_PAG(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D863_PAG(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+! *************************************************************************************
+! MWD-MI Deliveries
+
+define swpdel_PMI27 { ! Actual MWD-MI Deliveries at node 27
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D27_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D27_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI885 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D885_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D885_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI899 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D899_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D899_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI895 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D895_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D895_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI851B{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D851B_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D851B_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }       
+
+! *************************************************************************************
+! OTH-MI Deliveries
+
+define swpdel_PMI25 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D25_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D25_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI28 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D28_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D28_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI29 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D29_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D29_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+/*
+define swpdel_pmid201 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) d201_pmi(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) d201_pmi(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_pmid204 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) d204_pmi(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) d204_pmi(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+*/
+define swpdel_ButteCo {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) perdv_swp_oth1(i)*CL_ButteC(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) perdv_swp_oth1(i)*CL_ButteC(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_YubaCity {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D_WTPCYC_16_PU(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D_WTPCYC_16_PU(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_NBA_N {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D_BRK004_NBA_N(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D_BRK004_NBA_N(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_NBA_S {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D_BRK004_NBA_S(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D_BRK004_NBA_S(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+ define swpdel_PMI869{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D869_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D869_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+ define swpdel_PMI870{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D870_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D870_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI877{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D877_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D877_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI878{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D878_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D878_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI879{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D879_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D879_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI881{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D881_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D881_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI883{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D883_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D883_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI884{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D884_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D884_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI886{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D886_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D886_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI887{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D887_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D887_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI888{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D888_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D888_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI896{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D896_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D896_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI810{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D810_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D810_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI813{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D813_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D813_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI814{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D814_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D814_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI815{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D815_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D815_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI851A{
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D851A_PMI(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D851A_PMI(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+       
+! Actual Previous OTHERMI Deliveries
+define prvactdel_oth {value swpdel_PMI25 + swpdel_PMI28 + swpdel_PMI29 + swpdel_ButteCo 
+                      + swpdel_YubaCity + swpdel_NBA_N + swpdel_NBA_S + swpdel_PMI869
+                      + swpdel_PMI870 + swpdel_PMI877 + swpdel_PMI878 + swpdel_PMI879 + swpdel_PMI881
+                      + swpdel_PMI883 + swpdel_PMI884 + swpdel_PMI886 + swpdel_PMI887
+                      + swpdel_PMI888 + swpdel_PMI896 + swpdel_PMI810 + swpdel_PMI813
+                      + swpdel_PMI814 + swpdel_PMI815 + swpdel_PMI851A}
+
+!define SWP_OTH_PRV {alias prvactdel_oth kind 'DEBUG' units 'TAF'}
+
+! *************************************************************************************
+! Carryover Deliveries (allocated from previous year but kept in storage for current year
+
+define swpdel_PCO25 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D25_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D25_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO27 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D27_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D27_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO28 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D28_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D28_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO29 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D29_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D29_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_NBA_NCO {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D_BRK004_NBA_NCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D_BRK004_NBA_NCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_NBA_SCO {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D_BRK004_NBA_SCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D_BRK004_NBA_SCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+/*
+define swpdel_PCO802A {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D802A_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D802A_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO802B {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D802B_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D802B_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+*/
+
+define swpdel_PCO810 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D810_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D810_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO813 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D813_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D813_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO814 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D814_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D814_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO815 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D815_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D815_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO846 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D846_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D846_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO847 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D847_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D847_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO848 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D848_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D848_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO849 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D849_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D849_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO851 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D851_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D851_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO859 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D859_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D859_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO863 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D863_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D863_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO867 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D867_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D867_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO869 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D869_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D869_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO870 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D870_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D870_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO877 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D877_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D877_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO879 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D869_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D869_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO878 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D878_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D878_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO881 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D881_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D881_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO883 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D883_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D883_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO884 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D884_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D884_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO885 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D885_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D885_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO886 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D886_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D886_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO887 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D887_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D887_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO888 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D888_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D888_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO868 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D868_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D868_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO895 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D895_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D895_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO896 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D896_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D896_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PCO899 {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D899_PCO(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D899_PCO(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+! Actual Previous Carryover Deliveries
+define prvactdel_co {value
+                     swpdel_PCO25  +
+                     swpdel_PCO27 +
+                     swpdel_PCO28 +
+                     swpdel_PCO29 +
+                     swpdel_NBA_NCO +
+                     swpdel_NBA_SCO +
+!                     swpdel_PCO802A +
+                     swpdel_PCO810 +
+                     swpdel_PCO813 +
+                     swpdel_PCO814 +
+                     swpdel_PCO815 +
+                     swpdel_PCO846 +
+                     swpdel_PCO847 +
+                     swpdel_PCO848 +
+                     swpdel_PCO849 +
+                     swpdel_PCO851 +
+                     swpdel_PCO859 +
+                     swpdel_PCO863 +
+                     swpdel_PCO867 +
+                     swpdel_PCO869 +
+                     swpdel_PCO870 +
+                     swpdel_PCO877 +
+                     swpdel_PCO879 +
+                     swpdel_PCO878 +
+                     swpdel_PCO881 +
+                     swpdel_PCO883 +
+                     swpdel_PCO884 +
+                     swpdel_PCO885 +
+                     swpdel_PCO886 +
+                     swpdel_PCO887 +
+                     swpdel_PCO888 +
+                     swpdel_PCO868 +
+                     swpdel_PCO895 +
+                     swpdel_PCO896 +
+                     swpdel_PCO899}
+
+!define SWP_CO_PRV {alias prvactdel_co kind 'DEBUG' units 'TAF'}
+

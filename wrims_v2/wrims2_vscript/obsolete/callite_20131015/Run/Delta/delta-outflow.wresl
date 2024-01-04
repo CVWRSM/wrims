@@ -1,0 +1,264 @@
+!   This is the minimum required Delta outflow (MRDO) code
+! A. Munevar 1/10/00
+! Modified for D-1485 switches: Holly Canada, DWR (05/10/2012)
+
+if int(NDO_DLTSW)==3 {  !D-1485
+
+!############################################################################
+! STRIPED BASS SURVIVAL/SPAWNING FLOW REQUIREMENTS (1)
+!############################################################################
+/*D-1485 requirements*/
+! Required Delta outlfow in NON-subnormal snowmelt years
+define NDOFlowBass {
+  case WetDry {
+    condition   int(wyt_D1485_last) <= 3 .and. int(wyt_D1485) == 4
+    select          flow
+    from            NDOBass
+    where           month=month,wyt=43 }
+  case DryDry {
+    condition   int(wyt_D1485_last) >= 4 .and. int(wyt_D1485) == 4
+    select          flow
+    from            NDOBass
+    where           month=month,wyt=5 }
+
+  case other {
+    condition   always
+    select          flow
+    from            NDOBass
+    where           month=month,wyt=wyt_D1485 }
+}
+
+! Required Delta outflow with modification for subnormal snowmelt year type
+define NDOFlowBassSnow {
+  case loSnow {
+    condition int(wyt_snow) == 2
+    select    flow
+    from      NDOBassSnow
+    where     month=month }
+  case hiSnow {
+    condition always
+    value     NDOFlowBass }
+}
+
+! Striped Bass Survival/Spawning flow requirement
+define DO_req_flw1 {value NDOFlowBassSnow}
+
+! Days of month in affect for DO_req_flw1
+define begday_flw1 {
+    case May { ! for May 6-31 Striped Bass Survival criteria
+      condition   month==MAY
+      value       6 }
+    case other {
+      condition   always
+      value       1 }
+}
+
+define endday_flw1 {
+    case Apr { ! for Apr 1-14 Striped Bass Spawning criteria
+		condition   month==APR
+		value       14 }
+    case other {
+		condition   always
+		value       daysin }
+}
+
+!############################################################################
+! D-1641 REQUIREMENT (No D-1641 Regulation with a D-1485 study)
+!############################################################################
+define DO_req_flow  {value 0}
+define begday_flw {value 1}                 ! beginning and ending days of current month            
+define endday_flw {value daysin}            ! for use in final-mrdo.wresl
+
+!############################################################################
+! SUISUN MARSH FLOW REQUIREMENT (2)
+!############################################################################
+! Required Delta outlfow in NON-subnormal snowmelt years
+define NDOFlowSuis {
+  case Subnorm { ! Feb-Apr
+    condition int(wyt_snow)==2 .and. month >= FEB .and. month <= APR
+    value       10000.0 } ! units=cfs
+  case Wet { ! Feb-May
+    condition int(wyt_D1485)==1 .and. int(wyt_snow)==1 .and. month >= FEB .and. month <= MAY
+    value       10000.0 } ! units=cfs
+  case other {
+    condition always
+    value       2500.0 }
+}
+
+! Striped Bass Survival/Spawning flow requirement
+define DO_req_flw2 {value NDOFlowSuis}
+
+! Days of month in affect
+define begday_flw2 {value   1 }
+define endday_flw2 {value   daysin }
+
+!############################################################################
+! 60-DAY SUISUN MARSH FLOW REQUIREMENT (3)
+!############################################################################
+! Required 60-day Delta Outflow Jan-Apr
+define NDOFlow60std {
+  case AbvOrBlwNorm {
+    condition int(wyt_D1485) >= 2 .and. int(wyt_D1485) <=3 .and. int(wyt_snow)==1 .and. month >= JAN .and. month <= APR   ! 1 = above normal snow
+    value     12000.0 } ! units=cfs
+  case other {
+    condition always
+    value           2500.0 }
+}
+!Testing
+define NDOFlow60stdDV {alias NDOFlow60std kind 'FLOW' units 'CFS'}   
+define NDOcheckDV {alias NDO(-1) kind 'FLOW' units 'CFS'}
+
+! Days met in previous month
+define daysMetFlow60 {
+  case Met {
+    condition month >= FEB .and. month <= MAY .and. NDO(-1) > NDOFlow60std - 1.0
+    value           30.0 }
+  case other {
+    condition always
+    value           0.0 }
+}
+
+!CB define daysMetFlow60_ {alias daysMetFlow60 kind 'DAYS-MET' units 'DAYS'}
+define daysMetFlow60_ {std kind 'DAYS-MET' units 'DAYS'}   !CB NEW
+goal setdaysMetFlow60 {daysMetFlow60_ = daysMetFlow60}     !CB NEW
+
+! In Feb or Mar take advantage of what happened previously
+define NDOFlow60 {
+  case AbvBlwNormFeb {
+    condition int(wyt_D1485) >= 2 .and. int(wyt_D1485) <=3 .and. int(wyt_snow)==1 .and. month == FEB
+                        .and. daysMetFlow60 > 1.0 ! Met 30 days in Jan
+    value NDOFlow60std }
+  case AbvBlwNormMar {
+    condition int(wyt_D1485) >= 2 .and. int(wyt_D1485) <=3 .and. int(wyt_snow)==1 .and. month == MAR
+                        .and. daysMetFlow60 + daysMetFlow60_(-1) < 31.0 ! Not Met in Jan-Feb
+    value NDOFlow60std }
+  case AbvBlwNormApr {
+    condition int(wyt_D1485) >= 2 .and. int(wyt_D1485) <=3 .and. int(wyt_snow)==1 .and. month == APR
+                        .and. daysMetFlow60 + daysMetFlow60_(-1) < 31.0             ! Not Met in Feb-Mar
+                        .and. daysMetFlow60_(-1) + daysMetFlow60_(-2) < 31.0    ! Not Met in Jan-Feb
+    value NDOFlow60std }
+  case other {
+    condition   always
+    value     2500.0 }
+}
+!Testing
+define NDOFlow60dv {alias NDOFlow60 kind 'FLOW' units 'CFS'}
+
+! 60-day Flow requirement
+define DO_req_flw3 {value NDOFlow60}
+
+! Days of month in affect
+define begday_flw3 {value   1 }
+define endday_flw3 {value   daysin }
+
+!############################################################################
+! 2 OF 3 RESERVOIR IN FLOOD ENVELOPE REQUIREMENT (4)
+!############################################################################
+! 2 of 3 Reservoirs in Flood Envelope Flow Criteria
+
+! Index to determine if Oroville in flood envelope
+define OroFldType {
+  case Oct {                                                                  !RLEAF-
+    condition month==OCT .and. wateryear==beginWY                           !RLEAF-
+    value 0.0 }                                                               !RLEAF-
+  case flood {
+    condition   S_Orovl(-1) > s_OrovlLevel5(-1) - 0.5
+    value     1.0 }
+  case Noflood {
+    condition   always
+    value     0.0 }
+}
+
+! Index to determine if Folsom in flood envelope
+define FolFldType {
+  case Oct {                                                                  !RLEAF-
+    condition month==OCT .and. wateryear==beginWY                           !RLEAF-
+    value 0.0 }                                                               !RLEAF-
+  case flood {
+    condition   S_Folsm(-1) > S_FolsmLevel5(-1) - 0.5
+    value     1.0 }
+  case Noflood {
+    condition   always
+    value     0.0 }
+}
+
+! Index to determine if Shasta in flood envelope
+define ShaFldType {
+  case Oct {                                                                  !RLEAF-
+    condition month==OCT .and. wateryear==beginWY                           !RLEAF-
+    value 0.0 }                                                               !RLEAF-
+  case flood {
+    condition   S_Shsta(-1) > S_ShstaLevel5(-1) - 0.5
+    value     1.0 }
+  case Noflood {
+    condition   always
+    value     0.0 }
+}
+
+! Index to determine if 2 of 3 are in flood
+define FldType {value ShaFldType + OroFldType + FolFldType }
+define FldType_dv {alias FldType}
+
+! Required Delta if 2 of Shasta, Oroville, and Folsom storage is in flood envelope
+define NDOFlow2of3 {
+  case flood {
+    condition month >= JAN .and. month <= MAY .and. FldType > 1.9
+    value           6600.0 } ! units=cfs
+  case Noflood {
+    condition   always
+    value     2500.0 }
+}
+
+! 2-OF-3 Flow requirement
+define DO_req_flw4 {value NDOFlow2of3 }
+
+! Days of month in affect
+define begday_flw4 {value   1 }
+define endday_flw4 {value   daysin }
+
+
+}
+
+
+
+/******************D-1641********************************************************/
+
+
+else {
+
+	define January_PMI {
+		select  pmi
+		from    eightriver
+		where   wateryear=wateryear
+	}
+
+	!define NDOreqflowstd {select flow from NDO_flow_std where month=month, wyt_SAC=wyt_SAC}
+	define NDOreqflowstd  {     !NDO_DLTSW switch added 10/04/2010 by Z.Q. Richard Chen, DWR
+	    case USERDEF {  
+	      condition NDO_DLTSW == 2
+		select flow  
+		from  gui_NDO_flow
+		where month=month, wyt_SAC=wyt_SAC }
+	    case D1641 { 
+	      condition NDO_DLTSW == 1
+		select flow 
+		from NDO_flow_std 
+		where month=month, wyt_SAC=wyt_SAC}
+	    case NOREGULATION {
+	      condition always         !NDO_DLTSW == 0
+	      value 0}
+	    }
+
+	define DO_req_flow {          !NDO_DLTSW switch added 10/04/2010 by Z.Q. Richard Chen, DWR
+	    case    jan_pmi_LessThan_800 {
+		condition    month == JAN .and. January_PMI < 800.0 .and. NDO_DLTSW == 1
+		value        4500.}
+	    case other {
+		condition    always
+		value        NDOreqflowstd}
+	}
+
+	define begday_flw {value 1}                 ! beginning and ending days of current month            
+	define endday_flw {value daysin}            ! for use in final-mrdo.wresl
+
+}

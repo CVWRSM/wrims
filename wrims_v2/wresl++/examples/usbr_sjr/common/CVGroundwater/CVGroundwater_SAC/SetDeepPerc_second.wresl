@@ -1,0 +1,194 @@
+/*
+SETDEEPPERC.WRESL
+DEEP PERC PASSED TO GW MODULE
+
+The total deep perc for each WBA that are input to CalSim-III are passed
+to GW module using SetDP function.  The deep perc amounts are for each
+WBA area, and not all WBAs are covered by C2VSIM domain.  Then, it is 
+assumed that deep perc rate is uniform over the WBA so, the total deep
+perc at a WBA is scaled back using fDP_WBA_?? factor based on its area 
+overlaid by C2VSIM domain.  This scaled back deep perc is passed to the 
+GW module.
+
+Can Dogrul October 2008
+*/
+
+define DP_Total_E3        	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E4		{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E6		{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E10	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E11	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E17	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E28	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E29	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E22	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E23	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E31	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E32	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E30	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E40	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E38	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E39	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E37	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E52	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E53	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E44	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E45	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E48	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E46	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E47	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E54	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E78	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E85	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E115	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E106	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E107	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E108	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E121	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E122	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E123	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E137	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E138	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+define DP_Total_E321	{timeseries kind 'percolation-loss' units 'TAF' convert 'CFS'}
+
+
+!*********************************************************************
+!*********************************************************************
+!***  Set deep percolation at each WBA
+!*********************************************************************
+!*********************************************************************
+!Returnsvalue of 0 if successfully executed
+
+define rSetDP_2  {value    SetDP(DP_WBATotal_2[monthlyweighted] * cfs_cfm,INT(indxWBA_2)) }   
+                        
+define rSetDP_3  {value    SetDP(DP_WBATotal_3[monthlyweighted] * cfs_cfm,INT(indxWBA_3)) }  
+                        
+define rSetDP_4  {value    SetDP(DP_WBATotal_4[monthlyweighted] * cfs_cfm,INT(indxWBA_4)) }  
+                        
+define rSetDP_5  {value    SetDP(DP_WBATotal_5[monthlyweighted] * cfs_cfm,INT(indxWBA_5)) }  
+                        
+define rSetDP_6  {value    SetDP(DP_WBATotal_6[monthlyweighted] * cfs_cfm,INT(indxWBA_6)) }  
+                        
+define rSetDP_7N {value    SetDP(DP_WBATotal_7N[monthlyweighted] * cfs_cfm,INT(indxWBA_7N)) }      
+                        
+define rSetDP_7S {value    SetDP(DP_WBATotal_7S[monthlyweighted] * cfs_cfm,INT(indxWBA_7S)) }      
+                        
+define rSetDP_8N {value    SetDP(DP_WBATotal_8N[monthlyweighted] * cfs_cfm,INT(indxWBA_8N)) }      
+                        
+define rSetDP_8S {value    SetDP(DP_WBATotal_8S[monthlyweighted] * cfs_cfm,INT(indxWBA_8S)) }      
+                        
+define rSetDP_9  {value    SetDP(DP_WBATotal_9[monthlyweighted] * cfs_cfm,INT(indxWBA_9)) }  
+                        
+define rSetDP_10 {value    SetDP(DP_WBATotal_10[monthlyweighted] * cfs_cfm,INT(indxWBA_10)) }       
+                        
+define rSetDP_11 {value    SetDP(DP_WBATotal_11[monthlyweighted] * cfs_cfm,INT(indxWBA_11)) }       
+                        
+define rSetDP_12 {value    SetDP(DP_WBATotal_12[monthlyweighted] * cfs_cfm,INT(indxWBA_12)) }       
+                        
+define rSetDP_13 {value    SetDP(DP_WBATotal_13[monthlyweighted] * cfs_cfm,INT(indxWBA_13)) }       
+                        
+define rSetDP_14 {value    SetDP(DP_WBATotal_14[monthlyweighted] * cfs_cfm,INT(indxWBA_14)) }       
+                        
+define rSetDP_15N {value    SetDP(DP_WBATotal_15N[monthlyweighted] * cfs_cfm,INT(indxWBA_15N)) }
+                        
+define rSetDP_15S {value    SetDP(DP_WBATotal_15S[monthlyweighted] * cfs_cfm,INT(indxWBA_15S)) } 
+                        
+define rSetDP_16 {value    SetDP(DP_WBATotal_16[monthlyweighted] * cfs_cfm,INT(indxWBA_16)) }       
+                        
+define rSetDP_17N {value    SetDP(DP_WBATotal_17N[monthlyweighted] * cfs_cfm,INT(indxWBA_17N)) }
+                        
+define rSetDP_17S {value    SetDP(DP_WBATotal_17S[monthlyweighted] * cfs_cfm,INT(indxWBA_17S)) } 
+                        
+define rSetDP_18 {value    SetDP(DP_WBATotal_18[monthlyweighted] * cfs_cfm,INT(indxWBA_18)) }       
+                        
+define rSetDP_19 {value    SetDP(DP_WBATotal_19[monthlyweighted] * cfs_cfm,INT(indxWBA_19)) }       
+                        
+define rSetDP_20 {value    SetDP(DP_WBATotal_20[monthlyweighted] * cfs_cfm,INT(indxWBA_20)) }       
+                        
+define rSetDP_21 {value    SetDP(DP_WBATotal_21[monthlyweighted] * cfs_cfm,INT(indxWBA_21)) }       
+                        
+define rSetDP_22 {value    SetDP(DP_WBATotal_22[monthlyweighted] * cfs_cfm,INT(indxWBA_22)) }       
+                        
+define rSetDP_23 {value    SetDP(DP_WBATotal_23[monthlyweighted] * cfs_cfm,INT(indxWBA_23)) }       
+                        
+define rSetDP_24 {value    SetDP(DP_WBATotal_24[monthlyweighted] * cfs_cfm,INT(indxWBA_24)) }       
+                        
+define rSetDP_25 {value    SetDP(DP_WBATotal_25[monthlyweighted] * cfs_cfm,INT(indxWBA_25)) }       
+                        
+define rSetDP_26N {value    SetDP(DP_WBATotal_26N[monthlyweighted] * cfs_cfm,INT(indxWBA_26N)) }
+                        
+define rSetDP_26S {value    SetDP(DP_WBATotal_26S[monthlyweighted] * cfs_cfm,INT(indxWBA_26S)) } 
+                        
+define rSetDP_E3  {value    SetDP(DP_Total_E3 * cfs_cfm,INT(indxE3)) }       
+
+define rSetDP_E4  {value    SetDP(DP_Total_E4 * cfs_cfm,INT(indxE4)) }       
+
+define rSetDP_E6  {value    SetDP(DP_Total_E6 * cfs_cfm,INT(indxE6)) }         
+                        
+define rSetDP_E10  {value    SetDP(DP_Total_E10 * cfs_cfm,INT(indxE10)) }  
+ 
+define rSetDP_E11  {value    SetDP(DP_Total_E11 * cfs_cfm,INT(indxE11)) }  
+ 
+define rSetDP_E17  {value    SetDP(DP_Total_E17 * cfs_cfm,INT(indxE17)) }  
+ 
+define rSetDP_E28  {value    SetDP(DP_Total_E28 * cfs_cfm,INT(indxE28)) }  
+ 
+define rSetDP_E29  {value    SetDP(DP_Total_E29 * cfs_cfm,INT(indxE29)) }  
+ 
+define rSetDP_E22  {value    SetDP(DP_Total_E22 * cfs_cfm,INT(indxE22)) }  
+ 
+define rSetDP_E23  {value    SetDP(DP_Total_E23 * cfs_cfm,INT(indxE23)) }  
+ 
+define rSetDP_E31  {value    SetDP(DP_Total_E31 * cfs_cfm,INT(indxE31)) }  
+ 
+define rSetDP_E32  {value    SetDP(DP_Total_E32 * cfs_cfm,INT(indxE32)) }  
+ 
+define rSetDP_E30  {value    SetDP(DP_Total_E30 * cfs_cfm,INT(indxE30)) }  
+ 
+define rSetDP_E40  {value    SetDP(DP_Total_E40 * cfs_cfm,INT(indxE40)) }  
+ 
+define rSetDP_E38  {value    SetDP(DP_Total_E38 * cfs_cfm,INT(indxE38)) }  
+ 
+define rSetDP_E39  {value    SetDP(DP_Total_E39 * cfs_cfm,INT(indxE39)) }  
+ 
+define rSetDP_E37  {value    SetDP(DP_Total_E37 * cfs_cfm,INT(indxE37)) }  
+ 
+define rSetDP_E52  {value    SetDP(DP_Total_E52 * cfs_cfm,INT(indxE52)) }  
+ 
+define rSetDP_E53  {value    SetDP(DP_Total_E53 * cfs_cfm,INT(indxE53)) }  
+ 
+define rSetDP_E44  {value    SetDP(DP_Total_E44 * cfs_cfm,INT(indxE44)) }  
+ 
+define rSetDP_E45  {value    SetDP(DP_Total_E45 * cfs_cfm,INT(indxE45)) }  
+ 
+define rSetDP_E48  {value    SetDP(DP_Total_E48 * cfs_cfm,INT(indxE48)) }  
+ 
+define rSetDP_E46  {value    SetDP(DP_Total_E46 * cfs_cfm,INT(indxE46)) }  
+ 
+define rSetDP_E47  {value    SetDP(DP_Total_E47 * cfs_cfm,INT(indxE47)) }  
+ 
+define rSetDP_E54  {value    SetDP(DP_Total_E54 * cfs_cfm,INT(indxE54)) }  
+ 
+define rSetDP_E78  {value    SetDP(DP_Total_E78 * cfs_cfm,INT(indxE78)) }  
+ 
+define rSetDP_E85  {value    SetDP(DP_Total_E85 * cfs_cfm,INT(indxE85)) }  
+ 
+define rSetDP_E115  {value    SetDP(DP_Total_E115 * cfs_cfm,INT(indxE115)) }        
+
+define rSetDP_E106  {value    SetDP(DP_Total_E106 * cfs_cfm,INT(indxE106)) }        
+
+define rSetDP_E107  {value    SetDP(DP_Total_E107 * cfs_cfm,INT(indxE107)) }        
+
+define rSetDP_E108  {value    SetDP(DP_Total_E108 * cfs_cfm,INT(indxE108)) }        
+
+define rSetDP_E121  {value    SetDP(DP_Total_E121 * cfs_cfm,INT(indxE121)) }        
+
+define rSetDP_E122  {value    SetDP(DP_Total_E122 * cfs_cfm,INT(indxE122)) }        
+
+define rSetDP_E123  {value    SetDP(DP_Total_E123 * cfs_cfm,INT(indxE123)) }        
+
+define rSetDP_E137  {value    SetDP(DP_Total_E137 * cfs_cfm,INT(indxE137)) }        
+
+define rSetDP_E138  {value    SetDP(DP_Total_E138 * cfs_cfm,INT(indxE138)) }        
+
+define rSetDP_E321  {value    SetDP(DP_Total_E321 * cfs_cfm,INT(indxE321)) }        

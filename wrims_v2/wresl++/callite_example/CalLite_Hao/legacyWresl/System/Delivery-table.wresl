@@ -1,0 +1,47 @@
+!Feather River
+define D_Orovl {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_Therm {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_YubFea {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+!Yuba River
+define D_Daguer_dem {select demand from Demand_Daguerre_Pt where month=month, NYuba_index=wyt_SAC}
+define D_Daguer {std kind 'flow-delivery' units 'cfs'}
+goal set_Daguer {D_Daguer < D_Daguer_dem}
+
+!American River
+define D_Folsm {timeseries kind 'DEMAND' units 'CFS'}
+define D_Nimbus {timeseries kind 'DEMAND' units 'CFS'}
+define D_HSt {timeseries kind 'DEMAND' units 'CFS'}
+
+!Sacramento River
+define D_ClearTu {std kind 'FLOW-TUNNEL' units 'CFS'}  !Clear Creek Tunnel
+define D_Spring {std kind 'FLOW-TUNNEL' units 'CFS'}  !Spring Creek Tunnel
+define D_RedBlf {timeseries kind 'DEMAND' units 'CFS'}
+define D_Wilkns {timeseries kind 'DEMAND' units 'CFS'}
+define D_SacFea {std kind 'FLOW-DELIVERY' units 'CFS'} !Freemont Weir Spills to Yolo Bypass
+define D_SacAme {timeseries kind 'DEMAND' units 'CFS'}
+define D_SacAme1 {std kind 'FLOW-DELIVERY' units 'CFS'} !Sacramento Weir Spills
+
+!Delta
+define D_NDelta {timeseries kind 'DEMAND' units 'CFS'}
+define D_CCWD {timeseries kind 'DEMAND' units 'CFS'}
+
+!Export
+define D_SBay {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_UpDMC {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_ONlPP {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_SLCVP {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+!South of Delta
+define D_DosAmigosSWP {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_DosAmigosCVP {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_CoastAqdct {std kind 'FLOW-DELIVERY' units 'CFS'} 
+define D_Emp2Dud {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_KCWA {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_CVPRfg_854 {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_CVP_CVC {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_CVC2Chris {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_OSO {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_WarnePP {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_Alamo {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D_PearBlPP {std kind 'FLOW-DELIVERY' units 'CFS'}

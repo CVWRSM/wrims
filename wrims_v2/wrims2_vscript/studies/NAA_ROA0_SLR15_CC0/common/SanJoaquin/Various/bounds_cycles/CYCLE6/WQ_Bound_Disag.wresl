@@ -1,0 +1,1244 @@
+!WRESL statements for San Joaquin River System
+!WQ_BOUNDCYCLE6 (bounds within the San Joaquin basin for cycle 6 only: Water Quality )
+!Edward Chang
+!6/05/2000
+! Modified by Ken Yokoyama,USBR, April 28,2003 for Link-Node method
+!
+!Joint Model
+!This code bounds decision variables using monthly weighted constraints for cycle 6 only
+!Water quality release and remaining CAP calculations; final water quality
+!******************************************************************************************
+
+!*******************************
+!*********Water Quality*********
+!*******************************
+!WQ deficiency
+define wq_defdv {std kind 'flow-deficiency' units 'cfs'}
+goal setWQ_defdv {
+    lhs     WQ_defdv
+    case Oct_Mar {
+        condition month >= OCT .and. month <= MAR
+        rhs     WQ_MIN_defdv[SJR_WQ1] }
+    case April {
+        condition month  == apr
+        rhs     14.*WQ_MIN_defdv[SJR_WQ1]/30. + 16.*WQ_pulse_defdv[SJR_WQ2]/30. }
+    case MayOnly {
+        condition month  == may
+        rhs     15.*WQ_pulse_defdv[SJR_WQ2]/31. + 16.*WQ_MIN_defdv[SJR_WQ1]/31. }
+    case otherwise {
+        condition always
+        rhs     WQ_MIN_defdv[SJR_WQ1] }
+}
+define wq_red_defdv {std kind 'flow-deficiency' units 'cfs'}
+goal setWQ_red_defdv {
+    lhs     WQ_red_defdv
+    case Oct_Mar {
+        condition month >= OCT .and. month <= MAR
+        rhs     WQ_REDMIN_defdv[SJR_WQ1] }
+    case April {
+        condition month  == apr
+        rhs     14.*WQ_REDMIN_defdv[SJR_WQ1]/30. + 16.*WQ_REDpuls_defdv[SJR_WQ2]/30. }
+    case MayOnly {
+        condition month  == may
+        rhs     15.*WQ_REDpuls_defdv[SJR_WQ2]/31. + 16.*WQ_REDMIN_defdv[SJR_WQ1]/31. }
+    case otherwise {
+        condition always
+        rhs     WQ_REDMIN_defdv[SJR_WQ1] }
+}
+
+define WQreleasecycle6 {
+    case April {
+        condition month  == apr
+        value     14.*C10WQ[SJR_WQ1]/30. + 16.*C10WQ[SJR_WQ2]/30. }
+    case MayOnly {
+        condition month  == may
+        value     15.*C10WQ[SJR_WQ2]/31. + 16.*C10WQ[SJR_WQ1]/31. }
+    case otherwise {
+        condition always
+        value     C10WQ[SJR_WQ1] }
+          }
+
+goal capC10WQcycle6 { C10WQ = WQreleasecycle6  }
+
+define remWQrelCAPsv {   !TAF; state variable to be  written to a decision variable
+    case march {
+        condition   month == mar
+        value     max(0.,WQRelCap - C10WQ[SJR_WQ1]*cfs_TAF) }
+    case April {
+        condition month == apr
+        value     max(0.,remWQrelCap(-1) - 14.*C10WQ[SJR_WQ1]*cfs_TAF/30. - 16.*C10WQ[SJR_WQ2]*cfs_TAF/30.) }
+    case MayOnly {
+        condition month == may
+        value     max(0.,remWQrelCap(-1) - 15.*C10WQ[SJR_WQ2]*cfs_TAF/31. - 16.*C10WQ[SJR_WQ1]*cfs_TAF/31.) }
+    case Otherwise {
+        condition   always
+        value     max(0.,remWQrelCap(-1) - C10WQ[SJR_WQ1]*cfs_TAF) }
+        }
+goal setremWQrelCap { remWQrelCap = remWQrelCAPsv }
+
+!*************************************
+!*****Final Vernalis Water Quality****
+!*************************************
+
+!Since the computation of the monthly-averaged final water quality at Vernalis includes
+!the effects of:
+!    1) VAMP,
+!    2) Dissolved Oxygen,
+!    3) Vernalis Minimum flows,
+!    4) ERPP Water, and
+!    5) OID reallocated flows,
+!the water quality may be below the standard even in a month where water quality releases
+!are being made (because water quality releases are computed before any of the above
+!requirements
+!
+! K. Yokoyama April 28, 2003
+! This is the link-node salinity algorithm covering the San Joaquin River from Lander Ave. to Vernalis.  The link-node algorithm
+! consists of a series of EC mass balance equations from node 614 to node 639.  The computed EC from an upstream node is used as
+! the input EC of a downstream node.  Flow-EC regressions are used for the San Joaquin River at Lander Ave., Merced River near
+! Stevinson and the Tuolumne River near Modesto. Mud and Salt Slough, return Flow and accretion EC use monthly average values.
+! Written by Ken Yokoyama and Nancy Parker, April 2003
+
+/*Tributary Boundary Conditions to the link-node domain
+EC[microS/cm] = f(flow[cfs]), subject to max/min constraints
+(i.e. Regression Equations defining EC as a function of flow for the following tribs:
+-- San Joaquin River at Lander Ave.
+-- Merced River near Stevinson
+-- Tuolumne River near Modesto)
+Equation parameters developed by D. Steiner - 7/29/04, reflecting ~WY2000-2004 observations
+Max/min constraints on EC at each boundary were proposed by D. Steiner based on the same
+recent observations.
+*/
+define Lan_WQparam_1 {value -239.45}
+define Lan_WQparam_2 {value 2101.5}
+define Mer_WQparam_1 {value -100.52}
+define Mer_WQparam_2 {value 729.58}
+define Tuo_WQparam_1 {value -57.018}
+define Tuo_WQparam_2 {value 500.75}
+
+! SJR at Lander Ave:
+/*define EC_611_NPandP {
+     case NonPulseNonDO {
+          condition month <= may
+          value min(2000., max(500., Lan_WQparam_1*log(max(1.,C611[SJR_WQ1])) + Lan_WQparam_2)) ! Lander Ave.
+                }
+     case NonPulsePlusDO {
+          condition always    !June thru September
+          value min(2000., max(500., Lan_WQparam_1*log(max(1.,C611[VAMP_AND_DO])) + Lan_WQparam_2)) ! Lander Ave.
+                }}
+*/
+! Merced at Stevinson:  EC[microS/cm] = f(flow[cfs]), subject to max/min constraints
+define EC_566_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value min(500., max(85., Mer_WQparam_1*log(max(1.,C566[SJR_WQ1] + MercedRelease_Oct*taf_cfs)) + Mer_WQparam_2)) ! Merced River Oct-May
+                }
+     case NonPulsePlusDO {
+          condition always    !June thru September
+          value min(500., max(85., Mer_WQparam_1*log(max(1.,C566[VAMP_AND_DO])) + Mer_WQparam_2)) ! Merced River June-Sep
+                }}
+
+define EC_566_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may
+          value min(500., max(85., Mer_WQparam_1*log(max(1.,C566[VAMP_AND_DO])) + Mer_WQparam_2)) ! Merced River VAMP
+                }
+     case otherwise {
+          condition always
+          value     0.
+                }}
+
+! Tuolumne at Modesto:  EC[microS/cm] = f(flow[cfs]), subject to max/min constraints
+define EC_545_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value min(275., max(85., Tuo_WQparam_1*log(max(1.,C545[SJR_WQ1])) + Tuo_WQparam_2)) ! Tuolumne River Oct-May
+                }
+     case NonPulsePlusDO {
+          condition always    !June thru September
+          value min(275., max(85., Tuo_WQparam_1*log(max(1.,C545[VAMP_AND_DO])) + Tuo_WQparam_2)) ! Tuolumne River June-Sep
+                }}
+
+define EC_545_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may
+          value min(275., max(85., Tuo_WQparam_1*log(max(1.,C545[VAMP_AND_DO])) + Tuo_WQparam_2)) ! Tuolumne River VAMP
+                }
+     case otherwise {
+          condition always
+          value     0.
+                }}
+
+!A. Fock 2005/09/20 SJR WQM
+define EC_605_NPandP { value EC_C603 }
+
+define EC_595_NP {
+     case NearZero {
+         condition C595[SJR_WQ1] + D595[SJR_WQ1] + L595[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case NonPulseNonDO {
+          condition month <= may
+        value (C605B[SJR_WQ1] * EC_605_NPandP
+            + C588[SJR_WQ1] * EC_C588
+            + R595[SJR_WQ1] * EC_R595)
+            / (C595[SJR_WQ1] + D595[SJR_WQ1] + L595[SJR_WQ1] )}
+     case NonPulsePlusDO {
+     	condition	always
+     	value (C605B[VAMP_AND_DO] * EC_605_NPandP
+            + C588[VAMP_AND_DO] * EC_C588
+            + R595[VAMP_AND_DO] * EC_R595)
+            / (C595[VAMP_AND_DO] + D595[VAMP_AND_DO] + L595[VAMP_AND_DO] )}
+}
+
+define EC_595_P {
+     case JunToMar {
+     	condition	range(month,jun,mar)
+     	value		EC_595_NP
+     }
+     case NearZero {
+         condition C595[VAMP_AND_DO] + D595[VAMP_AND_DO] + L595[VAMP_AND_DO]< 0.0001
+         value 0.0 }
+     case Pulse {
+          condition always
+          value (C605B[VAMP_AND_DO] * EC_605_NPandP
+            + C588[VAMP_AND_DO] * EC_C588
+            + R595[VAMP_AND_DO] * EC_R595)
+            / (C595[VAMP_AND_DO] + D595[VAMP_AND_DO] + L595[VAMP_AND_DO])
+            }}/**/
+
+define EC_607_NP {
+     case NearZero {
+         condition C607[SJR_WQ1] + C607BC[SJR_WQ1]
+                 + D607A[SJR_WQ1] + D607D[SJR_WQ1] + L607[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case NonPulseNonDO {
+          condition month <= may
+        value (C605A[SJR_WQ1] * EC_605_NPandP
+            + I607 * EC_I607
+            + C708[SJR_WQ1] * EC_Mendota_Pool
+            + R607West[SJR_WQ1] * EC_Mendota_Pool)
+            / (C607[SJR_WQ1] + C607BC[SJR_WQ1] + D607A[SJR_WQ1] + D607D[SJR_WQ1] + L607[SJR_WQ1])}
+     case NonPulsePlusDO {
+          condition always    !June thru September
+        value (C605A[VAMP_AND_DO] * EC_605_NPandP
+            + I607 * EC_I607
+            + C708[VAMP_AND_DO] * EC_Mendota_Pool
+            + R607West[VAMP_AND_DO] * EC_Mendota_Pool)
+            / (C607[VAMP_AND_DO] + C607BC[VAMP_AND_DO]
+            + D607A[VAMP_AND_DO] + D607D[VAMP_AND_DO] + L607[VAMP_AND_DO])}
+            }
+
+define EC_607_P {
+	case JunToMar {
+		condition	range(month,jun,mar)
+		value		EC_607_NP
+	}
+     case NearZero {
+         condition C607[VAMP_AND_DO] + C607BC[VAMP_AND_DO]
+                + D607A[VAMP_AND_DO] + D607D[VAMP_AND_DO] + L607[VAMP_AND_DO] < 0.0001
+         value 0.0 }
+     case Pulse {
+          condition always
+        value (C605A[VAMP_AND_DO] * EC_605_NPandP
+            + I607 * EC_I607
+            + C708[VAMP_AND_DO] * EC_Mendota_Pool
+            + R607West[VAMP_AND_DO] * EC_Mendota_Pool)
+            / (C607[VAMP_AND_DO] + C607BC[VAMP_AND_DO]
+            + D607A[VAMP_AND_DO] + D607D[VAMP_AND_DO] + L607[VAMP_AND_DO])}
+            }
+
+define EC_608_NP {
+     case NearZero {
+         condition C608[SJR_WQ1] + L608[SJR_WQ1] + C608BC[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case NonPulseNonDO {
+          condition month <= may
+        value (C607[SJR_WQ1] * EC_607_NP
+            + C605C[SJR_WQ1] * EC_605_NPandP )
+            / (C608[SJR_WQ1] + L608[SJR_WQ1] + C608BC[SJR_WQ1])}
+     case NonPulsePlusDO {
+          condition always    !June thru September
+        value (C607[VAMP_AND_DO] * EC_607_NP
+            + C605C[VAMP_AND_DO] * EC_605_NPandP )
+            / (C608[VAMP_AND_DO] + L608[VAMP_AND_DO] + C608BC[SJR_WQ1])}
+            }
+define EC_608_P {
+	case JunToMar {
+		condition	range(month,jun,mar)
+		value		EC_608_NP
+	}
+     case NearZero {
+         condition C608[VAMP_AND_DO] + L608[VAMP_AND_DO] + C608BC[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case Pulse {
+          condition always
+        value (C607[VAMP_AND_DO] * EC_607_P
+            + C605C[VAMP_AND_DO] * EC_605_NPandP )
+            / (C608[VAMP_AND_DO] + L608[VAMP_AND_DO] + C608BC[SJR_WQ1])}
+            }
+
+define EC_609_NP {
+    case NearZero {
+         condition C609a[SJR_WQ1] + C609b[SJR_WQ1] + L609[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case NonPulseNonDO {
+          condition month <= may
+        value (C608[SJR_WQ1] * EC_608_NP)
+            / (C609a[SJR_WQ1] + C609b[SJR_WQ1] + L609[SJR_WQ1])}
+     case NonPulsePlusDO {
+          condition always    !June thru September
+        value (C608[VAMP_AND_DO] * EC_608_NP)
+            / (C609a[VAMP_AND_DO] + C609b[VAMP_AND_DO] + L609[VAMP_AND_DO])}
+            }
+define EC_609_P {
+	case JunToMar {
+		condition	range(month,jun,mar)
+		value		EC_609_NP
+	}
+     case NearZero {
+         condition C609a[VAMP_AND_DO] + C609b[VAMP_AND_DO] + L609[VAMP_AND_DO] < 0.0001
+         value 0.0 }
+     case Pulse {
+          condition always
+        value (C608[VAMP_AND_DO] * EC_608_P)
+            / (C609a[VAMP_AND_DO] + C609b[VAMP_AND_DO] + L609[VAMP_AND_DO])}
+            }
+
+define EC_587_NP {
+    case NearZero {
+         condition C587[SJR_WQ1] + C587a[SJR_WQ1] + L587[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case NonPulseNonDO {
+          condition month <= may
+        value (C595[SJR_WQ1] * EC_595_NP
+            + C582[SJR_WQ1] * EC_C582
+            + R587a[SJR_WQ1] * EC_R587a
+            + R587B[SJR_WQ1] * EC_R587B
+            + C609a[SJR_WQ1] * EC_609_NP)
+            / (C587[SJR_WQ1] + C587a[SJR_WQ1] + L587[SJR_WQ1])
+            }
+     case NonPulsePlusDO {
+          condition always
+        value (C595[VAMP_AND_DO] * EC_595_NP
+            + C582[VAMP_AND_DO] * EC_C582
+            + R587a[VAMP_AND_DO] * EC_R587a
+            + R587B[VAMP_AND_DO] * EC_R587B
+            + C609a[VAMP_AND_DO] * EC_609_NP)
+            / (C587[VAMP_AND_DO] + C587a[VAMP_AND_DO] + L587[VAMP_AND_DO])
+            }}
+
+define EC_587_P {
+	case JunToMar {
+		condition	range(month,jun,mar)
+		value		EC_587_NP
+	}
+    case NearZero {
+         condition C587[VAMP_AND_DO] + C587a[VAMP_AND_DO] + L587[VAMP_AND_DO] < 0.0001
+         value 0.0 }
+     case Pulse {
+          condition always
+        value (C595[VAMP_AND_DO] * EC_595_P
+            + C582[VAMP_AND_DO] * EC_C582
+            + R587a[VAMP_AND_DO] * EC_R587a
+            + R587B[VAMP_AND_DO] * EC_R587B
+            + C609a[VAMP_AND_DO] * EC_609_P)
+            / (C587[VAMP_AND_DO] + C587a[VAMP_AND_DO] + L587[VAMP_AND_DO])
+            }}
+
+define EC_589_NP {
+    case NearZero {
+         condition C589[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case NonPulseNonDO {
+          condition month <= may
+        value (C587[SJR_WQ1] * EC_587_NP
+            + I589 * EC_I589 )
+            / C589[SJR_WQ1]
+            }
+     case NonPulsePlusDO {
+          condition always    !June thru September
+        value (C587[VAMP_AND_DO] * EC_587_NP
+            + I589 * EC_I589 )
+            / C589[VAMP_AND_DO]
+            }}
+define EC_589_P {
+	case JunToMar {
+		condition	range(month,jun,mar)
+		value		EC_589_NP
+	}
+    case NearZero {
+         condition C589[VAMP_AND_DO] < 0.0001
+         value 0.0 }
+     case Pulse {
+          condition always
+        value (C587[VAMP_AND_DO] * EC_587_P
+            + I589 * EC_I589 )
+            / C589[VAMP_AND_DO]
+            }}
+
+define EC_610_NP {
+    case NearZero {
+         condition C610[SJR_WQ1] + L610[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case NonPulseNonDO {
+          condition month <= may
+        value (C609b[SJR_WQ1] * EC_609_NP
+            + C587a[SJR_WQ1] * EC_587_NP)
+            / (C610[SJR_WQ1] + L610[SJR_WQ1])}
+     case NonPulsePlusDO {
+          condition always    !June thru September
+        value (C609b[VAMP_AND_DO] * EC_609_NP
+            + C587a[VAMP_AND_DO] * EC_587_NP)
+            / (C610[VAMP_AND_DO] + L610[VAMP_AND_DO])}
+            }
+define EC_610_P {
+	case JunToMar {
+		condition	range(month,jun,mar)
+		value		EC_610_NP
+	}
+    case NearZero {
+         condition C610[VAMP_AND_DO] + L610[VAMP_AND_DO] < 0.0001
+         value 0.0 }
+     case Pulse {
+          condition always
+        value (C609b[VAMP_AND_DO] * EC_609_P
+            + C587a[VAMP_AND_DO] * EC_587_P)
+            / (C610[VAMP_AND_DO] + L610[VAMP_AND_DO])}
+            }
+
+define EC_611_NP {
+    case NearZero {
+         condition C611[SJR_WQ1] + L611[SJR_WQ1] < 0.0001
+         value 0.0 }
+     case NonPulseNonDO {
+          condition month <= may
+        value (C589[SJR_WQ1] * EC_589_NP
+            + C610[SJR_WQ1] * EC_610_NP)
+            / (C611[SJR_WQ1] + L611[SJR_WQ1] )
+            }
+     case NonPulsePlusDO {
+          condition always    !June thru September
+        value (C589[VAMP_AND_DO] * EC_589_NP
+            + C610[VAMP_AND_DO] * EC_610_NP)
+            / (C611[VAMP_AND_DO] + L611[VAMP_AND_DO] )
+            }}
+define EC_611_P {
+	case JunToMar {
+		condition	range(month,jun,mar)
+		value		EC_611_NP
+	}
+    case NearZero {
+         condition C611[VAMP_AND_DO] + L611[VAMP_AND_DO] < 0.0001
+         value 0.0 }
+     case Pulse {
+          condition always
+        value (C589[VAMP_AND_DO] * EC_589_P
+            + C610[VAMP_AND_DO] * EC_610_P)
+            / (C611[VAMP_AND_DO] + L611[VAMP_AND_DO] )
+            }}
+/**/
+! Conditions for the SJR at Mud and Salt Slough
+define EC_614_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value (C611[SJR_WQ1] * EC_611_NP                            !  Node 614 Oct-May
+               + I614A * EC_I614A
+               + (I614[SJR_WQ1]-I614A) * EC_Grassland_B
+               + R614West[SJR_WQ1] * EC2_R614
+               + C607BVAMP[SJR_WQ1] * EC_Mendota_Pool
+               + PctAt614*AbvNwmnResLoad)   !LDB, 8/30/04
+               /C614[SJR_WQ1]
+               }
+      case NonPulsePlusDO {
+      condition always    !June thru September
+          value (C611[VAMP_AND_DO] * EC_611_NP                       !  Node 614 June-Sep
+               + I614A * EC_I614A
+               + (I614[VAMP_AND_DO]-I614A) * EC_Grassland_B
+               + R614West[VAMP_AND_DO] * EC5_R614
+               + C607BVAMP[VAMP_AND_DO] * EC_Mendota_Pool
+               + PctAt614*AbvNwmnResLoad)   !LDB, 8/30/04
+               /C614[VAMP_AND_DO]
+               }}
+
+define EC_614_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may                        ! Node 614 VAMP
+      value (C611[VAMP_AND_DO] * EC_611_P
+               + I614A * EC_I614A
+               + (I614[VAMP_AND_DO]-I614A) * EC_Grassland_B
+               + R614West[VAMP_AND_DO] * EC5_R614
+               + C607BVAMP[VAMP_AND_DO] * EC_Mendota_Pool
+               + PctAt614*AbvNwmnResLoad)   !LDB, 8/30/04
+               /C614[VAMP_AND_DO]
+               }
+     case otherwise {
+               condition always
+               value     EC_614_NP
+               }}
+
+! Conditions for the SJR at Newman (Merced/SJR confluence)
+define EC_620_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value (C614[SJR_WQ1] * EC_614_NP                            !Node 620 Oct-May
+               + C566[SJR_WQ1] * EC_566_NP
+               + MercedRelease_Oct*TAF_cfs * EC_566_NP
+               + C619[SJR_WQ1] * EC2_R619
+               + R620[SJR_WQ1] * EC_E_Return620
+               + PctAt620*AbvNwmnResLoad)  !LDB, 8/30/04
+               /(C620[SJR_WQ1] + MercedRelease_Oct*TAF_cfs
+                 +D620A[SJR_WQ1]+D620B[SJR_WQ1]+D620C[SJR_WQ1]) !LDB, 8/30/04
+               }
+      case NonPulsePlusDO {
+      condition always    !June thru September
+          value (C614[VAMP_AND_DO] * EC_614_NP                            !Node 620 June-Sep
+               + C566[VAMP_AND_DO] * EC_566_NP
+               + C619[VAMP_AND_DO] * EC5_R619
+               + R620[VAMP_AND_DO] * EC_E_Return620
+               + PctAt620*AbvNwmnResLoad)  !LDB, 8/30/04
+               /(C620[VAMP_AND_DO]+D620A[VAMP_AND_DO]+D620B[VAMP_AND_DO]
+                 +D620C[VAMP_AND_DO]) !LDB, 8/30/04
+               }}
+
+define EC_620_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may                        !Node 620 VAMP
+      value (C614[VAMP_AND_DO] * EC_614_P
+               + C566[VAMP_AND_DO] * EC_566_P
+               + C619[VAMP_AND_DO] * EC5_R619
+               + R620[VAMP_AND_DO] * EC_E_Return620
+               + PctAt620*AbvNwmnResLoad)  !LDB, 8/30/04
+               /(C620[VAMP_AND_DO]+D620A[VAMP_AND_DO]+D620B[VAMP_AND_DO]
+                 +D620C[VAMP_AND_DO]) !LDB, 8/30/04
+               }
+     case otherwise {
+               condition always
+               value     0.
+               }}
+
+! Conditions for the SJR near Modesto (Tuolumne/SJR confluence)
+define EC_630_NP {
+     case NonPulseNonDO {
+          condition month <= may                                !Node 630 Oct-May
+          value (C620[SJR_WQ1] * EC_620_NP
+               + MercedRelease_Oct*TAF_cfs * EC_620_NP
+               + C545[SJR_WQ1] * EC_545_NP
+               + R630West[SJR_WQ1] * EC2_R630
+               + R630J[SJR_WQ1] * EC_TID_Return
+               + R630K[SJR_WQ1] * EC_TID_Return
+               + R630L[SJR_WQ1] * EC_TID_Return
+               + R630M[SJR_WQ1] * EC_R630M
+               + Salt630 !A. Fock 2005/09/23 Salt from tile drains and GW base flow
+               + PctAt630*BtwMazeNwmnResLoad) !LDB, 9/13/04
+               / (C630[SJR_WQ1]
+                 + MercedRelease_Oct*TAF_cfs
+                 +D630A[SJR_WQ1]+D630B[SJR_WQ1])
+               }
+      case NonPulsePlusDO {
+      condition always    !June thru September
+          value (C620[VAMP_AND_DO] * EC_620_NP                            !Node 630 June - Sep
+               + C545[VAMP_AND_DO] * EC_545_NP
+               + R630West[VAMP_AND_DO] * EC5_R630
+               + R630J[VAMP_AND_DO] * EC_TID_Return
+               + R630K[VAMP_AND_DO] * EC_TID_Return
+               + R630L[VAMP_AND_DO] * EC_TID_Return
+               + R630M[VAMP_AND_DO] * EC_R630M
+               + Salt630 !A. Fock 2005/09/23 Salt from tile drains and GW base flow
+               + PctAt630*BtwMazeNwmnResLoad) !LDB, 9/13/04
+               / (C630[VAMP_AND_DO]
+                  +D630A[VAMP_AND_DO]+D630B[VAMP_AND_DO])
+               }}
+
+define EC_630_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may
+         value (C620[VAMP_AND_DO] * EC_620_P                            !Node 630 VAMP
+               + C545[VAMP_AND_DO] * EC_545_P
+               + R630West[VAMP_AND_DO] * EC5_R630
+               + R630J[VAMP_AND_DO] * EC_TID_Return
+               + R630K[VAMP_AND_DO] * EC_TID_Return
+               + R630L[VAMP_AND_DO] * EC_TID_Return
+               + R630M[VAMP_AND_DO] * EC_R630M
+               + Salt630 !A. Fock 2005/09/23 Salt from tile drains and GW base flow
+               + PctAt630*BtwMazeNwmnResLoad) !LDB, 9/13/04
+               /(C630[VAMP_AND_DO]
+                 +D630A[VAMP_AND_DO]+D630B[VAMP_AND_DO])
+               }
+     case otherwise {
+               condition always
+               value     0.
+               }}
+
+! Conditions for the SJR at Maze
+define EC_636_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value (C630[SJR_WQ1] * EC_630_NP
+               + MercedRelease_Oct*TAF_cfs * EC_630_NP                        !Node 636 Oct-May
+               + R636A[SJR_WQ1] * EC_MID_Return
+               + R636B[SJR_WQ1] * EC_MID_Return
+               + R636C[SJR_WQ1] * EC_MID_Return
+               + Salt636 !A. Fock 2005/09/23 Salt from tile drains and GW base flow
+               + PctAt636*BtwMazeNwmnResLoad) !LDB, 9/13/04
+               /(C636[SJR_WQ1]+ MercedRelease_Oct*TAF_cfs)
+               }
+      case NonPulsePlusDO {
+      condition always    !June thru September
+          value (C630[VAMP_AND_DO]  * EC_630_NP                            !Node 636 June-Sep
+               + R636A[VAMP_AND_DO] * EC_MID_Return
+               + R636B[VAMP_AND_DO] * EC_MID_Return
+               + R636C[VAMP_AND_DO] * EC_MID_Return
+               + Salt636 !A. Fock 2005/09/23 Salt from tile drains and GW base flow
+               + PctAt636*BtwMazeNwmnResLoad) !LDB, 9/13/04
+               /(C636[VAMP_AND_DO])
+               }}
+
+define EC_636_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may                        !Node 636 VAMP
+      value (C630[VAMP_AND_DO] * EC_630_P
+               + R636A[VAMP_AND_DO] * EC_MID_Return
+               + R636B[VAMP_AND_DO] * EC_MID_Return
+               + R636C[VAMP_AND_DO] * EC_MID_Return
+               + Salt636 !A. Fock 2005/09/23 Salt from tile drains and GW base flow
+               + PctAt636*BtwMazeNwmnResLoad) !LDB, 9/13/04
+               /(C636[VAMP_AND_DO])
+               }
+     case otherwise {
+               condition always
+               value     0.
+               }}
+
+! Conditions for the Stanislaus River at Ripon
+define I528pos {value max(0.,I528)}
+define I528neg {value min(0.,I528)}
+
+define stan_min_3_est {
+	case April {
+		condition	month == apr
+		value 		VernMin_reqtobemet*30./14.
+	}
+	case May {
+		condition	month == may
+		value 		VernMin_reqtobemet*31./16.
+	}
+	case otherwise {
+		condition	always
+		value 		VernMin_reqtobemet
+	}
+}
+
+
+define EC_528_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value (C520[SJR_WQ1] * EC_Goodwin                            !Node 528 Oct-May
+               + R528A[SJR_WQ1] * EC_Stan_Return !OID/SSJID
+               + R528B[SJR_WQ1] * EC_Stan_Return !SSJID
+               + R528C[SJR_WQ1] * EC_MID_Return
+               + I528pos * EC_Stan_Accr
+               + stan_min_3_est * EC_Goodwin)     ! Vernalis X2 Flows
+!               + OIDInstreamToBeMet*TAF_cfs * EC_Goodwin)  !OID Water Purchases)
+               /(C528[SJR_WQ1]
+                 + stan_min_3_est !+ OIDInstreamToBeMet*TAF_cfs
+                 +D528[SJR_WQ1]-I528neg)
+               }
+     case NonPulsePlusDO {
+      condition always    !June thru September
+          value (C520[VAMP_AND_DO] * EC_Goodwin                            !Node 528 June-Oct
+               + R528A[VAMP_AND_DO] * EC_Stan_Return !OID/SSJID
+               + R528B[VAMP_AND_DO] * EC_Stan_Return !SSJID
+               + R528C[VAMP_AND_DO] * EC_MID_Return
+               + I528pos * EC_Stan_Accr
+               + stan_min_3_est * EC_Goodwin)     ! Vernalis X2 Flows
+!               + OIDInstreamToBeMet*TAF_cfs * EC_Goodwin)  !OID Water Purchases)
+               /(C528[VAMP_AND_DO]
+                 + stan_min_3_est !+ OIDInstreamToBeMet*TAF_cfs
+                 +D528[VAMP_AND_DO]-I528neg)
+               }}
+
+define EC_528_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may                        !Node 528 VAMP
+      value (C520[VAMP_AND_DO] * EC_Goodwin
+               + R528A[VAMP_AND_DO] * EC_Stan_Return !OID/SSJID
+               + R528B[VAMP_AND_DO] * EC_Stan_Return !SSJID
+               + R528C[VAMP_AND_DO] * EC_MID_Return
+               + I528pos * EC_Stan_Accr)
+!               + OIDInstreamToBeMet*TAF_cfs * EC_Goodwin)  !OID Water Purchases)
+               /(C528[VAMP_AND_DO]
+!                 + OIDInstreamToBeMet*TAF_cfs
+                 +D528[VAMP_AND_DO]-I528neg)
+               }
+     case otherwise {
+               condition always
+               value     0.
+               }}
+
+! Conditions for the SJR at the Stanislaus/San Joaquin confluence
+define EC_637_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value (C636[SJR_WQ1] * EC_636_NP
+               + MercedRelease_Oct*TAF_cfs * EC_636_NP
+               + C528[SJR_WQ1] * EC_528_NP
+               + (stan_min_3_est /*+ OIDInstreamToBeMet*TAF_cfs*/) * EC_528_NP
+!WB                + I637 * EC_I637 !A. Fock  2005/9/17
+!WB EC_I637 is wrong variable to use here, it is inconsistent with value used to determine Goodwin release, therefor use EC_Stan_Rip_Rtn
+               + I637 * EC_Stan_Rip_Rtn
+               + R637A[SJR_WQ1] * EC_MID_Return
+               + R637B[SJR_WQ1] * EC_MID_Return
+               + R637C[SJR_WQ1] * EC_Stan_Rip_Rtn
+               + R637D[SJR_WQ1] * EC_R637D )
+               /(C637[SJR_WQ1]
+                 + MercedRelease_Oct*TAF_cfs
+                 + stan_min_3_est !+ OIDInstreamToBeMet*TAF_cfs
+                 +D637[SJR_WQ1])
+               }
+    case NonPulsePlusDO {
+      condition always    !June thru September
+          value (C636[VAMP_AND_DO] * EC_636_NP
+               + C528[VAMP_AND_DO] * EC_528_NP
+               + (stan_min_3_est /*+ OIDInstreamToBeMet*TAF_cfs*/) * EC_528_NP
+!WB               + I637 * EC_I637 !A. Fock  2005/9/17
+!WB EC_I637 is wrong variable to use here, it is inconsistent with value used to determine Goodwin release, therefor use EC_Stan_Rip_Rtn
+               + I637 * EC_Stan_Rip_Rtn
+               + R637A[VAMP_AND_DO] * EC_MID_Return
+               + R637B[VAMP_AND_DO] * EC_MID_Return
+               + R637C[VAMP_AND_DO] * EC_Stan_Rip_Rtn
+               + R637D[VAMP_AND_DO] * EC_R637D)
+               /(C637[VAMP_AND_DO]
+                 + stan_min_3_est !+ OIDInstreamToBeMet*TAF_cfs
+                 +D637[VAMP_AND_DO])
+               }}
+
+define EC_637_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may
+      value (C636[VAMP_AND_DO] * EC_636_P
+               + C528[VAMP_AND_DO] * EC_528_P
+!               + OIDInstreamToBeMet*TAF_cfs * EC_528_P
+!WB               + I637 * EC_I637 !A. Fock  2005/9/17
+!WB EC_I637 is wrong variable to use here, it is inconsistent with value used to determine Goodwin release, therefor use EC_Stan_Rip_Rtn
+               + I637 * EC_Stan_Rip_Rtn
+               + R637A[VAMP_AND_DO] * EC_MID_Return
+               + R637B[VAMP_AND_DO] * EC_MID_Return
+               + R637C[VAMP_AND_DO] * EC_Stan_Rip_Rtn
+               + R637D[VAMP_AND_DO] * EC_R637D)
+               /(C637[VAMP_AND_DO]
+!                 + OIDInstreamToBeMet*TAF_cfs
+                 +D637[VAMP_AND_DO])
+               }
+     case otherwise {
+               condition always
+               value     0.
+               }}
+
+define VERNWQNONPULSE {
+     case NonPulseNonDO {
+          condition month <= may
+          value ( C637[SJR_WQ1] * EC_637_NP
+                + MercedRelease_Oct*TAF_cfs * EC_637_NP
+                + (stan_min_3_est /*+ OIDInstreamToBeMet*TAF_cfs*/) * EC_637_NP
+                + R639A[SJR_WQ1] * EC_R639A
+                + R639B[SJR_WQ1] * EC2_R639)
+                /(C639[SJR_WQ1]
+                 + MercedRelease_Oct*TAF_cfs
+                 + stan_min_3_est !+ OIDInstreamToBeMet*TAF_cfs
+                 +D639[SJR_WQ1])
+                }
+
+     case NonPulsePlusDO {
+          condition always    !June thru September
+          value (C637[VAMP_AND_DO] * EC_637_NP
+                + (stan_min_3_est /*+ OIDInstreamToBeMet*TAF_cfs*/) * EC_637_NP
+                + R639A[VAMP_AND_DO] * EC_R639A
+                + R639B[VAMP_AND_DO] * EC5_R639)
+                /(C639[VAMP_AND_DO]
+                  + stan_min_3_est ! + OIDInstreamToBeMet*TAF_cfs
+                  +D639[VAMP_AND_DO])
+                }}
+
+define VERNWQPULSE {
+     case APRILMAY {
+          condition month >= apr .and. month <= may
+          value (C637[VAMP_AND_DO] * EC_637_P
+!                + OIDInstreamToBeMet*TAF_cfs * EC_637_P
+                + R639A[VAMP_AND_DO] * EC_R639A
+                + R639B[VAMP_AND_DO] * EC5_R639)
+                /(C639[VAMP_AND_DO]
+!                  + OIDInstreamToBeMet*TAF_cfs
+                  +D639[VAMP_AND_DO])
+                }
+     case otherwise {
+          condition always
+          value     0.
+                    }}
+
+! Weight average the April and May flows
+!define EC_611finalSV {value EC_611_NPandP}
+
+define EC_566finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_566_NP/30. + 16.*EC_566_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_566_P/31. + 16.*EC_566_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_566_NP}
+                    }
+
+define EC_545finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_545_NP/30. + 16.*EC_545_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_545_P/31. + 16.*EC_545_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_545_NP}
+                    }
+
+define EC_595finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_595_NP/30. + 16.*EC_595_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_595_P/31. + 16.*EC_595_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_595_NP}
+                    }
+define EC_607finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_607_NP/30. + 16.*EC_607_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_607_P/31. + 16.*EC_607_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_607_NP}
+                    }
+define EC_608finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_608_NP/30. + 16.*EC_608_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_608_P/31. + 16.*EC_608_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_608_NP}
+                    }
+define EC_609finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_609_NP/30. + 16.*EC_609_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_609_P/31. + 16.*EC_609_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_609_NP}
+                    }
+define EC_587finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_587_NP/30. + 16.*EC_587_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_587_P/31. + 16.*EC_587_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_587_NP}
+                    }
+define EC_589finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_589_NP/30. + 16.*EC_589_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_589_P/31. + 16.*EC_589_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_589_NP}
+                    }
+define EC_610finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_610_NP/30. + 16.*EC_610_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_610_P/31. + 16.*EC_610_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_610_NP}
+                    }
+define EC_611finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_611_NP/30. + 16.*EC_611_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_611_P/31. + 16.*EC_611_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_611_NP}
+                    }
+define EC_614finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_614_NP/30. + 16.*EC_614_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_614_P/31. + 16.*EC_614_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_614_NP}
+                    }
+
+define EC_620finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_620_NP/30. + 16.*EC_620_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_620_P/31. + 16.*EC_620_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_620_NP}
+                    }
+
+define EC_630finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_630_NP/30. + 16.*EC_630_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_630_P/31. + 16.*EC_630_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_630_NP}
+                    }
+
+define EC_636finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_636_NP/30. + 16.*EC_636_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_636_P/31. + 16.*EC_636_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_636_NP}
+                    }
+
+define EC_528finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_528_NP/30. + 16.*EC_528_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_528_P/31. + 16.*EC_528_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_528_NP}
+                    }
+
+
+define EC_637finalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*EC_637_NP/30. + 16.*EC_637_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_637_P/31. + 16.*EC_637_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_637_NP}
+                    }
+
+define VernWQfinalSV {   !micromhos/cm; state variable to be  written to a decision variable
+     case April {
+          condition month == apr
+          value     14.*VernWQnonpulse/30. + 16.*VernWQpulse/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*VernWQpulse/31. + 16.*VernWQnonpulse/31. }
+     case otherwise {
+          condition always
+          value     VernWQnonpulse}
+                    }
+
+! Write to DSS
+! For EC
+!define EC_611_final {alias EC_611finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_566_NP_DV{alias EC_566_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_566_P_DV {alias EC_566_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_566_final {alias EC_566finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_545_NP_DV{alias EC_545_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_545_P_DV {alias EC_545_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_545_final {alias EC_545finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_605_final { alias EC_C603 kind 'Salinity-EC' units 'umhos/cm' }
+
+define EC_595_NP_DV{alias EC_595_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_595_P_DV {alias EC_595_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_595_final {alias EC_595finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_607_NP_DV{alias EC_607_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_607_P_DV {alias EC_607_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_607_final {alias EC_607finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_608_NP_DV{alias EC_608_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_608_P_DV {alias EC_608_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_608_final {alias EC_608finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_609_NP_DV{alias EC_609_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_609_P_DV {alias EC_609_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_609_final {alias EC_609finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_587_NP_DV{alias EC_587_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_587_P_DV {alias EC_587_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_587_final {alias EC_587finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_589_NP_DV{alias EC_589_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_589_P_DV {alias EC_589_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_589_final {alias EC_589finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_610_NP_DV{alias EC_610_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_610_P_DV {alias EC_610_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_610_final {alias EC_610finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_611_NP_DV{alias EC_611_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_611_P_DV {alias EC_611_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_611_final {alias EC_611finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_614_NP_DV{alias EC_614_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_614_P_DV {alias EC_614_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_614_final {alias EC_614finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_620_NP_DV{alias EC_620_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_620_P_DV {alias EC_620_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_620_final {alias EC_620finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_630_NP_DV{alias EC_630_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_630_P_DV {alias EC_630_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_630_final {alias EC_630finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_636_NP_DV{alias EC_636_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_636_P_DV {alias EC_636_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_636_final {alias EC_636finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_528_NP_DV{alias EC_528_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_528_P_DV {alias EC_528_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_528_final {alias EC_528finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define EC_637_NP_DV{alias EC_637_NP kind 'Salinity-EC' units 'umhos/cm'}
+define EC_637_P_DV {alias EC_637_P kind 'Salinity-EC' units 'umhos/cm'}
+define EC_637_final {alias EC_637finalSV kind 'Salinity-EC' units 'umhos/cm'}
+
+define VERNWQNONPULSEDV {alias VERNWQNONPULSE kind 'Salinity-EC' units 'umhos/cm'}
+define VERNWQPULSEDV {alias VERNWQPULSE kind 'Salinity-EC' units 'umhos/cm'}
+
+!define VernWQfinal {alias VernWQfinalSV kind 'Salinity-EC' units 'umhos/cm'}
+!define VernWQfinal {std kind 'Salinity-EC' units 'umhos/cm'}
+goal setVernWQfinal {VernWQfinal = VernWQfinalSV}
+
+
+!For Flow
+define C566_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C566_P_DV {std kind 'Flow-Channel' units 'cfs'}
+goal setC566_NPDV { C566_NP_DV = C566[SJR_WQ1] + MercedRelease_Oct*TAF_cfs}
+goal setC566_PDV { C566_P_DV = C566[VAMP_AND_DO] }
+
+define C545_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C545_P_DV {std kind 'Flow-Channel' units 'cfs'}
+goal setC545_NPDV { C545_NP_DV = C545[SJR_WQ1] }
+goal setC545_PDV { C545_P_DV = C545[VAMP_AND_DO] }
+
+define C614Cycle2 {std kind 'Flow-Cycle2' units 'cfs'}
+define C614Cycle5 {std kind 'Flow-Cycle5' units 'cfs'}
+goal setC614_Cyc2 { C614Cycle2 = C614[SJR_WQ1] }
+goal setC614_Cyc5 { C614Cycle5 = C614[VAMP_AND_DO] }
+
+define C614_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C614_P_DV {std kind 'Flow-Channel' units 'cfs'}
+goal setC614_NPDV { C614_NP_DV = C614[SJR_WQ1] }
+goal setC614_PDV { C614_P_DV = C614[VAMP_AND_DO] }
+
+define C620Cycle2 {std kind 'Flow-Cycle2' units 'cfs'}
+define C620Cycle5 {std kind 'Flow-Cycle5' units 'cfs'}
+goal setC620_Cyc2 { C620Cycle2 = C620[SJR_WQ1] }
+goal setC620_Cyc5 { C620Cycle5 = C620[VAMP_AND_DO] }
+
+define C620_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C620_P_DV {std kind 'Flow-Channel' units 'cfs'}
+goal setC620_NPDV { C620_NP_DV = C620[SJR_WQ1] + MercedRelease_Oct*TAF_cfs}
+goal setC620_PDV { C620_P_DV = C620[VAMP_AND_DO] }
+
+define C630Cycle2 {std kind 'Flow-Cycle2' units 'cfs'}
+define C630Cycle5 {std kind 'Flow-Cycle5' units 'cfs'}
+goal setC630_Cyc2 { C630Cycle2 = C630[SJR_WQ1] }
+goal setC630_Cyc5 { C630Cycle5 = C630[VAMP_AND_DO] }
+
+define C630_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C630_P_DV {std kind 'Flow-Channel' units 'cfs'}
+goal setC630_NPDV { C630_NP_DV = C630[SJR_WQ1] + MercedRelease_Oct*TAF_cfs}
+goal setC630_PDV { C630_P_DV = C630[VAMP_AND_DO] }
+
+define C636Cycle2 {std kind 'Flow-Cycle2' units 'cfs'}
+define C636Cycle5 {std kind 'Flow-Cycle5' units 'cfs'}
+goal setC636_Cyc2 { C636Cycle2 = C636[SJR_WQ1] }
+goal setC636_Cyc5 { C636Cycle5 = C636[VAMP_AND_DO] }
+
+define C636_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C636_P_DV {std kind 'Flow-Channel' units 'cfs'}
+goal setC636_NPDV { C636_NP_DV = C636[SJR_WQ1] + MercedRelease_Oct*TAF_cfs }
+goal setC636_PDV { C636_P_DV = C636[VAMP_AND_DO] }
+
+define C520_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C520_P_DV {std kind 'Flow-Channel' units 'cfs'}
+
+define C528_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C528_P_DV {std kind 'Flow-Channel' units 'cfs'}
+
+define C637Cycle2 {std kind 'Flow-Cycle2' units 'cfs'}
+define C637Cycle5 {std kind 'Flow-Cycle5' units 'cfs'}
+goal setC637_Cyc2 { C637Cycle2 = C637[SJR_WQ1] }
+goal setC637_Cyc5 { C637Cycle5 = C637[VAMP_AND_DO] }
+
+define C637_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C637_P_DV {std kind 'Flow-Channel' units 'cfs'}
+
+define apr_np_frac {value 30./14.}
+define may_np_frac {value 31./16.}
+
+
+goal setC520_NPDV {
+	lhs C520_NP_DV
+	case April {
+		condition	month == apr
+		rhs 		C520[SJR_WQ1] + apr_np_frac*C10MIN
+        }
+        case May {
+        	condition	month == may
+		rhs 		C520[SJR_WQ1] + may_np_frac*C10MIN
+        }
+        case Otherwise {
+        	condition	always
+		rhs 		C520[SJR_WQ1]
+                                + C10MIN  /*+ OIDInstreamToBeMet*TAF_cfs*/ + C520DO
+        }
+}
+goal setC520_PDV {
+	lhs C520_P_DV
+	case AprilOrMay {
+		condition	month == apr .or. month == may
+		rhs		C520[VAMP_AND_DO]
+	}
+	case otherwise {
+		condition	always
+		rhs		C520_NP_DV
+	}
+}
+
+goal setC528_NPDV {
+	lhs C528_NP_DV
+	case April {
+		condition	month == apr
+		rhs 		C528[SJR_WQ1] + apr_np_frac*C10MIN
+        }
+        case May {
+        	condition	month == may
+		rhs 		C528[SJR_WQ1] + may_np_frac*C10MIN
+        }
+        case Otherwise {
+        	condition	always
+		rhs 		C528[SJR_WQ1]
+                                + C10MIN  /*+ OIDInstreamToBeMet*TAF_cfs*/ + C520DO
+        }
+}
+goal setC528_PDV {
+	lhs C528_P_DV
+	case AprilOrMay {
+		condition	month == apr .or. month == may
+		rhs		C528[VAMP_AND_DO]
+	}
+	case otherwise {
+		condition	always
+		rhs		C528_NP_DV
+	}
+}
+
+goal setC637_NPDV {
+	lhs C637_NP_DV
+	case April {
+		condition	month == apr
+		rhs 		C637[SJR_WQ1] + apr_np_frac*C10MIN
+        }
+        case May {
+        	condition	month == may
+		rhs 		C637[SJR_WQ1] + may_np_frac*C10MIN
+        }
+        case Otherwise {
+        	condition	always
+		rhs 		C637[SJR_WQ1] + MercedRelease_Oct*TAF_cfs
+                                + C10MIN  /*+ OIDInstreamToBeMet*TAF_cfs*/ + C520DO
+        }
+}
+goal setC637_PDV {
+	lhs C637_P_DV
+	case AprilOrMay {
+		condition	month == apr .or. month == may
+		rhs		C637[VAMP_AND_DO]
+	}
+	case otherwise {
+		condition	always
+		rhs		C637_NP_DV
+	}
+}
+
+
+define C639_NP_DV{std kind 'Flow-Channel' units 'cfs'}
+define C639_P_DV {std kind 'Flow-Channel' units 'cfs'}
+goal setC639_NPDV {
+	lhs C639_NP_DV
+	case April {
+		condition	month == apr
+		rhs 		C639[SJR_WQ1] + apr_np_frac*C10MIN
+        }
+        case May {
+        	condition	month == may
+		rhs 		C639[SJR_WQ1] + may_np_frac*C10MIN
+        }
+        case Otherwise {
+        	condition	always
+		rhs 		C639[SJR_WQ1] + MercedRelease_Oct*TAF_cfs
+                                + C10MIN /*+ OIDInstreamToBeMet*TAF_cfs */+ C520DO
+        }
+}
+goal setC639_PDV {
+	lhs C639_P_DV
+	case AprilOrMay {
+		condition	month == apr .or. month == may
+		rhs		C639[VAMP_AND_DO]
+	}
+	case otherwise {
+		condition	always
+		rhs		C639_NP_DV
+	}
+}
+
+define MercedRelOctDV {alias MercedRelease_Oct*TAF_cfs  kind 'temp' units 'cfs'}
+define VrnMn_rqtobmtDV {alias VernMin_reqtobemet  kind 'temp' units 'cfs'}
+!define OIDInstrmToBMDV {alias OIDInstreamToBeMet*TAF_cfs kind 'temp' units 'cfs'}
+!define AL_C639chk2 {alias C639[SJR_WQ1] kind 'temp' units 'cfs'}
+!define AL_C639chk4 {alias C639[VAMP_AND_DO] kind 'temp' units 'cfs'}
+

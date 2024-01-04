@@ -1,0 +1,76 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U system.val_util%b	s-valuti.adb		0d0a8d0c NE OL PK
+W system%s		system.ads		system.ali
+W system.case_util%s	s-casuti.adb		s-casuti.ali
+
+U system.val_util%s	s-valuti.ads		e2c525af NE OL PU PK
+W system%s		system.ads		system.ali
+
+D system.ads		20090410155748 b8eb58c3
+D s-casuti.ads		20090417131548 1e832a9a
+D s-valuti.ads		20090409150020 5a2e7d6c
+D s-valuti.adb		20090409150020 49a7dafa
+X 1 system.ads
+37K9*System 197e11 3|34r9 113r5 4|32r6 32r28 34r14 326r5
+X 2 s-casuti.ads
+42K16*Case_Util 66e21 4|32w13 32r35
+47V13*To_Upper{character} 4|70r22
+X 3 s-valuti.ads
+34K16*Val_Util 1|37k9 3|113l12 113e20 4|34b21 326l12 326t20
+37U14*Normalize_String 38=7 39<7 39<10 4|40b14 73l8 73t24
+38s7 S{string} 4|41b7 45r12 46r12 50r29 62r13 68r10 70m13 70r32
+39i7 F{integer} 4|42b7 45m7 50r13 50r32 51m10 51r15 56r10 68r13 69r19
+39i10 L{integer} 4|42b10 46m7 50r18 56r14 62r16 63m10 63r15 69r24
+48U14*Scan_Sign 49>7 50^7 51>7 52<7 53<7 4|206b14 263l8 263t17
+49s7 Str{string} 4|207b7 225r13 238r10 249r13
+50p7 Ptr(integer) 4|208b7 213r22 229r13 243r13 254r13 262r7
+51i7 Max{integer} 4|209b7 219r14 228r17 242r17 253r17
+52b7 Minus{boolean} 4|210b7 239m10 250m10 259m10
+53i7 Start{positive} 4|211b7 234m7 243r24 254r24
+71U14*Scan_Plus_Sign 72>7 73^7 74>7 75<7 4|162b14 200l8 200t22
+72s7 Str{string} 4|163b7 177r13 190r10
+73p7 Ptr(integer) 4|164b7 168r22 181r13 194r13 199r7
+74i7 Max{integer} 4|165b7 171r14 180r17 193r17
+75i7 Start{positive} 4|166b7 186m7 194r24
+79V13*Scan_Exponent{integer} 80>7 81^7 82>7 83>7 4|79b13 156l8 156t21
+80s7 Str{string} 4|80b7 91r18 91r42 100r10 109r13 122r10 136r43 143r13 144r30
+. 146r23
+81p7 Ptr(integer) 4|81b7 85r22 144r38 154r7
+82i7 Max{integer} 4|82b7 90r15 103r17 112r17 141r24 144r43
+83b7 Real{boolean} 4|83b7 112r33
+95U14*Scan_Trailing_Blanks 95>36 95>50 4|269b14 276l8 276t28
+95s36 Str{string} 4|269b36 271r21 272r13
+95i50 P{positive} 4|269b50 271r16
+99U14*Scan_Underscore 100>7 101=7 102^7 103>7 104>7 4|144r13 282b14 324l8
+. 324t23
+100s7 Str{string} 4|283b7 313r12
+101i7 P{natural} 4|284b7 292m7 292r12 305r10 306r21 313r17 321r21
+102p7 Ptr(integer) 4|285b7 306r10 321r10
+103i7 Max{integer} 4|286b7 305r14
+104b7 Ext{boolean} 4|287b7 317r12
+X 4 s-valuti.adb
+69i14 J{integer} 70r16 70r35
+85i7 P{natural} 90r10 91r23 91r47 98m7 98r12 100r15 101m10 101r15 103r13
+. 109r18 110m10 110r15 112r13 122r15 136r48 139m10 139r15 141r20 143r18 144m35
+. 146r28 154r18
+86b7 M{boolean} 106m13 115m13 119m10 150r10
+87i7 X{integer} 132m7 135r13 136m13 136r18 151m10 151r16 155r14
+168i7 P{natural} 171r10 177r18 178m10 178r15 180r13 181r24 186r16 190r15
+. 191m10 191r15 193r13 199r18
+213i7 P{natural} 219r10 225r18 226m10 226r15 228r13 229r24 234r16 238r15
+. 240m10 240r15 242r13 249r18 251m10 251r15 253r13 262r18
+271i11 J{integer} 272r18
+289e7 C{character} 313m7 315r10 317r26 317r50
+

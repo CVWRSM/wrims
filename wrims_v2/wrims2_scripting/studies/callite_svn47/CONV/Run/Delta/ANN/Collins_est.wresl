@@ -1,0 +1,34 @@
+/*************************************
+Collins_est.wresl
+
+Nazrul Islam; DWR; (06/27/2010)
+Get the required Sac flow for ESTIMATED exports
+
+Add a switch to turn off D1641 constrain at Collins
+Z.Q. Richard Chen; DWR; (02/07/2011)
+**************************/
+define COReqSac {
+          case D1641Off{
+            condition CO_DLTSW == 0
+            value 0.}
+  case NoSalinityControlPossible{
+    condition abs(CO_m_sv) <= 0.001 .and. int(CO_b_sv) == 0
+    value 0.}
+  case NegSlope{
+    condition CO_m_sv <= 0.0
+    value 0.}
+  case highcost{
+    condition CO_Sac_ZeroExp_sv2 >= ANNcap
+    value 0.}
+  case NegCarriage{
+    condition CO_m_sv >= 1.0
+    value 0.}
+  case control{
+    condition month >=OCT .and. month <=MAY
+    value max(0., (EstTotExpTD-CO_b_sv)/CO_m_sv)}
+  case other {
+    condition  always
+    value 0.}
+}
+define COReqSacDV {alias COReqSac kind 'FLOW' units 'CFS'}
+

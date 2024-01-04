@@ -1,0 +1,94 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnvvnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U system.tasking.async_delays.enqueue_calendar%b  s-tadeca.adb  4a78e4a3 NE OL SU
+W ada%s			ada.ads			ada.ali
+W ada.calendar%s	a-calend.adb		a-calend.ali
+W ada.calendar.delays%s	a-caldel.adb		a-caldel.ali
+W system%s		system.ads		system.ali
+W system.task_primitives%s  s-taspri.ads	s-taspri.ali
+W system.task_primitives.operations%s  s-taprop.adb  s-taprop.ali
+W system.tasking%s	s-taskin.adb		s-taskin.ali
+W system.tasking.async_delays%s  s-taasde.adb	s-taasde.ali
+W system.tasking.initialization%s  s-tasini.adb	s-tasini.ali
+
+U system.tasking.async_delays.enqueue_calendar%s  s-tadeca.ads  24513b14 NE OL SU
+W ada%s			ada.ads			ada.ali
+W ada.calendar%s	a-calend.adb		a-calend.ali
+W system.tasking.async_delays%s  s-taasde.adb	s-taasde.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-calend.ads		20090409150020 19486c30
+D a-caldel.ads		20090409150020 c565f6eb
+D a-except.ads		20090727140100 34786013
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-atacco.ads		20090409150020 60789a20
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-osinte.ads		20090422121236 e19b549f
+D s-parame.ads		20091130110856 6cdeed25
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stausa.ads		20090429103054 146a8ff1
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-tasinf.ads		20090409150020 ff3904e8
+D s-taspri.ads		20090409150020 f6de4d95
+D s-taprop.ads		20090409150020 25a7965c
+D s-taskin.ads		20090707124244 78c4deed
+D s-taasde.ads		20090409150020 3871b753
+D s-tadeca.ads		20090409150020 0568e077
+D s-tadeca.adb		20090409150020 dab51e66
+D s-tasini.ads		20090409150020 75677a05
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-win32.ads		20100128134454 4b10300f
+X 1 ada.ads
+16K9*Ada 19e8 25|37r6 39r11 26|32r6 37r11 41r13 43r12 51r18
+X 2 a-calend.ads
+36K13*Calendar 358e17 25|37w10 39r15 26|32r10 37r15 41r17 43r16 51r22
+38I9*Time 25|39r24 26|37r24 41r26
+52V13*Clock{38I9} 26|43r25
+104V13*"<="{boolean} 26|43r9
+X 3 a-caldel.ads
+37K22*Delays 53e24 26|32w19 51r31
+50V13*To_Duration{duration} 26|51r38
+X 9 system.ads
+37K9*System 197e11 25|38r10 26|33r6 34r6 36r10 45r7 49r4 50r7 53r5
+X 21 s-taspri.ads
+41K16*Task_Primitives 124e27 26|33r13 45r14 50r14
+X 22 s-taprop.ads
+39K32*Operations 546e38 26|33w29 45r30 50r30
+120V13*Self{23|106P9} 26|50r41
+299U14*Yield 26|45r41
+X 23 s-taskin.ads
+46K16*Tasking 1117e19 25|38r17 26|34r13 36r17 49r11 53r12
+104R9*Ada_Task_Control_Block 1072e14
+106P9*Task_Id(104R9)
+X 24 s-taasde.ads
+38K24*Async_Delays 149e32 25|38r25 26|36r25 53r20
+95P9*Delay_Block_Access(94R9) 25|40r11 26|38r11
+131b7*Timed_Out{boolean} 26|44m9
+142U14 Time_Enqueue 26|51r4
+X 25 s-tadeca.ads
+38V38*Enqueue_Calendar{boolean} 24|38k24 25|39>4 40>4 26|36b38 53l33 53t49
+39i4 T{2|38I9} 26|37b4 43r7 51r51
+40p4 D{24|95P9} 26|38b4 44r7 51r55
+X 27 s-tasini.ads
+35K24*Initialization 26|34w21 49r19 27|190e34
+107U14*Defer_Abort 26|49r34
+

@@ -1,0 +1,21 @@
+1). run CONV for 12 months
+
+   sv    \COMMON\DSS\2020D09ESV.DSS
+   dv    \CONV\DSS\2020D09EDV.DSS
+   init  \TXFR\DSS\2020D09EDV.DSS
+
+
+2). copy CONV dv var to txfr init file  
+         \TXFR\DSS\2020D09EDV.DSS
+   
+   var list in \CONV\CONV_MultiStudy_FInt
+
+
+3). run TXFR for 12 months
+
+   sv   \COMMON\DSS\2020D09ESV.DSS
+   dv   \TXFR\DSS\2020D09EDV.DSS
+   init \TXFR\DSS\2020D09EDV.DSS
+
+
+go to 1.

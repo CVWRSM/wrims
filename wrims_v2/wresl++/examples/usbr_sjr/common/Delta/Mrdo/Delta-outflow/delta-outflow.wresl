@@ -1,0 +1,23 @@
+!!   This is the minimum required Delta outflow (MRDO) code 
+!       code by E. Reyes 7/8/98   / Armin Munevar 11/21/98
+
+define January_PMI {
+        select  pmi
+        from    eightriver
+        where   wateryear=wateryear
+}
+
+define DO_req_flow {
+	case	jan_pmi_greater_800 {
+	  condition	month == JAN .and. January_PMI > 800.
+	  value		6000.}
+	case other {
+	  condition	always
+	  select	flow
+	  from		NDO_flow_std
+      where		month=month, wyt_SAC=wyt_SAC}
+}
+
+define begday_flw {value 1}
+define endday_flw {value daysin}
+

@@ -1,0 +1,455 @@
+/*
+RETURN FLOWS FROM DEMAND UNITS
+
+NAMING TAKES THE FOLLOWING FORMS:
+R_{DEMAND UNIT}     - return flow from specific demand unit
+R_{WBA}_{DESTINATION}   - aggregated return from WBA to specific location
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! RETURNS FROM WBAS AND SUB-ARCS
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 61      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 61_PA1 - Oakdale ID, North of Stanislaus River - Ag 
+!==============================
+goal setR_61_PA1        {R_61_PA1         = TW_61_PA1  + LF_61_PA1  + OS_61_PA1  - RU_61_PA1 }
+goal setR_61_RFS61C     {R_61_PA1_RFS61C  = R_61_PA1 }
+goal setR_RFS61C_STS030 {R_RFS61C_STS030  = 0.3*R_61_PA1}
+goal setR_RFS61C_SJR056 {R_RFS61C_SJR056  = 0.7*R_61_PA1}
+
+
+!==============================
+! 61_PA2 - Oakdale ID, South of Stanislaus River - Ag
+!==============================
+goal setR_61_PA2        {R_61_PA2         = TW_61_PA2  + LF_61_PA2  + OS_61_PA2  - RU_61_PA2 }
+goal setR_61_RFS61B     {R_61_PA2_RFS61B  = R_61_PA2}
+
+! IMF -- setR_RFS61B_TUO017: changed from = to <
+goal setR_RFS61B_TUO017 {R_RFS61B_TUO017 < OS_61_PA2_a}   
+! IMF -- constraint that routes OS_61_PA2_b is in constraints-Contracts.wresl -- it's implemented as a delivery, not a return flow
+goal setD_RFS61B_61_NA2 {D_RFS61B_61_NA2 < OS_61_PA2_b}
+! IMF -- setR_RFS61B_RFS61D: changed from = to < 
+! IMF -- NOTE...
+!        R_RFS61B_RFS61D removed as per DWR/MWH review of latest schematic.
+!        Portion of return flow previously routed through this arc is assumed to go to STS (via R_RFS61B_STS036)
+! goal setR_RFS61B_RFS61D {R_RFS61B_RFS61D < OS_61_PA2_c} 
+! IMF -- constraint that routes OS_61_PA2_b is in constraints-Contracts.wresl -- it's implemented as a delivery, not a return flow
+! IMF -- changed to allow arc to take any excess if other splits restricted (orig)
+! goal setR_RFS61B_STS036 {R_RFS61B_STS036 = OS_61_PA2_d}  
+goal setR_RFS61B_STS036 {R_RFS61B_STS036 < R_61_PA2 } ! OS_61_PA2_d + TW_61_PA2 + LF_61_PA2 - RU_61_PA2}
+
+
+! OLD...
+!define R_61_PA2         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_61_PA2   {select AG from EastSideRF where month=month}
+!goal setR_61_PA2        {R_61_PA2        = D_OAK020_61_PA2 * Rfactor_61_PA2}
+!goal setR_61_PA2_RFS61B {R_61_PA2_RFS61B = R_61_PA2 + OS_61_PA2_a + OS_61_PA2_b + OS_61_PA2_c + OS_61_PA2_d}
+!! IMF -- setR_RFS61B_TUO017: changed from = to <
+!goal setR_RFS61B_TUO017 {R_RFS61B_TUO017 < OS_61_PA2_a}   
+!! IMF -- constraint that routes OS_61_PA2_b is in constraints-Contracts.wresl -- it's implemented as a delivery, not a return flow
+!! goal setD_RFS61B_61_NA2 {D_RFS61B_61_NA2 < OS_61_PA2_b}
+!! IMF -- setR_RFS61B_RFS61D: changed from = to < 
+!goal setR_RFS61B_RFS61D {R_RFS61B_RFS61D < OS_61_PA2_c} 
+!! IMF -- constraint that routes OS_61_PA2_b is in constraints-Contracts.wresl -- it's implemented as a delivery, not a return flow
+!! goal setR_RFS61B_STS036 {R_RFS61B_STS036 = OS_61_PA2_d}  
+!! IMF -- changed to allow arc to take any excess if other splits restricted (orig)
+!goal setR_RFS61B_STS036 {R_RFS61B_STS036 < R_61_PA2 + OS_61_PA2_a + OS_61_PA2_b + OS_61_PA2_c + OS_61_PA2_d} 
+
+
+!==============================
+! 61_NA1 - East of Modesto ID and Oakdale ID - Ag
+!==============================
+! surface water only
+
+
+!==============================
+! 61_NA2 - Modesto ID - Ag
+!==============================
+goal setR_61_NA2        {R_61_NA2         = TW_61_NA2  + LF_61_NA2  + OS_61_NA2  - RU_61_NA2 }
+goal setR_61_RFS61D     {R_61_NA2_RFS61D  = R_61_NA2 }
+
+goal setR_RFS61D_TUO017 {R_RFS61D_TUO017 < OS_61_NA2_a + TW_61_NA2 + LF_61_NA2 - RU_61_NA2 } 
+goal setR_RFS61D_RFS61A {R_RFS61D_RFS61A = OS_61_NA2_b + OS_61_NA2_c}
+goal setR_RFS61A_SJR075 {R_RFS61A_SJR075 = OS_61_NA2_b + 0.5*R_61_NA5_RFS61A}
+goal setR_RFS61A_SJR072 {R_RFS61A_SJR072 = OS_61_NA2_c + 0.5*R_61_NA5_RFS61A}
+goal setR_RFS61D_STS017 {R_RFS61D_STS030 = OS_61_NA2_d}
+goal setD_RFS61D_61_NA5 {D_RFS61D_61_NA5 < OS_61_NA2_e + OS_61_PA2_b}
+
+
+! OLD...
+!define R_61_NA2         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_61_NA2   {select AG from EastSideRF where month=month}
+!goal setR_61_NA2        {R_61_NA2        = D_RFS61B_61_NA2 * Rfactor_61_NA2 
+!                                         + D_MDSTO_61_NA2  * Rfactor_61_NA2
+!                                         + D_OAK020_61_NA2 * Rfactor_61_NA2}
+!goal setR_61_NA2_RFS61D {R_61_NA2_RFS61D = R_61_NA2 + OS_61_NA2_a + OS_61_NA2_b + OS_61_NA2_c + OS_61_NA2_d + OS_61_NA2_e}
+!
+!goal setR_RFS61D_TUO017 {R_RFS61D_TUO017 = OS_61_NA2_a}
+!goal setR_RFS61D_RFS61A {R_RFS61D_RFS61A = OS_61_NA2_b + OS_61_NA2_c}
+!goal setR_RFS61A_SJR075 {R_RFS61A_SJR075 = OS_61_NA2_b + .5*R_61_NA5_RFS61A}
+!goal setR_RFS61A_SJR072 {R_RFS61A_SJR072 = OS_61_NA2_c + .5*R_61_NA5_RFS61A}
+!goal setR_RFS61D_STS017 {R_RFS61D_STS030 = OS_61_NA2_d}
+!! IMF -- constraint that routes OS_61_NA2_e is in constraints-Contracts.wresl -- it's implemented as a delivery, not a return flow
+!! goal setD_RFS61D_61_NA5 {D_RFS61D_61_NA5 < OS_61_NA2_e}
+
+
+!==============================
+! 61_NA3 - Tuolumne River Diversions (north bank) - Riparian Ag
+!============================== 
+goal setR_61_NA3        {R_61_NA3         = TW_61_NA3  + LF_61_NA3  + OS_61_NA3  - RU_61_NA3 }
+goal setR_61_TUO003     {R_61_NA3_TUO003  = R_61_NA3 }
+
+! OLD
+!define R_61_NA3         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_61_NA3   {select AG from EastSideRF where month=month}
+!goal setR_61_NA3        {R_61_NA3        = D_TUO017_61_NA3 * Rfactor_61_NA3}
+!goal setR_61_NA3_TUO003 {R_61_NA3_TUO003 = R_61_NA3 + OS_61_NA3}
+
+
+!==============================
+! 61_NA4 - Stanislaus River Diversions - Riparian Ag
+!==============================
+goal setR_61_NA4        {R_61_NA4         = TW_61_NA4  + LF_61_NA4  + OS_61_NA4  - RU_61_NA4 }
+goal setR_61_SJR072     {R_61_NA4_SJR072  = R_61_NA4 }
+
+
+!==============================
+! 61_NA5 - East Bank of SJR, Tuolumne to Stanislaus - Riparian Ag
+!==============================
+goal setR_61_NA5        {R_61_NA5         = TW_61_NA5  + LF_61_NA5  + OS_61_NA5  - RU_61_NA5 }
+goal setR_61_RFS61A     {R_61_NA5_RFS61A  = R_61_NA5 }
+
+
+!==============================
+! 61_NA6 - East Bank of SJR, Downstream of Stanislaus - Riparian Ag
+!==============================
+! THIS UNIT HAS NO RETURN ARC...IS THIS CORRECT? 
+! (NO RETURN ARC IN CODE OR ON SCHEMATIC)
+! SET RETURNS TO ZERO FOR NOW...
+! define R_61_NA6         {std kind 'RETURN-FLOW' units 'CFS'}
+! goal setR_61_NA6        {R_61_NA6         = 0.0 } ! TW_61_NA6  + LF_61_NA6  + OS_61_NA6  - RU_61_NA6 }
+! goal setR_61_XXXXXX     {R_61_NA6_XXXXXX  = R_61_NA6 }
+
+
+!==============================
+! 61_NU1 - City of Modesto - M&I
+!==============================
+goal setR_61_NU1        {R_61_NU1         = WW_61_NU1 }
+goal setR_61_MOWWTP     {R_61_NU1_MOWWTP  = R_61_NU1 }
+
+
+! OLD...
+! NOTE -- set to zero in original CS3 formulation
+!define R_61_NU1         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_61_NU1   {select MI from EastSideRF where month=month}
+!goal setR_61_NU1        {R_61_NU1        = D_WTPMOD_61_NU1 * Rfactor_61_NU1}
+!goal setR_61_MOWWTP     {R_61_NU1_MOWWTP = R_61_NU1}
+
+
+!==============================
+! 61_NU2 - Cities of Lathrop, Manteca & Escalon - M&I
+!==============================
+goal setR_61_NU2        {R_61_NU2         = WW_61_NU2 }
+goal setR_61_MAWWTP     {R_61_NU2_MAWWTP  = R_61_NU2 }
+
+! OLD...
+!define R_61_NU2         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_61_NU2   {select MI from EastSideRF where month=month}
+!goal setR_61_NU2        {R_61_NU2        = D_WTPDGT_61_NU2 * Rfactor_61_NU2}
+!goal setR_61_NU2_MAWWTP {R_61_NU2_MAWWTP = R_61_NU2}
+
+
+!==============================
+! 61_NU3 - Oakdale, Ripon, Riverbank & Small Communities - M&I
+!==============================
+! no surface water
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 62      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 62_NA1 - East of Turlock, DAU 209 - Ag
+!==============================
+! no surface water
+
+
+!==============================
+! 62_NA2 - Merced River Diversions (north bank) - Riparian Ag
+!==============================
+goal setR_62_NA2        {R_62_NA2         = TW_62_NA2  + LF_62_NA2  + OS_62_NA2  - RU_62_NA2 }
+goal setR_62_MCD028     {R_62_NA2_MCD028  = R_62_NA2 }
+
+! OLD...
+!define R_62_NA2         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_62_NA2   {select AG from EastSideRF where month=month}
+!goal setR_62_NA2        {R_62_NA2        = D_MCD050_62_NA2 * Rfactor_62_NA2}
+!goal setR_62_NA2_MCD028 {R_62_NA2_MCD028 = R_62_NA2 + OS_62_NA2}
+
+
+!==============================
+! 62_NA3 - Turlock ID - Ag
+!==============================
+goal setR_62_NA3        {R_62_NA3         = TW_62_NA3  + LF_62_NA3  + OS_62_NA3  - RU_62_NA3 }
+goal setR_62_RFS62      {R_62_NA3_RFS62   = R_62_NA3 }
+
+goal setR_RFS62_MCD021  {R_RFS62_MCD021   = 0.08*R_62_NA3_RFS62}
+goal setR_RFS62_TUO022  {R_RFS62_TUO022   = 0.11*R_62_NA3_RFS62}
+goal setR_RFS62_SJR082  {R_RFS62_SJR082   = 0.81*R_62_NA3_RFS62}
+
+! goal setR_RFS62_MCD021a {R_RFS62_MCD021   > OS_62_NA3_a}
+! goal setR_RFS62_MCD021b {R_RFS62_MCD021   < OS_62_NA3_a + TW_62_NA3  + LF_62_NA3 - RU_62_NA3}
+! goal setR_RFS62_TUO022a {R_RFS62_TUO022   > OS_62_NA3_b}
+! goal setR_RFS62_TUO022b {R_RFS62_TUO022   < OS_62_NA3_b + TW_62_NA3  + LF_62_NA3 - RU_62_NA3}
+! goal setR_RFS62_SJR082a {R_RFS62_SJR082   > OS_62_NA3_c}
+! goal setR_RFS62_SJR082b {R_RFS62_SJR082   < OS_62_NA3_c + TW_62_NA3  + LF_62_NA3 - RU_62_NA3}
+
+
+!==============================
+! 62_NA4 - Tuolumne River Diversions (south bank) - Riparian Ag
+!==============================
+goal setR_62_NA4        {R_62_NA4         = TW_62_NA4  + LF_62_NA4  + OS_62_NA4  - RU_62_NA4 }
+goal setR_62_TUO003     {R_62_NA4_TUO003  = R_62_NA4 }
+
+! OLD...
+!define R_62_NA4         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_62_NA4   {select AG from EastSideRF where month=month}
+!goal setR_62_NA4        {R_62_NA4        = D_TUO017_62_NA4 * Rfactor_62_NA4}
+!goal setR_62_NA4_TUO003 {R_62_NA4_TUO003 = R_62_NA4 + OS_62_NA4}
+
+
+!==============================
+! 62_NA5 - East Bank of SJR, Merced to Tuolumne - Riparian Ag
+!==============================
+goal setR_62_NA5        {R_62_NA5         = TW_62_NA5  + LF_62_NA5  + OS_62_NA5  - RU_62_NA5 }
+goal setR_62_SJR082     {R_62_NA5_SJR082  = R_62_NA5 }
+
+! OLD...
+!define R_62_NA5         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_62_NA5   {select AG from EastSideRF where month=month}
+!goal setR_62_NA5        {R_62_NA5        = D_SJR114_62_NA5 * Rfactor_62_NA5}
+!goal setR_62_NA5_SJR082 {R_62_NA5_SJR082 = R_62_NA5 + OS_62_NA5}
+
+
+!==============================
+! 62_NA6 - Merced ID (north of Merced River) - Ag
+!==============================
+goal setR_62_NA6        {R_62_NA6         = TW_62_NA6  + LF_62_NA6  + OS_62_NA6  - RU_62_NA6 }
+goal setR_62_MCD028b    {R_62_NA6_MCD028  = R_62_NA6 }
+
+! OLD...
+!define R_62_NA6         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_62_NA6   {select AG from EastSideRF where month=month}
+!goal setR_62_NA6        {R_62_NA6        = D_MCD055_62_NA6 * Rfactor_62_NA6}
+!goal setR_62_NA6_MCD028 {R_62_NA6_MCD028 = R_62_NA6 + OS_62_NA6}
+
+
+!==============================
+! 62_NU - Cities of Turlock, Ceres, Dehli, Hilmer, Hughson, Keyes, Denair & Small Communities - M&I
+!==============================
+! no surface water
+! NO SW, BUT HAS RETURN -- CHECK IF THIS IS CORRECT...?
+goal setR_62_NU         {R_62_NU         = 0.0}
+goal setR_62_NU_TKWWTP  {R_62_NU_TKWWTP  = R_62_NU}
+goal setR_TKWWTP_SJR101 {R_TKWWTP_SJR101 = R_62_NU_TKWWTP}
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 63      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 63_PR1 - Arena Plains Unit of Merced NWR - Refuge
+!==============================
+goal setR_63_PR1        {R_63_PR1         = TW_63_PR1  + LF_63_PR1  + OS_63_PR1  - RU_63_PR1 }
+goal setR_63_ESC000     {R_63_PR1_ESC000  = R_63_PR1 }
+
+! OLD...
+!define R_63_PR1         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_63_PR1   {select RF from EastSideRF where month=month}
+!goal setR_63_PR1        {R_63_PR1        = D_ESC000_63_PR1 * Rfactor_63_PR1}
+!goal setR_63_PR1_ESC000 {R_63_PR1_ESC000 = R_63_PR1 + OS_63_PR1}
+
+
+!==============================
+! 63_PR2 - Merced and Lone Tree Units of Merced NWR - Refuge
+!==============================
+goal setR_63_PR2        {R_63_PR2         = TW_63_PR2  + LF_63_PR2  + OS_63_PR2  - RU_63_PR2 }
+goal setR_63_EBP041     {R_63_PR2_EBP041  = R_63_PR2 }
+
+! OLD...
+!define R_63_PR2         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_63_PR2   {select RF from EastSideRF where month=month}
+!goal setR_63_PR2        {R_63_PR2        = D_DED010_63_PR2 * Rfactor_63_PR2}
+!goal setR_63_PR2_EBP041 {R_63_PR2_EBP041 = R_63_PR2 + OS_63_PR2}
+
+
+!==============================
+! 63_PR3 - East Bear Unit of San Luis NWR - Refuge
+!==============================
+goal setR_63_PR3        {R_63_PR3         = TW_63_PR3  + LF_63_PR3  + OS_63_PR3  - RU_63_PR3 }
+goal setR_63_SJR134     {R_63_PR3_SJR134  = R_63_PR3 }
+
+! OLD...
+!define R_63_PR3         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_63_PR3   {select RF from EastSideRF where month=month}
+!goal setR_63_PR3        {R_63_PR3        = D_EBP048_63_PR3 * Rfactor_63_PR3}
+!goal setR_63_PR3_SJR134 {R_63_PR3_SJR134 = R_63_PR3 + OS_63_PR3}
+
+
+!==============================
+! 63_NA1 - East of Merced ID, DAU 211 - Ag
+!==============================
+! no surface water
+
+
+!==============================
+! 63_NA2 - Merced River Diversions (south bank) - Riparian Ag
+!==============================
+goal setR_63_NA2        {R_63_NA2         = TW_63_NA2  + LF_63_NA2  + OS_63_NA2  - RU_63_NA2 }
+goal setR_63_MCD028     {R_63_NA2_MCD028  = R_63_NA2 }
+
+! OLD...
+!define R_63_NA2         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_63_NA2   {select AG from EastSideRF where month=month}
+!goal setR_63_NA2        {R_63_NA2        = D_MCD042_63_NA2 * Rfactor_63_NA2}
+!goal setR_63_NA2_MCD028 {R_63_NA2_MCD028 = R_63_NA2 + OS_63_NA2}
+
+
+!==============================
+! 63_NA3 - Merced ID (south of Merced River) - Ag
+!==============================
+goal setR_63_NA3        {R_63_NA3         = TW_63_NA3  + LF_63_NA3  + OS_63_NA3  - RU_63_NA3 }
+goal setR_63_MCD028b    {R_63_NA3_MCD028  = R_63_NA3 }
+
+! OLD...
+!define R_63_NA3         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_63_NA3   {select AG from EastSideRF where month=month}
+!goal setR_63_NA3        {R_63_NA3        = D_MID021_63_NA3 * Rfactor_63_NA3}
+!goal setR_63_NA3_MCD028 {R_63_NA3_MCD028 = R_63_NA3 + OS_63_NA3}
+
+
+!==============================
+! 63_NA4 - West of Merced ID and Non District Areas in DAU 210 & 212 - Ag
+!==============================
+goal setR_63_NA4        {R_63_NA4         = TW_63_NA4  + LF_63_NA4  + OS_63_NA4  - RU_63_NA4 }
+goal setR_63_SJR117     {R_63_NA4_SJR117  = R_63_NA4 }
+
+! OLD...
+!define R_63_NA4         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_63_NA4   {select AG from EastSideRF where month=month}
+!goal setR_63_NA4        {R_63_NA4        = D_MCD002_63_NA4 * Rfactor_63_NA4
+!                                         + D_MCD021_63_NA4 * Rfactor_63_NA4
+!                                         + D_MID021_63_NA4 * Rfactor_63_NA4}
+!goal setR_63_NA4_SJR117 {R_63_NA4_SJR117 = R_63_NA4 + OS_63_NA4}
+
+
+!==============================
+! 63_NU - Cities of Merced, Atwater, Livingston, Winton, Planada, LeGrande & Small Communities - M&I
+!==============================
+! no surface water
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 64      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 64_PA1 - Madera ID - Ag
+!==============================
+goal setR_64_PA1        {R_64_PA1         = TW_64_PA1  + LF_64_PA1  + OS_64_PA1 - RU_64_PA1 }
+goal setR_64_EBP016     {R_64_PA1_EBP016  = R_64_PA1 }
+
+! OLD...
+!define R_64_PA1         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_64_PA1   {select AG from EastSideRF where month=month}
+!goal setR_64_PA1        {R_64_PA1        = D_FRS036_64_PA1 * Rfactor_64_PA1 
+!                                         + D_MDC006_64_PA1 * Rfactor_64_PA1
+!                                         + D_MDC032_64_PA1 * Rfactor_64_PA1
+!                                         + D_DBC014_64_PA1 * Rfactor_64_PA1}
+!goal setR_64_PA1_EBP016 {R_64_PA1_EBP016 = R_64_PA1 + OS_64_PA1}
+
+
+!==============================
+! 64_PA2 - Chowchilla ID - Ag
+!==============================
+goal setR_64_PA2        {R_64_PA2         = TW_64_PA2  + LF_64_PA2  + OS_64_PA2  - RU_64_PA2 }
+goal setR_64_RFS64      {R_64_PA2_RFS64   = R_64_PA2 }
+
+! OLD...
+!define R_64_PA2         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_64_PA2   {select AG from EastSideRF where month=month}
+!goal setR_64_PA2        {R_64_PA2        = D_CHW017_64_PA2 * Rfactor_64_PA2
+!                                         + D_ASL013_64_PA2 * Rfactor_64_PA1
+!                                         + D_BRS018_64_PA2 * Rfactor_64_PA1} 
+!goal setR_64_RFS64      {R_64_PA2_RFS64  = R_64_PA2 + OS_64_PA2}
+
+
+!==============================
+! 64_PA3 - Gravelly Ford and Root Creek Water Districts - Ag
+!==============================
+goal setR_64_PA3        {R_64_PA3         = TW_64_PA3  + LF_64_PA3  + OS_64_PA3  - RU_64_PA3 }
+goal setR_64_EBP016b    {R_64_PA3_EBP016  = R_64_PA3 }
+
+! OLD...
+! IMF -- CHANGED TO READ Rfactor FROM EastSideRF, not CVP_SOD_RF
+!! define Rfactor_64_PA3   {select factor from CVP_SOD_RF where contractor = 6413, month=month}
+!define R_64_PA3         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_64_PA3   {select DUM1 from EastSideRF where month=month}
+!goal setR_64_PA3        {R_64_PA3        = Rfactor_64_PA3 * D_SJR227_64_PA3
+!                                         + Rfactor_64_PA3 * D_MDC006_64_PA3}
+!goal setR_64_PA3_EBP016 {R_64_PA3_EBP016 = R_64_PA3 + OS_64_PA3}
+
+
+!==============================
+! 64_XA - Columbia Canal Co. (Exchange Contractor) - Ag
+!==============================
+goal setR_64_XA         {R_64_XA          = TW_64_XA   + LF_64_XA   + OS_64_XA   - RU_64_XA  }
+goal setR_64_SJR185     {R_64_XA_SJR185   = R_64_XA  }
+
+! OLD...
+! IMF -- CHANGED TO READ Rfactor FROM EastSideRF, not CVP_SOD_RF
+!! define Rfactor_64_XA    {select factor from CVP_SOD_RF where contractor = 6440, month=month}
+!define R_64_XA          {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_64_XA    {select DUM1  from EastSideRF where month=month}
+!goal setR_64_XA         {R_64_XA        = Rfactor_64_XA * D_MDOTA_64_XA}
+!goal setR_64_XA_SJR185  {R_64_XA_SJR185 = R_64_XA + OS_64_XA}
+
+
+!==============================
+! 64_NA1 - East of Madera ID and Non District DAU 213 - Ag
+!==============================
+! no surface water
+
+
+!==============================
+! 64_NA2 - West of Madera ID and Chowchilla ID - Ag
+!==============================
+goal setR_64_NA2        {R_64_NA2         = TW_64_NA2  + LF_64_NA2  + OS_64_NA2  - RU_64_NA2 }
+goal setR_64_EBP030     {R_64_NA2_EBP030  = R_64_NA2 }
+
+! OLD...
+!define R_64_NA2         {std kind 'RETURN-FLOW' units 'CFS'}
+!define Rfactor_64_NA2   {select AG from EastSideRF where month=month}
+!goal setR_64_NA2        {R_64_NA2        = D_RFS64_64_NA2  * Rfactor_64_NA2 
+!                                         + D_EBP016_64_NA2 * Rfactor_64_NA2}
+!goal setR_64_NA2_EBP030 {R_64_NA2_EBP030 = R_64_NA2}
+
+
+!==============================
+! 64_NU - Cities of Madera, Chowchilla, Madera Acres & Small Communities - M&I
+!==============================
+! no surface water
+

@@ -1,0 +1,606 @@
+!Sum of Calendar Year SWP Deliveries
+
+
+define swpdel_D25 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D25(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }  
+
+define swpdel_D27 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D27(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D28 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D28(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D29 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D29(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdelc_ButteCo {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) perdv_swp_oth1(i)*CL_ButteC(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdelc_YubaCity {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D_WTPCYC_16_PU(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdelc_nba {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D_BRK004_NBA(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D802A {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D802A(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+       
+define swpdel_D803 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D803(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+
+/*define swpdel_D821 {        !Surrogate deliveries
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D821(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } */
+
+define swpdel_D824 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D824(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D826 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D826(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D827 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D827(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D828 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D828(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D829 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D829(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D846 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D846(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D847 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D847(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D848 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D848(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D849 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D849(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D867 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D867(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D868 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D868(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D869 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D869(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+       
+define swpdel_D870 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D870(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }        
+
+define swpdel_D851 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D851(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+/*
+define swpdel_D853 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D853(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+*/
+define swpdel_D854 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D854(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D859 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D859(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D862 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D862(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D863 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D863(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D864 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D864(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D877 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D877(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D878 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D878(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D879 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D879(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D880 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D880(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D881 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D881(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D882 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D882(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D883 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D883(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D884 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D884(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D885 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D885(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D886 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D886(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D887 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D887(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D888 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D888(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D889 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D889(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D899 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D899(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D891 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D891(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D893 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D893(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D894 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D894(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D895 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D895(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D896 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D896(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D810 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D810(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_D813 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D813(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+ define swpdel_D814 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D814(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+ define swpdel_D815 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D815(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+ define swpdel_D816 {
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D816(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define calendar_del {value swpdel_D25 + swpdel_D27 + swpdel_D28 + swpdel_D29 + swpdelc_ButteCo + swpdelc_YubaCity + swpdelc_NBA + swpdel_D802A + swpdel_D803 /*+ swpdel_D821*/ + swpdel_D824 + swpdel_D827 + swpdel_D826 + swpdel_D828 + swpdel_D829 
+                           + swpdel_D846 + swpdel_D847 + swpdel_D848 + swpdel_D849 + swpdel_D867 + swpdel_D868 + swpdel_D869 + swpdel_D870 + swpdel_D851 /*+ swpdel_D853*/ + swpdel_D854 + swpdel_D859
+                           + swpdel_D862 + swpdel_D863 + swpdel_D864 + swpdel_D877 + swpdel_D878 + swpdel_D879 + swpdel_D880 + swpdel_D881 + swpdel_D882 + swpdel_D883 + swpdel_D884 + swpdel_D885
+                           + swpdel_D886 + swpdel_D887 + swpdel_D888 + swpdel_D889 + swpdel_D899 + swpdel_D891 + swpdel_D893 + swpdel_D894 + swpdel_D895 + swpdel_D896 + swpdel_D810 
+                           + swpdel_D813 + swpdel_D814 + swpdel_D815 + swpdel_D816}
+
+define cali {alias calendar_del units 'taf'}
+

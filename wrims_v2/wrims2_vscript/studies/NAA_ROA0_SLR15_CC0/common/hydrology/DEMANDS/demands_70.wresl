@@ -1,0 +1,757 @@
+/* This file sets up the diversion requirements for DSA 70
+   Each Diversion Requirement is split between project and nonproject
+   Non project diversion requirement is not entitled to releases from
+   Project reservoirs.
+   water right demands are part of the project demand but without deficiencies
+   see running gain file for more details
+
+   Logic developed by RAJ 9/99
+   Edited by Russ Yaworsky and Dustin Jones 12/02/99
+*/
+
+!Monthly delivery pattern for each of the water purveyors
+define perdem_70       {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !AG monthly distribution--DSA 70
+define perdem_70smud   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--SMUD Folsom South Canal
+define perdem_70Sac    {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--City of Sacramento
+define perdem_70Fol    {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Folsom City
+define perdem_70SJWDS  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--San Juan WD (Sac County)
+define perdem_70SJWDP  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--San Juan WD (Placer County)
+define perdem_70Rose   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Roseville City
+define perdem_70ArcWD  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Arcade WD
+define perdem_70NRWD   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Northridge WD
+define perdem_70Carm   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Carmichael WD
+define perdem_70PCWA   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Placer County WA
+define perdem_70FolP   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Folsom Prison
+define perdem_70ElDor  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--El Dorado ID
+define perdem_70ElDorCo {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--El Dorado County WA
+define perdem_70CARec  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--CA Parks & Rec
+define perdem_70SCWC   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--SCWC/ACWC
+define perdem_70SCWA   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Sac County WA
+
+!The following are monthly demands on the Sacramento River
+define dem_D162a_psc   {timeseries kind 'DEMAND-CVP-SC' units 'TAF' convert 'CFS'} !Settlement contract demand--Settlement Contracts
+define dem_D162b_psc   {timeseries kind 'DEMAND-CVP-SC' units 'TAF' convert 'CFS'} !Settlement contract demand--Natomas Central MWC
+define dem_D162c_psc   {timeseries kind 'DEMAND-CVP-SC' units 'TAF' convert 'CFS'} !Settlement contract demand--Pleasant Grove-Verona MWC
+define dem_D162d_wr    {timeseries kind 'DEMAND-NP-MI'  units 'TAF' convert 'CFS'} !Water right demand--Sac City SRWRP (Sac above American)
+define dem_D162e_pmi   {timeseries kind 'DEMAND-CVP-MI' units 'TAF' convert 'CFS'} !Project demand--PCWA SRWRP (Sac above American)
+define dem_D162e_wr    {timeseries kind 'DEMAND-NP-MI'  units 'TAF' convert 'CFS'} !Water right demand--PCWA SRWRP for Sac Suburban, Roseville, etc (Sac above American)
+
+!The following are annual demands on the American River and include Water Forum reductions
+define dem_D300_pmi_ann  {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--PCWA (American Pump Station abv Folsom)
+define dem_D300_wr_ann   {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--PCWA (American Pump Station abv Folsom)
+
+define dem_D8a_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Sac Suburban (American)
+define dem_D8b_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Folsom City
+define dem_D8b_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Folsom City
+define dem_D8c_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Folsom Prison
+define dem_D8d_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--SJWD Placer County
+define dem_D8e_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--SJWD Sac County
+define dem_D8e_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--SJWD Sac County
+define dem_D8f_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--El Dorado ID
+define dem_D8f_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--El Dorado ID
+define dem_D8g_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Roseville City (American)
+define dem_D8g_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Roseville City (American)
+define dem_D8h_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--PCWA at Folsom
+define dem_D8i_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--El Dorado County PL 101-514
+define dem_D9aa_wr_ann   {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--SCWC/ACWC
+define dem_D9ab_pmi_ann  {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Cal Parks & Rec
+define dem_D9b_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--SMUD Folsom South Canal
+define dem_D9b_wr_ann    {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--SMUD Folsom South Canal
+
+define dem_D302a_wr_ann  {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Sac City (American)
+define dem_D302b_wr_ann  {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Arcade WD
+define dem_D302c_wr_ann  {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Carmichael WD
+
+!The following are monthly losses on Folsom South Canal
+define dem_D9a_pls     {timeseries kind 'DEMAND-CVP-LS' units 'TAF' convert 'CFS'} !Project losses on Folsom South Canal
+
+!The following are annual demands on the Sacramento River (below American) and include Water Forum reductions
+define dem_D167a_wr_ann  {timeseries kind 'DEMAND-NP-MI'  units 'TAF'}  !Annual water right demand--Sac City (Sac below American)
+define dem_D167b_pmi_a   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual demands for Sac County WA
+
+
+!Define the Allocations for the Individual Contract Types as defined in the Water Forum.
+!The Water Forum allocations reflect full demands, demand reductions, and/or demand transfers.
+!See demand spreadsheet nod_demands.xls
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+!Special allocations for Hodge Decision flow criteria
+!If flow in the lower American River is less than the Hodge Decision flow levels,
+!then more of the City of Sac demand is shifted to the Sac River
+
+! define the two levels of allocation for D302a(American Diversion) and D167(Sacramento Diversion)
+! Modified by T. Crawford
+
+!**************
+! City of Sacramento
+!**************
+
+define dem_D167a_wr  {value dem_D167a_wr_ann * perdem_70Sac * taf_cfs}
+define dem_D302a_wr  {value dem_D302a_wr_ann * perdem_70Sac * taf_cfs}
+
+/* comment out by ad swri 11/23/04 for without water forum case
+! Set up the integer and accompanying goals that determine if flow is above or below the Hodge flow levels triggers.
+define Hodge_trigger {
+       case OCT {
+            condition month == OCT
+            value     1879.0 }
+
+       case NOV_FEB {
+            condition month >= NOV .and. month <= FEB
+            value     2000.0 }
+
+       case MAR_JUN {
+            condition month >= MAR .and. month <= JUN
+            value     3000.0 }
+
+       case JUL_SEP {
+            condition always
+            value     1750.0 }
+       }
+
+define Hodge_flow_limit {
+       case OCT_DEC {
+            condition month >= OCT .and. month <= DEC
+            value     100.0 }
+
+       case JUN_AUG {
+            condition month >= JUN .and. month <= AUG
+            value     155.0 }
+
+       case FEB_MAY_SEP {
+            condition always
+            value     120.0 }
+       }
+
+define dem_d302a_wf {
+       case above_Hodge {
+            condition minflow_C9_ >= Hodge_trigger
+            value     dem_d302a_wr}
+       case below_Hodge {
+            condition always
+            value     min(Hodge_flow_limit, dem_d302a_wr)}
+       }
+
+define dem_d167a_wf {
+       case above_Hodge {
+            condition minflow_C9_ >= Hodge_trigger
+            value     dem_d167a_wr}
+       case below_Hodge {
+            condition always
+            value     dem_d167a_wr + dem_d302a_wr - min(dem_d302a_wr, Hodge_flow_limit)}
+       }
+*/
+
+! added by swri 11/23/04 for without water forum case
+! See diversion shifting code below
+define dem_d302a_wf {value dem_d302a_wr }
+define dem_d167a_wf  {value dem_d167a_wr}
+
+define dem_d302a_wfdv {alias dem_d302a_wf kind 'DEMAND-WATER-FORUM' units 'cfs'}
+define dem_d167a_wfdv {alias dem_d167a_wf kind 'DEMAND-WATER-FORUM' units 'cfs'}
+
+!******************************************************************************************************************
+
+!*************
+! folsom city
+!**************
+
+define dem1_D8b_pmi_a {select Folsom from American_PRJ_WR where index=3} !Annual project demand - PL 101-514
+define adj_D8b_pmi_ann {value min(dem_D8b_pmi_ann, dem1_D8b_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D8b_pmi {value adj_D8b_pmi_ann * perdem_70Fol * taf_cfs}
+define dem_D8b_wr  {value dem_D8b_wr_ann * perdem_70Fol * taf_cfs}
+define dem_D8b_wf {value dem_D8b_wr + adj_D8b_pmi} !Water Forum allocation
+
+define dem_D8b_wfdv {alias dem_D8b_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! San Juan Water District SAC County
+!**************
+
+define dem1_D8e_pmi_a {select SJWD from American_PRJ_WR where index=2} !Annual project demand
+define adj_D8e_pmi_ann {value min(dem_D8e_pmi_ann, dem1_D8e_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D8e_pmi {value adj_D8e_pmi_ann * perdem_70SJWDS * taf_cfs}
+define dem_D8e_wr  {value dem_D8e_wr_ann * perdem_70SJWDS * taf_cfs}
+define dem_D8e_wf {value dem_D8e_wr + adj_D8e_pmi} !Water Forum allocation
+
+define dem_D8e_wfdv {alias dem_D8e_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! El Dorado ID
+!**************
+
+define dem1_D8f_pmi_a {select ElDorID from American_PRJ_WR where index=2} !Annual project demand - NOT PL 101-514
+define adj_D8f_pmi_ann {value min(dem_D8f_pmi_ann, dem1_D8f_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D8f_pmi {value adj_D8f_pmi_ann * perdem_70ElDor * taf_cfs}
+define dem_D8f_wr  {value dem_D8f_wr_ann * perdem_70ElDor * taf_cfs}
+define dem_D8f_wf {value dem_D8f_wr + adj_D8f_pmi} !Water Forum allocation
+
+define dem_D8f_wfdv {alias dem_D8f_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! City of Roseville
+!**************
+
+define dem1_D8g_pmi_a {select Roseville_8g from American_PRJ_WR where index=2} !Annual project demand
+define adj_D8g_pmi_ann {value min(dem_D8g_pmi_ann, dem1_D8g_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D8g_pmi {value adj_D8g_pmi_ann * perdem_70Rose * taf_cfs}
+define dem_D8g_wr  {value dem_D8g_wr_ann * perdem_70Rose * taf_cfs}
+define dem_D8g_wf {value dem_D8g_wr + adj_D8g_pmi} !Water Forum allocation
+
+define dem_D8g_wfdv {alias dem_D8g_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! City of Sacramento - SRWRP - above confluence of American River on Sacramento River
+!**************
+
+define dem_D162d_wf {value dem_D162d_wr}
+
+define dem_D162d_wfdv {alias dem_D162d_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! Placer County Water Agency (CVP project and WR water for Sac Suburban, Roseville, etc ) - SRWRP - above confluence of American River on Sacramento River
+!**************
+
+define adj_D162e_pmi {value dem_D162e_pmi * perdel_cvpmi_sys}
+define dem_D162e_wf {value adj_D162e_pmi + dem_D162e_wr}
+
+define dem_D162e_wfdv {alias dem_D162e_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! Placer County Water Agency (CVP project) - at Folsom Urban Intake
+!**************
+
+define dem1_D8h_pmi_a {select PCWA_8h from American_PRJ_WR where index=2} !Annual project demand
+define adj_D8h_pmi_ann {value min(dem_D8h_pmi_ann, dem1_D8h_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D8h_pmi {value adj_D8h_pmi_ann * perdem_70pcwa * taf_cfs}
+define dem_D8h_wf {value adj_D8h_pmi} !Water Forum allocation
+
+define dem_D8h_wfdv {alias dem_D8h_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! El Dorado County P.L. 101-514
+!**************
+
+define dem1_D8i_pmi_a {select ElDorID from American_PRJ_WR where index=3} !Annual project demand - PL 101-514
+define adj_D8i_pmi_ann {value min(dem_D8i_pmi_ann, dem1_D8i_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D8i_pmi {value adj_D8i_pmi_ann * perdem_70ElDorCo * taf_cfs}
+define dem_D8i_wf {value adj_D8i_pmi} !Water Forum allocation
+
+define dem_D8i_wfdv {alias dem_D8i_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! California Parks and Rec
+!**************
+
+define dem1_D9ab_pmi_a {select CalPrkRc from American_PRJ_WR where index=2} !Annual project demand
+define adj_D9ab_pmi_ann {value min(dem_D9ab_pmi_ann, dem1_D9ab_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D9ab_pmi {value adj_D9ab_pmi_ann * perdem_70CARec * taf_cfs}
+define dem_D9ab_wf {value adj_D9ab_pmi} !Water Forum allocation
+
+define dem_D9ab_wfdv {alias dem_D9ab_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! SMUD export Folsom South Canal
+!**************
+
+define dem1_D9b_pmi_a {select SMUD_9b from American_PRJ_WR where index=2} !Annual project demand
+define adj_D9b_pmi_ann {value min(dem_D9b_pmi_ann, dem1_D9b_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D9b_pmi {value adj_D9b_pmi_ann * perdem_70SMUD * taf_cfs}
+define dem_D9b_wr  {value dem_D9b_wr_ann * perdem_70SMUD * taf_cfs}
+define dem_D9b_wf {value dem_D9b_wr + adj_D9b_pmi} !Water Forum allocation
+
+define dem_D9b_wfdv {alias dem_D9b_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! Sac County WA (SMUD transfer)
+!**************
+
+/*The following code varies slightly from the other water agencies because the demands for SCWA
+were developed differently*/
+
+define dem1_D167b_pmi_a {select SCWA_176b from American_PRJ_WR where index=2} !Annual project demand
+define adj_D167b_pmi {value min(dem_D167b_pmi_a, dem1_D167b_pmi_a * perdel_cvpmi_sys) * perdem_70SCWA * taf_cfs} !Adjust contract amount for CVP cuts
+define dem_D167b_wf {value adj_D167b_pmi} !Water Forum allocation
+
+define dem_D167b_wfdv {alias dem_D167b_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! PCWA Pump Station
+!**************
+
+define dem1_D300_pmi_a {select PCWA_300 from American_PRJ_WR where index=2} !Annual project demand
+define adj_D300_pmi_ann {value min(dem_D300_pmi_ann, dem1_D300_pmi_a * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define adj_D300_pmi {value adj_D300_pmi_ann * perdem_70PCWA * taf_cfs}
+define dem_D300_wr  {value dem_D300_wr_ann * perdem_70PCWA * taf_cfs}
+define dem_D300_wf {value dem_D300_wr + adj_D300_pmi} !Water Forum allocation
+
+define dem_D300_wfdv {alias dem_D300_wf kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+!*************
+! Rest of DSA70 water users (includes Water Forum reductions)
+!**************
+
+define dem_D8a_wr   {value dem_D8a_wr_ann * perdem_70NRWD * taf_cfs}
+define dem_D302b_wr {value dem_D302b_wr_ann * perdem_70ArcWD * taf_cfs}
+define dem_D302c_wr {value dem_D302c_wr_ann * perdem_70Carm * taf_cfs}
+define dem_D8c_wr   {value dem_D8c_wr_ann * perdem_70FolP * taf_cfs}
+define dem_D8d_wr   {value dem_D8d_wr_ann * perdem_70SJWDP * taf_cfs}
+define dem_D9aa_wr  {value dem_D9aa_wr_ann * perdem_70SCWC * taf_cfs}
+
+!*********************************************************************************************************************
+
+
+!Define Minimum Groundwater Pumping for DSA 70
+define mingw_70 {timeseries kind 'GW-PUMPING-MIN' units 'TAF'}
+
+! Define diversion requirement
+define dr70 {timeseries kind 'demand' units 'taf'} ! Diversion requirement from CU model, basin efficiencies, etc
+define prj_dr70_imi {timeseries kind 'dem-cvp-indoorMI' units 'taf'} ! Additional project diversion requirement for indoor M&I demand
+define np_dr70_imi {timeseries kind 'dem-np-indoorMI' units 'taf'} ! Additional non-project diversion requirement for indoor M&I demand
+
+! Define project and non-project split percentages
+! 2020 Level provided by USBR
+define perc_dr70 {value 0.38}  ! CVP percentage of diversion requirement
+
+! Define non-project diversion requirement
+define np_dr70 {VALUE max(0.,dr70 * (1 - perc_dr70) - WTS_CI70*cfs_taf)}
+
+!Define project diversion requirement
+define prj_dr70 {VALUE dr70 * perc_dr70 }
+
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+!Set up DSA 70 diversion arc (and sub arc) splits
+
+define d300_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d300_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d300_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+goal set_d300_split {d300 = d300_prj + d300_np}
+goal set_d300_prj   {d300_prj = d300_pmi}
+
+define d8_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d8_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d8_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d8b_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8e_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8f_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8g_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8h_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8i_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8a_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8b_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8c_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8d_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8e_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8f_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d8g_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+goal set_d8_split {d8 = d8_prj + d8_np}
+goal set_d8_prj   {d8_prj = d8_pmi}
+goal set_d8_pmi   {d8_pmi = d8b_pmi + d8e_pmi + d8f_pmi + d8g_pmi + d8h_pmi + d8i_pmi}
+goal set_d8_np    {d8_np = d8a_np + d8b_np + d8c_np + d8d_np + d8e_np + d8f_np + d8g_np} !NEW
+
+define d302_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d302a_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d302b_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d302c_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+goal set_d302_split {d302 = d302_np}
+goal set_d302_np    {d302_np = d302a_np + d302b_np + d302c_np} !NEW
+
+define d167_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d167_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d167_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+
+!***************************************************
+!added by ejc 1/7/02 to provide more detailed outputs
+define d167a     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}    !City of Sacramento
+! define d167b     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}    !SCWA
+define d167a_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+! define d167b_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+!***************************************************
+
+goal set_d167_split {d167 = d167_prj + d167_np}
+goal set_d167_prj   {d167_prj = d167_pmi}
+
+!***************************************************
+!added by ejc 1/7/02 to provide more detailed outputs
+goal set_d167     {d167 = d167a + d167b}
+goal set_d167a    {d167a = d167a_np}
+goal set_d167b    {d167b = d167b_pmi}
+goal set_d167_np  {d167_np = d167a_np}
+goal set_d167_pmi {d167_pmi = d167b_pmi}
+!***************************************************
+
+define d162_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d162_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d162_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d162_psc     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d162a_psc    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d162b_psc    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d162c_psc    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d162d_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d162e_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d162e_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+goal set_d162_split {d162 = d162_prj + d162_np}
+goal set_d162_prj   {d162_prj = d162_psc + d162_pmi}
+goal set_d162_psc   {d162_psc = d162a_psc + d162b_psc + d162c_psc} !NEW
+goal set_d162_pmi   {d162_pmi = d162e_pmi} !NEW
+goal set_d162_np    {d162_np = d162d_np + d162e_np}
+
+define d9_prj      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9_pmi      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9_pag      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9_pls      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9_np       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9a_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9aa_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d9b_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9a_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9ab_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+define d9b_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9b_pag     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d9a_pls     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !NEW
+goal set_d9_split  {d9 = d9_prj + d9_np}
+goal set_d9_prj    {d9_prj = d9_pmi + d9_pag + d9_pls}
+goal set_d9_pmi1   {d9_pmi = d9a_pmi + d9b_pmi}
+goal set_d9_pag    {d9_pag = d9b_pag}
+goal set_d9_np1    {d9_np  = d9a_np + d9b_np}
+goal set_d9_pmi2   {d9_pmi = d9ab_pmi + d9b_pmi} !NEW
+goal set_d9_np2    {d9_np = d9aa_np + d9b_np} !NEW
+goal set_d9_pls    {d9_pls = d9a_pls}
+
+define d309a_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d309a_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d309a_pls     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d309a_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+goal set_d309a_split {d309a = d309a_prj + d309a_np}
+goal set_d309a_prj   {d309a_prj = d309a_pmi + d309a_pls}
+goal set_d309a_pmi   {d309a_pmi = d9a_pmi}
+goal set_d309a_pls   {d309a_pls = d9_pls}
+goal set_d309a_np    {d309a_np  = d9a_np}
+
+define d309b_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d309b_pag     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d309b_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d309b_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+goal set_d309b_split {d309b = d309b_prj + d309b_np}
+goal set_d309b_prj   {d309b_prj = d309b_pag + d309b_pmi}
+goal set_d309b_pag   {d309b_pag = d9b_pag}
+goal set_d309b_pmi   {d309b_pmi = d9b_pmi}
+goal set_d309b_np    {d309b_np  = d9b_np}
+
+
+!Set the upper limit for the allocations of demand arcs d162, d167, d8, d9, d302, & d300
+
+goal limit_d162a_psc {d162a_psc < dem_D162a_psc} !NEW
+goal limit_d162b_psc {d162b_psc < dem_D162b_psc} !NEW
+goal limit_d162c_psc {d162c_psc < dem_D162c_psc} !NEW
+goal limit_d162d_np  {d162d_np < dem_D162d_wr} !NEW
+goal limit_d162e_pmi {d162e_pmi < adj_D162e_pmi} !NEW
+goal limit_d162e_np  {d162e_np < dem_D162e_wr} !NEW
+
+goal limit_d167a_np  {d167a_np < dem_d167a_wf}
+goal limit_d167b_pmi {d167b_pmi < adj_D167b_pmi}
+
+goal limit_d8b_pmi {d8b_pmi < adj_D8b_pmi} !NEW
+goal limit_d8e_pmi {d8e_pmi < adj_D8e_pmi} !NEW
+goal limit_d8f_pmi {d8f_pmi < adj_D8f_pmi} !NEW
+goal limit_d8g_pmi {d8g_pmi < adj_D8g_pmi} !NEW
+goal limit_d8h_pmi {d8h_pmi < adj_D8h_pmi} !NEW
+goal limit_d8i_pmi {d8i_pmi < adj_D8i_pmi}
+
+goal limit_d8a_np  {d8a_np < dem_D8a_wr} !NEW
+goal limit_d8b_np  {d8b_np < dem_D8b_wr} !NEW
+goal limit_d8c_np  {d8c_np < dem_D8c_wr} !NEW
+goal limit_d8d_np  {d8d_np < dem_D8d_wr} !NEW
+goal limit_d8e_np  {d8e_np < dem_D8e_wr} !NEW
+goal limit_d8f_np  {d8f_np < dem_D8f_wr} !NEW
+goal limit_d8g_np  {d8g_np < dem_D8g_wr} !NEW
+
+goal limit_d309a_pmi {d309a_pmi < adj_D9ab_pmi}
+goal limit_d309a_pls {d309a_pls < dem_d9a_pls}
+goal limit_d309a_np  {d309a_np < dem_d9aa_wr}
+goal limit_d309b_pag {d309b_pag < 0.}! adj_D9bg_pag}
+goal limit_d309b_pmi {d309b_pmi < adj_D9b_pmi}
+goal limit_d309b_np  {d309b_np < dem_D9b_wr}
+
+
+goal limit_d9ab_pmi {d9ab_pmi < adj_D9ab_pmi} !NEW
+goal limit_d9b_pmi  {d9b_pmi < adj_D9b_pmi} !NEW
+goal limit_d9aa_np  {d9aa_np < dem_D9aa_wr} !NEW
+goal limit_d9b_np   {d9b_np < dem_D9b_wr} !NEW
+goal limit_d9a_pls  {d9a_pls < dem_D9a_pls} !NEW
+goal limit_d9_pag   {d9_pag < 0.}! adj_D9bg_pag}
+
+
+!goal limit_d302a_np {d302a_np < dem_D302a_wf} !NEW
+goal limit_d302b_np {d302b_np < dem_D302b_wr} !NEW
+goal limit_d302c_np {d302c_np < dem_D302c_wr} !NEW
+
+goal limit_d300_pmi {d300_pmi < adj_D300_pmi}
+goal limit_d300_np  {d300_np < dem_D300_wr}
+
+!**************
+! City of Sacramento
+! Special Code for City of Sacramento - Shifting diversion from American R to Sacramento
+!**************
+/*
+define Hst_max {value 99999.*taf_cfs}
+define Hst_threshold { value 1.0} !units cfs
+define int_Hst_abv {INTEGER std kind 'INTEGER' units 'NONE'}
+define int_Hst_blw {alias 1. - int_Hst_abv kind 'INTEGER'units 'NONE'}
+define Hst_above {std kind 'FLOW-HST-ABV' units 'CFS'}
+define Hst_below {std kind 'FLOW-HST-BLW' units 'CFS'}
+
+goal Hst_flow {Hst_above - Hst_below = C303_EXC - Hst_threshold - dem_D302a_wf}
+goal Hst_abv_force {Hst_above < int_Hst_abv*Hst_max}
+goal Hst_blw_force {Hst_below < int_Hst_blw*Hst_max}
+
+goal limit_d302a_np2 {dem_D302a_wf > d302a_np } !NEW
+goal limit_d167a_np {lhs d167a_np rhs dem_D167a_wf - dem_D302a_wf lhs<rhs penalty 0 lhs>rhs penalty 99999} !NEW
+*/
+
+!%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+! Split diversion requirement between project and nonproject
+define c306_prj     {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Project diversion requirement
+define c306_np      {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Non-project diversion requirement
+define c306_pls     {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+goal set_C306_split {c306 = c306_prj + c306_np + c306_pls}
+
+! Setup groundwater pumping for DSA70
+define gp66_prj {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}  ! Project groundwater pumping
+define gp66_np  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}  ! non project groundwater pumping
+goal set_gp66_3 { gp66 = gp66_prj + gp66_np}   ! Split pumping between project & non-project
+
+! Set limits on project diversion requirement
+goal set_c306_prj  {C306_prj = prj_dr70*taf_cfs + prj_dr70_imi*taf_cfs}
+goal set_306_prj_2 {C306_prj = d167_prj + d8_prj + d300_prj + d162_prj + d309a_pmi + gp66_prj }
+
+! Set limits on non-project diversion requirement
+goal set_c306_np   {C306_np = np_dr70*taf_cfs + np_dr70_imi*taf_cfs}
+goal set_c306_np_2 {C306_np = d302_np + d162_np + d167_np + d8_np + d309a_np + d300_np + c225 - D308A - C308 + d168a + gp66_np }
+
+! Do not go to satisfy diversion requirement
+goal set_c306_pls  {C306_pls = d309a_pls}
+
+! Define minimum monthly groundwater pumping (using minimum value from  1980-1993 Historical Level CVGSM run))
+! Minimum pumping cannot be more than the diversion requirement
+define minpump_70_prj {VALUE min(mingw_70*perc_dr70,prj_dr70)  }       ! (UNITS = TAF)
+define minpump_70_np  {VALUE min(mingw_70*(1.0-perc_dr70),np_dr70)  }  ! (UNITS = TAF)
+goal set_gp66_prj     {gp66_prj > minpump_70_prj*taf_cfs }
+goal set_gp66_np      {gp66_np > minpump_70_np*taf_cfs + WTS_GW70 }   !adjust for GW substitution transfers
+
+! This penalty sets non-project groundwater pumping (above minimum pumping requirement) as lowest priorty water source:
+! 1) Minimum non-project GW pumping 2) Surface water diversions 3) River gains diversions (D168a) 4) Additional GW pumping
+goal limit_gp66_np    {
+              lhs gp66_np
+              rhs minpump_70_np + WTS_GW70*cfs_taf    !adjust for GW substitution transfers
+              lhs>rhs penalty 100*taf_cfs
+              }
+
+! This constraint prevents diversions from D162, D8 and D300 from circumventing the DSA70 Diversion Requirement
+! accidentally through the imported water spill arc C308
+goal limit_C308 {C308 < C225 - D308A}
+
+!**********************************************************************************************
+! The following code separates the indoor M&I water from the other water use
+! 100% of indoor M&I is assumed to be returned to the system
+! "Other" water uses are returned at a much smaller rate (see "returns.wresl")
+
+define c306_imi        {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} ! Used in returns_nod.wresl
+define c306_other      {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} ! Used in returns_nod.wresl
+define c306prj_imi     {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} ! Used in returns_nod.wresl
+define c306prj_other   {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} ! Used in returns_nod.wresl
+define c306np_imi      {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} ! Used in returns_nod.wresl
+define c306np_other    {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} ! Used in returns_nod.wresl
+goal C306_imi_split    {c306_imi = c306prj_imi + c306np_imi}
+goal C306_other_split  {c306_other = c306prj_other + c306np_other}
+goal set_c306prj_imi   {c306prj_imi = prj_dr70_imi*taf_cfs}
+goal set_c306np_imi    {c306np_imi = np_dr70_imi*taf_cfs}
+goal set_c306prj_other {c306prj_other = c306_prj - c306prj_imi}
+goal set_c306np_other  {c306np_other = c306_np - c306np_imi}
+
+define perdel_pmi_sysdv {alias perdel_cvpmi_sys kind 'perdel-cvp-mi' units 'none'}
+define perdel_psc_sysdv {alias perdel_cvpsc_sys kind 'perdel-cvp-sc' units 'none'}
+define perdel_pag_sysdv {alias perdel_cvpag_sys kind 'perdel-cvp-ag' units 'none'}
+
+
+!*********************************************************************************************************
+!*******************************DSA 70 Shortage Definitions***********************************************
+!*********************************************************************************************************
+
+define ad_d162a_psc {value perdel_cvpsc_sys * dem_d162a_psc}
+define ad_d162b_psc {value perdel_cvpsc_sys * dem_d162b_psc}
+define ad_d162c_psc {value perdel_cvpsc_sys * dem_d162c_psc}
+define ad_d162e_pmi {value adj_d162e_pmi}
+define ad_d167b_pmi {value adj_d167b_pmi}
+define ad_d168c_frwp_pmi {value dem_d168c_frwp_pmi*perdel_cvpmi_sys} ! Does not contribute to Diversion Requirement
+define ad_d8b_pmi  {value adj_d8b_pmi}
+define ad_d8e_pmi  {value adj_d8e_pmi}
+define ad_d8f_pmi  {value adj_d8f_pmi}
+define ad_d8g_pmi  {value adj_d8g_pmi}
+define ad_d8h_pmi  {value adj_d8h_pmi}
+define ad_d8i_pmi  {value adj_d8i_pmi}
+define ad_d9a_pmi  {value adj_d9ab_pmi}
+define ad_d9b_pmi  {value adj_d9b_pmi} ! Does not contribute to Diversion Requirement
+!define ad_d9b_pag  {value adj_D9bg_pag} ! Does not contribute to Diversion Requirement
+define ad_d300_pmi {value adj_D300_pmi}
+
+define ad_d162d_np  {value dem_D162d_wr}
+define ad_d162e_np  {value dem_D162e_wr}
+define ad_d167a_np  {value dem_d167a_wf}
+define ad_d300_np   {value dem_d300_wr}
+define ad_d302a_np  {value dem_d302a_wr}
+define ad_d302b_np  {value dem_d302b_wr}
+define ad_d302c_np  {value dem_d302c_wr}
+define ad_d8a_np    {value dem_d8a_wr}
+define ad_d8b_np    {value dem_d8b_wr}
+define ad_d8c_np    {value dem_d8c_wr}
+define ad_d8d_np    {value dem_d8d_wr}
+define ad_d8e_np    {value dem_d8e_wr}
+define ad_d8f_np    {value dem_d8f_wr}
+define ad_d8g_np    {value dem_d8g_wr}
+define ad_d9a_np    {value dem_d9aa_wr}
+define ad_d9b_np    {value dem_D9b_wr} ! Does not contribute to Diversion Requirement
+
+
+!***************************************************
+define ad_sum_70_prj    {value max((ad_d162a_psc + ad_d162b_psc + ad_d162c_psc +
+                    ad_d162e_pmi + ad_d167b_pmi +
+                    ad_d8b_pmi + ad_d8e_pmi + ad_d8f_pmi + ad_d8g_pmi + ad_d8h_pmi + ad_d8i_pmi +
+                    ad_d9a_pmi + ad_d300_pmi),
+                    0.00001)}
+define ad_sum_70_np     {value max((ad_d162d_np + ad_d162e_np +
+                    ad_d167a_np +
+                    ad_d300_np +
+                    ad_d302a_np + ad_d302b_np + ad_d302c_np +
+                    ad_d8a_np + ad_d8b_np + ad_d8c_np + ad_d8d_np + ad_d8e_np + ad_d8f_np + ad_d8g_np +
+                    ad_d9a_np), 0.00001)}
+
+!Now define the amount to reduce the Allowable Diversions by to equal the Project Diversion Requirement
+define extra_70_prj {value max((ad_sum_70_prj - prj_dr70*taf_cfs - prj_dr70_imi*taf_cfs + minpump_70_prj*taf_cfs), 0.0)}
+define extra_70_np  {value max((ad_sum_70_np - np_dr70*taf_cfs - np_dr70_imi*taf_cfs + minpump_70_np*taf_cfs), 0.0)}
+
+define extra_short70 {alias extra_70_prj kind 'delivery-shortage' units 'cfs'}
+define adsum70npshort {alias ad_sum_70_np kind 'delivery-shortage' units 'cfs'}
+
+define extra_d162a_psc {value extra_70_prj*(ad_d162a_psc/ad_sum_70_prj)}
+define extra_d162b_psc {value extra_70_prj*(ad_d162b_psc/ad_sum_70_prj)}
+define extra_d162c_psc {value extra_70_prj*(ad_d162c_psc/ad_sum_70_prj)}
+define extra_d162e_pmi {value extra_70_prj*(ad_d162e_pmi/ad_sum_70_prj)}
+define extra_d167b_pmi {value extra_70_prj*(ad_d167b_pmi/ad_sum_70_prj)}
+define extra_d8b_pmi   {value extra_70_prj*(ad_d8b_pmi/ad_sum_70_prj)}
+define extra_d8e_pmi   {value extra_70_prj*(ad_d8e_pmi/ad_sum_70_prj)}
+define extra_d8f_pmi   {value extra_70_prj*(ad_d8f_pmi/ad_sum_70_prj)}
+define extra_d8g_pmi   {value extra_70_prj*(ad_d8g_pmi/ad_sum_70_prj)}
+define extra_d8h_pmi   {value extra_70_prj*(ad_d8h_pmi/ad_sum_70_prj)}
+define extra_d8i_pmi   {value extra_70_prj*(ad_d8i_pmi/ad_sum_70_prj)}
+define extra_d9a_pmi   {value extra_70_prj*(ad_d9a_pmi/ad_sum_70_prj)}
+define extra_d300_pmi  {value extra_70_prj*(ad_d300_pmi/ad_sum_70_prj)}
+
+define extra_d162d_np  {value extra_70_np*(ad_d162d_np/ad_sum_70_np)}
+define extra_d162e_np  {value extra_70_np*(ad_d162e_np/ad_sum_70_np)}
+define extra_d167a_np  {value extra_70_np*(ad_d167a_np/ad_sum_70_np)}
+define extra_d300_np   {value extra_70_np*(ad_d300_np/ad_sum_70_np)}
+define extra_d302a_np  {value extra_70_np*(ad_d302a_np/ad_sum_70_np)}
+define extra_d302b_np  {value extra_70_np*(ad_d302b_np/ad_sum_70_np)}
+define extra_d302c_np  {value extra_70_np*(ad_d302c_np/ad_sum_70_np)}
+define extra_d8a_np    {value extra_70_np*(ad_d8a_np/ad_sum_70_np)}
+define extra_d8b_np    {value extra_70_np*(ad_d8b_np/ad_sum_70_np)}
+define extra_d8c_np    {value extra_70_np*(ad_d8c_np/ad_sum_70_np)}
+define extra_d8d_np    {value extra_70_np*(ad_d8d_np/ad_sum_70_np)}
+define extra_d8e_np    {value extra_70_np*(ad_d8e_np/ad_sum_70_np)}
+define extra_d8f_np    {value extra_70_np*(ad_d8f_np/ad_sum_70_np)}
+define extra_d8g_np    {value extra_70_np*(ad_d8g_np/ad_sum_70_np)}
+define extra_d9a_np    {value extra_70_np*(ad_d9a_np/ad_sum_70_np)}
+
+! CVP contract shortages
+define short_d162a_psc {alias perdel_cvpsc_sys*dem_d162a_psc - extra_d162a_psc - d162a_psc kind 'delivery-shortage' units 'cfs'}
+define short_d162b_psc {alias perdel_cvpsc_sys*dem_d162b_psc - extra_d162b_psc - d162b_psc kind 'delivery-shortage' units 'cfs'}
+define short_d162c_psc {alias perdel_cvpsc_sys*dem_d162c_psc - extra_d162c_psc - d162c_psc kind 'delivery-shortage' units 'cfs'}
+define short_d162e_pmi {alias adj_D162e_pmi - extra_d162e_pmi - d162e_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d167b_pmi {alias adj_D167b_pmi - extra_d167b_pmi - d167b_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d300_pmi  {alias adj_d300_pmi - extra_d300_pmi - d300_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d8b_pmi   {alias adj_d8b_pmi - extra_d8b_pmi - d8b_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d8e_pmi   {alias adj_d8e_pmi - extra_d8e_pmi - d8e_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d8f_pmi   {alias adj_d8f_pmi - extra_d8f_pmi - d8f_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d8g_pmi   {alias adj_d8g_pmi - extra_d8g_pmi - d8g_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d8h_pmi   {alias adj_d8h_pmi - extra_d8h_pmi - d8h_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d8i_pmi   {alias adj_d8i_pmi - extra_d8i_pmi - d8i_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d9a_pmi   {alias adj_D9ab_pmi - extra_d9a_pmi - d9a_pmi kind 'delivery-shortage' units 'cfs'}
+define short_d9b_pmi   {alias adj_D9b_pmi - d9b_pmi kind 'delivery-shortage' units 'cfs'}
+!define short_d9b_pag   {alias adj_D9bg_pag - d9b_pag kind 'delivery-shortage' units 'cfs'}
+
+!Water Rights shortages
+define short_d167a_np {alias dem_d167a_wf - extra_d167a_np - d167a_np kind 'delivery-shortage' units 'cfs'}
+define short_d162d_np {alias dem_d162d_wr - extra_d162d_np - d162d_np kind 'delivery-shortage' units 'cfs'}
+define short_d162e_np {alias dem_d162e_wr - extra_d162e_np - d162e_np kind 'delivery-shortage' units 'cfs'}
+define short_d300_np  {alias dem_d300_wr - extra_d300_np - d300_np kind 'delivery-shortage' units 'cfs'}
+define short_d302a_np {alias dem_d302a_wf - extra_d302a_np - d302a_np kind 'delivery-shortage' units 'cfs'}
+define short_d302b_np {alias dem_d302b_wr - extra_d302b_np - d302b_np kind 'delivery-shortage' units 'cfs'}
+define short_d302c_np {alias dem_d302c_wr - extra_d302c_np - d302c_np kind 'delivery-shortage' units 'cfs'}
+define short_d8a_np   {alias dem_d8a_wr - extra_d8a_np - d8a_np kind 'delivery-shortage' units 'cfs'}
+define short_d8b_np   {alias dem_d8b_wr - extra_d8b_np - d8b_np kind 'delivery-shortage' units 'cfs'}
+define short_d8c_np   {alias dem_d8c_wr - extra_d8c_np - d8c_np kind 'delivery-shortage' units 'cfs'}
+define short_d8d_np   {alias dem_d8d_wr - extra_d8d_np - d8d_np kind 'delivery-shortage' units 'cfs'}
+define short_d8e_np   {alias dem_d8e_wr - extra_d8e_np - d8e_np kind 'delivery-shortage' units 'cfs'}
+define short_d8f_np   {alias dem_d8f_wr - extra_d8f_np - d8f_np kind 'delivery-shortage' units 'cfs'}
+define short_d8g_np   {alias dem_d8g_wr - extra_d8g_np - d8g_np kind 'delivery-shortage' units 'cfs'}
+define short_d9a_np   {alias dem_D9aa_wr - extra_d9a_np - d9a_np kind 'delivery-shortage' units 'cfs'}
+define short_d9b_np   {alias dem_d9b_wr - d9b_np kind 'delivery-shortage' units 'cfs'}
+
+
+!DSA 70 Settlement Contractors water shortage
+define short_d162_psc {alias short_d162a_psc + short_d162b_psc + short_d162c_psc kind 'delivery-shortage' units 'cfs'}
+
+!Shortage for SCWA Freeport (not part of total shortage computation)
+define short_D305 {alias dem_scwa_total_pmi - D167B - D168C kind 'delivery-shortage' units 'cfs'}
+
+!DSA 70 shortage (project, American River only)
+define short_cvp_Amer_n {alias short_d300_pmi +
+                   short_d8b_pmi + short_d8e_pmi + short_d8f_pmi + short_d8g_pmi + short_d8h_pmi + short_d8i_pmi +
+                   short_d9a_pmi +
+                   short_d9b_pmi ! + short_d9b_pag
+                 kind 'delivery-shortage-cvp' units 'cfs'}
+
+define short_np_Amer_n  {alias short_d300_np +
+                   short_d302a_np + short_d302b_np + short_d302c_np +
+                   short_d8a_np + short_d8b_np + short_d8c_np + short_d8d_np + short_d8e_np + short_d8f_np + short_d8g_np +
+                   short_d9a_np +
+                   short_d9b_np
+                 kind 'delivery-shortage-np' units 'cfs'}
+
+!Water Forum shortage (project, American River only)
+define short_cvp_wf_n {alias short_d305 +
+                 short_d300_pmi +
+                 short_d8b_pmi + short_d8e_pmi + short_d8f_pmi + short_d8g_pmi + short_d8h_pmi + short_d8i_pmi +
+                 short_d9a_pmi +
+                 short_d9b_pmi ! + short_d9b_pag
+                       kind 'delivery-shortage-cvp' units 'cfs'}
+
+!Water Forum shortage (non-project, American River only)
+define short_np_wf_n {alias short_d167a_np +
+                short_d162d_np + short_d162e_np +
+                short_d300_np +
+                short_d302a_np + short_d302b_np + short_d302c_np +
+                short_d8a_np + short_d8b_np + short_d8c_np + short_d8d_np + short_d8e_np + short_d8f_np + short_d8g_np +
+                short_d9a_np
+                       kind 'delivery-shortage-np' units 'cfs'}
+
+!Water Forum shortage (total, American River only)
+define short_total_wf_n {alias short_cvp_wf_n + short_np_wf_n kind 'delivery-shortage' units 'cfs'}
+
+!American River project deliveries
+define del_cvp_Amer_n {alias d300_prj + d8_prj + d9_prj kind 'delivery-cvp' units 'cfs'}
+
+!American River non-project deliveries
+define del_np_Amer_n {alias d300_np + d302_np + d8_np + d9_np kind 'delivery-np' units 'cfs'}
+
+!Water Forum delivery (project, including Sac River)
+define del_cvp_wf_n {alias d167b + d168c + d300_prj + d8_prj + d9_prj kind 'delivery-cvp' units 'cfs'}
+
+!Water Forum delivery (non-project, including Sac River)
+define del_np_wf_n {alias d167a_np + d162_np + d300_np + d302_np + d8_np + d9_np kind 'delivery-np' units 'cfs'}
+
+!Water Forum deliver(total, including Sac River)
+define del_total_wf_n {alias del_cvp_wf_n + del_np_wf_n kind 'delivery-water-forum' units 'cfs'}

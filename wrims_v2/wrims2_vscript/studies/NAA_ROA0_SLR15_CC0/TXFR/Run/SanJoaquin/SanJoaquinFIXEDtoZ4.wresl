@@ -1,0 +1,72 @@
+! Set up SJR Interface for specification of fixed operation
+    INCLUDE 'SystemReduced_SJR\channel-table.wresl'
+    INCLUDE 'SystemReduced_SJR\delivery-table.wresl'
+    INCLUDE 'SystemReduced_SJR\inflow-table.wresl'
+    INCLUDE 'SystemReduced_SJR\return-table.wresl'
+    define VAMP_reqdv {std kind 'flow-requirement' units 'cfs'}
+    Define D514a_1 {std kind 'FLOW-DELIVERY' units 'CFS'} !1485 water
+    Define D514a_2 {std kind 'FLOW-DELIVERY' units 'CFS'} !area of origin water
+
+! Read in Fixed operation inputs
+    define S10__Z4            {timeseries kind 'STORAGE'          units 'TAF'}
+    define C10__Z4            {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define C501__Z4           {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+!    define C503__Z4           {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define C508__Z4           {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define R514__Z4           {timeseries kind 'FLOW-RETURN'      units 'CFS'}
+    define D514A__Z4          {timeseries kind 'FLOW-DELIVERY'     units 'CFS'}
+    define D514B__Z4          {timeseries kind 'FLOW-DELIVERY'     units 'CFS'}
+    define D514a_1__z4        {timeseries kind 'FLOW-DELIVERY'     units 'CFS'}
+    define D514a_2__z4        {timeseries kind 'FLOW-DELIVERY'     units 'CFS'}
+    define C605a_SJRWQ1__Z4   {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define C605a_VAMPDO__Z4   {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+!    define C639_SJRWQ1__Z4    {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define C639_SJRWQ2__Z4    {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define C639_VAMPDO__Z4    {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define C639__Z4           {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define R644__Z4           {timeseries kind 'FLOW-RETURN'      units 'CFS'}
+    define C708__Z4           {timeseries kind 'FLOW-CHANNEL'     units 'CFS'}
+    define D607B_SJRWQ1__Z4   {timeseries kind 'FLOW-DELIVERY'    units 'CFS'}
+    define D607B_VAMPDO__Z4   {timeseries kind 'FLOW-DELIVERY'    units 'CFS'}
+    define D608B_SJRWQ1__Z4   {timeseries kind 'FLOW-DELIVERY'    units 'CFS'}
+    define D608B_VAMPDO__Z4   {timeseries kind 'FLOW-DELIVERY'    units 'CFS'}
+    define SJR_ANN_ESTDV__Z4  {timeseries kind 'ANN-PARAMETER'    units 'CFS'}
+    define VAMP_REQDV__Z4     {timeseries kind 'FLOW-REQUIREMENT' units 'CFS'}
+    define C639_NP_DV__Z4     {timeseries kind 'Flow-Channel'     units 'cfs'}
+    define C639_P_DV__Z4      {timeseries kind 'Flow-Channel'     units 'cfs'}
+    define VERNWQNONPULSE__Z4 {timeseries kind 'Salinity-EC' units 'umhos/cm'}
+    define VERNWQPULSE__Z4    {timeseries kind 'Salinity-EC' units 'umhos/cm'}
+    define VERNWQFINAL__Z4    {timeseries kind 'Salinity-EC' units 'umhos/cm'}
+    define SIO_SWP__Z4        {timeseries kind 'storage' units 'taf'}
+
+! Set ones that can be set as Global params - all others set as locals in each cycle
+    goal set_C501  {C501  = C501__Z4 }
+!    goal set_C503  {C503  = C503__Z4 }
+    goal set_C508  {C508  = C508__Z4 }
+    goal set_R514  {R514  = R514__Z4 }
+    goal set_D514A  {D514A  = D514A__Z4 }
+    goal set_D514B  {D514B  = D514B__Z4 }
+    goal set_D514A_1  {D514A_1  = D514A_1__Z4 }
+    goal set_D514A_2  {D514A_2  = D514A_2__Z4 }
+    goal set_C708  {C708 + I607_WTS + I607_EWA = C708__Z4 /* + I607_WTS__Z4 + I607_EWA__Z4 */}
+    define SJR_ann_est {value SJR_ANN_ESTDV__Z4}
+    goal set_VAMP_req  {VAMP_REQDV = VAMP_REQDV__Z4}
+
+! outputs to support LTGEN simulation in SJR fixed simulations
+    define S10              {alias S10__Z4            kind 'STORAGE'      units 'TAF'}
+    define C10              {alias C10__Z4            kind 'FLOW-CHANNEL' units 'CFS'}
+    define SIO_SWP          {alias SIO_SWP__Z4        kind 'STORAGE'      units 'TAF'}
+
+! outputs for backward combatability
+!    define C639_SJRWQ1      {alias C639_SJRWQ1__Z4    kind 'FLOW-CHANNEL' units 'CFS'}
+!    define C639_VAMPDO      {alias C639_VAMPDO__Z4    kind 'FLOW-CHANNEL' units 'CFS'}
+    define VernWQfinal      {alias VERNWQFINAL__Z4    kind 'Salinity-EC'  units 'umhos/cm'}
+    define VernWQfinalSV    {value VERNWQFINAL__Z4}
+    goal set_R644  {R644  = R644__Z4 }
+
+! outputs to support DSM2 simulation in SJR fixed simulations
+    define C639_NP_DV       {alias C639_NP_DV__Z4     kind 'Flow-Channel' units 'cfs'}
+    define C639_P_DV        {alias C639_P_DV__Z4      kind 'Flow-Channel' units 'cfs'}
+    define VERNWQNONPULSEDV {alias VERNWQNONPULSE__Z4 kind 'Salinity-EC'  units 'umhos/cm'}
+    define VERNWQPULSEDV    {alias VERNWQPULSE__Z4    kind 'Salinity-EC'  units 'umhos/cm'}
+

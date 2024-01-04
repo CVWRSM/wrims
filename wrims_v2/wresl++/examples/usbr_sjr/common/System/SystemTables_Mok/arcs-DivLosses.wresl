@@ -1,0 +1,266 @@
+/*
+  ARCS-WUFACTORS.WRESL
+ CALSIM III SYSTEM FILE
+  
+  Purpose: Define water use factors
+
+  NAMING TAKES THE FOLLOWING FORMS:
+  EVF_{Upstream CalSim-III node}_{demand unit} - evaporative conveyance loss
+  DPF_{Upstream CalSim-III node}_{demand unit} - deep percolation conveyance loss
+  LFF_{Upstream CalSim-III node}_{demand unit} - lateral flow conveyance loss (from canal to toe drain)
+  SPF_{Upstream CalSim-III node}_{demand unit} - spill conveyance loss (from canal to drain outfall - not available for reuse)
+  
+  RUF_{demand unit} - reuse fraction
+  RPF_{demand unit}     - riparian and miscellaneous field/on-farm evaporative losses 
+  EV_{demand unit}      - total evaporative loss associated with surface water conveyance           
+  DP_{demand unit}      - total deep percolation loss associated with surface water conveyance              
+  LF_{demand unit}      - total lateral flow loss associated with surface water conveyance              
+  SP_{demand unit}      - total spill associated with surface water conveyance              
+  DL_{demand unit}      - total loss associated with surface water conveyance (evaporation loss+deep percolation+lateral flow+spill)        
+  
+
+ Edited ADraper, MWH, 05/11/08
+ Edited by DJones 04/22/08
+ Edited ADraper, MWH, 11/15/06
+*/
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60N     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 60N_NA1 - Jackson Valley ID - Ag
+!==============================
+define EVF_AMADR_60N_NA1  {value 0.01} ! evaporative loss fraction
+define DPF_AMADR_60N_NA1  {value 0.04} ! deep percolation loss fraction
+define LFF_AMADR_60N_NA1  {value 0.10} ! lateral flow loss fraction
+
+define RUFR_60N_NA1       {value 0.0*RUFRmax} ! reuse fraction for irrigated rice
+define RUFO_60N_NA1       {value 0.00}        ! reuse fraction for other irrigated crops
+define RUFW_60N_NA1       {value 0.00}        ! reuse fraction for wetlands 
+define RPF_60N_NA1        {value 0.00}        ! riparian/miscellaneous ET fraction 
+
+define EV_60N_NA1         {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60N_NA1         {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60N_NA1         {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60N_NA1         {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+
+!==============================
+! 60N_NA2
+!==============================
+define EVF_FSC015_60N_NA2 {value 0.01} ! evaporative loss fraction
+define DPF_FSC015_60N_NA2 {value 0.04} ! deep percolation loss fraction
+define LFF_FSC015_60N_NA2 {value 0.10} ! lateral flow loss fraction
+
+define RUFR_60N_NA2       {value 0.0*RUFRmax} ! reuse fraction for irrigated rice
+define RUFO_60N_NA2       {value 0.00}        ! reuse fraction for other irrigated crops
+define RUFW_60N_NA2       {value 0.00}        ! reuse fraction for wetlands 
+define RPF_60N_NA2        {value 0.00}        ! riparian/miscellaneous ET fraction 
+
+define EV_60N_NA2         {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60N_NA2         {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60N_NA2         {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60N_NA2         {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+
+!==============================
+! 60N_NA3 - North San Joaquin WCD - Ag
+!============================== 
+define EVF_MOK050_60N_NA3 {value 0.01} ! evaporative loss fraction
+define DPF_MOK050_60N_NA3 {value 0.04} ! deep percolation loss fraction
+define LFF_MOK050_60N_NA3 {value 0.10} ! lateral flow loss fraction
+
+define RUFR_60N_NA3       {value 0.0*RUFRmax} ! reuse fraction for irrigated rice
+define RUFO_60N_NA3       {value 0.00}        ! reuse fraction for other irrigated crops
+define RUFW_60N_NA3       {value 0.00}        ! reuse fraction for wetlands 
+define RPF_60N_NA3        {value 0.00}        ! riparian/miscellaneous ET fraction 
+
+define EV_60N_NA3         {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60N_NA3         {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60N_NA3         {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60N_NA3         {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+
+!==============================
+! 60N_NA4 - Woodbridge ID - Ag
+!============================== 
+define EVF_MOK035_60N_NA4 {value 0.01} ! evaporative loss fraction
+define DPF_MOK035_60N_NA4 {value 0.04} ! deep percolation loss fraction
+define LFF_MOK035_60N_NA4 {value 0.10} ! lateral flow loss fraction
+
+define RUFR_60N_NA4       {value 0.0*RUFRmax} ! reuse fraction for irrigated rice
+define RUFO_60N_NA4       {value 0.00}        ! reuse fraction for other irrigated crops
+define RUFW_60N_NA4       {value 0.00}        ! reuse fraction for wetlands 
+define RPF_60N_NA4        {value 0.00}        ! riparian/miscellaneous ET fraction 
+
+define EV_60N_NA4         {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60N_NA4         {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60N_NA4         {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60N_NA4         {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+
+!==============================
+! 60N_NA5 - Non-District - Ag
+!============================== 
+define EVF_MOK050_60N_NA5 {value 0.01} ! evaporative loss fraction
+define DPF_MOK050_60N_NA5 {value 0.04} ! deep percolation loss fraction
+define LFF_MOK050_60N_NA5 {value 0.10} ! lateral flow loss fraction
+
+define EVF_MOK034_60N_NA5 {value 0.01} ! evaporative loss fraction
+define DPF_MOK034_60N_NA5 {value 0.04} ! deep percolation loss fraction
+define LFF_MOK034_60N_NA5 {value 0.10} ! lateral flow loss fraction
+
+define RUFR_60N_NA5       {value 0.0*RUFRmax} ! reuse fraction for irrigated rice
+define RUFO_60N_NA5       {value 0.00}        ! reuse fraction for other irrigated crops
+define RUFW_60N_NA5       {value 0.00}        ! reuse fraction for wetlands 
+define RPF_60N_NA5        {value 0.00}        ! riparian/miscellaneous ET fraction 
+
+define EV_60N_NA5         {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60N_NA5         {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60N_NA5         {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60N_NA5         {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+
+!==============================
+! 60N_NU1  
+!============================== 
+! No surface deliveries
+
+
+!==============================
+! 60N_NU2 - Rancho Murieta - M&I 
+!============================== 
+define EVF_CSM033_60N_NU2 {value 0.01} ! evaporative loss fraction
+define DPF_CSM033_60N_NU2 {value 0.04} ! deep percolation loss fraction
+define LFF_CSM033_60N_NU2 {value 0.00} ! lateral flow loss fraction
+
+define EV_60N_NU2         {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60N_NU2         {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60N_NU2         {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60N_NU2         {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+! OLD...
+! define EF_CSM033_60N_NU2  {value 0.01} ! evaporative loss fraction
+! define SF_CSM033_60N_NU2  {value 0.04} ! deep percolation loss fraction
+! define EL_CSM033_60N_NU2  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+! define SL_CSM033_60N_NU2  {std kind 'SEEPAGE-LOSS'     units 'CFS'}        
+! define DL_CSM033_60N_NU2  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+! 
+! define DL_60N_NU2         {std kind 'DELIVERY-LOSS'    units 'CFS'}
+
+
+!==============================
+! 60N_PU
+!==============================
+define EVF_FSC025_60N_PU  {value 0.01} ! evaporative loss fraction
+define DPF_FSC025_60N_PU  {value 0.04} ! deep percolation loss fraction
+define LFF_FSC025_60N_PU  {value 0.00} ! lateral flow loss fraction
+
+define EV_60N_PU          {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60N_PU          {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60N_PU          {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60N_PU          {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+! OLD...
+! define EF_FSC025_60N_PU   {value 0.01} ! evaporative loss fraction
+! define SF_FSC025_60N_PU   {value 0.04} ! deep percolation loss fraction
+! define EL_FSC025_60N_PU   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+! define SL_FSC025_60N_PU   {std kind 'SEEPAGE-LOSS'     units 'CFS'}        
+! define DL_FSC025_60N_PU   {std kind 'DELIVERY-LOSS'    units 'CFS'}
+! 
+! define DL_60N_PU          {std kind 'DELIVERY-LOSS'    units 'CFS'}
+
+
+!==============================
+! EBMUD
+!==============================
+define EVF_EBA100_EBMUD   {value 0.05001} ! evaporative loss fraction
+define DPF_EBA100_EBMUD   {value 0.04999} ! deep percolation loss fraction
+define LFF_EBA100_EBMUD   {value 0.00}    ! lateral flow loss fraction
+
+define EV_EBMUD           {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_EBMUD           {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_EBMUD           {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_EBMUD           {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+! OLD...
+! define EF_FSC027_EBMUD  {value 0.05001}
+! define SF_FSC027_EBMUD  {value 0.04999}
+! 
+! define DL_FSC027_EBMUD  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+! define EL_FSC027_EBMUD  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+! define SL_FSC027_EBMUD  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+! 
+! define DL_EBMUD     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60S !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 60S_NA1
+!==============================
+! No surface deliveries
+
+
+!==============================
+! 60S_NA2
+!==============================
+! No surface deliveries
+
+
+!==============================
+! 60S_NU1 - City of Stockton via SEWD - M&I 
+!==============================
+! NOTE: there is no NU2...just named NU1 (legacy?)
+define EVF_WTPWDH_60S_NU1 {value 0.01} ! evaporative loss fraction
+define DPF_WTPWDH_60S_NU1 {value 0.04} ! deep percolation loss fraction
+define LFF_WTPWDH_60S_NU1 {value 0.00} ! lateral flow loss fraction
+
+define EVF_WTPDWS_60S_NU1 {value 0.01} ! evaporative loss fraction
+define DPF_WTPDWS_60S_NU1 {value 0.04} ! deep percolation loss fraction
+define LFF_WTPDWS_60S_NU1 {value 0.00} ! lateral flow loss fraction
+
+define EV_60S_NU1         {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60S_NU1         {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60S_NU1         {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60S_NU1         {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+! OLD...
+! define EF_WTPWDH_60S_NU1  {value 0.01} ! evaporative loss fraction
+! define SF_WTPWDH_60S_NU1  {value 0.04} ! deep percolation loss fraction
+! define EL_WTPWDH_60S_NU1  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+! define SL_WTPWDH_60S_NU1  {std kind 'SEEPAGE-LOSS'     units 'CFS'}        
+! define DL_WTPWDH_60S_NU1  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+! 
+! define EF_WTPDWS_60S_NU1  {value 0.01} ! evaporative loss fraction
+! define SF_WTPDWS_60S_NU1  {value 0.04} ! deep percolation loss fraction
+! define EL_WTPDWS_60S_NU1  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+! define SL_WTPDWS_60S_NU1  {std kind 'SEEPAGE-LOSS'     units 'CFS'}        
+! define DL_WTPDWS_60S_NU1  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+! 
+! define DL_60S_NU1         {std kind 'DELIVERY-LOSS'    units 'CFS'}
+
+
+!==============================
+! 60S_PA1 - Stockton East WD - Ag
+!==============================
+define EVF_CLV023_60S_PA1 {value 0.01} ! evaporative loss fraction
+define DPF_CLV023_60S_PA1 {value 0.04} ! deep percolation loss fraction
+define LFF_CLV023_60S_PA1 {value 0.10} ! lateral flow loss fraction
+
+define RUFR_60S_PA1       {value 0.0*RUFRmax} ! reuse fraction for irrigated rice
+define RUFO_60S_PA1       {value 0.00}        ! reuse fraction for other irrigated crops
+define RUFW_60S_PA1       {value 0.00}        ! reuse fraction for wetlands 
+define RPF_60S_PA1        {value 0.00}        ! riparian/miscellaneous ET fraction 
+
+define EV_60S_PA1         {std kind 'EVAPORATIVE-LOSS'  units 'CFS'}
+define DP_60S_PA1         {std kind 'DEEP-PERCOLATION'  units 'CFS'}
+define LF_60S_PA1         {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define DL_60S_PA1         {std kind 'DELIVERY-LOSS'     units 'CFS'}
+
+
+

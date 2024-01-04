@@ -1,0 +1,23 @@
+!Define COSMA demand
+/***********SEWD WTP Supply*************/
+!SEWD WTP: Fix deliveries from New Hogan and New Melones
+goal setSEWD_NewHogan	{
+	lhs D506B
+	rhs D506B[VAMP_AND_DO]
+	!rhs D506B[SJRBASE]
+	lhs>rhs penalty 999999
+     lhs<rhs penalty 999999 }
+
+goal setSEWD_NewMelones	{
+	lhs D520A
+	rhs D520A[VAMP_AND_DO]
+	!rhs D520[SJRBASE]
+	lhs>rhs penalty 999999
+     lhs<rhs penalty 999999 }
+
+goal setSEWD_NewMelones2	{
+	lhs D520A1
+	rhs D520A1[VAMP_AND_DO]
+	!rhs D520[SJRBASE]
+	lhs>rhs penalty 999999
+     lhs<rhs penalty 999999 }

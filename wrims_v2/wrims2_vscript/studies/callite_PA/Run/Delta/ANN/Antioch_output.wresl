@@ -1,0 +1,87 @@
+/*************************************
+Antioch_output.wresl
+
+Holly Canada, DWR (05/02/2012)
+Modified from Emmaton_output.wresl [Nazrul Islam; DWR; (06/27/2010)]
+
+D-1485 Regulation
+
+*************************/
+
+!Maximum export given the sacramento river flow
+define AN_MaxExport {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setANMax {
+  lhs AN_MaxExport
+  case D1485Off{
+    condition AN_DLTSW == 0
+    rhs 999999.}
+  case NoSalinityControlPossible{
+    condition abs(AN_m_sv) <= 0.001 .and. int(AN_b_sv) == 0
+    rhs ExportCap}
+  case NegSlope{
+    condition AN_m_sv <= 0.0
+    rhs 999999.}
+  case HighCost{
+    condition AN_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap}
+  /*case NegCarriage{
+    condition abs(AN_m_sv) >= 1.0
+    rhs 999999.}*/
+  case Normal {
+    condition always
+    rhs AN_m_sv*C_Hood_ANN + AN_m_sv*C_YoloBP + AN_b_sv}
+}
+
+!****************************************************************************************
+
+! required delta outflow given exports
+
+define AN_MRDO {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setANmrdo {
+  lhs AN_MRDO
+  case D1485Off{
+    condition AN_DLTSW == 0
+    rhs 0.}  
+  case NoSalinityControlPossible{
+    condition abs(AN_m_sv) <= 0.001 .and. int(AN_b_sv) == 0
+    rhs 0.}
+  case NegSlope{
+    condition AN_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition AN_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  /*case NegCarriage{
+    condition abs(AN_m_sv) >= 1.0
+    rhs 999999.}*/
+  case Normal {
+    condition always
+    rhs ((1-AN_m_sv)/AN_m_sv)*D_ExpTD - AN_b_sv/AN_m_sv + netDeltaInflow}
+}
+
+!****************************************************************************************
+
+! required sac flow given exports
+
+define AN_ReqSac {lower unbounded upper unbounded kind 'FLOW' units 'cfs'}
+goal set_AN_ReqSac {
+  lhs AN_ReqSac
+  case D1485Off{
+    condition AN_DLTSW == 0
+    rhs 0.}  
+  case NoSalinityControlPossible{
+    condition abs(AN_m_sv) <= 0.001 .and. int(AN_b_sv) == 0
+    rhs 0.}
+  case NegSlope{
+    condition AN_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition AN_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  /*case NegCarriage{
+    condition abs(AN_m_sv) >= 1.0
+    rhs 999999.}*/
+  case Normal {
+    condition always
+    rhs D_ExpTD/AN_m_sv - AN_b_sv/AN_m_sv}
+}

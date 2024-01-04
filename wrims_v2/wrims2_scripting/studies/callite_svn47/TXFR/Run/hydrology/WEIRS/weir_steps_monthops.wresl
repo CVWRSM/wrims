@@ -1,0 +1,82 @@
+/*************************************
+weir_steps_monthops.wresl
+
+Tom FitzHugh BOR 5/18/2010
+
+This file is monthly weir code for the Fremont and Sacramento weirs. It will 
+be run only during cycle 1, and then these weirs will be operated using a daily 
+approach during cycle 2 as described in file weir_steps_dailyops_SETUP.wresl
+
+/*************************************
+
+This file contains statements that set up the following weirs and overflows:
+- Fremont Weir Overflow to Yolo Bypass, River Mile 82
+- Sacramento Weir Overflow to Yolo Bypass, River Mile 63       
+
+*******************************************************************************
+NOTES:
+
+- Weir flows are significantly influenced by backwater effects and weir submergence,
+  making it difficult to measure or estimate weir spills.
+
+- To simplify weir and overflow operation, the flow arcs are defined by a simple
+  linear equation.  This should not be a significant issue in a real application,
+  since actual weir flow is not terribly important output for a monthly time step.
+  However, a reasonable representation of weir flow is more important for weekly
+  and shorter time steps, especially daily; therefore, future revisions may be necessary.
+
+- Since estimates of the river flow at weir crest elevation are reasonably known,
+  this point was fixed in the analysis.
+
+- The weir flows are computed from the inflows to the nodes after taking deliveries
+  out. 
+
+*****************************************************************/
+
+! *******************************************************************************
+! Estimated Overflow Rating for Fremont Weir to the Yolo Bypass
+! (River Mile 82), DSA 69.
+
+! Estimated Sacramento River flow at weir crest elevation is 62,000 cfs
+define C_SacFea_0 {upper 62000. kind 'flow-channel' units 'cfs'}         ! segment from 0 to 62000
+define C_SacFea_1 {upper unbounded kind 'flow-channel' units 'cfs'}     ! segment above 62000
+goal sumN_SacFea_in {C_Wilkns + C_YubFea + AD_SacFea = C_SacFea_0 + C_SacFea_1 }
+
+! slopes of Fremont Weir overflow curves for each segment of Sac River flow
+define fwslope0 {value 0.}
+define fwslope1 {value 0.79808}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal actfwflow {D_FreWeir = fwslope0*C_SacFea_0 + fwslope1*C_SacFea_1 }
+
+! integer variable to bound segments for proper filling step by step
+define int_fweir {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundN_SacFea_in_0 {C_SacFea_0 > int_fweir * 62000.}
+goal boundN_SacFea_in_1 {C_SacFea_1 < int_fweir * 9999999.}
+
+! total flow entering SacFeather node
+define QSacFth {alias C_Wilkns + C_YubFea + AD_SacFea kind 'flow-channel' units 'cfs'}
+
+! *******************************************************************************
+! Estimated Overflow Rating for Sacramento Weir to the Yolo Bypass
+! (River Mile 63), DSA 70.
+
+! Estimated Sacramento River flow at weir crest elevation is 73,000 cfs
+define C_SacAme_0 {upper 73000. kind 'flow-channel' units 'cfs'}           ! segment from 0 to 73000
+define C_SacAme_1 {upper unbounded kind 'flow-channel' units 'cfs'}       ! segment above 73000
+goal sumN_SacAme_in {C_SacFea + C_HSt + AD_SacAme - D_SacAme = C_SacAme_0 + C_SacAme_1}
+
+! slopes of Sacramento Weir overflow curves for each segment of Sac River flow
+define swslope0 {value 0.0}
+define swslope1 {value 0.8738}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal actswflow {D_SacWeir = swslope0*C_SacAme_0 + swslope1*C_SacAme_1 }
+
+! integer variable to bound segments for proper filling step by step
+define int_sweir {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC_SacAme_0 {C_SacAme_0 > int_sweir * 73000.}
+goal boundC_SacAme_1 {C_SacAme_1 < int_sweir * 9999999.}
+
+! total flow entering SacAmerican node
+define QSacAme {alias C_SacFea + C_HSt + AD_SacAme - D_SacAme kind 'flow-channel' units 'cfs'}

@@ -1,0 +1,33 @@
+
+!Load X2 data to limit filling of LV from January to June.
+define X2_last {timeseries 'X2_prv' kind 'x2-position-prev' units 'km'}
+define km_chs {value 74. }     ! km to Chipps Island
+define km_cnf {value 81. }     ! km to Confluence (Sac & SJR)
+
+define daysX2_chs {
+     case FebtoJun {
+          condition      month >= FEB .and. month <= JUN
+          select         chs_days
+          from           x2days
+          where          wateryear=wateryear,month=month    }
+     case StandardOff {
+          condition      always
+          value          0    }    }
+
+define daysX2_cnf {
+     case FebtoJun {
+          condition      month >= FEB .and. month <= JUN
+          select         cnf_days
+          from           x2days
+          where          wateryear=wateryear,month=month    }
+     case StandardOff {
+          condition      always
+          value          0    }    }
+
+
+!Load CVP NOD M&I allocations for limiting CVP deliveries to CCWD
+define perdel_cvpmi_sys {timeseries kind 'percent-delivery' units 'none'}
+
+!Load Delta surplus for determining LV water right diversions.
+define Delta_Surplus {timeseries kind 'temporary' units 'cfs'} !NEED TO VERIFY DEFINITION OF DELTA SURPLUS UNDER LV WATER RIGHT
+

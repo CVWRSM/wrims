@@ -1,0 +1,255 @@
+/************************************************
+
+coa.wresl
+
+Author: Cody L. Milligan BOR 06/17/10
+
+Dan Easton 11/12/2010 modify penality for D_Banks_EXP1, and D_Jones_EXP1
+************************************************/
+
+/*  This file contains the logic for the Coordinated Operation Agreement (COA).
+    This logic is based on the 1986 COA document and on DWRSIM documentation and logic.
+    The concept of the COA is as follows:
+
+    1) If total CVP and SWP exports are greater than what was withdrawn from storage then
+       there was excess water in the system called unstored water for export (UWFE).
+       This water must be shared using the negotiated formulas.  The current formula
+       gives CVP 55% of this water.  The rest goes to SWP. INT_IBU_UWFE = 1
+
+    2) If total CVP and SWP storage withdrawals are greater than the total exports then
+       there were In-Basin-Uses (IBU) that required storage withdrawals.  The responsibility
+       for these requirements is to be shared according to the negotiated formulas. The
+       current formula requires CVP to provide 75% of these storage withdrawals.  The rest
+       is provided by SWP.  INT_IBU_UWFE = 0
+
+    3) Often after meeting it's COA obligation one of the projects (usually CVP) can't
+       export all the water it's entitled to due to export capacity.  This logic allows
+       the other project to take any unused portion.  It's important that a project
+       be allowed to take all that it wants before giving up any of its share.
+
+    4) There are very specific definitions for UWFE and IBU in the COA document.  These
+       definitions have been followed as closely as possible. Some things to keep in mind:
+       - Storage increases are considered part of the UWFE and are shared as per the formulas.
+       - CVP only includes Whiskeytown storage withdrawals, not storage increases in its
+         definition of change in storage.
+
+    5) Weights have been placed on the CVP share of UWFE (CVP_UWFE) and each project's unused
+       share to allow each project only to take what it's entitled to plus any unused share.
+       You don't want CVP cutting its export to allow SWP to take more water.
+
+    6) For SWPDS, SHADS and FOLDS: positive is storage withdrawal, negative is storage increase.
+
+    7) Total exports are defined as total Banks pumping including wheeling plus Jones pumping
+       plus Contra Costa Export.  Wheeling is considered as a CVP export and is defined with
+       separate wresl logic. */
+
+
+! These statements define the decision variables that are used in the COA statements.
+
+define SWPDS {lower -1000000. upper 1000000. kind 'STORAGE-CHANGE' UNITS 'CFS'}     !  SWP change in storage
+define SHADS {lower -1000000. upper 1000000. kind 'STORAGE-CHANGE' UNITS 'CFS'}     !  Shasta change in storage
+define FOLDS {lower -1000000. upper 1000000. kind 'STORAGE-CHANGE' UNITS 'CFS'}     !  Folsom change in storage
+define WHSSW {std kind 'STORAGE-WDL' UNITS 'CFS'}                                   !  Whiskeytown storage withdrawal
+define WHSSI {std kind 'STORAGE-INC' UNITS 'CFS'}                                   !  Whiskeytown storage increase
+define IBU   {std kind 'IBU' UNITS 'CFS'}                                           !  Total In-Basin-Uses met with storage withdrawals
+define UWFE  {std kind 'UWFE' UNITS 'CFS'}                                          !  Total Unstored-Water-For-Export
+define CVP_SHARE {std kind 'PERCENT-COA' UNITS 'NONE'}                              !  CVP COA Share
+define SWP_SHARE {std kind 'PERCENT-COA' UNITS 'NONE'}                              !  SWP COA Share
+define UNUSED_FS {std kind 'UNUSED-FS' UNITS 'CFS'}                                 !  Unused Federal Share of surplus
+define UNUSED_SS {std kind 'UNUSED-SS' UNITS 'CFS'}                                 !  Unused State Share of surplus
+    
+! These statements define binary 'integer' decision variables that are used to force other variables to be either positive or zero.
+
+define int_WHS_stor_chg {INTEGER std kind 'INTEGER' UNITS 'NONE'}                   ! this defines an integer with bounds [0,1]
+define int_IBU_UWFE     {INTEGER std kind 'INTEGER' UNITS 'NONE'}                   ! this defines an integer with bounds [0,1]
+
+! Define maximum values for the above two decision variables.  These simply need to be
+! sufficiently large such that the variable will never exceed the value, but small enough
+! to avoid truncation/roundoff errors in the force constraints.
+
+define WHS_stor_chg_max {value 3000.*taf_cfs}
+define IBU_UWFE_max     {value 9999999.}
+
+! **************************** SWP STORAGE CHANGE DEFINITIONS ****************************
+
+/*  COA document actually defines SWPSW as:
+    Palermo Canal Diversion + Thermalito DD Release to Feather River
+  + Thermalito DD Diversion to Hatchery + Butte County Diversion
+  + Thermalito ID Diversion + Richvale Canal + Western Canal + PG&E Lateral
+  + Sutter Butte Canal + Thermalito Afterbay Release to Feather River
+  - Lake Oroville Inflow - Kelly Ridge Power Plant Discharge             */
+
+goal swp_storage_change {SWPDS = C_Therm + D_Therm + D_Orovl - I_Orovl - I_KellyRidge}  !Define SWP Storage Change
+
+! **************************** CVP STORAGE CHANGE DEFINITIONS ****************************
+
+! Shasta Reservoir
+
+/*  COA document actually defines Shasta storage withdrawal as:
+    Keswick Dam Release + Keswick Diversions + Shasta Diversions
+    - Shasta Inflow - Discharge from Spring Creek Power Plant
+    This results in:                            */
+
+goal shasta_storage_change {SHADS = C_Kswck_m - I_Shsta - D_Spring_m}                   !Define Shasta Storage Change
+
+! Folsom Reservoir
+
+/*  COA Document actually defines Folsom storage withdrawal as:
+    Nimbus Release + Nimbus Diversion to Folsom South Canal
+    + Diversions from Folsom Lake - Inflow to Folsom
+    Including local inflow into Nimbus this results in: */
+
+goal folsom_storage_change {FOLDS = C_Nimbus_m + D_Nimbus + D_Folsm - I_Folsm - I_Nimbus}       !Define Folsom Storage Change
+
+! Whiskeytown Reservoir
+
+goal whiskey_storage_change {WHSSW - WHSSI = C_Wkytn_m + D_Spring_m - I_Wkytn}
+
+goal WHSSW_force {WHSSW < int_WHS_stor_chg * WHS_stor_chg_max}                      ! if int=0, WHSSW=0, WHSSI=pos
+goal WHSSI_force {WHSSI < WHS_stor_chg_max - int_WHS_stor_chg * WHS_stor_chg_max}   ! if int=1, WHSSW=pos, WHSSI=0
+
+! **************************** COA BALANCE CONSTRAINTS ****************************
+
+/* This goal is the guts of COA.  It includes delta surplus plus total exports and
+   total change in storage. If RHS is positive you have UWFE, If negative you have IBU.
+   D_Jones = Pumping at Jones
+   D_Banks = Puming at Banks
+   C_Delta = Surplus Delta outflow 
+   D_CCWD = Diversions at Contra Costa Water District */
+   
+define C_Delta_CVP {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_Delta_SWP {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_Delta_ANN {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+goal SrpArcSplit {C_Delta = C_Delta_CVP + C_Delta_SWP + C_Delta_ANN + C_Delta_whlcv + C_Delta_whljp}
+
+goal COA_Balance {UWFE - IBU = C_Delta_CVP + C_Delta_SWP + D_CCWD + 2./3.*D_Napa + 2./3.* D_Solano + D_Jones_EXP1 + D_Banks_EXP1
+                               + Surp1Terms + Surp2Terms - SHADS - FOLDS - WHSSW - SWPDS + UNUSED_FS + UNUSED_SS}
+
+goal UWFE_force {UWFE < int_IBU_UWFE * IBU_UWFE_max}                                ! if int=0, UWFE=0, IBU=pos
+goal IBU_force  {IBU < IBU_UWFE_max - int_IBU_UWFE * IBU_UWFE_max}                  ! if int=1, UWFE=pos, IBU=0
+
+define CVP_UWFE {value 0.55}                                                        ! CVP COA Share of unstored water for export
+define CVP_IBU  {value 0.75}                                                        ! CVP COA Share of storage withdrawals
+goal CVP_Split {CVP_share = int_IBU_UWFE * CVP_UWFE + CVP_IBU - CVP_IBU * int_IBU_UWFE}  !CVP Share
+goal SWP_Split {SWP_share = 1.0 - CVP_share }                                       !SWP Share
+
+/*  Restrict exports to satisfy COA:  Exports = storage withdrawal - storage increase -
+    share of in basin uses + share of unstored water for export + other party's unused share  */
+
+goal COA_CVP { D_Jones_EXP1 + Surp1Terms + D_CCWD = SHADS + FOLDS + WHSSW - .75*IBU + .55*UWFE - UNUSED_FS - C_Delta_CVP}
+goal COA_SWP { D_Banks_EXP1 + 2./3.*D_Napa + 2./3.* D_Solano + Surp2Terms = SWPDS - .25*IBU + .45*UWFE - UNUSED_SS - C_Delta_SWP}
+
+goal setUNUSED_FS { D_Banks_EXP2 < UNUSED_FS }
+goal setUNUSED_SS { D_Jones_EXP2 < UNUSED_SS }
+
+
+
+if int(EI_DLTSW)==1 .or. int(EI_DLTSW)==2 {
+  
+! The projects share available export capacity when EI is controlling.
+
+
+!EI_control_on = 1 when the EI Ratio was controlling total exports in the Upstream cycle.  When EI is controlling in the Upstream cycle,
+!and if it is determined that exports are not going to be further controlled by a BO RPA, then sharing logic under the EI control is implemented in the B2_BO_DailyWeir cycle.
+!When NOT controlling in the Upstream cycle, EI sharing logic is turned off and protections are implemented to prevent one project from incurring the carriage
+!costs of another project aggressively pressing against the EI constraint in the remaining cycles.
+define EI_control_on {
+    case EI_control {
+        condition   c_delta_swp[Upstream] + c_delta_cvp[Upstream] > 0.1 .and. 
+                    eiexpctrl[Upstream] - d_exptd[Upstream] < 0.01 .and.
+                    MRDO_final < C_SacSJR[Upstream] + 0.1
+        value       1.
+    }
+    case otherwise {
+        condition   always
+        value       0.
+    }
+}
+
+goal EI_split_swp {
+    lhs     D_Banks_EXP1
+    case ei_control {
+    condition   EI_control_on > 0.5 .and. C_OMR[base] > C408_Limit .and. MAXEXP_RPA > d_exptd[base]
+     rhs        0.5*EiExpCtrl[Upstream] + ExpRatio*c_therm - ExpRatio*c_therm[Upstream]
+     lhs>rhs    penalty 1285
+     lhs<rhs    penalty 0}
+}
+goal EI_split_cvp {
+    lhs     D_Jones_EXP1
+    case ei_control {
+    condition   EI_control_on > 0.5 .and. C_OMR[base] > C408_Limit .and. MAXEXP_RPA > d_exptd[base]
+     rhs        0.5*EiExpCtrl[Upstream] + ExpRatio*c_wkytn_m + ExpRatio*c_kswck_m + ExpRatio*c_nimbus_m 
+                              - ExpRatio*c_wkytn_m[Upstream] - ExpRatio*c_kswck_m[Upstream] - ExpRatio*c_nimbus_m[Upstream]
+     lhs>rhs    penalty 1285
+     lhs<rhs    penalty 0}
+}
+
+goal No_EI_split_swp1 {
+    lhs     D_Banks_SWP
+    case no_ei_control {
+    condition   EI_control_on < 0.5 .and. C_OMR[base] > C408_Limit .and. 
+                MAXEXP_RPA > d_exptd[base] .and. MRDO_final < C_SacSJR[Upstream] + 0.1
+    rhs        D_Banks_SWP[Upstream]
+    lhs>rhs    penalty 0
+    lhs<rhs penalty 1290}
+}
+
+goal No_EI_split_swp2 {
+    lhs     C_Delta_SWP
+    case no_ei_control {
+    condition   EI_control_on < 0.5 .and. S_SLSWP[Upstream] > swprulecv[Upstream] + 0.01 .and. 
+                C_OMR[base] > C408_Limit .and. MAXEXP_RPA > d_exptd[base]
+    rhs        C_Delta_SWP[Upstream]
+    lhs<rhs    penalty 0
+    lhs>rhs    penalty 1290}
+}
+
+goal No_EI_split_cvp1 {
+    lhs     D_Jones_CVP
+    case no_ei_control {
+    condition   EI_control_on < 0.5 .and. C_OMR[base] > C408_Limit .and. 
+                MAXEXP_RPA > d_exptd[base] .and. MRDO_final < C_SacSJR[Upstream] + 0.1
+    rhs        D_Jones_CVP[Upstream]
+    lhs>rhs    penalty 0
+    lhs<rhs penalty 1290}
+}
+
+goal No_EI_split_cvp2 {
+    lhs     C_Delta_CVP
+    case no_ei_control {
+    condition   EI_control_on < 0.5 .and. S_SLCVP[Upstream] > cvprulecv[Upstream] + 0.01 .and. 
+                C_OMR[base] > C408_Limit .and. MAXEXP_RPA > d_exptd[base]
+    rhs        C_Delta_CVP[Upstream]
+    lhs<rhs    penalty 0
+    lhs>rhs    penalty 1290}
+}
+
+
+
+! Only apply sharing logic under the AprilMay pulse flow export contraint when this constraint was controlling operations in the Upstream cycle.
+goal AprMay_split_swp {
+    lhs     D_Banks_EXP1
+     case AprMay {
+        condition      range(month,apr,may) .and. VAMP_DLTSW == 1 .and. 
+                       c_delta_swp[Upstream] + c_delta_cvp[Upstream] > 0.1 .and. 
+                       aprmayexpctrl[Upstream] - d_exptd[Upstream] < 0.01 .and. 
+                       MAXEXP_RPA > d_exptd[base]
+     rhs        0.5*AprMayExpCtrl
+     lhs>rhs    penalty 1285
+     lhs<rhs    penalty 0
+     }
+}
+goal AprMay_split_cvp {
+    lhs     D_Jones_EXP1 
+     case AprMay {
+        condition      range(month,apr,may) .and. VAMP_DLTSW == 1 .and. 
+                       c_delta_swp[Upstream] + c_delta_cvp[Upstream] > 0.1 .and. 
+                       aprmayexpctrl[Upstream] - d_exptd[Upstream] < 0.01 .and. 
+                       MAXEXP_RPA > d_exptd[base]
+     rhs        0.5*AprMayExpCtrl
+     lhs>rhs    penalty 1285
+     lhs<rhs        penalty 0
+     }
+}
+}

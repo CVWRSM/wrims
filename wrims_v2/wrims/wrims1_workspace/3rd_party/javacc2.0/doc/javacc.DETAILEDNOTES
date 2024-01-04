@@ -1,0 +1,1898 @@
+THIS FILE IS A COMPLETE LOG OF ALL CHANGES THAT HAVE TAKEN PLACE SINCE
+THE RELEASE OF VERSION 0.5 IN OCTOBER, 1996.
+
+AS NOTED HERE, DURING THE TRANSITION FROM 0.5 TO 2.0, THERE HAVE BEEN
+THE FOLLOWING INTERMEDIATE VERSIONS:
+
+	0.6.-10
+	0.6.-9
+	0.6.-8
+	0.6(Beta1)
+	0.6(Beta2)
+	0.6
+	0.6.1
+	0.7pre1
+	0.7pre2
+	0.7pre3
+	0.7pre4
+	0.7pre5
+	0.7pre6
+	0.7pre7
+	0.7
+	0.7.1
+	0.8pre1
+	0.8pre2
+	1.0
+	1.2
+
+A MORE CONCISE VERSION OF THIS FILE IS AVAILABLE IN javacc.RELEASENOTES.
+
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 2.0 (as compared to version 1.2)
+-------------------------------------------------------------------
+
+Added CPP grammar to examples directory (contributed by Malome Khomo).
+
+-------------------------------------------------------------------
+
+GUI is now available to run JavaCC.  You can control all aspects of
+JJTree and JavaCC (except creating and editing the grammar file)
+through this GUI.
+
+-------------------------------------------------------------------
+
+Desktop icons now available on a variety of platforms so you can
+run JavaCC by double clicking the icon.
+
+-------------------------------------------------------------------
+
+Bash on NT support improved.
+
+-------------------------------------------------------------------
+
+Uninstaller included.
+
+-------------------------------------------------------------------
+
+Fixed some minor bugs.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 1.2 (as compared to version 1.0)
+-------------------------------------------------------------------
+
+Moved JavaCC to the Metamata installer and made it available for
+download from Metamata's web site.
+
+-------------------------------------------------------------------
+
+Added Java 1.2 grammars to the examples directory.
+
+-------------------------------------------------------------------
+
+Added repetition range specifications for regular expressions.
+You can specify exact number of times a particular re should
+occur or a {man, max} range, e.g,
+
+    TOKEN:
+    {
+         < TLA: (["A"-"Z"]){3} > // Three letter acronyms!
+
+      |
+
+         < DOS_FILENAME: (~[".", ":", ";", "\\"]) {1,8}
+                         ( "." (~[".", ":", ";", "\\"]){1,3})? >
+               // An incomplete spec for the DOS file name format
+    }
+
+The translation is right now expanding out these many number of times
+so use it with caution.
+
+-------------------------------------------------------------------
+
+You can now specify actions/state changes for EOF. It is right now
+very strict in that it has to look exactly like:
+
+   <*> TOKEN:
+   {
+      < EOF > { action } : NEW_STATE
+   }
+
+which means that EOF is still EOF in every state except that now
+you can specify what state changes  if any or what java code
+if any to execute on seeing EOF.
+
+This should help in writing grammars for processing C/C++ #include
+files, without going through hoops as in the old versions.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 1.0 (as compared to version 0.8pre2)
+-------------------------------------------------------------------
+
+Fixed bugs related to usage of JavaCC with Java 2.
+
+-------------------------------------------------------------------
+
+Many other bug fixes.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.8pre2 (as compared to version 0.8pre1)
+-------------------------------------------------------------------
+
+Mainly bug fixes.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.8pre1 (as compared to version 0.7.1)
+-------------------------------------------------------------------
+
+Changed all references to Stream classes in the JavaCC code itself and
+changed them to Reader/Writer.
+
+-------------------------------------------------------------------
+
+Changed all the generated *CharStream classes to use Reader instead of
+InputStream. The names of the generated classes still say *CharStream.
+For compatibility reasons, the old constructors are still supported.
+All the constructors that take InputStream create InputStreamReader
+objects for reading the input data. All users parsing non-ASCII inputs
+should continue to use the InputStream constrctors.
+
+-------------------------------------------------------------------
+
+Generate inner classes instead of top level classes where appropriate.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7.1 (as compared to version 0.7)
+-------------------------------------------------------------------
+
+Fixed a bug in the handling of empty PARSER_BEGIN...PARSER_END
+regions.
+
+-------------------------------------------------------------------
+
+Fixed a bug in Java1.1noLA.jj - the improved performance Java grammar.
+
+-------------------------------------------------------------------
+
+Fixed a spurious definition that was being generated into the parser
+when USER_TOKEN_MANAGER was set to true.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7 (as compared to version 0.7pre7)
+-------------------------------------------------------------------
+
+Fixed the error reporting routines to delete duplicate entries from
+the "expected" list.
+
+-------------------------------------------------------------------
+
+Generated braces around the "if (true) ..." construct inserted
+by JavaCC to prevent the dangling else problem.
+
+-------------------------------------------------------------------
+
+Added code to consume_token that performs garbage collections of
+tokens no longer necessary for error reporting purposes.
+
+-------------------------------------------------------------------
+
+Fixed a bug with OPTIMIZE_TOKEN_MANAGER when there is a commmon prefix
+for two or more (complex) regular expressions.
+
+-------------------------------------------------------------------
+
+Fixed a JJTree bug where a node annotation #P() caused a null pointer
+error.
+
+-------------------------------------------------------------------
+
+Only generate the jjtCreate() methods if the NODE_FACTORY option is
+set.
+
+-------------------------------------------------------------------
+
+Fixed a bug where the name of the JJTree state file was being used in
+the declaration of the field.
+
+-------------------------------------------------------------------
+
+Updated the performance page to demonstrate how JavaCC performance
+has improved since Version 0.5.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7pre7 (as compared to version 0.7pre6)
+-------------------------------------------------------------------
+
+Added an option CACHE_TOKENS with a default value of false.  You
+can generate slightly faster and (it so happens) more compact
+parsers if you set CACHE_TOKENS to true.
+
+-------------------------------------------------------------------
+
+Improved time and space requirements as compared to earlier
+versions - regardless of the setting of CACHE_TOKENS.
+
+Performance has improved roughly 10% (maybe even a little more).
+Space requirements have reduced approximately 30%.
+
+It is now possible to generate a Java parser whose class file is
+only 28K in size.  To do this, run JavaCC on Java1.1noLA.jj with
+options ERROR_REPORTING=false and CACHE_TOKENS=true.
+
+And over the next few months, there is still places where space
+and time can be trimmed!
+
+-------------------------------------------------------------------
+
+The token_mask arrays are completely gone and replaced by bit
+vectors.
+
+-------------------------------------------------------------------
+
+Nested switch statements have been flattened.
+
+-------------------------------------------------------------------
+
+Fixed a bug in the outputting of code to generate a method
+
+    jjCheckNAddStates(int i)
+
+calls to which are generated, but not the method.
+
+-------------------------------------------------------------------
+
+Generating the `static' keyword for the backup method of the
+UCode*.java files when STATIC flag is set.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7pre6 (as compared to version 0.7pre5)
+-------------------------------------------------------------------
+
+Extended the generated CharStream classes with a method to adjust the
+line and column numbers for the beginning of a token.  Look at the C++
+grammar in the distribution to see an example usage.
+
+-------------------------------------------------------------------
+
+Fixed the JavaCC front-end so that error messages are given with line
+numbers relative to the original .jjt file if the .jj file is generated
+by pre-processing using jjtree.
+
+-------------------------------------------------------------------
+
+Removed support for old deprecated features:
+
+. IGNORE_IN_BNF can no longer be used.  Until this version, you
+  would get a deprecated warning message if you did use it.
+
+. The extra {} in TOKEN specifications can no longer be used.  Until
+  this version, you would get a deprecated warning message if your
+  did use it.
+
+-------------------------------------------------------------------
+
+ParseError is no longer supported.  It is now ParseException.  Please
+delete the existing generated files for ParseError and ParseException.
+The right ParseException will automatically get regenerated.
+
+-------------------------------------------------------------------
+
+Completed step 1 in getting rid of the token mask arrays.  This
+occupies space and is also somewhat inefficient.  Essentially,
+replaced all "if" statements that test a token mask entry with
+faster "switch" statements.  The token mask array still exist for
+error reporting - but they will be removed in the next step (in
+the next release).  As a result, we have noticed improved parser
+speeds (upto 10% for the Java grammar).
+
+As a consequence of doing step 1, but not step 2, the size of the
+generated parser has increased a small amount.  When step 2 is
+completed, the size of the generated parser will go down to be even
+smaller than what it was before.
+
+-------------------------------------------------------------------
+
+Cache tokens one step ahead during parsing for performance reasons.
+
+-------------------------------------------------------------------
+
+Made the static token mask fields "final".  Note that the token
+mask arrays will go away in the next release.
+
+-------------------------------------------------------------------
+
+The Java 1.1 grammar was corrected to allow interfaces nested within
+blocks.  The JavaCC grammar was corrected to fix a bug in its
+handling of the ">>>=" operator.
+
+-------------------------------------------------------------------
+
+Fixed a bug in the optimizations of the lexical analyzer.
+
+-------------------------------------------------------------------
+
+Many changes have been made to JJTree.  See the JJTree release
+notes for more information.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7pre5 (as compared to version 0.7pre4)
+-------------------------------------------------------------------
+
+Fixed a bug with TOKEN_MGR_DECLS introduced in 0.7pre4.
+
+-------------------------------------------------------------------
+
+Enhanced JavaCC input grammar to allow JavaCC reserved words in
+Java code (such as actions).  This too was disallowed in 0.7pre4
+only and has been rectified.
+
+-------------------------------------------------------------------
+
+The JavaCC+JJTree grammar is now being offered to our users.  You
+can find it in the examples directory.
+
+-------------------------------------------------------------------
+
+Fixed an array index out of bounds bug in the parser - that sometimes
+can happen when a non-terminal can expand to more than 100 other
+non-terminals.
+
+-------------------------------------------------------------------
+
+Fixed a bug in generating parsers with USER_CHAR_STREAM set to true.
+
+-------------------------------------------------------------------
+
+Created an alternate Java 1.1 grammar in which lookaheads have been
+modified to minimize the space requirements of the generated
+parser.  See the JavaGrammars directory under the examples directory.
+
+-------------------------------------------------------------------
+
+Provided instructions on how you can make your own grammars space
+efficient (until JavaCC is improved to do this).  See the
+JavaGrammars directory under the examples directory.
+
+-------------------------------------------------------------------
+
+Updated all examples to make them current.  Some examples had become
+out of date due to newer versions of JavaCC.
+
+-------------------------------------------------------------------
+
+Updated the VHDL example - Chris Grimm made a fresh contribution.
+This seems to be a real product quality example now.
+
+-------------------------------------------------------------------
+
+Fixed bugs in the Obfuscator example that has started being used
+for real obfuscation by some users.
+
+-------------------------------------------------------------------
+
+The token manager class is non-final (this was a bug).
+
+-------------------------------------------------------------------
+
+Many changes have been made to JJTree.  See the JJTree release
+notes for more information.
+
+-------------------------------------------------------------------
+
+Fixed all token manager optimization bugs that we know about.
+
+-------------------------------------------------------------------
+
+Fixed all UNICODE lexing bugs that we know about.
+
+-------------------------------------------------------------------
+
+Fixed an array index out of bounds bug in the token manager.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7pre4 (as compared to version 0.7pre3)
+-------------------------------------------------------------------
+
+The only significant change for this version is that we incorporated
+the Java grammar into the JavaCC grammar.  The JavaCC front end is
+therefore able to parse the entire grammar file intelligently rather
+than simple ignore the actions.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7pre3 (as compared to version 0.7pre2)
+-------------------------------------------------------------------
+
+WE HAVE NOT ADDED ANY MAJOR FEATURES TO JAVACC FOR THIS PRERELEASE.
+WE'VE FOCUSED MAINLY ON BUG FIXES.  BUT HERE IS WHAT HAS CHANGED:
+
+-------------------------------------------------------------------
+
+Fixed the JavaCC license agreement to allow redistributions of example
+grammars.
+
+-------------------------------------------------------------------
+
+Fixed a couple of bugs in the JavaCC grammar.
+
+-------------------------------------------------------------------
+
+Fixed an obscure bug that caused spurious '\r's to be generated
+on Windows machines.
+
+-------------------------------------------------------------------
+
+Changed the generated *CharStream classes to take advantage of the
+STATIC flag setting.  With this (like the token manager and parser)
+the *CharStream class also will have all the methods and variables to
+be static with STATIC flag.
+
+-------------------------------------------------------------------
+
+A new option OPTIMIZE_TOKEN_MANAGER is introduced. It defaults to
+true.  When this option is set, optimizations for the TokenManager, in
+terms of size *and* time are performed.
+
+This option is automatically set to false if DEBUG_TOKEN_MANAGER is
+set to true.
+
+The new option OPTIMIZE_TOKEN_MANAGER might do some unsafe
+optimization that can cause your token manager not to compile or run
+properly. While we don't expect this to happen that much, in case it
+happens, just turn off the option so that those optimizations will not
+happen and you can continue working. Also, if this happens, please
+send us the grammar so we can analyze the problem and fix JavaCC.
+
+-------------------------------------------------------------------
+
+A String-valued option OUTPUT_DIRECTORY is implemented. This can be
+used to instruct JavaCC to generate all the code files in a particular
+directory.  By default, this is set to user.dir.
+
+-------------------------------------------------------------------
+
+Fixed a minor bug (in 0.7pre2) in that the specialToken field was not
+being set before a lexical action for a TOKEN type reg. exp.
+
+-------------------------------------------------------------------
+
+Added a toString method to the Token class to return the image.
+
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7pre2 (as compared to version 0.7pre1)
+
+-------------------------------------------------------------------
+
+AS USUAL, KEEP IN MIND THAT THIS IS A PRERELEASE THAT WE HAVE NOT
+TESTED EXTENSIVELY.  THERE ARE A FEW KNOWN BUGS THAT ARE STILL PRESENT
+IN THIS VERSION.  QUALITY CONTROL FOR PRERELEASES ARE SIGNIFICANTLY
+LOWER THAN STABLE RELEASES - I.E., WE DON'T MIND THE PRESENCE OF BUGS
+THAT WE WOULD FEEL EMBARASSED ABOUT IN STABLE RELEASES.
+
+-------------------------------------------------------------------
+
+Main feature release for 0.7pre2 is a completely redone JJTree.  It
+now bootstraps itself.  See the JJTree release notes for more
+information.
+
+-------------------------------------------------------------------
+
+Error recovery constructs have been modified a bit from 0.7pre1.  The
+parser methods now throw only ParseException by default.  You can now
+specify a "throws" clause with your non-terminals to add other
+exceptions to this list explicitly.  Please see the help web page at:
+
+   http://www.suntest.com/JavaCCBeta/newerrorhandling.html
+
+for complete information on error recovery.
+
+-------------------------------------------------------------------
+
+A new Java grammar improved for performance in the presence of very
+complex expressions is now included.  This is NewJava1.1.jj.
+
+-------------------------------------------------------------------
+
+More optimizations for the size of the token manager's java and class
+files.  The generated .java files are about 10-15% smaller that
+0.7pre1 (and 40-45%) smaller compared to 0.6. The class files (with
+-O) are about 20% smaller compared to 0.6.
+
+-------------------------------------------------------------------
+
+The parser size has been decreased.  The current optimizations affect
+grammars that have small amounts of non-1 lookaheads.  For example the
+generated code for the Java grammar has now reduced by 10%.
+
+-------------------------------------------------------------------
+
+Extended the Token class to introduce a new factory function that
+takes the token kind and returns a new Token object. This is done to
+facilitate creating Objects of subclasses of Token based on the kind.
+Look at the generated file Token.java for more details.
+
+-------------------------------------------------------------------
+
+The restriction on the input size (to be < 2 gbytes) for the token
+manager is gone.  Now the lexer can tokenize any size input (no
+limit).
+
+-------------------------------------------------------------------
+
+Removed all the refrences to System.out.println in the *CharStream
+classes.  Now all these are thrown as Error objects.
+
+-------------------------------------------------------------------
+
+Fixed a very old problem with giving input from System.in. Previously
+for the EOF, you needed to give  or  more than once. But now it is
+not required any more.
+
+-------------------------------------------------------------------
+
+Fixed a few codegeneration bugs (that give java compiler errors) from
+0.7pre1.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.7pre1 (as compared to version 0.6.1)
+
+-------------------------------------------------------------------
+
+This version is experimental.  Please do not expect this version to
+be as robust as version 0.6.1.
+
+-------------------------------------------------------------------
+
+The main feature for this new version is error recovery.  We have laid
+the foundations for error recovery in this version.  Things will
+continue to improve.  Please see the help web page at:
+
+   http://www.suntest.com/JavaCCBeta/newerrorhandling.html
+
+for complete information on error recovery.
+
+-------------------------------------------------------------------
+
+Deprecated syntax from Version 0.5 now causes a warning message.  So
+far, we have been quietly processing the old syntax, now you will be
+notified if you still have those constructs in your grammars.
+
+-------------------------------------------------------------------
+
+Streamlined the TokenManager code. The java file generated is now
+about 30% smaller than before. The class files (with -O option) are
+about 10-15% smaller.  The execution time is also reduced by 8-12%.
+(all the numbers are for typical grammars)
+
+-------------------------------------------------------------------
+
+Parser methods are declared to throw "Exception", and not "ParseError".
+
+-------------------------------------------------------------------
+
+Two new exceptions have been added - TokenMgrError for token manager
+errors and ParseException for parser errors.  The exception ParseError
+is now deprecated.  It is still generated to maintain backward
+compatibility.
+
+-------------------------------------------------------------------
+
+The previous scheme for customization of error messages is gone.  The
+previous scheme required you to subclass the parser and/or the token
+manager to customize error messages.  Now you have to modify the
+method "getMessage" within the class ParseException.
+
+-------------------------------------------------------------------
+
+Added the try-catch-finally syntax of Java to facilitate error recovery.
+
+-------------------------------------------------------------------
+
+Added a method generateParseException to facilitate error recovery.
+
+-------------------------------------------------------------------
+
+Removed *all* System.out.println statements from the TokenManager.
+
+-------------------------------------------------------------------
+
+Fixed two very minor bugs - one with MORE and EOF and another one with
+> 7bit characters starting a complex (non-string literal) regular
+expression.
+
+-------------------------------------------------------------------
+
+Modified getNextToken of the token manager (not the parser) not to
+throw any exception any more. It only throws (subclasses of) Error
+which need not be mentioned in the declaration.
+
+-------------------------------------------------------------------
+
+Got rid of the variables that were being used to customize error
+reporting.
+
+-------------------------------------------------------------------
+
+The LexicalError method is not there in the TokenManager class
+anymore.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.6.1 (as compared to version 0.6)
+
+-------------------------------------------------------------------
+
+We do not accept input from standard input any more.  Now all JavaCC
+input must come from files.  The reason for this is that the name of
+the file is necessary for a lot of our advanced bookkeeping, in
+keeping the tools well integrated, and also for the purpose of a
+forthcoming feature - emacs compatible error messages.
+
+-------------------------------------------------------------------
+
+The README file has been updated to reflect this version.
+
+-------------------------------------------------------------------
+
+JavaCC now generates jjtree.reset(); into the generated ReInit
+methods when the grammar file has been processed earlier by JJTree.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.6 (as compared to version 0.6(Beta2))
+
+-------------------------------------------------------------------
+
+Fixed a bug with the generated lexer when a string literal token which
+is a prefix of another string literal token occurs just before EOF in
+the input.
+
+-------------------------------------------------------------------
+
+Fixed an IGNORE_CASE bug caused due to a mismatch between JDK 1.0.2
+and JDK 1.1.
+
+-------------------------------------------------------------------
+
+Indented the generated lexer code.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.6(Beta2) (as compared to version 0.6(Beta1))
+
+-------------------------------------------------------------------
+
+JJTree has significantly improved.  See the JJTree releasenotes for
+more information.
+
+-------------------------------------------------------------------
+
+Fixed a bug that caused comments immediately before productions to
+not get inserted into the generated code.
+
+-------------------------------------------------------------------
+
+Fixed a bug in lexical analyzer generation for rules of the form:
+
+       (("a")*)+
+
+-------------------------------------------------------------------
+
+Fixed a bug in lexical analyzer code generation with IGNORE_CASE
+option/attribute for cases when there are character ranges given in
+lowercase. The bug was that for such cases the uppercase versions were
+not being accepted.
+
+-------------------------------------------------------------------
+
+Fixed the ASCII_CharStream class to do the correct column number
+calculations for tabs.
+
+-------------------------------------------------------------------
+
+Fixed a bug with one string literal token being a prefix of another
+string literal token (e.g., "final" and "finally"), with IGNORE_CASE
+attribute or option set. The bug was that the generated code had
+unreachable statements which java compiler didn't like.
+
+-------------------------------------------------------------------
+
+Changed the interpretation and the corresponding implementation of the
+IGNORE_CASE option and attribute. A specification like
+
+    TOKEN [IGNORE_CASE] :
+    { 
+       < STUFF: (~["a"-"z"])+ >
+    }
+
+will now mean
+
+    TOKEN  :
+    { 
+       < STUFF: (~["a"-"z", "A"-"Z"])+ >
+    }
+
+previously, it meant
+
+    TOKEN [IGNORE_CASE] :
+    { 
+       < STUFF: (["\u0000"-"\u0060", "\u007b"-"\u00ff"])+ >
+    }
+
+(so, if you look carefully, "a"-"z" will also get added, which is not
+very intuitive)
+
+Intuitively with the new scheme, ~["a"-"z"] with IGNORE_CASE stands
+for any non-alphabetic character.
+
+-------------------------------------------------------------------
+
+Changed the lexical error message to print the prefix that was already
+consumed when a lexical error occurs.
+
+-------------------------------------------------------------------
+
+Changed printing <EOF> in lexical error when the input character is 0,
+instead now it explicitly checks to see if an <EOF> has indeed occured
+when printing Encountered : <EOF>
+
+-------------------------------------------------------------------
+
+Improved parse error messages when ERROR_REPORTING is set to false.
+
+-------------------------------------------------------------------
+
+Calls to getNextToken are now tracked and traced when DEBUG_PARSER
+is set to true.  Previously, this was not happening - so JAVACODE
+productions could not be debugged easily.
+
+-------------------------------------------------------------------
+
+The install script has been improved further by the JInstall
+developer.
+
+-------------------------------------------------------------------
+
+Added some new examples - DU contributed by John D. Ramsdell, the
+Lookahead examples used to illustrate the various Lookahead concepts,
+and an transformation example to illustrate "passing through" of
+tokens.
+
+-------------------------------------------------------------------
+
+Modified some existing examples as follows:
+
+. Updated the Java 1.1 grammar to include nested classes/interfaces
+  within interfaces; and also modified its CastExpression expansions
+  to expand to Type so that any actions associated with Type get
+  automatically invoked (this was thanks to Bill Foote).
+
+. The Interpreter example has been improved to use the new features
+  of JJTree.  It also includes read and write statements now.
+
+. Simple1.jj in the SimpleExamples directory has been improved to
+  accept '\r's in addition to '\n's.
+
+-------------------------------------------------------------------
+
+Download is now also available in ftp form.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.6(Beta1) (as compared to version 0.6.-8)
+
+-------------------------------------------------------------------
+
+Improved the error detection algorithm to get a complete list of
+expected tokens in all cases.  There are situations when a lot of
+complex lookaheads are used when some expected tokens are overlooked
+in earlier versions.
+
+-------------------------------------------------------------------
+
+Fixed a bug in the generated CharStream files which was giving problems
+for large tokens.
+
+-------------------------------------------------------------------
+
+Reordered the generation of code in the parser to cause the boilerplate
+code to be generated after the actual parser code.  This allows us to
+customize the boilerplate code and reduce its size and complexity for
+simple grammars.
+
+-------------------------------------------------------------------
+
+The lookahead ambiguity checking algorithm has been extended to
+consider the existence of nested semantic lookahead.  Hence, fewer
+warnings are produced in the presence of semantic lookahead.
+
+-------------------------------------------------------------------
+
+Added two new options DEBUG_PARSER and DEBUG_LOOKAHEAD.  The option
+DEBUG will soon be deleted.  But for the time being, DEBUG is
+equivalent to DEBUG_PARSER.  DEBUG_PARSER provides just parser debugging.
+DEBUG_LOOKAHEAD provides detailed lookahead debugging in addition to
+parser debugging.
+
+-------------------------------------------------------------------
+
+Implemented a new boolean option COMMON_TOKEN_ACTION which defaults to
+false.  When this option is set, the getNextToken method of the
+generated lexer will make a call
+
+       CommonTokenAction(matchedToken);
+
+before returning a token. This method can be implemented by the user
+in the TOKEN_MGR_DECLS. Its signature is :
+
+       void CommonTokenAction(Token t)
+
+One of the examples that I can think of where this feature is useful
+is the calculation of line and column numbers when you have #line
+directives (like a C/C++ preprocessed file). So you can maintain the
+line and column numbers in the lexer seperately and just before
+returning a token, you can adjust the line and column numbers so that
+your error messages will be more precise.
+
+Note : a) if the STATIC option is set to true, this method needs to be
+declared to be a static method and b) this method is called *ONLY* for
+TOKEN kind tokens and *NOT* for SKIP/MORE/SPECIAL_TOKEN.
+
+-------------------------------------------------------------------
+
+New grammars including a Java 1.1 grammar and a couple of HTML
+grammars have been added.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.6.-8 (as compared to version 0.6.-9)
+
+-------------------------------------------------------------------
+
+The name of the tools have been changed.  Essentially, the tools will
+now be distributed under the official name "Java Compiler Compiler".
+The short name for this tool is JavaCC.  While the old names will
+still work for stuff such as the mailing list, web pages, etc., we
+encourage all of you to move over to the new name as soon as possible.
+
+The main change for you will be that the program name "jack" changes
+to "javacc".  The package COM.sun.labs.jack changes to COM.sun.labs.javacc.
+The tree builder preprocessor (originally beanstalk) is now called
+jjtree, and the old JackDoc is now called jjdoc.  The preferred file
+extension for grammar input files is now ".jj".
+
+The reason for the name change is that this tool has become far more
+successful than we ever expected.  We are doing everything to make this
+a professional tool and a formally registered name is one aspect of
+this process.
+
+-------------------------------------------------------------------
+
+Beanstalk and JackDoc have been integrated with Jack into one release
+although they are still invoked as different main programs with their
+changed names.
+
+-------------------------------------------------------------------
+
+All private variables and classes of the generated parser is now
+prefixed with "jj" or "JJ".  If you avoid using names starting with
+"jj"/"JJ", you will not clash with the generated variables.
+
+
+-------------------------------------------------------------------
+
+The Java grammar and the JavaCC input grammar did not allow form feeds.
+They have been extended to allow them now.
+
+-------------------------------------------------------------------
+
+Some quirks in semantic lookahead have been fixed.  Lookahead specifications
+are now allowed anywhere in the grammar (just like actions).  In summary,
+semantic lookahead is now evaluated during other lookaheads.  A variable
+"lookingAhead" is provided for you to fine-tune your semantic lookahead.
+
+Example:
+
+void foo():
+{}
+{
+  A()
+|
+  B()
+}
+
+void A():
+{}
+{ LOOKAHEAD({isType(getToken(1)}) "a" "b" }
+
+void B():
+{}
+{ "a" "b" }
+
+In this example, when foo() is parsed, A() is selected if the next token
+(that must match an "a") is a type.  Otherwise B() is selected.  That is
+because during the choice determination between A() and B(), the semantic
+lookahead appears within the single token lookahead for the A() | B()
+choice point.
+
+Suppose this example is modified to:
+
+void foo():
+{}
+{
+  A()
+|
+  B()
+}
+
+void A():
+{}
+{ "a" LOOKAHEAD({isType(getToken(1)}) "b" }
+
+void B():
+{}
+{ "a" "b" }
+
+In this case we are interested in choosing A() if the second token (that
+matches "b") is a type.  In this case the choice A() is taken since there
+is no semantic lookahead within a lookahead of 1 token (the default) at
+the choice point for A() | B().  After A() is selected, there will be a
+parse error if "b" does not happen to be a type.
+
+Now consider this last modification that illustrates an important feature:
+
+void foo():
+{}
+{
+  LOOKAHEAD(2)
+  A()
+|
+  B()
+}
+
+void A():
+{}
+{ "a" LOOKAHEAD({isType(getToken(1)}) "b" }
+
+void B():
+{}
+{ "a" "b" }
+
+In this case, the lookahead for the choice point A() | B() has been increased
+to 2 and therefore includes the semantic lookahead.  Hence the choice is
+taken properly.  LOOKAHEAD(2) could be replaced by LOOKAHEAD(A()) with the
+same effect.
+
+
+A new document "LookaheadTutorial.txt" is being prepared and an incomplete
+version is available in the doc directory.  This will eventually provide a
+clear description of all issues of LOOKAHEAD.
+
+Special thanks to an example from Doug South that illustrated what we
+needed to do to improve semantic lookahead.
+
+-------------------------------------------------------------------
+
+For a LOOKAHEAD(...) with only semantic lookahead, the syntactic lookahead
+amount defaults to 0.  Previously this defaulted to the global lookahead
+amount.  This is a more intuitive default with our new extended semantic
+lookahead.
+
+-------------------------------------------------------------------
+
+SPECIAL_TOKEN processing has been implemented.  This means that any
+regular expression defined to be a SPECIAL_TOKEN (typically comments)
+may be accessed in a special manner from user actions in the parser.
+This allows these tokens to be recovered during parsing while at the
+same time these tokens do not participate in the parsing.
+
+Details:
+
+The class Token now has an additional field:
+
+   Token specialToken;
+
+This field points to the special token immediately prior to the current
+token (special or otherwise).  If the token immediately prior to the
+current token is a regular token (and not a special token), then this
+field is set to null.  The "next" field's of regular tokens continue
+to have the same meaning - i.e., they point to the next regular token
+except in the case of the EOF token where the "next" field is null.
+The "next" field of special tokens point to the special token immediately
+following the current token.  If the token immediately following the
+current token is a regular token, the "next" field is set to null.
+
+This is clarified by the following example.  Suppose you wish to
+print all special tokens prior to the regular token "t" (but only those
+that are after the regular token before "t"):
+
+  if (t.specialToken == null) return;
+    // The above statement determines that there are no special tokens
+    // and returns control to the caller.
+  Token tmp_t = t.specialToken;
+  while (tmp_t.specialToken != null) tmp_t = tmp_t.specialToken;
+    // The above line walks back the special token chain until it
+    // reaches the first special token after the previous regular
+    // token.
+  while (tmp_t != null) {
+    System.out.println(tmp_t.image);
+    tmp_t = tmp_t.next;
+  }
+    // The above loop now walks the special token chain in the forward
+    // direction printing them in the process.  
+
+-------------------------------------------------------------------
+
+The parser generator has itself been bootstrapped to take advantage
+of the SPECIAL_TOKEN implementation.  What this means is that any
+comments in your grammar input file will be retained in your generated
+files.
+
+-------------------------------------------------------------------
+
+In addition to being able to specify a global IGNORE_CASE, now it can
+also be specified at the token specification level.  More specifically,
+by placing a "[IGNORE_CASE]" immediately after TOKEN, SPECIAL_TOKEN,
+SKIP, or MORE, the case is ignored in all regular expressions in that
+particular token specification.
+
+Example:
+
+TOKEN[IGNORE_CASE]:
+{
+  "html" | "li" | "ul"
+}
+
+-------------------------------------------------------------------
+
+A single token specification may now describe multiple lexical states.
+Previously the syntax was <lexical_state_name> to associate a particular
+state with the specification.  Now you can provide a list of state
+names separated by commas.  For example:
+
+<LSTATE1, LSTATE2>
+SKIP:
+{
+  " "
+}
+
+says skip spaces (" ") in states LSTATE1 and LSTATE2.
+
+You can also use the wild card character "*" to include all lexical
+states.  For example,
+
+<*>
+SKIP:
+{
+  " "
+}
+
+says skip spaces (" ") in all lexical states.
+
+-------------------------------------------------------------------
+
+The declaration "int EOF = 0;" has been added to the ...Constants.java
+file.
+
+-------------------------------------------------------------------
+
+Two new variables are available for use in lexical actions :
+
+   int lengthOfMatch - lenght of the current match (after last match).
+         Note that this does not include any MORE's that have been
+         matched after the last TOKEN/SKIP.
+         Read only.
+
+   Token matchedToken - this is available to user actions in TOKEN
+         as well as SPECIAL_TOKEN actions.
+         Read/Write.
+
+The variable matchedPos that used to be avaialable is not available
+anymore for use in actions.
+
+-------------------------------------------------------------------
+
+As a convenience, when USER_TOKEN_MANAGER is set to true, a token can
+be specified as simply <NAME>.  No definition is required.  However,
+all tokens that are important must have a label otherwise it will not
+be possible to refer to the index of that token from the user written
+token manager.  A warning message is provided when labels are not
+provided.
+
+-------------------------------------------------------------------
+
+There was a bug due to which non-terminals with non-ASCII characters
+were not processed correctly.  This bug has been fixed.
+
+-------------------------------------------------------------------
+
+Added a new option DEBUG_TOKEN_MANAGER to debug the generated token
+manager. If this option is set to true, the generated token manager
+will provide debug information while doing lexical analysis. This
+information includes what kind of token is currently matched, what are
+the possible longer matches, the current input character and the
+lexical state name.
+
+When this option is set, very detailed debugging information is
+produced, therefore it is best to use this option with very small test
+inputs.
+
+-------------------------------------------------------------------
+
+When DEBUG is true, tracing is also performed during LOOKAHEAD.
+
+-------------------------------------------------------------------
+
+Added a warning when a char > 0xff is seen in a regular expression
+specificiation and neither the JAVA_UNICODE_ESCAPE nor the
+UNICODE_INPUT option is set to true.
+
+-------------------------------------------------------------------
+
+Fixed the NullPointerException in lexical actions.
+
+-------------------------------------------------------------------
+
+Fixed the ArrayStore exception in *CharStream classes.
+
+-------------------------------------------------------------------
+
+Fixed the duplicate case label error with the IGNORE_CASE option.
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.6.-9 (as compared to version 0.6.-10)
+
+-------------------------------------------------------------------
+
+The major change for this version is the addition of lexical states.
+This is describe in detail later.  However, as a consequence of
+doing this, a large portion of the Jack code that handled the lexical
+analyzer generation has either been modified or substantially
+rewritten.  This could cause new bugs to appear or even old bugs
+to reappear.  We have run the new Jack through a regression suite,
+but can never be sure.  We are a little more lax about these minor
+versions than we will be for major versions that are announced to
+the entire public.  The addition of lexical states is upward
+compatible.
+
+-------------------------------------------------------------------
+
+Once again (as in 0.6.-10), we will have a version skew between the
+tools - Jack, Beanstalk, and JackDoc all operate on different versions
+of the grammars.  We anticipate making a general release numbered
+0.5.5 (which will be based on 0.6.-9) within the next 2 to 3 weeks.
+
+-------------------------------------------------------------------
+
+Jack and Beanstalk are still being released separately.  Hopefully,
+0.5.5 will be a single joint release.
+
+-------------------------------------------------------------------
+
+All options may now be placed either in the Jack source file, or as
+command line arguments.  Options are no longer required to be
+upper-case.  They are now case insensitive.  There are some alternate
+ways of entering options from the command line (alternate to
+-option=value).  You can also say "-option:value".  If the option is
+boolean valued, then "-option=true" can be shortened to "-option"
+(e.g., -STATIC) and "-option=false" can be shortened to "-NOoption"
+(e.g., -NOSTATIC).
+
+-------------------------------------------------------------------
+
+There are two main programs provided.  One is called Main.class and
+terminates execution with System.exit.  The return code indicates
+success/failure of the parser generation.  The other is called
+MacMain.class and terminates by executing return statements.  The main
+program of MacMain.class can be called from your other Java programs
+if you wish to integrate Jack with something else.  The name MacMain
+was chosen because this main program was created due to System.exit
+not working properly on the Mac's.  The source code for these main
+programs is provided as part of the release to facilitate any special
+usage requirements of your Java environment.
+
+-------------------------------------------------------------------
+
+The following options have been added:
+
+IGNORE_CASE: This is a boolean valued option that defaults to false.
+If set to true, then the generated lexical analyzer ignores the case
+of letters.  Please see the Java Language Specification, sections
+20.5.20 and 20.5.21 for complete details on what this means for
+general UNICODE characters.
+
+The following are integer options that control the thoroughness of the
+ambiguity checking performed by Jack.  Increasing these numbers can
+cause Jack to spend a very long time in performing ambiguity checking
+and possibly even run out of memory.  So be careful when setting these
+to large values.
+
+CHOICE_AMBIGUITY_CHECK: This integer option has a default value of 2.
+This is the number of tokens considered in checking choices of the
+form "A | B | ..." for ambiguity.  For example, if there is a common
+two token prefix for both A and B, but no common three token prefix,
+(assume this option is set to 3) then Jack can tell you to use a
+lookahead of 3 for disambiguation purposes.  And if A and B have a
+common three token prefix, then Jack only tell you that you need to
+have a lookahead of 3 *OR MORE*.  Increasing this can give you more
+comprehensive ambiguity information at the cost of more processing
+time.
+
+OTHER_AMBIGUITY_CHECK: This integer option has a default value of 1.
+This is the number of tokens considered in checking all other kinds of
+choices (i.e., of the forms "(A)*", "(A)+", and "(A)?") for ambiguity.
+This takes more time to do than the choice checking, and hence the
+default value is set to 1 rather than 2.
+
+-------------------------------------------------------------------
+
+"<<", >>", ">>>", ">>=", etc. were tokens in earlier versions of Jack.
+This caused Jack to give error messages on inputs that looked like
+"<foo: <bar>>".  Now, these are no longer tokens.  If these appear
+within Java code, they will be treated as multiple tokens and written
+to the output file in the same manner (so it will reappear exactly as
+is).
+
+-------------------------------------------------------------------
+
+The methods "enable_tracing" and "disable_tracing" may now be called
+even with a parser generated with option DEBUG set to false.  In this
+case, these methods are no-ops, but they allow you to easily recompile
+without having to remove the calls to these methods.
+
+-------------------------------------------------------------------
+
+The Java grammar now allows semicolons at the same level as top-level
+class and interface declarations (as per the JLS).  It seems now that
+the Jack Java grammar is superior to all others I know.
+
+-------------------------------------------------------------------
+
+A bug involving the processing of a range including \u0000 has been
+fixed.
+
+-------------------------------------------------------------------
+
+The lexical analyzer (or token manager) has been further optimized
+for use with non-ASCII (i.e., UNICODE) characters.
+
+-------------------------------------------------------------------
+
+The parser has now been optimized significantly for productions that
+use a lookahead of 1 (with or without semantic lookahead).  In
+addition, the parser has also been optimized to a lesser extent for
+productions that use a lookahead of 2 or more.  As a consequence of
+these optimizations and resulting algorithm changes, the huge array
+(of size 10000) is no longer generated and the problem of the
+array index out of bounds exception no longer exists.
+
+-------------------------------------------------------------------
+
+Added a new method GetSuffix to the CharStream interface and its
+implementation to the CharStream classes generated by Jack.
+
+-------------------------------------------------------------------
+
+Modified the Lexical Error message in case of <EOF>. to say
+Encountered : <EOF>.  Previously it used to print the last matched
+character.
+
+-------------------------------------------------------------------
+
+Currently lexical state names and token labels share the same name
+space.  Therefore the same name cannot be used for both a lexical
+state and a token label.  Since there is one standard lexical state
+called DEFAULT, therefore there cannot be any label with the same
+name.  This causes a non-upward-compatible situation in this case.
+
+-------------------------------------------------------------------
+
+LEXICAL STATES AND LEXICAL ACTIONS
+
+(This is an upward compatible change except for the use of DEFAULT
+ to earlier versions of Jack)
+
+The Jack lexical specification is organized into a set of "lexical
+states".  Each lexical state is named with an identifier.  There is a
+standard lexical state called DEFAULT.  The generated lexical analyzer
+is at any moment in one of these lexical states.  When the lexical
+analyzer is initialized, it starts off in the DEFAULT state, by default.
+The starting lexical state can also be specified as a parameter while
+constructing a lexer object.
+
+Each lexical state contains an ordered list of regular expressions
+(possibly labeled as before), this order is derived from the order of
+occurrence in the input file.  There are four kinds of regular
+expressions: SKIP, MORE, TOKEN, and SPECIAL_TOKEN.
+
+As mentioned above, the lexical analyzer is in exactly one state at
+any moment.  At this moment, the lexical analyzer only considers the
+regular expressions defined in this state for matching purposes (using
+the same algorithm as before - longest and earliest match).  After a
+match, one can now specify an action to be executed as well as a new
+lexical state to move to.  If a new lexical state is not specified,
+the lexical analyzer remains in the current state.
+
+The syntax for introducing regular expressions is:
+
+  RegularExpressionProduction ::=
+    [ "<" IDENTIFIER ">" ] Kind ":"
+    [ "{" "}" ]  // we do away with this but make it optional for upward compatibility.
+    "{"
+      RegularExpressionSpec ( "|" RegularExpressionSpec )*
+    "}"
+
+  Kind ::=
+    "SKIP" | "MORE" | "TOKEN" | "SPECIAL_TOKEN" | "IGNORE_IN_BNF"
+
+  RegularExpressionSpec ::=
+    RegularExpression [ "{" java_declarations_and_code "}" ] [ ":" IDENTIFIER ]
+
+The grammar entities "RegularExpression", "java_declarations_and_code",
+and "IDENTIFIER" are exactly the same as in Jack 0.6.-10.
+
+You may still introduce regular expressions inline in the grammar as
+before, and these regular expressions are considered to be part of the
+DEFAULT state.
+
+As mentioned above, all older Jack files will continue to work with
+the new version of Jack - it is fully upward compatible.  However, there
+are two pieces of "deprecated" syntax (which you should eventually change
+to new syntax).  Jack will eventually flag this as deprecated usage, and
+then later on disallow it completely.  These two cases are:
+
+1. The "{}" at the beginning of regular expression productions have no
+   use and we are now getting rid of it.  As the above syntax shows,
+   it will be currently retained as optional.
+
+2. The reserved word "SKIP" replaces "IGNORE_IN_BNF".  If you use
+   "IGNORE_IN_BNF" in your Jack file, it will be treated like a "SKIP"
+   declaration.  Note that the semantics of SKIP are the same as the
+   old IGNORE_IN_BNF, so existing grammars will continue to work in
+   exactly the same way.
+
+The kind "SPECIAL_TOKEN" is for tokens such as comments that you want
+to do special processing on.  This has not been implemented in 0.6.-9,
+but will be implemented in the near future.  For the time being,
+"SPECIAL_TOKEN" will work in the same way as "SKIP".
+
+The lexical state of all the regular expressions in a regular
+expression production is the identifier that appears within angular
+brackets before SKIP, MORE, etc.  If this ("<...>") is not present,
+then the lexical state of of all the regular expressions in the
+regular expression production is DEFAULT.  All the regular expressions
+in the regular expression production are of the specified kind (SKIP,
+MORE, TOKEN, SPECIAL_TOKEN).
+
+The kind specifies what to do when a regular expression has been
+successfully matched:
+
+SKIP: Simply throw away the matched string.
+MORE: Continue (to whatever the next state is) taking the matched
+      string along.  This string will be a prefix of the new matched
+      string.
+TOKEN: Create a token using the matched string and send it to the
+       parser (or any caller).
+SPECIAL_TOKEN: TBD (for the time being, this is the same as SKIP)
+IGNORE_IN_BNF: Deprecated.  Same as SKIP.
+
+Whenever the end of file <EOF> is detected, it causes the creation
+of an <EOF> token (regardless of the current state of the lexical
+analyzer).  However, if an <EOF> is detected in the middle of a match
+for a regular expression, or immediately after a MORE regular expression
+has been matched, an error is reported.
+
+The regular expressions in a regular expression production are written
+as regular expression specifications.  Each regular expression
+specification has (in addition to the regular expression itself) some
+arbitrary Java code that will be executed on successful recognition of
+the regular expression (this is optional), and also the new state to
+go to which is also optional.
+
+After the regular expression is matched, the Java code (the lexical
+action) is executed. All the variables (and methods) declared in the
+TOKEN_MGR_DECLS region (see below) are available here for use. In
+addition, the following variables and methods of the lexer are also
+available for use:
+
+   StringBuffer image - this contains the characters that have been
+                        matched so far (after the last SKIP/TOKEN).
+                        Read/Write.
+
+   int matchedPos -     the length of the suffix (of image) that is
+                        matched by the current RE (excluding any
+                        MORE's that are alreadymatched before this
+                        RE).
+                        Preferably Read-Only.
+
+   int curLexState -    index of the current lexical state.
+                        Preferably Read-Only.
+
+   inputStream -        The input stream of appropriate type ASCII or
+                        ASCII_UCodeESC or UCode or UCode_UCodeESC
+                        CharStream depending on the UNICODE and
+                        JAVA_UNICODE_ESCAPE option setting. The stream
+                        is currently at the last character read for
+                        this match. So methods like getEndLine,
+                        getEndColumn can be used to get the line and
+                        column number info for the current match.
+                        Read-Only.
+
+   Token matchedToken - Available ONLY for actions with TOKEN kind
+                        regular expressions. This is the token object
+                        that will be returned to the caller (after the
+                        action).
+                        Read/Write.
+
+   void SwitchTo(int) - A method to switch to a new lexical state.
+                        This method can be called with the state name
+                        which you want the lexer to change to.
+
+Immediately after this, the lexical analyzer changes state to that
+specified by <IDENTIFIER>.  If <IDENTIFIER> is missing, it stays in
+the current state.
+
+After that the action specified by the kind of the regular expression
+is taken (SKIP, MORE, ... ). If the kind is TOKEN, the matched token
+is returned.
+
+Lexical actions have access to a set of class level declarations.
+These declarations are introduced within the Jack file using the
+following syntax:
+
+token_manager_decls ::=
+  "TOKEN_MGR_DECLS" ":"
+  "{" java_declarations_and_code "}"
+
+These declarations are accessible from all lexical actions.
+
+Changing Lexical States Using Java Code :
+---------------------------------------
+
+A method
+
+          void SwitchTo(int lexState)
+
+is generated as a member of the lexer class. This can be used to
+switch to a new lexical state without using the : <STATENAME> syntax.
+It should be used with caution, especially if you plan to call it in
+parser actions because the parser may have already looked ahead a few
+tokens before the action is executed.
+
+EXAMPLES
+--------
+
+Example 1: Comments
+
+SKIP :
+{
+  "/*" : WithinComment
+}
+
+<WithinComment> SKIP :
+{
+  "*/" : DEFAULT
+}
+
+<WithinComment> MORE :
+{
+  <~[]>
+}
+
+
+Example 2: String Literals with actions to print the length of the string:
+
+TOKEN_MGR_DECLS :
+{
+  int stringSize;
+}
+
+MORE :
+{
+  "\"" {stringSize = 0;} : WithinString
+}
+
+<WithinString> TOKEN :
+{
+  <STRLIT: "\""> {System.out.println("Size = " + stringSize);} : DEFAULT
+}
+
+<WithinString> MORE :
+{
+  <~["\n","\r"]> {stringSize++;}
+}
+
+-------------------------------------------------------------------
+*******************************************************************
+-------------------------------------------------------------------
+
+MODIFICATIONS IN VERSION 0.6.-10 (as compared to version 0.5)
+
+-------------------------------------------------------------------
+
+INCONSISTENCY ALERT: Intermediate versions (numbered x.y.-z) may
+be inconsistent.  For example, 0.6.-10 has an improved grammar for
+Jack input files, but JackDoc has not been modified.  Please ignore
+such inconsistencies which we will try to keep minimal.  Major
+releases (numbered x.y) will always be consistent.
+
+-------------------------------------------------------------------
+
+NOTE: The array index out of bounds problem (in scan_token) has not
+yet been fixed!
+
+-------------------------------------------------------------------
+
+Some long file names have been shortened to facilitate using Jack
+on Mac machines.
+
+-------------------------------------------------------------------
+
+File generation now starts after most front end error checks have
+been performed.  Very soon "most" in the previous statement will
+become "all".  After which time, we may make the Jack front end
+source code available with certain usage restrictions.
+
+-------------------------------------------------------------------
+
+Jack 0.5 allowed private tokens (declared with #) to be used in
+grammar specifications.  Now this is detected and an error reported.
+
+-------------------------------------------------------------------
+
+A warning previously reported as an error has been fixed to be a
+warning.
+
+-------------------------------------------------------------------
+
+Calls to System.exit(...) have been replaced by "return" to facilitate
+usage on the Mac.
+
+-------------------------------------------------------------------
+
+Jack's internal generation algorithm has been modified.  If you peek
+at the Jack generated parsers, you will notice the difference.
+Currently, things work just the same as before, but we have set the
+stage for further improvements which will use this new framework.
+This includes optimizations for single token lookahead, etc.
+
+-------------------------------------------------------------------
+
+Jack's input tokens now have the same definition as in the Java
+language specification but includes the following additional reserved
+words: options, LOOKAHEAD, PARSER_BEGIN, PARSER_END, JAVACODE,
+IGNORE_IN_BNF, TOKEN, and EOF.
+
+-------------------------------------------------------------------
+
+The long comments (/*...*/) in the Jack input files did not work
+properly when the '*/' was immediately preceded by an odd number of
+'*'s.  This bug has been fixed.
+
+-------------------------------------------------------------------
+
+The type specification of non-terminal declarations (on the left-hand
+side of a production) can now be any Java type specifications.
+Previously there were a few restrictions.
+
+-------------------------------------------------------------------
+
+The LHS of the optional assignment in tokens and non-terminals can now
+be any legal Java LHS that does not begin with "(".  Previously, the
+LHS was restricted to be a single identifier.  The restriction
+regarding "(" will be removed in future versions.  Therefore, you can
+have things like:
+
+  a.b = NT(...)
+  a[x+y].c(1,2).d = NT(...)
+  etc.
+
+but you cannot have something like:
+
+  (a).b = NT(...)
+
+because is starts with "(".
+
+-------------------------------------------------------------------
+
+The lookahead repertoire of Jack has been augmented with semantic
+lookahead.  Apart from the default lookahead (which we highly
+recommend that you set to 1), Jack now has three methods of specifying
+lookahead at the various choice points.  These are (the first two
+already existed):
+
+1. Fixed lookahead: Here you specify the number of tokens to
+   lookahead, and this overrides the default lookahead amount.  An
+   example of its use is "LOOKAHEAD(5)" to specify that a lookahead of
+   5 tokens must be used at the current choice point instead of the
+   default amount.
+
+2. Syntactic lookahead: We used to call this "variable lookahead".
+   Here you specify an expansion to use in the lookahead process that
+   is different from the expansion to be parsed (which is the one that
+   would have been used if this were not present).  An example of its
+   use is LOOKAHEAD( ( "abstract" | "final" | "public" )* "class" ).
+   In this case, the lookahead succeeds if the next set of tokens in
+   the input stream are a sequence of "abstract", "final", and
+   "public" followed by "class".
+
+3. Semantic lookahead: Here you specify a boolean expression.  The
+   lookahead succeeds if this expression evaluates to true.  An
+   example of its use is:
+
+   LOOKAHEAD( { getToken(1).kind == IDENTIFIER && isType(getToken(1).image) } )
+
+   The boolean expression is placed within braces just like actions
+   are.  In this case, the lookahead succeeds if the next token is an
+   identifier that designates a type.  (Actually, this is not entirely
+   true, there is a syntactic lookahead that is also performed.  See
+   below for lookahead combinations and defaults.)
+
+The three kinds of lookahead can be combined together according to the
+following syntax:
+
+LOOKAHEAD ( integer_literal , Jack_expansion , { boolean_expression } )
+
+At least one of the three (in the comma separated list must be
+present).  If you don't want to specialize lookahead, simply don't
+specify it and the default action will be taken - which is to use the
+default lookahead amount on the expansion to be parsed.  When a
+lookahead specification is present, its behavior is detailed below on
+a case by case basis:
+
+a. The "lookahead expansion" is specified by Jack_expansion in the
+   above syntax.  If Jack_expansion is not present in the lookahead
+   specification, "lookahead expansion" defaults to the expansion to
+   be parsed.  Also, if the boolean_expression is not present, it
+   defaults to "true".
+
+b. If the integer_literal is not present, it defaults to either (i)
+   the default lookahead amount if Jack_expansion is not present, or
+   (ii) Integer.MAX_VALUE if Jack_expansion is present.  This is how
+   "infinite" lookahead is achieved when Jack_expansion is present.
+   If the integer_literal is 0, then no syntactic lookahead is
+   performed.
+
+Examples:
+
+1. Default behavior: If there is no explicit lookahead specification
+   at a choice point, it is as we have the following:
+
+   LOOKAHEAD(default_lookahead_amount, expansion_to_be_parsed, {true}).
+
+2. Only an integer literal is specified as in (from the Java grammar):
+
+   LOOKAHEAD(2)
+   StaticInitializer()
+
+   Then two tokens of lookahead is used to determine lookahead.  With
+   all the defaults, the above lookahead specification is:
+
+   LOOKAHEAD(2, StaticInitializer(), {true})
+
+3. Only an expansion is present as in (from the Java grammar):
+
+   LOOKAHEAD( ( "abstract" | "final" | "public" )* "class" )
+   ClassDeclaration()
+
+   The above lookahead expands to include all defaults to be:
+
+   LOOKAHEAD(2147483647, ( "abstract" | "final" | "public" )* "class", {true} )
+
+4. Only a semantic specification is present as in the earlier example:
+
+   LOOKAHEAD( { getToken(1).kind == IDENTIFIER && isType(getToken(1).image) } )
+
+   This is equivalent to:
+
+   LOOKAHEAD(default_lookahead_amount, expansion_to_be_parsed,
+             { getToken(1).kind == IDENTIFIER && isType(getToken(1).image) } )
+
+   Note here that if you simply have a semantic lookahead specification,
+   it is *still* preceded by an implicit syntactic lookahead check.  So
+   most probably the check that getToken(1).kind == IDENTIFIER was not
+   necessary as in the following use of the above semantic lookahead:
+
+   void expression() :
+   {}
+   {
+     LOOKAHEAD( { isType(getToken(1).image) } )
+     castExpression()
+   |
+     functionCall()
+   }
+
+   void castExpression() :
+   {}
+   {
+     <IDENTIFIER> "(" expression() ")"
+   }
+
+   So assuming the default lookahead is 1, the above lookahead with defaults
+   is:
+
+   LOOKAHEAD(1, castExpression(), { isType(getToken(1).image) } )
+
+   Since the semantic lookahead is performed only if the syntactic lookahead
+   succeeds, we are guaranteed that the first lookahead token is indeed an
+   identifier.
+
+5. Suppose we do not wish to have a syntactic lookahead performed before
+   the semantic lookahead.  We then simply set the lookahead amount to 0
+   as in the following example.  This example is the syntax of Jack's
+   lookahead itself:
+
+   void lookaheadSpecification() :
+   {}
+   {
+     "LOOKAHEAD" "("
+       [ integer_literal() ]
+       [ "," ]
+       [ expansion() ]
+       [ "," ]
+       [ "{" expression() "}" ]
+     ")"
+   }
+
+   As you can see, the problem with this grammar is that it allows all
+   sorts of illegal stuff with the (...).  For example it allows
+   LOOKAHEAD() and LOOKAHEAD(,,) both of which are illegal.  If you
+   try to write the grammar to disallow these cases, the grammar
+   becomes rather large and actions have to be repeated at different
+   places (try it).  Instead, I could augment the above grammar with
+   semantic predicates as follows and I'm done!
+
+   void lookaheadSpecification() :
+   {
+     boolean atLeastOne = false;
+     boolean comma1Reqd = false, comma2Reqd = false;
+   }
+   {
+     "LOOKAHEAD" "("
+       [ integer_literal() { comma1Reqd = true; atLeastOne = true; } ]
+       [ LOOKAHEAD(0, {comma1Reqd}) "," ]
+       [ expansion() { comma2Reqd = true; atLeastOne = true; } ]
+       [ LOOKAHEAD(0, {comma2Reqd}) "," ]
+       [ LOOKAHEAD(0, {!atLeastOne || getToken(1).kind == LBRACE}) "{" expression() "}" ]
+     ")"
+   }
+
+   Don't get confused by the two uses of "LOOKAHEAD" above - one is as
+   a string and the other is as a reserved word!  This is how Jack
+   bootstraps itself.
+   If the 0 in the lookahead specifications were omitted, you will get
+   a different effect than the one required.
+
+-------------------------------------------------------------------
+
+Fixed lexer code generation for cases when there are no string literal
+tokens specified.
+
+-------------------------------------------------------------------
+ 
+Fixed lexer code for grammars with length of string literals >= any
+other string matched by a complex regular expression.
+
+-------------------------------------------------------------------
+ 
+Complex regular expression starting with char >= 256.
+
+-------------------------------------------------------------------
+
+Fixed lexer code generation problem with negated literals.
+
+-------------------------------------------------------------------
+
+Modified lexer code generation to generate smaller methods so Java
+interpreters don't choke.
+
+-------------------------------------------------------------------
+
+Fixed the Stream class files to remove calls to finalize() so that
+Jack generated parsers can be used in applets.
+
+-------------------------------------------------------------------
+
+Fixed a couple of NullPointerException problems in the generated code.
+
+-------------------------------------------------------------------
+
+Fixed bug in optimizing choices with character lists.
+
+-------------------------------------------------------------------
+
+Generating string initializations for Stringliteral token images
+instead of the large number of assignments that were creating
+problems with some compilers.
+
+-------------------------------------------------------------------
+
+An extra comment has been added to the top of the Java grammar to make
+it clear that you may use parsers generated from this grammar in a
+manner similar to parsers generated out of your own grammars.  This
+is legalese, not technical!
+
+-------------------------------------------------------------------
+
+Some bugs in the Java grammar that comes with Jack have been fixed:
+
+     .	The single line comment specification has been changed from
+		<"//" (~["\n","\r"])* ("\n"|"\r\n")>
+	to
+		<"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+
+     .	The /*...*/ comment specification has been changed from
+		<"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
+	to
+		<"/*" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/">
+
+     .  The right shift operators were wrongly specified to be:
+
+		< RSHIFT: ">>" >
+		< RSIGNSHIFT: ">>>" >
+		< RSHIFTASSIGN: ">>=" >
+		< RSIGNSHIFTASSIGN: ">>>=" >
+
+	They have been corrected to be:
+
+		< RSIGNEDSHIFT: ">>" >
+		< RUNSIGNEDSHIFT: ">>>" >
+		< RSIGNEDSHIFTASSIGN: ">>=" >
+		< RUNSIGNEDSHIFTASSIGN: ">>>=" >
+
+-------------------------------------------------------------------

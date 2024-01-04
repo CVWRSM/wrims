@@ -1,0 +1,197 @@
+! Code by E.Reyes as of 3/8/01
+! Modified by D. Easton 12/04/00
+
+!!! Special Feather River Fish Criteria for Oct 15 - Nov 30 @ CP203
+
+/*
+Criteria being modeled:
+
+If during the period of October 15 thru November 30, the flow in the Feather River at C.P. 203 is greater than
+2500 cfs (except for flood release purposes), then the flow at C.P. 203 may not be less than 500 cfs below the
+existing flow until after March 30.
+
+
+How the Criteria is modeled:
+
+The criteria only applies to a part of the month of October, so the trigger flow of 2500 cfs is flow weighted for
+the entire month.  To compensate for the other half of the month that has no trigger, the trigger applied to the
+entire month of October may be greater than 2500 cfs.  The triggers for October and November can be set in
+'feather_fish_203.table'.
+
+When the trigger is exceeded, a "price" must be paid (a minflow thru March as opposed to no minflow if the trigger
+is not exceeded).  To avoid paying this price, releases for exports should be reduced to get below the trigger.
+Releases to meet in-basin uses however, should never be reduced to get below the trigger.
+
+If releases for flood control are made then no minimum flow is applied.
+*/
+
+
+
+
+!      In October and November, try to keep flow at CP203 < trigger otherwise pay the price
+!      of a minflow(=OCT flow or NOV flow - 500cfs) through March.  Do this by reducing releases for exports if necessary.
+!      If trigger is exceeded because of flood spills then no minflow is applied.
+
+
+!Example:       month   C_Thermalito flow scenario        minflow
+!       OCT     BELOW TRIGGER                     0 CFS =>  CHECK TO SEE WHAT HAPPENS NOVEMBER
+!       OCT     ABOVE TRIGGER DUE TO FLOOD        0 CFS =>  CHECK TO SEE WHAT HAPPENS NOVEMBER
+!       OCT     ABOVE TRIGGER                     C203 FLOW - 500 CFS  (NOV - MARCH)
+!       NOV     BELOW TRIGGER                     0 CFS
+!       NOV     ABOVE TRIGGER DUE TO FLOOD        0 CFS
+!       NOV     ABOVE TRIGGER                     C203 FLOW - 500 CFS  (DEC - MARCH)
+
+
+define oct_trigger_cfs {
+        select    target
+        from      feather_fish_203
+        where   month = OCT}
+
+define nov_trigger_cfs {
+        select    target
+        from      feather_fish_203
+        where   month = NOV}
+
+define minflow_C_Therm {
+  case October {
+    condition month == OCT
+    value   0
+  }
+  case November1 {
+    condition   month == NOV .AND.
+        int(C_Therm(prevOCT)) <= oct_trigger_cfs
+    value   0
+  }
+  case November2 {
+    condition month == NOV .AND.
+        S_Orovl(prevOCT)+1. >= s_OrovlLevel5(prevOCT)
+    value   0
+  }
+  case November3 {
+    condition month == NOV
+    value   C_Therm(prevOCT) - 500
+  }
+  case DecemberToMarch1 {
+    condition month >= DEC .AND. month <= MAR .AND.
+        int(C_Therm(prevOCT)) > oct_trigger_cfs .AND.
+        S_Orovl(prevOCT)+1. < s_OrovlLevel5(prevOCT) .AND.
+        int(C_Therm(prevNOV)) > nov_trigger_cfs .AND.
+        S_Orovl(prevNOV)+1. < s_OrovlLevel5(prevNOV)
+    value   max(C_Therm(prevOCT) - 500, C_Therm(prevNOV) - 500)
+  }
+  case DecemberToMarch2 {
+    condition month >= DEC .AND. month <= MAR .AND.
+        int(C_Therm(prevOCT)) > oct_trigger_cfs .AND.
+        S_Orovl(prevOCT)+1. < s_OrovlLevel5(prevOCT)
+    value   C_Therm(prevOCT) - 500
+  }
+  case DecemberToMarch3 {
+    condition month >= DEC .AND. month <= MAR .AND.
+        int(C_Therm(prevNOV)) > nov_trigger_cfs .AND.
+        S_Orovl(prevNOV)+1. < s_OrovlLevel5(prevNOV)
+    value   C_Therm(prevNOV) - 500
+  }
+  case otherwise {
+    condition always
+    value   0
+  }
+}
+
+goal avoidTrigger {
+  lhs C_Therm
+  case October {
+    condition month == OCT
+    rhs   oct_trigger_cfs
+    lhs>rhs   penalty 4600
+    lhs<rhs   penalty 0
+  }
+  case November {
+    condition month == NOV
+    rhs   max(nov_trigger_cfs, minflow_C_Therm + 500)
+    lhs>rhs   penalty 4600
+    lhs<rhs   penalty 0
+  }
+}
+
+!DWR and DFG have an agreement to maintain ~1700 cfs minflow from the thermalito complex to the mouth (Just above Verona).
+!The data for the timeseries minflow is defined in "minflow_C_YubFea", the Feather River flow above Verona.
+!The actual minflow for C_Therm, just below the Thermalito complex, is then the max of the minflow_C_Therm and minflow_C_YubFea.
+
+define minflow_C_YubFea {timeseries kind 'FLOW-MIN-REQUIRED' units 'CFS'}
+
+goal meetC_Therm_Minflow {C_Therm_MIF < max(minflow_C_Therm, minflow_c_YubFea)}
+define C_Therm_min {alias minflow_C_Therm kind 'CHANNEL-MINFLOW' units 'CFS'}
+
+!Limit Oroville release to be limited to 10,000 cfs Jul-Sep for the protection of Orchards downstream.
+goal OroRelJulSep {
+        lhs C_Therm
+    case JulSep {
+      condition month>=JUL .and. month<=SEP
+      rhs               10000.
+                        lhs>rhs   penalty 9990
+      lhs<rhs   penalty 0 }
+}
+
+
+!DWR maintains flow at the "Mouth of Feather River" based on requirements of diversion pumping facilities.
+!Their flow target depends on upstream Yuba and Oroville inflow, the DWR/DFG agreed flow target above Verona,
+!and a 2800 cfs flow rate related to pumping facility requirements.
+
+define frsa_alloc {
+  case Drought {
+    condition     wyt_FEATHER == 1
+    value         0.50*(dem_D7A_PAG + dem_D7B_PAG + dem_D206A_PAG + dem_D206B_PAG)*taf_cfs}
+  case Normal {
+    condition    always
+    value        1.00*(dem_D7A_PAG + dem_D7B_PAG + dem_D206A_PAG + dem_D206B_PAG)*taf_cfs}
+}
+
+
+define minflowFeaMouth {
+    case DiversionSeason {
+        condition month>=APR .and. month<=SEP
+        value     max(min(2800.,I_EnglB-dem_D230_MI+I_Orovl-frsa_alloc),minflow_C_YubFea) }
+    case other {
+        condition always
+        value     minflow_C_YubFea }
+}
+
+goal MouthMinFlow {C_YubFea_MIF < minflowFeaMouth}
+
+
+! Oroville would be operated only to satify minimum instream and delta conditions if less than 1.0 MAF - Aaron Miller 5/21/08
+goal oro_releases {
+    lhs C_Orovl
+    case low_storage {
+    	condition S_Orovl(-1) < 1000.
+    		rhs minflow_C_Therm
+    		lhs>rhs penalty 3000.
+    		lhs<rhs penalty 0 }
+    case norm_storage {
+    	condition always
+    		rhs minflow_C_Therm
+    		lhs>rhs penalty 0
+    		lhs<rhs penalty 0 }
+}
+
+! Oroville would have physical contraints when reaching lower elevations - Aaron Miller 5/21/08
+! oro<1250 TAF units 2,4,6 are lost
+! oro<850 TAF units 1,3,5 are lost
+goal river_valve_flow {
+    lhs C_Orovl
+    case river_valve_only {
+	condition S_Orovl(-1) < 850. ! lose units 1,3,5 at 850 TAF only river valve can move water @ 1500 cfs (safe capacity)
+	    rhs 1500.
+	    lhs>rhs penalty 1000000
+	    lhs<rhs penalty 0 }
+    case units_1_3_5_rv {       ! lose units 2,4,6 at 1250 TAF at this elevation.  Units 1,3,5 + river valve = 8700 max 
+    	condition S_Orovl(-1) < 1250.
+    	    rhs 8700.
+	    lhs>rhs constrain
+	    lhs<rhs penalty 0 }
+    case full_hyatt_available {
+	condition always
+	    rhs 17000.
+	    lhs>rhs penalty 0
+	    lhs<rhs penalty 0 }
+}

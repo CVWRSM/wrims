@@ -1,0 +1,306 @@
+define D100 {std kind 'FLOW-DELIVERY' units 'CFS'} !Clear Creek Tunnel Diversion
+define D3 {std kind 'FLOW-DELIVERY' units 'CFS'} !Spring Creek Tunnel Diversion
+define D104 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA58 Diversion from Stream
+define D107 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA58 Depletion
+define demand_D109 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D109 {lower 0. upper demand_D109 kind 'FLOW-DELIVERY' units 'CFS'} !DSA58 Negative Accretions Adjustment
+!NODOS
+define D112 {std kind 'FLOW-DELIVERY' units 'CFS'} !Tehama Colusa diversion - TCCA cap ata 2530 CFS
+define D114 {std kind 'FLOW-DELIVERY' units 'CFS'} !Glenn Colusa diversion - GCID cap ata 4000 CFS
+define D14401 {lower 0. upper upperD14401 kind 'FLOW-DELIVERY' units 'CFS'} !Flow to NODOS from Glenn-Colusa Canal
+define D17501 {lower 0. upper upperD17501 kind 'FLOW-DELIVERY' units 'CFS'} !
+define D124A {lower 0. upper upperD124A kind 'FLOW-DELIVERY' units 'CFS'} !New Canal from Sac River to NODOS
+define D17601 {lower 0. upper upperD17601 kind 'FLOW-DELIVERY' units 'CFS'} !
+define D31_S32 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP transfer to CVP account in exchange for release from Shasta Lake
+define D33_S31 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA spill to SWP account (usually a spring spill if forecasts are low)
+define D33_S32 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA spill to CVP or transfer to CVP account in exchange for release from Shasta Lake
+define D34_S31 {std kind 'FLOW-DELIVERY' units 'CFS'} !WQ spill to SWP account (usually a spring spill if forecasts are low)
+define D34_S32 {std kind 'FLOW-DELIVERY' units 'CFS'} !WQ spill to CVP or transfer to CVP account in exchange for release from Shasta Lake
+define D30 {std kind 'FLOW-DELIVERY' units 'CFS'} !Local Releases to Space
+define D32 {std kind 'FLOW-DELIVERY' units 'CFS'} !Yolo Bypass Releases to Space
+define D33 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA Release Fake from NODOS
+define D34 {std kind 'FLOW-DELIVERY' units 'CFS'} !WQ Release Fake from NODOS
+!
+define D171 {std kind 'FLOW-DELIVERY' units 'CFS'} !Corning Canal
+define L17101 {std kind 'FLOW-DELIVERY' units 'CFS'} !Corning Canal loss
+define D17101 {std kind 'FLOW-DELIVERY' units 'CFS'} !Corning Canal
+define D172 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA4
+define L172 {std kind 'FLOW-DELIVERY' units 'CFS'} !Canal loss
+define D17201 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA4
+define L17201 {std kind 'FLOW-DELIVERY' units 'CFS'} !TC Canal Loss
+define D113A {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA4 diversion
+define D11301 {std kind 'FLOW-DELIVERY' units 'CFS'} !Surface water diversion to meet WBA4 demand
+define D11302 {std kind 'FLOW-DELIVERY' units 'CFS'} !Total WBA4 deliveries
+define L11302 {std kind 'FLOW-DELIVERY' units 'CFS'} !Canal loss
+define D113B {std kind 'FLOW-DELIVERY' units 'CFS'} !Sacramento River diversion to meet WBA5 demand
+define D11305 {std kind 'FLOW-DELIVERY' units 'CFS'} !Surface water diversion to meet WBA5 demand
+define D11306 {std kind 'FLOW-DELIVERY' units 'CFS'} !Total WBA5 deliveries
+define L11306 {std kind 'FLOW-DELIVERY' units 'CFS'}      ! Surface water conveyance loss WBA5
+define D122A {std kind 'FLOW-DELIVERY' units 'CFS'} !Sac Diversion to CB
+define D122A_WTS {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !Placeholder for Water Transfer related Supply
+define L122A {std kind 'FLOW-DELIVERY' units 'CFS'} !GCID Loss WBA 8NS
+define D117 {std kind 'FLOW-DELIVERY' units 'CFS'} !Spills to Sutter Bypass
+define demand_D118 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D118 {lower 0. upper demand_D118 kind 'FLOW-DELIVERY' units 'CFS'} !DSA10 Negative Accretions Adjustment
+define D42 {std kind 'FLOW-DELIVERY' units 'CFS'} !OUWUA delivery to South Canal
+define D17301 {std kind 'FLOW-DELIVERY' units 'CFS'} !OUWUA delivery to North Canal
+define L17301 {std kind 'FLOW-DELIVERY' units 'CFS'} !Reach 1 Losses
+define D17302 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA6
+define L173 {std kind 'FLOW-DELIVERY' units 'CFS'} !Reach 2 Losses
+define L142 {std kind 'FLOW-DELIVERY' units 'CFS'} !Reach 3 Losses
+define L17401 {std kind 'FLOW-DELIVERY' units 'CFS'} !Canal losses
+define D174 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA7N diversion from TCC
+define D17401 {std kind 'FLOW-DELIVERY' units 'CFS'} !Total WBA7N diversion
+define D17502 {lower 0. upper 1900. kind 'FLOW-DELIVERY' units 'CFS'} !
+define D178 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D17801 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define L17801 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D122B {std kind 'FLOW-DELIVERY' units 'CFS'} !Sacramento River West Bank Diversions
+define D122B_WTS {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !Placeholder for Water Transfer related Supply
+define L122b {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA 8NS Sac River
+define D122_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA Purchase Placeholder
+define demand_D123 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D123 {lower 0. upper demand_D123 kind 'FLOW-DELIVERY' units 'CFS'} !DSA 15 Negative Accretions Adjustment
+define D143A {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA8NN Diversion
+define D143A_WTS {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !Placeholder for Water Transfer related Supply
+define D143A_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA Purchase Placeholder
+define D14301 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA8NN Diversion
+define D143B {std kind 'FLOW-DELIVERY' units 'CFS'} !Sacramento Refuge Diversion
+define D14302 {std kind 'FLOW-DELIVERY' units 'CFS'} !Sacramento Refuge Diversion
+define L143 {std kind 'FLOW-DELIVERY' units 'CFS'} !GC Canal Loss
+define L143A {std kind 'FLOW-DELIVERY' units 'CFS'} !GC Canal Loss
+define L143B {std kind 'FLOW-DELIVERY' units 'CFS'} !Ref through GC Canal Loss
+define D145A {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA8NS Diversion
+define L145A {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA 8NS
+define D145A_WTS {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !Placeholder for Water Transfer related Supply
+define D145A_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA Purchase Placeholder
+define L145B {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA 8NS Refuge loss
+define D145B {std kind 'FLOW-DELIVERY' units 'CFS'} !Refuge Diversion Requirement
+define D14501 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA8NS Diversion
+define D169 {std kind 'FLOW-DELIVERY' units 'CFS'} !BDCP DWC weir
+define D18302 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA8NS Diversion of WBA 8S Return Flows from CBD LGB
+define D180 {std kind 'FLOW-DELIVERY' units 'CFS'} !Colusa Basin Drain diversion to WBA8NN
+define L180A {std kind 'FLOW-DELIVERY' units 'CFS'} !GC Canal Loss
+define D182A {std kind 'FLOW-DELIVERY' units 'CFS'} !Colusa Basin Drain
+define L182A {std kind 'FLOW-DELIVERY' units 'CFS'} ! WBA 8NS CBD diversion
+define D182B {std kind 'FLOW-DELIVERY' units 'CFS'} !Colusa Basin Drain
+define D18201 {std kind 'FLOW-DELIVERY' units 'CFS'} !Delevan and Colusa refuges
+define D183 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA8S
+define L183 {std kind 'FLOW-DELIVERY' units 'CFS'} ! WBA 8S CBD diversion
+define D18301 {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA8S
+define D124 {std kind 'FLOW-DELIVERY' units 'CFS'} !Moulton Weir Spills to Sutter Bypass
+define D125 {std kind 'FLOW-DELIVERY' units 'CFS'} !Colusa Weir Spills to Sutter Bypass
+define D126 {std kind 'FLOW-DELIVERY' units 'CFS'} !Tisdale Weir Spills to Sutter Bypass
+define D129A {std kind 'FLOW-DELIVERY' units 'CFS'} !WBA8S diversion from Sacramento River
+define L129A {std kind 'FLOW-DELIVERY' units 'CFS'} ! WBA 8S Sac R diversion
+define D222 {std kind 'FLOW-DELIVERY' units 'CFS'} !Sutter NWR Depletion
+define D128 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA15 Diversion from Stream
+define D128_WTS {std kind 'FLOW-DELIVERY' units 'CFS'} !Placeholder for Water Transfer related Supply
+define D128_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA Purchase Placeholder
+define L128 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D131 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA15 Depletion
+define demand_D134 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D134 {lower 0. upper demand_D134 kind 'FLOW-DELIVERY' units 'CFS'} !DSA12 Negative Accretions Adjustment
+define D160 {std kind 'FLOW-DELIVERY' units 'CFS'} !Freemont Weir Spills to Yolo Bypass
+define D162 {std kind 'FLOW-DELIVERY' units 'CFS'} !Sacramento River Left Bank Diversions
+define D163 {std kind 'FLOW-DELIVERY' units 'CFS'} !Sacramento River Right Bank Diversions
+define D165 {std kind 'FLOW-DELIVERY' units 'CFS'} !West Sacramento Diversion
+define D165B {std kind 'FLOW-DELIVERY' units 'CFS'} !Woodland - Davis Municipal project
+define D166A {std kind 'FLOW-DELIVERY' units 'CFS'} !Sacramento Weir Spills
+define demand_D166B {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D166B {lower 0. upper demand_D166B kind 'FLOW-DELIVERY' units 'CFS'} !DSA70 Negative Accretions Adjustment
+define demand_D152 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D152 {lower 0. upper demand_D152 kind 'FLOW-DELIVERY' units 'CFS'} !DSA65 Negative Accretions Adjustment
+define D155 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA65 Depletion
+define D6 {std kind 'FLOW-DELIVERY' units 'CFS'} !PALERMO CANAL DIVERSION FROM L. OROVILLE
+define D201 {std kind 'FLOW-DELIVERY' units 'CFS'} !Butte County Diversion
+define D202 {std kind 'FLOW-DELIVERY' units 'CFS'} !Themolito ID Diversion
+define D7A {std kind 'FLOW-DELIVERY' units 'CFS'} !Western Canal
+define D7B {std kind 'FLOW-DELIVERY' units 'CFS'} !Joint Canal
+define D7B_WTS {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !Placeholder for Water Transfer related Supply
+define D7B_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA Purchase Placeholder
+define D204 {std kind 'FLOW-DELIVERY' units 'CFS'} !Yuba City
+define D204_REOP {std kind 'FLOW-DELIVERY' units 'CFS'} !Yuba Inflow Reduction for previous yr NOD purchase
+define D230 {std kind 'FLOW-DELIVERY' units 'CFS'} !Yuba County Water Agency
+define Yuba_Trans_EWA {timeseries kind 'flow-inflow' units 'cfs'} ! LYRA Component 1 SW Transferable Water
+define D230_LRYA {alias Yuba_Trans_EWA kind 'FLOW-TRANSFERABLE' units 'CFS'} ! LYRA Component 1 SW Transferable Water - remove since I230 includes this amount - will add back in at I204 if needed for transfers
+define D285 {std kind 'FLOW-DELIVERY' units 'CFS'} !Camp Far West ID
+define D283 {std kind 'FLOW-DELIVERY' units 'CFS'} !South Sutter WD
+define D223 {std kind 'FLOW-DELIVERY' units 'CFS'} !Feather River Export to DSA 70
+define D206A {std kind 'FLOW-DELIVERY' units 'CFS'} !Feather Water District
+define D206B {std kind 'FLOW-DELIVERY' units 'CFS'} !Misc FRSA
+define D206C {std kind 'FLOW-DELIVERY' units 'CFS'} !Joint Board at Sunset Pumps
+define D207A {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA69 Diversion from Stream
+define demand_D207B {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D207B {lower 0. upper demand_D207B kind 'FLOW-DELIVERY' units 'CFS'} !DSA69 Negative Accretions Adjustment
+define D210 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA69 Depletion
+define D217 {std kind 'FLOW-DELIVERY' units 'CFS'} !Butte Creek Diversion
+define D218 {std kind 'FLOW-DELIVERY' units 'CFS'} !Gray Lodge Refure Depletion
+define D226 {std kind 'FLOW-DELIVERY' units 'CFS'} !Butte Sink Duck Clubs
+define D167 {std kind 'FLOW-DELIVERY' units 'CFS'} !City of Sacramento Diversion
+define D168A {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA70 Diversion from Stream
+define D168A_WTS {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !Placeholder for Water Transfer related Supply
+define D168B {std kind 'FLOW-DELIVERY' units 'CFS'} !EBMUD and CCWD Freeport Regional Water Project Export
+define D168C {std kind 'FLOW-DELIVERY' units 'CFS'} !SCWA Freeport Regional Water Project Diversion
+define D300 {std kind 'FLOW-DELIVERY' units 'CFS'} !PCWA Diversion
+define D8 {std kind 'FLOW-DELIVERY' units 'CFS'} !SAN JUAN ROSEVILLE DIVERSION FROM FOLSOM
+define D9 {std kind 'FLOW-DELIVERY' units 'CFS'} !FOLSOM SOUTH CANAL
+define D302 {std kind 'FLOW-DELIVERY' units 'CFS'} !City of Sacramento Diversion
+define D304 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D305 {std kind 'FLOW-DELIVERY' units 'CFS'} !SCWA Excess
+define D307 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA70 Depletion
+define demand_D308A {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D308A {lower 0. upper demand_D308A kind 'FLOW-DELIVERY' units 'CFS'} !
+define D308B {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D309a {std kind 'FLOW-DELIVERY' units 'CFS'} !FOLSOM SOUTH CANAL DSA70 demand
+define D309b {std kind 'FLOW-DELIVERY' units 'CFS'} !FOLSOM SOUTH CANAL Export to DSA59
+define D400 {std kind 'FLOW-DELIVERY' units 'CFS'} !IF diversion
+define demand_D400B {timeseries kind 'NETDICU_POS' units 'TAF' convert 'CFS'}
+define D400B {lower 0. upper demand_D400B kind 'FLOW-DELIVERY' units 'CFS'} !NET DELTA ISLAND CONSUMPTIVE USE (NET DICU) - POSITIVE VALUES
+define D403A {std kind 'FLOW-DELIVERY' units 'CFS'} !DIVERSION TO VALLEJO
+define D403B {std kind 'FLOW-DELIVERY' units 'CFS'} !DIVERSION TO NORTH BAY - Napa
+define D403C {std kind 'FLOW-DELIVERY' units 'CFS'} !DIVERSION TO NORTH BAY - Solano
+define D403D {std kind 'FLOW-DELIVERY' units 'CFS'} !DIVERSION TO NORTH BAY - FVB Settlement Water
+define demand_D404 {timeseries kind 'NETDICU_POS' units 'TAF' convert 'CFS'}
+define D404 {lower 0. upper demand_D404 kind 'FLOW-DELIVERY' units 'CFS'} !NET DELTA ISLAND CONSUMPTIVE USE (NET DICU) - POSITIVE VALUES
+define demand_D406 {timeseries kind 'NETDICU_POS' units 'TAF' convert 'CFS'}
+define D406 {lower 0. upper demand_D406 kind 'FLOW-DELIVERY' units 'CFS'} !NET DELTA ISLAND CONSUMPTIVE USE (NET DICU) - POSITIVE VALUES
+define D406B {std kind 'FLOW-DELIVERY' units 'CFS'} !City of Antioch Pre-1914
+define D407 {std kind 'FLOW-DELIVERY' units 'CFS'} !REQUIRED DELTA OUTFLOW
+define D408 {std kind 'FLOW-DELIVERY' units 'CFS'} !CCWD Old River and AIP intakes upstream of OMR
+define D416 {std kind 'FLOW-DELIVERY' units 'CFS'} !CCWD Rock Slough intake downstream of OMR
+define D409 {std kind 'FLOW-DELIVERY' units 'CFS'} !DELTA EXPORT THROUGH JONES PP AND BANKS PP
+define demand_D409B {timeseries kind 'NETDICU_POS' units 'TAF' convert 'CFS'}
+define D409B {lower 0. upper demand_D409B kind 'FLOW-DELIVERY' units 'CFS'} !NET DELTA ISLAND CONSUMPTIVE USE (NET DICU) - POSITIVE VALUES
+define demand_D410 {timeseries kind 'NETDICU_POS' units 'TAF' convert 'CFS'}
+define D410 {lower 0. upper demand_D410 kind 'FLOW-DELIVERY' units 'CFS'} !NET DELTA ISLAND CONSUMPTIVE USE (NET DICU) - POSITIVE VALUES
+define demand_D412 {timeseries kind 'NETDICU_POS' units 'TAF' convert 'CFS'}
+define D412 {lower 0. upper demand_D412 kind 'FLOW-DELIVERY' units 'CFS'} !NET DELTA ISLAND CONSUMPTIVE USE (NET DICU) - POSITIVE VALUES
+define demand_D413 {timeseries kind 'NETDICU_POS' units 'TAF' convert 'CFS'}
+define D413 {lower 0. upper demand_D413 kind 'FLOW-DELIVERY' units 'CFS'} !NET DELTA ISLAND CONSUMPTIVE USE (NET DICU) - POSITIVE VALUES
+define D418 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP TRACY PUMPING PLANT  DIV
+define D419 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP HARVEY BANKS PUMPING PLANT DIV
+define D446A {std kind 'FLOW-DELIVERY' units 'CFS'}  !Deliveries out of IF to CCWD/Los Vaqueros
+define D702 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP UPPER DMC LOSSES
+define D703 {std kind 'FLOW-DELIVERY' units 'CFS'} !0'NEILL FB DIV TO CVP SAN LUIS
+define D704 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP SAN LUIS RES RETURN
+define D705 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP CROSS VALLEY CANAL TRANSFER
+define D710 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP SAN FELIPE PROJECT/ AG DIV
+define D711 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP SAN FELIPE PROJECT/ MI DIV
+define D801 {std kind 'FLOW-DELIVERY' units 'CFS'} !South Bay Aqueduct
+define D802A {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 2A/ OAK FLAT WD
+define D803 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 1-2 LOSSES
+define D804 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP WHEELING FOR CVP
+define D804A {std kind 'FLOW-DELIVERY' units 'CFS'} !Dedicated Intertie Segment
+define D805 {std kind 'FLOW-DELIVERY' units 'CFS'} !O'NEILL FB DIV TO SWP SAN LUIS
+define D807 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP JOINT USE DIVERSION
+define D810 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP S BAY RCH 1-4/ ALAMEDA Z7
+define D811 {lower 0. upper 363. kind 'FLOW-DELIVERY' units 'CFS'} !DIVERSION TO SWP LAKE DEL VALLE  - 363cfs for Del Valle pipeline/SBA improvement project
+define D813 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP S BAY RCH 5-6/  ALAMEDA Z7
+define D814 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP S BAY RCH 7-8/ ALAMEDA CO
+define D815 {std kind 'FLOW-DELIVERY' units 'CFS'} !S BAY RCH 9/ SANTA CLARA VLY WD
+define D816 {std kind 'FLOW-DELIVERY' units 'CFS'} !LOSS REACH1-9
+define D824 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 3 LOSSES
+define D826 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 4 LOSSES
+define D827 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 5 LOSSES
+define D828 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 6 LOSSES
+define D829 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 7 LOSSES
+define D834 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP DOS AMIGOS PP/RCH 3 LOSSES
+define D836 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP PROJ AG/ Westlands Dry up of Westlands WD #1 (Centinella WD),Westlands WD #1 (Broadview WD),Westlands WD #2 (Mercy Springs WD) and Westlands WD #1 (Widren WD)
+define D837 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP PROJ AG/ WESTLANDS+MISC/ R4
+define D838 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP RCH 4 LOSSES JOINT-REACH
+define D839 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP PROJ AG/ WESTLANDS REACH 5
+define D840 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP RCH 5 LOSSES JOINT-REACH
+define D841 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP PROJ AG/ WESTLANDS/ REACH 6
+define D842 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP RCH 6 LOSSES JOINT-REACH
+define D843 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP PROJ AG/ WESTLANDS REACH 7
+define D844 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP PROJECT M&I REACH 7
+define D845 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP RCH 7 LOSSES JOINT-REACH
+define D846 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 8C/ EMPIRE WEST SIDE
+define D847 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 8C/ COUNTY OF KINGS
+define D848 {std kind 'FLOW-DELIVERY' units 'CFS'} !RCH 8C-8D/ TULARE L BASIN WSD
+define D849 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 8D/ DUDLEY RIDGE WD
+define D850 {std kind 'FLOW-DELIVERY' units 'CFS'} !LAS PERILLAS DIVERSION
+define D851 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 9-13B/ KCWA
+define D854 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 8C-13B LOSSES
+define D855 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP CROSS VALLEY CANAL/ AG DIV
+define D856 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP CROSS VALLEY/ REFUGE DIV
+define D859 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP KCWA
+define D859_DW_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} ! EWA dry/wet exchange put to CA destination
+define D859_PRJ {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D862 {std kind 'FLOW-DELIVERY' units 'CFS'} !WHEELER RIDGE PP& RCH 14 LOSSES
+define D863 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 15A-16A/ KCWA
+define D864 {std kind 'FLOW-DELIVERY' units 'CFS'} !CHRISMAN PP& RCH 15A-18A LOSSES
+define D867 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP COASTAL BR/ RCH 31A/ KCWA
+define D868 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP COAST BR/ RCH 31A/ CASTAIC
+define D869 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP COAST BR/ SLO+SB CO. FC&WCD
+define D870 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP COAST BR/ SLO
+define D877 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 19-22A AVEK WA
+define D878 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 20A-20B PALMDALE WD
+define D879 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP R-21 LITTLEROCK CR ID
+define D880 {std kind 'FLOW-DELIVERY' units 'CFS'} !PEARBLOSSOM PP&RCH 17-21 LOSSES
+define D881 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 22B-23/ MOJAVE WA
+define D882 {std kind 'FLOW-DELIVERY' units 'CFS'} !MOJAVE PWP & RCH 22A-23 LOSSES
+define D883 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP RCH 26ACOACHELLA VALLEY WD
+define D884 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 26A DESERT WA
+define D885 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 26 MWD
+define D885_DW_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} ! EWA dry/wet exchange put
+define D885_SS_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} ! EWA Source Shift Payback
+define D886 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP RCH 26A SAN BERNARDINO
+define D887 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP RCH 26 SAN GABRIEL VALLEY
+define D888 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP RCH 26SAN GORGONIO PASS WA
+define D889 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 24-28 REC + LOSSES
+define D891 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 29A-29F LOSSES
+define D893 {std kind 'FLOW-DELIVERY' units 'CFS'} !CASTAIC PWP& RCH 29H-29J LOSSES
+define D894 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 30/ REC + LOSSES
+define D895 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 30 MWD
+define D895_SS_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} ! EWA Source Shift Payback
+define D896 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 30 CASTAIC LAKE WA
+define D899 {std kind 'FLOW-DELIVERY' units 'CFS'} !SWP REACH 28G-28H MWD
+define D899_SS_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} ! EWA Source Shift Payback
+define D25 {std kind 'FLOW-DELIVERY' units 'CFS'} !CRESTLINE R-24 DIV FROM SILVERWOOK LAKE
+define D27 {std kind 'FLOW-DELIVERY' units 'CFS'} !MWD R-28J DIV FROM LAKE PERRIS
+define D28 {std kind 'FLOW-DELIVERY' units 'CFS'} !VENTURA R-29H-29G DIV FROM PYRAMID LAKE
+define D29 {std kind 'FLOW-DELIVERY' units 'CFS'} !VENTURA R-30 DIV FROM CASTAIC LAKE
+define GP60 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA58 Groundwater Pumping
+define GP61 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA10 Groundwater Pumping
+define GP62 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA12 Groundwater Pumping
+define GP63 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA15 Groundwater Pumping
+define GP64 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA65 Groundwater Pumping
+define GP65 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA69 Groundwater Pumping
+define GP66 {std kind 'FLOW-DELIVERY' units 'CFS'} !DSA70 Groundwater Pumping
+define D11 {std kind 'FLOW-DELIVERY' units 'CFS'} !DIV FROM CVP SAN LUIS RESERVOIR
+define D852_ILWB_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} !Deposit to In Lieu Water Bank
+define D805_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA WHEELING
+define D11_PURCHASE {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA SOD CVP purchases
+define D12 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA total acquisition
+define D13 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA release to Auqeduct for exchange and GWbank
+define D13_SrcShft {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA payback of Source Shifted Water
+define D13_ILWB {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA release to Aqueduct for In Lieu GWbank
+define D13_SWP1 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA SWP DELIVERY DEBT PAYBACK
+define D13_CVP1 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA CVP DELIVERY DEBT PAYBACK
+define D13_SWP2 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA SWP SAN LUIS STORAGE DEBT PAYBACK
+define D13_CVP2 {std kind 'FLOW-DELIVERY' units 'CFS'} !EWA CVP SAN LUIS STORAGE DEBT PAYBACK
+define D13_cvptrans {std kind 'FLOW-DELIVERY' units 'CFS'} !ewa transfer to cvp san luis
+define D13_swptrans {std kind 'FLOW-DELIVERY' units 'CFS'} !ewa transfer to swp san luis
+define D815_WTS {std kind 'FLOW-DELIVERY' units 'CFS'} !Water Transfer to South Bay Aq.
+define D885_WTS {std kind 'FLOW-DELIVERY' units 'CFS'} !Water Transfer to South Coast West Branch
+define D895_WTS {std kind 'FLOW-DELIVERY' units 'CFS'} !Water Transfer to South Coast East Branch
+define D852_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to SJV Groundwater Storage
+define D810_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to ACFC
+define D813_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to ACFC
+define D814_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to ACWD
+define D815_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to SCV
+define D711_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to San Felipe SCV
+define D896_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to CLWA2
+define D881_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to MWA Groundwater Storage
+define D27_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to MWD
+define D885_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to MWD
+define D895_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to MWD
+define D899_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to MWD
+define D886_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to SBV
+define D887_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to SGV
+define D888_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to SGP
+define D28_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to VC
+define D29_LCP {lower unbounded upper unbounded kind 'FLOW-DELIVERY' units 'CFS'} !LCPSIM Adjustment to VC
+

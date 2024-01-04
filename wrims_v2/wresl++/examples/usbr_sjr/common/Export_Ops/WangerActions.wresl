@@ -1,0 +1,110 @@
+! WangerActions.wresl
+!
+! Implements the Dec 2007 Judge Wanger Delta Smelt decision.
+! Simplified approach to approximate a projected future condition in which protective
+! measures called for in the decision are implemented.
+!
+! HORB barrier is assumed to be in place but gates fully opened.
+! See SoDeltaChannels code for this modification and other information used in this code.
+!
+! This code could be used as a prescriptive use of export restrictions either as part
+! of or separate from B2 and EWA accounting.
+! If action #3 is greater than -12000, then VAMP export controls are assumed (based on
+!   whatever Vernalis flows are present)
+!
+! Targets
+define P_1a_OMR_target { select P_1a_OMR from OldMiddleRiver_std where Year=wateryear}
+define P_1b_OMR_target { select P_1b_OMR from OldMiddleRiver_std where Year=wateryear}
+define P_2a_OMR_target { select P_2a_OMR from OldMiddleRiver_std where Year=wateryear}
+define P_2b_OMR_target { select P_2b_OMR from OldMiddleRiver_std where Year=wateryear}
+define P_3a_OMR_target { select P_3a_OMR from OldMiddleRiver_std where Year=wateryear}
+define P_3b_OMR_target { select P_3b_OMR from OldMiddleRiver_std where Year=wateryear}
+define P_3c_OMR_target { select P_3c_OMR from OldMiddleRiver_std where Year=wateryear}
+define P_3d_OMR_target { select P_3d_OMR from OldMiddleRiver_std where Year=wateryear}
+!
+! Special calcs for generalized Wanger Action #1
+define Banks_P_1a_max {value BanksCapPermit*14./24. + BanksMax1*10./24.} ! defines average for first 24 days of December
+define Qsod_P_1a_est { value Banks_P_1a_max+ maxTracycalc + D_RSL004_est + netDICU_SOD}
+define Qomr_P_1a_est { value coefA*C_SJR070[VAMP_AND_DO]+coefb*Qsod_P_1a_est+coefc}
+!
+define Banks_P_1b_max {value BanksMax1}
+define Qsod_P_1b_est { value Banks_P_1b_max + maxTracycalc + D_RSL004_est + netDICU_SOD}
+define Qomr_P_1b_est { value coefA*C_SJR070[VAMP_AND_DO]+coefb*Qsod_P_1b_est+coefc}
+!
+! Special calcs for generalized Wanger Action #3
+define Qexp_pulseperiod  {
+       case VAMP {
+        condition P_3b_OMR_target >= -12000. .or. P_3c_OMR_target >= -12000.
+                value PulseExpRes}
+       case None {
+        condition always
+                value BanksCapPermit + maxTracycalc}
+}
+define Qsod_P_3bc_est { value Qexp_pulseperiod + D_RSL004_est + netDICU_SOD}
+define Qomr_P_3bc_est { value coefA*C_SJR070[VAMP_AND_DO]+coefb*Qsod_P_3bc_est+coefc}
+!
+define Qsod_P_3d_est { value BanksCapPermit + maxTracycalc + D_RSL004_est + netDICU_SOD}
+define Qomr_P_3d_est { value coefA*C_SJR070[VAMP_AND_DO]+coefb*Qsod_P_3d_est+coefc}
+!
+! Action triggers
+define C_OMR002_limit {
+     case Dec{
+          condition month==dec .and. P_1a_OMR_target >= -12000.
+          value Qomr_P_1a_est   * (daysin-7.)/daysin
+              + P_1a_OMR_target * 7. /daysin}
+     case Jan{
+          condition month==jan .and. P_2a_OMR_target >= -12000.
+          value max(P_1a_OMR_target,P_1b_OMR_target,-12000.) * 3. /daysin
+              + P_1b_OMR_target * 7. /daysin
+              + P_2a_OMR_target * (daysin-10.)/daysin}
+     case Feb{
+          condition month==feb .and. P_2a_OMR_target >= -12000.
+          value P_2a_OMR_target * 18. /daysin
+              + max(P_2a_OMR_target,P_2b_OMR_target,-12000.) * (daysin-18.)/daysin}
+     case Mar{
+          condition month==mar .and. P_3a_OMR_target >= -12000.
+          value P_3a_OMR_target}
+     case Apr{
+          condition month==apr .and. P_3b_OMR_target >= -12000.
+          value P_3b_OMR_target *         14. /daysin
+              + Qomr_P_3bc_est  * (daysin-14.)/daysin}
+     case May{
+          condition month==may .and. P_3c_OMR_target >= -12000.
+          value Qomr_P_3bc_est  *         15. /daysin
+              + P_3c_OMR_target * (daysin-15.)/daysin}
+     case Jun{
+          condition month==jun .and. P_3d_OMR_target >= -12000.
+          value P_3d_OMR_target *         20. /daysin
+              + Qomr_P_3d_est  * (daysin-20.)/daysin}
+     case otherwise{
+          condition always
+          value -999999.}
+}
+goal bound_Qomr { C_OMR002 > C_OMR002_limit }
+define C_OMR002_LBound  {alias C_OMR002_limit kind 'FLOW-LBOUND' units 'CFS'}
+
+!
+! Split arcs and Goals to force impacts of actions at pumps
+!*********************************************************************************************
+! C408_Base represents the OMR flow not including COA related pumping at Banks or Tracy
+define C_OMR002_NoEXP1  {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_C_OMR002_NoEXP1 {C_OMR002_NoEXP1 - C_OMR002 = CAA000_EXP1 + CAA000_EXP1 + CAA000_FDED_EXP1}
+!
+goal bound_CAA000 {
+  lhs     CAA000_EXP1
+  case WangerActions{
+    condition month>=dec .or. month<=jun
+    rhs     0.5*C_OMR002_NoEXP1 - 0.5*C_OMR002_limit
+    lhs>rhs    penalty 1285
+    lhs<rhs penalty    0}
+}
+!
+goal bound_DMC003 {
+  lhs     DMC003_EXP1 + CAA000_FDED_EXP1
+  case WangerActions{
+    condition month>=dec .or. month<=jun
+    rhs     0.5*C_OMR002_NoEXP1 - 0.5*C_OMR002_limit
+    lhs>rhs    penalty 1285
+    lhs<rhs penalty    0}
+}
+!

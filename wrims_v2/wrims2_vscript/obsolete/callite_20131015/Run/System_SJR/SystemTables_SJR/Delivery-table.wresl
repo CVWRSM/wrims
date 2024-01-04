@@ -1,0 +1,126 @@
+define D_FKCNL {std kind 'FLOW-DELIVERY' units 'CFS'} !Friant Kern Canal
+define D_MDRCNL {std kind 'FLOW-DELIVERY' units 'CFS'} !Madera Canal
+define D18F {std kind 'FLOW-DELIVERY' units 'CFS'} !Madera Canal Flood flow
+define D_CALAVA {std kind 'FLOW-DELIVERY' units 'CFS'} !Calaveras River
+define D_CALAVB {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D_CALAVC {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D_CALAVD {std kind 'FLOW-DELIVERY' units 'CFS'} !City of Stockton
+define D509 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define L509 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define L509A {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D511 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D510 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define L_CALAVA {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define L_CALAVB {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D512 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define DI512 {std kind 'flow-delivery' units 'cfs' }
+define D_STANGDWNA {std kind 'FLOW-DELIVERY' units 'CFS'} !SEWD/CSJ
+define D_STANGDWNA1 {std kind 'FLOW-DELIVERY' units 'CFS'} !OID/SSJID Sale to SEWD
+define D_STANGDWNB {std kind 'FLOW-DELIVERY' units 'CFS'} !Oakdale North / SSJID
+define D_STANGDWNC {std kind 'FLOW-DELIVERY' units 'CFS'} !Oakdale South
+define D523 {std kind 'FLOW-DELIVERY' units 'CFS'} !SSJID/OID No. Depletion
+define D_STANRIPN {std kind 'FLOW-DELIVERY' units 'CFS'} !Stanislaus River Diversion
+define D_STANRIPNA {std kind 'FLOW-DELIVERY' units 'CFS'} !Stanislaus River Depletion
+define D_STANRIPNA_riv {std kind 'FLOW-DELIVERY' units 'cfs'}
+define D530_VAMP {std kind 'FLOW-DELIVERY' units 'CFS'} !VAMP Exchange with NDP Release
+define D531 {std kind 'FLOW-DELIVERY' units 'CFS'} !Oakdale ID South
+define D533 {std kind 'FLOW-DELIVERY' units 'CFS'} !Modesto ID Ag and MI Depletions
+define D535 {std kind 'FLOW-DELIVERY' units 'CFS'} !Lands West of OID
+define D_TUOLA {std kind 'FLOW-DELIVERY' units 'CFS'} !Tuolomne to Turlock Turnout, D540A
+define D_TUOLB {std kind 'FLOW-DELIVERY' units 'CFS'} !Tuolomne to Modesto Turnout, D540B
+define D_TUOLC {std kind 'FLOW-DELIVERY' units 'CFS'} !Tuolomne River Diversion, D545
+define D_TUOLC_A {std kind 'FLOW-DELIVERY' units 'CFS'} !Tuolomne River Depletion, D545A
+define D_TUOLC_A_riv {std kind 'flow-delivery' units 'cfs'} !D545A_riv
+define D549 {std kind 'FLOW-DELIVERY' units 'CFS'} !Turlock Area Ag
+define D551 {std kind 'FLOW-DELIVERY' units 'CFS'} !Deliv to Lands West of Turlock ID
+define D_MERCED1C {std kind 'FLOW-DELIVERY' units 'CFS'} !Merced River Diversion to Merced ID Area, D561
+define D_MERCED1B {std kind 'FLOW-DELIVERY' units 'CFS'} !Merced River Riparian Delivery, D562
+define D_MERCED1A {std kind 'FLOW-DELIVERY' units 'CFS'} !Merced River Riparian Depletion, D562A
+define D_MERCED1A_riv {std kind 'flow-delivery' units 'cfs'} !D562A_riv
+define D_MERCED2 {std kind 'FLOW-DELIVERY' units 'CFS'} ! D566
+define D570 {std kind 'FLOW-DELIVERY' units 'CFS'} !Diversion to Irrigation
+define D571 {std kind 'FLOW-DELIVERY' units 'CFS'} !Merced ID
+define demand_D572 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D572 {upper demand_D572 kind 'FLOW-DELIVERY' units 'CFS'} !Bear Ck Refuge on Merced R.
+define D574 {std kind 'FLOW-DELIVERY' units 'CFS'} !Depletion by DAU 212
+define D_CHOWR1 {std kind 'FLOW-DELIVERY' units 'CFS'} !Chowchilla River Deliv to ChowID
+define D_CHOWR1_16B {upper 200. kind 'FLOW-DELIVERY' units 'CFS'} !Chowchilla River Deliv to ChowID 16B groundwater recharge
+define L_CHOWR1 {std kind 'FLOW-DELIVERY' units 'CFS'} !Chowchilla River Loss
+define D584 {std kind 'FLOW-DELIVERY' units 'CFS'} !Chowchilla ID Delivery
+define D586 {std kind 'FLOW-DELIVERY' units 'CFS'} !Depletion by DAU 215
+define L_CHOWR2 {std kind 'FLOW-DELIVERY' units 'CFS'} !Depletion in Chowchilla/Eastside Bypass Structure
+define D_FRSNO {std kind 'FLOW-DELIVERY' units 'CFS'} !Fresno River Deliv to Madera ID
+define L_FRSNO {std kind 'FLOW-DELIVERY' units 'CFS'} !Fresno River Loss
+define D590 {std kind 'FLOW-DELIVERY' units 'CFS'} !Madera Canal to Madera ID
+define D590_16B {upper 200. kind 'FLOW-DELIVERY' units 'CFS'} !Madera Canal to Madera ID 16B groundwater recharge
+define L590 {std kind 'FLOW-DELIVERY' units 'CFS'} !Madera Canal Loss
+define D590F {std kind 'FLOW-DELIVERY' units 'CFS'} !Madera Canal flood release to Fresno River
+define D592 {std kind 'FLOW-DELIVERY' units 'CFS'} !Madera ID Deliv
+define D_Chowbyp {std kind 'FLOW-DELIVERY' units 'CFS'} !Bypass Delivery to DAU 215
+define D_GRAVF {std kind 'FLOW-DELIVERY' units 'CFS'} !Gravelly Ford Diversion
+define L_GRAVF {std kind 'FLOW-DELIVERY' units 'CFS'} !Friant to Gravelly Ford Loss
+define L_SJRcb {std kind 'FLOW-DELIVERY' units 'CFS'} !Gravelly Ford to Bifurcation Loss
+define L_MDOTA {std kind 'FLOW-DELIVERY' units 'CFS'} !Bifurcation Loss to Pool    WB
+define L_SJRREST {std kind 'FLOW-DELIVERY' units 'CFS'} !Loss in proposed channel   WB
+define L_SJRSAND {std kind 'FLOW-DELIVERY' units 'CFS'} !Loss from Sack Dam to Sand Slu   WB
+define L_SJRMPBYP {std kind 'FLOW-DELIVERY' units 'CFS'} !Loss from Sand Slu to Maraposa BP return WB
+define L_SJRLNDR {std kind 'FLOW-DELIVERY' units 'CFS'} !Loss U/S from Lander  WB
+define L_Chowbyp {std kind 'FLOW-DELIVERY' units 'CFS'} ! Loss in Upper portion of Chowchilla Bypass  WB
+define D_MDOTAA {std kind 'FLOW-DELIVERY' units 'CFS'} !MENDOTA POOL/PROJECT AG DIV
+define D_MDOTAB {std kind 'FLOW-DELIVERY' units 'CFS'} !MENDOTA POOL/ EXCHANGE DIV
+define D_MDOTAC {std kind 'FLOW-DELIVERY' units 'CFS'} !MENDOTA POOL/ REFUGE DIV
+define D_MDOTAD {std kind 'FLOW-DELIVERY' units 'CFS'} !MENDOTA POOL/ LOSSES
+define D608B {std kind 'FLOW-DELIVERY' units 'CFS'} !Sack Dam/ Exchange
+define D608C {std kind 'FLOW-DELIVERY' units 'CFS'} !Sack Dam/ Refuge
+define D_SJRMERA {std kind 'FLOW-DELIVERY' units 'CFS'} !West of Turlock
+define demand_D_SJRMERB {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D_SJRMERB {upper demand_D_SJRMERB kind 'FLOW-DELIVERY' units 'CFS'} !Mainstem Delivery Merced to Tuolomne
+define D_SJRMERC {upper 50. kind 'FLOW-DELIVERY' units 'CFS'} !SJR Mainstem Delivery to Stevenson/ElNido
+define D_SJRTUOLA {std kind 'FLOW-DELIVERY' units 'CFS'} !SJR Diversion to Lands NW of Modesto
+define demand_D_SJRTUOLB {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D_SJRTUOLB {upper demand_D_SJRTUOLB kind 'FLOW-DELIVERY' units 'CFS'} !Mainstem Delivery Tuolomne to Stanislaus
+define demand_D_SJRSTAN {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D_SJRSTAN {upper demand_D_SJRSTAN kind 'FLOW-DELIVERY' units 'CFS'} !Mainstem Delivery below Stanislaus
+define demand_D_SJRVER {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D_SJRVER {upper demand_D_SJRVER kind 'FLOW-DELIVERY' units 'CFS'} !SJR NON-PROJECT DIV/ VERNALIS
+define D_SJRCALA {std kind 'FLOW-DELIVERY' units 'CFS'} !Riparian Diversion from Delta for COSMA Ag DWSP
+define D_SJRCALB {std kind 'FLOW-DELIVERY' units 'CFS'} !DWSP Diversion M&I
+define D700 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP Upper DMC Ag Div
+define D701 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP UPPER DMC AG DIV
+define D706 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP Lower DMC Volta Ag Div
+define D707 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP Lower DMC Volta Exchange Div
+define D708 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP Lower DMC Volta Refuge Div
+define D833 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP Project Ag San Luis WD Reach 3
+define D835 {std kind 'FLOW-DELIVERY' units 'CFS'} !CVP Dos Amigos PP/Rch 4 Ag
+define D521 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D75_SEEP {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D78 {std kind 'FLOW-DELIVERY' units 'CFS'} !Modesto Res Release for ID
+define D78_MI {std kind 'FLOW-DELIVERY' units 'CFS'} !Modesto Res Deliv to MI Demand
+define D78_SEEP {std kind 'FLOW-DELIVERY' units 'CFS'} !Seepage from Modesto Res
+define D78A {std kind 'FLOW-DELIVERY' units 'CFS'} !Modesto Area MI Demand
+define D79 {std kind 'FLOW-DELIVERY' units 'CFS'} !Turlock Res Release for ID
+define D79_SEEP {std kind 'FLOW-DELIVERY' units 'CFS'} !Seepage from Turlock Res
+
+
+!for schematic purposes
+define  D_SJRMER {std kind 'flow-delivery' units 'cfs'}
+goal setDVNSJRMER { D_SJRMER = D_SJRMERA + D_SJRMERB + D_SJRMERC }
+
+define D_CALAV {std kind 'flow-delivery' units 'cfs'}
+goal setDVNCALAV { D_CALAV = D_CALAVA + D_CALAVB + D_CALAVC + D_CALAVD }
+
+define  D_TUOL {std kind 'flow-delivery' units 'cfs'}
+goal setDVNTUOL { D_TUOL = D_TUOLA + D_TUOLB + D_TUOLB}
+
+define  D_SJRTUOL {std kind 'flow-delivery' units 'cfs'}
+goal setDVNSJRTUOL { D_SJRTUOL = D_SJRTUOLA + D_SJRTUOLB }
+
+define  D_SJRCAL {std kind 'flow-delivery' units 'cfs'}
+goal setDVNSJRCAL { D_SJRCAL = D_SJRCALA + D_SJRCALB }
+
+define  D_STANGDWN {std kind 'flow-delivery' units 'cfs'}
+goal setDVNSTANGDWN { D_STANGDWN = D_STANGDWNA1 + D_STANGDWNA + D_STANGDWNB + D_STANGDWNC }
+
+define  D_SJRMDOTA {std kind 'flow-delivery' units 'cfs'}
+goal setDVNSJRMDOTA { D_SJRMDOTA = D_MDOTAA + D_MDOTAD }
+

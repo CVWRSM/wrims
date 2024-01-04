@@ -1,0 +1,61 @@
+/*
+B2Action4Repeat.wresl
+
+Nazrul islam; DWR; 10/14/2010
+
+B2 Action 4: CVP VAMP Export Extension (May 16-31)
+
+
+*/
+
+!**** VAMP Export Extension (May16-31) ****************
+/*
+!Max Amount May Shoulder or June Ramping can take as the remaining b2 account - WQCP cost estimate
+
+define MayShoulder {
+  case AcctRestrict {
+!    condition MaxExportRes*taf_cfs < 3000.*15.0/daysin - PulseExpRes*0.5*16/daysin .and. month==May
+    condition MaxExportRes*taf_cfs < 3000.*16.0/daysin - PulseExpRes*0.5*16/daysin .and. month==May
+    value MaxExportRes*taf_cfs      }
+  case TotalMayShoulder {
+    condition month==May
+    value max(0.0, 3000.*16.0/daysin - PulseExpRes*0.5*16/daysin)     }
+  case other {
+    condition always
+    value 0.0}
+}
+
+define MayShoulderdv {alias MayShoulder kind 'May-Export-Red' units 'cfs'}
+
+define MayExportRest {value max(800.0,3000.*16.0/daysin + PulseExpRes*0.5*15.0/daysin - MayShoulder)}
+*/
+
+!Retrieve May export restriction as pre-processed by CalSim
+define MayExportRest_b2 {timeseries kind 'Export-Restriction' units 'cfs'}
+
+define MayExportRestdv {alias MayExportRest_b2 kind 'May-Export-Restrict' units 'cfs'}
+
+! Monthly VAMP export restriction for CVP during May 16-31
+goal b2action4_1 {
+  lhs D_Jones_cvp + D_Banks_cvp
+  case May {
+    condition    month==MAY .and. int(B2Action4On)==1
+    rhs         MayExportRest_b2
+    lhs<rhs     penalty 0 }
+}
+
+!for output only:
+define b2_4_1cap {std kind 'OUTPUT' units 'CFS'}
+goal setb2_4_1 {
+  lhs b2_4_1cap
+  case May {
+    condition    month==MAY .and. int(B2Action4On)==1
+    rhs         MayExportRest_b2
+    lhs>rhs     constrain
+    lhs<rhs     constrain}
+  case other {
+    condition  always
+    rhs        20000.
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+}

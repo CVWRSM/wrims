@@ -1,0 +1,83 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.interrupts.signal%b  a-intsig.adb		a0aa9a7e NE OL PK
+W ada.interrupts%s	a-interr.adb		a-interr.ali
+W system%s		system.ads		system.ali
+W system.interrupt_management%s  s-intman.adb	s-intman.ali
+W system.interrupt_management.operations%s  s-inmaop.adb  s-inmaop.ali
+
+U ada.interrupts.signal%s  a-intsig.ads		5427e2d9 NE OL PK
+W ada.interrupts%s	a-interr.adb		a-interr.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-interr.ads		20090409150020 efd4d7b2
+D a-intsig.ads		20090409150020 bbf3356b
+D a-intsig.adb		20090409150020 e9377642
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-atacco.ads		20090409150020 60789a20
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-intman.ads		20090409150020 c33ceba5
+D s-inmaop.ads		20090409150020 f26ed957
+D s-interr.ads		20090409150020 75a56d85
+D s-osinte.ads		20090422121236 e19b549f
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stausa.ads		20090429103054 146a8ff1
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-tasinf.ads		20090409150020 ff3904e8
+D s-taspri.ads		20090409150020 f6de4d95
+D s-taskin.ads		20090707124244 78c4deed
+D s-taprob.ads		20090409150020 5e00115c
+D s-tpoben.ads		20090409150020 18aadfe3
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-win32.ads		20100128134454 4b10300f
+X 1 ada.ads
+16K9*Ada 19e8 6|37r9 42r5 7|34r14 46r5
+X 5 a-interr.ads
+38K13*Interrupts 1|16k9 5|71e19 6|37r13 42r9 7|34r18 46r9
+40I9*Interrupt_ID<21|64I9> 6|39r46 7|40r46
+X 6 a-intsig.ads
+37K24*Signal 5|38k13 6|42l20 42e26 7|34b29 46l20 46t26
+39U14*Generate_Interrupt 39>34 7|40b14 44l8 44t26
+39i34 Interrupt{5|40I9} 7|40b34 43r52
+X 12 i-c.ads
+35I9*int<integer>
+X 14 system.ads
+37K9*System 7|32r6 42r7 43r10 14|197e11
+X 19 s-intman.ads
+50K16*Interrupt_Management 7|32r13 42r14 43r17 19|111e32
+55I9*Interrupt_ID<12|35I9> 7|43r38
+X 20 s-inmaop.ads
+32K37*Operations 7|32w34 42r35 20|125e43
+99U14*Interrupt_Self_Process 7|42r46
+X 21 s-interr.ads
+64I9*Ada_Interrupt_ID<short_short_integer>
+

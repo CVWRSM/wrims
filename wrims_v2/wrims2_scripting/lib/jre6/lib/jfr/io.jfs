@@ -1,0 +1,19 @@
+// Additional settings for enabling more verbose Java I/O logging
+{
+        "http://www.oracle.com/jrockit/jvm/" : {
+
+		//////// Java I/O related events
+
+		// Socket/SocketChannel read/write
+                "java/socket_*" : {
+		     "enable" : true,
+                     "stacktrace" : true
+		},
+
+		// FileInputStream/RandomAccessFile/FileChannel read/write
+                "java/file_*" : {
+		     "enable" : true,
+                     "stacktrace" : true
+		}
+	}
+}

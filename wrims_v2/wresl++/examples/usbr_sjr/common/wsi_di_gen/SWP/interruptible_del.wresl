@@ -1,0 +1,180 @@
+! *************************************************************************************
+! Interuptible Deliveries
+
+define swpdel_pin27{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D27_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin820{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D821_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin846{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D846_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin848{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D848_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin849{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D849_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin868{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D868_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin859{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D859_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin877{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D877_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin883{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D883_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin884{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D884_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin885{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D885_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin899{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D899_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin895{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D895_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin810{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D810_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin814{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D814_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define swpdel_pin815{
+
+       case      JAN  {
+       condition month == JAN .and. wateryear > 1922
+       sum(i=-1,-12,-1) D815_pin(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       } 
+
+define prvactdel_pin {value swpdel_pin27 + swpdel_pin820 + swpdel_pin846 + swpdel_pin848 + swpdel_pin849 + swpdel_pin868 + swpdel_pin859 + swpdel_pin877 + swpdel_pin883 + swpdel_pin884 + swpdel_pin885 + swpdel_pin899 + swpdel_pin895 + swpdel_pin810 + swpdel_pin814 + swpdel_pin815 }

@@ -1,0 +1,33 @@
+! OMR_stub.wresl
+!
+! place holder for potential OMR constraints
+!
+define C408_limit {value -99999.}
+!
+goal bound_Qomr { C408 > C408_limit }
+define C408_LBound  {alias C408_limit kind 'FLOW-LBOUND' units 'CFS'}
+
+!
+! Split arcs and Goals to force impacts of actions at pumps
+!*********************************************************************************************
+! C408_Base represents the OMR flow not including COA related pumping at Banks or Tracy
+define C408_NoEXP1  {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_C408NoEXP1 {C408_NoEXP1 - C408 = D419_EXP1_TD + D418_EXP1_TD + D419_CVPDEDEX1TD}
+!
+goal bound_D419 {
+  lhs     D419_EXP1_TD
+  case FWSBOActions{
+  condition month>=dec .or. month<=jun
+    rhs     0.5*C408_NoEXP1 - 0.5*C408_limit
+    lhs>rhs    penalty 1285
+    lhs<rhs penalty    0}
+}
+!
+goal bound_D418 {
+  lhs     D418_EXP1_TD + D419_CVPDEDEX1TD
+  case FWSBOActions{
+    condition month>=dec .or. month<=jun
+    rhs     0.5*C408_NoEXP1 - 0.5*C408_limit
+    lhs>rhs    penalty 1285
+    lhs<rhs penalty    0}
+}

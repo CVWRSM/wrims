@@ -1,0 +1,112 @@
+!No recharge and pumping at the same time.
+define int_GWR {INTEGER STD kind 'INTEGER' units 'NONE'}
+goal recharge {D931_GWR + D936_GWR + D950_GWR < int_GWR*10000.}
+goal pump {D933_GWP + D938_GWP + D952_GWP < 10000. - int_GWR*10000.}
+
+!Limit groundwater recharge time when Tule wetness index < 41.
+define gwr_switch {
+	case wet {condition tule_wet_indx > 41 value 0.}
+	case otherwise {condition always value 1.}
+}
+goal set_gwr_switch { int_GWR < gwr_switch}
+
+/*define lim_GWRseason {
+	case JantoMar {
+		condition	range(month,jan,mar)
+		value		10000.
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+goal set_GWRseason1 {C848_TVC_GWR < lim_GWRseason}
+goal set_GWRseason2 {C851_SW_GWR < lim_GWRseason}
+goal set_GWRseason3 {C861_AEI_GWR < lim_GWRseason}
+
+goal set_GWPseason1 {D933_GWP < max(0., 10000. - lim_GWRseason)}
+goal set_GWPseason2 {D938_GWP < max(0., 10000. - lim_GWRseason)}
+goal set_GWPseason3 {D952_GWP < max(0., 10000. - lim_GWRseason)}
+*/
+!Groundwater recharge
+!NEED TO INCLUDE IN LIEU RECHARGE USING MWD ARTICLE 56
+
+!Split GWR diversions by source.
+DEFINE D931_GWR_SP {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Spill from Millerton
+DEFINE D931_GWR_SU {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Delta surplus
+DEFINE D931_GWR_DD {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Fall drawdown
+GOAL SPLIT_D931_GWR {D931_GWR = D931_GWR_SP + D931_GWR_SU + D931_GWR_DD}
+
+DEFINE D936_GWR_SP {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Spill from Millerton
+DEFINE D936_GWR_SU {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Delta surplus
+DEFINE D936_GWR_DD {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Fall drawdown
+GOAL SPLIT_D936_GWR {D936_GWR = D936_GWR_SP + D936_GWR_SU + D936_GWR_DD}
+
+DEFINE D950_GWR_SP {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Spill from Millerton
+DEFINE D950_GWR_SU {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Delta surplus
+DEFINE D950_GWR_DD {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'} !Fall drawdown
+GOAL SPLIT_D950_GWR {D950_GWR = D950_GWR_SP + D950_GWR_SU + D950_GWR_DD}
+
+!Route GWR and allow for makeup of MWD spills in incremental storage.
+goal lim_surplus_GWR {D931_GWR_SU + D936_GWR_SU + D950_GWR_SU + D25A_SPR_SU = D419_FMP}
+goal route_Millerton_spills {D931_GWR_SP + D936_GWR_SP + D950_GWR_SP = D18_DFS_SP_WQ_G + D18_DFS_SP_WS_G + D18_SC_G}
+goal route_surplus1 {D931_GWR_SU + D936_GWR_SU + D950_GWR_SU = C848_TVC_GWR + C851_SW_GWR + C861_AEI_GWR}
+goal route_drawdown {D931_GWR_DD + D936_GWR_DD + D950_GWR_DD = D18_DD_G}
+
+!Groundwater Bank accounting including 10% loss
+define S933 {std kind 'storage' units 'taf'}
+define S938 {std kind 'storage' units 'taf'}
+define S952 {std kind 'storage' units 'taf'}
+
+define S933_MWD {std kind 'storage' units 'taf'}
+define S933_FWUA {std kind 'storage' units 'taf'}
+goal split_S933 {S933 = S933_MWD + S933_FWUA}
+
+define S938_MWD {std kind 'storage' units 'taf'}
+define S938_FWUA {std kind 'storage' units 'taf'}
+goal split_S938 {S938 = S938_MWD + S938_FWUA}
+
+define S952_MWD {std kind 'storage' units 'taf'}
+define S952_FWUA {std kind 'storage' units 'taf'}
+goal split_S952 {S952 = S952_MWD + S952_FWUA}
+
+define D933_GWP_MWD {std kind 'flow-delivery' units 'cfs'}
+define D933_GWP_FWUA {std kind 'flow-delivery' units 'cfs'}
+goal split_D933_GWP {D933_GWP = D933_GWP_MWD + D933_GWP_FWUA}
+
+define D938_GWP_MWD {std kind 'flow-delivery' units 'cfs'}
+define D938_GWP_FWUA {std kind 'flow-delivery' units 'cfs'}
+goal split_D938_GWP {D938_GWP = D938_GWP_MWD + D938_GWP_FWUA}
+
+define D952_GWP_MWD {std kind 'flow-delivery' units 'cfs'}
+define D952_GWP_FWUA {std kind 'flow-delivery' units 'cfs'}
+goal split_D952_GWP {D952_GWP = D952_GWP_MWD + D952_GWP_FWUA}
+
+goal continuity933_MWD {S933_MWD*taf_cfs - S933_MWD(-1)*taf_cfs = 0.9*D931_GWR_SU - D933_GWP_MWD}
+goal continuity938_MWD {S938_MWD*taf_cfs - S938_MWD(-1)*taf_cfs = 0.9*D936_GWR_SU - D938_GWP_MWD}
+goal continuity952_MWD {S952_MWD*taf_cfs - S952_MWD(-1)*taf_cfs = 0.9*D950_GWR_SU - D952_GWP_MWD}
+
+goal continuity933_FWUA {S933_FWUA*taf_cfs - S933_FWUA(-1)*taf_cfs = 0.9*D931_GWR_SP + 0.9*D931_GWR_DD - D933_GWP_FWUA}
+goal continuity938_FWUA {S938_FWUA*taf_cfs - S938_FWUA(-1)*taf_cfs = 0.9*D936_GWR_SP + 0.9*D936_GWR_DD - D938_GWP_FWUA}
+goal continuity952_FWUA {S952_FWUA*taf_cfs - S952_FWUA(-1)*taf_cfs = 0.9*D950_GWR_SP + 0.9*D936_GWR_DD - D952_GWP_FWUA}
+
+!goal lim_D913_C2 {D913_GWP + D912_C2 + D916_C2 < FK_final_C2 * taf_cfs * dist_912_c2/100. + FK_final_C2 * taf_cfs * dist_916_c2/100.}
+
+!Restrict MWD surplus deliveries to pumping from MWD water banks.
+goal MWD_GWB_withdrawl {D27_PMI_fmp + D885_PMI_fmp + D895_PMI_fmp + D899_PMI_fmp + D25A_SPR_GWP = D933_GWP_MWD + D938_GWP_MWD + D952_GWP_MWD}
+
+!Route MWD groundwater pumping.
+goal route_D913_GWP {C861_AEI_R_DFG + C848_TVC_R_DFG + C855_CVC_R_DFG + C851_SW_R_DFG = D933_GWP_MWD + D938_GWP_MWD + D952_GWP_MWD}
+
+!Restrict supplemental deliveries to FWUA SC gwp.
+goal FWUA_gwp_withdrawl {D910_SD_GWP + D920_SD_GWP + D932_SD_GWP + D937_SD_GWP + D950_SD_GWP = D933_GWP_FWUA + D938_GWP_FWUA + D952_GWP_FWUA}
+
+!Restict Partnership groundwater pumping to pumping by Friant contractors in-lieu of receiving surface water.
+
+goal local_gwp_933 {D933_gwp  < D931A_C2 + D931A_SD + D931B_C2 + D931B_SD + 100.}
+goal local_gwp_938 {D938_gwp < D936_C2 + D936_SD + 100.}
+goal local_gwp_952 {D952_gwp < D950_C2 + D950_SD + 100.}
+
+
+
+

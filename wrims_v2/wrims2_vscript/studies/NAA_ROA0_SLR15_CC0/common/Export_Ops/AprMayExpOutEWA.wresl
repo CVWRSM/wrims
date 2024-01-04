@@ -1,0 +1,219 @@
+! This file calculates Tracy and Banks pumping volumes during the pulse and non-pulse periods. (Toshio)
+
+define D418_TD_P {std kind 'flow-delivery' units 'CFS'}
+define D418_TD_NP {std kind 'flow-delivery' units 'CFS'}
+define D419_TD_P {std kind 'flow-delivery' units 'CFS'}
+define D419_TD_NP {std kind 'flow-delivery' units 'CFS'}
+
+goal setD418_TD_P_1 {
+     lhs D418_TD_P
+    case APR {
+     condition month == APR
+     rhs PulseExpCtrl/2.
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY
+     rhs PulseExpCtrl/2.
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case other {
+     condition always
+     rhs 0.
+}
+}
+
+/*
+goal setD418_TD_P_2 {
+     lhs D418_TD_P
+    case APR {
+     condition month == APR
+     rhs EiExpCtrl/2.
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY
+     rhs EiExpCtrl/2.
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+}
+*/
+
+goal setD418_TD_P_3 {
+     lhs D418_TD_P
+    case APR {
+     condition month == APR
+     rhs D418
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY
+     rhs D418
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+}
+
+/*
+goal setD418_TD_P_4 {
+     lhs D418_TD_P
+    case APRMAY {
+     condition month == APR .or. month == MAY
+     rhs 800.
+     lhs>rhs    penalty 0
+     lhs<rhs    penalty 9999
+}
+}
+*/
+
+goal setD418_TD_P_5 {
+     lhs D418_TD_P
+    case APR {
+     condition month == APR .and. int(B2Action3On)==1
+     rhs PulseExpRes*0.5
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY .and. int(B2Action3On)==1
+     rhs PulseExpRes*0.5
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+}
+
+goal setD418_TD_P_6 {
+     lhs D418_TD_P
+    case APR {
+     condition month == APR .and. int(EwaAction3On)==1
+     rhs PulseExpRes*0.5
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY .and. int(EwaAction3On)==1
+     rhs PulseExpRes*0.5
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+}
+
+
+goal setD418_TD_NP_1 {
+     lhs D418_TD_NP
+    case APR {
+     condition month == APR
+     rhs D418*30./14. - D418_TD_P*16./14.
+}
+    case MAY {
+     condition month==MAY
+     rhs D418*31./16. - D418_TD_P*15./16.
+}
+    case other {
+     condition always
+     rhs 0.
+}
+}
+
+goal setD419_TD_P_1 {
+     lhs D419_TD_P
+    case APR {
+     condition month == APR
+     rhs PulseExpCtrl/2.
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY
+     rhs PulseExpCtrl/2.
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case other {
+     condition always
+     rhs 0.
+}
+}
+
+/*
+goal setD419_TD_P_2 {
+     lhs D419_TD_P
+    case APR {
+     condition month == APR
+     rhs EiExpCtrl/2.
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY
+     rhs EiExpCtrl/2.
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+}
+*/
+
+goal setD419_TD_P_3 {
+     lhs D419_TD_P
+    case APR {
+     condition month == APR
+     rhs D419
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY
+     rhs D419
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+}
+
+/*goal setD419_TD_P_4 {
+     lhs D419_TD_P
+    case APRMAY {
+     condition month == APR .or. month == MAY
+     rhs 700.
+     lhs>rhs    penalty 0
+     lhs<rhs    penalty 9999
+}
+}*/
+
+goal setD419_TD_P_5 {
+     lhs D419_TD_P
+    case APR {
+     condition month == APR .and. int(EwaAction3On)==1
+     rhs PulseExpRes*0.5
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+    case MAY {
+     condition month == MAY .and. int(EwaAction3On)==1
+     rhs PulseExpRes*0.5
+     lhs>rhs    penalty 9999
+     lhs<rhs    penalty 100
+}
+}
+
+
+goal setD419_TD_NP_1 {
+     lhs D419_TD_NP
+    case APR {
+     condition month == APR
+     rhs D419*30./14. - D419_TD_P*16./14.
+}
+    case MAY {
+     condition month==MAY
+     rhs D419*31./16. - D419_TD_P*15./16.
+}
+    case other {
+     condition always
+     rhs 0.
+}
+}
+

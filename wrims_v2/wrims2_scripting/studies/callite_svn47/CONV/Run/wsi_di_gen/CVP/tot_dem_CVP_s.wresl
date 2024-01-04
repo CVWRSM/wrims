@@ -1,0 +1,88 @@
+/*************************************
+tot_dem_CVP_s.wresl
+Hao Xie DWR (1/5/2012) 
+
+This file calculates the sum of the actual deliveries for each type (AG, MI,
+Refuge and Exchange) from March to the month prior to the current model month.
+Only values for model month March - August are used.
+
+This file is used to calculate the Actual DI to be used in the curve generation procedure.
+
+**************************************/
+
+
+! ================================= AG Deliveries ================================
+
+define cvpdem_pag {  ! Annual Sum of Reduced Demands for AG
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) red_dem_pag(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+
+
+! ============================== MI Deliveries =================================
+
+define cvpdem_pmi { ! Annual Sum of Reduced Demands for MI
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) red_dem_pmi(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+
+
+! =============================== Exchange Deliveries ============================
+
+define cvpdem_pex { ! Annual Sum of Reduced Demands for EX
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) red_dem_pex(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+
+! ================================= Refuge Deliveries =============================
+
+define cvpdem_prf { ! Annual Sum of Reduced Demands for REF
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       sum(i=-1,-12,-1) red_dem_prf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+
+! ================================= Loss Deliveries =============================
+
+define cvpdem_pls { ! Annual Sum of Reduced Demands for LS
+
+       case      MAR  {
+       condition month == MAR .and. wateryear > 1922
+       value     acvpdem_pls_s }
+       
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+
+! ============================== Total Reduced Demand for SOD =======================
+
+define tot_dem_cvp_s {value cvpdem_pag + cvpdem_pmi + cvpdem_pex + cvpdem_prf + cvpdem_pls} 

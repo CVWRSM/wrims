@@ -1,0 +1,126 @@
+! Main WRESL Files containes the paths to run the model.
+!Date Modified: 04/23/2010; By: Hao Xie
+! 5/18/10 Added logic for two cycles to accomodate daily weir flows Tom FitzHugh BOR
+! comment out daily weir flows for corroboration study; Richard Chen DWR
+! 4/25/11 Cleanup Codes to remove CS2CL,CL, and change Ave to AVG. Richard Chen, DWR
+
+sequence CYCLE1 {
+    model   Upstream
+    order   1
+    }
+
+sequence CYCLE2 {
+    model   BASE
+    order   2
+    }
+
+sequence CYCLE3 {
+    model   B2_BO_DailyWeir
+    order   3
+    }
+
+model inc1 {
+	define getFinalMrdo {EXTERNAL f90} 
+	include 'Delta\DeltaExtFuncs_7inpANN.wresl'
+	include 'swp_dellogic\allocation\co_extfcn.wresl'
+
+	!Swithes applyed to all cycle
+	include 'Assumptions\Options_Switches.wresl'
+	include 'wytypes\wytypes.wresl'
+	!=====================
+	include 'System\System.wresl'
+	include 'hydrology\forecast\CVPforecasts.wresl'	
+}
+
+model inc2 {
+	include 'Assumptions\assumption.wresl'
+	include 'hydrology\demands\demands_defs.wresl'
+	include 'swp_dellogic\SwpDeliveryLogic.wresl'
+	include 'cvp_dellogic\CVP_delivery_Logic_system.wresl'
+	include 'cvp_dellogic\CVP_delivery_Logic_south.wresl' 
+	include 'swp_dellogic\conveyance_limits.wresl'
+	include 'hydrology\demands\demands.wresl'
+	include 'NorthofDelta\NOD.wresl'
+	include 'Rulecurve\rulecurve.wresl'
+	include 'Rulecurve\cvp_delivery_rule_curve.wresl'
+	include 'Rulecurve\San_Luis_Levels.wresl'
+	include 'Export_Ops\export_ops.wresl'
+	include 'Wheeling\WheelOpsVarDefines.wresl'
+}
+
+model inc3 {
+	include 'B2Actions\BaseStudyResults.wresl' 
+	include 'B2Actions\B2Action1Repeat.wresl'
+	include 'system\weight-table.wresl'
+}
+    
+model Upstream {         !CYCLE 1
+
+	include model inc1
+
+	include 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+
+	include model inc2
+
+	include 'Wheeling\WheelzeroCVC.wresl'
+	include 'Wheeling\WheelzeroJPOD.wresl' 
+	include 'COA\coa_Up.wresl'
+	include 'Delta\Ann\ExportEstimate1_up.wresl'
+	include 'Delta\Delta.wresl'
+	include 'Delta\X2_BO_WQ.wresl'
+
+	include model inc3
+}
+
+model BASE {         !CYCLE 2
+
+	include model inc1
+	include model inc2
+	include model inc3
+
+	include 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+	include 'Wheeling\WheelzeroCVC.wresl'
+	include 'Wheeling\WheelzeroJPOD.wresl' 
+	include 'COA\coa.wresl'
+	include 'Delta\Ann\ExportEstimate1.wresl'
+	include 'Delta\Delta.wresl'
+	include 'Delta\X2_BO_WQ.wresl'
+}
+
+
+model B2_BO_DailyWeir {         !CYCLE 3
+
+	include model inc1
+	include model inc2
+	include model inc3
+
+	include 'hydrology\WEIRS\weir_steps_dailyops_SETUP.wresl'  
+	include 'B2Actions\B2SetBaseline.wresl'                    
+	include 'B2Actions\B2ActionsDeltaRepeat.wresl'      
+	include 'B2Actions\B2BanksFix.wresl' 
+	include 'Delta\Ann\ExportEstimate1_B2.wresl'
+	include 'Delta\Delta_reduced_calls.wresl'
+	include 'Delta\X2_BO_WQ.wresl'
+
+! BO Code
+	include 'Export_Ops\OMR\DELTA_RPA_init.wresl'
+	include 'Export_Ops\FWS_SMELT_BO_FallX2check.wresl'
+	include 'Export_Ops\NMFS_SALMON_BO_DCC.wresl'
+	include 'Export_Ops\NMFS_SALMON_BO_Def.wresl'
+	include 'Export_Ops\NMFS_SALMON_BO_SJR.wresl'
+
+	include 'Export_Ops\OMR\FWS_SMELT_BO.wresl' 
+	include 'Export_Ops\OMR\EXP_constraint.wresl'
+	include 'Export_Ops\OMR\OMR_constraint.wresl'
+	include 'COA\coa_BO.wresl'
+
+	include 'Delta\xc-gates.wresl'                 
+	include 'Wheeling\Wheelcap.wresl'
+	include 'Wheeling\wheelfixes.wresl'
+	include 'output\cycle_output.wresl'
+	include 'Shortage\ShortWarning.wresl'
+	include 'FlowCriteria\FlowCriteria.wresl'
+
+	include 'output\DV_ouput.wresl'
+}
+

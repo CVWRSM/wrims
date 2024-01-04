@@ -1,0 +1,25 @@
+parameter {
+
+	const option_A { 1 }
+	const totalflow { 100 }
+
+}
+
+sequence CYCLE1 {
+    model   fiRst
+    order   1
+
+}
+
+model firsT { 
+
+	include model why
+
+}
+
+	
+model why { 
+
+	include 'subfile.wresl'
+  
+}

@@ -1,0 +1,191 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnvvnnnnnvvnnnnnnnnnnnnnnnnnn
+
+U ada.sequential_io%b	a-sequio.adb		08d69e01 NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.unchecked_conversion%s
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c_streams%s  i-cstrea.adb		i-cstrea.ali
+W system%s		system.ads		system.ali
+W system.crtl%s		s-crtl.ads		s-crtl.ali
+W system.file_control_block%s  s-ficobl.ads	s-ficobl.ali
+W system.file_io%s	s-fileio.adb		s-fileio.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+U ada.sequential_io%s	a-sequio.ads		9f300499 BN NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.io_exceptions%s	a-ioexce.ads		a-ioexce.ali
+W system%s		system.ads		system.ali
+W system.sequential_io%s  s-sequio.adb		s-sequio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-sequio.ads		20090409150020 fefacb21
+D a-sequio.adb		20090409150020 2c9ec41c
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-fileio.ads		20091027141444 42b99b37
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-sequio.ads		20090409150020 d8b3a580
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 6|36r6 43r9 158r5 7|43r6 45r14 57r27 58r27 203r41 271r5
+X 5 a-ioexce.ads
+18K13*IO_Exceptions 30e22 6|36w10 106r37 107r37 108r37 109r37 110r37 111r37
+. 112r37
+21X4*Status_Error 6|106r51
+22X4*Mode_Error 6|107r51
+23X4*Name_Error 6|108r51
+24X4*Use_Error 6|109r51
+25X4*Device_Error 6|110r51
+26X4*End_Error 6|111r51
+27X4*Data_Error 6|112r51
+X 6 a-sequio.ads
+41+9 Element_Type 46r7 50r7 97r50 98r46 7|157r49 167r14 168r17 180r13 195r41
+. 222r17 253r46 261r14 262r17
+43k13*Sequential_IO 1|16k9 6|41z9 158l9 158e22 7|45b18 271l9 271t22
+53P9*File_Type(22|43R9) 71r21 77r21 82r36 83r36 84r36 85r36 87r29 88r29 89r29
+. 91r29 97r28 98r28 100r33 133r27 138r27 141c9 7|66r35 76r21 89r36 98r33
+. 107r26 116r29 125r26 134r26 144r21 157r27 239r35 244r35 253r28
+55E9*File_Mode 55e54 61r8 72r14 78r14 84r54 87r47 138r38 7|57r53 58r68 77r14
+. 125r44 145r14 239r53
+55n23*In_File{55E9} 62r7
+55n32*Out_File{55E9} 63r7 72r27 7|77r27
+55n42*Append_File{55E9} 64r7
+70U14*Create 71=7 72>7 73>7 74>7 7|75b14 83l8 83t14
+71p7 File{53P9} 7|76b7 82m23
+72e7 Mode{55E9} 7|77b7 82r38
+73s7 Name{string} 7|78b7 82r45
+74s7 Form{string} 7|79b7 82r51
+76U14*Open 77=7 78>7 79>7 80>7 7|143b14 151l8 151t12
+77p7 File{53P9} 7|144b7 150m21
+78e7 Mode{55E9} 7|145b7 150r36
+79s7 Name{string} 7|146b7 150r43
+80s7 Form{string} 7|147b7 150r49
+82U14*Close 82=22 123r20 145r19 7|66b14 69l8 69t13
+82p22 File{53P9} 7|66b21 68r22
+83U14*Delete 83=22 127r20 147r19 7|89b14 92l8 92t14
+83p22 File{53P9} 7|89b22 91r23
+84U14*Reset 84=22 84>47 7|239b14 242l8 242t13
+84p22 File{53P9} 7|239b21 241r22
+84e47 Mode{55E9} 7|239b46 241r57
+85U14*Reset 85=22 7|244b14 247l8 247t13
+85p22 File{53P9} 7|244b21 246r22
+87V13*Mode{55E9} 87>22 151r19 7|125b13 128l8 128t12
+87p22 File{53P9} 7|125b19 127r36
+88V13*Name{string} 88>22 152r19 7|134b13 137l8 137t12
+88p22 File{53P9} 7|134b19 136r28
+89V13*Form{string} 89>22 149r19 7|107b13 110l8 110t12
+89p22 File{53P9} 7|107b19 109r28
+91V13*Is_Open{boolean} 91>22 150r19 7|116b13 119l8 119t15
+91p22 File{53P9} 7|116b22 118r31
+97U14*Read 97>21 97<39 154r19 7|157b14 233l8 233t12
+97p21 File{53P9} 7|157b20 162r34 171r17 212r34 226r28 231r28
+97*39 Item{41+9} 7|157b38 158r34 181r21 213m16 226m35 231m35
+98U14*Write 98>21 98>39 156r19 7|253b14 269l8 269t13
+98p21 File{53P9} 7|253b21 257r35 265r17 268r26
+98*39 Item{41+9} 7|253b39 254r33 268r33
+100V13*End_Of_File{boolean} 100>26 148r19 7|98b13 101l8 101t19
+100p26 File{53P9} 7|98b26 100r35
+106X4*Status_Error
+107X4*Mode_Error
+108X4*Name_Error
+109X4*Use_Error
+110X4*Device_Error
+111X4*End_Error
+112X4*Data_Error
+X 7 a-sequio.adb
+47K12 FIO=47:31 68r7 91r7 100r14 109r14 118r14 127r22 136r14 162r7 170r10
+. 212r16 226r10 231r10 241r7 246r7 257r7 264r10 268r7
+48K12 FCB=48:31 54r18 57r64 58r53
+49K12 SIO=49:31 55r18 82r7 150r7
+50K12 SSE=50:31 184r33 185r26 187r31
+52N4 SU 158r46 158r56 254r45 254r55
+54P12 AP{16|80P9} 68r18 91r19 100r31 109r24 118r27 127r32 136r24 162r30 171r13
+. 212r30 226r24 231r24 241r18 246r18 257r31 265r13 268r22
+55P12 FP{22|63P9} 82r19 150r17
+57V13 To_FCB[10|20]{16|62E9} 82r30 150r28 241r49
+58V13 To_SIO[10|20]{6|55E9} 127r14
+158m7 Siz{12|44M12} 222r64 231r49
+159m7 Rsiz{12|44M12} 171m24 185r46 212r57 222r57 226r49
+184i16 RsizS{26|54I9} 187r55
+187A21 SA<26|70A9><26|54I9> 189r20 194r41 207r33
+194P21 SAP(187A21) 203r67
+195P21 ItemP(6|41+9) 203r72
+203V25 To_ItemP[10|20]{195P21} 213r24
+207a16 Buffer{187A21} 212m41 213m34
+254m7 Siz{12|44M12} 265r24 268r47
+X 10 a-unccon.ads
+20v14*Unchecked_Conversion 7|43w10 57r31 58r31 203r45
+X 11 interfac.ads
+36K9*Interfaces 7|37r6 37r32 11|171e15
+X 12 i-cstrea.ads
+37K20*C_Streams 7|37w17 37r43 12|274e25
+44M12*size_t{14|60M9} 7|158r23 159r14 171r38 254r22 265r37
+X 13 system.ads
+37K9*System 6|38r6 141r26 7|38w6 39r6 40r6 41r6 42r6 47r24 48r24 49r24 50r24
+. 52r21 60r13 171r52 265r51 13|197e11
+68N4*Storage_Unit 7|52r28 171r59 265r58
+X 14 s-crtl.ads
+38K16*CRTL 7|39w13 60r20 14|196e16
+60M9*size_t 7|60r25
+X 16 s-ficobl.ads
+42K16*File_Control_Block 7|40w13 48r31 16|160e30
+62E9*File_Mode 7|57r68 58r57 16|62e66
+80P9*AFCB_Ptr(82R9) 7|54r22
+X 17 s-fileio.ads
+39K16*File_IO 7|41w13 47r31 17|254e19
+101U14*Close 7|68r11
+111U14*Delete 7|91r11
+114U14*Reset 7|241r11
+117U14*Reset 7|246r11
+120V13*Mode{16|62E9} 7|127r26
+123V13*Name{string} 7|136r18
+127V13*Form{string} 7|109r18
+131V13*Is_Open{boolean} 7|118r18
+156U14*Check_Read_Status 7|162r11
+162U14*Check_Write_Status 7|257r11
+168V13*End_Of_File{boolean} 7|100r18
+208U14*Read_Buf 7|170r14 212r20 226r14 231r14
+231U14*Write_Buf 7|264r14 268r11
+X 22 s-sequio.ads
+39K16*Sequential_IO 6|38w13 141r33 7|49r31 22|78e25
+63P9*File_Type(43R9) 6|141r47 7|55r22
+66U14*Create 7|82r11
+72U14*Open 7|150r11
+X 26 s-stoele.ads
+42K16*Storage_Elements 7|42w13 50r31 26|117e28
+54I9*Storage_Offset<integer> 7|184r37 185r30
+64M9*Storage_Element
+70A9*Storage_Array(64M9)<54I9> 7|187r35
+

@@ -1,0 +1,164 @@
+! TransfersAcquisitions_Max1.wresl
+!
+!******************************************************************************
+! Read in Max NOD Acquisitions for this year type - This represents the upper bound of acquisitions in
+! Sac, Feather and Yuba Basins. These are the limits for Stage1, Stage2, L4 and EWA acquisitions
+!
+define OpsMax_flag {select ItemValue from WTS_JobControl where Item=1.}
+!
+!******************************************************************************
+! Yuba
+! GW-only transfers code:
+define YubaGW_Max1yr {select Yuba_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}  !Data entry is for annual max
+define YubaGW_Max1 {
+    case initialorOpsMax {
+        condition wateryear==1922 .or. OpsMax_flag==1.
+        value YubaGW_Max1yr }    ! Uses tabular inputs - which should be set at maximum of 61 TAF for Existing and 70 TAF for FutureNA
+    case otherwise {
+        condition always
+!
+! These are the maximums for Existing and Future NA assumptions from the LYRA EIS/R analysis:
+!                 Existing          FutureNA
+!             Amount   Factor   Amount   Factor
+! Max 1yr      61 TAF   1.00     70 TAF   1.00
+! Max 2yr     116 TAF   1.90    120 TAF   1.71
+! Max 3yr     116 TAF   1.90    140 TAF   2.00
+!
+! Existing
+!        value min(    1.00 * YubaGW_Max1yr,
+!                  max(1.90 * YubaGW_Max1yr - YubaGWdv(prevSep) - AnnYubaGW_EWAdv(prevSep), 0.),
+!                  max(1.90 * YubaGW_Max1yr - YubaGWdv(prevSep) - AnnYubaGW_EWAdv(prevSep) - PrevYrYubaGWdv(prevSep), 0.))
+!
+! Future NA
+        value min(    1.00 * YubaGW_Max1yr,
+                  max(1.71 * YubaGW_Max1yr - YubaGWdv(prevSep) - AnnYubaGW_EWAdv(prevSep), 0.),
+                  max(2.00 * YubaGW_Max1yr - YubaGWdv(prevSep) - AnnYubaGW_EWAdv(prevSep) - PrevYrYubaGWdv(prevSep), 0.))
+    }
+}
+! LYRA C1 SW transfers code:
+define YubaSW_Max1yr {select Yuba_SW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}  !Data entry is for annual max
+define YubaSW_Max1 {value min(AprSepLRYAC1,YubaSW_Max1yr)}
+
+!******************************************************************************
+
+!
+! Feather GW Substitution and Crop Idling/Shifting is defined in Common Assumptions Documentation
+define FeathGW_Max1yr {select Feather_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+define FeathGW_Max1 {
+    case initialorOpsMax {
+        condition wateryear==1922 .or. OpsMax_flag==1.
+        value FeathGW_Max1yr }
+    case otherwise {
+        condition always
+! Max 1yr     1.00 * Max1yr
+! Max 2yr     1.75 * Max1yr
+! Max 3yr     2.00 * Max1yr
+        value min(    1.00 * FeathGW_Max1yr,
+                  max(1.75 * FeathGW_Max1yr - FeathGWdv(prevSep), 0.),                                ! add EWA term as needed
+                  max(2.00 * FeathGW_Max1yr - FeathGWdv(prevSep) - PrevYrFeathGWdv(prevSep), 0.))     ! add EWA term as needed
+    }
+}
+
+define FeathCI_Max1 {select Feather_CI from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+!
+! Sac Valley GW Substitution and Crop Idling/Shifting is defined in Common Assumptions Documentation
+define SacGW_Max1yr {select SacValley_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+define SacGW_Max1 {
+    case initialorOpsMax {
+        condition wateryear==1922 .or. OpsMax_flag==1.
+        value SacGW_Max1yr }
+    case otherwise {
+        condition always
+! Max 1yr     1.00 * Max1yr
+! Max 2yr     1.75 * Max1yr
+! Max 3yr     2.00 * Max1yr
+        value min(    1.00 * SacGW_Max1yr,
+                  max(1.75 * SacGW_Max1yr - SacGWdv(prevSep), 0.),                              ! add EWA term as needed
+                  max(2.00 * SacGW_Max1yr - SacGWdv(prevSep) - PrevYrSacGWdv(prevSep), 0.))     ! add EWA term as needed
+    }
+}
+define SacCI_Max1 {select SacValley_CI from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+!
+define SacOthGW_Max1yr {select SacOther_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+define SacOthGW_Max1 {
+    case initialorOpsMax {
+        condition wateryear==1922 .or. OpsMax_flag==1.
+        value SacOthGW_Max1yr }
+    case otherwise {
+        condition always
+! Max 1yr     1.00 * Max1yr
+! Max 2yr     1.75 * Max1yr
+! Max 3yr     2.00 * Max1yr
+        value min(    1.00 * SacOthGW_Max1yr,
+                  max(1.75 * SacOthGW_Max1yr - SacOthGWdv(prevSep), 0.),                                 ! add EWA term as needed
+                  max(2.00 * SacOthGW_Max1yr - SacOthGWdv(prevSep) - PrevYrSacOthGWdv(prevSep), 0.))     ! add EWA term as needed
+    }
+}
+define SacOthCI_Max1 {select SacOther_CI from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+!
+! American R GW Substitution
+define AmerRGW_Max1yr {select AmerR_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+define AmerRGW_Max1 {
+    case initialorOpsMax {
+        condition wateryear==1922 .or. OpsMax_flag==1.
+        value AmerRGW_Max1yr }
+    case otherwise {
+        condition always
+! Max 1yr     1.00 * Max1yr
+! Max 2yr     1.75 * Max1yr
+! Max 3yr     2.00 * Max1yr
+        value min(    1.00 * AmerRGW_Max1yr,
+                  max(1.75 * AmerRGW_Max1yr - AmerRGWdv(prevSep), 0.),                                ! add EWA term as needed
+                  max(2.00 * AmerRGW_Max1yr - AmerRGWdv(prevSep) - PrevYrAmerRGWdv(prevSep), 0.))     ! add EWA term as needed
+    }
+}
+!
+define TOTAL_NOD_Max1 {value YubaGW_Max1 + YubaSW_Max1 + FeathGW_Max1 + FeathCI_Max1 + SacGW_Max1 + SacCI_Max1 + SacOthGW_Max1 + SacOthCI_Max1 + AmerRGW_Max1}
+define WTS_NOD_Max1 {alias TOTAL_NOD_Max1 kind 'Stage1-Max-Acquisition' units 'taf'}
+!
+!******************************************************************************
+! Read in Max SOD Acquisitions for this year type - This represents the upper bound of acquisitions
+! from regions along the DMC and CA. These are the limits for Stage1, Stage2, L4 and EWA acquisitions
+!
+! Mendota Pool/DMC region GW Substitution and Crop Idling/Shifting is defined in Common Assumptions Documentation
+define DMCGW_Max1yr {select DMC_GW from WTS_MaxAcquisitionAmts_SOD where Index=wyt_TRANS}
+define DMCGW_Max1 {
+    case initialorOpsMax {
+        condition wateryear==1922 .or. OpsMax_flag==1.
+        value DMCGW_Max1yr }
+    case otherwise {
+        condition always
+! Max 1yr     1.00 * Max1yr
+! Max 2yr     1.75 * Max1yr
+! Max 3yr     2.00 * Max1yr
+        value min(    1.00 * DMCGW_Max1yr,
+                  max(1.75 * DMCGW_Max1yr - DMCGWdv(prevSep) - AnnDMC_GW_EWAdv(prevSep), 0.),
+                  max(2.00 * DMCGW_Max1yr - DMCGWdv(prevSep) - AnnDMC_GW_EWAdv(prevSep) - PrevYrDMCGWdv(prevSep), 0.))
+    }
+}
+define DMCCI_Max1 {select DMC_CI from WTS_MaxAcquisitionAmts_SOD where Index=wyt_TRANS}
+!
+! California Aqueduct region GW Substitution and Crop Idling/Shifting is defined in Common Assumptions Documentation
+define CAGW_Max1yr {select CA_GW from WTS_MaxAcquisitionAmts_SOD where Index=wyt_TRANS}
+define CAGW_Max1 {
+    case initialorOpsMax {
+        condition wateryear==1922 .or. OpsMax_flag==1.
+        value CAGW_Max1yr }
+    case otherwise {
+        condition always
+! Max 1yr     1.00 * Max1yr
+! Max 2yr     1.75 * Max1yr
+! Max 3yr     2.00 * Max1yr
+        value min(    1.00 * CAGW_Max1yr,
+                  max(1.75 * CAGW_Max1yr - CAGWdv(prevSep) - AnnCA_GW_EWAdv(prevSep), 0.),
+                  max(2.00 * CAGW_Max1yr - CAGWdv(prevSep) - AnnCA_GW_EWAdv(prevSep) - PrevYrCAGWdv(prevSep), 0.))
+    }
+}
+define CACI_Max1 {select CA_CI from WTS_MaxAcquisitionAmts_SOD where Index=wyt_TRANS}
+!
+define TOTAL_SOD_Max1 {value DMCGW_Max1 + DMCCI_Max1 + CAGW_Max1 + CACI_Max1}
+define WTS_SOD_Max1 {alias TOTAL_SOD_Max1 kind 'Stage1-Max-Acquisition' units 'taf'}
+!
+!******************************************************************************
+! This is the total Max overall
+define TOTAL_Max1 {value TOTAL_NOD_Max1 + TOTAL_SOD_Max1}

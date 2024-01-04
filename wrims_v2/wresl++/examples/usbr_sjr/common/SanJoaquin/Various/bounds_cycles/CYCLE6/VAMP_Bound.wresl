@@ -1,0 +1,205 @@
+! VAMP_Bound.wresl
+! Edward Chang
+! 5/01/2000
+! Joint Model
+! This code bounds decision variables using monthly weighted constraints for cycle 6 only
+! Revised by C. Hsu, 3/6/03, USBR, for review and documentation project
+!########################################################################################
+/*
+VAMP releases from SJRAG members
+*/
+! VAMP requirement for April- May window
+define VAMP_reqdv {std kind 'flow-requirement' units 'cfs'}
+goal setVAMP_reqdv {
+    lhs     VAMP_reqdv
+    case    AprilMay {
+        condition   month >= apr .and. month <= may
+        rhs         VAMP_reqdv[VAMP_AND_DO] }
+        case    otherwise {
+            condition always
+        rhs 0. }
+        }
+
+! VAMP deficiency window
+define VAMP_defdv { std kind 'flow-deficiency' units 'cfs'}
+goal setVAMP_defdv {
+    lhs     VAMP_defdv
+    case    AprilMay {
+        condition   month >= apr .and. month <= may
+        rhs         VAMP_defdv[VAMP_AND_DO] }
+        }
+
+! Restrict Exchange contractors deliveries (due to reduction for VAMP)
+! And pass VAMP contribution down Los Banos Creek to the SJR 
+goal restrD_XCC054_72_XA3 {
+     lhs  D_XCC054_72_XA3
+     case April {
+          condition month == apr
+          rhs       14.*D_XCC054_72_XA3[SJR_WQ1]/30. + 16.*D_XCC054_72_XA3[VAMP_AND_DO]/30.
+          lhs<rhs   penalty 0. }
+     case MayOnly {
+          condition  month == may
+          rhs       15.*D_XCC054_72_XA3[VAMP_AND_DO]/31. + 16.*D_XCC054_72_XA3[SJR_WQ1]/31.
+          lhs<rhs   penalty 0. }
+	case otherwise {
+		condition always
+		rhs D_XCC054_72_XA3[SJR_WQ1] }
+          }
+goal setD_XCC054_LBN008 {
+     lhs  D_XCC054_LBN008
+     case April {
+          condition month == apr
+          rhs       14.*D_XCC054_LBN008[SJR_WQ1]/30. + 16.*D_XCC054_LBN008[VAMP_AND_DO]/30.
+          lhs<rhs   penalty 0. }
+     case MayOnly {
+          condition  month == may
+          rhs       15.*D_XCC054_LBN008[VAMP_AND_DO]/31. + 16.*D_XCC054_LBN008[SJR_WQ1]/31.
+          lhs<rhs   penalty 0. }
+	case otherwise {
+		condition always
+		rhs D_XCC054_LBN008[SJR_WQ1] }
+          }
+
+/*
+April release
+*/
+! April added release from Merced ID in cycle 6
+goal setMercedIDaddAprc6 { MercedIDaddApr =  MercedIDaddApr[VAMP_AND_DO] }
+! April added release from OID in cycle 6
+goal setOIDaddAprc6 { OIDaddApr = OIDaddApr[VAMP_AND_DO] }
+! April added release from Exchange Contractors in cycle 6
+goal setExchangeaddAprc6 { ExchangeaddApr = ExchangeaddApr[VAMP_AND_DO] }
+! April added release from MID/TID in cycle 6
+goal setMIDTIDaddAprc6 { MIDTIDaddApr = MIDTIDaddApr[VAMP_AND_DO] }
+
+! VAMP requirement from New Don Pedro for MID/TID in cycle 6
+goal setC_PEDROvampcyc6 {
+    lhs  C_PEDROvamp
+    case April {
+        condition month == apr
+        rhs       16. * C_PEDROVAMP[VAMP_AND_DO]/30.
+          }
+    case MayOnly {
+        condition month == may
+        rhs       15. * C_PEDROVAMP[VAMP_AND_DO]/31.
+          }
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+! VAMP requirement from McClure for Merced ID in cycle 6
+goal setC_MCLREvampcyc6 {
+    lhs  C_MCLREvamp
+    case April {
+        condition month == apr
+        rhs       16. * C_MCLREVAMP[VAMP_AND_DO]/30.
+          }
+    case MayOnly {
+        condition month == may
+        rhs       15. * C_MCLREVAMP[VAMP_AND_DO]/31.
+          }
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+! VAMP requirement from New Melones for OID in cycle 6
+goal setC_MELONvamp_Mcy6 {
+    lhs  C_MELONvamp_M
+    case April {
+        condition month == apr
+        rhs       16. * C_MELONvamp_M[VAMP_AND_DO]/30.
+          }
+    case MayOnly {
+        condition month == may
+        rhs       15. * C_MELONvamp_M[VAMP_AND_DO]/31.
+          }
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+! New Melones owned to New Don Pedro in cycle 6
+goal setC_PEDROSTANVAMPc6 {
+    lhs  C_PEDRO_STS_VAMP
+    case April {
+        condition month == apr
+        rhs       16. * C_PEDRO_STS_VAMP[VAMP_AND_DO]/30.
+          }
+    case MayOnly {
+        condition month == may
+        rhs       15. * C_PEDRO_STS_VAMP[VAMP_AND_DO]/31.
+          }
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+
+goal setD_XCC054_VAMPc6 {
+	lhs D_XCC054_VAMP
+    case April {
+        condition month == apr
+        rhs       16. * D_XCC054_VAMP[VAMP_AND_DO]/30.}			
+    case MayOnly {
+        condition month == may
+        rhs       15. * D_XCC054_VAMP[VAMP_AND_DO]/31.}
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+
+
+
+/*
+Instantaneous VAMP flow (15 or 16 day flow; not monthly averaged)
+VAMP release from different sources
+*/
+! Instantaneous VAMP release from New Melones
+goal setNMVamprelease {
+    lhs  NMVamprelease
+    case AprMay {
+    	condition month==APR .or. month==MAY
+    	rhs  C_MELONvamp_m[VAMP_AND_DO] }
+    case otherwise {
+    	condition always
+    	rhs 0.}
+    }
+! Instantaneous VAMP release from DMC
+goal setDMCVamprelease {
+    lhs  DMCVamprelease
+    case AprMay {
+    	condition month==APR .or. month==MAY
+    	rhs  D_XCC054_VAMP[VAMP_AND_DO]}
+    case otherwise {
+    	condition always
+    	rhs 0.}
+    }
+! Instantaneous VAMP release from New Don Pedro
+goal setDPVamprelease {
+    lhs  DPVamprelease
+    case AprMay {
+    	condition month==APR .or. month==MAY
+    	rhs  C_PEDROVamp[VAMP_AND_DO]}
+    case otherwise {
+    	condition always
+    	rhs 0.}
+    }
+! Instantaneous VAMP release from New Melones debt to New Don Pedro
+goal setDPStanVamprel {
+    lhs DPStanVamprel
+    case AprMay {
+    	condition month==APR .or. month==MAY
+    	rhs C_PEDRO_STS_VAMP[VAMP_AND_DO]}
+    case otherwise {
+    	condition always
+    	rhs 0.}
+    }
+! Instantaneous VAMP release from McClure
+goal setMCVamprelease {
+    lhs  MCVamprelease
+    case AprMay {
+    	condition month==APR .or. month==MAY
+    	rhs  C_MCLREVAMP[VAMP_AND_DO]}
+    case otherwise {
+    	condition always
+    	rhs 0.}
+    }
+

@@ -1,0 +1,209 @@
+/*Weir_steps.wresl
+
+*******************************************************************************
+
+Sacramento River - Butte & Colusa Basin, and Weir Overflow Operation.
+Weir and Overflow ratings are estimates and therefore subject to change.
+River Miles based on miles above Collinsville.
+
+
+*******************************************************************************
+*******************************************************************************
+NOTES:
+
+- Weir flows are significantly influenced by backwater effects and weir submergence,
+  making it difficult to measure or estimate weir spills.
+
+- To simplify weir and overflow operation, the flow arcs are defined by a simple
+  linear equation.  This should not be a significant issue in a real application,
+  since actual weir flow is not terribly important output for a monthly time step.
+  However, a reasonable representation of weir flow is more important for weekly
+  and shorter time steps, especially daily; therefore, future revisions may be necessary.
+
+- Since estimates of the river flow at weir crest elevation are reasonably known,
+  this point was fixed in the analysis.  This approach was used for all weirs
+  except the gated Sacramento Weir, as noted below.
+
+- The weir flows are computed from the inflows to the nodes before taking deliveries
+  out since this is the order that it's done in PROSIM.  Weir flows are not
+  available to the demands at the nodes.
+
+Westside Overflow to Colusa Basin
+- Since Westside Overflow to Colusa Basin begins when Sacramento River flow
+  exceeds 300,000 cfs, this overflow arc (currently commented out) may be unnecessary.
+- If the Westside Overflow is included, an arc to the Colusa Basin must be
+  established at either Node 116 (commented statements shown below) or Node 117.
+  Statements must also be added to the appropriate WRESL files
+  (e.g., weights, delivery-arc., connectivity, channel-arc, etc.).
+
+
+*******************************************************************************
+*******************************************************************************
+
+This file contains statements that set up the following weirs and overflows:
+- Westside Overflow to Colusa Basin, above Ord Ferry, River Mile 190
+- Eastside Overflow to Butte Basin, at Ord Ferry, River Mile 184
+- Moulton Weir Overflow to Butte Basin, River Mile 158
+- Colusa Weir Overflow to Butte Basin, River Mile 146
+- Tisdale Weir Overflow to Butte Basin, River Mile 119
+
+The following weirs are addressed in weir_steps_monthops and dailyops files:
+- Fremont Weir Overflow to Yolo Bypass, River Mile 82
+- Sacramento Weir Overflow to Yolo Bypass, River Mile 63
+
+
+
+*******************************************************************************
+Estimated Overflow Rating for Westside Overflow to Colusa Basin,
+Sacramento River above Ord Ferry (River Mile 190), DSA 10.
+
+Estimated Sacramento River flow when overflow begins is 300,000 cfs
+define C115_0 {upper 300000}          ! segment from 0 to 300000
+define C115_1 {upper unbounded}       ! segment above 300000
+goal sumN116in {C115 = C115_0 + C115_1}
+
+slopes of Westside overflow curves for each segment of Sac River flow
+define woslope0 {value 0.0}
+define woslope1 {value 0.8204}
+
+weir flow will be a sum of all the segment's linearized functions
+goal actwoflow {D116 = woslope0*C115_0 + woslope1*C115_1}
+
+integer variable to bound segments for proper filling step by step
+define int_westside {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC115_0 {C115_0 > int_westside * 300000}
+goal boundC115_1 {C115_1 < int_westside * 9999999}
+*/
+
+! *******************************************************************************
+! Estimated Overflow Rating for Eastside Overflow to Butte Basin,
+! Sacramento River at Ord Ferry (River Mile 184), DSA 10.
+
+! Estimated Sacramento River flow when overflow begins is 90,000 cfs
+define C116_0 {upper 90000. kind 'flow-channel' units 'cfs'}           ! segment from 0 to 90000
+define C116_1 {upper unbounded kind 'flow-channel' units 'cfs'}       ! segment above 90000
+goal sumN117in {C116 = C116_0 + C116_1}
+
+! slopes of Eastside overflow curves for each segment of Sac River flow
+define eoslope0 {value 0.0}
+define eoslope1 {value 0.73071}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal acteoflow {D117 = eoslope0*C116_0 + eoslope1*C116_1}
+
+! integer variable to bound segments for proper filling step by step
+define int_eastside {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC116_0 {C116_0 > int_eastside * 90000.}
+goal boundC116_1 {C116_1 < int_eastside * 9999999.}
+
+
+! *******************************************************************************
+! Estimated Overflow Rating for Moulton Weir to the Sutter Bypass
+! (River Mile 158), DSA 15.
+
+! Estimated Sacramento River flow at weir crest elevation is 60,000 cfs
+define C123_0 {upper 60000. kind 'flow-channel' units 'cfs'}           ! segment from 0 to 60000
+define C123_1 {upper unbounded kind 'flow-channel' units 'cfs'}       ! segment above 60000
+goal sumN124in {C123 /*+ C17603*/ - D124A = C123_0 + C123_1}
+
+! slopes of Moulton Weir overflow curves for each segment of Sac River flow
+define mwslope0 {value 0.0}
+define mwslope1 {value 0.33152}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal actmwflow {D124 = mwslope0*C123_0 + mwslope1*C123_1}
+
+! integer variable to bound segments for proper filling step by step
+define int_mweir {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC123_0 {C123_0 > int_mweir * 60000.}
+goal boundC123_1 {C123_1 < int_mweir * 9999999.}
+
+
+! *******************************************************************************
+! Estimated Overflow Rating for Colusa Weir to the Sutter Bypass
+! (River Mile 146), DSA 15.
+
+! Estimated Sacramento River flow at weir crest elevation is 30,000 cfs
+define C124_0 {upper 30000. kind 'flow-channel' units 'cfs'}           ! segment from 0 to 30000
+define C124_1 {upper unbounded kind 'flow-channel' units 'cfs'}       ! segment above 30000
+goal sumN125in {C124 = C124_0 + C124_1}
+
+! slopes of Colusa Weir overflow curves for each segment of Sac River flow
+define cwslope0 {value 0.0}
+define cwslope1 {value 0.76788}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal actcwflow {D125 = cwslope0*C124_0 + cwslope1*C124_1}
+
+! integer variable to bound segments for proper filling step by step
+define int_cweir {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC124_0 {C124_0 > int_cweir * 30000.}
+goal boundC124_1 {C124_1 < int_cweir * 9999999.}
+
+
+! *******************************************************************************
+! Estimated Overflow Rating for Tisdale Weir to the Sutter Bypass
+! (River Mile 119), DSA 15.
+
+! Estimated Sacramento River flow at weir crest elevation is 18,000 cfs
+define C125_0 {upper 18000. kind 'flow-channel' units 'cfs'}           ! segment from 0 to 18000
+define C125_1 {upper unbounded kind 'flow-channel' units 'cfs'}       ! segment above 18000
+goal sumN126in {C125 = C125_0 + C125_1}
+
+! slopes of Tisdale Weir overflow curves for each segment of Sac River flow
+define twslope0 {value 0.0}
+define twslope1 {value 0.75177}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal acttwflow {D126 = twslope0*C125_0 + twslope1*C125_1}
+
+! integer variable to bound segments for proper filling step by step
+define int_tweir {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC125_0 {C125_0 > int_tweir * 18000.}
+goal boundC125_1 {C125_1 < int_tweir * 9999999.}
+
+
+! *******************************************************************************
+
+! Estimated Overflow Rating for BDCP DWC Bypass    !M.Reginato 08/2008
+! Located at Freeport
+define SacFPTzero {value 21081. }            !Max Flow at Sac River without spills over the new weir
+define SacFPTmax {value 37421. - SacFPTzero }  !Sac flow for when the weir is flowing at maximum minus SacFPTzero
+
+! flow in cfs
+define C169_splt0 {upper SacFPTzero kind 'flow-channel' units 'cfs'}    !split C169 flows
+define C169_splt1 {upper SacFPTmax kind 'flow-channel' units 'cfs'}
+define C169_splt2 {upper unbounded kind 'flow-channel' units 'cfs'}
+define int_DWCWeir1 {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+define int_DWCWeir2 {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+
+goal sumN169in {C168 + R169 = C169_splt0 + C169_splt1 + C169_splt2}
+
+! slopes of Sacramento Weir overflow curves for each segment of Sac River flow
+define DWCslope0 {value 0.0}
+define DWCslope1 {value 0.1836}  !Weir Slope
+define DWCslope2 {value 0.0}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal actDWCflow {
+	lhs D169
+/*
+        case DEC_APR{
+	 condition month >=DEC .and. month <=APR
+         rhs DWCslope0*C169_splt0 + DWCslope1*C169_splt1 + DWCslope2*C169_splt2} */  !BDCP Assumptions
+	case other{
+	 condition always
+	 rhs 0. }
+}
+
+! integer variable to bound segments for proper filling step by step
+goal boundC169_0  {C169_splt0 > int_DWCWeir1 * SacFPTzero}
+goal boundC169_1a {C169_splt1 < int_DWCWeir1 * SacFPTmax}
+
+goal boundC169_1b {C169_splt1 > int_DWCWeir2 * SacFPTmax}
+goal boundC169_2  {C169_splt2 < int_DWCWeir2 * 9999999.}
+
+define QsacFree {alias C168 + R169  kind 'flow-channel' units 'cfs'}
+
+! *******************************************************************************
+

@@ -1,0 +1,187 @@
+! Transfers_Capacity_Limits.wresl
+! This file calculates the limits for South-of-the-Delta network conveyance for input to LCPSIM.
+! LCPSIM uses this information to determine transfer opportunities.
+! These values are computed using a slack calculation
+!
+! ***************************************************************************
+!  These are the limits for output to LCPSIM
+!
+! Available Capacity to Transfer through CA from Banks PP to South Bay
+define BANKS_SB_ConvLtd  {lower unbounded upper unbounded kind 'Avail-Conveyance' units 'CFS'}
+! Available Capacity to Transfer through CA from Banks PP to South Coast
+define BANKS_SC_ConvLtd  {lower unbounded upper unbounded kind 'Avail-Conveyance' units 'CFS'}
+! Available Capacity to Transfer through CA from Banks PP to South Bay and South Coast
+define BANKS_ConvLtd     {lower unbounded upper unbounded kind 'Avail-Conveyance' units 'CFS'}
+! Available Capacity to Transfer through Banks PP considering Delta constraints
+define DELTA_ConvLtd     {lower unbounded upper unbounded kind 'Avail-Conveyance' units 'CFS'}
+! Available Capacity to Transfer from CVP Joint Use to South Coast
+define CJU_SC_ConvLtd    {lower unbounded upper unbounded kind 'Avail-Conveyance' units 'CFS'}
+! Available Capacity to Transfer through CA from Banks PP and CVP Joint Use and from the Tulare Basin
+define SC_EB_ConvLtd     {lower unbounded upper unbounded kind 'Avail-Conveyance' units 'CFS'}
+define SC_WB_ConvLtd     {lower unbounded upper unbounded kind 'Avail-Conveyance' units 'CFS'}
+define SC_ConvLtd        {lower unbounded upper unbounded kind 'Avail-Conveyance' units 'CFS'}
+
+! Delta Constrained - Does not consider Salinity cost associated with potential increase in pumping
+goal setConvLimitDelta1 {DELTA_ConvLtd < BANKS_ConvLtd}
+goal setConvLimitDelta2 {DELTA_ConvLtd + D419 < BanksCapPhys}     !Physical Capacity
+goal setConvLimitDelta3 {DELTA_ConvLtd + D419 < max_ba}           !Outage Constrained
+goal setConvLimitDelta4 {DELTA_ConvLtd + D419 < BanksMaxAllow    + D419_EWA} !Permit Capacity (considering CVP dedicated and other) - adjusted for EWA operations
+goal setConvLimitDelta5 {DELTA_ConvLtd + D418 + D419 < EiExpCtrl + D419_EWA} !E/I Ratio Limit - adjusted for EWA operations
+goal setConvLimitDelta8 {                                         !Apr-May Pulse Period Limit (non B2/EWA)
+    lhs  DELTA_ConvLtd + D418 + D419
+    case APR_MAY {
+        condition     month == APR .or. month ==MAY
+        rhs           AprMayExpCtrl
+        lhs<rhs       penalty 0 }
+}
+
+goal setConvLimitDelta7 {                                         !Minimal Capacity anticipated in June - to be consistent with WTS logic
+    lhs     DELTA_ConvLtd + 0.5*D419
+    case limitTransfer_June {
+        condition month==JUN
+        rhs   0.5*BanksMaxAllow
+        lhs<rhs    penalty 0}
+}
+
+! Constraints for reaches from Banks to San Luis
+! Above SBA
+goal setConvLimit_C800 {BANKS_ConvLtd < 10300. - C800}
+
+! Constraints for reaches along South Bay Aqueduct (SBA)
+goal setConvLimit_C809 {BANKS_SB_ConvLtd < 430. - C809}
+goal setConvLimit_C812 {BANKS_SB_ConvLtd < 363. - C812}
+goal setConvLimit_C814 {BANKS_SB_ConvLtd < 184. - C814}
+
+! Constraints for reaches from Banks to San Luis
+! Below SBA
+goal setConvLimit_C801 {BANKS_SC_ConvLtd < 10000. - C801}
+! Along SWP Joint Use
+goal setConvLimit_C807 {BANKS_SC_ConvLtd < 8465. - C807}
+goal setConvLimit_C825 {BANKS_SC_ConvLtd < 0.542*max_da - C825} !Outage constraint for Dos Amigos
+!goal setConvLimit_C830 {BANKS_SC_ConvLtd < 8100. - C830}
+
+! Constraints for CVP Joint Use
+goal setConvLimit_C838  {CJU_SC_ConvLtd < 4635. - C838}
+goal setConvLimit2_C838 {CJU_SC_ConvLtd < 0.458*max_da - C838}  !Outage constraint for Dos Amigos
+goal setConvLimit_C845  {CJU_SC_ConvLtd < 4635. - C845}
+
+! Constraints for reaches below Joint Use
+goal setConvLimit_C830 {SC_ConvLtd < 8100. - C830}
+goal setConvLimit_C851 {SC_ConvLtd < 5350. - C851}
+goal setConvLimit_C860 {SC_ConvLtd < max_bv - C860}  !Outage constraint for Buena Vista
+goal setConvLimit_C862 {SC_ConvLtd < max_tr - C862}  !Outage constraint for Teerink
+goal setConvLimit_C863 {SC_ConvLtd < 4400. - C863}
+goal setConvLimit_C864 {SC_ConvLtd < max_ch - C864}  !Outage constraint for Chrisman
+goal setConvLimit_C865 {SC_ConvLtd < max_ed - C865}  !Outage constraint for Edmonston
+
+! Constraints for reaches along East Branch
+goal setConvLimit_C875A {SC_EB_ConvLtd < 3150. - C875A}
+goal setConvLimit_C880  {SC_EB_ConvLtd < 2105. - C880}
+goal setConvLimit2_C880 {SC_EB_ConvLtd < max_pb - C880} !Outage constraint for Pearblossom
+goal setConvLimit_C882  {SC_EB_ConvLtd < 2160. - C882}
+goal setConvLimit2_C882 {SC_EB_ConvLtd < max_mj - C882} !Outage constraint for Mojave
+goal setConvLimit_C25   {SC_EB_ConvLtd < 2600. - C25}
+
+! Constraints for reaches along West Branch
+goal setConvLimit_C875B {SC_WB_ConvLtd < 3130. - C875B}
+goal setConvLimit_C890  {SC_WB_ConvLtd < max_os - C890} !Outage constraint for Oso
+goal setConvLimit_C892  {SC_WB_ConvLtd < 1565. - C892}
+
+! Constrain Available Capacity to Transfer through CA from Banks PP to South Bay (not considering Delta)
+goal setConvLimit_SB   {BANKS_SB_ConvLtd < BANKS_ConvLtd}
+
+! Constrain Available Capacity to Transfer through CA from Banks PP to South Coast (not considering Delta)
+goal setConvLimit_SC1  {BANKS_SC_ConvLtd < BANKS_ConvLtd}
+goal setConvLimit_SC2  {BANKS_SC_ConvLtd < SC_ConvLtd}
+
+! Constrain Available Capacity to Transfer through CA from Banks PP to South Bay and South Coast (not considering Delta)
+goal setConvLimit_CA1  {BANKS_ConvLtd < BANKS_SB_ConvLtd + BANKS_SC_ConvLtd}
+goal setConvLimit_CA2  {BANKS_ConvLtd < DELTA_ConvLtd}
+
+! Constrain Available Capacity to Transfer from CVP Joint Use to South Coast
+goal setConvLimit_CJU  {CJU_SC_ConvLtd < SC_ConvLtd}
+
+! Constrain Available Capacity to Transfer through CA from Banks PP and CVP Joint Use and from the Tulare Basin (not considering Delta)
+goal setConvLimit_SC   {SC_ConvLtd < SC_EB_ConvLtd + SC_WB_ConvLtd}
+
+! ***************************************************************************
+! Capacity Information for reference only - actual capacities set in Channel definition file
+! * indicates a constraint assumed in reduced calculations
+!
+!               ARC   CAPACITY   REACH INFO
+!
+!Banks PP       D419*     N/A    Banks PP
+!Banks to SL    C800*   10300    Banks to SL
+!South Bay      D801      430    South Bay
+!               C809*     430    South Bay
+!               C810      430    South Bay
+!               C811      430    South Bay
+!               C812*     363    South Bay
+!               C813      305    South Bay
+!               C814*     184    South Bay
+!Banks To SL    C801*   10000    Banks To SL
+!               C802    10000    Banks To SL
+!               C803    10000    Banks To SL
+!               C804    10000    Banks To SL
+!Joint Use SWP  C806    13100    Joint Use SWP
+!               C807*    8465    Joint Use SWP
+!               C808     8465    Joint Use SWP
+!               C820     8465    Joint Use SWP
+!               C821     8465    Joint Use SWP
+!               C822    99999    Joint Use SWP
+!               C824     8465    Joint Use SWP
+!               C825*    8465    Joint Use SWP
+!               C826     8465    Joint Use SWP
+!               C827     8465    Joint Use SWP
+!               C828     8465    Joint Use SWP
+!               C829     8465    Joint Use SWP
+!               C830*    8100    Joint Use SWP
+!Joint Use CVP  C838*    4635    Joint Use CVP
+!               C839     4635    Joint Use CVP
+!               C840     4635    Joint Use CVP
+!               C841     4635    Joint Use CVP
+!               C842    99999    Joint Use CVP
+!               C843     4635    Joint Use CVP
+!               C844     4635    Joint Use CVP
+!               C845*    4635    Joint Use CVP
+!Below JointUse C830*    8100    Below Joint Use
+!               C846     8100    Below Joint Use
+!               C847     8100    Below Joint Use
+!               C848     8100    Below Joint Use
+!               C849     8100    Below Joint Use
+!               C850     7300    Below Joint Use
+!               C851*    5350    Below Joint Use
+!               C852     5350    Below Joint Use
+!               C853     5350    Below Joint Use
+!               C854     5350    Below Joint Use
+!               C855     5350    Below Joint Use
+!               C856     5350    Below Joint Use
+!               C857     5350    Below Joint Use
+!               C858     5350    Below Joint Use
+!               C859     5350    Below Joint Use
+!               C860*    5350    Below Joint Use
+!               C861     5047    Below Joint Use
+!               C862*    4600    Below Joint Use
+!               C863*    4400    Below Joint Use
+!               C864*    4400    Below Joint Use
+!               C865*    4400    Below Joint Use
+!East Branch    C875A*   3150    East Branch
+!               C876     3150    East Branch
+!               C877     2991    East Branch
+!               C878     2991    East Branch
+!               C879     2953    East Branch
+!               C880*    2105    East Branch
+!               C881     2875    East Branch
+!               C882*    2160    East Branch
+!               C25*     2600    East Branch
+!               C883     2810    East Branch
+!               C884     2810    East Branch
+!West Branch    C875B*   3130    West Branch
+!               C890*    3130    West Branch
+!               C891     3130    West Branch
+!               C892*    1565    West Branch
+!               C28     18000    West Branch
+!               C893    18000    West Branch
+!               C894    18000    West Branch
+!               C29     18000    West Branch
+! ***************************************************************************

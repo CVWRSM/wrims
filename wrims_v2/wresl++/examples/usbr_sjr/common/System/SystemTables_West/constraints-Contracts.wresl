@@ -1,0 +1,133 @@
+/*
+LIMIT DIVERSIONS TO CONTRACT-LIMIT AMOUNTS AND CHANNEL CAPACITY CONSTRAINTS
+
+NAMING TAKES THE FOLLOWING FORMS:
+CL_{ORIGIN PREFIX}_{DESTINATION}    - limitation on specific contractors extraction from general source
+
+
+
+Original formulation: C. Olson (MWH) June 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 64      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*
+East side stuff...here for west-side-only model...
+goal limitD_MDOTA_64_XA    {D_MDOTA_64_XA < CLM_64_XA * taf_cfs * perdv_cvpex_s }
+! For comparison with CalSim-II do not allow diversion of return flow from 64_XA at Sack Dam
+goal setD_SJR180_ARY010    {D_SJR180_ARY010 < C_SJR192 }
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 50      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! City of Tracy
+goal limit_D_WTPJJO_50_PU  {D_WTPJJO_50_PU < CLM_50_PUa * taf_cfs * perdv_cvpmi_s }
+goal limit_D_WTPDGT_50_PU  {D_WTPDGT_50_PU < CLM_50_PUb * taf_cfs * perdv_cvpmi_s }
+
+! Banta Carbona & Westside
+goal limit_D_50_PA         {D_DMC021_50_PA !+ D_RFS71A_50_PA
+                             < CLM_50_PA * taf_cfs * perdv_cvpag_s }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 71      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Musco Olive Products
+goal limit_D_71_PU1  {D_CAA012_71_PU1 < CLM_71_PU1 * taf_cfs * perdv_cvpmi_s }
+! VA Cemetary
+goal limit_D_71_PU2  {D_CAA066_71_PU2 < CLM_71_PU2 * taf_cfs * perdv_cvpmi_s }
+
+! Hospital WD
+goal limit_D_71_PA1 {D_DMC030_71_PA1 < CLM_71_PA1 * taf_cfs * perdv_cvpag_s } 
+! West Stanislaus ID
+goal limit_D_71_PA2 {D_DMC034_71_PA2 /* + D_SJR082_71_PA2 */ < CLM_71_PA2 * taf_cfs * perdv_cvpag_s } 
+! Kern Canon WD
+goal limit_D_71_PA3 {D_DMC034_71_PA3 < CLM_71_PA3 * taf_cfs * perdv_cvpag_s } 
+! Patterson WD
+goal limit_D_71_PA4 {D_DMC044_71_PA4 /* + D_SJR096_71_PA4 */ < CLM_71_PA4 * taf_cfs * perdv_cvpag_s } 
+! Del Puerto, Salado, Orestimba, Sunflower
+goal limit_D_71_PA5 {D_DMC044_71_PA5 < CLM_71_PA5 * taf_cfs * perdv_cvpag_s } 
+! Davis/Mustang/Foothill/Quinto/Romero/Centinella
+goal limit_D_71_PA6 {D_DMC064_71_PA6 < CLM_71_PA6 * taf_cfs * perdv_cvpag_s } 
+! Oak Flat
+goal limit_D_71_PA7 {D_CAA046_71_PA7 < CLM_71_PA7 * taf_cfs * perdv_cvpag_s } 
+! Byron/Bethany (Plainview)
+goal limit_D_71_PA8 {D_DMC011_71_PA8 < CLM_71_PA8 * taf_cfs * perdv_cvpag_s } 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 72      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Laguna WD
+goal limit_D_XCC025_72_PA   {D_XCC025_72_PA  < CLM_72_PA * taf_cfs * perdv_cvpag_s }
+! San Luis Canal Co Exchange Contractors
+goal limit_D_ARY010_72_XA1  {D_ARY010_72_XA1 < CLM_72_XA1 * taf_cfs * perdv_cvpex_s }
+! Central California ID South Exchange Contractors
+goal limit_D_XCC010_72_XA2  {D_XCC010_72_XA2 < CLM_72_XA2 * taf_cfs * perdv_cvpex_s }
+! Central California ID North Exchange Contractors
+goal limit_D_XCC054_72_XA3  {D_XCC054_72_XA3 < CLM_72_XA3 * taf_cfs * perdv_cvpex_s }
+
+
+! Volta WA
+goal limit_D_72_PR1  {D_VLW008_72_PR1 < CLM_72_PR1 * taf_cfs * perdv_cvprf_s }
+! Kesterson, Freitas, & Blue Goose units of San Luis NWR, China Island unit of North Grassland
+goal limit_D_72_PR2  {D_XCC033_72_PR2 < CLM_72_PR2 * taf_cfs * perdv_cvprf_s }   
+! West Bear Ck and San Luis units of San Luis NWR
+goal limit_D_72_PR3  {D_ARY010_72_PR3 < CLM_72_PR3 * taf_cfs * perdv_cvprf_s }  
+! Los Banos WA, Salt Slouth and Gadwall units of North Grassland
+goal limit_D_72_PR4  {D_XCC033_72_PR4 + D_ARY010_72_PR4 < CLM_72_PR4 * taf_cfs * perdv_cvprf_s }  
+! Grassland WD North - take deliv from RF and from Garzas Ck before taking canal water
+goal limit_D_72_PR5  {D_RFS72A_72_PR5 + D_XCC054_72_PR5 + D_LBN012_72_PR5
+                             < CLM_72_PR5 * taf_cfs * perdv_cvprf_s } 
+! Grassland WD South
+goal limit_D_72_PR6  {D_ARY010_72_PR6 + D_XCC025_72_PR6 < CLM_72_PR6 * taf_cfs * perdv_cvprf_s } 
+
+! City of Dos Palos
+goal limit_D_CAA095_72_PU  {D_CAA095_72_PU < CLM_72_PU * taf_cfs * perdv_cvpmi_s } 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 73      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Firebaugh Exchange Contractors
+goal limit_D_73_XA   {D_MDOTA_73_XA + D_DMC111_73_XA < CLM_73_XA * taf_cfs * perdv_cvpex_s }
+! San Luis WD North
+goal limit_D_73_PA1  {D_DMC070_73_PA1 + D_CAA087_73_PA1 < CLM_73_PA1 * taf_cfs * perdv_cvpag_s }
+! Eagle Field, Mercy Springs, Oro Loma
+goal limit_D_73_PA2  {D_DMC105_73_PA2 < CLM_73_PA2 * taf_cfs * perdv_cvpag_s }
+! San Luis WD South, Pacheco, Panoche
+goal limit_D_73_PA3  {D_DMC091_73_PA3 + D_CAA109_73_PA3 < CLM_73_PA3 * taf_cfs * perdv_cvpag_s }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 90      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal limit_D_90_PA1  {D_MDOTA_90_PA1  + D_CAA109_90_PA1 + D_CAA143_90_PA1 + D_CAA155_90_PA1 + D_CAA172_90_PA1 
+                      < CLM_90_PA1 * taf_cfs * perdv_cvpag_s }
+goal limit_D_90_PA2  {D_CAA143_90_PA2 < CLM_90_PA2 * taf_cfs * perdv_cvpag_s }
+goal limit_D_90_PU   {D_CAA143_90_PU  + D_CAA156_90_PU  + D_CAA165_90_PU
+                      < CLM_90_PU  * taf_cfs * perdv_cvpmi_s }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 91      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal limit_D_MDOTA_91_PR     {D_MDOTA_91_PR < CLM_91_PR * taf_cfs * perdv_cvprf_s }
+goal limit_D_MDOTA_91_PA     {D_MDOTA_91_PA < CLM_91_PA * taf_cfs * perdv_cvpag_s
+                                            + CLM_91_WR * taf_cfs * perdv_cvpex_s }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! limits to DMC transfers to XCC
+!goal limit_D_DMC076_XCC043  {D_DMC076_XCC043 < CLM_72_XA3 * taf_cfs * perdv_cvpex_s }
+!goal limit_D_DMC091_SCC025  {D_DMC091_SCC025 < CLM_72_PA  * taf_cfs * perdv_cvpag_s }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Felipe Unit     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal limit_D_SLUIS_SFLPE   {D_SLUIS_SFLPE < CLM_SFLPE_PA * taf_cfs * perdv_cvpag_s
+                                          + CLM_SFLPE_PU * taf_cfs * perdv_cvpmi_s }
+
+
+
+

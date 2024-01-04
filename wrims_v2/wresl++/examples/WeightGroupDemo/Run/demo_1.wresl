@@ -1,0 +1,33 @@
+
+sequence CYCLE1 {
+    model   First
+    order   1
+    }
+
+	
+model First { 
+
+  define X { std kind 'DELIVERY' units 'CFS' }
+  define Y { std kind 'DELIVERY' units 'CFS' }
+  define Z { std kind 'DELIVERY' units 'CFS' } 
+  
+  goal G_All {  X+Y+Z  < 30 }  
+  
+  objective Obj {
+	[X, 5]
+	[Y, 5]
+	[Z, 5]
+  }
+ 
+}
+
+! objective 150.
+!
+! x           0
+! y           0
+! z          30
+
+
+
+
+

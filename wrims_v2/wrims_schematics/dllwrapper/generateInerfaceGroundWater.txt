@@ -1,0 +1,53 @@
+1
+interfacetogw
+CVGroundwater
+initgwsystem setgp setdp setstrmflow simgw getseep getgw_h getstrm_h getpumpshort getpercentpumpshort printgwresults advancegwstate
+12
+initgwsystem
+float
+int int int
+WaterYear Month iWRIMS1Run
+setgp
+float
+float int
+Value WBAIndex
+setdp
+float
+float int
+Value WBAIndex
+setstrmflow
+float
+float int
+Value StrmNodeIndex
+simgw
+float
+int int
+WaterYear Month
+getseep
+float
+int
+indxStrm
+getgw_h
+float
+int int
+indxGW Layer
+getstrm_h
+float
+int
+indxStrm
+getpumpshort
+float
+int
+iDummy
+getpercentpumpshort
+float
+int
+iDummy
+printgwresults
+float
+int int
+WaterYear Month
+advancegwstate
+float
+int
+iDummy

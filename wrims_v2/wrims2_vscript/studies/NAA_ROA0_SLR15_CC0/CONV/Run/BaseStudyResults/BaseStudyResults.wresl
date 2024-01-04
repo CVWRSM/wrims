@@ -1,0 +1,19 @@
+/*
+Retrieve results from base studies
+*/
+
+! STUDY 3 RESULTS
+! Minimum Required flows
+define C3MIF__z3 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C5MIF__z3 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C9MIF__z3 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+! B2 action triggers
+define B2Action2On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action3On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action4On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action5On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action6On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action7On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+! Export Restrictions to repeat
+define MayExportRest__z3 {timeseries kind 'Export-Restriction' units 'cfs'}
+define JunePumpRest__z3 {timeseries kind 'Export-Restriction' units 'cfs'}

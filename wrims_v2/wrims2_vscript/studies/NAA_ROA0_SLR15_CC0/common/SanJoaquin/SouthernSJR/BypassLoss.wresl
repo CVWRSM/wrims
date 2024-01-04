@@ -1,0 +1,37 @@
+/*
+Depletion representation in the Chowchilla/Eastside Bypass Structure:  (Brekke, 09/13/04)
+
+This file checks whether Chowchilla Bypass is being operated for flood control.
+In these instances, CALSIM assumes that any residual flows from the Chowchilla
+and Fresno Rivers, along with flows being sent from the SJ Bifurcation through
+the Chowchilla Bypass, will eventually pass through the Eastside Bypass and
+into the San Joaquin River.  In other instance (i.e. when the Chowchilla Bypass,
+or C605B, is empty, it is assumed that any flows coming from the Chowchilla and
+Fresno Rivers will go underground prior to reaching the San Joaquin River (i.e. C587) is zero.
+
+To represent this thought, a loss variable is introduced at node 587.  When their is flow
+in C605B, then L587 is set at zero and Bypass depletions during flood operations are ignored.
+When C605B is dry, then L587 is set at the summed value of all inflows to node 587, implying
+that C587 will be zero.
+*/
+
+/* Retrieve predefined Chowchilla Bypass "Status" variable.  These values were determined from
+a CALSIM simulation where only results from Friant to the Bifurcation are considered.  If
+input assumptions on Friant or James Bypass flood control operations are change, then this
+"Status" variable must be recomputed.*/
+define ChowBypStatus {timeseries kind 'status-channel' units 'none'}
+
+/*
+Loss function is placed at Node 587, which is approximately the confluence of the Chowchilla
+River and the Eastside/Chowchilla Bypass Structure.
+*/
+/*goal set_L587 {
+    lhs L587
+        case Flood_Operations {
+            condition ChowBypStatus == 0.
+            rhs C582 + C595 + R587A + R587B}
+        case otherwise {
+            condition always
+            rhs 0.}
+}
+*/

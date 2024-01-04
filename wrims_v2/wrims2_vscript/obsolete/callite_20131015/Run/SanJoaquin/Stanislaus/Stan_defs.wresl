@@ -1,0 +1,302 @@
+! Stan_defs.wresl
+! Edward Chang
+! 6/2000
+! Nancy Parker 11/02
+! This file defines the Stanislaus allocations and demand cuts
+! Revised by Claire Hsu, 02/26/03, USBR, for review and documentation
+! #######################################################################
+/*
+Oakdale Irrigation District and Southern San Joaquin Irrigation District.
+The allocation to Oakdale Irrigation District and Southern San Joaquin Irrigation District
+is determined using the New Melones forecast, NMforecast2.  Monthly delivery of surface
+water is limited by distributing the annual allocation by the fraction of annual CUAW.
+Delivery cuts are based on the 1998 San Joaquin River Agreement.
+*/
+!define annual delivery allocation based on October forecast, and monthly distributions
+define OSSJID_yr { 
+    !case NMForecast1_LOW {
+    !    condition NMforecast1 < 940.
+    !    value 400.}
+    !case otherwise {
+    !    condition always
+        select OSSJID from stan_yrossjid given NMF2 = NMforecast2 use  linear }
+!}       
+! Alias OSSJID_yr for output
+define OSSJID_yrdv {alias OSSJID_yr kind 'allocation' units 'taf'}
+
+define stan_dem_est {select standem from stan_dem given NMF = NMforecast1 use linear}
+
+define stan_dem_estdv {alias stan_dem_est kind 'demand' units 'taf'}
+
+! New Melones forecast 3, the Projected end of September storage 
+define NMforecast3 {
+    case firstyr {
+    condition wateryear==beginWY .and. month <= mar
+        value NMforecast1 - (OSSJID_yr*0.959) - stan_dem_est - 53.3 - 68.-60.
+    }
+    case Mar {
+    condition month == mar 
+            value NMforecast1 - (OSSJID_yr*0.959) - stan_dem_est - 53.3 - 68.-60.
+        }
+        case otherwise {
+        condition always
+            value NMforecast1dv(prevMar)- (OSSJID_yrdv(prevMar)*0.959) - stan_dem_estdv(prevMar) - 53.3 - 68.-60.
+        }
+}
+define NMforecast3DV {alias NMforecast3 kind 'forecast' units 'taf'}
+
+/*
+Divide allocation relative to the portion of demand on each side of the river
+*/
+! Consumptive use applied water Ag demand for Oakdale ID South
+define cuaw_531_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! Consumptive use applied water for Oakdale ID project Ag
+define cuaw_523OID_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! Consumptive use applied water for South San Joaquin ID project Ag
+define cuaw_523SSJ_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+! Define non district M & I demand of SSJID North
+define demand_D523_MI_A {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+
+! Total consumptive use applied water project Ag demand
+define cuaw_523_pag {value cuaw_523OID_pag + cuaw_523SSJ_pag}
+! Annual OID South demand decision variable
+define ann_OID_Sdv {std kind 'annual-demand' units 'taf'}
+! Annual OID North demand decision variable
+define ann_OID_Ndv {std kind 'annual-demand' units 'taf'}
+! Total OID North annual demand decision variable
+define ann_OIDdv {std kind 'annual-demand' units 'taf'}
+! Total SSJID annual demand decision variable
+define ann_SSJdv {std kind 'annual-demand' units 'taf'}
+! Total annual woodward seepage demand decision variable
+define ann_S75_seepdv {std kind 'annual-demand' units 'taf'}
+
+! Define Oakdale ID South Ag delivery factor
+!define D531_pag_factor {select factD531 from sjr_monthly_data where month=month}
+define D531_pag_factor {timeseries kind 'factor' units 'percent'}
+!define AL_d531pagfac {alias d531_pag_factor kind 'temp' units 'percent'}
+
+! Get Woodward Reservoir seepage rates from lookup table
+!define S75_seep { select seep_75 from seep_rates where month=month}
+define S75_seep {timeseries kind 'demand' units 'taf'}
+
+! define SSJID/OID Notrth diversion factor
+!define D523_pag_factor {select factD523 from sjr_monthly_data where month=month}
+define D523_pag_factor {timeseries kind 'factor' units 'percent'}
+
+! Define spill for Ag to Tuolumne River based on SJR water year type
+define spill_545b_pag {timeseries kind 'FLOW-RETURN' units 'taf'}
+! Define spill for Ag to Modesto ID based on SJR water year type
+define spill_532_pag {timeseries kind 'FLOW-RETURN' units 'taf'}
+! Define spill for Ag to Modesto non district based on SJR water year type
+define spill_534b_pag {timeseries kind 'FLOW-RETURN' units 'taf'}
+! Define spill for Ag to Ripon based on SJR water year type
+define spill_STANRIPNa_pag {timeseries kind 'FLOW-RETURN' units 'taf'}
+! Define return flow from South San Joaquin ID and Oakdale North to Stanislaus River, depends on SJR water year type
+define spill_STANRIPNb_pag {timeseries kind 'FLOW-RETURN' units 'taf'}
+! Define return flow from South San Joaquin ID to areas east, depends on SJR water year type
+define spill_526_pag {timeseries kind 'FLOW-RETURN' units 'taf'}
+
+! Define minimum private groundwater pumping limit
+define GP530_min_prv_limit {timeseries kind 'GW-PUMPING' units 'cfs'}
+!define AL_g530minprv {alias gp530_min_prv_limit kind 'temp' units 'cfs'}
+! Define minimum Ag groundwater pumping limit
+define GP530_min_pag_limit {timeseries kind 'GW-PUMPING' units 'cfs'}
+
+!define AL_g530minpag {alias gp530_min_pag_limit kind 'temp' units 'cfs'}
+! Define SSJID/Oakdale ID North minimum private pumping limits
+define GP522_min_prv_limit {timeseries kind 'GW-PUMPING' units 'cfs'}
+! Define SSJID/Oakdale ID North minimum Ag pumping limits
+define GP522_min_pag_limit {timeseries kind 'GW-PUMPING' units 'cfs'}
+define min522gw {value GP522_min_prv_limit + GP522_min_pag_limit}
+
+
+! Define annual OID South demand (sum of Oct - Sept demands)
+define ann_OID_S {
+    case oct {
+        condition month == oct
+        sum(i=0,11,1) max(0., cuaw_531_pag(i)/D531_pag_factor(i)*1.1 *cfs_taf(i)                           ! canal turnout demand
+                       + max(0.,min(2. * taf_cfs(i), (cuaw_531_pag(i)/D531_pag_factor(i)-GP530_min_prv_limit(i)-GP530_min_pag_limit(i))) *cfs_taf(i))  !loss
+                       + min(spill_545b_pag(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !spill
+                       + min(spill_532_pag(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !spill
+                       + min(spill_534b_pag(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !spill
+                       + min(spill_STANRIPNa_pag(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !spill
+                       - min(GP530_min_prv_limit(i) * cfs_taf(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i))  !min gw
+                       - min(GP530_min_pag_limit(i) * cfs_taf(i), cuaw_531_pag(i)/D531_pag_factor(i) *cfs_taf(i)))  !min gw
+                     }
+    case otherwise {
+        condition   always
+        value ann_OID_Sdv(-1) }
+        }
+
+! Define annual OID North demand (sum of Oct - Sept demands)
+define ann_OID_N {
+    case oct {
+        condition month == oct
+        sum(i=0,11,1) max(0.,(cuaw_523OID_pag(i) / D523_pag_factor(i)*1.1 *cfs_taf(i)                           ! canal turnout demand
+                       + max(0.,min(2./2. * taf_cfs(i), (cuaw_523OID_pag(i)/D523_pag_factor(i)-GP522_min_prv_limit(i)-GP522_min_pag_limit(i))) *cfs_taf(i))  !loss
+                       + min(spill_STANRIPNb_pag(i)/2., (cuaw_523OID_pag(i)/D523_pag_factor(i)) *cfs_taf(i))  !spill
+                       + min(spill_526_pag(i)/2., (cuaw_523OID_pag(i)/D523_pag_factor(i)) *cfs_taf(i))  !spill
+                       - min(GP522_min_prv_limit(i)/2. * cfs_taf(i), cuaw_523OID_pag(i)/D523_pag_factor(i) *cfs_taf(i))  !min gw
+                       - min(GP522_min_pag_limit(i)/2. * cfs_taf(i), cuaw_523OID_pag(i)/D523_pag_factor(i) *cfs_taf(i))))  !min gw
+                     }
+    case otherwise {
+        condition   always
+        value ann_OID_Ndv(-1) }
+        }
+! Define annual SSJID demand (sum of Oct - Sept demands)
+define ann_SSJ {
+    case oct {
+        condition month == oct
+        sum(i=0,11,1) max(0.,(cuaw_523SSJ_pag(i)/ D523_pag_factor(i)*1.1 *cfs_taf(i) + demand_D523_MI_A(i) * cfs_taf(i)
+                       + max(0.,min(2./2. * taf_cfs(i), (cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1-GP522_min_prv_limit(i)-GP522_min_pag_limit(i))) *cfs_taf(i))  !loss
+                       + min(spill_STANRIPNb_pag(i)/2., (cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1) *cfs_taf(i))  !loss
+                       + min(spill_526_pag(i)/2., (cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1) *cfs_taf(i))  !loss
+                       - min(GP522_min_prv_limit(i)/2. * cfs_taf(i), cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1 *cfs_taf(i))  !min gw
+                       - min(GP522_min_pag_limit(i)/2. * cfs_taf(i), cuaw_523SSJ_pag(i)/D523_pag_factor(i)*1.1 *cfs_taf(i))))  !min gw
+                       }
+    case otherwise {
+        condition   always
+        value ann_SSJdv(-1) }
+        }
+
+! Define annual Woodward seepage
+define ann_S75_seep {
+    case oct {
+        condition month == oct
+        sum(i=0,11,1) S75_seep(i) }
+    case otherwise {
+        condition   always
+        value ann_S75_seepdv(-1) }
+        }
+
+
+! Set limits on annual woodward seepage
+goal set_ann_s75_seepdv {ann_S75_seepdv = ann_S75_seep}
+
+! Define annual OID demands
+define ann_OID {value ann_OID_S + ann_OID_N}
+! Set limits on annual OID demands
+goal set_ann_OIDdv {ann_OIDdv = ann_OID}
+! Set limits on annual OID South demands
+goal set_ann_OID_Sdv {ann_OID_Sdv = ann_OID_S}
+! Set limits on annual OID North demands
+goal set_ann_OID_Ndv {ann_OID_Ndv = ann_OID_N}
+! Set limits on annual SSJID demands
+goal set_ann_SSJdv {ann_SSJdv = ann_SSJ}
+! Apportion OID's Allocation between the North and South sides
+define OID_South_pct {value ann_OID_S/(ann_OID_S + ann_OID_N)}
+! OID South side allocation
+define OID_South_yr {value (OSSJID_yr/2.) * OID_South_pct}
+! OID North side allocation
+define OID_North_yr {value (OSSJID_yr/2.) * (1-OID_South_pct)}
+
+/*
+Oakdale Irrigation District and Southern San Joaquin Irrigation District
+Reductions in delivery due to contributions for the VAMP pulse.
+VAMP contribution is computed in April/May, and taken out of the 
+delivery in June through September
+*/
+
+! set what was actually contributed to VAMP in April and May
+define OIDreddv { std kind 'delivery-red' units 'TAF' }
+define OIDred {
+    case OctMay {
+        condition month<JUN
+        value  0. }
+    case June {
+        condition   month == JUN
+        value (C_MELONVAMP_M(-2) + C_PEDRO_STAN_VAMP(-2))*cfs_taf(-2) 
+            + (C_MELONVAMP_M(-1) + C_PEDRO_STAN_VAMP(-1))*cfs_taf(-1) }
+    case otherwise {
+        condition always
+        value  OIDreddv(-1) }
+}
+goal setOIDreddv { OIDreddv = OIDred }
+
+! distribute the total cut among OID north and south and SSJID
+! and apportion each cut over the June-Sept period relative to the 
+! cuaw distribution
+define OIDred_N {value OIDred * ann_OID_N/(ann_OID_S + ann_OID_N + ann_SSJ)}   
+define OIDred_S {value OIDred * ann_OID_S/(ann_OID_S + ann_OID_N + ann_SSJ)}
+define SSJIDred {value OIDred * ann_SSJ/(ann_OID_S + ann_OID_N + ann_SSJ)}
+
+define OIDcut_N {
+    case OctMay {
+        condition month<JUN
+        value 0.0}
+    case June {
+        condition month==JUN
+        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag+cuaw_523OID_pag(1)+cuaw_523OID_pag(2)+cuaw_523OID_pag(3))}
+    case July {
+        condition month==JUL
+        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag(-1)+cuaw_523OID_pag+cuaw_523OID_pag(1)+cuaw_523OID_pag(2))}
+    case August {
+        condition month==AUG
+        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag(-2)+cuaw_523OID_pag(-1)+cuaw_523OID_pag+cuaw_523OID_pag(1))}
+    case September {
+        condition month==SEP
+        value OIDred_N * cuaw_523OID_pag/(cuaw_523OID_pag(-3)+cuaw_523OID_pag(-2)+cuaw_523OID_pag(-1)+cuaw_523OID_pag)}
+    case otherwise {
+        condition always
+        value 0.0}
+}
+
+define SSJIDcut {
+    case OctMay {
+        condition month<JUN
+        value 0.0}
+    case June {
+        condition month==JUN
+        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag+cuaw_523SSJ_pag(1)+cuaw_523SSJ_pag(2)+cuaw_523SSJ_pag(3))}
+    case July {
+        condition month==JUL
+        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag(-1)+cuaw_523SSJ_pag+cuaw_523SSJ_pag(1)+cuaw_523SSJ_pag(2))}
+    case August {
+        condition month==AUG
+        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag(-2)+cuaw_523SSJ_pag(-1)+cuaw_523SSJ_pag+cuaw_523SSJ_pag(1))}
+    case September {
+        condition month==SEP
+        value SSJIDred * cuaw_523SSJ_pag/(cuaw_523SSJ_pag(-3)+cuaw_523SSJ_pag(-2)+cuaw_523SSJ_pag(-1)+cuaw_523SSJ_pag)}
+    case otherwise {
+        condition always
+        value 0.0}
+}
+    
+define OIDcut_S {
+    case OctMay {
+        condition month<JUN
+        value 0.0}
+    case June {
+        condition month==JUN
+        value OIDred_S * cuaw_531_pag/(cuaw_531_pag+cuaw_531_pag(1)+cuaw_531_pag(2)+cuaw_531_pag(3))}
+    case July {
+        condition month==JUL
+        value OIDred_S * cuaw_531_pag/(cuaw_531_pag(-1)+cuaw_531_pag+cuaw_531_pag(1)+cuaw_531_pag(2))}
+    case August {
+        condition month==AUG
+        value OIDred_S * cuaw_531_pag/(cuaw_531_pag(-2)+cuaw_531_pag(-1)+cuaw_531_pag+cuaw_531_pag(1))}
+    case September {
+        condition month==SEP
+        value OIDred_S * cuaw_531_pag/(cuaw_531_pag(-3)+cuaw_531_pag(-2)+cuaw_531_pag(-1)+cuaw_531_pag)}
+    case otherwise {
+        condition always
+        value 0.0}
+}
+
+
+
+! save cuts for output
+define SSJIDcutdv { std kind 'delivery-cut' units 'TAF' }
+goal setSSJIDcutdv { SSJIDcutdv = SSJIDcut }
+define OIDcut_Ndv { std kind 'delivery-cut' units 'TAF' }
+goal setOIDcut_Ndv { OIDcut_Ndv = OIDcut_N }
+define OIDcut_Sdv { std kind 'delivery-cut' units 'TAF' }
+goal setOIDcut_Sdv { OIDcut_Sdv = OIDcut_S }
+
+define SSJIDreddv { std kind 'delivery-red' units 'TAF' }
+goal setSSJIDreddv { SSJIDreddv = SSJIDred }
+define OIDred_Ndv { std kind 'delivery-red' units 'TAF' }
+goal setOIDred_Ndv { OIDred_Ndv = OIDred_N }
+define OIDred_Sdv { std kind 'delivery-red' units 'TAF' }
+goal setOIDred_Sdv { OIDred_Sdv = OIDred_S }

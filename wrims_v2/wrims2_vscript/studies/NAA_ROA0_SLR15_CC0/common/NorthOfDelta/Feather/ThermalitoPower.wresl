@@ -1,0 +1,6 @@
+define C203_EXC1 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+define C203_EXC2 {std kind 'FLOW-SPILL-POWER' units 'CFS'}
+goal C203_EXC_total {C203_EXC=C203_EXC1+C203_EXC2}
+
+define C203_POW {lower 0 upper 17000 kind 'FLOW-POWER' units 'CFS'}
+goal C203_POW_total {C203_POW=C203_MIF+C203_EXC1}

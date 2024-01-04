@@ -1,0 +1,38 @@
+/*
+ 
+References data from cycle BASE to reduce ANN function calls to reduce runtime.
+
+See the *_data.wresl file for how these parameters are calculated.
+
+*/
+
+!*************************************************************************************************************
+
+! calculate previous month's value of salinity
+define CO_EC_Month {std kind 'SALINITY' units 'UMHOS/CM'}
+define CO_EC_Month_sv {value CO_EC_Month[BASE]}
+goal setCO_EC_MON {CO_EC_Month = CO_EC_Month_sv}
+
+!****************************************************************************************
+
+! define the EC standard for Jersey Point (millimhos/cm)
+define CO_EC_STD {std kind 'SALINITY' units 'UMHOS/CM'}
+define CO_EC_STD_sv {value CO_EC_STD[BASE]}
+goal COECstandout {CO_EC_STD = CO_EC_STD_sv}
+
+!****************************************************************************************
+
+!get slope and intercept for constraint exp<=m*sac+b
+define CO_m {lower unbounded upper unbounded kind 'SLOPE' units 'NONE'}
+define CO_b {lower unbounded upper unbounded kind 'INTERCEPT' units 'NONE'}
+define CO_m_sv {value CO_m[BASE]}
+define CO_b_sv {value CO_b[BASE]}
+goal setCO_m {CO_m = CO_m_sv}
+goal setCO_b {CO_b = CO_b_sv}
+
+!********************************************************************
+
+!Get the required Sac flow for ZERO exports
+define CO_Sac_ZeroExp {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define CO_Sac_ZeroExp_sv2 {value CO_Sac_ZeroExp[BASE]}
+goal setCO_Sac_ZeroExp {CO_Sac_ZeroExp = CO_Sac_ZeroExp_sv2}

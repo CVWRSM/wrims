@@ -1,0 +1,13 @@
+include 'NMFS_SALMON_BO_Def.wresl'
+include 'OMR\FWS_SMELT_BO_Def.wresl'
+
+!include 'FWS_SMELT_BO_FallX2check.wresl'
+define FWS_MaxExp_X2 {value FWSMaxExpX2__Z4}  ! grab from CONV
+define FWS_MaxExpX2dv {alias FWS_MaxExp_X2 kind 'Export-Limit' units 'cfs'} !for output only
+
+!include 'NMFS_SALMON_BO_DCC.wresl'
+define NMFS_days_open {value NMFSdaysopen__Z4}  ! grab from CONV
+define NMFSdaysopendv  {alias NMFS_days_open kind 'DCC-DAYS-OPEN' UNITS 'NONE'}  !for output only
+
+define NMFS_MaxExp_DCC {value NMFSMaxExpDCC__Z4}  ! grab from CONV
+define NMFS_MaxExpDCCdv {alias NMFS_MaxExp_DCC kind 'Export-Limit' units 'cfs'} !for output only

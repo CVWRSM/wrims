@@ -1,0 +1,103 @@
+! bounds_cycle5.wresl
+! Edward Chang
+! 5/02/2000
+! Joint Model
+! This code bounds decision variables for cycle 5 only (San Joaquin System)
+! Revised by C. Hsu, 3/5/03, USBR, for review and documentation project
+!##########################################################################
+
+/*
+Cycle 5
+Water quality releases from previous cycles are included in this cycle because:
+   1) Releases can contribute towards meeting the DO requirement (Jun - Sept)
+   2) Releases can alter the pre-existing Vernalis flow and cause a change in the VAMP requirement (Apr -May).
+*/
+! New Melones water quality release for cycle 5
+goal setC10WQcycle5 {
+    LHS  C10WQ
+    CASE APRMAY {
+        CONDITION MONTH >= APR .AND. MONTH <= MAY
+          RHS       C10WQ[SJR_WQ2]
+        lhs<rhs   penalty 0 }
+    CASE OTHERWISE {
+        CONDITION always
+        RHS       C10WQ[SJR_WQ1]
+        lhs<rhs   penalty 0 }
+        }
+! New Melones main channel release
+GOAL SETC10MCYCLE5 {C10M = C10m[SJR_WQ2] }
+! February Thru June 1995 WQCP Vernalis minflow release
+GOAL setC10MINcycle5 { C10MIN = 0. }
+! October Merced Releases
+goal setC20MINcycle5 { C20MIN = 0. }
+! New Melones RPA release
+goal setC10RPAcycle5 { C10RPA = 0. }    
+! OID reallocated water
+goal setC10INSTREAMcycle5 { C10INSTREAM = C10INSTREAM[sjrbase] }
+! Payment of VAMP NM/NDP exchange debt
+goal setC10VAMP_Tcycle5 { C10VAMP_T = 0. }
+! Debt is incurred in cycle 5 but payment is not made until cycle 6
+goal setD530_VAMP {D530_VAMP = 0.}
+
+! Tuolumne River release for minflow for April-May window for cycle 5
+goal boundC540cycle5 {
+    lhs C540_mif
+    case AprMay {
+        condition   month >= apr .and. month <= may
+        rhs         C540_mif[SJR_WQ2]
+        lhs<rhs     penalty 0 }
+    case otherwise {
+        condition   always
+        rhs         C540_mif[SJR_WQ1]
+        lhs<rhs     penalty 0 }
+        }
+
+! Stanislaus River below Goodwin (Reach 5 ) water quality flow for April-May window
+Goal boundC520cycle5 {
+    lhs C520_mif
+    case AprMay {
+        condition   month >= apr .and. month <= may
+        rhs         C520_mif[SJR_WQ2]
+        lhs<rhs     penalty 0 }
+    case otherwise {
+        condition   always
+        rhs         C520_mif[SJR_WQ1]
+        lhs<rhs     penalty 0 }
+        }
+! Stanislaus River below Ripon water quality release
+goal boundC528cycle5 {
+    lhs C528_mif
+    case AprMay {
+        condition   month >= apr .and. month <= may
+        rhs         C528_mif[SJR_WQ2]
+        lhs<rhs     penalty 0 }
+    case otherwise {
+        condition   always
+        rhs         C528_mif[SJR_WQ1]
+        lhs<rhs     penalty 0 }
+        }
+! Stanislaus River below Ripon April and May pulse flow
+goal bound1C520_exc_acycle5 {
+     lhs       C520_exc_a
+    case AprMay {
+        condition   month >= apr .and. month <= may
+          rhs       C520_exc_a[SJR_PULSE]
+          lhs<rhs   penalty 0 }
+     case otherwise {
+          condition always
+          rhs       C520_exc_a[SJRBASE]
+          lhs<rhs   penalty 0 }
+          }
+! Stanislaus River below Ripon April and May pulse flow
+goal bound2C520_exc_acycle5 {
+     lhs       C520_exc_a
+    case AprMay {
+        condition   month >= apr .and. month <= may
+          rhs       C520_exc_a[SJR_PULSE]
+          lhs>rhs   penalty 0 }
+     case otherwise {
+          condition always
+          rhs       C520_exc_a[SJRBASE]
+          lhs>rhs   penalty 0 }
+          }
+

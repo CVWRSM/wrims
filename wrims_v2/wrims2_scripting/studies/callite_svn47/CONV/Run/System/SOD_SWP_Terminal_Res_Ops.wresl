@@ -1,0 +1,40 @@
+
+
+!Retrieve CalSim storage diversions and releases.
+
+define SW_DelValle {timeseries kind 'STORAGE-WITHDRAWAL' units 'CFS'} !Del Valle Reservoir
+define SD_DelValle {timeseries kind 'STORAGE-DIVERSION' units 'CFS'} !Del Valle Reservoir
+define SW_Silverwood {timeseries kind 'STORAGE-WITHDRAWAL' units 'CFS'} !Silverwood Reservoir
+define SD_Silverwood {timeseries kind 'STORAGE-DIVERSION' units 'CFS'} !Silverwood Reservoir
+define SW_Perris {timeseries kind 'STORAGE-WITHDRAWAL' units 'CFS'} !Perris Reservoir
+define SD_Perris {timeseries kind 'STORAGE-DIVERSION' units 'CFS'} !Perris Reservoir
+define SW_Pyramid {timeseries kind 'STORAGE-WITHDRAWAL' units 'CFS'} !Pyramid Reservoir
+define SD_Pyramid {timeseries kind 'STORAGE-DIVERSION' units 'CFS'} !Pyramid Reservoir
+define SW_Castaic {timeseries kind 'STORAGE-WITHDRAWAL' units 'CFS'} !Castaic Reservoir
+define SD_Castaic {timeseries kind 'STORAGE-DIVERSION' units 'CFS'} !Castaic Reservoir
+
+
+!Define decision variables for CalLite implementation
+define D_DelValle {STD kind 'FLOW-DELIVERY' units 'CFS'} !Del Valle Reservoir
+define I_DelValle {STD kind 'FLOW-INFLOW' units 'CFS'} !Del Valle Reservoir
+define D_Silverwood {STD kind 'FLOW-DELIVERY' units 'CFS'} !Silverwood Reservoir
+define I_Silverwood {STD kind 'FLOW-INFLOW' units 'CFS'} !Silverwood Reservoir
+define D_Perris {STD kind 'FLOW-DELIVERY' units 'CFS'} !Perris Reservoir
+define I_Perris {STD kind 'FLOW-INFLOW' units 'CFS'} !Perris Reservoir
+define D_Pyramid {STD kind 'FLOW-DELIVERY' units 'CFS'} !Pyramid Reservoir
+define I_Pyramid {STD kind 'FLOW-INFLOW' units 'CFS'} !Pyramid Reservoir
+define D_Castaic {STD kind 'FLOW-DELIVERY' units 'CFS'} !Castaic Reservoir
+define I_Castaic {STD kind 'FLOW-INFLOW' units 'CFS'} !Castaic Reservoir
+
+!Constrain decision variables
+goal lim_D_DelValle {D_DelValle < SD_DelValle}
+goal lim_I_DelValle {I_DelValle < SW_DelValle}
+goal lim_D_Silverwood {D_Silverwood < SD_Silverwood}
+goal lim_I_Silverwood {I_Silverwood < SW_Silverwood}
+goal lim_D_Perris {D_Perris < SD_Perris}
+goal lim_I_Perris {I_Perris < SW_Perris}
+goal lim_D_Pyramid {D_Pyramid < SD_Pyramid}
+goal lim_I_Pyramid {I_Pyramid < SW_Pyramid}
+goal lim_D_Castaic {D_Castaic < SD_Castaic}
+goal lim_I_Castaic {I_Castaic < SW_Castaic}
+

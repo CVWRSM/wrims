@@ -1,0 +1,14 @@
+define InitGWSystem           {EXTERNAL interfacetogw.dll}  !Construct and initialize the finite element groundwater model 
+define SetGP	              {EXTERNAL interfacetogw.dll}  !Set the groundwater pumping at WBA level
+define SetDP                  {EXTERNAL interfacetogw.dll}  !Set the deep percolation at WBA level
+define SetStrmFlow            {EXTERNAL interfacetogw.dll}  !Set the stream flow at a stream node
+define SimGW 	              {EXTERNAL interfacetogw.dll}  !Simulate the groundwater system
+define GetSeep                {EXTERNAL interfacetogw.dll}  !Get the seepage (gw-stream interaction) at a groundwater node
+define GetGW_H                {EXTERNAL interfacetogw.dll}  !Get the head at a groundwater node corresponding to a stream node
+define GetStrm_H              {EXTERNAL interfacetogw.dll}  !Get the stream stage at a stream node
+define GetPumpShort           {EXTERNAL interfacetogw.dll}  !Get the total pumping shortage
+define GetPercentPumpShort    {EXTERNAL interfacetogw.dll}  !Get the total pumping shortage as percentage of total pumping requested by CalSim
+define GetSWShedDP            {EXTERNAL interfacetogw.dll}  !Get the deep perc at small watersheds accumulated to Calsim regions
+define PrintGWResults         {EXTERNAL interfacetogw.dll}  !Print results after last iteration
+define AdvanceGWState         {EXTERNAL interfacetogw.dll}  !Advance system state after last iteration
+                                    

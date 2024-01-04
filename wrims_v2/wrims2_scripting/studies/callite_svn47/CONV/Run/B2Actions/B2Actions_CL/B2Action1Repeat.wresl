@@ -1,0 +1,102 @@
+/** 
+B2Action1Repeat.wresl
+
+Nazrul Islam, DWR, 10/13/2010
+Tom FitzHugh, BOR, 11/9/10  edited file to add Clear Creek BO requirement and stability criteria, and code to conserve Shasta storage for NMFS RPAs.
+
+This file imposes all the (b)(2) upstream actions that are taken in the (b)(2) run.
+If this code is active, Keswick, Clear Cr and Nimbus minflow goal have to be inactive.
+
+**/
+
+! whether to implement NMFS Clear Creek BO: no action: value=0; action: value=1
+!define ClearCrkBOswitch {select Option from options where Index=5}
+
+! NMFS BO Action I.1.1 Clear Creek - Spring Attraction Flows
+! adds 600 cfs for 3 days twice in the month of May
+define ClrCk_NMFS_target { 
+    case May {              
+        condition month == MAY 
+        value  max(C_Wkytn_MIF_b2, ClearCrk_min) * (daysin - 6.)/daysin + 600.*6./daysin }
+    case otherwise {
+        condition always
+        value 0. }
+} 
+
+! (Per D. Hilts 10/16/09) Reinstate CC Stability Criteria (for future b2 runs turn Action 1 ON always)
+! Stability criteria is to prevent precipitous drops in flow
+
+! Flow limit over which stability is not enforced
+define ClearStabLimit {select StabFlow from ClearStability where month=month}
+
+! Fraction of previous month's flow to maintain in current month
+define ClearStabFract {select fraction from ClearStability where month=month}
+
+define C_Wkytn_adj {
+    case BelowMin {! Don't allow flows to drop below 50
+        condition C_Wkytn_MIF_b2 < 50.
+            value 50.0 }
+    case JuneDip { ! Don't allow flows to drop below 85.0 cfs
+        condition month == JUN
+        value max(85.0,C_Wkytn_MIF_b2) }
+    case Otherwise {
+        condition always
+            value 0.0}
+}
+
+! Minflow is either the inputted lookup table's Minimum Instream Flow value or the stability target
+define minflow_C_Wkytn_b2 {
+    case Oct1922 {
+       condition month==OCT .and. wateryear==1922
+            value       0.0}
+    case UnderStabLim {
+       condition   C_Wkytn(-1)< ClearStabLimit + 0.1 .and. month > 1
+            value       max(C_Wkytn(-1),C_Wkytn_adj)*ClearStabFract }
+    case OverStabLim {
+       condition   always
+            value       0.0}
+}
+
+! B2 Action 1: Upstream AFRP Actions, will use BO target too if switch is on
+goal b2action1Whi_1 {
+  lhs C_Wkytn_MIF
+    case BO {
+        condition int(ClearCrkBOswitch) == 1
+            rhs       max(C_Wkytn_adj, ClrCk_NMFS_target, minflow_C_Wkytn_b2, C_Wkytn_MIF_b2, ClearCrk_min)   !when BO switch = 1, BO target used and stability criteria applied
+        lhs>rhs   constrain
+        lhs<rhs   penalty 99 } 
+    case NO_BO {
+        condition int(ClearCrkBOswitch) == 0    
+            rhs       max(C_Wkytn_MIF_b2, ClearCrk_min)   !when BO switch = 0, BO target not used, no stability target   
+        lhs>rhs   constrain
+        lhs<rhs   penalty 99 }  
+    }
+
+! (Per D. Hilts and P. Fujitani 10/16/09) Conserve Shasta storage for NMFS RPAs in Fall (Oct - Dec)
+! Turn this on only when Fall X2 RPA is active
+!define FallX2 {select Option from options where Index=1}
+define minflow_C_Kswck_adj {
+    case OctDec {
+        condition month < 4 .and. C_Kswck_MIF_b2 >= 4500.0 .and. FallX2 == 1
+            value 4000.0
+    }
+    case otherwise {
+        condition always
+            value max(C_Kswck_MIF_b2, effective_C_Keswick_min)
+    }
+}
+
+goal b2action1Sha_2 {
+  lhs C_Kswck_MIF
+    rhs       minflow_C_Kswck_adj
+    lhs>rhs   constrain
+    lhs<rhs   penalty 99 } 
+
+
+! B2 Action 1: Upstream AFRP Actions continued
+goal b2action1Fol_3 {
+  lhs C_Nimbus_mif
+    rhs       max(C_Nimbus_mif_b2, /*nimbus_hist_std,*/ minflowFMPAmer)
+    lhs>rhs   constrain
+    lhs<rhs   penalty 0 }
+

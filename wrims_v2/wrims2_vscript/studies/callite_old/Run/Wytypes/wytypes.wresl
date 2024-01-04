@@ -1,0 +1,279 @@
+/************************************
+Wytypes.wresl
+
+Tom FitzHugh BOR 4/27/2010
+
+WATER YEAR TYPE DEFINITIONS
+
+**************************************/
+
+! ================ INDICES AS DEFINED BY DWR (CHANGE IN FEB) =====================
+! the 40-30-30 index for Sacramento Basin
+define wyt_SAC {
+    case OCTtoJAN {
+         condition  month >= OCT .and. month <= JAN
+         select     SACindex
+         from       wytypes
+         where      wateryear=wateryear - 1.}
+    case rest {
+         condition  always
+         select     SACindex
+         from       wytypes
+         where      wateryear=wateryear}
+}
+
+
+! the Shasta index as defined by the CVP (changes in March)
+define wyt_SHASTA_cvp {
+        case OCTtoFEB {
+        condition   month >= OCT .and. month <= FEB
+        select      SHASTAindex
+        from        wytypes
+        where       wateryear=wateryear - 1.}
+
+        case rest {
+        condition   always
+        select      SHASTAindex
+        from        wytypes
+        where       wateryear=wateryear}
+}
+
+! the American River D893 index as defined by the CVP (changes in March)
+define wyt_AMERd893_cvp {
+        case OCTtoFEB {
+        condition   month >= OCT .and. month <= FEB
+        select      AmerD893
+        from        wytypes
+        where       wateryear=wateryear - 1.}
+
+        case rest {
+        condition   always
+        select      AmerD893
+        from        wytypes
+        where       wateryear=wateryear}
+}
+
+! ============================== YEAR TYPES ====================================
+! the following year type names can be used to represent the numbers found in the tables
+define Wet          {value 1}
+define AboveNormal  {value 2}
+define BelowNormal  {value 3}
+define Dry          {value 4}
+define Critical     {value 5}
+
+! the Trinity index   1=Very Wet, 2=Wet, 3=Normal, 4=Dry, 5=Critically Dry: Note: Index changes in Apr.
+define wyt_TRIN {
+         case OCTtoMar {
+                   condition        month >= OCT .and. month <= MAR
+                   select           Trinityindex
+                   from               wytypes
+                   where            wateryear=wateryear - 1.}
+         case rest {
+                   condition        always
+                   select           Trinityindex
+                   from               wytypes
+                   where            wateryear=wateryear}
+}
+! So first define the calendar year since deliveries are based on Jan-Dec year
+define calendaryear {
+    case JantoSep {
+        condition   month >= 4 .and. month <= 12
+        value       wateryear }
+    case OcttoDec {
+        condition   always
+        value       wateryear - 1 }
+}
+
+! the Feather Index for the Feather River Basin
+define wyt_FEATHER {
+    case OCTtoJAN {
+         condition  month >= OCT .and. month <= JAN
+         select     FEATHERindex
+         from       wytypes
+         where      wateryear=wateryear - 1.}
+    case rest {
+         condition  always
+         select     FEATHERindex
+         from       wytypes
+         where      wateryear=wateryear}
+}
+
+/**
+ MODIFIED 40-30-30 index so that values are updated in Jan.
+ Done so that days meeting RSL standard begin in Jan for the upcoming water year type.
+ Remove and change variable mod_wyt_SAC ==> wyt_SAC in all table lookups if no longer
+ meeting standard on p. 16 WQCP.**/
+define mod_wyt_SAC {
+    case JAN {
+         condition  month == JAN
+         select     SACindex 
+         from       wytypes 
+         where      wateryear=wateryear}
+    case rest {
+         condition  always
+         value      wyt_SAC}
+}
+
+
+! the 60-20-20 index for San Joaquin basin
+define wyt_SJR {
+    case OCTtoJAN {
+         condition  month >= OCT .and. month <= JAN
+         select     SJRindex
+         from       wytypes
+         where      wateryear=wateryear - 1.}
+    case rest {
+         condition  always
+         select     SJRindex
+         from       wytypes
+         where      wateryear=wateryear}
+}
+
+! Previous year's SJR water year type index, select water year type from lookup table
+define wyt_SJR_prv1 {
+    case OCTtoJAN {
+         condition     month >= OCT .and. month <= JAN
+         select        index
+         from        wytypeSJR
+         where        wateryear=wateryear - 2.}
+    case rest {
+         condition    always
+         select        index
+         from        wytypeSJR
+         where        wateryear=wateryear -1. }
+        }
+
+! Two years ago's SJR water year type index, select water year type from lookup table
+define wyt_SJR_prv2 {
+    case OCTtoJAN {
+         condition     month >= OCT .and. month <= JAN
+         select        index
+         from        wytypeSJR
+         where        wateryear=wateryear - 3.}
+    case rest {
+         condition    always
+         select        index
+         from        wytypeSJR
+         where        wateryear=wateryear -2. }
+        }
+        
+
+/* H. Canada DWR 04/26/12
+Added water year types for D-1485 */
+
+! ============================== D-1485 YEAR TYPES ====================================
+! the D1485 water year type index
+define wyt_D1485 {
+         case OCTtoJAN {
+                   condition        month >= OCT .and. month <= JAN
+                   select           index
+                   from                      wytypeD1485
+                   where            wateryear=wateryear - 1.}
+         case rest {
+                   condition        always
+                   select                    index
+                   from                               wytypeD1485
+                   where                     wateryear=wateryear }
+}
+
+! the D1485 subnormal snowmelt water year type index (1=above normal, 2=sub-normal)
+define wyt_snow {
+         case OCTtoJAN {
+                   condition        month >= OCT .and. month <= JAN
+                   select           index
+                   from                      wytypeSnow
+                   where            wateryear=wateryear - 1.}
+         case rest {
+                   condition        always
+                   select                    index
+                   from                               wytypeSnow
+                   where                     wateryear=wateryear }
+}
+/*
+! the D1485 2 year water year type index (0=D1485 normal, 1=yr following critical year)
+define wyt_2yr {
+         case OCTtoJAN {
+                   condition        month >= OCT .and. month <= JAN
+                   select           index
+                   from                      wytype2yr
+                   where            wateryear=wateryear - 1.}
+         case rest {
+                   condition        always
+                   select                    index
+                   from                               wytype2yr
+                   where                     wateryear=wateryear }
+}
+
+! the D1485 water year type index for Fish and Wildlife standards
+define wyt_D1485fw {value  wyt_D1485 + wyt_2yr}
+*/
+! the D1485 project deficiency year water year type index (0=D1485 normal, 1=deficiency year)
+define wyt_defic {
+         case OCTtoJAN {
+                   condition        month >= OCT .and. month <= JAN
+                   select           index
+                   from                      wytypeDefic
+                   where            wateryear=wateryear - 1.}
+         case rest {
+                   condition        always
+                   select                    index
+                   from                               wytypeDefic
+                   where                     wateryear=wateryear }
+}
+
+! Get last year's water year type
+define wyt_D1485_last {
+         select   index
+         from              wytypeD1485
+         where             wateryear=wateryear-1.
+}
+
+/*! Get last year's 2 yr water year type
+define wyt_2yr_last {
+         select   index
+         from              wytype2yr
+         where             wateryear=wateryear-1.
+}
+
+! the D1485 water year type index for Fish and Wildlife standards last year
+define wyt_D1485fw_last {value      wyt_D1485_last + wyt_2yr_last}
+*/
+!Define water year type for ANN, use calendar year for use in D1485 study.
+! the D1485 water year type index
+define wyt_D1485_ann {
+  case OCTtoDEC {
+    condition  month >= OCT .and. month <= DEC
+    select  index
+    from  wytypeD1485
+    where  wateryear=wateryear - 1.}
+  case rest {
+    condition  always
+    select  index
+    from  wytypeD1485
+    where  wateryear=wateryear }
+}
+/*
+! the D1485 2 year water year type index (0=D1485 normal, 1=yr following critical year)
+define wyt_2yr_ann {
+  case OCTtoDEC {
+    condition  month >= OCT .and. month <= DEC
+    select  index
+    from  wytype2yr
+    where  wateryear=wateryear - 1.}
+  case rest {
+    condition  always
+    select  index
+    from  wytype2yr
+    where  wateryear=wateryear }
+}
+! the D1485 water year type index for Fish and Wildlife standards, for use in ANN
+define wyt_ann_D1485 {value  wyt_D1485_ann + wyt_2yr_ann}
+*/
+define wyt_ann {
+    case D1485 {
+         condition NDO_DLTSW == 3
+         value wyt_D1485_ann}
+    case D1641 {
+    	condition always
+    	value mod_wyt_SAC}
+}

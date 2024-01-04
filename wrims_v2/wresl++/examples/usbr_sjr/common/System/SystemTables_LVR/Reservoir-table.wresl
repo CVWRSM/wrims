@@ -1,0 +1,20 @@
+define S422_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S422level2 {select trgt from res_level_422 where res_num=422,level=2,month=month}
+define S422_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S422level3 {select trgt from res_level_422 where res_num=422,level=3,month=month}
+define S422_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S422level4 {value 275} !Set at max raise being evaluated, reservoir level restricted in Parameters.wresl (S422_Cap)
+define S422_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S422 {std kind 'STORAGE' units 'TAF'} !LOS VAQUEROS
+goal storage422 {S422=S422_1+S422_2+S422_3+S422_4}
+define F422 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E422 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A422 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S422 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A422last {select area from res_info_422 given storage=1000*S422(-1) use linear where res_num=422}
+define A422forward {select area from res_info_422 given storage=1050*S422(-1) use linear where res_num=422}
+define A422back {select area from res_info_422 given storage=950*S422(-1) use linear where res_num=422}
+define coefev422 {value (A422forward - A422back)/(100*max(0.01,S422(-1)))}
+goal area422 {A422=A422last+1000*coefev422*S422-1000*coefev422*S422(-1)}
+goal evap422 {E422*cfs_taf=(evap_S422/12000.)*A422last}
+

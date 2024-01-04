@@ -1,0 +1,92 @@
+/*************************************
+JerseyPoint_output.wresl
+
+Nazrul Islam; DWR; (06/27/2010)
+
+Add a switch to turn off D1641/D1485 constrain at JerseyPoint
+Z.Q. Richard Chen; DWR; (02/07/2011)
+**************************/
+
+!maximum export given the sacramento river flow
+!define netDeltaInflow {std kind 'FLOW-INFLOW' units 'CFS'} 
+define netDeltaInflow {alias C_SJRVER + AD_SJRCalALL + AD_Mokelumne /* + C_YoloBP*/ + I_MarshCr - D_CCWD - C_NBA - net_delta_cuDV kind 'FLOW-INFLOW' units 'CFS'}
+
+define JP_MaxExport {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setJPMax {
+  lhs JP_MaxExport
+          case DRegsOff{
+            condition JP_DLTSW == 0
+          rhs 999999. }
+  case NoSalinityControlPossible{
+    condition abs(JP_m_sv) <= 0.001 .and. int(JP_b_sv) == 0
+    rhs ExportCap}
+  case NegSlope{
+    condition JP_m_sv <= 0.0
+    rhs 999999.}
+  case HighCost{
+    condition JP_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap}
+  case NegCarriage{
+    condition JP_m_sv >= 1.0
+    rhs 999999.}
+  case Normal {
+    condition always
+    rhs JP_m_sv*C_Hood_ANN + JP_m_sv*c_YoloBP + JP_b_sv}
+}
+
+
+!****************************************************************************************
+
+! required delta outflow given exports
+
+define JP_MRDO {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setJPmrdo {
+  lhs JP_MRDO
+           case DRegsOff{
+            condition JP_DLTSW == 0
+          rhs 0.} 
+  case NoSalinityControlPossible{
+    condition abs(JP_m_sv) <= 0.001 .and. int(JP_b_sv) == 0
+    rhs 0.}
+  case NegSlope{
+    condition JP_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition JP_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  case NegCarriage{
+    condition JP_m_sv >= 1.0
+    rhs 0.}
+  case Normal {
+    condition always
+    rhs ((1-JP_m_sv)/JP_m_sv)*D_ExpTD - JP_b_sv/JP_m_sv + netDeltaInflow }
+}
+
+!****************************************************************************************
+
+! required sac flow given exports
+
+define JP_ReqSac {lower unbounded upper unbounded kind 'FLOW' units 'cfs'}
+goal set_JP_ReqSac {
+  lhs JP_ReqSac
+           case DRegsOff{
+            condition JP_DLTSW == 0
+            rhs 0.}   
+  case NoSalinityControlPossible{
+    condition abs(JP_m_sv) <= 0.001 .and. int(JP_b_sv) == 0
+    rhs 0.}
+  case NegSlope{
+    condition JP_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition JP_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  case NegCarriage{
+    condition JP_m_sv >= 1.0
+    rhs 0.}
+  case Normal {
+    condition always
+    rhs D_ExpTD/JP_m_sv - JP_b_sv/JP_m_sv}
+}
+
+

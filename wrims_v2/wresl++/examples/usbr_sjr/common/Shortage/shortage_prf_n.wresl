@@ -1,0 +1,10 @@
+!Modified by DJE 12/8/00
+
+!Non-SWP and Non-CVP NOD Refuges.  More like project water rights
+define short_c136b {alias perdel_cvprf_sys*dem_c136b_prf*taf_cfs - c136b kind 'delivery-shortage' units 'cfs'}
+define short_c216b {alias perdel_swp_ag*dem_c216b_prf*taf_cfs - c216b kind 'delivery-shortage' units 'cfs'}
+define short_c221 {alias dem_c221_prf*taf_cfs - c221 kind 'delivery-shortage' units 'cfs'}
+
+define short_prf_n {alias short_c136b +  short_c216b + short_c221 kind 'delivery-shortage-prf' units 'cfs'}
+
+define del_prf_n   {alias c136b + c216b + c221 kind 'delivery-prf' units 'cfs'}

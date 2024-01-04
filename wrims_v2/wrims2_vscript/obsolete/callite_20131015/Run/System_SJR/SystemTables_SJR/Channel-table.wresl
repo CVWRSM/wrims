@@ -1,0 +1,94 @@
+define C_MELON {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !New Melones Release
+define C_MLRTN {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Millerton Release
+define C_MCLRE {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !McClure Release
+define C_HNSLY {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Hensley Lake Release
+define C_STANGDWN {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Stanislaus R below Goodwin
+define C_STANGDWN_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_STANGDWN_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_STANGDWNtotal {C_STANGDWN=C_STANGDWN_MIF+C_STANGDWN_EXC}
+define C513A {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Delivery to City of Stockton M&I
+!define C513B {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Delivery to City of Stockton GW recharge
+define C522 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Delivery to SSJID Area
+define C_STANRIPN {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Stanislaus R below Rippon
+define C_STANRIPN_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_STANRIPN_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_STANRIPNtotal {C_STANRIPN=C_STANRIPN_MIF+C_STANRIPN_EXC}
+define C530 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Delivery to OID
+define C_ESTMN {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Eastman Lake Release
+define C532 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Delivery to Modesto Area
+define C534 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Lands NW of Modesto
+define C_TUOL {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Tuolomne R blw Modesto and Turlock IDs, C540 AND C545 combined
+define C_TUOL_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_TUOL_ITUOLC {lower -99999 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Accounts for net inflow at Calsim node 545 (not on CalLite schematic)
+goal C_TUOLCinflow {C_TUOL_ITUOLC = I_TUOL + R_TUOLA + R_TUOLB + R_TUOLC - D_TUOLC}      
+define C_TUOL_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_TUOLtotal {C_TUOL=C_TUOL_MIF+C_TUOL_ITUOLC+C_TUOL_EXC}
+define C548 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Supply to Turlock Area Ag
+define C550 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Supply to Lands West of Turlock Area
+define C_MERCED1 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Merced R at POD to Merced ID to Snelling, C561 and C562 combined
+define minflow_C_MERCED1B {timeseries kind 'FLOW-MIN-REQUIRED' units 'TAF' convert 'CFS'} !MINFLOW_C561
+define minflow_C_MERCED1C {timeseries kind 'FLOW-MIN-REQUIRED' units 'TAF' convert 'CFS'} !MINFLOW_C562
+define C_MERCED1_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}  !MIF set in Merced_dems.wresl, since deliv estimate required beforehand
+define C_MERCED1_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_MERCED1total {C_MERCED1=C_MERCED1_MIF+C_MERCED1_EXC}
+define C_MERCED2 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Merced R Abv San Joaquin
+define C570 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Merced River Delivery to Refuge
+define C573 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Delivery to DAU212
+define C580 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Chowchilla R below Madera Canal
+define C_CHOWR {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Chowchilla R below ID Delivery
+define C583 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Supply to Chowchilla Area
+define C585 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Supply to DAU215
+define C587 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Chowchilla Bypass III
+define C_FRSNO {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Fresno River
+define C_FRSNO_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_FRSNO_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_FRSNOtotal {C_FRSNO=C_FRSNO_MIF+C_FRSNO_EXC}
+define C_Mdrcnl {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Madera Canal
+define C_MdrcnlF {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Madera Canal spills to Chowchilla R.
+define C_Mdrcnl_16B {std kind 'flow-channel' units 'cfs'}
+define C591 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Supply to Madera Area Demands
+define C_Chowbyp2 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Chowchilla Bypass II
+define C_GRAVF {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR below Gravelly Ford
+define C_SJRCB {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR below Chowchilla Bypass
+define C_Chowbyp1 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Chowchilla Bypass 
+
+!goal setC_Chowbyp1 { C_Chowbyp1 =0} ! temp
+
+define C_SJRREST {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Proposed channel 
+define C_MDOTA {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR below Mendota Pool
+
+define C607X {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Reach3BFlood
+define C607Y {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Reach3B
+
+
+define C_SJRSACK {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR Mendota Pool to Sack Dam 
+define C_SJRSAND {lower 0 upper 0000 kind 'FLOW-CHANNEL' units 'CFS'} !SJR Sack Dam to Sand Slu   will be greater than 0.0 with restoration flow
+define C_SANDSL {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR Sack Dam to Chowchilla BP  
+define C_MPBYP {lower 0 upper 8500 kind 'FLOW-CHANNEL' units 'CFS'} !Maraposa BP 
+define C_SJRMPBYP {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} ! 
+define C_EASTBYP {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Eastside BP  
+
+define C_MDOTABC {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Flow to Mendota Pool Exchange Contractors and Refuges
+
+define C_MDOTABVAMP {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Pool Exch Donation to VAMP
+define C_SJRSACKBC {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Flow to Exchange Contractors and Refuges from Sack Dam
+define C_SJRLNDR {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Below Lander Av.
+define C_SJRMS {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR avb Salt Slough
+define C_SJRMER {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR Merced to Tuolomne
+define C_SJRTUOL {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR Tuolomne to Stanislaus
+define C_SJRMAZE {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR below Maze
+define C_SJRSTAN {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR below Stanislaus
+define c75 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Blw Woodward
+define C76 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Stanislaus R blw Tulloch
+define C_PEDRO {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !New Don Pedro Release
+define C_Nhgan {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !New Hogan Release
+
+define C_SJRCAL {lower 0. upper 9999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !
+define C505 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Calaveras River below Bellota
+define C506 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Calaveras River below Stockton E ID
+define C507 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Calavaras River
+define C_Calav {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Calaveras R above SJR
+define C509 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Calaveras River to SEWD
+define C501 {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Cosumnes River
+
+define C_CVPDMC {lower 0 upper 3500 kind 'FLOW-CHANNEL' units 'CFS'} !Lower DMC to Mendota Pool

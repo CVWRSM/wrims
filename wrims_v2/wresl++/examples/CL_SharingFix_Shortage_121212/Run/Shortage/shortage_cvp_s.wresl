@@ -1,0 +1,88 @@
+!  AG Shortage
+define short_D700_pag {alias perdel_cvpag_s*dem_D700_pag*taf_cfs - D700_pag kind 'delivery-shortage' units 'cfs'}
+define short_D701_pag {alias perdel_cvpag_s*dem_D701_pag*taf_cfs - D701_pag kind 'delivery-shortage' units 'cfs'}
+define short_D706_pag {alias perdel_cvpag_s*dem_D706_pag*taf_cfs - D706_pag kind 'delivery-shortage' units 'cfs'}
+define short_D607A_pag {alias perdel_cvpag_s*dem_D607A_pag*taf_cfs - D607A_pag kind 'delivery-shortage' units 'cfs'}
+define short_D833_pag {alias perdel_cvpag_s*dem_D833_pag*taf_cfs - D833_pag kind 'delivery-shortage' units 'cfs'}
+define short_D835_pag {alias perdel_cvpag_s*dem_D835_pag*taf_cfs - D835_pag kind 'delivery-shortage' units 'cfs'}
+define short_D836_pag {alias perdel_cvpag_s*dem_D836_pag*taf_cfs - D836_pag kind 'delivery-shortage' units 'cfs'}
+define short_D837_pag {alias perdel_cvpag_s*dem_D837_pag*taf_cfs - D837_pag kind 'delivery-shortage' units 'cfs'}
+define short_D839_pag {alias perdel_cvpag_s*dem_D839_pag*taf_cfs - D839_pag kind 'delivery-shortage' units 'cfs'}
+define short_D841_pag {alias perdel_cvpag_s*dem_D841_pag*taf_cfs - D841_pag kind 'delivery-shortage' units 'cfs'}
+define short_D843_pag {alias perdel_cvpag_s*dem_D843_pag*taf_cfs - D843_pag kind 'delivery-shortage' units 'cfs'}
+define short_D710_pag {alias perdel_cvpag_s*dem_D710_pag*taf_cfs - D710_pag kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_pag_s {alias short_D700_pag + short_D701_pag + short_D706_pag + short_D607A_pag +
+                              short_D833_pag + short_D835_pag + short_D836_pag + short_D837_pag + short_D839_pag +
+                              short_D841_pag + short_D843_pag + short_D710_pag
+                        kind  'delivery-shortage-cvp'
+                        units 'cfs'}
+
+define del_cvp_pag_south {alias D700_pag + D701_pag + D706_pag + D607A_pag +
+                            D833_pag + D835_pag + D836_pag + D837_pag + D839_pag +
+                            D841_pag + D843_pag + D710_pag
+                      kind  'delivery-cvp'
+                      units 'cfs'}
+
+
+
+!  MI Shortage
+define short_D711_pmi {alias perdel_cvpmi_s*dem_D711_pmi*taf_cfs - D711_pmi kind 'delivery-shortage' units 'cfs'}
+define short_D844_pmi {alias perdel_cvpmi_s*dem_D844_pmi*taf_cfs - D844_pmi kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_pmi_s {alias short_D711_pmi + short_D844_pmi kind 'delivery-shortage-cvp' units 'cfs'}
+
+define del_cvp_pmi_south {alias D711_pmi + D844_pmi kind 'delivery-cvp' units 'cfs'}
+
+
+
+!  Exchange Shortage
+define short_D707_pex {alias perdel_cvpex_s*dem_D707_pex*taf_cfs - D707_pex kind 'delivery-shortage' units 'cfs'}
+define short_D607B_pex {alias perdel_cvpex_s*dem_D607B_pex*taf_cfs - D607B_pex kind 'delivery-shortage' units 'cfs'}
+define short_D608B_pex {alias perdel_cvpex_s*dem_D608B_pex*taf_cfs - D608B_pex kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_pex_s {alias short_D707_pex + short_D607B_pex + short_D608B_pex kind 'delivery-shortage-cvp' units 'cfs'}
+
+define del_cvp_pex_south {alias D707_pex + D607B_pex + D608B_pex kind 'delivery-cvp' units 'cfs'}
+
+
+!  Refuge Shortage
+define short_D708_prf {alias perdel_cvprf_s*dem_D708_prf*taf_cfs - D708_prf kind 'delivery-shortage' units 'cfs'}
+define short_D607C_prf {alias perdel_cvprf_s*dem_D607C_prf*taf_cfs - D607C_prf kind 'delivery-shortage' units 'cfs'}
+define short_D608C_prf {alias perdel_cvprf_s*dem_D608C_prf*taf_cfs - D608C_prf kind 'delivery-shortage' units 'cfs'}
+define short_D856_prf {alias perdel_cvprf_s*dem_D856_prf*taf_cfs - D856_prf kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_prf_s {alias short_D708_prf + short_D607C_prf+ short_D608C_prf  + short_D856_prf kind 'delivery-shortage-cvp' units 'cfs'}
+
+define del_cvp_prf_south {alias D708_prf + D607C_prf + D608C_prf + D856_prf kind 'delivery-cvp' units 'cfs'}
+
+
+!  Losses Shortage
+define short_d702_pls {alias dem_d702_pls*taf_cfs - d702_pls kind 'delivery-shortage' units 'cfs'}
+define short_d834_pls {alias dem_d834_pls*taf_cfs - d834_pls kind 'delivery-shortage' units 'cfs'}
+define short_d838_pls {alias dem_d838_pls*taf_cfs - d838_pls kind 'delivery-shortage' units 'cfs'}
+define short_d840_pls {alias dem_d840_pls*taf_cfs - d840_pls kind 'delivery-shortage' units 'cfs'}
+define short_d842_pls {alias dem_d842_pls*taf_cfs - d842_pls kind 'delivery-shortage' units 'cfs'}
+define short_d845_pls {alias dem_d845_pls*taf_cfs - d845_pls kind 'delivery-shortage' units 'cfs'}
+define short_d607D_pls {alias dem_d607d_pls*taf_cfs - d607d_pls kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_pls_s {alias short_d702_pls + short_d834_pls + short_d838_pls +
+                             short_d840_pls + short_d842_pls + short_d845_pls + short_d607D_pls
+                       kind  'delivery-shortage-cvp'
+                       units 'cfs'}
+
+define del_cvp_pls_south {alias d702_pls + d834_pls + d838_pls +
+                            d840_pls + d842_pls + d845_pls + d607D_pls
+                      kind  'delivery-cvp'
+                      units 'cfs'}
+
+
+
+! TOTAL
+define short_cvp_tot_s {alias short_cvp_pag_s + short_cvp_pmi_s + short_cvp_pex_s + short_cvp_prf_s + short_cvp_pls_s kind 'delivery-shortage-cvp' units 'cfs'}
+!define short_cvp_tot   {alias short_cvp_tot_n + short_cvp_tot_s kind 'delivery-shortage-cvp' units 'cfs'}
+
+
+define del_cvp_total_south {alias del_cvp_pag_south + del_cvp_pmi_south + del_cvp_pex_south + del_cvp_prf_south + del_cvp_pls_south kind 'delivery-cvp' units 'cfs'}
+!define del_cvp_total   {alias del_cvp_total_north + del_cvp_total_south kind 'delivery-cvp' units 'cfs'}
+

@@ -1,0 +1,5 @@
+! Tracy Split
+
+define DMC003_cvp {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVP pumping at Tracy
+define DMC003_WTS {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! Transfer export at Tracy
+goal totalTracy {C_DMC003 = DMC003_cvp + DMC003_WTS} !Total Tracy

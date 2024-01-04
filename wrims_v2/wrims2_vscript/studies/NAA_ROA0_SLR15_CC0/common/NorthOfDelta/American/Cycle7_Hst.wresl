@@ -1,0 +1,10 @@
+!origninal test3 done at 100 cfs buffer
+
+goal restrict_C9 { 
+     lhs C9
+     case Hst_below {
+     	condition  C303_EXC[MONTHLYWEIGHTED] < 1.0
+     rhs C9[MONTHLYWEIGHTED] - D302a_np[MONTHLYWEIGHTED]
+     lhs>rhs    penalty 999999
+     lhs<rhs    penalty 0}
+}

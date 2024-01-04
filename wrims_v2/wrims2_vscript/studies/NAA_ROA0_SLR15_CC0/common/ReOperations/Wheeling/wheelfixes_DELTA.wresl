@@ -1,0 +1,335 @@
+! fix swp and coa operations to that without wheeling
+goal fixD14401_NORM {
+  lhs     D14401_NORM
+  rhs     D14401_NORM[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD17501_NORM {
+  lhs     D17501_NORM
+  rhs     D17501_NORM[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD124A_norm {
+  lhs     D124A_norm
+  rhs     D124A_norm[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177A {
+  lhs     c177A
+  rhs     c177A[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177B {
+  lhs     c177B
+  rhs     c177B[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177C_norm {
+  lhs     c177C_norm
+  rhs     c177C_norm[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177D {
+  lhs     c177D
+  rhs     c177D[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177E {
+  lhs     c177E
+  rhs     c177E[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping1TD {
+  lhs     D419_swp_TD
+  rhs     D419_swp_TD[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping1IF {
+  lhs     D419_swp_IF
+  rhs     D419_swp_IF[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping2TD {
+  lhs     D419_EXP1_TD
+  rhs     D419_EXP1_TD[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping2IF {
+  lhs     D419_EXP1_IF
+  rhs     D419_EXP1_IF[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping3TD {
+  lhs     D419_EXP2_TD
+  rhs     D419_EXP2_TD[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping3IF {
+  lhs     D419_EXP2_IF
+  rhs     D419_EXP2_IF[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping1TD {
+  lhs     D418_cvp_TD
+  rhs     D418_cvp_TD[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping1IF {
+  lhs     D418_cvp_IF
+  rhs     D418_cvp_IF[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping2TD {
+  lhs     D418_EXP1_TD
+  rhs     D418_EXP1_TD[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping2IF {
+  lhs     D418_EXP1_IF
+  rhs     D418_EXP1_IF[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping3TD {
+  lhs     D418_EXP2_TD
+  rhs     D418_EXP2_TD[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping3IF {
+  lhs     D418_EXP2_IF
+  rhs     D418_EXP2_IF[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+/*
+goal fixD419CVPDED {
+  lhs     D419_CVPDED
+  rhs     D419_CVPDED[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD419CVPDED1 {
+  lhs     D419_CVPDED_EXP1
+  rhs     D419_CVPDED_EXP1[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD419CVPDED2 {
+  lhs     D419_CVPDED_EXP2
+  rhs     D419_CVPDED_EXP2[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+*/
+goal FixD859GWSWP {
+  lhs     D859_GWRECH_SWP
+  rhs     D859_GWRECH_SWP[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal FixD859GWCVPA {
+  lhs     D859_GWRECH_CVPA
+  rhs     D859_GWRECH_CVPA[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNBPumpingB {
+  lhs     D403B
+  rhs     D403B[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNBPumpingC {
+  lhs     D403C
+  rhs     D403C[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCCCPumping {
+  lhs     D408
+  rhs     D408[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixfeatherretflow {
+  lhs     c137
+  rhs     c137[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixyubaflow {
+  lhs     C230
+  rhs     C230[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixd207a {
+  lhs     d207a
+  rhs     d207a[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixd207b {
+  lhs     d207b
+  rhs     d207b[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixbearflow {
+  lhs     c282
+  rhs     c282[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixfeatherinflow {
+  lhs     c223
+  rhs     c223[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixfeatherexport {
+  lhs     c225
+  rhs     c225[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixcvprefuge {
+  lhs     d705
+  rhs     d705[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixsouthbay {
+  lhs     d801
+  rhs     d801[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSL {
+  lhs     s12
+  rhs     s12[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+/*
+goal fixSLout {
+  lhs     c12
+  rhs     c12[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+*/
+goal fixSLin {
+  lhs     d805
+  rhs     d805[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixterminals {
+  lhs     c855
+  rhs     c855[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixUNUSEDFS {
+  lhs     UNUSED_FS
+  rhs     UNUSED_FS[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixUNUSEDSS {
+  lhs     UNUSED_SS
+  rhs     UNUSED_SS[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSWPDS {
+  lhs     SWPDS
+  rhs     SWPDS[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNODOSswpDS {
+  lhs     NODOSswpDS
+  rhs     NODOSswpDS[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSHADS {
+  lhs     SHADS
+  rhs     SHADS[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixFOLDS {
+  lhs     FOLDS
+  rhs     FOLDS[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixWHSSW {
+  lhs     WHSSW
+  rhs     WHSSW[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNODOScvpDS {
+  lhs     NODOScvpDS
+  rhs     NODOScvpDS[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixUWFE {
+  lhs     UWFE
+  rhs     UWFE[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixIBU {
+  lhs     IBU
+  rhs     IBU[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc184a {
+  lhs     c184a
+  rhs     c184a[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixgc184b {
+  lhs     c184b
+  rhs     c184b[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc152a {
+  lhs     c152a
+  rhs     c152a[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixgc152b {
+  lhs     c152b
+  rhs     c152b[DELTA]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}

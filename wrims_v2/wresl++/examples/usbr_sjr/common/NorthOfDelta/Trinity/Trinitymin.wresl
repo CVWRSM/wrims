@@ -1,0 +1,11 @@
+!! TRINITY Minimum Flow Code
+!       code by J. Burke
+
+! Get the minimum flow required at TRINITY (C94)
+define MF_C_LWSTN { 
+       select       river_q
+       from         Trinitymin
+       where        month=month, wyt_TRIN=wyt_TRIN}
+
+! Set the minimum flow goal       
+goal TrinityMin {C_LWSTN_MIF < MF_C_LWSTN }

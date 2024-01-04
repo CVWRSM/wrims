@@ -1,0 +1,13 @@
+/*************************************
+JonesSplit.wresl
+ 
+Nazrul Islam DWR (04/27/2010)
+
+There is no split in Jones PP capacity.
+**************************************/
+
+define D_Jones_cvp {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVP pumping at Jones PP
+define D_Jones_EXP1 {std kind 'flow-delivery' units 'cfs'}
+define D_Jones_EXP2 {std kind 'flow-delivery' units 'cfs'}
+goal totalJones {D_Jones = D_Jones_cvp } !Total Jones PP
+goal CVPArcSplit {D_Jones_CVP = D_Jones_EXP1 + D_Jones_EXP2 }

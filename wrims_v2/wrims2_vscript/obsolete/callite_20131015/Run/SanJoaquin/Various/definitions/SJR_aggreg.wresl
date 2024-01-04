@@ -1,0 +1,38 @@
+! SJR_agreg.wresl
+! Edward Chang
+! 6/05/2000
+! Joint Model
+! The following code assigns a group of arcs (not within one arc) a variable for book-keeping
+! Revised by C. Hsu, 4/3/03, USBR, for review and documentation project
+!############################################################################################
+
+! Define VAMP release state variable, units = cfs
+define VAMP_release {std kind 'FLOW-RELEASE' units 'cfs'}
+! Sum of VAMP release requirement for April and May
+goal setVAMP_release { VAMP_release = C_MELONVAMP_M + C_MCLREVAMP + C_PEDROVAMP + C_PEDRO_STAN_VAMP + C_MDOTABVAMP }
+
+/*
+Define VAMP release state variables for use in cycle 6
+*/
+! Instantaneous VAMP release to be set in cycle 6 from Stanislaus
+define DPStanVamprel {std kind 'FLOW-RELEASE' units 'cfs'}
+! Instantaneous VAMP release to be set in cycle 6 from Don Pedro
+define DPVamprelease {std kind 'FLOW-RELEASE' units 'cfs'}
+! Instantaneous VAMP release to be set in cycle 6 from Lake McClure
+define MCVamprelease {std kind 'FLOW-RELEASE' units 'cfs'}
+! Instantaneous VAMP release to be set in cycle 6 form New Melones
+define NMVamprelease {std kind 'FLOW-RELEASE' units 'cfs'}
+! Instantaneous VAMP release to be set in cycle 6 from DMC
+define DMCVamprelease {std kind 'FLOW-RELEASE' units 'cfs'}
+
+/*
+VAMP add-water requirement to be set in cycle 5
+*/
+! Define VAMP add-water for April from DMC
+define ExchangeaddApr {std kind 'add-requirement_VAMP' units 'TAF'}
+! Define VAMP add-water for April from OID
+define OIDaddApr {std kind 'add-requirement_VAMP' units 'TAF'}
+! Define VAMP add-water for April from Merced ID
+define MercedIDaddApr {std kind 'add-requirement_VAMP' units 'TAF'}
+! Define VAMP add-water for April from MID/TID
+define MIDTIDaddApr {std kind 'add-requirement_VAMP' units 'TAF'}

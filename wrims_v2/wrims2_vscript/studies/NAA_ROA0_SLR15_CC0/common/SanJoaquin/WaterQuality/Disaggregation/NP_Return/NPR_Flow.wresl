@@ -1,0 +1,62 @@
+!Anna Fock  Oct 2003
+/* SJR Non-Project Returns Definition
+Disaggregation of one CALSIM Non-Project Return arc to DSM2-based arcs (Part B prefix, # of arcs)
+based on SJRIO riparian and post-1914 diversion along the SJR
+CALSIM                        DSM2
+SJR Non-Project Return(R,1)    = SJR Non-Project Return(NPR,multiple)
+
+**********************Westside Non-Project returns************************
+Westside returns of pumped groundwater. ID is DSM2 node
+Source:    2003SJRIO\DPMP.dat (Post-1914 diversion at various river-miles)
+        2003SJRIO\HRPMP.dat (dry year annual SJR diversion for pasture, corn, and almond at various river-miles)
+        Table 8. (Page C-45), Regulation of Agricultural Drainage to the SJR: Appendix C (Return flow location of SJR diversion)
+*/
+!Spacial distribution of CALSIM Non-project returns under DSM2 schematic
+define Frac_NPR601 { select factor from DSM2_NPR where nodeID = 601 }    !R639A at RM75      weight = 1.00
+define Frac_NPR602 { select factor from DSM2_NPR where nodeID = 602 }    !R637D at RM76      weight = 0.30
+define Frac_NPR603 { select factor from DSM2_NPR where nodeID = 603 }    !R637D at RM77      weight = 0.55
+define Frac_NPR604 { select factor from DSM2_NPR where nodeID = 604 }    !R637D at RM78.5 weight = 0.07
+define Frac_NPR605 { select factor from DSM2_NPR where nodeID = 605 }    !R637D at RM80      weight = 0.07
+define Frac_NPR612 { select factor from DSM2_NPR where nodeID = 612 }    !R630M at RM87      weight = 0.16
+define Frac_NPR616 { select factor from DSM2_NPR where nodeID = 616 }    !R630M at RM91.5 weight = 0.03
+define Frac_NPR617 { select factor from DSM2_NPR where nodeID = 617 }    !R630M at RM93      weight = 0.07
+define Frac_NPR623 { select factor from DSM2_NPR where nodeID = 623 }    !R630M at RM98      weight = 0.03
+define Frac_NPR628 { select factor from DSM2_NPR where nodeID = 628 }    !R630M at RM105  weight = 0.41
+define Frac_NPR631 { select factor from DSM2_NPR where nodeID = 631 }    !R630M at RM109  weight = 0.10
+define Frac_NPR635 { select factor from DSM2_NPR where nodeID = 635 }    !R630M at RM113  weight = 0.07
+define Frac_NPR638 { select factor from DSM2_NPR where nodeID = 638 }    !R630M at RM117  weight = 0.07
+define Frac_NPR645 { select factor from DSM2_NPR where nodeID = 645 }    !R630M at RM125  weight = 0.02
+define Frac_NPR649 { select factor from DSM2_NPR where nodeID = 649 }    !R630M at RM130  weight = 0.04
+
+!Flow calculation under DSM2 schematic
+define NPR601 { std kind 'NPR-Flow' Units 'CFS' }    !R639A at RM75
+define NPR602 { std kind 'NPR-Flow' Units 'CFS' }    !R637D at RM76
+define NPR603 { std kind 'NPR-Flow' Units 'CFS' }    !R637D at RM77
+define NPR604 { std kind 'NPR-Flow' Units 'CFS' }    !R637D at RM78.5
+define NPR605 { std kind 'NPR-Flow' Units 'CFS' }    !R637D at RM80
+define NPR612 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM87
+define NPR616 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM91.5
+define NPR617 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM93
+define NPR623 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM98
+define NPR628 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM105
+define NPR631 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM109
+define NPR635 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM113
+define NPR638 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM117
+define NPR645 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM125
+define NPR649 { std kind 'NPR-Flow' Units 'CFS' }    !R630M at RM130
+
+Goal Set_NPR601 { NPR601 = R639A * Frac_NPR601 }    !R639A at RM75
+Goal Set_NPR602 { NPR602 = R637D * Frac_NPR602 }    !R637D at RM76
+Goal Set_NPR603 { NPR603 = R637D * Frac_NPR603 }    !R637D at RM77
+Goal Set_NPR604 { NPR604 = R637D * Frac_NPR604 }    !R637D at RM78.5
+Goal Set_NPR605 { NPR605 = R637D * Frac_NPR605 }    !R637D at RM80
+Goal Set_NPR612 { NPR612 = R630M * Frac_NPR612 }    !R630M at RM87
+Goal Set_NPR616 { NPR616 = R630M * Frac_NPR616 }    !R630M at RM91.5
+Goal Set_NPR617 { NPR617 = R630M * Frac_NPR617 }    !R630M at RM93
+Goal Set_NPR623 { NPR623 = R630M * Frac_NPR623 }    !R630M at RM98
+Goal Set_NPR628 { NPR628 = R630M * Frac_NPR628 }    !R630M at RM105
+Goal Set_NPR631 { NPR631 = R630M * Frac_NPR631 }    !R630M at RM109
+Goal Set_NPR635 { NPR635 = R630M * Frac_NPR635 }    !R630M at RM113
+Goal Set_NPR638 { NPR638 = R630M * Frac_NPR638 }    !R630M at RM117
+Goal Set_NPR645 { NPR645 = R630M * Frac_NPR645 }    !R630M at RM125
+Goal Set_NPR649 { NPR649 = R630M * Frac_NPR649 }    !R630M at RM130

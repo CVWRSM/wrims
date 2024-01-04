@@ -1,0 +1,50 @@
+/*
+CALSIM III
+BEARRIVER.WRESL
+
+Edited ajdraper, MWH, November 15, 2006
+*/
+
+! Operational logic for export from Bear River to PG&E, PCWA and NID.
+! Operations for Camp Far West Reservoir releases
+! Operational Logic for diversions from Bear River to Camp Far West ID and Soth Sutter WD (Demand Unit 22_NA)
+! Operations are taken from the Bear River Model
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear River Exports	    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define D294 {timeseries kind 'FLOW-DELIVERY' units 'TAF' convert 'CFS'} !Gold Hill/Combie Canal, from Bear River Model
+!define D292 {timeseries kind 'FLOW-DELIVERY' units 'TAF' convert 'CFS'} !Bear River Canal, from Bear River Model
+!define D290 {timeseries kind 'FLOW-DELIVERY' units 'TAF' convert 'CFS'} !Boardman Canal, from Bear River Model
+!define R291 {timeseries kind 'FLOW-RETURN'    units 'TAF' convert 'CFS'} !Return flow from Boardman Canal to Bear River, from Bear River Model
+
+!goal setD_LBR002_LBC001 {D_LBR002_LBC001 =  D294-R291}
+!goal setD_BRR050_BEC000 {D_BRR050_BEC000 =  D292}
+!goal setD_CMBIE_CBC000  {D_CMBIE_CBC000 =  D290}
+
+!Diversions from Combie Reservoir are diverted to the Combie Phase I, II, and III systems which are north of the Bear River
+!diverted to Magnolia Reservoir which is north of the Bear River
+!and diverted to the Combie-Ophir system which is south of the Bear River and is the only part represented in CalSim-III
+
+! Based on Nevada Irrigation District Raw Water Master Plan (Sep 2005), page 5-38, flows into the Combie-Ophir system
+! are approximately 2/3 of the diversion from Combie Reservoir
+
+goal set {D_CBC000_NID_N1 = 0.33*D_CMBIE_CBC000}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Camp Far West Reservoir    !!!!!!!!!!!!!!!!!!!!!!!!!!	
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define C286 {timeseries kind 'FLOW-CHANNEL' units 'CFS'} ! Release from Camp Far West from Bear River Model
+
+!goal setI_BRR017 {I_BRR017 = C286}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Lower Bear River Diversions    	!!!!!!!!!!!!!!!!!!	
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define D285 {timeseries kind 'FLOW-DELIVERY' units 'CFS'} !Camp Far West ID
+!define D283 {timeseries kind 'FLOW-DELIVERY' units 'CFS'} !South Sutter WD
+
+!goal setD_BRR017_23_NA {D_BRR017_23_NA <  D285}
+!goal setD_BRR016_23_NA {D_BRR016_23_NA <  D283}
+

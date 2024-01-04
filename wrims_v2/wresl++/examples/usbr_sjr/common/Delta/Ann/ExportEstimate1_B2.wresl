@@ -1,0 +1,85 @@
+/*
+This file defines export levels for each project (SWP,CVP).
+Estimates are based on current month delivery and San Luis rule-curve.
+*/
+
+!*********************************************************************************************
+! SWP exports:
+
+! export for south-of-delta SWP: demand
+define EstSWPSodDem {value /*swp_total_demand*/
+dem_totswps_pag*perdel_swp_ag +
+  dem_totswps_pls +
+  dem_totswps_pmwmi*perdel_swp_mwd +
+  dem_totswps_potmi*perdel_swp_oth
+  - I860
+}
+
+define exp_est_SWPDem {alias EstSWPSodDem kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta SWP: rulecurve
+define EstSWPSodRC {value SWPRULEcalc1*taf_cfs - (S_SLUIS_SWP(-1)+S_SLUIS_SWPmod)*taf_cfs}
+define exp_est_SWPRC {alias EstSWPSodRC kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta SWP: demand + rulecurve
+define EstSWPSodExp {value min(BanksMaxAllow, max(300.0, EstSWPSodDem + EstSWPSodRC))}
+define exp_est_SWP {alias EstSWPSodExp kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+!*********************************************************************************************
+! CVP exports:
+
+! export for south-of-delta CVP: demand
+define EstCVPSodDem {value
+  dem_totcvps_pag*taf_cfs*perdel_cvpag_s - dem_d607a_pag*taf_cfs*perdel_cvpag_s +
+  dem_totcvps_pls*taf_cfs - dem_d607d_pls*taf_cfs +
+  dem_totcvps_pmi*taf_cfs*perdel_cvpmi_s  +
+  dem_totcvps_pex*taf_cfs*perdel_cvpex_s - dem_d607b_pex*taf_cfs*perdel_cvpex_s +
+  dem_totcvps_prf*taf_cfs*perdel_cvprf_s - dem_d607c_prf*taf_cfs*perdel_cvprf_s +
+  max(0.0, dem_d607a_pag*taf_cfs*perdel_cvpag_s + dem_d607d_pls*taf_cfs + dem_d607b_pex*taf_cfs*perdel_cvpex_s + dem_d607c_prf*taf_cfs*perdel_cvprf_s - C605a[SJR_WQ1] - I_FSL012 - I_JBP006)}
+define exp_est_CVPDem {alias EstCVPSodDem kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta CVP: rulecurve
+define EstCVPSodRC {value CvpRuleCalc1*taf_cfs - (S_SLUIS_CVP(-1)+S_SLUIS_CVPmod)*taf_cfs}
+define exp_est_CVPRC {alias EstCVPSodRC kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! minimum Tracy pumping
+define TracyMinPumpLevel {
+        case TracyShastaLow {
+                condition S_SHSTA(-1) /*+ S44(-1)*/ + S_SHSTAmod < 1500.0
+                value 600.0 }
+        case TracyShastaHigh {
+                condition always
+                value 800.0 }
+}
+! export for south-of-delta CVP: demand + rulecurve
+define CVPexportcap {value maxTracycalc+ CVPDedBanksSwitch*BanksMaxAllowCVP}
+define EstCVPSodExp {
+       case Action2On {
+            condition month >= DEC .and. month <= JAN .and. int(B2Action2On)==1
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC), max(TracyMinPumpLevel,D418CVP_B2Base + D419CVP_B2Base - redAction2))}
+       case Action7On {
+            condition month >= FEB .and. month <= MAR .and. int(B2Action7On)==1
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC), max(TracyMinPumpLevel,D418CVP_B2Base + D419CVP_B2Base - (ResAction7/2.)*taf_cfs))}
+       case Action6On {
+            condition month == APR .and. int(B2Action6On)==1
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC), PulseExpRes*0.5)}
+       case Action4On {
+            condition month == MAY .and. int(B2Action4On)==1
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC), PulseExpRes*0.5)}
+       case Action3OnAPR {
+            condition month == APR .and. int(B2Action3On)==1
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC), min(CVPexportcap, max(0.0, EstCVPSodDem + EstCVPSodRC)*14.0/daysin + PulseExpRes*0.5*16.0/daysin), TracyCapPermit*14.0/daysin + PulseExpRes*0.5*16.0/daysin)}
+       case Action3OnMAY {
+            condition month == MAY .and. int(B2Action3On)==1
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC), 3000.*16.0/daysin + PulseExpRes*0.5*15.0/daysin, TracyCapPermit*14.0/daysin + PulseExpRes*0.5*16.0/daysin)}
+       case Action5On {
+            condition month == JUN .and. int(B2Action5On)==1
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC), D418(-1)*0.5 + D419_CVP(-1)*0.5 + min(CVPexportcap, max(0.0, EstCVPSodDem + EstCVPSodRC)*0.5), 3000.0)}
+       case Action5Off {
+            condition month == JUN
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC), 3000.0)}
+       case rest {
+            condition always
+            value     min(CVPexportcap, max(TracyMinPumpLevel, EstCVPSodDem + EstCVPSodRC))}
+       }
+define exp_est_CVP {alias EstCVPSodExp kind 'EXPORT-ESTIMATE' units 'CFS'}

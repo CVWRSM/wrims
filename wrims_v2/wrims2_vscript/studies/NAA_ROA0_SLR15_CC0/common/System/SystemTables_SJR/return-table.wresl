@@ -1,0 +1,95 @@
+define R508 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R526 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R528A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R528B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R528C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R532 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R534A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R534B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R545A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R545B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R545C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R550A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R550B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R564A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R564B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R566 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R573 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R585 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R587A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R587B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R595 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607D {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607E {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607F {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607G {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607H {std kind 'FLOW-RETURN' units 'CFS'} !
+define R607i {std kind 'FLOW-RETURN' units 'CFS'} !A. Fock 2005/09/21 Mendota WMA refuge return
+define R607West {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614J {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614L {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614D {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614E {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614F {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614G {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614H {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614I {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614K {std kind 'FLOW-RETURN' units 'CFS'} !
+define R614West {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619D {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619E {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619F {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619G {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619H {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619I {std kind 'FLOW-RETURN' units 'CFS'} !
+define R619West {std kind 'FLOW-RETURN' units 'CFS'} !
+define R620 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630D {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630E {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630F {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630H {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630I {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630J {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630K {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630L {std kind 'FLOW-RETURN' units 'CFS'} !
+define R630M {std kind 'FLOW-RETURN' units 'CFS'} !
+define rfactor_R630M {value 0.3}
+goal returnflowR630M {R630M=rfactor_R630M*D620B}
+define R630West {std kind 'FLOW-RETURN' units 'CFS'} !
+define R636A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R636B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R636C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R637A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R637B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R637C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R637D {std kind 'FLOW-RETURN' units 'CFS'} !
+define rfactor_R637D {value 0.3}
+goal returnflowR637D {R637D=rfactor_R637D*D630B}
+define R639A {std kind 'FLOW-RETURN' units 'CFS'} !
+define rfactor_R639A {value 0.3}
+goal returnflowR639A {R639A=rfactor_R639A*D637}
+define R639West {std kind 'FLOW-RETURN' units 'CFS'} !
+define R639B {std kind 'FLOW-RETURN' units 'CFS'} !
+!
+define R644 {std kind 'FLOW-RETURN' units 'CFS'}
+define R644A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R644B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R644C {std kind 'FLOW-RETURN' units 'CFS'} !
+define R644D {std kind 'FLOW-RETURN' units 'CFS'} !
+goal setR644 { R644 = R644A + R644B + R644C + R644D }
+!
+define R514 {std kind 'FLOW-RETURN' units 'CFS'}
+define R514A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R514B {std kind 'FLOW-RETURN' units 'CFS'}
+goal setR514 { R514 = R514A + R514B }

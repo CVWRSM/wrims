@@ -1,0 +1,71 @@
+! TransfersAcquisitions_Max1.wresl
+!
+!******************************************************************************
+! Read in Max NOD Acquisitions for this year type - This represents the upper bound of acquisitions in
+! Sac, Feather and Yuba Basins. These are the limits for Stage1, Stage2, L4 and EWA acquisitions
+!
+! Yuba
+define Yuba_Max1yr {select Yuba from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}  !Data entry is for annual max
+!
+define Yuba_Max1 {
+    case first_year {
+        condition month<MAY .and. wateryear==1922
+        value 0. }
+    case second_year {
+        condition wateryear==1922
+        value Yuba_Max1yr }    ! Uses tabular inputs - which should be set at maximum of 61 TAF for Existing and 70 TAF for FutureNA
+    case otherwise {
+        condition always
+!
+! These are the maximums for Existing and Future NA assumptions from the LYRA EIS/R analysis:
+!            Existing    FutureNA
+! Max 1yr      61 TAF      70 TAF
+! Max 2yr     116 TAF     120 TAF
+! Max 3yr     116 TAF     140 TAF
+!
+! Existing
+!        value min(Yuba_Max1yr,
+!                  max(116.-Yubadv(prevSep)-AnnYuba_EWAdv(prevSep),0.),
+!                  max(116.-Yubadv(prevSep)-AnnYuba_EWAdv(prevSep)
+!                          -PrevYrYubadv(prevSep),0.))
+! Future NA
+        value min(Yuba_Max1yr,
+                  max(120.-Yubadv(prevSep)-AnnYuba_EWAdv(prevSep),0.),
+                  max(140.-Yubadv(prevSep)-AnnYuba_EWAdv(prevSep)
+                          -PrevYrYubadv(prevSep),0.))
+    }
+}
+!
+! Feather GW Substitution and Crop Idling/Shifting is defined in Common Assumptions Documentation
+define FeathGW_Max1 {select Feather_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+define FeathCI_Max1 {select Feather_CI from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+!
+! Sac Valley GW Substitution and Crop Idling/Shifting is defined in Common Assumptions Documentation
+define SacGW_Max1 {select SacValley_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+define SacCI_Max1 {select SacValley_CI from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+define SacOthGW_Max1 {select SacOther_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+define SacOthCI_Max1 {select SacOther_CI from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+! American R GW Substitution
+define AmerRGW_Max1 {select AmerR_GW from WTS_MaxAcquisitionAmts_NOD where Index=wyt_TRANS}
+!
+define TOTAL_NOD_Max1 {value Yuba_Max1 + FeathGW_Max1 + FeathCI_Max1 + SacGW_Max1 + SacCI_Max1 + SacOthGW_Max1 + SacOthCI_Max1 + AmerRGW_Max1}
+define WTS_NOD_Max1 {alias TOTAL_NOD_Max1 kind 'Stage1-Max-Acquisition' units 'taf'}
+!
+!******************************************************************************
+! Read in Max SOD Acquisitions for this year type - This represents the upper bound of acquisitions
+! from regions along the DMC and CA. These are the limits for Stage1, Stage2, L4 and EWA acquisitions
+!
+! Mendota Pool/DMC region GW Substitution and Crop Idling/Shifting is defined in Common Assumptions Documentation
+define DMCGW_Max1 {select DMC_GW from WTS_MaxAcquisitionAmts_SOD where Index=wyt_TRANS}
+define DMCCI_Max1 {select DMC_CI from WTS_MaxAcquisitionAmts_SOD where Index=wyt_TRANS}
+!
+! California Aqueduct region GW Substitution and Crop Idling/Shifting is defined in Common Assumptions Documentation
+define CAGW_Max1 {select CA_GW from WTS_MaxAcquisitionAmts_SOD where Index=wyt_TRANS}
+define CACI_Max1 {select CA_CI from WTS_MaxAcquisitionAmts_SOD where Index=wyt_TRANS}
+!
+define TOTAL_SOD_Max1 {value DMCGW_Max1 + DMCCI_Max1 + CAGW_Max1 + CACI_Max1}
+define WTS_SOD_Max1 {alias TOTAL_SOD_Max1 kind 'Stage1-Max-Acquisition' units 'taf'}
+!
+!******************************************************************************
+! This is the total Max overall
+define TOTAL_Max1 {value TOTAL_NOD_Max1 + TOTAL_SOD_Max1}

@@ -1,0 +1,89 @@
+!SanLuisLimitsDefs.wresl
+!N. Parker & L. Brekke
+!1/26/06
+!
+
+! These definitions are used to define San Luis storage mods in Cycle 1 
+! (see file PreEWAStorageMod.wresl) and then again starting in Cycle 6.
+! In the initial full-system cycle of a baseline step for EWA studies, limit
+! project pumping into San Luis to the fill potential less the project's 
+! carried over storage debt.    (i.e. reduce san luis capacity by the carryover
+! debt)
+
+! Delivery to interruptible demands is allowed if the project storage reaches
+! this reduced "fill limit".  
+
+! BLCoDebt's are the "baseline" steps' understanding of the remaining SL CO debt.
+! They must be calculated from End-of-Sept EWA step results for JPOD-EWA 
+! storage differences (new debt) plus residual carryover debt.  
+! *****************************************************************************
+
+/*
+define S11__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S12__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S15__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S25__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S27__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S28__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S29__z5 {timeseries kind 'STORAGE' units 'TAF'}
+*/
+define B2SwpGainDeldv {std kind 'FLOW-GAIN-SWP' units 'TAF'}
+define EwaCoDebtSwp2dv {std kind 'debt' units 'taf'}
+define EwaCoDebtCvp2dv {std kind 'debt' units 'taf'}
+define EwaNewDebtSwp2dv {std kind 'debt' units 'taf'}
+define EwaNewDebtCvp2dv {std kind 'debt' units 'taf'}
+define BLCoDebtSwpdv {std kind 'debt' units 'taf'}
+define BLCoDebtCvpdv {std kind 'debt' units 'taf'}
+
+
+define SwpSeptDiff {
+  case FirstMonth {
+    condition month==OCT .and. int(wateryear)==1922
+    value 0.0 }
+  case October {
+    condition month==OCT 
+    value max(0., EwaNewDebtSwp2dv(-1))}
+  case otherwise {
+    condition always
+    value 0. }
+}
+define CvpSeptDiff {
+  case FirstMonth {
+    condition month==OCT .and. int(wateryear)==1922
+    value 0.0 }
+  case October {
+    condition month==OCT 
+    value max(0., EwaNewDebtCvp2dv(-1))}
+  case otherwise {
+    condition always
+    value 0. }
+}
+
+! Baseline studies start October with overall carryover debt understood to be
+! the EWA step EOSept carryover debt plus the EOSept new debt.  Baseline studies
+! may fill into this debt space with pumping of surplus water, thus decreasing 
+! the level of carryover debt that is then passed back to the EWA step.  
+
+define BLCoDebtSwp {
+    case FirstMonth {
+      condition month==OCT .and. int(wateryear)==1922
+      value 0.0 }
+    case October {
+      condition month==OCT
+      value EwaCoDebtSwp2dv(-1) + SwpSeptDiff } 
+    case otherwise {
+      condition always
+      value BLCoDebtSwpdv(-1) }
+}
+define BLCoDebtCvp {
+    case FirstMonth {
+      condition month==OCT .and. int(wateryear)==1922
+      value 0.0 }
+    case October {
+      condition month==OCT
+      value EwaCoDebtCvp2dv(-1) + CvpSeptDiff } 
+    case otherwise {
+      condition always
+      value BLCoDebtCvpdv(-1) }
+}
+

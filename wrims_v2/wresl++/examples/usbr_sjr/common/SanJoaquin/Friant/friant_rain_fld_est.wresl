@@ -1,0 +1,42 @@
+! Friant_rain_fl_est.wresl
+! MBK (consultants for USBR)
+! 11/21/02
+! Created for the Upper San Joaquin River Basin Storage Investigation Project
+! This file estimates rainflood release, used to determine 215 water allocation
+! Revised by Claire Hsu, USBR, 02/25/03    for review and documentation project
+!######################################################################
+/*
+Estimate total flood control release, total delivery and maximum of rainflood and snowmelt releases
+*/
+! Estimate Friant evaporation amount
+define Friant_est_evap {
+        select inc
+        from Friant_Evap
+        where contract_month = contract_month }
+
+! Total delivery from Friant for current month (Friant-Kern and Madera Canal Class 1 and 2 deliveries plus losses)
+define curr_fr_del {
+    value  Madera_c1_del + Madera_c2_del + Madera_loss
+           + FK_c1_del + FK_c2_del + FK_loss }
+
+! Estimate the rainflood release that will be required from Friant this month
+goal compute_rain_rel {
+    lhs Fr_rain_rel
+    case initialize {
+        condition month == sep .and. wateryear == 1921
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs max ( 0.0, S_MLRTN(-1) + I_MLRTN *cfs_taf - curr_Fr_del - Friant_est_evap - S_MLRTNlevel4 - C_MLRTN_min)  } }
+
+! Estimated total flood control release, maximum of rainflood and snowmelt releases
+define Fr_fc_rel {value max( max ( 0.0, (S_MLRTN(-1) + I_MLRTN * cfs_taf - curr_Fr_del - Friant_est_evap )
+                  - S_MLRTNlevel4 - C_MLRTN_min)  , fr_for_spill * Fr_srp / 100. ) }
+
+! used for debugging
+!define fr_for_spill_chk {alias fr_for_spill kind 'temp' units 'taf'}
+!define Fr_srp_chk {alias Fr_srp kind 'temp' units 'taf'}
+!define curr_fr_del_chk {alias curr_fr_del kind 'temp' units 'taf'}
+!define Fr_est_e_chk {alias Friant_est_evap kind 'temp' units 'taf'}
+!define S_MLRTNlevel4_chk {alias S_MLRTNlevel4 kind 'temp' units 'taf'}
+

@@ -1,0 +1,100 @@
+/*************************************
+demands_RedBlf.wresl
+ 
+Tom FitzHugh BOR 5/13/2010
+
+Handles demand/delivery logic for Red Bluff.  Deliveries are limited to the minimum of
+contract demand adjusted by contract cuts and diversion requirement adjusted for losses.
+
+In addition to losses associated with each delivery, Calsim computes an overall loss for
+the Tehama-Colusa Canal, which 1% of flow in C171.  Approximated this here by adding on 
+an additional loss factor (ConvLs_172) onto all three deliveries that are beyond C171
+in the Calsim network (D172, D174, D178).
+**************************************/
+
+/* DSA 58 (Sacramento River above Red Bluff) */
+! Define the Agricultural, M&I, and Settlement Contractors Allowable Diversion limits based on contract cuts
+define ad_d104_pag {value perdel_cvpag_sys*dem_d104_pag*taf_cfs}  
+define ad_d104_pmi {value perdel_cvpmi_sys*dem_d104_pmi*taf_cfs}
+define ad_d104_psc {value perdel_cvpsc_sys*dem_d104_psc*taf_cfs}
+
+! Define demand by type based on CVP contract amounts
+define con_d104_pag {select contract from nodcvpcontract where contractor=1}
+define con_d104_pmi {select contract from nodcvpcontract where contractor=2}
+define con_d104_psc {select contract from nodcvpcontract where contractor=3}
+define con_58_total {select contract from nodcvpcontract where contractor=4} 
+ 
+! Define delivery target based on minimum of adjusted contract demands and diversion requirement
+define target_d104_pag {value min(ad_d104_pag, demand_prj_58*con_d104_pag/con_58_total)}
+define target_d104_pmi {value min(ad_d104_pmi, demand_prj_58*con_d104_pmi/con_58_total)}
+define target_d104_psc {value min(ad_d104_psc, demand_prj_58*con_d104_psc/con_58_total)}
+
+! Limits deliveries to targets
+goal limit_d104_pag  {d104_pag < target_d104_pag}
+goal limit_d104_pmi  {d104_pmi < target_d104_pmi}
+goal limit_d104_psc  {d104_psc < target_d104_psc}
+ 
+! Set limit on total project stream diversion 
+/*** I replicated the statement below from demands_58.wresl, but I am not sure it is necessary 
+since the code above (originally from cvp_bound_del_system.wresl) constrains the pag, pmi and psc portions 
+of D104 to demands x percent delivery ... leaving in for now to replicate Calsim*/
+goal set_d104_proj   {d104_prj < dem_d104_prj*taf_cfs }
+
+goal splitD104  {d104_prj = d104_psc + d104_pmi + d104_pag}
+
+/****** Corning Canal ******/
+! According to historical record, CVP deliveries through Corning canal are limited.
+goal setL17101 {L17101 = D171 * ConvLs_17101}  !set conveyance loss  
+  
+define D171_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD171   {D171_pag < perdel_cvpag_sys*con_D171_pag }
+goal limitD171_1 {D171_pag < target_D17101 + L17101}
+
+goal splitD171 {D171 = D171_pag}
+ 
+/****** WBA4 along Tehama-Colusa Canal ******/
+goal setL17201 {L17201 = D172 * (ConvLs_17201 + ConvLs_172)}  !set conveyance loss
+
+define D172_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD172   {D172_pag < perdel_cvpag_sys*con_D172_pag}
+goal limitD172_1 {D172_pag < target_D17201 + L17201}
+
+goal splitD172 {D172 = D172_pag}
+  
+/****** WBA7N ******/ 
+goal setL17401 {L17401 = D174 * (ConvLs_17401 + ConvLs_172)}  !set conveyance loss
+
+define D174_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD174   {D174_pag < perdel_cvpag_sys*con_D174_pag}
+goal limitD174_1 {D174_pag < target_D17401 + L17401}
+
+goal splitD174 {D174 = D174_pag}
+ 
+/****** WBA7S ******/
+goal setL17801 {L17801 = D178 * (ConvLs_17801 + ConvLs_172)}  !set conveyance loss
+
+define D178_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD178   {D178_pag < perdel_cvpag_sys*con_D178_pag}
+goal limitD178_1 {D178_pag < target_D17801 + L17801}
+
+goal splitD178 {D178 = D178_pag}
+
+!Define TC canal losses and aggregate TC diversion including diversion for TC to GC intertie.
+goal set_D112 {D112 = D171 + D172 + D174 + D178 + L172 + C_TC_GC - C_StCr_TC }
+
+define inf_set_L172 {std kind 'infeas-prevention' units 'cfs'}
+goal set_L172 {0.99 * L172 = 0.01*D172 + 0.01*D174 + 0.01*D178 + 0.01*C_TC_GC - 0.01*C_StCr_TC + inf_set_L172}
+
+! Set total project deliveries for Red Bluff and also deliveries by type
+goal setD_RedBlf_P {D_RedBlf_P = D104_PRJ + D112}
+goal setD_RedBlf_pag {D_RedBlf_pag = d104_pag + D171_pag + D172_pag + D174_pag + D178_pag}
+goal setD_RedBlf_pmi {D_RedBlf_pmi = d104_pmi}
+goal setD_RedBlf_psc {D_RedBlf_psc = d104_psc}
+
+
+
+

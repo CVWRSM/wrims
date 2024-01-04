@@ -1,0 +1,38 @@
+! CYCLE1OUT
+! R. Field
+! Reclamation
+! 06/16/2004
+! WRESL code for writing selective cycle 1 output to DSS
+! FOR DE-BUGGING PURPOSES ONLY!
+
+!#######################################################
+
+define D425_TScycle1 {std kind 'flow-cycle1' units 'cfs' }
+goal outD425_TScycle1 {D425_TScycle1 = D425_TS[LV_BASE]}
+
+define D408_RScycle1 {std kind 'flow-cycle1' units 'cfs' }
+goal outD408_RScycle1 {D408_RScycle1 = D408_RS[LV_BASE]}
+
+define D408_RS_CScycle1 {std kind 'flow-cycle1' units 'cfs' }
+goal outD408_RS_CScycle1 {D408_RS_CScycle1 = D408_RS_CS[LV_BASE]}
+
+define D408_ORcycle1 {std kind 'flow-cycle1' units 'cfs' }
+goal outD408_ORcycle1 {D408_ORcycle1 = D408_OR[LV_BASE]}
+
+define D408_OR_CScycle1 {std kind 'flow-cycle1' units 'cfs' }
+goal outD408_OR_CScycle1 {D408_OR_CScycle1 = D408_OR_CS[LV_BASE]}
+
+define D408_AIPcycle1 {std kind 'flow-cycle1' units 'cfs' }
+goal outD408_AIPcycle1 {D408_AIPcycle1 = D408_AIP[LV_BASE]}
+
+define D408_AIP_CSc1 {std kind 'flow-cycle1' units 'cfs' }
+goal outD408_AIP_CSc1 {D408_AIP_CSc1 = D408_AIP_CS[LV_BASE]}
+
+define S422_cycle1 {std kind 'volume-cycle1' units 'taf'}
+goal outS422_cycle1 {S422_cycle1 = S422[LV_BASE]}
+
+define C422cycle1dv {std kind 'flow-cycle1' units 'cfs' }
+goal outC422cycle1dv {C422cycle1dv = C422[LV_BASE]}
+
+define C430Acycle1dv {std kind 'flow-cycle1' units 'cfs' }
+goal outC430Acycle1dv {C430Acycle1dv = C430A[LV_BASE]}

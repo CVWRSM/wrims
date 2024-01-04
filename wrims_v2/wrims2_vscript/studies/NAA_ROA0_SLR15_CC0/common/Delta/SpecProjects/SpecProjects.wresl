@@ -1,0 +1,48 @@
+!SpecProjects.wresl
+
+!******************************************************************************
+! City of Antioch - Pre-1914 water rights
+! When Antioch's water intake at Rodger's Point gets too salty, the city purchases water from CCWD instead.
+! A California Supreme Court decision required the State to ensure that Antioch had fresh water at its intake.
+! The State and federal governments reimburse Antioch about 2/3rds of the cost of purchasing the CCWD water.
+! For modeling, it is assumed that the Pre-1914 water is diverted when Rock Slough is below the 150 mg/l Cl- standard.
+
+define Antioch_demand {        ! TAF/mon
+    case goodWQ {
+        condition WQ408_RS <= 150.
+        value 25. * cfs_taf }
+    case Other {
+        condition always
+        value 0. }
+}
+goal set_D406B { D406B < Antioch_demand * taf_cfs}
+
+!******************************************************************************
+! Fairfield, Vacaville and Benecia Agreement for Settlement Water
+define FVB_demand { value 2.635 }  ! TAF/mon
+!Limit Diversions for FVB Settlement Water to times when the system is in UWFE Condition
+!Also weighted such that excess flow conditions in the Delta need to occur
+goal set_D403D { D403D < FVB_demand * int_IBU_UWFE * taf_cfs}
+
+!******************************************************************************
+! Davis-Woodland project for excess flows - NOT USED
+define Woodland_demand {
+!    case OCT { condition month == OCT value 2.041 }    !max TAF/mon
+!    case NOV { condition month == NOV value 1.392 }
+!    case DEC { condition month == DEC value 1.214 }
+!    case JAN { condition month == JAN value 1.077 }
+!    case FEB { condition month == FEB value 1.077 }
+!    case MAR { condition month == MAR value 1.303 }
+!    case APR { condition month == APR value 1.577 }
+!    case MAY { condition month == MAY value 2.088 }
+!    case JUN { condition month == JUN value 2.689 }
+!    case JUL { condition month == JUL value 0.    }
+!    case AUG { condition month == AUG value 0.    }
+!    case SEP { condition month == SEP value 2.529 }
+    case Oth { condition always value 0. }
+}
+! Limit Diversions for Davis-Woodland project to times when the system is in UWFE Condition
+!Also weighted such that excess flow conditions in the Delta need to occur
+goal set_d165B {d165B < Woodland_demand * int_IBU_UWFE * taf_cfs}
+
+!******************************************************************************

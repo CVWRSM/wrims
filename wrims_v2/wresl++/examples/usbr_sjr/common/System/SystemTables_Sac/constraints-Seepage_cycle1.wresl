@@ -1,0 +1,349 @@
+/*
+SEEPAGE ARCS
+
+The sign of GetSeep is with respect to groundwater; i.e.
+
+  positive seepage (GetSeep) = loosing stream
+  negative seepage (GetSeep) = gaining stream
+
+When multiplied by -1, it reflects stream's perspective.  
+
+Original formulation _ AJD, jtpayne July 2006
+updated _ Can Dogrul June 2007
+*/
+
+
+!*********************************************************************
+!*********************************************************************
+!***  Conversion factor from CFS to CF/MONTH
+!*********************************************************************
+!*********************************************************************
+/*  already defined in constraints-seepage.wresl file for the SJW system
+define  cfs_cfm  {value daysin * 86400.0}
+define  cfs_cfmp {case first{
+                     condition wateryear == 1922 .and. month == Oct
+                          value daysin * 86400.0}
+                  case other{
+                     condition always
+                          value  daysindv(-1) * 86400.0 }}
+*/
+!*********************************************************************
+!*********************************************************************
+!***  Groundwater simulation
+!*********************************************************************
+!*********************************************************************
+!INCLUDE '..\..\CVGroundwater\CVGroundwater.wresl'
+
+         
+!*********************************************************************
+!*********************************************************************
+!***  Define goals
+!*********************************************************************
+!********************************************************************* 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! American River      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
+goal setFOLSM_389  { SG_FOLSM_389  = - GetSeep(374)   / cfs_cfm }                           
+goal setNTOMA_385  { SG_NTOMA_385  = - GetSeep(375)   / cfs_cfm }                           
+goal setAMR020_384 { SG_AMR020_384 = - GetSeep(376)   / cfs_cfm }                           
+goal setAMR015_380 { SG_AMR015_380 = - GetSeep(377)   / cfs_cfm }                           
+goal setAMR009_375 { SG_AMR009_375 = - GetSeep(378)   / cfs_cfm }                           
+goal setAMR004_374 { SG_AMR004_374 = - GetSeep(379)   / cfs_cfm }                           
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Antelope Creek      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setANT010_073 { SG_ANT010_073 = - GetSeep(233)   / cfs_cfm }          
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Big Chico Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setBCC012_132 { SG_BCC012_132 = - GetSeep(269)   / cfs_cfm }          
+goal setBCC006_131 { SG_BCC006_131 = - GetSeep(270)   / cfs_cfm }          
+goal setBCC004_130 { SG_BCC004_130 = - GetSeep(271)   / cfs_cfm }          
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Bear River          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setBRR017_333 { SG_BRR017_333 = - GetSeep(358)   / cfs_cfm }          
+goal setBRR011_332 { SG_BRR011_332 = - GetSeep(359)   / cfs_cfm }          
+goal setBRR004_331 { SG_BRR004_331 = - GetSeep(360)   / cfs_cfm }          
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Butte Creek         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setBTC043_143 { SG_BTC043_143 = - GetSeep(283)   / cfs_cfm }          
+goal setBTC036_147 { SG_BTC036_147 = - GetSeep(284)   / cfs_cfm }          
+goal setBTC032_157 { SG_BTC032_157 = - GetSeep(285)   / cfs_cfm }          
+goal setBTC029_173 { SG_BTC029_173 = - GetSeep(286)   / cfs_cfm }          
+goal setBTC024_188 { SG_BTC024_188 = - GetSeep(287)   / cfs_cfm }          
+goal setBTC018_204 { SG_BTC018_204 = - GetSeep(288)   / cfs_cfm }          
+goal setBTC012_223 { SG_BTC012_223 = - GetSeep(289)   / cfs_cfm }          
+goal setBTC007_242 { SG_BTC007_242 = - GetSeep(290)   / cfs_cfm }          
+goal setBTC003_255 { SG_BTC003_255 = - GetSeep(291)   / cfs_cfm }          
+goal setBSL001_263 { SG_BSL001_263 = -(GetSeep(292) +      
+                                       GetSeep(333) ) / cfs_cfm }    
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Battle Creek        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setBTL006_038 { SG_BTL006_038 = - GetSeep(220)   / cfs_cfm }          
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Cache Creek         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setCCH030_335 { SG_CCH030_335 = - GetSeep(390)   / cfs_cfm }      
+goal setCCH023_336 { SG_CCH023_336 = - GetSeep(391)   / cfs_cfm }      
+goal setCCH017_347 { SG_CCH017_347 = - GetSeep(392)   / cfs_cfm }      
+goal setCCH012_348 { SG_CCH012_348 = - GetSeep(393)   / cfs_cfm }      
+goal setCCH006_358 { SG_CCH006_358 = - GetSeep(394)   / cfs_cfm }      
+goal setCCH003_359 { SG_CCH003_359 = - GetSeep(395)   / cfs_cfm }      
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Colusa Basin Drain  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setCBD049_220 { SG_CBD049_220 = - GetSeep(318)   / cfs_cfm }          
+goal setCBD044_239 { SG_CBD044_239 = - GetSeep(319)   / cfs_cfm }          
+goal setCBD041_253 { SG_CBD041_253 = - GetSeep(320)   / cfs_cfm }          
+goal setCBD037_260 { SG_CBD037_260 = - GetSeep(321)   / cfs_cfm }          
+goal setCBD031_268 { SG_CBD031_268 = -(GetSeep(317) +      
+                                       GetSeep(322) +          
+                                       GetSeep(323) ) / cfs_cfm }               
+goal setCBD028_275 { SG_CBD028_275 = - GetSeep(324)   / cfs_cfm }
+goal setCBD023_289 { SG_CBD023_289 = - GetSeep(325)   / cfs_cfm }
+goal setCBD018_302 { SG_CBD018_302 = - GetSeep(326)   / cfs_cfm }
+goal setCBD012_314 { SG_CBD012_314 = - GetSeep(327)   / cfs_cfm }
+goal setCBD005_326 { SG_CBD005_326 = - GetSeep(328)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Cottonwood Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setCWD004_036 { SG_CWD004_036 = - GetSeep(218)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Cow Creek           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setCOW014_012 { SG_COW014_012 = - GetSeep(211)   / cfs_cfm }
+goal setCOW007_011 { SG_COW007_011 = - GetSeep(212)   / cfs_cfm }
+goal setCOW003_017 { SG_COW003_017 = - GetSeep(213)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Deer Creek          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setDRC010_096 { SG_DRC010_096 = - GetSeep(256)   / cfs_cfm }
+goal setDRC006_100 { SG_DRC006_100 = - GetSeep(257)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Elder Creek         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setELD027_081 { SG_ELD027_081 = - GetSeep(237)   / cfs_cfm }
+goal setELD022_082 { SG_ELD022_082 = - GetSeep(238)   / cfs_cfm }
+goal setELD017_083 { SG_ELD017_083 = - GetSeep(239)   / cfs_cfm }
+goal setELD012_084 { SG_ELD012_084 = - GetSeep(240)   / cfs_cfm }
+goal setELD005_085 { SG_ELD005_085 = - GetSeep(241)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Feather River       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setFTR068_162 { SG_FTR068_162 = - GetSeep(341)   / cfs_cfm }
+goal setFTR063_161 { SG_FTR063_161 = - GetSeep(342)   / cfs_cfm }
+goal setFTR059_177 { SG_FTR059_177 = - GetSeep(343)   / cfs_cfm }
+goal setFTR053_192 { SG_FTR053_192 = - GetSeep(344)   / cfs_cfm }
+goal setFTR048_208 { SG_FTR048_208 = - GetSeep(345)   / cfs_cfm }
+goal setFTR045_232 { SG_FTR045_232 = - GetSeep(346)   / cfs_cfm }
+goal setFTR036_246 { SG_FTR036_246 = - GetSeep(347)   / cfs_cfm }
+goal setFTR029_283 { SG_FTR029_283 = -(GetSeep(348) +
+                                       GetSeep(351) +
+                                       GetSeep(352) ) / cfs_cfm }
+goal setFTR025_295 { SG_FTR025_295 = - GetSeep(353)   / cfs_cfm }
+goal setFTR021_307 { SG_FTR021_307 = - GetSeep(354)   / cfs_cfm }
+goal setFTR016_318 { SG_FTR016_318 = - GetSeep(355)   / cfs_cfm }
+goal setFTR012_330 { SG_FTR012_330 = -(GetSeep(356) +
+                                       GetSeep(361) +
+                                       GetSeep(362) ) / cfs_cfm }
+goal setFTR008_329 { SG_FTR008_329 = -(GetSeep(340) +
+                                       GetSeep(363) +
+                                       GetSeep(364) ) / cfs_cfm }
+goal setFTR003_340 { SG_FTR003_340 = - GetSeep(365)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Glenn_Colusa Canal  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setGCC007_128 { SG_GCC007_128 = - GetSeep(303)   / cfs_cfm }
+goal setGCC010_139 { SG_GCC010_139 = - GetSeep(304)   / cfs_cfm }
+goal setGCC015_154 { SG_GCC015_154 = - GetSeep(305)   / cfs_cfm }
+goal setGCC022_169 { SG_GCC022_169 = - GetSeep(306)   / cfs_cfm }
+goal setGCC027_183 { SG_GCC027_183 = - GetSeep(307)   / cfs_cfm }
+goal setGCC032_198 { SG_GCC032_198 = - GetSeep(308)   / cfs_cfm }
+goal setGCC036_211 { SG_GCC036_211 = - GetSeep(309)   / cfs_cfm }
+goal setGCC039_216 { SG_GCC039_216 = - GetSeep(310)   / cfs_cfm }
+goal setGCC042_227 { SG_GCC042_227 = - GetSeep(311)   / cfs_cfm }
+goal setGCC046_236 { SG_GCC046_236 = - GetSeep(312)   / cfs_cfm }
+goal setGCC050_250 { SG_GCC050_250 = - GetSeep(313)   / cfs_cfm }
+goal setGCC056_258 { SG_GCC056_258 = - GetSeep(314)   / cfs_cfm }
+goal setGCC060_266 { SG_GCC060_266 = - GetSeep(315)   / cfs_cfm }
+goal setGCC065_267 { SG_GCC065_267 = - GetSeep(316)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Mill Creek          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setMLC006_088 { SG_MLC006_088 = - GetSeep(243)   / cfs_cfm }
+goal setMLC004_087 { SG_MLC004_087 = - GetSeep(244)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Paynes Creek        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setPYN001_046 { SG_PYN001_046 = - GetSeep(225)   / cfs_cfm}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Putah Creek         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setPTH024_428 { SG_PTH024_428 = - GetSeep(400)   / cfs_cfm }
+goal setPTH020_410 { SG_PTH020_410 = - GetSeep(401)   / cfs_cfm }
+goal setPTH015_411 { SG_PTH015_411 = - GetSeep(402)   / cfs_cfm }
+goal setPTH011_412 { SG_PTH011_412 = - GetSeep(403)   / cfs_cfm }
+goal setPTH007_413 { SG_PTH007_413 = - GetSeep(404)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Sacramento River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setSAC296_001 { SG_SAC296_001 = - GetSeep(205)   / cfs_cfm }
+goal setSAC294_005 { SG_SAC294_005 = - GetSeep(206)   / cfs_cfm }
+goal setSAC289_009 { SG_SAC289_009 = - GetSeep(207)   / cfs_cfm }
+goal setSAC287_015 { SG_SAC287_015 = - GetSeep(208)   / cfs_cfm }
+goal setSAC281_022 { SG_SAC281_022 = - GetSeep(209)   / cfs_cfm }
+goal setSAC277_023 { SG_SAC277_023 = -(GetSeep(210) +
+                                       GetSeep(214) +                  
+                                       GetSeep(215) ) / cfs_cfm }                  
+goal setSAC275_029 { SG_SAC275_029 = - GetSeep(216)   / cfs_cfm }
+goal setSAC269_037 { SG_SAC269_037 = -(GetSeep(217) +
+                                       GetSeep(219) +                  
+                                       GetSeep(221) +                  
+                                       GetSeep(222) ) / cfs_cfm }                  
+goal setSAC265_045 { SG_SAC265_045 = - GetSeep(223)   / cfs_cfm }
+goal setSAC259_056 { SG_SAC259_056 = -(GetSeep(224) + 
+                                       GetSeep(226) +                  
+                                       GetSeep(227) ) / cfs_cfm }                  
+goal setSAC254_055 { SG_SAC254_055 = - GetSeep(228)   / cfs_cfm }
+goal setSAC250_067 { SG_SAC250_067 = - GetSeep(229)   / cfs_cfm }
+goal setSAC247_068 { SG_SAC247_068 = - GetSeep(230)   / cfs_cfm }
+goal setSAC240_072 { SG_SAC240_072 = - GetSeep(231)   / cfs_cfm }
+goal setSAC232_079 { SG_SAC232_079 = -(GetSeep(232) +
+                                       GetSeep(234) +                  
+                                       GetSeep(235) ) / cfs_cfm }                  
+goal setSAC228_086 { SG_SAC228_086 = -(GetSeep(236) +
+                                       GetSeep(245) +                  
+                                       GetSeep(242) +                  
+                                       GetSeep(246) ) / cfs_cfm }                  
+goal setSAC224_094 { SG_SAC224_094 = -(GetSeep(247) +
+                                       GetSeep(253) +                  
+                                       GetSeep(254) ) / cfs_cfm }                  
+goal setSAC218_099 { SG_SAC218_099 = -(GetSeep(255) +
+                                       GetSeep(258) +                  
+                                       GetSeep(259) ) / cfs_cfm }                  
+goal setSAC214_105 { SG_SAC214_105 = - GetSeep(260)   / cfs_cfm }
+goal setSAC207_113 { SG_SAC207_113 = - GetSeep(261)   / cfs_cfm }
+goal setSAC196_129 { SG_SAC196_129 = -(GetSeep(262) +
+                                       GetSeep(272) +                  
+                                       GetSeep(268) +                  
+                                       GetSeep(273) ) / cfs_cfm }                  
+goal setSAC193_140 { SG_SAC193_140 = - GetSeep(274)   / cfs_cfm }
+goal setSAC185_144 { SG_SAC185_144 = - GetSeep(275)   / cfs_cfm }
+goal setSAC182_155 { SG_SAC182_155 = - GetSeep(276)   / cfs_cfm }
+goal setSAC178_171 { SG_SAC178_171 = - GetSeep(277)   / cfs_cfm }
+goal setSAC174_186 { SG_SAC174_186 = - GetSeep(278)   / cfs_cfm }
+goal setSAC168_202 { SG_SAC168_202 = - GetSeep(279)   / cfs_cfm }
+goal setSAC162_221 { SG_SAC162_221 = - GetSeep(280)   / cfs_cfm }
+goal setSAC154_240 { SG_SAC154_240 = - GetSeep(281)   / cfs_cfm }
+goal setSAC148_254 { SG_SAC148_254 = - GetSeep(282)   / cfs_cfm }
+goal setSAC141_262 { SG_SAC141_262 = - GetSeep(294)   / cfs_cfm }
+goal setSAC134_269 { SG_SAC134_269 = - GetSeep(295)   / cfs_cfm }
+goal setSAC129_277 { SG_SAC129_277 = - GetSeep(296)   / cfs_cfm }
+goal setSAC122_291 { SG_SAC122_291 = - GetSeep(297)   / cfs_cfm }
+goal setSAC115_303 { SG_SAC115_303 = - GetSeep(298)   / cfs_cfm }
+goal setSAC106_315 { SG_SAC106_315 = - GetSeep(299)   / cfs_cfm }
+goal setSAC097_327 { SG_SAC097_327 = - GetSeep(300)   / cfs_cfm }
+goal setSAC093_339 { SG_SAC093_339 = -(GetSeep(301) +
+                                       GetSeep(329) +                  
+                                       GetSeep(330) ) / cfs_cfm }                  
+goal setSAC085_349 { SG_SAC085_349 = - GetSeep(331)   / cfs_cfm }
+goal setSAC083_350 { SG_SAC083_350 = -(GetSeep(332) +
+                                       GetSeep(366) +                  
+                                       GetSeep(367) ) / cfs_cfm }                  
+goal setSAC082_351 { SG_SAC082_351 = - GetSeep(368)   / cfs_cfm }
+goal setSAC081_363 { SG_SAC081_363 = - GetSeep(369)   / cfs_cfm }
+goal setSAC078_362 { SG_SAC078_362 = - GetSeep(370)   / cfs_cfm }
+goal setSAC075_361 { SG_SAC075_361 = - GetSeep(371)   / cfs_cfm }
+goal setSAC066_372 { SG_SAC066_372 = - GetSeep(372)   / cfs_cfm }
+goal setSAC063_373 { SG_SAC063_373 = -(GetSeep(373) +
+                                       GetSeep(380) +                  
+                                       GetSeep(381) ) / cfs_cfm }                  
+goal setSAC057_416 { SG_SAC057_416 = - GetSeep(382)   / cfs_cfm }
+goal setSAC053_435 { SG_SAC053_435 = - GetSeep(383)   / cfs_cfm }
+goal setSAC048_451 { SG_SAC048_451 = 0.0}!- GetSeep(384)   / cfs_cfm }
+goal setSAC041_463 { SG_SAC041_463 = 0.0}!- GetSeep(385)   / cfs_cfm }
+goal setSAC036_475 { SG_SAC036_475 = 0.0}!- GetSeep(386)   / cfs_cfm }
+goal setSAC030_476 { SG_SAC030_476 = 0.0}!- GetSeep(387)   / cfs_cfm }
+goal setSAC022_493 { SG_SAC022_493 = 0.0}!- GetSeep(388)   / cfs_cfm }
+goal setSAC017_492 { SG_SAC017_492 = 0.0}!-(GetSeep(389) +
+                                       !GetSeep(412) +                  
+                                       !GetSeep(413) ) / cfs_cfm }                  
+goal setSAC011_527 { SG_SAC011_527 = 0.0}!- GetSeep(414)   / cfs_cfm }
+goal setSAC007_526 { SG_SAC007_526 = 0.0}!- GetSeep(415)   / cfs_cfm }
+goal setSAC003_525 { SG_SAC003_525 = 0.0}!- GetSeep(417)   / cfs_cfm }
+goal setSAC000_531 { SG_SAC000_531 = 0.0}! - GetSeep(418)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Stony Creek         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setSTN026_124 { SG_STN026_124 = - GetSeep(263)   / cfs_cfm }
+goal setSTN021_125 { SG_STN021_125 = - GetSeep(264)   / cfs_cfm }
+goal setSTN014_126 { SG_STN014_126 = - GetSeep(265)   / cfs_cfm }
+goal setSTN009_127 { SG_STN009_127 = - GetSeep(266)   / cfs_cfm }
+goal setSTN004_128 { SG_STN004_128 = - GetSeep(267)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Sutter Bypass       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setSBP031_270 { SG_SBP031_270 = - GetSeep(334)   / cfs_cfm }
+goal setSBP028_278 { SG_SBP028_278 = - GetSeep(335)   / cfs_cfm }
+goal setSBP024_281 { SG_SBP024_281 = - GetSeep(336)   / cfs_cfm }
+goal setSBP021_293 { SG_SBP021_293 = - GetSeep(337)   / cfs_cfm }
+goal setSBP018_305 { SG_SBP018_305 = - GetSeep(338)   / cfs_cfm }
+goal setSBP014_317 { SG_SBP014_317 = - GetSeep(339)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Thomes Creek        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setTHM026_108 { SG_THM026_108 = - GetSeep(248)   / cfs_cfm }
+goal setTHM021_101 { SG_THM021_101 = - GetSeep(249)   / cfs_cfm }
+goal setTHM017_091 { SG_THM017_091 = - GetSeep(250)   / cfs_cfm }
+goal setTHM012_092 { SG_THM012_092 = - GetSeep(251)   / cfs_cfm }
+goal setTHM005_093 { SG_THM005_093 = - GetSeep(252)   / cfs_cfm }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Yolo Bypass         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setYBP032_360  {SG_YBP032_360 =  - GetSeep(396)   / cfs_cfm}
+goal setYBP026_401  {SG_YBP026_401 =  - GetSeep(397)   / cfs_cfm}
+goal setYBP023_407  {SG_YBP023_407 =  - GetSeep(398)   / cfs_cfm}
+goal setYBP020_414  {SG_YBP020_414 =  -(GetSeep(399) +
+                                        GetSeep(405) +
+                                        GetSeep(406) ) / cfs_cfm}
+goal setYBP016_433  {SG_YBP016_433 =  - GetSeep(407)   / cfs_cfm}
+goal setYBP014_432  {SG_YBP014_432 =  - GetSeep(408)   / cfs_cfm}
+goal setYBP011_448  {SG_YBP011_448 =  - GetSeep(409)   / cfs_cfm}
+goal setYBP007_460  {SG_YBP007_460 =  - GetSeep(410)   / cfs_cfm}
+goal setYBP002_473  {SG_YBP002_473 =  - GetSeep(411)   / cfs_cfm}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!! Yuba River          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        !
+goal setYUB011_285 { SG_YUB011_285 = - GetSeep(349)   / cfs_cfm }
+goal setYUB006_284 { SG_YUB006_284 = - GetSeep(350)   / cfs_cfm }
+                                        
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Folsom South Canal  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define FSC_Losses       {timeseries kind 'SEEPAGE'  units 'TAF' convert 'CFS'}  !Seepage losses for Folsom South Canal
+goal setSG_FSC003       {SG_FSC003 < -FSC_Losses}                                       

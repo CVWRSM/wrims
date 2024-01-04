@@ -1,0 +1,33 @@
+/*************************************
+wsi_di_act_SWP.wresl
+Hao Xie DWR (1/5/2012) 
+
+This determines the Demand Index (DI) which is Delivery + Carryover
+**************************************/
+
+
+define set_DI_SWP {
+     case OCT {
+          condition      month == JAN
+          value          calendar_del - prvactdel_pin + S_Orovl(prevSEP) /*+ S31(prevSEP)*/ + S_SLSWP(prevSEP) }
+
+     case other {
+          condition      always
+          value            0.0 }
+     }
+
+
+define DI_actual_SWP {alias set_DI_SWP kind 'DEMAND-INDEX' units 'TAF'}
+
+define set_WSI_SWP {
+     case APR_MAY {
+          condition      month == APR .or. month == MAY
+          value          WSI_SWP }
+
+     case other {
+          condition      always
+          value          0.0 }
+     }
+
+define WSI_actual_SWP {alias set_WSI_SWP kind 'WATER-SUPPLY-INDEX' units 'TAF'}
+

@@ -1,0 +1,71 @@
+! This file defines reoperation variables and arc-splits for wheeling, transfers, EWA, etc.
+! this has been reorganized by location
+! Other variables may be defined elsewhere (channel-table, NOD_Storage_Transfer, etc)
+
+! Whiskeytown
+define C3_m {std kind 'FLOW' UNITS 'CFS'}
+define C3_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C3_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+goal ClrcrkWhl { C3 = C3_m + C3_whlcv + C3_whljp}
+
+define D3_m {std kind 'FLOW' UNITS 'CFS'}
+define D3_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define D3_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+goal SprcrkWhl { D3 = D3_m + D3_whlcv + D3_whljp }
+
+! Shasta/Keswick
+define C5_m {std kind 'FLOW' UNITS 'CFS'}
+define C5_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C5_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C5_EWA {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C5_SWP {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C5_WTS {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+define C5_S32SWP {std kind 'FLOW-CHANNEL' units 'CFS'}   ! NODOS related
+define C5_S32OTH {std kind 'FLOW-CHANNEL' units 'CFS'}   ! NODOS related
+goal wheeling1a {D3_whlcv < C5_whlcv}
+goal wheeling1b {D3_whljp < C5_whljp}
+goal ShastaWhl { C5 = C5_m + C5_whlcv + C5_whljp + C5_EWA + C5_SWP + C5_WTS + C5_S32SWP + C5_S32OTH}
+
+! Folsom/Nimbus
+define C9_m {std kind 'FLOW' UNITS 'CFS'}
+define C9_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C9_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C9_EWA {std kind 'FLOW-CHANNEL' units 'CFS'}
+goal FolsomWhl { C9 = C9_m + C9_whlcv + C9_whljp + C9_EWA}
+
+! NODOS
+define C32_m {std kind 'FLOW' UNITS 'CFS'}
+define C32_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C32_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+goal NODOSCVPWhl { C32 = C32_m + C32_whlcv + C32_whljp }
+
+! Oroville
+!define C6_m {std kind 'FLOW' UNITS 'CFS'}
+define C6_EWA {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C6_WTS {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+!goal OroWhl   {C6 = C6_m /* + C6_EWA */ + C6_WTS}
+
+! Feather COA Adjustmetn
+define C203_m {std kind 'FLOW' UNITS 'CFS'}
+!define C203_EWA {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C203_WTS {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+goal OroWhl   {C203 = C203_m /* + C203_EWA */ + C203_WTS}
+
+! Inflow components
+define C400_reop {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+define C400_whlcv {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+define C400_whljp {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+define C400_WTS {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+define C400_EWA {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+goal splitC400_reop {C400_reop = C400_whlcv + C400_whljp + C400_WTS + C400_EWA}
+
+! Outflow required (per ANN) in excess of D407
+define C407_whlcv {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C407_whljp {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C407_WTS {std kind 'flow-channel' units 'cfs'}
+define C407_ewa {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+define C407_ewarels {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+
+! REOP Balance Error terms
+define Reop_Rel_Bal_Err {lower unbounded upper unbounded kind 'BALANCE-ERROR' UNITS 'CFS'}
+define ReopSurp_Bal_Err {lower unbounded upper unbounded kind 'BALANCE-ERROR' UNITS 'CFS'}

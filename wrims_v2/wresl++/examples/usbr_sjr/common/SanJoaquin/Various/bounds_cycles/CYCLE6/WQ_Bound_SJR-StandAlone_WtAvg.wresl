@@ -1,0 +1,1372 @@
+!WRESL statements for San Joaquin River System
+!WQ_BOUND.wresl (bounds within the San Joaquin basin for cycle 6 only: Water Quality )
+!Edward Chang
+!6/05/2000
+! Modified by Ken Yokoyama,USBR, April 28,2003 for Link-Node method
+! Modified again by Nancy Parker, June 2009 for application to CalSimIII implementation
+
+!This code bounds decision variables using monthly weighted constraints for cycle 6 only
+!Water quality release and remaining CAP calculations; final water quality
+!******************************************************************************************
+
+/* 
+CHANGED CYCLE NAME FROM MONTHLYWEIGHTED TO VAMP_AND_DO IN ALL CYCLE REFERENCES FOR SJR STAND-ALONE!
+*/
+
+
+!*******************************
+!*********Water Quality*********
+!*******************************
+!WQ deficiency
+define wq_defdv {std kind 'flow-deficiency' units 'cfs'}
+goal setWQ_defdv {
+    lhs     WQ_defdv
+    case Oct_Mar {
+        condition month >= OCT .and. month <= MAR
+        rhs     WQ_MIN_defdv[SJR_WQ1] }
+    case April {
+        condition month  == apr
+        rhs     14.*WQ_MIN_defdv[SJR_WQ1]/30. + 16.*WQ_pulse_defdv[SJR_WQ2]/30. }
+    case MayOnly {
+        condition month  == may
+        rhs     15.*WQ_pulse_defdv[SJR_WQ2]/31. + 16.*WQ_MIN_defdv[SJR_WQ1]/31. }
+    case otherwise {
+        condition always
+        rhs     WQ_MIN_defdv[SJR_WQ1] }
+}
+
+define wq_red_defdv {std kind 'flow-deficiency' units 'cfs'}
+goal setWQ_red_defdv {
+    lhs     WQ_red_defdv
+    case Oct_Mar {
+        condition month >= OCT .and. month <= MAR
+        rhs     WQ_reduced_min_defdv[SJR_WQ1] }
+    case April {
+        condition month  == apr
+        rhs     14.*WQ_reduced_min_defdv[SJR_WQ1]/30. + 16.*WQ_reduced_pulse_defdv[SJR_WQ2]/30. }
+    case MayOnly {
+        condition month  == may
+        rhs     15.*WQ_reduced_pulse_defdv[SJR_WQ2]/31. + 16.*WQ_reduced_min_defdv[SJR_WQ1]/31. }
+    case otherwise {
+        condition always
+        rhs     WQ_reduced_min_defdv[SJR_WQ1] }
+}
+
+define WQreleasecycle6 {
+    case April {
+        condition month  == apr
+        value     14.*C_MELONwq[SJR_WQ1]/30. + 16.*C_MELONwq[SJR_WQ2]/30. }
+    case MayOnly {
+        condition month  == may
+        value     15.*C_MELONwq[SJR_WQ2]/31. + 16.*C_MELONwq[SJR_WQ1]/31. }
+    case otherwise {
+        condition always
+        value     C_MELONwq[SJR_WQ1] }
+          }
+goal capC_MELONwqcycle6 { C_MELONwq = WQreleasecycle6  }
+
+define remWQrelCAPsv {   !TAF; state variable to be  written to a decision variable
+    case march {
+        condition   month == mar
+        value     max(0.,WQRelCap - C_MELONwq[SJR_WQ1]*cfs_TAF) }
+    case April {
+        condition month == apr
+        value     max(0.,remWQrelCap(-1) - 14.*C_MELONwq[SJR_WQ1]*cfs_TAF/30. - 16.*C_MELONwq[SJR_WQ2]*cfs_TAF/30.) }
+    case MayOnly {
+        condition month == may
+        value     max(0.,remWQrelCap(-1) - 15.*C_MELONwq[SJR_WQ2]*cfs_TAF/31. - 16.*C_MELONwq[SJR_WQ1]*cfs_TAF/31.) }
+    case Otherwise {
+        condition   always
+        value     max(0.,remWQrelCap(-1) - C_MELONwq[SJR_WQ1]*cfs_TAF) }
+        }
+goal setremWQrelCap { remWQrelCap = remWQrelCAPsv }
+
+!*************************************
+!*****Final Vernalis Water Quality****
+!*************************************
+
+! The computation of the monthly-averaged final water quality at Vernalis includes
+! the effects of:
+!    1) VAMP,
+!    2) Dissolved Oxygen,
+!    3) Vernalis Minimum flows,
+!    4) ERPP Water, and
+!    5) OID reallocated flows
+! Final water quality is computed from the pulse period and non-pulse period flow
+! and EC values computed in cycles 2, 4, and 5, and from these additional cycle 6
+! operations.  
+
+define Mer_WQparam_1 {value -100.52}
+define Mer_WQparam_2 {value 729.58}
+define Tuo_WQparam_1 {value -57.018}
+define Tuo_WQparam_2 {value 500.75}
+
+! Merced at Stevinson:  EC[microS/cm] = f(flow[cfs]), subject to max/min constraints
+define EC_MCD002_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value min(500., max(85., Mer_WQparam_1*log(max(1.,C_MCD002[SJR_WQ1] + MercedRelease_Oct*taf_cfs)) + Mer_WQparam_2)) ! Merced River Oct-May
+                }
+     case NonPulsePlusDO {
+          condition always    !June thru September
+          value min(500., max(85., Mer_WQparam_1*log(max(1.,C_MCD002[VAMP_AND_DO])) + Mer_WQparam_2)) ! Merced River June-Sep
+                }}
+define EC_MCD002_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may
+          value min(500., max(85., Mer_WQparam_1*log(max(1.,C_MCD002[VAMP_AND_DO])) + Mer_WQparam_2)) ! Merced River VAMP
+                }
+     case otherwise {
+          condition always
+          value     0.
+                }}
+define EC_MCD002finalSV { 
+     case April {
+          condition month == apr
+          value     14.*EC_MCD002_NP/30. + 16.*EC_MCD002_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_MCD002_P/31. + 16.*EC_MCD002_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_MCD002_NP}
+}
+! Tuolumne at Modesto:  EC[microS/cm] = f(flow[cfs]), subject to max/min constraints
+define EC_TUO003_NP {
+     case NonPulseNonDO {
+          condition month <= may
+          value min(275., max(85., Tuo_WQparam_1*log(max(1.,C_TUO003[SJR_WQ1])) + Tuo_WQparam_2)) ! Tuolumne River Oct-May
+                }
+     case NonPulsePlusDO {
+          condition always    !June thru September
+          value min(275., max(85., Tuo_WQparam_1*log(max(1.,C_TUO003[VAMP_AND_DO])) + Tuo_WQparam_2)) ! Tuolumne River June-Sep
+                }}
+define EC_TUO003_P {
+     case APRILMAY {
+          condition month >= apr .and. month <= may
+          value min(275., max(85., Tuo_WQparam_1*log(max(1.,C_TUO003[VAMP_AND_DO])) + Tuo_WQparam_2)) ! Tuolumne River VAMP
+                }
+     case otherwise {
+          condition always
+          value     0.
+                }}
+define EC_TUO003finalSV { 
+     case April {
+          condition month == apr
+          value     14.*EC_TUO003_NP/30. + 16.*EC_TUO003_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_TUO003_P/31. + 16.*EC_TUO003_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_TUO003_NP}
+}
+
+define EC_SJR214_NPandP { value EC_SJR221 }
+define EC_SJR205_NPandP { value EC_SJR221 }
+
+! Start of the link-node method.
+
+! ************************************************************************
+! SAN LUIS VACINITY ---
+                       
+! ASSUME WHEELING GOES TO SLUIS FIRST, THEN DMC
+! NOTE: NEED TO ASSUME EC FOR D_DMC070_CAA069 *OR* D_CAA069_DMC070 BECAUSE CAN'T COMPUTE SIMULTANEOUSLY
+!       THIS SETUP ASSUMES EC FOR D_DMC070_CAA069 IS EC_TRACY 
+!       (i.e., assumes diversion to CAA069 before mixing at node DMC070)
+!       (this is accounted for in DMC070 balance by setting inflow from DMC as C_DMC064-D_DMC070_CAA069)
+define EC_SLUIS_dv  {std kind 'salinity' units 'ms/cm'}
+
+define EC_CAA009    {value ( C_CAA006[VAMP_AND_DO]               * EC_Banks
+                           + D_DMC007_CAA009[VAMP_AND_DO]        * EC_Tracy )
+                           / ( C_CAA009[VAMP_AND_DO] ) }
+
+define EC_CAA067    {value EC_CAA009}
+
+define EC_CAA069    {value ( C_CAA067[VAMP_AND_DO]               * EC_CAA067
+                           + D_DMC070_CAA069[VAMP_AND_DO]        * EC_Tracy            ! necessary to assume EC_DMC070 = EC_Tracy...
+                           + C_SLUIS[VAMP_AND_DO]                * EC_SLUIS_dv(-1) )   ! necessary to assume EC_SLUIS @ previous time...
+                           / (C_CAA069[VAMP_AND_DO] + D_CAA069_DMC070[VAMP_AND_DO] + D_CAA069_SLUIS[VAMP_AND_DO] ) }
+
+define EC_DMC070    {value ( (C_DMC064[VAMP_AND_DO] - D_DMC070_CAA069[VAMP_AND_DO]) * EC_Tracy
+                           + D_CAA069_DMC070[VAMP_AND_DO]        * EC_CAA069
+                           + max(0.0,SG_DMC070_758[VAMP_AND_DO]) * EC_SG_DMC070        ! seepage gains
+                           + max(0.0,SG_DMC070_763[VAMP_AND_DO]) * EC_SG_DMC070 )      ! seepage gains
+                           / ( D_DMC070_CAA069[VAMP_AND_DO] + D_DMC070_VLW008[VAMP_AND_DO] 
+                             + D_DMC070_73_PA1[VAMP_AND_DO] + C_DMC070[VAMP_AND_DO]
+                             - min(0.0,SG_DMC070_758[VAMP_AND_DO])                     ! seepage losses
+                             - min(0.0,SG_DMC070_763[VAMP_AND_DO]) ) }                 ! seepage losses
+                             
+define EC_SLUIS     {value ( S_SLUIS(-1)*taf_cfs                 * EC_SLUIS_dv(-1)
+                           + D_CAA069_SLUIS[VAMP_AND_DO]         * EC_CAA069
+                           + I_SLUIS                             * EC_ISLUIS
+                           - C_SLUIS[VAMP_AND_DO]                * EC_SLUIS_dv(-1)
+                           - D_SLUIS_SFLPE[VAMP_AND_DO]          * EC_SLUIS_dv(-1) )
+                           / ( S_SLUIS[VAMP_AND_DO]*taf_cfs ) }
+goal setEC_SLUIS_dv {EC_SLUIS_dv = EC_SLUIS}
+
+
+! ************************************************************************
+! MENDOTA POOL VACINITY ---
+
+define EC_MDOTA_DV  {std kind 'salinity' units 'mS/cm'}                             
+
+define EC_R_91_PA {
+    case nearZero {
+        condition R_91_PA_FSL012[VAMP_AND_DO]<0.1 .or. AW_91_PA[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MDOTA_91_PA[VAMP_AND_DO] * EC_MDOTA_DV(-1) * (1.0 + EVF_MDOTA_91_PA_a[VAMP_AND_DO]) 
+                  + GP_91_PA[VAMP_AND_DO]       * EC_GP_91 ) 
+                  / ( DN_MDOTA_91_PA[VAMP_AND_DO] + GP_91_PA[VAMP_AND_DO] )
+                  + pow( dEC_91_PA, (1.0 + (RU_91_PA[VAMP_AND_DO]/AW_91_PA[VAMP_AND_DO])) )
+        }          
+}
+
+define EC_R_91_PR {
+    case nearZero {
+        condition R_91_PR_FSL005[VAMP_AND_DO]<0.1 .or. AW_91_PR[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MDOTA_91_PR[VAMP_AND_DO] * EC_MDOTA_DV(-1) * (1.0 + EVF_MDOTA_91_PR_a[VAMP_AND_DO]) 
+                  + GP_91_PR[VAMP_AND_DO]       * EC_GP_91 ) 
+                  / ( DN_MDOTA_91_PR[VAMP_AND_DO] + GP_91_PR[VAMP_AND_DO] )
+                  + pow( dEC_91_PR, (1.0 + (RU_91_PR[VAMP_AND_DO]/AW_91_PR[VAMP_AND_DO])) )
+        }
+}
+
+define EC_FSL005 {
+    case NearZero {
+        condition C_FSL005[VAMP_AND_DO] - min(0.,SG_FSL005_886[VAMP_AND_DO]) < .1
+        value 0.0}
+    case otherwise {
+        condition always
+        value ( I_FSL012 * EC_FSL012
+              + I_JBP006 * EC_JBP006
+              + min(0.,SG_FSL012_892[VAMP_AND_DO]) * EC_FSL012
+              + max(0.,SG_FSL012_892[VAMP_AND_DO]) * EC_SG_FSL012
+              + max(0.,SG_FSL005_886[VAMP_AND_DO]) * EC_SG_FSL005
+              + R_91_PR_FSL005[VAMP_AND_DO]        * EC_R_91_PR   ! EC_MP_RF_Return 
+              + R_91_PA_FSL012[VAMP_AND_DO]        * EC_R_91_PA ) ! EC_MP_Ag_Return)
+              / ( C_FSL005[VAMP_AND_DO] - min(0.,SG_FSL005_886[VAMP_AND_DO]) ) }
+}
+
+define EC_MDOTA {  ! Mendota Pool
+    case NearZero {
+        condition C_MDOTA[VAMP_AND_DO]          + D_MDOTA_91_PA[VAMP_AND_DO] + D_MDOTA_91_PR[VAMP_AND_DO]
+                  + D_MDOTA_90_PA1[VAMP_AND_DO] + D_MDOTA_73_XA[VAMP_AND_DO] + D_MDOTA_XCC010[VAMP_AND_DO]
+                  + D_MDOTA_64_XA[VAMP_AND_DO]  - min(0.,SG_MDOTA_872[VAMP_AND_DO]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR205[VAMP_AND_DO]             * EC_SJR205
+                  + C_FSL005[VAMP_AND_DO]             * EC_FSL005
+                  + C_DMC116[VAMP_AND_DO]             * EC_DMC070
+                  + max(0.,SG_MDOTA_872[VAMP_AND_DO]) * EC_SG_MDOTA )
+                  / ( C_MDOTA[VAMP_AND_DO]        + D_MDOTA_91_PA[VAMP_AND_DO] + D_MDOTA_91_PR[VAMP_AND_DO]
+                    + D_MDOTA_90_PA1[VAMP_AND_DO] + D_MDOTA_73_XA[VAMP_AND_DO] + D_MDOTA_XCC010[VAMP_AND_DO]
+                    + D_MDOTA_64_XA[VAMP_AND_DO]  - min(0.,SG_MDOTA_872[VAMP_AND_DO]) ) }
+}
+goal setEC_MDOTA_DV {EC_MDOTA_DV = EC_MDOTA}
+
+define EC_R_64_XA {
+    case nearZero {
+        condition R_64_XA_SJR185[VAMP_AND_DO]<0.1 .or. AW_64_XA[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MDOTA_64_XA[VAMP_AND_DO] * EC_MDOTA * (1.0 + EVF_MDOTA_64_XA_a[VAMP_AND_DO]) 
+                  + GP_64_XA[VAMP_AND_DO]       * EC_GP_64 ) 
+                  / ( DN_MDOTA_64_XA[VAMP_AND_DO] + GP_64_XA[VAMP_AND_DO] )
+                  + pow( dEC_64_XA, (1.0 + (RU_64_XA[VAMP_AND_DO]/AW_64_XA[VAMP_AND_DO])) ) }
+}
+
+
+! ************************************************************************
+! SJR FROM MENDOTA POOL TO SAND SLOUGH
+define EC_SJR201  { ! confluence with Mendota Bypass (Restoration) Channel
+    case nearZero {
+        condition C_SJR201[VAMP_AND_DO] < .1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( C_MDOTA[VAMP_AND_DO] * EC_MDOTA
+                  + D_SJR205_SJR201[VAMP_AND_DO] * EC_SJR205)
+                  / ( C_SJR201[VAMP_AND_DO] ) }
+}
+
+define EC_SJR195  { ! SJR at Firebaugh Slough
+    case nearZero {
+        condition C_SJR195[VAMP_AND_DO] < .1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( C_SJR201[VAMP_AND_DO] * EC_SJR201
+                  + C_FBW001[VAMP_AND_DO] * EC_DMC070
+                  + min(0.,SG_SJR198_858[VAMP_AND_DO]) * EC_SJR201
+                  + max(0.,SG_SJR198_858[VAMP_AND_DO]) * EC_SG_SJR198)
+                  / ( C_SJR195[VAMP_AND_DO] ) }
+}
+
+define EC_SJR185  { 
+    case nearZero {
+        condition C_SJR185[VAMP_AND_DO] - min(0.,SG_SJR185_829[VAMP_AND_DO]) < .1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( C_SJR195[VAMP_AND_DO]              * EC_SJR195
+                  + min(0.,SG_SJR192_843[VAMP_AND_DO]) * EC_SJR195
+                  + max(0.,SG_SJR192_843[VAMP_AND_DO]) * EC_SG_SJR192
+                  + R_64_XA_SJR185[VAMP_AND_DO]        * EC_R_64_XA 
+                  + max(0.,SG_SJR185_829[VAMP_AND_DO]) * EC_SG_SJR185)
+                  / ( C_SJR185[VAMP_AND_DO] - min(0.,SG_SJR185_829[VAMP_AND_DO] ) ) }
+}
+
+define EC_SJR180  {  ! Sack Dam
+    case NearZero {
+        condition C_SJR180[VAMP_AND_DO] + D_SJR180_ARY010[VAMP_AND_DO] - min(0.,SG_SJR180_818[VAMP_AND_DO]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR185[VAMP_AND_DO]              * EC_SJR185
+                  + SR_64_SJR180                       * EC_SR_64_SJR180
+                  + max(0.,SG_SJR180_818[VAMP_AND_DO]) * EC_SG_SJR180)
+                  / ( C_SJR180[VAMP_AND_DO] + D_SJR180_ARY010[VAMP_AND_DO] - min(0.,SG_SJR180_818[VAMP_AND_DO] ) ) }
+}
+
+define EC_SJR166  {  ! Sand Slough
+    case NearZero {
+        condition C_SJR166[VAMP_AND_DO] + D_SJR166_EBP032[VAMP_AND_DO] - min(0.,SG_SJR166_784[VAMP_AND_DO]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR180[VAMP_AND_DO]              * EC_SJR180
+                  + min(0.,SG_SJR173_798[VAMP_AND_DO]) * EC_SJR180
+                  + max(0.,SG_SJR173_798[VAMP_AND_DO]) * EC_SG_SJR173
+                  + max(0.,SG_SJR166_784[VAMP_AND_DO]) * EC_SG_SJR166)
+                  / ( C_SJR166[VAMP_AND_DO] + D_SJR166_EBP032[VAMP_AND_DO] - min(0.,SG_SJR166_784[VAMP_AND_DO] ) ) }
+}
+
+
+
+! ************************************************************************
+! EAST SIDE RETURNS TO EASTSIDE BYPASS
+define EC_R_64_PA1 {
+    case nearZero {
+        condition R_64_PA1_EBP016[VAMP_AND_DO]<0.1 .or. AW_64_PA1[VAMP_AND_DO]<0.1
+        value 0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DBC014_64_PA1[VAMP_AND_DO] * EC_IDBC024 * (1.0 + EVF_DBC014_64_PA1_a[VAMP_AND_DO]) 
+                  + DN_FRS036_64_PA1[VAMP_AND_DO] * EC_FRS046  * (1.0 + EVF_FRS036_64_PA1_a[VAMP_AND_DO])
+                  + DN_MDC006_64_PA1[VAMP_AND_DO] * EC_MLRTN   * (1.0 + EVF_MDC006_64_PA1_a[VAMP_AND_DO])
+                  + DN_MDC032_64_PA1[VAMP_AND_DO] * EC_MLRTN   * (1.0 + EVF_MDC032_64_PA1_a[VAMP_AND_DO])
+                  + GP_64_PA1[VAMP_AND_DO]        * EC_GP_64 ) 
+                  / ( DN_DBC014_64_PA1[VAMP_AND_DO] 
+                    + DN_FRS036_64_PA1[VAMP_AND_DO]
+                    + DN_MDC006_64_PA1[VAMP_AND_DO]
+                    + DN_MDC032_64_PA1[VAMP_AND_DO]
+                    + GP_64_PA1[VAMP_AND_DO] )
+                  + pow( dEC_64_PA1, (1.0 + (RU_64_PA1[VAMP_AND_DO]/AW_64_PA1[VAMP_AND_DO])) ) }
+}          
+
+define EC_R_64_PA3 {
+    case nearZero  {
+        condition R_64_PA3_EBP016[VAMP_AND_DO]<0.1 .or. AW_64_PA3[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR227_64_PA3[VAMP_AND_DO] * EC_SJR221  * (1.0 + EVF_SJR227_64_PA3_a[VAMP_AND_DO]) 
+                  + DN_MDC006_64_PA3[VAMP_AND_DO] * EC_MLRTN   * (1.0 + EVF_MDC006_64_PA3_a[VAMP_AND_DO])
+                  + GP_64_PA3[VAMP_AND_DO]        * EC_GP_64 ) 
+                  / ( DN_SJR227_64_PA3[VAMP_AND_DO] 
+                    + DN_MDC006_64_PA3[VAMP_AND_DO]
+                    + GP_64_PA3[VAMP_AND_DO] )
+                  + pow( dEC_64_PA3, (1.0 + (RU_64_PA3[VAMP_AND_DO]/AW_64_PA3[VAMP_AND_DO])) ) }
+}
+
+define EC_EBP016  {  ! Eastside bypass and Fresno River
+    case NearZero {
+        condition C_EBP016[VAMP_AND_DO] + D_EBP016_64_NA2[VAMP_AND_DO] - min(0.,SG_EBP016_819[VAMP_AND_DO]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( D_SJR214_EBP001[VAMP_AND_DO]       * EC_SJR214
+                  + C_COT033[VAMP_AND_DO]              * EC_CDMOBB
+                  + SR_64_EBP005                       * EC_SR_64_EBP005
+                  + max(0.,SG_EBP016_819[VAMP_AND_DO]) * EC_SG_EBP016
+                  + C_FRS016[VAMP_AND_DO]              * EC_FRS046
+                  + R_64_PA1_EBP016[VAMP_AND_DO]       * EC_R_64_PA1
+                  + R_64_PA3_EBP016[VAMP_AND_DO]       * EC_R_64_PA3)
+                  / ( C_EBP016[VAMP_AND_DO] + D_EBP016_64_NA2[VAMP_AND_DO] - min(0.,SG_EBP016_819[VAMP_AND_DO] ) ) }
+}
+
+define EC_R_64_PA2 {
+    case nearZero {
+        condition R_64_PA2_RFS64[VAMP_AND_DO]<0.1 .or. AW_64_PA2[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_CHW017_64_PA2[VAMP_AND_DO] * EC_CHW028  * (1.0 + EVF_CHW017_64_PA2_a[VAMP_AND_DO]) 
+                  + DN_ASL013_64_PA2[VAMP_AND_DO] * EC_CHW028  * (1.0 + EVF_ASL013_64_PA2_a[VAMP_AND_DO])
+                  + DN_BRS018_64_PA2[VAMP_AND_DO] * EC_CHW028  * (1.0 + EVF_BRS018_64_PA2_a[VAMP_AND_DO])
+                  + GP_64_PA2[VAMP_AND_DO]        * EC_GP_64 ) 
+                  / ( DN_CHW017_64_PA2[VAMP_AND_DO] 
+                    + DN_ASL013_64_PA2[VAMP_AND_DO]
+                    + DN_BRS018_64_PA2[VAMP_AND_DO]
+                    + GP_64_PA2[VAMP_AND_DO] )
+                  + pow( dEC_64_PA2, (1.0 + (RU_64_PA2[VAMP_AND_DO]/AW_64_PA2[VAMP_AND_DO])) ) }
+}
+
+define EC_R_64_NA2  {  
+    case nearZero {
+        condition R_64_NA2_EBP030[VAMP_AND_DO]<0.1 .or. AW_64_NA2[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_EBP016_64_NA2[VAMP_AND_DO] * EC_EBP016   * (1.0 + EVF_EBP016_64_NA2_a[VAMP_AND_DO]) 
+                  + DN_RFS64_64_NA2[VAMP_AND_DO]  * EC_R_64_PA2 * (1.0 + EVF_RFS64_64_NA2_a[VAMP_AND_DO])
+                  + GP_64_NA2[VAMP_AND_DO]        * EC_GP_64 ) 
+                  / ( DN_EBP016_64_NA2[VAMP_AND_DO] 
+                    + DN_RFS64_64_NA2[VAMP_AND_DO]
+                    + GP_64_NA2[VAMP_AND_DO] )
+                  + pow( dEC_64_NA2, (1.0 + (RU_64_NA2[VAMP_AND_DO]/AW_64_NA2[VAMP_AND_DO])) ) }        
+}
+
+define EC_EBP030 { ! Eastside Bypass and Chowchilla River
+    case NearZero {
+        condition C_EBP030[VAMP_AND_DO] - min(0.,SG_EBP030_785[VAMP_AND_DO]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_EBP016[VAMP_AND_DO]              * EC_EBP016
+                  + SR_64_EBP019                   * EC_SR_64_EBP019
+                  + C_BRS018[VAMP_AND_DO]              * EC_CDMOBB
+                  + C_ASL013[VAMP_AND_DO]              * EC_CDMOBB
+                  + R_RFS64_EBP022[VAMP_AND_DO]        * EC_R_64_PA2
+                  + R_64_NA2_EBP030[VAMP_AND_DO]       * EC_R_64_NA2
+                  + SR_63_EBP030                   * EC_SR_63_EBP030
+                  + SR_64_EBP030                   * EC_SR_64_EBP030
+                  + C_CHW006[VAMP_AND_DO]              * EC_CHW028
+                  + max(0.,SG_EBP030_785[VAMP_AND_DO]) * EC_SG_EBP030)
+                  / ( C_EBP030[VAMP_AND_DO] - min(0.,SG_EBP030_785[VAMP_AND_DO]) ) }
+}
+
+define EC_R_63_PR2  {  
+    case nearZero {
+        condition R_63_PR2_EBP041[VAMP_AND_DO]<0.1 .or. AW_63_PR2[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DED010_63_PR2[VAMP_AND_DO] * EC_CDMOBB   * (1.0 + EVF_DED010_63_PR2_a[VAMP_AND_DO]) 
+                  + GP_63_PR2[VAMP_AND_DO]        * EC_GP_63 ) 
+                  / ( DN_DED010_63_PR2[VAMP_AND_DO] 
+                    + GP_63_PR2[VAMP_AND_DO] )
+                  + pow( dEC_63_PR2, (1.0 + (RU_63_PR2[VAMP_AND_DO]/AW_63_PR2[VAMP_AND_DO])) ) }          
+}
+
+define EC_EBP041  { !blw Mariposa Bypass
+    case NearZero {
+        condition C_EBP041[VAMP_AND_DO] + SP_EBP041_SJR145[VAMP_AND_DO] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_EBP030[VAMP_AND_DO]        * EC_EBP030
+                  + SR_63_EBP032             * EC_SR_63_EBP032
+                  + SR_64_EBP032             * EC_SR_64_EBP032
+                  + D_SJR166_EBP032[VAMP_AND_DO] * EC_SJR166
+                  + R_63_PR2_EBP041[VAMP_AND_DO] * EC_R_63_PR2)
+                  / ( C_EBP041[VAMP_AND_DO] + SP_EBP041_SJR145[VAMP_AND_DO] ) }
+}
+
+define EC_OWN011  { 
+    case NearZero {
+        condition C_OWN011[VAMP_AND_DO] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( R_MDWWTP_OWN011[VAMP_AND_DO] * EC_MDWWTP
+                  + C_OWN040[VAMP_AND_DO]        * EC_CDMOBB )
+                  / ( C_OWN011[VAMP_AND_DO] ) }
+}                  
+
+define EC_ESC000_DV {std kind 'salinity' units 'ms/cm'}
+define EC_R_63_PR1_DV {std kind 'salinity' units 'ms/cm'}
+define EC_ESC000  {
+    case NearZero {
+        condition C_ESC000[VAMP_AND_DO] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( D_BCK006_ESC000[VAMP_AND_DO] * EC_CDMOBB
+                  + R_AWWWTP_ESC000[VAMP_AND_DO] * EC_AWWWTP
+                  + R_63_PR1_ESC000[VAMP_AND_DO] * EC_R_63_PR1_DV(-1) )
+                  / ( D_ESC000_63_PR1[VAMP_AND_DO] + C_ESC000[VAMP_AND_DO] ) }
+}    
+goal setEC_ESC000_DV {EC_ESC000_DV = EC_ESC000}
+
+define EC_R_63_PR1 {
+    case NearZero {
+        condition R_63_PR1_ESC000[VAMP_AND_DO]<0.1 .or. AW_63_PR1[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_ESC000_63_PR1[VAMP_AND_DO] * EC_ESC000   * (1.0 + EVF_ESC000_63_PR1_a[VAMP_AND_DO]) 
+                  + GP_63_PR1[VAMP_AND_DO]        * EC_GP_63 ) 
+                  / ( DN_ESC000_63_PR1[VAMP_AND_DO] 
+                    + GP_63_PR1[VAMP_AND_DO] )
+                  + pow( dEC_63_PR1, (1.0 + (RU_63_PR1[VAMP_AND_DO]/AW_63_PR1[VAMP_AND_DO])) ) }
+}
+goal setEC_R_63_PR1_dv{EC_R_63_PR1_dv = EC_R_63_PR1}             
+
+define EC_EBP048 {
+    case NearZero {
+        condition C_EBP048[VAMP_AND_DO] + D_EBP048_63_PR3[VAMP_AND_DO] - min(0.,SG_EBP048_729[VAMP_AND_DO]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_EBP041[VAMP_AND_DO] * EC_EBP041
+                  + C_DED003[VAMP_AND_DO] * EC_CDMOBB
+                  + C_ESC000[VAMP_AND_DO] * EC_ESC000
+                  + C_OWN011[VAMP_AND_DO] * EC_OWN011
+                  + C_BCK006[VAMP_AND_DO] * EC_CDMOBB
+                  + max(0.,SG_EBP048_729[VAMP_AND_DO]) * EC_SG_EBP048)
+                  / ( C_EBP048[VAMP_AND_DO] + D_EBP048_63_PR3[VAMP_AND_DO] - min(0.,SG_EBP048_729[VAMP_AND_DO]) ) }
+}
+
+define EC_EBP050 {
+    case NearZero {
+        condition C_EBP050[VAMP_AND_DO] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_EBP048[VAMP_AND_DO] * EC_EBP048
+                  + SR_64_EBP050 * EC_SR_64_EBP050
+                  + SR_63_EBP050 * EC_SR_63_EBP050 ) 
+                  / ( C_EBP050[VAMP_AND_DO] ) }
+}
+
+
+
+! ************************************************************************
+! SJR FROM MARIPOSA BYPASS TO STEVINSON (OUTLET OF EASTSIDE BYPASS)
+define EC_SJR145  {  ! SJR blw Mariposa Bypass
+    case NearZero {
+        condition C_SJR145[VAMP_AND_DO] - min(0.,SG_SJR145_749[VAMP_AND_DO]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR166[VAMP_AND_DO]              * EC_SJR166
+                  + min(0.,SG_SJR157_769[VAMP_AND_DO]) * EC_SJR166
+                  + max(0.,SG_SJR157_769[VAMP_AND_DO]) * EC_SG_SJR157
+                  + min(0.,SG_SJR152_768[VAMP_AND_DO]) * EC_SJR166       !assume SG at 152 has same sign as at 157
+                  + max(0.,SG_SJR152_768[VAMP_AND_DO]) * EC_SG_SJR152
+                  + max(0.,SG_SJR145_749[VAMP_AND_DO]) * EC_SG_SJR145
+                  + SP_EBP041_SJR145[VAMP_AND_DO]      * EC_EBP041 ) 
+                  / ( C_SJR145[VAMP_AND_DO] - min(0.,SG_SJR145_749[VAMP_AND_DO]) ) }
+            }  
+
+define EC_R_63_PR3  {  
+    case nearZero {
+        condition R_63_PR3_SJR134[VAMP_AND_DO]<0.1 .or. AW_63_PR3[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_EBP048_63_PR3[VAMP_AND_DO] * EC_EBP048   * (1.0 + EVF_EBP048_63_PR3_a[VAMP_AND_DO]) 
+                  + GP_63_PR3[VAMP_AND_DO]        * EC_GP_63 ) 
+                  / ( DN_EBP048_63_PR3[VAMP_AND_DO] 
+                    + GP_63_PR3[VAMP_AND_DO] )
+                  + pow( dEC_63_PR3, (1.0 + (RU_63_PR3[VAMP_AND_DO]/AW_63_PR3[VAMP_AND_DO])) ) }        
+}
+
+define EC_SJR134 {  ! SJR nr Stevinson
+    case NearZero {
+        condition C_SJR134[VAMP_AND_DO] - min(0.,SG_SJR134_715[VAMP_AND_DO]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR145[VAMP_AND_DO]              * EC_SJR145
+                  + min(0.,SG_SJR141_728[VAMP_AND_DO]) * EC_SJR145
+                  + max(0.,SG_SJR141_728[VAMP_AND_DO]) * EC_SG_SJR141
+                  + max(0.,SG_SJR134_715[VAMP_AND_DO]) * EC_SG_SJR134
+                  + SR_63_SJR134                   * EC_SR_63_SJR134
+                  + C_EBP050[VAMP_AND_DO]              * EC_EBP050
+                  + R_63_PR3_SJR134[VAMP_AND_DO]       * EC_R_63_PR3) 
+                  / ( C_SJR134[VAMP_AND_DO] - min(0.,SG_SJR134_715[VAMP_AND_DO]) ) }
+}  
+
+
+
+! ************************************************************************
+! WEST SIDE RETURNS TO SALT SLOUGH (SAL006) and MUD SLOUGH (MSN004) 
+define EC_R_73_XA {
+    case nearZero {
+        condition R_73_XA_SLD027[VAMP_AND_DO]<0.1 .or. AW_73_XA[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC111_73_XA[VAMP_AND_DO]  * EC_DMC070   * (1.0 + EVF_DMC111_73_XA_a[VAMP_AND_DO]) 
+                  + DN_MDOTA_73_XA[VAMP_AND_DO]   * EC_MDOTA    * (1.0 + EVF_MDOTA_73_XA_a[VAMP_AND_DO])
+                  + GP_73_XA[VAMP_AND_DO]         * EC_GP_73 ) 
+                  / ( DN_DMC111_73_XA[VAMP_AND_DO] 
+                    + DN_MDOTA_73_XA[VAMP_AND_DO]
+                    + GP_73_XA[VAMP_AND_DO] )
+                  + pow( dEC_73_XA, (1.0 + (RU_73_XA[VAMP_AND_DO]/AW_73_XA[VAMP_AND_DO])) ) }          
+}
+
+define EC_R_73_PA1 {
+    case nearZero {
+        condition R_73_PA1_LBN025[VAMP_AND_DO]<0.1 .or. AW_73_PA1[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_CAA087_73_PA1[VAMP_AND_DO] * EC_CAA069   * (1.0 + EVF_CAA087_73_PA1_a[VAMP_AND_DO]) 
+                  + DN_DMC070_73_PA1[VAMP_AND_DO] * EC_DMC070   * (1.0 + EVF_DMC070_73_PA1_a[VAMP_AND_DO])
+                  + GP_73_PA1[VAMP_AND_DO]        * EC_GP_73 ) 
+                  / ( DN_CAA087_73_PA1[VAMP_AND_DO] 
+                    + DN_DMC070_73_PA1[VAMP_AND_DO]
+                    + GP_73_PA1[VAMP_AND_DO] )
+                  + pow( dEC_73_PA1, (1.0 + (RU_73_PA1[VAMP_AND_DO]/AW_73_PA1[VAMP_AND_DO])) ) }               
+}
+
+define EC_R_73_PA2 {
+    case nearZero {
+        condition R_73_PA2_SLD027[VAMP_AND_DO]<0.1 .or. AW_73_PA2[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC105_73_PA2[VAMP_AND_DO] * EC_DMC070   * (1.0 + EVF_DMC105_73_PA2_a[VAMP_AND_DO]) 
+                  + GP_73_PA2[VAMP_AND_DO]        * EC_GP_73 ) 
+                  / ( DN_DMC105_73_PA2[VAMP_AND_DO] 
+                    + GP_73_PA2[VAMP_AND_DO] )
+                  + pow( dEC_73_PA2, (1.0 + (RU_73_PA2[VAMP_AND_DO]/AW_73_PA2[VAMP_AND_DO])) ) }            
+}
+
+define EC_R_73_PA3 {
+    case nearZero {
+        condition R_73_PA3_SLD027[VAMP_AND_DO]<0.1 .or. AW_73_PA3[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC091_73_PA3[VAMP_AND_DO] * EC_DMC070   * (1.0 + EVF_DMC091_73_PA3_a[VAMP_AND_DO]) 
+                  + DN_CAA109_73_PA3[VAMP_AND_DO] * EC_CAA069   * (1.0 + EVF_CAA109_73_PA3_a[VAMP_AND_DO])
+                  + GP_73_PA3[VAMP_AND_DO]        * EC_GP_73 ) 
+                  / ( DN_DMC091_73_PA3[VAMP_AND_DO] 
+                    + DN_CAA109_73_PA3[VAMP_AND_DO]
+                    + GP_73_PA3[VAMP_AND_DO] )
+                  + pow( dEC_73_PA3, (1.0 + (RU_73_PA3[VAMP_AND_DO]/AW_73_PA3[VAMP_AND_DO])) ) }           
+}
+
+define EC_R_72_PR1 {
+    case nearZero {
+        condition R_72_PR1_LBN012[VAMP_AND_DO]<0.1 .or. AW_72_PR1[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_VLW008_72_PR1[VAMP_AND_DO] * EC_DMC070   * (1.0 + EVF_VLW008_72_PR1_a[VAMP_AND_DO]) 
+                  + GP_72_PR1[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_VLW008_72_PR1[VAMP_AND_DO] 
+                    + GP_72_PR1[VAMP_AND_DO] )
+                  + pow( dEC_72_PR1, (1.0 + (RU_72_PR1[VAMP_AND_DO]/AW_72_PR1[VAMP_AND_DO])) ) }           
+}
+             
+define EC_LBN025 {
+    case nearZero {
+        condition C_LBN025[VAMP_AND_DO] < .1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_BANOS[VAMP_AND_DO]         * EC_BANOS
+                  + R_73_PA1_LBN025[VAMP_AND_DO] * EC_R_73_PA1)
+                  / ( C_LBN025[VAMP_AND_DO] ) }
+}
+
+define EC_LBN012 {
+    case nearZero {
+        condition C_LBN012[VAMP_AND_DO] < .1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_LBN025[VAMP_AND_DO]        * EC_LBN025
+                  + C_VLW008[VAMP_AND_DO]        * EC_DMC070
+                  + R_72_PR1_LBN012[VAMP_AND_DO] * EC_R_72_PR1)
+                  / ( C_LBN012[VAMP_AND_DO] ) }
+}
+
+define EC_R_72_PR6 {
+    case nearZero {
+        condition R_72_PR6_RFS72A[VAMP_AND_DO]<0.1 .or. AW_72_PR6[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_ARY010_72_PR6[VAMP_AND_DO] * EC_SJR180   * (1.0 + EVF_ARY010_72_PR6_a[VAMP_AND_DO])
+                  + DN_XCC025_72_PR6[VAMP_AND_DO] * EC_MDOTA    * (1.0 + EVF_XCC025_72_PR6_a[VAMP_AND_DO])
+                  + GP_72_PR6[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_ARY010_72_PR6[VAMP_AND_DO] 
+                    + DN_XCC025_72_PR6[VAMP_AND_DO]
+                    + GP_72_PR6[VAMP_AND_DO] )
+                  + pow( dEC_72_PR6, (1.0 + (RU_72_PR6[VAMP_AND_DO]/AW_72_PR6[VAMP_AND_DO])) ) }          
+}
+
+define EC_R_71_PA6 {
+    case nearZero {
+        condition R_71_PA6_RFS71C[VAMP_AND_DO]<0.1 .or. AW_71_PA6[VAMP_AND_DO]<0.1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( DN_DMC064_71_PA6[VAMP_AND_DO] * EC_Tracy    * (1.0 + EVF_DMC064_71_PA6_a[VAMP_AND_DO]) 
+                  + GP_71_PA6[VAMP_AND_DO]        * EC_GP_71 ) 
+                  / ( DN_DMC064_71_PA6[VAMP_AND_DO] 
+                    + GP_71_PA6[VAMP_AND_DO] )
+                  + pow( dEC_71_PA6, (1.0 + (RU_71_PA6[VAMP_AND_DO]/AW_71_PA6[VAMP_AND_DO])) ) }         
+}
+
+define EC_XCC054 {
+    case nearZero {
+        condition D_XCC054_72_XA3[VAMP_AND_DO] + D_XCC054_72_PR5[VAMP_AND_DO] + D_XCC054_LBN008[VAMP_AND_DO] < .1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_XCC033[VAMP_AND_DO]        * EC_MDOTA
+                  + D_DMC076_XCC043[VAMP_AND_DO] * EC_DMC070
+                  + C_QNT005[VAMP_AND_DO]        * EC_QNT005
+                  + C_GRZ012[VAMP_AND_DO]        * EC_GRZ012
+                  + R_RFS71C_XCC054[VAMP_AND_DO] * EC_R_71_PA6)
+                  / ( D_XCC054_72_XA3[VAMP_AND_DO] + D_XCC054_72_PR5[VAMP_AND_DO] + D_XCC054_LBN008[VAMP_AND_DO] ) }
+}
+
+define EC_R_72_PR5 {
+    case nearZero {
+        condition R_72_PR5_MSN009[VAMP_AND_DO]<0.1 .or. AW_72_PR5[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC054_72_PR5[VAMP_AND_DO] * EC_XCC054   * (1.0 + EVF_XCC054_72_PR5_a[VAMP_AND_DO])
+                  + DN_LBN012_72_PR5[VAMP_AND_DO] * EC_LBN012   * (1.0 + EVF_LBN012_72_PR5_a[VAMP_AND_DO])
+                  + DN_RFS72A_72_PR5[VAMP_AND_DO] * EC_R_72_PR6 * (1.0 + EVF_RFS72A_72_PR5_a[VAMP_AND_DO])
+                  + GP_72_PR5[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_XCC054_72_PR5[VAMP_AND_DO] 
+                    + DN_LBN012_72_PR5[VAMP_AND_DO]
+                    + DN_RFS72A_72_PR5[VAMP_AND_DO]
+                    + GP_72_PR5[VAMP_AND_DO] )
+                  + pow( dEC_72_PR5, (1.0 + (RU_72_PR5[VAMP_AND_DO]/AW_72_PR5[VAMP_AND_DO])) ) }          
+}
+
+define EC_R_72_PR4 {
+    case nearZero {
+        condition R_72_PR4_SAL006[VAMP_AND_DO]<0.1 .or. AW_72_PR4[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC033_72_PR4[VAMP_AND_DO] * EC_MDOTA    * (1.0 + EVF_XCC033_72_PR4_a[VAMP_AND_DO])
+                  + DN_ARY010_72_PR4[VAMP_AND_DO] * EC_SJR180   * (1.0 + EVF_ARY010_72_PR4_a[VAMP_AND_DO])
+                  + GP_72_PR4[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_XCC033_72_PR4[VAMP_AND_DO] 
+                    + DN_ARY010_72_PR4[VAMP_AND_DO]
+                    + GP_72_PR4[VAMP_AND_DO] )
+                  + pow( dEC_72_PR4, (1.0 + (RU_72_PR4[VAMP_AND_DO]/AW_72_PR4[VAMP_AND_DO])) ) }            
+}
+
+define EC_R_72_PR3 {
+    case nearZero {
+        condition R_72_PR3_SAL006[VAMP_AND_DO]<0.1 .or. AW_72_PR3[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_ARY010_72_PR3[VAMP_AND_DO] * EC_SJR180   * (1.0 + EVF_ARY010_72_PR3_a[VAMP_AND_DO])
+                  + GP_72_PR3[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_ARY010_72_PR3[VAMP_AND_DO] 
+                    + GP_72_PR3[VAMP_AND_DO] )
+                  + pow( dEC_72_PR3, (1.0 + (RU_72_PR3[VAMP_AND_DO]/AW_72_PR3[VAMP_AND_DO])) ) }           
+}
+
+define EC_R_72_PR2 {
+    case nearZero {
+        condition R_72_PR2_MSN004[VAMP_AND_DO]<0.1 .or. AW_72_PR3[VAMP_AND_DO]<0.1
+        value 0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC033_72_PR2[VAMP_AND_DO] * EC_MDOTA    * (1.0 + EVF_XCC033_72_PR2_a[VAMP_AND_DO])
+                  + GP_72_PR2[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_XCC033_72_PR2[VAMP_AND_DO] 
+                    + GP_72_PR2[VAMP_AND_DO] )
+                  + pow( dEC_72_PR2, (1.0 + (RU_72_PR2[VAMP_AND_DO]/AW_72_PR2[VAMP_AND_DO])) ) }          
+}
+
+define EC_R_72_PA {
+    case nearZero {
+        condition R_72_PA_MSS014[VAMP_AND_DO]<0.1 .or. AW_72_PA[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC025_72_PA[VAMP_AND_DO]  * EC_MDOTA    * (1.0 + EVF_XCC025_72_PA_a[VAMP_AND_DO])
+                  + GP_72_PA[VAMP_AND_DO]         * EC_GP_72 ) 
+                  / ( DN_XCC025_72_PA[VAMP_AND_DO] 
+                    + GP_72_PA[VAMP_AND_DO] ) 
+                  + pow( dEC_72_PA, (1.0 + (RU_72_PA[VAMP_AND_DO]/AW_72_PA[VAMP_AND_DO])) ) }          
+                    
+}
+
+define EC_R_72_XA1 {
+    case nearZero {
+        condition R_72_XA1_SAL017[VAMP_AND_DO]<0.1 .or. AW_72_XA1[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_ARY010_72_XA1[VAMP_AND_DO] * EC_SJR180   * (1.0 + EVF_ARY010_72_XA1_a[VAMP_AND_DO])
+                  + GP_72_XA1[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_ARY010_72_XA1[VAMP_AND_DO] 
+                    + GP_72_XA1[VAMP_AND_DO] )
+                  + pow( dEC_72_XA1, (1.0 + (RU_72_XA1[VAMP_AND_DO]/AW_72_XA1[VAMP_AND_DO])) ) }          
+}
+
+define EC_R_72_XA2 {
+    case nearZero {
+        condition R_72_XA2_SAL017[VAMP_AND_DO]<0.1 .or. AW_72_XA2[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC010_72_XA2[VAMP_AND_DO] * EC_MDOTA    * (1.0 + EVF_XCC010_72_XA2_a[VAMP_AND_DO])
+                  + GP_72_XA2[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_XCC010_72_XA2[VAMP_AND_DO] 
+                    + GP_72_XA2[VAMP_AND_DO] )
+                  + pow( dEC_72_XA2, (1.0 + (RU_72_XA2[VAMP_AND_DO]/AW_72_XA2[VAMP_AND_DO])) ) }           
+}
+
+define EC_R_72_XA3_P {
+    case nearZero {
+        condition R_72_XA3_RFS72B[VAMP_AND_DO]<0.1 .or. AW_72_XA3[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case VAMP {
+        condition month==apr .or. month==may
+        value     ( DN_XCC054_72_XA3[VAMP_AND_DO] * EC_XCC054   * (1.0 + EVF_XCC054_72_XA3_a[VAMP_AND_DO])
+                  + GP_72_XA3[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_XCC054_72_XA3[VAMP_AND_DO] 
+                    + GP_72_XA3[VAMP_AND_DO] )
+                  + pow( dEC_72_XA3, (1.0 + (RU_72_XA3[VAMP_AND_DO]/AW_72_XA3[VAMP_AND_DO])) ) }  
+    case otherwise {
+        condition always
+        value 0.0}
+}
+
+define EC_R_72_XA3_NP {
+    case nearZero {
+        condition R_72_XA3_RFS72B[SJR_WQ1]<0.1 .or. AW_72_XA3[SJR_WQ1]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC054_72_XA3[SJR_WQ1] * EC_XCC054   * (1.0 + EVF_XCC054_72_XA3_a[SJR_WQ1])
+                  + GP_72_XA3[SJR_WQ1]        * EC_GP_72 ) 
+                  / ( DN_XCC054_72_XA3[SJR_WQ1] 
+                    + GP_72_XA3[SJR_WQ1] )
+                  + pow( dEC_72_XA3, (1.0 + (RU_72_XA3[SJR_WQ1]/AW_72_XA3[SJR_WQ1])) ) } 
+}
+
+define EC_SAL006 {
+    case nearZero {
+        condition C_SAL006[VAMP_AND_DO] < .1
+        value 0.0}
+    case otherwise {
+        condition always 
+        value (R_72_PR3_SAL006[VAMP_AND_DO] * EC_R_72_PR3
+             + R_72_PR4_SAL006[VAMP_AND_DO] * EC_R_72_PR4
+             + R_72_XA1_SAL017[VAMP_AND_DO] * EC_R_72_XA1
+             + R_72_XA2_SAL017[VAMP_AND_DO] * EC_R_72_XA2
+             + R_72_PA_MSS014[VAMP_AND_DO]  * EC_R_72_PA
+             + R_RFS72A_MSS014[VAMP_AND_DO] * EC_R_72_PR6
+             + SR_72_SAL006                 * EC_SR_72_SAL006)
+             / ( C_SAL006[VAMP_AND_DO] ) }
+}
+
+define EC_MSN004_P {
+    case nearZero {
+        condition C_MSN004[VAMP_AND_DO] < .1
+        value     0.0}
+    case VAMP {
+        condition month==apr .or. month==may
+        value     ( R_RFS72B_MSN004[VAMP_AND_DO] * EC_R_72_XA3_P
+                  + R_72_PR2_MSN004[VAMP_AND_DO] * EC_R_72_PR2
+                  + R_72_PR5_MSN009[VAMP_AND_DO] * EC_R_72_PR5
+                  + R_73_PA2_SLD027[VAMP_AND_DO] * EC_R_73_PA2
+                  + R_73_PA3_SLD027[VAMP_AND_DO] * EC_R_73_PA3
+                  + R_73_XA_SLD027[VAMP_AND_DO]  * EC_R_73_XA
+                  + C_LBN012[VAMP_AND_DO]        * EC_LBN012
+                  + D_XCC054_LBN008[VAMP_AND_DO] * EC_XCC054
+                  + SR_71_MSN004                 * EC_SR_71_MSN004
+                  + SR_72_MSN004                 * EC_SR_72_MSN004
+                  + SR_73_MSN004                 * EC_SR_73_MSN004
+                  + SR_73_SLD027                 * EC_SR_73_SLD027 )
+                  / ( C_MSN004[VAMP_AND_DO] ) }
+    case otherwise {
+        condition always
+        value 0.0}
+}
+define EC_MSN004_NP {
+    case nearZero {
+        condition C_MSN004[SJR_WQ1] < .1
+        value 0.0}
+    case otherwise {
+        condition always 
+        value     ( R_RFS72B_MSN004[SJR_WQ1] * EC_R_72_XA3_NP
+                  + R_72_PR2_MSN004[SJR_WQ1] * EC_R_72_PR2
+                  + R_72_PR5_MSN009[SJR_WQ1] * EC_R_72_PR5
+                  + R_73_PA2_SLD027[SJR_WQ1] * EC_R_73_PA2
+                  + R_73_PA3_SLD027[SJR_WQ1] * EC_R_73_PA3
+                  + R_73_XA_SLD027[SJR_WQ1]  * EC_R_73_XA
+                  + C_LBN012[SJR_WQ1]        * EC_LBN012
+                  + D_XCC054_LBN008[SJR_WQ1] * EC_XCC054
+                  + SR_71_MSN004             * EC_SR_71_MSN004
+                  + SR_72_MSN004             * EC_SR_72_MSN004
+                  + SR_73_MSN004             * EC_SR_73_MSN004
+                  + SR_73_SLD027             * EC_SR_73_SLD027 )
+                  / ( C_MSN004[SJR_WQ1] ) }
+}
+
+
+
+! ************************************************************************
+! SJR CONFLUENCE WITH SALT SLOUGH + MUD SLOUGH
+define EC_SJR127 {  ! Salt Slough Confluence
+    case NearZero {
+        condition C_SJR127[VAMP_AND_DO] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR134[VAMP_AND_DO] * EC_SJR134
+                  + C_SAL006[VAMP_AND_DO] * EC_SAL006) 
+                  / ( C_SJR127[VAMP_AND_DO] ) }
+}  
+
+define EC_SJR119_P {  ! Mud Slough North
+    case NearZero {
+        condition C_SJR119[VAMP_AND_DO] < 0.1
+        value 0.0 }
+    case VAMP {
+        condition month==apr .or. month==may
+        value     ( C_SJR127[VAMP_AND_DO]              * EC_SJR127
+                  + min(0.,SG_SJR123_702[VAMP_AND_DO]) * EC_SJR127
+                  + max(0.,SG_SJR123_702[VAMP_AND_DO]) * EC_SG_SJR123
+                  + C_MSN004[VAMP_AND_DO]              * EC_MSN004_P) 
+                  / ( C_SJR119[VAMP_AND_DO] ) }
+    case otherwise {
+        condition always
+        value 0.0}
+}
+
+define EC_SJR119_NP {  ! Mud Slough North
+    case NearZero {
+        condition C_SJR119[SJR_WQ1] < 0.1
+        value 0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR127[SJR_WQ1]              * EC_SJR127
+                  + min(0.,SG_SJR123_702[SJR_WQ1]) * EC_SJR127
+                  + max(0.,SG_SJR123_702[SJR_WQ1]) * EC_SG_SJR123
+                  + C_MSN004[SJR_WQ1]              * EC_MSN004_NP) 
+                  / ( C_SJR119[SJR_WQ1] ) }
+}
+
+
+
+! ************************************************************************
+! NEWMAN WASTEWAY AND EAST SIDE RETURN TO SJR117
+define EC_NMW004 { ! Newman Wasteway
+    case nearZero {
+        condition C_NMW004[VAMP_AND_DO] < .1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( D_DMC054_NMW004[VAMP_AND_DO] * EC_Tracy
+                  + R_RFS71C_NMW004[VAMP_AND_DO] * EC_R_71_PA6)
+                  / ( C_NMW004[VAMP_AND_DO] ) }
+}
+
+define EC_R_63_NA4_P  {
+    case nearZero {
+        condition R_63_NA4_SJR117[VAMP_AND_DO]<0.1 .or. AW_63_NA4[VAMP_AND_DO]<0.1
+        value 0.0 }
+    case VAMP {
+        condition month==apr .or. month==may
+        value     ( DN_MCD002_63_NA4[VAMP_AND_DO] * EC_MCD002_P * (1.0 + EVF_MCD002_63_NA4_a[VAMP_AND_DO])
+                  + DN_MCD021_63_NA4[VAMP_AND_DO] * EC_MCD002_P * (1.0 + EVF_MCD021_63_NA4_a[VAMP_AND_DO])
+                  + DN_MID021_63_NA4[VAMP_AND_DO] * EC_MCD002_P * (1.0 + EVF_MID021_63_NA4_a[VAMP_AND_DO])
+                  + GP_63_NA4[VAMP_AND_DO]        * EC_GP_63 ) 
+                  / ( DN_MCD002_63_NA4[VAMP_AND_DO] 
+                    + DN_MCD021_63_NA4[VAMP_AND_DO] 
+                    + DN_MID021_63_NA4[VAMP_AND_DO] 
+                    + GP_63_NA4[VAMP_AND_DO] )
+                  + pow( dEC_63_NA4, (1.0 + (RU_63_NA4[VAMP_AND_DO]/AW_63_NA4[VAMP_AND_DO])) ) }              
+    case otherwise {
+        condition always
+        value 0.0}
+}
+
+define EC_R_63_NA4_NP  {
+    case nearZero {
+        condition R_63_NA4_SJR117[SJR_WQ1]<0.1 .or. AW_63_NA4[SJR_WQ1]<0.1
+        value 0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MCD002_63_NA4[SJR_WQ1] * EC_MCD002_NP * (1.0 + EVF_MCD002_63_NA4_a[SJR_WQ1])
+                  + DN_MCD021_63_NA4[SJR_WQ1] * EC_MCD002_NP * (1.0 + EVF_MCD021_63_NA4_a[SJR_WQ1])
+                  + DN_MID021_63_NA4[SJR_WQ1] * EC_MCD002_NP * (1.0 + EVF_MID021_63_NA4_a[SJR_WQ1])
+                  + GP_63_NA4[SJR_WQ1]        * EC_GP_63 ) 
+                  / ( DN_MCD002_63_NA4[SJR_WQ1] 
+                    + DN_MCD021_63_NA4[SJR_WQ1] 
+                    + DN_MID021_63_NA4[SJR_WQ1] 
+                    + GP_63_NA4[SJR_WQ1] )
+                  + pow( dEC_63_NA4, (1.0 + (RU_63_NA4[SJR_WQ1]/AW_63_NA4[SJR_WQ1])) ) }              
+}
+
+
+
+! ************************************************************************
+! SJR FROM MERCED RIVER TO BELOW NEWMAN GAGE
+define EC_SJR116_NP {  ! Merced Confluence
+    case NonPulseNonDO {
+        condition month <= may
+        value     ( C_SJR119[SJR_WQ1]        * EC_SJR119_NP
+                  + SR_63_SJR117             * EC_SR_63_SJR117
+                  + SR_71_SJR117             * EC_SR_71_SJR117
+                  + SR_72_SJR117             * EC_SR_72_SJR117
+                  + C_NMW004[SJR_WQ1]        * EC_NMW004
+                  + R_63_NA4_SJR117[SJR_WQ1] * EC_R_63_NA4_NP
+                  + C_MCD002[SJR_WQ1]        * EC_MCD002_NP
+                  + max(0.,SG_SJR116_693[SJR_WQ1]) * EC_SG_SJR116 )
+                  / ( C_SJR116[SJR_WQ1] + D_SJR116_72_NA1[SJR_WQ1] - min(0.,SG_SJR116_693[SJR_WQ1]) ) }
+    case NonPulsePlusDO {
+        condition always    !June thru September
+        value     ( C_SJR119[VAMP_AND_DO]        * EC_SJR119_NP
+                  + SR_63_SJR117                 * EC_SR_63_SJR117
+                  + SR_71_SJR117                 * EC_SR_71_SJR117
+                  + SR_72_SJR117                 * EC_SR_72_SJR117
+                  + C_NMW004[VAMP_AND_DO]        * EC_NMW004
+                  + R_63_NA4_SJR117[VAMP_AND_DO] * EC_R_63_NA4_NP
+                  + C_MCD002[VAMP_AND_DO]        * EC_MCD002_NP
+                  + max(0.,SG_SJR116_693[VAMP_AND_DO]) * EC_SG_SJR116 )
+                  / ( C_SJR116[VAMP_AND_DO] + D_SJR116_72_NA1[VAMP_AND_DO] - min(0.,SG_SJR116_693[VAMP_AND_DO]) ) }
+}
+
+define EC_SJR116_P {  ! Merced Confluence
+    case APRILMAY {
+        condition month==apr .or. month==may
+        value     ( C_SJR119[VAMP_AND_DO]        * EC_SJR119_P
+                  + SR_63_SJR117             * EC_SR_63_SJR117
+                  + SR_71_SJR117             * EC_SR_71_SJR117
+                  + SR_72_SJR117             * EC_SR_72_SJR117
+                  + C_NMW004[VAMP_AND_DO]        * EC_NMW004
+                  + R_63_NA4_SJR117[VAMP_AND_DO] * EC_R_63_NA4_P
+                  + C_MCD002[VAMP_AND_DO]        * EC_MCD002_P
+                  + max(0.,SG_SJR116_693[VAMP_AND_DO]) * EC_SG_SJR116 )
+                  / ( C_SJR116[VAMP_AND_DO] + D_SJR116_72_NA1[VAMP_AND_DO] - min(0.,SG_SJR116_693[VAMP_AND_DO]) ) }
+     case otherwise {
+               condition always
+               value     0.}
+}
+
+define EC_SJR114_NP {  ! Below Newman Gage
+    case NonPulseNonDO {
+        condition month <= may
+        value (C_SJR116[SJR_WQ1] * EC_SJR116_NP
+             + C_MRS000[SJR_WQ1] * EC_MCD002_NP)
+             /(C_SJR114[SJR_WQ1] + D_SJR114_62_NA5[SJRBASE])}
+    case NonPulsePlusDO {
+        condition always 
+        value (C_SJR116[VAMP_AND_DO] * EC_SJR116_NP
+             + C_MRS000[VAMP_AND_DO] * EC_MCD002_NP)
+             /(C_SJR114[VAMP_AND_DO] + D_SJR114_62_NA5[VAMP_AND_DO])}
+}
+define EC_SJR114_P {  ! Below Newman Gage
+    case APRILMAY {
+        condition month==apr .or. month==may
+        value (C_SJR116[VAMP_AND_DO] * EC_SJR116_P
+             + C_MRS000[VAMP_AND_DO] * EC_MCD002_P)
+             /(C_SJR114[VAMP_AND_DO] + D_SJR114_62_NA5[VAMP_AND_DO])}
+     case otherwise {
+               condition always
+               value     0.}
+}
+
+
+
+! ************************************************************************
+! WEST SIDE RETURN TO SJR106   
+define EC_R_72_NA1_NP {
+    case nearZero {
+        condition R_72_NA1_SJR106[SJR_WQ1]<0.1 .or. AW_72_NA1[SJR_WQ1]<0.1
+        value 0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR116_72_NA1[SJR_WQ1] * EC_SJR116_NP * (1.0 + EVF_SJR116_72_NA1_a[SJR_WQ1])
+                  + GP_72_NA1[SJR_WQ1]        * EC_GP_72 ) 
+                  / ( DN_SJR116_72_NA1[SJR_WQ1] 
+                    + GP_72_NA1[SJR_WQ1] )
+                  + pow( dEC_72_NA1, (1.0 + (RU_72_NA1[SJR_WQ1]/AW_72_NA1[SJR_WQ1])) ) }         
+}
+
+define EC_R_72_NA1_P {
+    case VAMP {
+        condition R_72_NA1_SJR106[VAMP_AND_DO]>0.1 .and. AW_72_NA1[VAMP_AND_DO]>0.1 .and. month>=APR .and. month<=may
+        value     ( DN_SJR116_72_NA1[VAMP_AND_DO] * EC_SJR116_P * (1.0 + EVF_SJR116_72_NA1_a[VAMP_AND_DO])
+                  + GP_72_NA1[VAMP_AND_DO]        * EC_GP_72 ) 
+                  / ( DN_SJR116_72_NA1[VAMP_AND_DO] 
+                    + GP_72_NA1[VAMP_AND_DO] )
+                  + pow( dEC_72_NA1, (1.0 + (RU_72_NA1[VAMP_AND_DO]/AW_72_NA1[VAMP_AND_DO])) ) } 
+     case otherwise {
+               condition always
+               value     0.}
+}
+
+define EC_R_71_PA5 {
+    case nearZero {
+        condition R_71_PA5_RFS71B[VAMP_AND_DO]<0.1 .or. AW_71_PA5[VAMP_AND_DO]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC044_71_PA5[VAMP_AND_DO] * EC_Tracy    * (1.0 + EVF_DMC044_71_PA5_a[VAMP_AND_DO])
+                  + GP_71_PA5[VAMP_AND_DO]        * EC_GP_71 ) 
+                  / ( DN_DMC044_71_PA5[VAMP_AND_DO] 
+                    + GP_71_PA5[VAMP_AND_DO] )
+                  + pow( dEC_71_PA5, (1.0 + (RU_71_PA5[VAMP_AND_DO]/AW_71_PA5[VAMP_AND_DO])) ) }           
+}
+
+
+
+! ************************************************************************
+! SJR ORESTIMBA CREEEK TO PATTERSON
+define EC_SJR106_NP {  ! Orestimba Ck Confluence
+    case NonPulseNonDO {
+        condition month <= may
+        value     ( C_SJR114[SJR_WQ1]              * EC_SJR114_NP
+                  + SR_71_SJR106                   * EC_SR_71_SJR106
+                  + SR_72_SJR106                   * EC_SR_72_SJR106
+                  + min(0.,SG_SJR111_683[SJR_WQ1]) * EC_SJR114_NP
+                  + max(0.,SG_SJR111_683[SJR_WQ1]) * EC_SG_SJR111
+                  + max(0.,SG_SJR106_671[SJR_WQ1]) * EC_SG_SJR106
+                  + C_ORT009[SJR_WQ1]              * EC_ORT009
+                  + R_RFS72B_SJR106[SJR_WQ1]       * EC_R_72_XA3_NP
+                  + R_72_NA1_SJR106[SJR_WQ1]       * EC_R_72_NA1_NP
+                  + R_RFS71B_SJR106[SJR_WQ1]       * EC_R_71_PA5)
+                  / ( C_SJR106[SJR_WQ1] - min(0.,SG_SJR106_671[SJR_WQ1]) ) }
+    case NonPulsePlusDO {
+        condition always    !June thru September
+        value     ( C_SJR114[VAMP_AND_DO]              * EC_SJR114_NP
+                  + SR_71_SJR106                       * EC_SR_71_SJR106
+                  + SR_72_SJR106                       * EC_SR_72_SJR106
+                  + min(0.,SG_SJR111_683[VAMP_AND_DO]) * EC_SJR114_NP
+                  + max(0.,SG_SJR111_683[VAMP_AND_DO]) * EC_SG_SJR111
+                  + max(0.,SG_SJR106_671[VAMP_AND_DO]) * EC_SG_SJR106
+                  + C_ORT009[VAMP_AND_DO]              * EC_ORT009
+                  + R_RFS72B_SJR106[VAMP_AND_DO]       * EC_R_72_XA3_NP
+                  + R_72_NA1_SJR106[VAMP_AND_DO]       * EC_R_72_NA1_NP
+                  + R_RFS71B_SJR106[VAMP_AND_DO]       * EC_R_71_PA5)
+                  / ( C_SJR106[VAMP_AND_DO] - min(0.,SG_SJR106_671[VAMP_AND_DO]) ) }
+}
+
+define EC_SJR106_P {  ! Orestimba Ck Confluence
+    case VAMP {
+        condition month==apr .or. month==may
+        value     ( C_SJR114[VAMP_AND_DO]              * EC_SJR114_P
+                  + SR_71_SJR106                       * EC_SR_71_SJR106
+                  + SR_72_SJR106                       * EC_SR_72_SJR106
+                  + min(0.,SG_SJR111_683[VAMP_AND_DO]) * EC_SJR114_P
+                  + max(0.,SG_SJR111_683[VAMP_AND_DO]) * EC_SG_SJR111
+                  + max(0.,SG_SJR106_671[VAMP_AND_DO]) * EC_SG_SJR106
+                  + C_ORT009[VAMP_AND_DO]              * EC_ORT009
+                  + R_RFS72B_SJR106[VAMP_AND_DO]       * EC_R_72_XA3_P
+                  + R_72_NA1_SJR106[VAMP_AND_DO]       * EC_R_72_NA1_P
+                  + R_RFS71B_SJR106[VAMP_AND_DO]       * EC_R_71_PA5)
+                  / ( C_SJR106[VAMP_AND_DO] - min(0.,SG_SJR106_671[VAMP_AND_DO]) ) }
+     case otherwise {
+               condition always
+               value     0.}
+}
+
+define EC_SJR096_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value     ( C_SJR105[SJR_WQ1]        * EC_SJR106_NP
+                  + R_TKWWTP_SJR101[SJR_WQ1] * EC_TKWWTP
+                  + max(0.,SG_SJR096_660[SJR_WQ1]) * EC_SG_SJR096)
+                  / ( C_SJR096[SJR_WQ1] + D_SJR096_71_PA4[SJR_WQ1] - min(0.,SG_SJR096_660[SJR_WQ1]) ) }
+    case NonPulsePlusDO {
+        condition always    !June thru September
+        value     ( C_SJR105[VAMP_AND_DO]        * EC_SJR106_P
+                  + R_TKWWTP_SJR101[VAMP_AND_DO] * EC_TKWWTP
+                  + max(0.,SG_SJR096_660[VAMP_AND_DO]) * EC_SG_SJR096)
+                  / ( C_SJR096[VAMP_AND_DO] + D_SJR096_71_PA4[VAMP_AND_DO] - min(0.,SG_SJR096_660[VAMP_AND_DO]) ) }
+}
+define EC_SJR096_P {
+    case VAMP {
+        condition month==apr .or. month==may
+        value     ( C_SJR105[VAMP_AND_DO]        * EC_SJR106_P
+                  + R_TKWWTP_SJR101[VAMP_AND_DO] * EC_TKWWTP
+                  + max(0.,SG_SJR096_660[VAMP_AND_DO]) * EC_SG_SJR096)
+                  / ( C_SJR096[VAMP_AND_DO] + D_SJR096_71_PA4[VAMP_AND_DO] - min(0.,SG_SJR096_660[VAMP_AND_DO]) ) }
+     case otherwise {
+               condition always
+               value     0.}
+}
+
+
+
+/*
+Compute the combined EC at points in the SJR and Westside systems from elements of
+the solution for pulse and non-pulse periods. Not done for every single node - just
+the ones where salinity information is typically output or would now be interesting.
+*/
+
+
+define EC_R_72_XA3 {
+     case April {
+          condition month == apr
+          value     14.*EC_R_72_XA3_NP/30. + 16.*EC_R_72_XA3_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_R_72_XA3_P/31. + 16.*EC_R_72_XA3_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_R_72_XA3_NP}
+}
+
+define EC_MSN004 {
+     case April {
+          condition month == apr
+          value     14.*EC_MSN004_NP/30. + 16.*EC_MSN004_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_MSN004_P/31. + 16.*EC_MSN004_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_MSN004_NP}
+}
+
+define EC_SJR119 {
+     case April {
+          condition month == apr
+          value     14.*EC_SJR119_NP/30. + 16.*EC_SJR119_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_SJR119_P/31. + 16.*EC_SJR119_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_SJR119_NP}
+}
+define EC_R_63_NA4 {
+     case April {
+          condition month == apr
+          value     14.*EC_R_63_NA4_NP/30. + 16.*EC_R_63_NA4_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_R_63_NA4_P/31. + 16.*EC_R_63_NA4_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_R_63_NA4_NP}
+}
+define EC_SJR116 {
+     case April {
+          condition month == apr
+          value     14.*EC_SJR116_NP/30. + 16.*EC_SJR116_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_SJR116_P/31. + 16.*EC_SJR116_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_SJR116_NP}
+}
+define EC_SJR114 {
+     case April {
+          condition month == apr
+          value     14.*EC_SJR114_NP/30. + 16.*EC_SJR114_P/30. }
+     case MayOnly {
+          condition month == may
+          value     15.*EC_SJR114_P/31. + 16.*EC_SJR114_NP/31. }
+     case otherwise {
+          condition always
+          value     EC_SJR114_NP}
+}
+
+
+define EC_R_91_PAdv     {alias EC_R_91_PA     kind 'salinity' units 'mS/cm'}
+define EC_R_91_PRdv     {alias EC_R_91_PR     kind 'salinity' units 'mS/cm'}
+define EC_FSL005dv      {alias EC_FSL005      kind 'salinity' units 'mS/cm'}
+define EC_MDOTAdv       {alias EC_MDOTA       kind 'salinity' units 'mS/cm'}
+define EC_R_64_XAdv     {alias EC_R_64_XA     kind 'salinity' units 'mS/cm'}
+define EC_SJR180dv      {alias EC_SJR180      kind 'salinity' units 'mS/cm'}
+define EC_SJR166dv      {alias EC_SJR166      kind 'salinity' units 'mS/cm'}
+define EC_R_64_PA1dv    {alias EC_R_64_PA1    kind 'salinity' units 'mS/cm'}
+define EC_R_64_PA3dv    {alias EC_R_64_PA3    kind 'salinity' units 'mS/cm'}
+define EC_EBP016dv      {alias EC_EBP016      kind 'salinity' units 'mS/cm'}
+define EC_R_64_PA2dv    {alias EC_R_64_PA2    kind 'salinity' units 'mS/cm'}
+define EC_R_64_NA2dv    {alias EC_R_64_NA2    kind 'salinity' units 'mS/cm'}
+define EC_EBP041dv      {alias EC_EBP041      kind 'salinity' units 'mS/cm'}
+define EC_EBP048dv      {alias EC_EBP048      kind 'salinity' units 'mS/cm'}
+define EC_EBP050dv      {alias EC_EBP050      kind 'salinity' units 'mS/cm'}
+define EC_SJR145dv      {alias EC_SJR145      kind 'salinity' units 'mS/cm'}
+define EC_SJR134dv      {alias EC_SJR134      kind 'salinity' units 'mS/cm'}
+define EC_R_73_XAdv     {alias EC_R_73_XA     kind 'salinity' units 'mS/cm'}
+define EC_R_73_PA1dv    {alias EC_R_73_PA1    kind 'salinity' units 'mS/cm'}
+define EC_R_73_PA2dv    {alias EC_R_73_PA2    kind 'salinity' units 'mS/cm'}
+define EC_R_73_PA3dv    {alias EC_R_73_PA3    kind 'salinity' units 'mS/cm'}
+define EC_R_72_PR1dv    {alias EC_R_72_PR1    kind 'salinity' units 'mS/cm'}
+define EC_LBN025dv      {alias EC_LBN025      kind 'salinity' units 'mS/cm'}
+define EC_LBN012dv      {alias EC_LBN012      kind 'salinity' units 'mS/cm'}
+define EC_R_72_PR6dv    {alias EC_R_72_PR6    kind 'salinity' units 'mS/cm'}
+define EC_XCC054dv      {alias EC_XCC054      kind 'salinity' units 'mS/cm'}
+define EC_R_72_PR5dv    {alias EC_R_72_PR5    kind 'salinity' units 'mS/cm'}
+define EC_R_72_PR4dv    {alias EC_R_72_PR4    kind 'salinity' units 'mS/cm'}
+define EC_R_72_PR3dv    {alias EC_R_72_PR3    kind 'salinity' units 'mS/cm'}
+define EC_R_72_PR2dv    {alias EC_R_72_PR2    kind 'salinity' units 'mS/cm'}
+define EC_R_72_PAdv     {alias EC_R_72_PA     kind 'salinity' units 'mS/cm'}
+define EC_R_72_XA1dv    {alias EC_R_72_XA1    kind 'salinity' units 'mS/cm'}
+define EC_R_72_XA2dv    {alias EC_R_72_XA2    kind 'salinity' units 'mS/cm'}
+define EC_R_72_XA3dv    {alias EC_R_72_XA3    kind 'salinity' units 'mS/cm'}
+define EC_SAL006dv      {alias EC_SAL006      kind 'salinity' units 'mS/cm'}
+define EC_MSN004dv      {alias EC_MSN004      kind 'salinity' units 'mS/cm'}
+define EC_SJR127dv      {alias EC_SJR127      kind 'salinity' units 'mS/cm'}
+define EC_SJR119dv      {alias EC_SJR119      kind 'salinity' units 'mS/cm'}
+define EC_R_71_PA6dv    {alias EC_R_71_PA6    kind 'salinity' units 'mS/cm'}
+define EC_NMW004dv      {alias EC_NMW004      kind 'salinity' units 'mS/cm'}
+define EC_R_63_NA4dv    {alias EC_R_63_NA4    kind 'salinity' units 'mS/cm'}
+define EC_SJR116dv      {alias EC_SJR116      kind 'salinity' units 'mS/cm'}
+define EC_SJR114dv      {alias EC_SJR114      kind 'salinity' units 'mS/cm'}
+
+! define EC_R_72_NA1dv    {alias EC_R_72_NA1    kind 'salinity' units 'mS/cm'}
+! define EC_SJR106dv      {alias EC_SJR106      kind 'salinity' units 'mS/cm'}
+! define EC_SJR096dv      {alias EC_SJR096      kind 'salinity' units 'mS/cm'}
+! define EC_R_71_PA4dv    {alias EC_R_71_PA4    kind 'salinity' units 'mS/cm'}
+! define EC_R_71_NA1dv    {alias EC_R_71_NA1    kind 'salinity' units 'mS/cm'}
+! define EC_SJR091dv      {alias EC_SJR091      kind 'salinity' units 'mS/cm'}
+! define EC_WWW001dv      {alias EC_WWW001      kind 'salinity' units 'mS/cm'}
+! define EC_R_62_NA3dv    {alias EC_R_62_NA3    kind 'salinity' units 'mS/cm'}
+! define EC_R_62_NA5dv    {alias EC_R_62_NA5    kind 'salinity' units 'mS/cm'}
+! define EC_SJR082dv      {alias EC_SJR082      kind 'salinity' units 'mS/cm'}
+! define EC_SJR081dv      {alias EC_SJR081      kind 'salinity' units 'mS/cm'}
+! define EC_R_71_PA1dv    {alias EC_R_71_PA1    kind 'salinity' units 'mS/cm'}
+! define EC_R_71_PA2dv    {alias EC_R_71_PA2    kind 'salinity' units 'mS/cm'}
+! define EC_R_71_PA3dv    {alias EC_R_71_PA3    kind 'salinity' units 'mS/cm'}
+! define EC_R_71_PA5dv    {alias EC_R_71_PA5    kind 'salinity' units 'mS/cm'}
+! define EC_R_71_NA2dv    {alias EC_R_71_NA2    kind 'salinity' units 'mS/cm'}
+! define EC_R_RFS61Adv    {alias EC_R_RFS61A    kind 'salinity' units 'mS/cm'}
+! define EC_SJR075dv      {alias EC_SJR075      kind 'salinity' units 'mS/cm'}
+! define EC_R_61_PA1dv    {alias EC_R_61_PA1    kind 'salinity' units 'mS/cm'}
+! define EC_R_61_PA2dv    {alias EC_R_61_PA2    kind 'salinity' units 'mS/cm'}
+! define EC_R_61_NA2dv    {alias EC_R_61_NA2    kind 'salinity' units 'mS/cm'}
+! define EC_STS036dv      {alias EC_STS036      kind 'salinity' units 'mS/cm'}
+! define EC_STS030dv      {alias EC_STS030      kind 'salinity' units 'mS/cm'}
+! define EC_STS017dv      {alias EC_STS017      kind 'salinity' units 'mS/cm'}
+! define EC_R_61_NA5dv    {alias EC_R_61_NA5    kind 'salinity' units 'mS/cm'}
+! define EC_R_61_NA4dv    {alias EC_R_61_NA4    kind 'salinity' units 'mS/cm'}
+! define EC_SJR072dv      {alias EC_SJR072      kind 'salinity' units 'mS/cm'}
+! define EC_SJR070dv      {alias EC_SJR070      kind 'salinity' units 'mS/cm'}
+! define EC_TUO022dv      {alias EC_TUO022      kind 'salinity' units 'mS/cm'}
+! define EC_TUO017dv      {alias EC_TUO017      kind 'salinity' units 'mS/cm'}
+! define EC_TUO010dv      {alias EC_TUO010      kind 'salinity' units 'mS/cm'}
+! define EC_R_61_NA3dv    {alias EC_R_61_NA3    kind 'salinity' units 'mS/cm'}
+! define EC_R_62_NA4dv    {alias EC_R_62_NA4    kind 'salinity' units 'mS/cm'}
+! define EC_TUO003calcdv  {alias EC_TUO003calc  kind 'salinity' units 'mS/cm'}
+
+
+

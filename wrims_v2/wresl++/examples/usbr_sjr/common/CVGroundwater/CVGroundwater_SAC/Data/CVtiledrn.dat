@@ -1,0 +1,88 @@
+C*******************************************************************************
+C
+C                  INTEGRATED WATER FLOW MODEL (IWFM)
+C                        *** Version 3.02 ***
+C
+C*******************************************************************************
+C
+C                  TILE DRAINS PARAMETER DATA FILE
+C                        for IWFM Simulation
+C                            (Unit 17)                            
+C
+C
+C             Project:  C2VSim: California Central Valley Groundwater-Surface Water Simulation Model
+C             Filename: CVtiledrn_110603.dat
+C
+C*******************************************************************************
+C                          File Description:
+C
+C   This data file contains tile drains parameter values.
+C
+C*******************************************************************************
+C                  Tile Drains Data Specifications
+C
+C   NTD    ;  Number of groundwater nodes with tile drains
+C   FACTH  ;  Conversion factor for tile drain elevations
+C   FACTCDC;  Conversion factor for tile drain conductances
+C            It is used to convert only the spatial component of the unit; 
+C            DO NOT include the conversion factor for time component of the unit.
+C            * e.g. Unit of conductance listed in this file = AC/MONTH
+C                   Consistent unit used in simulation      = SQ.FT/DAY 
+C                   Enter FACTQ (AC/MONTH -> SQ.FT/MONTH)   = 2.29568E-05 
+C                    (conversion of MONTH -> DAY is performed automatically) 
+C   TUNIT ; Time unit of conductance.  This should be one of the units 
+C            recognized by HEC-DSS that are listed in the Main Control File.  
+C-------------------------------------------------------------------------------
+C       VALUE                   DESCRIPTION
+C-------------------------------------------------------------------------------
+        11                       /NTD
+        1.0                      /FACTH
+        60.0                     /FACTCDC  (convert ft^2/sec to ft^2/min)
+        1min                     /TUNIT
+C-------------------------------------------------------------------------------
+C                         Tile Drain Parameters
+C
+C   The following lists the groundwater node number, elevation and conductance 
+C   for each tile drain. The stream node that the tile drain flow contributes to 
+C   is also listed.
+C
+C   NODEDR ; Groundwater node number corresponding to the tile drain
+C        Case 1: For drainage out of node, list the node number as a negative value. For example,
+C          list node 898 as -898,
+C          list node 98 as -98,
+C          list node 1898 as -1898
+C        Case 2: For drainage into the node, list the node number as a positive value. For example,
+C          list node 898 as 898,
+C          list node 98 as 98,
+C          list node 1898 as 1898
+C   ELEVDR ; Elevation of the drain; [L]
+C   CDCDR  ; Hydraulic conductance of the interface between the aquifer and 
+C             the drain; [L^2/T]
+C   ISTRMDR; Stream node into which drain flows into (input 0 (zero) if the 
+C             drain flows out of the modeled area) 
+C
+C-------------------------------------------------------------------------------
+C NODEDR     ELEVDR        CDCDR     ISTRMDR
+C-------------------------------------------------------------------------------
+  -794     110.70      0.1000       114
+  -815     181.70      0.1000       114
+  -816     115.70      0.1000       114
+  -827     133.70      0.1000       114
+  -828     130.70      0.1000       114
+  -840     188.70      0.1000       114
+  -841     167.70      0.1000       114
+  -842     149.70      0.1000       114
+  -855     189.70      0.1000       114
+  -856     190.70      0.1000       114
+  -857     187.70      0.1000       114
+c  -867     219.90      0.0350       113
+c  -870     219.90      0.0350       113
+c  -871     173.90      0.0350       113
+c  -872     148.90      0.0350       113
+c  -884     210.90      0.0350       113
+c  -885     160.90      0.0350       113
+c  -890     190.90      0.0350       113
+c  -891     158.90      0.0350       113
+c  -905     179.90      0.0350       113
+c  -906     155.90      0.0350       113
+c  -922     161.90      0.0350       113

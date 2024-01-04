@@ -1,0 +1,125 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnvnnnnnnnnnnnnnnnnnnnnnnnnvnnvnnnnnnnnnvnnnnnnnnnnnnnvnnnnnnvnnnnnnnnnnnnnn
+
+U ada.strings.wide_wide_unbounded.wide_wide_text_io%b  a-szuzti.adb  45b2b242 NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.strings.wide_wide_unbounded%s  a-stzunb.adb  a-stzunb.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.wide_wide_text_io%s  a-ztexio.adb		a-ztexio.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.parameters%s	s-parame.adb		s-parame.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+U ada.strings.wide_wide_unbounded.wide_wide_text_io%s  a-szuzti.ads  66235ad2 NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.strings.wide_wide_unbounded%s  a-stzunb.adb  a-stzunb.ali
+W ada.wide_wide_text_io%s  a-ztexio.adb		a-ztexio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-string.ads		20070406091342 87b4230b
+D a-stzmap.ads		20090409150020 9e409275
+D a-stzunb.ads		20090409150020 ea06681c
+D a-szuzti.ads		20090409150020 b242fc83
+D a-szuzti.adb		20090409150020 c997808c
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-ztexio.ads		20091028133152 3e67ce4d
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-wchcon.ads		20090417130712 30c48dc1
+X 1 ada.ads
+16K9*Ada 19e8 10|38r6 40r9 45r14 52r14 60r14 65r14 71r5 11|32r6 32r33 34r14
+. 65r14 97r14 162r5
+X 7 a-string.ads
+16K13*Strings 1|16k9 7|35e16 10|40r13 71r9 11|34r18 162r9
+X 9 a-stzunb.ads
+39K21*Wide_Wide_Unbounded 7|16k13 9|443e36 10|40r21 71r17 11|34r26 162r17
+42R9*Unbounded_Wide_Wide_String 411e14 10|43r13 46r14 53r18 54r35 58r11 61r14
+. 63r14 66r14 11|40r29 45r16 65r54 71r16 91r35 98r18 138r23 143r41 152r28
+. 157r46
+49P9*Wide_Wide_String_Access(wide_wide_string) 11|43r16 44r16 69r16 70r16
+51U14*Free 11|55r10 82r10
+409p7*Reference{49P9} 11|59m14 86m14 107r15 118r18 118r51 124r30 140r14 145r20
+. 154r19 159r25
+410i7*Last{natural} 11|60m14 87m14 114m12 118r34 119m18 124r18 130r40 140r32
+. 145r38 154r37 159r43
+429U14 Realloc_For_Chunk 11|108r10 130r10
+X 10 a-szuzti.ads
+40K41*Wide_Wide_Text_IO 9|39k21 10|71l37 71e54 11|34b46 162l37 162t54
+42V13*Get_Line{9|42R9} 11|40b13 62l8 62t16
+44V13*Get_Line{9|42R9} 45>7 11|64b13 89l8 89t16
+45p7 File{14|54P9} 11|65b7 74r17 78r20
+51U14*Get_Line 52>7 53<7 11|93r7 96b14 132l8 132t16
+52p7 File{14|54P9} 11|97b7 117r13
+53r7 Item{9|42R9} 11|98b7 107r10 108m29 114m7 118r13 118r29 118r46 119m13
+. 124r13 124r25 130m29 130r35
+54U14*Get_Line 54<24 11|91b14 94l8 94t16
+54r24 Item{9|42R9} 11|91b24 93m32
+57U14*Put 58>7 11|138b14 141l8 141t11
+58r7 U{9|42R9} 11|138b19 140r12 140r30
+59U14*Put 60>7 61>7 11|143b14 146l8 146t11
+60p7 File{14|54P9} 11|143b19 145r12
+61r7 U{9|42R9} 11|143b37 145r18 145r36
+62U14*Put_Line 63>7 11|152b14 155l8 155t16
+63r7 U{9|42R9} 11|152b24 154r17 154r35
+64U14*Put_Line 65>7 66>7 11|157b14 160l8 160t16
+65p7 File{14|54P9} 11|157b24 159r17
+66r7 U{9|42R9} 11|157b42 159r23 159r41
+X 11 a-szuzti.adb
+41a7 Buffer{wide_wide_string} 48m17 49r37 50r20 51m20 54r47
+42i7 Last{natural} 48m25 49r50 50r13 51m28 52r57 54r60
+43p7 Str1{9|49P9} 49m7 52r45 53r16 53r31 54r16 55m16 56m10 59r27 60r27
+44p7 Str2{9|49P9} 52m10 53r10 54r10 54r33 56r18
+45r7 Result{9|42R9} 59m7 60m7 61r14
+67a7 Buffer{wide_wide_string} 74m23 75r37 77r20 78m26 81r47
+68i7 Last{natural} 74m31 75r50 77r13 78m34 79r57 81r60
+69p7 Str1{9|49P9} 75m7 79r45 80r16 80r31 81r16 82m16 83m10 86r27 87r27
+70p7 Str2{9|49P9} 79m10 80r10 81r10 81r33 83r18
+71r7 Result{9|42R9} 86m7 87m7 88r14
+X 14 a-ztexio.ads
+52K13*Wide_Wide_Text_IO 10|38w10 45r18 52r18 60r18 65r18 11|32w10 32r37 65r18
+. 97r18 14|498e26
+54P9*File_Type(373R9) 10|45r36 52r36 60r36 65r36 11|65r36 97r36 143r26 157r31
+124V13*Current_Input{54P9} 11|93r17
+244U14*Put 11|145r7
+245U14*Put 11|140r7
+247U14*Get_Line 11|74r7 78r10 116r10
+258U14*Get_Line 11|48r7 51r10
+262U14*Put_Line 11|159r7
+266U14*Put_Line 11|154r7
+

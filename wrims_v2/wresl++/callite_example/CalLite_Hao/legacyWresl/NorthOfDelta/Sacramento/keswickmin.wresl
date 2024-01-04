@@ -1,0 +1,12 @@
+define minflow_C_Kswck {timeseries kind 'flow-min-required' units 'CFS'}
+
+define kswck_min {lower -999999.0 upper 999999.0 kind 'alias' units 'CFS'}
+
+define tempcntrl_surrogate {value 3250.}
+
+define effective_C_Kswck_min { value max(minflow_C_Kswck,tempcntrl_surrogate) }
+
+Goal  setkswck_min { kswck_min =effective_C_Kswck_min}
+
+! goal meetC_Kswck_min {C_Kswck_MIF < effective_C_Kswck_min}  ! This goal is set in "setnodminflows.wresl" file in D1641 and D1485 studies and in "b2action1.wresl" file in (b)(2) study.
+

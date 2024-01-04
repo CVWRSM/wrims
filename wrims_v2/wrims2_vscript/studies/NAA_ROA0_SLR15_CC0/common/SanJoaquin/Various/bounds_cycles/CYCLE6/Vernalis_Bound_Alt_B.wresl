@@ -1,0 +1,77 @@
+! Edward Chang
+! 5/01/2000
+! Joint Model
+! Revised by C. Hsu, 4/10/03, USBR, for review and documentation project
+! This code bounds decision variables using monthly weighted constraints for cycle 6 only (within San Joaquin Basin)
+!###################################################################################################
+ 
+/*
+Flow at Vernalis, without Vernalis minimum flows from February to June plus October
+*/
+define Vern_nomincycle6 { 
+    case NonPulseNonDO {
+        condition   month <= mar
+        value       C639[SJR_WQ1] }
+    case April {
+        condition   month == apr
+        value       14.*C639[SJR_WQ1]/30. + 16.*C639[VAMP_AND_DO]/30. }
+    case Mayonly {
+        condition   month == may
+        value       15.*C639[VAMP_AND_DO]/31. + 16.*C639[SJR_WQ1]/31. }
+    case NonPulsePlusDO {
+        condition   always
+        value       C639[VAMP_AND_DO] }
+        }
+        
+define D630C_prv_cyc { 
+    case NonPulseNonDO {
+        condition   month <= mar
+        value       D630C[SJR_WQ1] }
+    case April {
+        condition   month == apr
+        value       14.*D630C[SJR_WQ1]/30. + 16.*D630C[VAMP_AND_DO]/30. }
+    case Mayonly {
+        condition   month == may
+        value       15.*D630C[VAMP_AND_DO]/31. + 16.*D630C[SJR_WQ1]/31. }
+    case NonPulsePlusDO {
+        condition   always
+        value       D630C[VAMP_AND_DO] }
+        }
+        
+! Total flows at Vernalis including instream and minimum flows
+goal set1Vernalis_cycle6 { C639 = Vern_nomincycle6 + C10INSTREAM + C10MIN + C20MIN + D630C_prv_cyc - D630C }
+
+
+/*
+Vernalis flows during pulse (April and May including ERPP), and non-pulse periods
+for use in computing final water quality based on split month calculations
+ERPP inflows will affect Vernalis flows in May
+*/
+! ERPP inflows for 10 days, units = CFS
+define SJRERPPinflows { value     0. }
+        
+
+/*
+15 day water representing cycle pulse period; weights ERPP for 15 days
+does not include D639 (Vernalis Non-project Diversion)
+*/
+define pulseC639woD639 { 
+     case April {        
+          condition month == apr
+          value     C639[VAMP_AND_DO] }
+     case MayOnly {
+          condition  month == may
+          value     C639[VAMP_AND_DO] + SJRERPPinflows*10./15.}
+     case NotAprMay {          
+          condition always
+          value     0. }
+          } 
+! Vernalis non-pulse flow before the Vernalis Non-project Diversion
+define flowC639woD639 {       
+     case OctthruMay {
+          condition month <= may
+          value C639[SJR_WQ1] + VernMin_reqtobemet + MercedRelease_Oct*TAF_cfs }
+     case DOwindow {
+          condition always
+          value     C639[VAMP_AND_DO] + VernMin_reqtobemet}
+          }

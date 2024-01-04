@@ -1,0 +1,41 @@
+! This file sets Wheeling to zero in cycle 6.
+
+define C_Wkytn_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'} ! Added on 9/20/02 to activate wheeling for Trinity import
+define D_Spring_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'} ! Added on 9/20/02 to activate wheeling for Trinity import
+define C_Kswck_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_Nimbus_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_Wkytn_m {std kind 'FLOW' UNITS 'CFS'}  ! Added on 9/20/02 to activate wheeling for Trinity import
+define D_Spring_m {std kind 'FLOW' UNITS 'CFS'}  ! Added on 9/20/02 to activate wheeling for Trinity import
+define C_Kswck_m {std kind 'FLOW' UNITS 'CFS'}
+define C_Nimbus_m {std kind 'FLOW' UNITS 'CFS'}
+define C_Delta_whlcv {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+
+goal ClrcrkWhl { C_Wkytn = C_Wkytn_m + C_Wkytn_whlcv }  ! Added on 9/20/02 to activate wheeling for Trinity import
+goal SprcrkWhl { D_Spring = D_Spring_m + D_Spring_whlcv }  ! Added on 9/20/02 to activate wheeling for Trinity import
+goal ShastaWhl { C_Kswck = C_Kswck_m + C_Kswck_whlcv }
+goal FolsomWhl { C_Nimbus = C_Nimbus_m + C_Nimbus_whlcv }
+
+
+
+! Restrict wheeling to be less than remaining cap
+goal wheeling2 {D_Banks_cvc = 0.0}
+goal wheeling6 {I_CVCWheel = 0.0}
+goal wheeling2a {C_Delta_whlcv = 0.0}
+goal wheel_Cl_1 {C_Wkytn_whlcv = 0.0} ! Added on 9/20/02 to activate wheeling for Trinity import
+goal wheel_Sp_1 {D_Spring_whlcv = 0.0} ! Added on 9/20/02 to activate wheeling for Trinity import
+goal wheeling2b {C_Kswck_whlcv = 0.0}
+goal wheeling2c {C_Nimbus_whlcv = 0.0}
+!goal wheeling2d {d419_cvpwhl = 0.0}
+
+! make sure wheeled water makes it to CVP San Luis and DMC
+goal wheeling3 {D_CVP_CVC=D_Banks_cvc}
+
+!goal wheelJPOD {D804=0.0}
+
+
+
+
+
+
+

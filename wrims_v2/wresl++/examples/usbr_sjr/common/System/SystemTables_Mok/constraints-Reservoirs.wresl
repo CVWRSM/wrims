@@ -1,0 +1,75 @@
+/*
+ STORAGE CONTINUITY
+ 
+ 
+ 
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Pardee Reservoir, Mokelumne River		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define S_PARDElevel1 	{value 16}                                                                              
+define S_PARDE_1 		{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_PARDEZone1 	{S_PARDE_1 < S_PARDElevel1}                                                                        
+define S_PARDElevel2 	{select target from res_level where res_num=90, level=2,month=month}                     
+define S_PARDE_2 		{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_PARDEZone2 	{S_PARDE_2 < S_PARDElevel2-S_PARDElevel1}                                                              
+define S_PARDElevel3 	{select target from res_level where res_num=90, level=3,month=month}                     
+define S_PARDE_3 		{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_PARDEZone3 	{S_PARDE_3 < S_PARDElevel3-S_PARDElevel2}                                                              
+define S_PARDElevel4 	{timeseries kind 'STORAGE-LEVEL' units 'TAF'}                                           
+define S_PARDE_4 		{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_PARDEZone4 	{S_PARDE_4 < S_PARDElevel4-S_PARDElevel3}                                                              
+define S_PARDElevel5 	{value 210}                                                                             
+define S_PARDE_5 		{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_PARDEZone5 	{S_PARDE_5 < S_PARDElevel5-S_PARDElevel4}                                                              
+define S_PARDE 		{std kind 'STORAGE' units 'TAF'} !Pardee Reservoir                                            
+goal storage_PARDE 	{S_PARDE=S_PARDE_1+S_PARDE_2+S_PARDE_3+S_PARDE_4+S_PARDE_5}                                                       
+define F_PARDE 		{std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}                                                 
+define E_PARDE 		{lower unbounded kind 'EVAPORATION' units 'CFS'}                                              
+define A_PARDE 		{std kind 'SURFACE-AREA' units 'ACRES'}                                                       
+define evap_PARDE 	{timeseries kind 'EVAPORATION-RATE' units 'IN'}                                          
+define A_PARDElast 	{select area from res_info given storage=1000*S_PARDE(-1) use linear where res_num=90}        
+define A_PARDEforward {select area from res_info given storage=1050*S_PARDE(-1) use linear where res_num=90}     
+define A_PARDEback 	{select area from res_info given storage=950*S_PARDE(-1) use linear where res_num=90}         
+define coefev_PARDE 	{value (A_PARDEforward - A_PARDEback)/(100*max(0.01,S_PARDE(-1)))}                                   
+goal area_PARDE 		{A_PARDE=A_PARDElast+1000*coefev_PARDE*S_PARDE-1000*coefev_PARDE*S_PARDE(-1)}                                        
+goal setevap_PARDE 		{E_PARDE*cfs_af=(evap_PARDE/24)*A_PARDElast+(evap_PARDE/24)*A_PARDE}                                         
+define relcap_PARDE 	{select discharge from res_info given storage=1000*S_PARDE(-1) use linear where res_num=90}  
+goal maxrelease_PARDE {C_PARDE<relcap_PARDE}                                                                         
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Comanche Reservoir, Mokelumne River		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define S_CMCHElevel1 	{value 1}                                                                               
+define S_CMCHE_1 	{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_CMCHEZone1 	{S_CMCHE_1 < S_CMCHElevel1}                                                                        
+define S_CMCHElevel2 	{value 28}                                                                              
+define S_CMCHE_2 	{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_CMCHEZone2 	{S_CMCHE_2 < S_CMCHElevel2-S_CMCHElevel1}                                                              
+define S_CMCHElevel3 	{value 244}                                                                             
+define S_CMCHE_3 	{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_CMCHEZone3 	{S_CMCHE_3 < S_CMCHElevel3-S_CMCHElevel2}                                                              
+define S_CMCHElevel4 	{timeseries kind 'STORAGE-LEVEL' units 'TAF'}                                           
+define S_CMCHE_4	{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_CMCHEZone4 	{S_CMCHE_4 < S_CMCHElevel4-S_CMCHElevel3}                                                              
+define S_CMCHElevel5 	{value 438}                                                                             
+define S_CMCHE_5 	{std kind 'STORAGE-ZONE' units 'TAF'}                                                       
+goal S_CMCHEZone5 	{S_CMCHE_5 < S_CMCHElevel5-S_CMCHElevel4}                                                              
+define S_CMCHE 		{std kind 'STORAGE' units 'TAF'} !Camanche Reservoir                                          
+goal storage_CMCHE 	{S_CMCHE=S_CMCHE_1+S_CMCHE_2+S_CMCHE_3+S_CMCHE_4+S_CMCHE_5}                                                       
+define F_CMCHE 		{std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}                                                 
+define E_CMCHE 		{lower unbounded kind 'EVAPORATION' units 'CFS'}                                              
+define A_CMCHE 		{std kind 'SURFACE-AREA' units 'ACRES'}                                                       
+define evap_CMCHE 	{timeseries kind 'EVAPORATION-RATE' units 'IN'}                                          
+define A_CMCHElast 	{select area from res_info given storage=1000*S_CMCHE(-1) use linear where res_num=91}        
+define A_CMCHEforward   {select area from res_info given storage=1050*S_CMCHE(-1) use linear where res_num=91}     
+define A_CMCHEback 	{select area from res_info given storage=950*S_CMCHE(-1) use linear where res_num=91}         
+define coefev_CMCHE 	{value (A_CMCHEforward - A_CMCHEback)/(100*max(0.01,S_CMCHE(-1)))}                                   
+goal area_CMCHE 	{A_CMCHE=A_CMCHElast+1000*coefev_CMCHE*S_CMCHE-1000*coefev_CMCHE*S_CMCHE(-1)}                                        
+goal setevap_CMCHE 	{E_CMCHE*cfs_af=(evap_CMCHE/24)*A_CMCHElast+(evap_CMCHE/24)*A_CMCHE}                                         
+define relcap_CMCHE 	{select discharge from res_info given storage=1000*S_CMCHE(-1) use linear where res_num=91}  
+goal maxrelease_CMCHE   {C_CMCHE<relcap_CMCHE} 

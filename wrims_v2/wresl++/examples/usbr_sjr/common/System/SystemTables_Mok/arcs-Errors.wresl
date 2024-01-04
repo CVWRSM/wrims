@@ -1,0 +1,98 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-ERROR.WRESL
+
+NAMING TAKES THE FOLLOWING FORM:
+ErrPos_{CalSim-III node}
+ErrNeg_{CalSim-III node}
+
+Ensures connectivity constraints can be met
+Large penalty assigned to arcs
+
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+
+define ErrPos_60N_NA1 {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_60N_NA2 {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_60N_NA3 {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_60N_NA4 {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_60N_NA5 {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_60N_NU1 {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_60N_NU2 {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_60N_NU3 {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_60N_PU  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_EBMUD  {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_AMADR  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CSM035  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CSM033  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CSM026  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CSM021  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CSM016  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CSM011  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CSM005  {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_DSC035  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DSC028  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DSC026  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DSC023  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DSC016  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DSC012  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DSC008  {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_PARDE   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CMCHE   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK057  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK055  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK050  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK044  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK035  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK034  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK028  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK022  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MOK019  {std kind 'Error-TERM' units 'CFS'}
+!define ErrPos_MOK014  {std kind 'Error-TERM' units 'CFS'} !defined in Sac system files
+!define ErrPos_MOK004  {std kind 'Error-TERM' units 'CFS'} !defined in Sac system files
+
+define ErrNeg_60N_NA1 {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_60N_NA2 {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_60N_NA3 {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_60N_NA4 {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_60N_NA5 {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_60N_NU1 {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_60N_NU2 {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_60N_NU3 {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_60N_PU    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_EBMUD  {std kind 'Error-TERM' units 'CFS'}
+
+define ErrNeg_AMADR   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CSM035  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CSM033  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CSM026  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CSM021  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CSM016  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CSM011  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CSM005  {std kind 'Error-TERM' units 'CFS'}
+
+define ErrNeg_DSC035  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DSC028  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DSC026  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DSC023  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DSC016  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DSC012  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DSC008  {std kind 'Error-TERM' units 'CFS'}
+
+define ErrNeg_PARDE   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CMCHE   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK057  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK055  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK050  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK044  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK035  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK034  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK028  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK022  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MOK019  {std kind 'Error-TERM' units 'CFS'}
+!define ErrNeg_MOK014  {std kind 'Error-TERM' units 'CFS'} !defined in Sac system files
+!define ErrNeg_MOK004  {std kind 'Error-TERM' units 'CFS'} !defined in Sac system files

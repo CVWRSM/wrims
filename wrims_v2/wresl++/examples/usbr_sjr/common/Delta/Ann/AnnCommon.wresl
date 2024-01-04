@@ -1,0 +1,180 @@
+! R.Wilbur & S. Wu 5/10/05
+/*
+
+    ARTIFICIAL NEURAL NETWORK
+    DELTA SALINITY MODELING
+
+    ANN determines salinity (micro-mhos/cm) at various locations in the Delta given flows
+    (Sac, SWP pumping, CVP pumping, SJR, Channel depletions) and the Delta cross-channel
+    position for the past 118 days
+
+    In this CALSIM modeling implementation the 78 days are split into three parts: previous two months
+    and current month.  The previous months flows and gate positions are known values, while the
+    current month flows (at least SAC and Exports) are unknown variables. These
+    are the 2 knobs used to meet salinity standards in the Delta.
+
+    FUNCTION CALLS:
+    ===============
+    LOCATION KEY:
+      1 = Jersey Point
+      2 = Contra Costa - Rock Slough
+      3 = Emmaton
+      4 = Antioch
+      5 = Collinsville
+      6 = Mallard (Chipps)
+      7 = Los Vaqueros Diversion
+
+    VARIABLE KEY:
+      1 = Slope
+      2 = Intercept (Qsac=0)
+      3 = Qsac required for an export of 1500cfs
+
+    DXC KEY:
+      DAYS OPEN (assumed first part of month if not full month)
+
+    AVE_TYPE KEY:
+      1 = monthly average
+      2 = first day of month value
+      3 = last day of month value
+      4 = maximum daily value
+      5 = minimum daily vlaue
+      6 = maximum 14-day value
+      7 = average for first 15 days
+      8 = average for last 15 days
+*/
+
+!*************************************************************************************************************
+
+define JP {value 1}
+define RS {value 2}
+define EM {value 3}
+define AN {value 4}
+define CO {value 5}
+define CH {value 6}
+define LV {value 7}
+
+define slope {value 1}
+define intercept {value 2}
+
+define monthly_ave {value 1}
+define first_day {value 2}
+define last_day {value 3}
+define max_day {value 4}
+define min_day {value 5}
+define max_14day_running_ave {value 6}
+define ave_first_15days {value 7}
+define ave_last_15days {value 8}
+
+define ann_type {value monthly_ave}
+
+define line_JP_lo   {value  5000}
+define line_JP_hi   {value 12000}
+
+define line_EM_lo   {value  5000}
+define line_EM_hi   {value 12000}
+
+define line_CO_lo   {value  8000}
+define line_CO_hi   {value 12000}
+
+define line_RS_1_lo {value  2000}
+define line_RS_1_hi {value  4000}
+define line_RS_2_lo {value  6000}
+define line_RS_2_hi {value  8000}
+define line_RS_3_lo {value 10000}
+define line_RS_3_hi {value 12000}
+
+define daysindv {alias daysin kind 'DAYS' units 'DAYS'}
+
+!*************************************************************************************************************
+! Define largest export if ANN is an infeasible solution
+define ExportCap {  ! value 1500.} shengjun comment 8/16/2004
+  !start of add by Shengjun 8/16/2004
+  /*case tracylowshasta { condition S4(-1) < 1500.
+    value 900 }
+  case tracyhighshasta   { condition always
+    value 1100. }*/
+  value 1500. !temporary limit for debugging code
+}
+!end of add
+
+!*************************************************************************************************************
+! Define maximum Qsac for restricting ANN
+define ANNcap {
+  select Qsaclimit
+  from ANNlimit
+  where month=month,wyt_sac=wyt_ann
+}
+define ANNcap_out {alias ANNcap kind 'FLOW' units 'CFS'}
+
+!*************************************************************************************************************
+! define the other flows that go into making the sac component
+! Yolo Bypass is simulated dynamically
+! Mokelumne/Consumnes R. is simulated with SJR in previous cycles
+define sac_oth { std kind 'FLOW-INFLOW' units 'CFS' } ! Known inflows (previous month)
+goal def_sac_oth { sac_oth = C_YBP002 + SR_25_CSL005 - C_CSL005B + C_MOK019  + C_CLV004 }
+
+!*************************************************************************************************************
+! Currently known inflows: Mokelumne R., Consumnes R. and Calaveras R. | Yolo Bypass not known.
+define D_BSL005_VJO_est { value demand_VJO*taf_cfs } ! Vallejo
+
+define sac_oth_est { value C_MOK019[VAMP_AND_DO]  + C_CLV004[VAMP_AND_DO] - D_BSL005_VJO_est - dem_D_BRK004_NBA_N*taf_cfs*perdel_27 - dem_D_BRK004_NBA_S*taf_cfs*perdel_36 } !
+define sac_oth_est_ { alias sac_oth_est kind 'FLOW-INFLOW' units 'CFS'}
+
+!*************************************************************************************************************
+! define the other flows that go into making the export component
+define net_delta_cu { value DND_1 + DND_2 + DND_3 + DND_4 + DND_5 }   ! Net Delta Consumptive Use
+        
+define net_DICU{ lower unbounded kind 'DICU_FLOW' units 'CFS' }!shengjun add 2/24/2005
+goal def_net_DICU{ net_DICU = DND_1 + DND_2 + DND_3 + DND_4 + DND_5 }
+        
+define exp_oth { lower unbounded kind 'FLOW-EXPORTS' units 'CFS' }
+goal def_exp_oth { exp_oth = D_RSL004_CCC004 }
+
+! Demand in TAF/month
+define D_RSL004_est { timeseries 'UD_CCWD' kind 'DEMAND-CVP' units 'TAF' convert 'CFS'}
+
+define exp_oth_est { value D_RSL004_est}
+define exp_oth_est_ { alias exp_oth_est kind 'FLOW-EXPORTS' units 'CFS' }
+
+!*************************************************************************************************************
+! DELTA CROSS-CHANNEL GATE POSITION
+define DXC {lower unbounded kind 'GATE-DAYS-OPEN' units 'NONE'}
+define DXCOpenDays {select days_open from xchanneldays where month=month}
+define DXC_est { value DXCOpenDays} !shengjun add 8/12/2004
+define DXC_estdv {alias DXC_est kind 'GATE-DAYS-OPEN' units 'NONE'}
+
+goal setDXC {DXC = DXC_est * int_SAC_below}
+
+!*************************************************************************************************************
+! Estimates for San Joaquin River
+define C10MIN_ann_est {
+  case FebMarJun {
+    condition month == feb .or. month == mar .or. month == jun
+    value  VernMin_reqtobemet}
+  case April {
+    condition month == apr
+    value  VernMin_reqtobemet*14./30.}
+  case MayOnly {
+    condition month == may
+    value  VernMin_reqtobemet*16./31.}
+  case otherwise {
+    condition always
+    value  0. }
+}
+
+define C10INSTREAM_ann_est {value OIDInstreamToBeMet*TAF_cfs}
+
+define C20MIN_ann_est {
+  case October {
+    condition month == oct
+    value       MercedRelease_Oct*TAF_cfs}
+  case otherwise {
+    condition always
+    value       0.}
+}
+
+define SJR_ann_est {value Vern_nomincycle6
+                          + C10MIN_ann_est
+                          + C10INSTREAM_ann_est
+                          + C20MIN_ann_est}
+define SJR_ann_estdv {alias SJR_ann_est kind 'ANN-PARAMETER' units 'cfs'}

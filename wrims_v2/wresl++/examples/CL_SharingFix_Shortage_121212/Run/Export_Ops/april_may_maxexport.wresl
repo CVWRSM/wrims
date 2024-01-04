@@ -1,0 +1,155 @@
+/*************************************
+april_may_maxexport.wresl
+ 
+Nazrul Islam DWR (04/27/2010)
+
+This code defines the reduced export limit during the April 15 - May 15 pulse period.
+During this period, allowable export is set to certain limits based upon the flow of the
+San Joaquin River.  The allowable exports for April and May are the weighted averages
+of allowable exports inside and outside of the pulse period.  The non-pulse period April and May
+Export is the smaller of the pump capacity and the Export Allowed by thr E/I ratio for that period.
+**************************************/
+
+! Delta inflow using the previous cycle SJR flow
+define Dinflow {alias C_Hood_ANN+AD_Mokelumne+C_YoloBP+AD_Calaveras+AD_SJR_VAMP  kind 'INFLOW-PULSE' units 'CFS'}
+
+!############ PULSE PERIOD #############################
+! Allowable export is set to certain limits based upon the flow of the San Joaquin River.
+
+! Pulse period export control variable
+define PulseExpCtrl {std kind 'EXPORT-CTRL-PULSE' UNITS 'CFS'}
+
+! Total export permissible by pumps and/or permits (TAF) only used in Apr-May
+define ExportCapacity {value JonesCapPermit + BanksCapPermit}
+
+! Limit exports during the pulse periods to the maximum of 1500 cfs or the SJR flow
+! not including the pulse or Vamp flows (C639[SJR_WQ2]).
+goal compare_sjrflow {!PulseExpCtrl < max(1500.0, AD_SJR_Pulse)}
+	lhs PulseExpCtrl
+        case VAMPexpCtrlOff {
+            condition    VAMP_DLTSW == 0 .and. range(month,apr,may)
+            rhs          99999.
+            lhs<rhs      penalty 0 }
+        case otherwise {
+            condition     always
+            rhs           max(1500.0, AD_SJR_Pulse)
+            lhs<rhs       penalty 0 }
+}
+
+
+! Limit to EI ratio (WQCP) during the pulse period.
+goal compare_ratio {PulseExpCtrl < Dinflow*ExpRatio}
+
+! Limit to pump capacity during the pulse period.
+goal compare_capacity {PulseExpCtrl < ExportCapacity}
+
+!############ NON-PULSE PERIOD #############################
+! For the non pulse periods in April and May, the allowable export is the smaller of
+! the pump capacity or 0.35*INFLOW.  The allowable export due to the E/I ratio
+! is defined in 'expratio.wresl' as 'EiExpCtrl'.
+
+! Non-pulse export restriction variable
+define NonPulseExpCtrl {std KIND 'EXPORT-CTRL-NON-PULSE' UNITS 'CFS'}
+
+! Limit to EI ratio
+goal from_ratio {NonPulseExpCtrl < EiExpCtrl}
+
+! Limit to pump capacity
+goal from_capacity {NonPulseExpCtrl < ExportCapacity}
+
+!############ WEIGHTED EXPORT RESTRICTION FOR PERIOD (PULSE + NON-PULSE) #############################
+! The monthly allowable export is the day-weighted average of the allowable export in the pulse and
+! non-pulse periods.
+
+! Combination pulse + non-pulse export restriction variable
+define AprMayExpCtrl {std kind 'EXPORT-CTRL-APRMAY' units 'CFS'}
+
+! Monthly export restriction - day weighted
+goal Export_limit_during_pulse_mon {
+    lhs    AprMayExpCtrl
+        case April {
+            condition     month == APR
+            rhs           NonPulseExpCtrl*14.0/daysin + PulseExpCtrl*16.0/daysin
+            lhs<rhs       penalty 0 }
+        case May {
+            condition     month == MAY
+            rhs           NonPulseExpCtrl*16.0/daysin + PulseExpCtrl*15.0/daysin
+            lhs<rhs       penalty 0 }
+        case otherwise {
+	    condition   always
+	    rhs     99999.
+	    lhs<rhs     penalty 0}
+}
+
+! Limit the actual export to the day weighted average allowable export for each month.
+goal Limit_Exports {
+    lhs  ExportActual
+        case APR_MAY {
+            condition     range(month,apr,may)
+            rhs           AprMayExpCtrl
+            lhs<rhs       penalty 0 }
+}
+
+
+! Monthly export restriction - day weighted for each project to take individual pump capacities into account
+
+define AprMayJonesCtrl {std kind 'EXPORT-CTRL-APRMAY' units 'CFS'}
+
+goal Export_limit_Jones_pulse_mon {
+    lhs    AprMayJonesCtrl
+        case April {
+            condition     month == APR
+            rhs           JonesCapPermit*14.0/daysin + PulseExpCtrl*0.5*16.0/daysin
+            lhs<rhs       penalty 0 }
+        case May {
+            condition     month == MAY
+            rhs           JonesCapPermit*16.0/daysin + PulseExpCtrl*0.5*15.0/daysin
+            lhs<rhs       penalty 0 }
+        case otherwise {
+	    condition   always
+	    rhs     99999.
+	    lhs<rhs     penalty 0}
+}
+
+define AprMayBanksCtrl {std kind 'EXPORT-CTRL-APRMAY' units 'CFS'}
+
+goal Export_limit_Banks_pulse_mon {
+    lhs    AprMayBanksCtrl
+        case April {
+            condition     month == APR
+            rhs           BanksMaxAllow*14.0/daysin + PulseExpCtrl*0.5*16.0/daysin
+            lhs<rhs       penalty 0 }
+        case May {
+            condition     month == MAY
+            rhs           BanksMaxAllow*16.0/daysin + PulseExpCtrl*0.5*15.0/daysin
+            lhs<rhs       penalty 0 }
+        case otherwise {
+	    condition   always
+	    rhs     99999.
+	    lhs<rhs     penalty 0}
+}
+
+goal Export_limit_D_Jones {  ! Prevents Non-Pulse portion of month from being greater than Physical Capacity
+    lhs    D_Jones /** Need to change to D_Jones_TD for IF implementation **/
+!        case no_vamp {   !Richard Chen added for VAMP switch
+!                condition     VAMP_DLTSW == 0 .and. range(month,apr,may)
+!                rhs           JonesCapPermit     
+!                lhs<rhs       penalty 0 }    
+        case April {
+            condition     month == APR .or. month == MAY
+            rhs           AprMayJonesCtrl
+            lhs<rhs       penalty 0 }
+}
+
+goal Export_limit_D_Banks {  ! Prevents Non-Pulse portion of month from being greater than Physical Capacity
+    lhs    D_Banks
+!        case no_vamp {   !Richard Chen added for VAMP switch
+!                condition     VAMP_DLTSW == 0 .and. range(month,apr,may)
+!                rhs           BanksCapPermit     
+!                lhs<rhs       penalty 0 }      
+        case April {
+            condition     month == APR .or. month == MAY
+            rhs           AprMayBanksCtrl
+            lhs<rhs       penalty 0 }
+}
+

@@ -1,0 +1,282 @@
+/*************************************
+FMStandard.wresl
+ 
+Tom FitzHugh BOR 10/8/2010; modified by Nazrul Islam (11/1/2010) Line 276 for B2 implementation
+
+Implements the Water Forum's American River Flow Management Standard.  The standard is summarized in the NMFS BO 
+Appendix 2-D, though not all the details necessary to understand this implementation are present there.  See Lower 
+American River Flow Management Standard report (July 2006) and especially the 2008 Technical Report revising the 
+standard (July 2008) for all the details.  Note that there are some differences between the July 2008 report and 
+the implementation here, which have been carried over from previous Calsim code.  The differences are:
+
+(1) The report uses the Impaired Folsom Inflow Index as the index flow for Mar-Sept, but this code uses the Impaired 
+Nimbus Inflow Index instead.  This is the reason why the index curve in the FMP_Trigger.table for Mar-Sept is not 
+the same as the one in the report.  
+
+(2) Conference year and off-ramp conditions are not implemented using all the criteria described in the report.  Instead
+the index curves are extended down to a minimum value which corresponds to the appropriate minimum flow (250 cfs from 
+Jan-Sept 15 and 500 from Sept 16-Dec 30) for extremely dry conditions.
+
+(3) Certain discretionary adjustments (water conservation and fish protection) are not included in this code, because
+it is not possible to model those in Calsim/CalLite.
+
+Evaporation forecasts are based on average relations between storage in a prior month and evap, generated using outputs 
+from the Calsim Apr BO study.  All calcs in TAF.
+May-Sept evap estimate in Mar: 0.072 * end of Feb storage    correlation coefficient of relationship: 0.64
+May-Sept evap estimate in June: 0.042 * end of May storage   correlation coefficient of relationship: 0.96
+Mar-May evap estimate in Mar: 0.026 * end of Feb storage     correlation coefficient of relationship: 0.71
+June-Sept evap estimate in June: 0.034 * end of May storage  correlation coefficient of relationship: 0.95
+**************************************/
+
+! Defines Upper American River Model timeseries, this is a timeseries of storage in French Meadows,
+! Hell Hole, and Union Valley Reservoirs, which are upstream of Folsom
+define UARM {timeseries kind 'STORAGE' units 'TAF'}
+define UARM_{alias UARM kind 'STORAGE' units 'TAF'}
+
+! Defines Sacramento River Index
+define SRI {timeseries kind 'INDEX' units 'TAF'}
+define SRI_{alias SRI kind 'INDEX' units 'TAF'}
+
+! Calculate the forecasted inflow into Folsom during May-Sept
+define AmerFrcstInflow {
+    case MAR_SEP {
+                condition       month >= MAR .and. month <= SEP
+                sum(i=-(month-MAY),SEP-month)  I_Folsm(i)*cfs_taf(i) } ! sum of the May to Sept inflow 
+    case other {
+        condition       always
+        value           0.0   }
+}
+! Calculate the forecasted diversions from Folsom Reservoir and Folsom South Canal during May-Sept
+define AmerFrcstDivs {
+    case MAR_SEP {
+                condition       month >= MAR .and. month <= SEP                        
+                sum(i=-(month-MAY),SEP-month)  min(dem_D8b_pmi_ann(i), dem1_D8b_pmi_a * perdel_cvpmi_sys) * perdem_70Fol(i)
+              + min(dem_D8e_pmi_ann(i), dem1_D8e_pmi_a * perdel_cvpmi_sys) * perdem_70SJWDS(i)
+              + min(dem_D8f_pmi_ann(i), dem1_D8f_pmi_a * perdel_cvpmi_sys) * perdem_70ElDor(i)
+              + min(dem_D8g_pmi_ann(i), dem1_D8g_pmi_a * perdel_cvpmi_sys) * perdem_70Rose(i)
+              + min(dem_D8h_pmi_ann(i), dem1_D8h_pmi_a * perdel_cvpmi_sys) * perdem_70pcwa(i)
+              + min(dem_D8i_pmi_ann(i), dem1_D8i_pmi_a * perdel_cvpmi_sys) * perdem_70ElDorCo(i)
+              + min(dem_D9ab_pmi_ann(i), dem1_D9ab_pmi_a * perdel_cvpmi_sys) * perdem_70CARec(i)
+              + min(dem_D9b_pmi_ann(i), dem1_D9b_pmi_a * perdel_cvpmi_sys) * perdem_70SMUD(i)
+              + (demand_D_Folsm_NP(i)*cfs_taf(i)) + (demand_D_Nimbus_NP(i)*cfs_taf(i))}         
+    case other {
+        condition       always
+        value           0.0   }
+}
+
+define AmerDivtest {alias AmerFrcstDivs kind 'test' units 'taf'}
+
+! Calculate the forecasted evap from Folsom during May-Sept.  
+! Computed in Mar using end of Feb storage and coefficient 1.19 and re-computed in June using end of May 
+! storage and coefficient 0.66.  Recomputation for June is mentioned in 2008 report.
+! NOTE that the only time these calcs are actually used to set a standard is in Mar and June 
+! (see loop minflowFMPAmer), so only need to adjust computation in June.
+define AmerFrcstEvap {
+    case MAR_APR {
+        condition       month >= MAR .and. month <= MAY 
+                value 0.072 * S_Folsm(FEB-month) }
+    case JUNE_SEP {
+         condition      month >= JUN .and. month <= SEP 
+                value 0.042 * S_Folsm(MAY-month) }
+    case other {
+        condition       always
+                value           0.0   }
+}
+
+!Evaporation computed using end of May storage and coefficient 0.56
+define Evap_Folsm_JuneSept {
+    case JUNE {
+        condition       month == JUN
+                value 0.034 * S_Folsm(-1)} 
+    case other {
+        condition       always
+                value           0.0   }
+}
+! Calculate the forecasted Folsom inflow - diversions from Folsom Reservoir and Folsom South Canal - Folsom evaporation during June-Sept
+define AmerFrcstSummer {  
+    case JUN_SEP {
+                condition       month == JUN 
+                sum(i=-(month-JUN),SEP-month) I_Folsm(i)*cfs_taf(i)   
+              - min(dem_D8b_pmi_ann(i), dem1_D8b_pmi_a * perdel_cvpmi_sys) * perdem_70Fol(i)
+              - min(dem_D8e_pmi_ann(i), dem1_D8e_pmi_a * perdel_cvpmi_sys) * perdem_70SJWDS(i)
+              - min(dem_D8f_pmi_ann(i), dem1_D8f_pmi_a * perdel_cvpmi_sys) * perdem_70ElDor(i)
+              - min(dem_D8g_pmi_ann(i), dem1_D8g_pmi_a * perdel_cvpmi_sys) * perdem_70Rose(i)
+              - min(dem_D8h_pmi_ann(i), dem1_D8h_pmi_a * perdel_cvpmi_sys) * perdem_70pcwa(i)
+              - min(dem_D8i_pmi_ann(i), dem1_D8i_pmi_a * perdel_cvpmi_sys) * perdem_70ElDorCo(i)
+              - min(dem_D9ab_pmi_ann(i), dem1_D9ab_pmi_a * perdel_cvpmi_sys) * perdem_70CARec(i)
+              - min(dem_D9b_pmi_ann(i), dem1_D9b_pmi_a * perdel_cvpmi_sys) * perdem_70SMUD(i)
+              - (demand_D_Folsm_NP(i)*cfs_taf(i)) - (demand_D_Nimbus_NP(i)*cfs_taf(i)) 
+              - (Evap_Folsm_JuneSept / 4)}  !Evap computed above was total for 4 months, so need to divide by 4 here 
+    case other {
+        condition       always
+        value           0.0   }
+}
+
+define Evap_Folsm_MarMay {
+    case MAR {
+        condition       month == MAR
+                value 0.026 * S_Folsm(-1)}
+    case other {
+        condition       always
+                value           0.0   }
+}
+! Calculate the forecasted Folsom inflow - diversions from Folsom Reservoir and Folsom South Canal - Folsom evaporation during Mar-May
+define AmerFrcstSpring {
+    case MARforecast{
+                condition       month == MAR
+                sum(i=-(month-MAR),MAY-month) I_Folsm(i)*cfs_taf(i)   
+              - min(dem_D8b_pmi_ann(i), dem1_D8b_pmi_a * perdel_cvpmi_sys) * perdem_70Fol(i)
+              - min(dem_D8e_pmi_ann(i), dem1_D8e_pmi_a * perdel_cvpmi_sys) * perdem_70SJWDS(i)
+              - min(dem_D8f_pmi_ann(i), dem1_D8f_pmi_a * perdel_cvpmi_sys) * perdem_70ElDor(i)
+              - min(dem_D8g_pmi_ann(i), dem1_D8g_pmi_a * perdel_cvpmi_sys) * perdem_70Rose(i)
+              - min(dem_D8h_pmi_ann(i), dem1_D8h_pmi_a * perdel_cvpmi_sys) * perdem_70pcwa(i)
+              - min(dem_D8i_pmi_ann(i), dem1_D8i_pmi_a * perdel_cvpmi_sys) * perdem_70ElDorCo(i)
+              - min(dem_D9ab_pmi_ann(i), dem1_D9ab_pmi_a * perdel_cvpmi_sys) * perdem_70CARec(i)
+              - min(dem_D9b_pmi_ann(i), dem1_D9b_pmi_a * perdel_cvpmi_sys) * perdem_70SMUD(i)
+              - (demand_D_Folsm_NP(i)*cfs_taf(i)) - (demand_D_Nimbus_NP(i)*cfs_taf(i)) 
+              - (Evap_Folsm_MarMay / 3)} !Evap computed above was total for 3 months, so need to divide by 3 here                    
+    case other {
+        condition       always
+        value           0.0   }
+}
+
+
+define AmerSumtest {alias AmerFrcstSummer kind 'test' units 'taf'}
+define AmerSprtest {alias AmerFrcstSpring kind 'test' units 'taf'}
+
+! Compute Folsom trigger storage for FMP flows, used in lookup table below       
+define amerFMPTrigger {
+    case OctDec {
+        condition   month>=OCT .and. month<=DEC
+                value                   S_Folsm(prevSEP) + UARM(prevSEP) }  ! Computes Four Reservoir Index
+    case JanFeb {
+        condition   month>=JAN .and. month<=FEB
+                value                    0 }    ! No need for a trigger in Jan-Feb since SRI year type determines standard (see code below)
+    case MarSep {
+        condition   always
+                value           AmerFrcstInflow - AmerFrcstDivs - AmerFrcstEvap}   ! Computes Impaired Nimbus Inflow Index
+}
+
+define C_Nimbus_imp_flow {alias amerFMPTrigger kind 'IMP_FLOW' units 'CFS'}
+define C_Nimbus_fmp_mif {std kind 'INIT_FLOW' units 'CFS'}    !defined so previous month's final min flow can be retrieved
+
+!lookup the flow prescription
+define minFMPAmerTmp {select fmpflow from FMP_Trigger given trigger=amerFMPTrigger use linear where month=month} !Select the initial minflow from the lookup table using the trigger defined above
+
+define C_Nimbus_trig {alias amerFMPTrigger kind 'FLOW' units 'CFS'}     !save the trigger to DSS
+define C_Nimbus_fmp_tmp {alias minFMPAmerTmp kind 'FLOW' units 'CFS'}    !save the initial minflow to DSS
+
+!lookup the SRI yeartype from input
+define sri_ytp {select sriytpnum from SRI_bp given BreakP=SRI use minimum}
+
+define sri_ytp_ {alias sri_ytp kind 'INDEX' units 'NONE'}
+
+define EOMayForecast {   ! In March, computes end of May projected Folsom storage
+    case MarForecast {
+        condition       month == MAR    
+        value           S_Folsm(-1)+AmerFrcstSpring-(minFMPAmerTmp*(92.*1.9835/1000.))   }    !92 days between Mar 1 and May 31
+    case other {
+        condition       always
+        value           0.   }
+ }
+
+! redefine minflow using initial minimum flow values and FMS program rules
+define minflowFMPAmer {
+        case OctMax {                                                             !if initial standard >= 2000, then Oct stays at 1500
+                condition    month==OCT .and. minFMPAmerTmp >= 2000.
+                value        1500. }
+        case NovMax {                                                             !if initial standard >= 2000, then Nov steps up from 1500 to 1750 on Nov 2, from 1750 to 2000 on Nov 9
+                condition    month==NOV .and. minFMPAmerTmp >= 2000.              !This is spawning flow prescriptive adjustment
+                value        ((1500.*1) + (1750.*7) + (2000.*22))/30 }
+        case DecMax {                                                             !if initial standard >= 2000, then Dec stays at 2000
+                condition    month==DEC .and. minFMPAmerTmp >= 2000.
+                value        (2000.) }
+        case OctMin {                                                               ! if initial standard <= 1500, then use that value as standard in Oct-Dec
+                condition    month>=OCT .and. month<=DEC .and. minFMPAmerTmp <= 1500.
+                value        (minFMPAmerTmp) }
+        case OctOther {                                                           ! if initial standard between 1500 and 2000, then Oct stays at 1500
+                condition    month==OCT .and. minFMPAmerTmp > 1500. .and. minFMPAmerTmp < 2000.
+                value        1500. }
+        case NovOther {                                                           ! if initial standard between 1500 and 2000, then go from 1500 to max of 1500 and initial standard - 250 on Nov 2, and up to initial flow standard on Nov 9
+                condition    month==NOV .and. minFMPAmerTmp > 1500. .and. minFMPAmerTmp < 2000.  !This is spawning flow prescriptive adjustment
+                value        ((1500.*1) + (max(minFMPAmerTmp - 250., 1500.)*7) + (max(minFMPAmerTmp, 1500.)*22)) / 30 }
+        case DecOther {
+                condition    month==DEC .and. minFMPAmerTmp > 1500. .and. minFMPAmerTmp < 2000.  ! if initial standard between 1500 and 2000, then Dec stays at initial standard
+                value        (minFMPAmerTmp) }
+        case JanFebCMin {
+                condition       month>=JAN .and. month<=FEB .and. sri_ytp == 5 .and. C_Nimbus_fmp_mif(-1) < 800.   ! if previously below 800 then can go all the way down to 250 (off-ramp to D-893 standard)
+                value           max(250., min(1750., (0.85 * C_Nimbus_fmp_mif(-1)))) }                               
+        case JanFebC {
+                condition       month>=JAN .and. month<=FEB .and. sri_ytp == 5 .and. C_Nimbus_fmp_mif(-1) >= 800.  ! if previously above 800 then must stay above 800
+                value           max(800., min(1750., (0.85 * C_Nimbus_fmp_mif(-1)))) }
+        case JanLoSto {
+                condition    month==JAN .and. S_Folsm(-1) < 300. .and. S_FolsmLevel5(-1) > S_Folsm(-1)   ! SAFCA diagram could in theory require more than 675 TAF of FC space be maintained in Folsom, so leaving stmt in in case this ever happens.
+                value        max(800.,min(1750.,0.85 * C_Nimbus_fmp_mif(-1))) }                          ! If End-of-Dec Folsom storage is < 300 TAF, standard is 85% of Dec standard with a min of 800
+        case FebLoSto {
+                condition    month==FEB .and. S_Folsm(-1) < 350. .and. S_FolsmLevel5(-1) > S_Folsm(-1)   ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        max(800.,min(1750.,0.85 * C_Nimbus_fmp_mif(-1))) }                          ! If End-of-Jan Folsom storage is < 350 TAF, standard is 85% of Jan standard with a min of 800
+        case JanFebDBN {
+                condition       month>=JAN .and. month<=FEB .and. sri_ytp >= 3  ! If dry or below normal year on SRI, standard is same as Dec up to 1750
+                value           min(1750.,C_Nimbus_fmp_mif(-1)) }
+        case JanFebANW {
+                condition       month>=JAN .and. month<=FEB .and. sri_ytp <= 2  ! If above normal or wet year on SRI, standard is 1750
+                value           1750.}
+        case MarLow {                                                                  
+                condition    month==MAR .and.  EOMayForecast < 700.        ! Avoid going up in release if End-of-May storage isn't going to hit 700 TAF.    !min flow for 92 days
+                value        min(1750., minFMPAmerTmp, C_Nimbus_fmp_mif(-1)) }
+        case MarOther {                                                                  
+                condition    month==MAR .and. EOMayForecast >= 700.        ! If End-of-May storage > 700 TAF use initial standard up to a max of 1750   !min flow for 92 days               
+                value        min(1750., minFMPAmerTmp) }
+        case APRMay {
+                condition       month>=APR .and. month<=MAY
+                value          C_Nimbus_fmp_mif(-1)}                      !use Mar standard in April and May
+        case JunMin {
+                condition       month==JUN                                ! don't let requirement bring EOSep Folsom storage less than 300
+                value           min(1750., minFMPAmerTmp, (max(250.,((S_Folsm(-1)+AmerFrcstSummer-300.)*1000.)/(122.*1.9835)) ))}       ! use the minimum of 1750, the initial standard, and flow that will reduce EOSept storage to no less than 300, but never going lower than 250
+        case JulAug {                                   
+                condition       month>=JUL .and. month<=AUG
+                value           C_Nimbus_fmp_mif(-1)}               !use June standard in July and August
+        case SepMin {
+                condition       always
+                value           max(375.,(((C_Nimbus_fmp_mif(-1) * 4) + (min(C_Nimbus_fmp_mif(-1), 1500.) * 26)) / 30)) } ! set min flow after labor day to max of 1500 cfs, assume labor day on 4th day, but don't 
+}                                                                                                                         ! let flow go below 375, since this is the off-ramp/conference year value avg for Sept  
+
+define JanFebCrit {  !Sets to value to indicate conditions in Jan and Feb
+        case OctDec {
+                condition    month>=OCT .and. month<=DEC
+                value        0. }
+        case JanBoth {
+                condition    month==JAN .and. S_Folsm(-1) < 300. .and. S_FolsmLevel5(-1) > S_Folsm(-1) .and. sri_ytp == 5   
+                value        3. }   ! low storage in Folsom not induced by flood control operations in a dritically dry year
+        case JanSto {
+                condition    month==JAN .and. S_Folsm(-1) < 300. .and. S_FolsmLevel5(-1) > S_Folsm(-1)   
+                value        2. }   ! low storage in Folsom not induced by flood control operations, not a critically dry year                      
+        case JanCrit {
+                condition    month==JAN .and. sri_ytp == 5    
+                value        1. }   ! critically dry year but storage OK                       
+        case FebBoth {
+                condition    month==FEB .and. S_Folsm(-1) < 350. .and. S_FolsmLevel5(-1) > S_Folsm(-1) .and. sri_ytp == 5    
+                value        3. }  ! low storage in Folsom not induced by flood control operations in a dritically dry year
+        case FebSto {
+                condition    month==FEB .and. S_Folsm(-1) < 350. .and. S_FolsmLevel5(-1) > S_Folsm(-1)    
+                value        2. }  ! low storage in Folsom not induced by flood control operations, not a critically dry year                         
+        case FebCrit {
+                condition    month==FEB .and. sri_ytp == 5   
+                value        1. }  ! critically dry year but storage OK
+        case JFOther   {
+                condition    always
+                value        0. }
+}
+
+define C_Nimbus_jf_trig  {alias JanFebCrit kind 'CRITERIA' units 'NONE'}
+
+goal set_C_Nimbus_fmp_mif {C_Nimbus_fmp_mif = minflowFMPAmer}             ! create time series
+define C_Nimbus_fmp {alias minflowFMPAmer kind 'FLOW' units 'CFS'}     !save the final minflow to DSS
+
+!goal meet_min_C_Nimbus { C_Nimbus_mif < minflowFMPAmer } ! Minimum required flows in American River below Nimbus Dam
+
+
+
+define AmEvapMaySept_alias {alias AmerFrcstEvap kind 'test' units 'taf'}
+define AmEvapJunSept_alias {alias Evap_Folsm_JuneSept kind 'test' units 'taf'}
+define AmEvapMarMay_alias {alias Evap_Folsm_MarMay kind 'test' units 'taf'}

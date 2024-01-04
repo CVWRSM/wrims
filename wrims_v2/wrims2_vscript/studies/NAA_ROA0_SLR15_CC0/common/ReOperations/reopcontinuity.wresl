@@ -1,0 +1,43 @@
+!-------------------------------------------------
+!ANN flow adjustments (at Hood)
+! whlcv
+goal setC400_whlcv {C3_whlcv + C5_whlcv + C9_whlcv + C32_whlcv                !LHS for CVC
+                  = C400_whlcv + D400_whlcv}
+! whljp
+goal setC400_whljp {C3_whljp + C5_whljp + C9_whljp + C32_whljp                !LHS for JPOD
+                  = C400_whljp + D400_whljp
+                  + C177C_EXOP}                                               !RHS for NODOS/Shasta Stored Water movement
+! WTS
+goal setC400_WTS   {WTS_Yuba + WTS_DSA12 + WTS_DSA15 + WTS_DSA69 + WTS_DSA70  !LHS for WTS
+                  + WTS_DEC12_Stg2 + WTS_DEC15_Stg2 + WTS_DEC69_Stg2 + WTS_DEC70_Stg2
+                  + C5_WTS   + C6_WTS   + SP4_WTS*taf_cfs + SP6_WTS*taf_cfs
+                  = C400_WTS + D400_WTS                                       !RHS for WTS
+                  + WTS_INC12_Stg2 + WTS_INC15_Stg2 + WTS_INC69_Stg2 + WTS_INC70_Stg2
+                  + I4_WTS + I6_WTS }
+! EWA
+goal setC400_EWA   {C5_ewa - C5_ewa_ex + C9_ewa + C6_ewa                      !LHS for EWA
+                  = C400_EWA + D400_EWA}
+
+! Reop source continuities
+goal setReleaseCont {C400_whlcv + C400_whljp + C400_WTS + C400_EWA
+		   + D400_whlcv + D400_whljp + D400_WTS + D400_EWA
+                   = C407_whlcv + D419_cvcrels                                !RHS for CVC
+                   + C407_whljp + D419_whlrels                                !RHS for JP
+                   + C407_ewarels + D419_ewarels                              !RHS for EWA
+                   + C407_WTS   + D419_WTS   + D418_WTS + WTS_SPILL           !RHS for WTS
+           + Reop_Rel_Bal_Err}
+goal zeroReop_Rel_Bal {lhs Reop_Rel_Bal_Err
+               rhs 0.
+                       lhs>rhs penalty 999999
+                       lhs<rhs penalty 999999}
+
+goal setSurplusCont {C407_cvp + C407_swp                                      !LHS for New Base Ops
+                   + Surp1Terms + Surp2Terms                                  !LHS for surplus reduction from CVC, CVP JPOD and EWA JPOD use of surplus at pumps
+                   + D168c_exc_ntDep                                          !LHS for surplus reduction from FRWP
+                   = C407_cvp_Base + C407_swp_Base                            !RHS for Old Base Ops
+           + ReopSurp_Bal_Err}
+goal zeroReopSurp_Bal {lhs Reop_Rel_Bal_Err
+               rhs 0.
+                       lhs>rhs penalty 99999
+                       lhs<rhs penalty 99999}
+

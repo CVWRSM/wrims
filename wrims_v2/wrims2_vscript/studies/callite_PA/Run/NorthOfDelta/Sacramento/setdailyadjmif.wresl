@@ -1,0 +1,18 @@
+/* setdailymif.wresl
+
+Tom FitzHuigh BOR 12/13/10
+
+This file sets the adjustments to minimum instream flows based on daily variations of unregulated flow to
+better match system representation with USRDOM.
+
+*/
+
+!RED BLUFF
+define ts_adj_rb {timeseries kind 'FLOW' units 'CFS'} !Max adjustment specified as timeseries
+define flow_adj_rb {alias ts_adj_rb kind 'FLOW' units 'CFS'}
+goal set_da_adj_rb {C_RedBlf_MIF_DAILY < ts_adj_rb}
+
+!WILKINS SLOUGH
+define ts_adj_wlk {timeseries kind 'FLOW' units 'CFS'} !Max adjustment specified as timeseries
+define flow_adj_wlk {alias ts_adj_wlk kind 'FLOW' units 'CFS'}
+goal set_da_adj_wlk {C_Wilkns_MIF_DAILY < ts_adj_wlk}

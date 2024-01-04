@@ -1,0 +1,45 @@
+// Additional settings for enabling more verbose synchronization logging
+{
+        "http://www.oracle.com/jrockit/jvm/" : {
+
+                //////// JVM synchronization related events
+
+                // JVM mutex enter
+                "vm/sync/mutex_enter" : {
+		     "enable" : true,
+                     "stacktrace" : true
+		},
+
+                // JVM monitor wait
+                "vm/sync/monitor_wait" : {
+		     "enable" : true,
+                     "stacktrace" : true
+		},
+
+                // JVM lock profiling
+                "vm/sync/lock_profile" : {
+		     "enable" : true
+		},
+
+                // JVM event wait
+                "vm/sync/event_wait" : {
+		     "enable" : true,
+                     "stacktrace" : true
+		},
+
+ 
+                //////// Java synchronization related events
+
+                // Java monitor enter, wait, lock profiling
+                // NOTE: Lock profiling requires extra VM flag -XX:+UseLockProfiling
+                "java/monitor_*" : {
+		     "enable" : true,
+                     "stacktrace" : true
+		},
+
+                "java/statistics/lock_profile" : {
+		     "enable" : true,
+                     "stacktrace" : true
+		}
+	}
+}

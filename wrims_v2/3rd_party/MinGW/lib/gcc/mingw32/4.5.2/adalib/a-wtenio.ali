@@ -1,0 +1,105 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnvnnvnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnn
+
+U ada.wide_text_io.enumeration_io%b  a-wtenio.adb  457a6f83 NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.wide_text_io%s	a-witeio.adb		a-witeio.ali
+W ada.wide_text_io.enumeration_aux%s  a-wtenau.adb  a-wtenau.ali
+
+U ada.wide_text_io.enumeration_io%s  a-wtenio.ads  a5568dbd BN NE OL PK GE
+W ada.wide_text_io%s	a-witeio.adb		a-witeio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-witeio.ads		20091028133152 e90583d1
+D a-wtenau.ads		20090409150020 a301468f
+D a-wtenio.ads		20090409150020 4c530e6c
+D a-wtenio.adb		20090409150020 aa282760
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-wchcon.ads		20090417130712 30c48dc1
+X 1 ada.ads
+16K9*Ada 19e8 11|45r9 74r5 12|32r6 34r14 36r24 104r5
+X 9 a-witeio.ads
+52K13*Wide_Text_IO 1|16k9 9|496e21 11|45r13 74r9 12|32r10 34r18 36r28 104r9
+54P9*File_Type(373R9) 11|50r26 54r15 12|42r26 75r15
+76I12*Field{integer} 11|47r20 56r15 61r15 12|77r15 87r15
+83E9*Type_Set 83e45 11|48r22 57r15 62r15 72r14 12|78r15 88r15 97r14
+83n34*Upper_Case{83E9} 11|48r34
+124V13*Current_Input{54P9} 12|54r12
+125V13*Current_Output{54P9} 12|91r12
+301X4*Data_Error 12|49r38 67r38
+X 10 a-wtenau.ads
+35K34*Enumeration_Aux 69e37 12|32w23 36r41
+37U14*Get_Enum_Lit 12|46r11
+46U14*Scan_Enum_Lit 12|64r11
+54U14*Put 12|82r11
+62U14*Puts 12|101r11
+X 11 a-wtenio.ads
+43E9 Enum 50r48 51r30 55r15 60r15 66r18 71r14 12|42r48 43r34 47r15 52r30
+. 59r18 65r15 76r15 80r39 86r15 96r14 99r39
+45k26*Enumeration_IO 9|52k13 11|43z9 74l22 74e36 12|34b31 104l22 104t36
+47i4*Default_Width{9|76I12} 56r24 61r24 12|77r24 87r24
+48e4*Default_Setting{9|83E9} 57r27 62r27 72r26 12|78r27 88r27 97r26
+50U14*Get 50>19 50<37 12|42b14 50l8 50t11 54r7
+50p19 File{9|54P9} 12|42b19 46r25
+50*37 Item{43E9} 12|42b37 47m7
+51U14*Get 51<19 12|52b14 55l8 55t11
+51*19 Item{43E9} 12|52b19 54m27
+53U14*Put 54>7 55>7 56>7 57>7 12|74b14 83l8 83t11 91r7
+54p7 File{9|54P9} 12|75b7 82r16
+55*7 Item{43E9} 12|76b7 80r56
+56i7 Width{9|76I12} 12|77b7 82r29
+57e7 Set{9|83E9} 12|78b7 82r36
+59U14*Put 60>7 61>7 62>7 12|85b14 92l8 92t11
+60*7 Item{43E9} 12|86b7 91r28
+61i7 Width{9|76I12} 12|87b7 91r34
+62e7 Set{9|83E9} 12|88b7 91r41
+64U14*Get 65>7 66<7 67<7 12|57b14 68l8 68t11
+65s7 From{wide_string} 12|58b7 64r26 65r32
+66*7 Item{43E9} 12|59b7 65m7
+67i7 Last{positive} 12|60b7 64m39 65r47
+69U14*Put 70<7 71>7 72>7 12|94b14 102l8 102t11
+70s7 To{wide_string} 12|95b7 101m17
+71*7 Item{43E9} 12|96b7 99r56
+72e7 Set{9|83E9} 12|97b7 101r28
+X 12 a-wtenio.adb
+36K12 Aux=36:41 46r7 64r7 82r7 101r7
+43a7 Buf{wide_string} 46m31 47r32
+44i7 Buflen{natural} 46m36 47r42
+62i7 Start{natural} 64m32 65r38
+80s7 Image{wide_string} 82r22
+99s7 Image{wide_string} 101r21
+

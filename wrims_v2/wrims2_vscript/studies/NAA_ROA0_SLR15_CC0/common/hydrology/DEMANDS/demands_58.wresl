@@ -1,0 +1,129 @@
+! This file sets up the diversion requirements for DSA 58
+! Each Diversion Requirement is split between project and nonproject
+! Non project diversion requirement is not entitled to releases from
+! Project reservoirs
+! see running gain file for more details
+! Logic developed by RAJ 9/99
+
+!Total annual demands for AG, MI, and SC for the Mar-Feb demand schedule
+define acd_MIdv {std kind 'demand-annual' units 'taf'}
+
+define acd_58_pmi {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_d104_PMI(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_d104_PMI(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_d104_PMI(i) }
+
+       case Rest {
+       condition always
+       value acd_MIdv(-1) }
+
+        }
+
+goal save_acd_MIdv {acd_MIdv = acd_58_pmi}
+
+define acd_SCdv {std kind 'demand-annual' units 'taf'}
+
+define acd_58_psc {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_d104_PSC(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_d104_PSC(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_d104_PSC(i) }
+
+       case Rest {
+       condition always
+       value acd_SCdv(-1) }
+
+        }
+
+goal save_acd_SCdv {acd_SCdv = acd_58_psc}
+
+define acd_AGdv {std kind 'demand-annual' units 'taf'}
+
+define acd_58_pag {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_d104_PAG(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_d104_PAG(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_d104_PAG(i) }
+
+       case Rest {
+       condition always
+       value acd_AGdv(-1) }
+
+        }
+
+goal save_acd_AGdv {acd_AGdv = acd_58_pag}
+
+
+
+!Define Total Annual Contract Demand
+define acd_58 {VALUE acd_58_pmi + acd_58_pag + acd_58_psc}
+
+! Define project and non project split percentages
+!  2020 Level provided by USBR
+define perc_dr58 {VALUE 0.90 }  ! CVP only
+
+! define Project diversion requirement
+define prj_dr58 {VALUE dr58*perc_dr58 }
+
+! define Nonproject diversion requirement
+define np_dr58 {VALUE dr58 - prj_dr58 }
+
+! split diversion requirement arc between project and nonproject
+define c106_prj {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! Project Diversion requirement
+define c106_np   {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! non project diversion requirement
+goal set_C106_split  {c106  = c106_prj  + c106_np }  ! total diversion requirement
+
+define gp60_prj {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }  ! Project groundwater pumping
+define gp60_np   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }  ! non project groundwater pumping
+goal set_gp60_3 { gp60 = gp60_prj + gp60_np }   ! total pumping
+
+define d104_prj {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' } ! project stream diversion
+define d104_np   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' } ! non project stream diversion
+goal set_d104_2  {d104 = d104_prj + d104_np }  ! total stream diversion
+
+! Set limits on project diversion requirement
+goal set_c106_prj   {C106_prj = prj_dr58*taf_cfs }  ! Restrict the flow arc to the project diversion requirement
+goal set_c106_prj_2 {C106_prj = d104_prj + gp60_prj} ! restrict flow arc project supplies
+
+! Set limits on non project diversion requirement
+goal set_c106_np   {C106_np = np_dr58*taf_cfs } ! Restrict the flow arc to the non project diversion requirement
+goal set_c106_np_2 {C106_np = d104_np + gp60_np } ! restrict flow arc to non project supplies
+
+! define minimum monthly groundwater pumping (using minimum value from  1980-2002 Historical Level CVGSM run)
+! minimum pumping cannot be more than the diversion requirement
+
+define minpump_58_prj {VALUE min(mingw_58*perc_dr58,prj_dr58)  }  ! (UNITS = TAF)
+define minpump_58_np  {VALUE min(mingw_58*(1.0-perc_dr58),np_dr58)  }  ! (UNITS = TAF)
+goal set_gp60_prj     {gp60_prj > minpump_58_prj*taf_cfs }
+goal set_gp60_np      {gp60_np > minpump_58_np*taf_cfs }
+
+
+! Set limits on project stream diversion, convert to CFS
+goal set_d104_proj   {d104_prj < dem_d104_prj*taf_cfs }
+
+

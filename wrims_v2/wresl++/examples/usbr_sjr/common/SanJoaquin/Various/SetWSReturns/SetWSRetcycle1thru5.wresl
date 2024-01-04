@@ -1,0 +1,83 @@
+! SetWSRetcycle1thru5.wresl
+! EDWARD CHANG
+! 6/28/2000
+! This file defines CVP deliveries whose return flows enter the San Joaquin System 
+! (Used for Cycle 2 through 5)
+! Revised by C. Hsu, 3/5/03, USBR, for review and documentation project
+!##################################################################################################################
+/*
+Fix CVP deliveries to 100 % of adjusted delivery decision, which will fix the return flows
+into the San Joaquin system, which is an accurate full system approximation for the returns
+before the full system is integrated.  The approximation is needed because the returns affect
+main-stem flows which dictate Water Quality and VAMP releases.  Anything which determines a
+return flow to the mainstem SJR above Vernalis is set here.  Basically, this is the same code
+which sets limits on the deliveries in the full system simulation, but the constraints are 
+= instead of <.
+*/
+
+! Banta Carbona/Westside
+goal fix_D_50_PA  {D_DMC021_50_PA < CLM_50_PA * taf_cfs * perdv_cvpag_s}
+! Hospital WD	
+
+goal fix_D_71_PA1 {D_DMC030_71_PA1 < CLM_71_PA1 * taf_cfs * perdv_cvpag_s}
+! West Stanislaus ID
+goal fix_D_71_PA2 {D_DMC034_71_PA2 /* + D_SJR082_71_PA2 */  < CLM_71_PA2 * taf_cfs * perdv_cvpag_s}
+! Kern Canon WD
+goal fix_D_71_PA3 {D_DMC034_71_PA3 < CLM_71_PA3 * taf_cfs * perdv_cvpag_s}
+! Patterson WD
+goal fix_D_71_PA4 {D_DMC044_71_PA4 /* + D_SJR096_71_PA4 */ < CLM_71_PA4 * taf_cfs * perdv_cvpag_s}
+! Del Puerto/Salado/Orestimba/Sunflower
+goal fix_D_71_PA5 {D_DMC044_71_PA5 < CLM_71_PA5 * taf_cfs * perdv_cvpag_s}
+! Davis/Mustang/Foothill/Quinto/Romero/Centinella
+goal fix_D_71_PA6 {D_DMC064_71_PA6 < CLM_71_PA6 * taf_cfs * perdv_cvpag_s}
+! Byron Bethany (Plainview)
+goal fix_D_71_PA8 {D_DMC011_71_PA8 < CLM_71_PA8 * taf_cfs * perdv_cvpag_s}
+! Laguna WD
+goal fix_D_72_PA   {D_XCC025_72_PA  < CLM_72_PA * taf_cfs * perdv_cvpag_s}
+! San Luis WD North
+goal fix_D_73_PA1  {D_DMC070_73_PA1 + D_CAA087_73_PA1 < CLM_73_PA1 * taf_cfs * perdv_cvpag_s}
+! Eagle Field, Mercy Springs, Oro Loma
+goal fix_D_73_PA2  {D_DMC105_73_PA2 < CLM_73_PA2 * taf_cfs * perdv_cvpag_s}
+! San Luis WD South, Pacheco, Panoche
+goal fix_D_73_PA3  {D_DMC091_73_PA3 + D_CAA109_73_PA3 < CLM_73_PA3 * taf_cfs * perdv_cvpag_s}
+! Coelho, Fresno Slough, James ID, Tranquility, etc...
+goal fix_D_91_PA   {D_MDOTA_91_PA < CLM_91_PA * taf_cfs * perdv_cvpag_s
+                                  + CLM_91_WR * taf_cfs * perdv_cvpex_s }
+
+! San Luis Canal Co Exchange Contractors
+goal fix_D_72_XA1  {D_ARY010_72_XA1 < CLM_72_XA1 * taf_cfs * perdv_cvpex_s}
+! Central California ID South Exchange Contractors
+goal fix_D_72_XA2  {D_XCC010_72_XA2 < CLM_72_XA2 * taf_cfs * perdv_cvpex_s}
+! Central California ID North Exchange Contractors
+goal fix_D_72_XA3  {D_XCC054_72_XA3 < CLM_72_XA3 * taf_cfs * perdv_cvpex_s}
+! Firebaugh Exchange Contractors
+goal fix_D_73_XA   {D_MDOTA_73_XA + D_DMC111_73_XA < CLM_73_XA * taf_cfs * perdv_cvpex_s }
+
+
+! Volta WA
+goal fix_D_72_PR1  {D_VLW008_72_PR1 < CLM_72_PR1 * taf_cfs * perdv_cvprf_s}
+! Kesterson, Freitas, & Blue Goose units of San Luis NWR, China Island unit of North Grassland
+goal fix_D_72_PR2  {D_XCC033_72_PR2 < CLM_72_PR2 * taf_cfs * perdv_cvprf_s}  
+! West Bear Ck and San Luis units of San Luis NWR
+goal fix_D_72_PR3  {D_ARY010_72_PR3 < CLM_72_PR3 * taf_cfs * perdv_cvprf_s} 
+! Los Banos WA, Salt Slouth and Gadwall units of North Grassland
+goal fix_D_72_PR4  {D_XCC033_72_PR4 + D_ARY010_72_PR4 < CLM_72_PR4 * taf_cfs * perdv_cvprf_s}  
+! Grassland WD North - take deliv from RF and from Garzas Ck before taking canal water
+goal fix_D_72_PR5  {D_RFS72A_72_PR5 + D_XCC054_72_PR5 + D_LBN012_72_PR5
+                             < CLM_72_PR5 * taf_cfs * perdv_cvprf_s} 
+! Grassland WD South
+goal fix_D_72_PR6  {D_ARY010_72_PR6 + D_XCC025_72_PR6 < CLM_72_PR6 * taf_cfs * perdv_cvprf_s} 
+! Mendota WA
+!goal fix_D_91_PR   {D_MDOTA_91_PR < CLM_91_PR * taf_cfs * perdv_cvprf_s }
+
+! Tracy
+goal fix_D_50_PU  {D_DMC016_WTPJJO < CLM_50_PUa * taf_cfs * perdv_cvpmi_s} 
+! Musco Olive Products
+goal fix_D_71_PU  {D_CAA012_71_PU1 < CLM_71_PU1 * taf_cfs * perdv_cvpmi_s} 
+! VA Cemetary
+goal fix_D_72_PU1  {D_CAA066_71_PU2 < CLM_71_PU2 * taf_cfs * perdv_cvpmi_s} 
+! City of Dos Palos
+goal fix_D_72_PU2  {D_CAA095_72_PU < CLM_72_PU * taf_cfs * perdv_cvpmi_s} 
+! Avenal, Coalinga, Huron
+goal fix_D_90_PU  {D_CAA143_90_PU < CLM_90_PU * taf_cfs * perdv_cvpmi_s} 
+                                           

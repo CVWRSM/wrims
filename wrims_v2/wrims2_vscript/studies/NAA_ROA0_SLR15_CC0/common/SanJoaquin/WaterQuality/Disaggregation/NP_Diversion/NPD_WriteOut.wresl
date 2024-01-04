@@ -1,0 +1,280 @@
+!Anna Fock  Oct 2003
+!Calculation of SJR Non-Project Diversion
+!write-out Non-Pulse period result for DSM2 in the last cycle
+define D639_NP  {
+    case NonPulseNonDO {
+        condition month <= may
+        value D639[SJR_WQ1] }
+    case NonPulsePlusDO {
+        condition always
+        value D639[VAMP_AND_DO] }
+            }
+
+define D637_NP  {
+    case NonPulseNonDO {
+        condition month <= may
+        value D637[SJR_WQ1] }
+    case NonPulsePlusDO {
+    condition always
+    value D637[VAMP_AND_DO] }
+            }
+
+define D630B_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value D630B[SJR_WQ1] }
+    case NonPulsePlusDO {
+        condition always
+        value D630B[VAMP_AND_DO] }
+            }
+
+define D620B_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value D620B[SJR_WQ1] }
+    case NonPulsePlusDO {
+        condition always value D620B[VAMP_AND_DO] }
+            }
+
+define NPD17_NP  { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D639 at DSM2 border
+define NPD601_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D637 at RM75
+define NPD602_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D630B at RM76
+define NPD603_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D630B at RM77
+define NPD604_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D630B at RM78.5
+define NPD605_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D630B at RM80
+define NPD611_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM86
+define NPD612_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM87
+define NPD613_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM88
+define NPD614_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM89
+define NPD615_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM90
+define NPD616_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM91.5
+define NPD624_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM99
+define NPD627_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM103
+define NPD628_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM105
+define NPD629_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM106
+define NPD630_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM107.5
+define NPD631_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM109
+define NPD632_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM110
+define NPD636_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM114
+define NPD637_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM116
+define NPD638_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM117
+define NPD645_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM125
+define NPD649_NP { lower -100000 kind 'NPD-Flow' Units 'CFS' }    !D620B at RM130
+
+goal set_NPD17_NP  { NPD17_NP  = D639_NP  * Frac_NPD17  }
+goal set_NPD601_NP { NPD601_NP = D637_NP  * Frac_NPD601 }
+goal set_NPD602_NP { NPD602_NP = D630B_NP * Frac_NPD602 }
+goal set_NPD603_NP { NPD603_NP = D630B_NP * Frac_NPD603 }
+goal set_NPD604_NP { NPD604_NP = D630B_NP * Frac_NPD604 }
+goal set_NPD605_NP { NPD605_NP = D630B_NP * Frac_NPD605 }
+goal set_NPD611_NP { NPD611_NP = D620B_NP * Frac_NPD611 }
+goal set_NPD612_NP { NPD612_NP = D620B_NP * Frac_NPD612 }
+goal set_NPD613_NP { NPD613_NP = D620B_NP * Frac_NPD613 }
+goal set_NPD614_NP { NPD614_NP = D620B_NP * Frac_NPD614 }
+goal set_NPD615_NP { NPD615_NP = D620B_NP * Frac_NPD615 }
+goal set_NPD616_NP { NPD616_NP = D620B_NP * Frac_NPD616 }
+goal set_NPD624_NP { NPD624_NP = D620B_NP * Frac_NPD624 }
+goal set_NPD627_NP { NPD627_NP = D620B_NP * Frac_NPD627 }
+goal set_NPD628_NP { NPD628_NP = D620B_NP * Frac_NPD628 }
+goal set_NPD629_NP { NPD629_NP = D620B_NP * Frac_NPD629 }
+goal set_NPD630_NP { NPD630_NP = D620B_NP * Frac_NPD630 }
+goal set_NPD631_NP { NPD631_NP = D620B_NP * Frac_NPD631 }
+goal set_NPD632_NP { NPD632_NP = D620B_NP * Frac_NPD632 }
+goal set_NPD636_NP { NPD636_NP = D620B_NP * Frac_NPD636 }
+goal set_NPD637_NP { NPD637_NP = D620B_NP * Frac_NPD637 }
+goal set_NPD638_NP { NPD638_NP = D620B_NP * Frac_NPD638 }
+goal set_NPD645_NP { NPD645_NP = D620B_NP * Frac_NPD645 }
+goal set_NPD649_NP { NPD649_NP = D620B_NP * Frac_NPD649 }
+
+
+!write-out Pulse period result for DSM2 in the last cycle
+define D639_P  {
+    case APRILMAY {
+        condition month >= apr .and. month <= may
+        value D639[VAMP_AND_DO] }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define D637_P  {
+    case APRILMAY {
+        condition month >= apr .and. month <= may
+        value D637[VAMP_AND_DO] }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define D630B_P {
+    case APRILMAY {
+        condition month >= apr .and. month <= may
+        value D630B[VAMP_AND_DO] }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define D620B_P {
+    case APRILMAY {
+        condition month >= apr .and. month <= may
+        value D620B[VAMP_AND_DO] }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define NPD17_P  { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D639 at DSM2 border
+define NPD601_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D637 at RM75
+define NPD602_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D630B at RM76
+define NPD603_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D630B at RM77
+define NPD604_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D630B at RM78.5
+define NPD605_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D630B at RM80
+define NPD611_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM86
+define NPD612_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM87
+define NPD613_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM88
+define NPD614_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM89
+define NPD615_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM90
+define NPD616_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM91.5
+define NPD624_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM99
+define NPD627_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM103
+define NPD628_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM105
+define NPD629_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM106
+define NPD630_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM107.5
+define NPD631_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM109
+define NPD632_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM110
+define NPD636_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM114
+define NPD637_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM116
+define NPD638_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM117
+define NPD645_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM125
+define NPD649_P { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM130
+
+goal set_NPD17_P  { NPD17_P  = D639_P  * Frac_NPD17  }
+goal set_NPD601_P { NPD601_P = D637_P  * Frac_NPD601 }
+goal set_NPD602_P { NPD602_P = D630B_P * Frac_NPD602 }
+goal set_NPD603_P { NPD603_P = D630B_P * Frac_NPD603 }
+goal set_NPD604_P { NPD604_P = D630B_P * Frac_NPD604 }
+goal set_NPD605_P { NPD605_P = D630B_P * Frac_NPD605 }
+goal set_NPD611_P { NPD611_P = D620B_P * Frac_NPD611 }
+goal set_NPD612_P { NPD612_P = D620B_P * Frac_NPD612 }
+goal set_NPD613_P { NPD613_P = D620B_P * Frac_NPD613 }
+goal set_NPD614_P { NPD614_P = D620B_P * Frac_NPD614 }
+goal set_NPD615_P { NPD615_P = D620B_P * Frac_NPD615 }
+goal set_NPD616_P { NPD616_P = D620B_P * Frac_NPD616 }
+goal set_NPD624_P { NPD624_P = D620B_P * Frac_NPD624 }
+goal set_NPD627_P { NPD627_P = D620B_P * Frac_NPD627 }
+goal set_NPD628_P { NPD628_P = D620B_P * Frac_NPD628 }
+goal set_NPD629_P { NPD629_P = D620B_P * Frac_NPD629 }
+goal set_NPD630_P { NPD630_P = D620B_P * Frac_NPD630 }
+goal set_NPD631_P { NPD631_P = D620B_P * Frac_NPD631 }
+goal set_NPD632_P { NPD632_P = D620B_P * Frac_NPD632 }
+goal set_NPD636_P { NPD636_P = D620B_P * Frac_NPD636 }
+goal set_NPD637_P { NPD637_P = D620B_P * Frac_NPD637 }
+goal set_NPD638_P { NPD638_P = D620B_P * Frac_NPD638 }
+goal set_NPD645_P { NPD645_P = D620B_P * Frac_NPD645 }
+goal set_NPD649_P { NPD649_P = D620B_P * Frac_NPD649 }
+
+
+!write-out Final result for DSM2 in the last cycle
+define D639_FINAL  {
+    case April {
+        condition month == apr
+        value ( 14.* D639_NP/30. + 16.* D639_P /30.) }
+    case MayOnly {
+        condition month == may
+        value ( 15.* D639_P/31. + 16.* D639_NP /31.) }
+    case otherwise {
+        condition always
+        value D639_NP  }
+            }
+
+define D637_FINAL  {
+    case April {
+        condition month == apr
+        value ( 14.* D637_NP/30. + 16.* D637_P /30.) }
+    case MayOnly {
+        condition month == may
+        value ( 15.* D637_P/31. + 16.* D637_NP /31.) }
+    case otherwise {
+        condition always
+        value D637_NP  }
+            }
+
+define D630B_FINAL {
+    case April {
+        condition month == apr
+        value (14.* D630B_NP/30. + 16.* D630B_P/30.) }
+    case MayOnly {
+        condition month == may
+        value (15.* D630B_P/31. + 16.* D630B_NP/31.) }
+    case otherwise {
+        condition always
+        value D630B_NP }
+            }
+
+define D620B_FINAL {
+    case April {
+        condition month == apr
+        value (14.* D620B_NP/30. + 16.* D620B_P/30.) }
+    case MayOnly {
+        condition month == may
+        value (15.* D620B_P/31. + 16.* D620B_NP/31.) }
+    case otherwise {
+        condition always
+        value D620B_NP }
+            }
+
+define NPD17_Final  { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D639 at DSM2 border
+define NPD601_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D637 at RM75
+define NPD602_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D630B at RM76
+define NPD603_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D630B at RM77
+define NPD604_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D630B at RM78.5
+define NPD605_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D630B at RM80
+define NPD611_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM86
+define NPD612_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM87
+define NPD613_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM88
+define NPD614_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM89
+define NPD615_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM90
+define NPD616_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM91.5
+define NPD624_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM99
+define NPD627_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM103
+define NPD628_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM105
+define NPD629_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM106
+define NPD630_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM107.5
+define NPD631_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM109
+define NPD632_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM110
+define NPD636_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM114
+define NPD637_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM116
+define NPD638_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM117
+define NPD645_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM125
+define NPD649_Final { lower -100000  kind 'NPD-Flow' Units 'CFS' }    !D620B at RM130
+
+Goal Set_NPD17_F  { NPD17_Final  = D639_Final  * Frac_NPD17  }    !D639 at DSM2 border
+Goal Set_NPD601_F { NPD601_Final = D637_Final  * Frac_NPD601 }    !D637 at RM75
+Goal Set_NPD602_F { NPD602_Final = D630B_Final * Frac_NPD602 }    !D630B at RM76
+Goal Set_NPD603_F { NPD603_Final = D630B_Final * Frac_NPD603 }    !D630B at RM77
+Goal Set_NPD604_F { NPD604_Final = D630B_Final * Frac_NPD604 }    !D630B at RM78.5
+Goal Set_NPD605_F { NPD605_Final = D630B_Final * Frac_NPD605 }    !D630B at RM80
+Goal Set_NPD611_F { NPD611_Final = D620B_Final * Frac_NPD611 }    !D620B at RM86
+Goal Set_NPD612_F { NPD612_Final = D620B_Final * Frac_NPD612 }    !D620B at RM87
+Goal Set_NPD613_F { NPD613_Final = D620B_Final * Frac_NPD613 }    !D620B at RM88
+Goal Set_NPD614_F { NPD614_Final = D620B_Final * Frac_NPD614 }    !D620B at RM89
+Goal Set_NPD615_F { NPD615_Final = D620B_Final * Frac_NPD615 }    !D620B at RM90
+Goal Set_NPD616_F { NPD616_Final = D620B_Final * Frac_NPD616 }    !D620B at RM91.5
+Goal Set_NPD624_F { NPD624_Final = D620B_Final * Frac_NPD624 }    !D620B at RM99
+Goal Set_NPD627_F { NPD627_Final = D620B_Final * Frac_NPD627 }    !D620B at RM103
+Goal Set_NPD628_F { NPD628_Final = D620B_Final * Frac_NPD628 }    !D620B at RM105
+Goal Set_NPD629_F { NPD629_Final = D620B_Final * Frac_NPD629 }    !D620B at RM106
+Goal Set_NPD630_F { NPD630_Final = D620B_Final * Frac_NPD630 }    !D620B at RM107.5
+Goal Set_NPD631_F { NPD631_Final = D620B_Final * Frac_NPD631 }    !D620B at RM109
+Goal Set_NPD632_F { NPD632_Final = D620B_Final * Frac_NPD632 }    !D620B at RM110
+Goal Set_NPD636_F { NPD636_Final = D620B_Final * Frac_NPD636 }    !D620B at RM114
+Goal Set_NPD637_F { NPD637_Final = D620B_Final * Frac_NPD637 }    !D620B at RM116
+Goal Set_NPD638_F { NPD638_Final = D620B_Final * Frac_NPD638 }    !D620B at RM117
+Goal Set_NPD645_F { NPD645_Final = D620B_Final * Frac_NPD645 }    !D620B at RM125
+Goal Set_NPD649_F { NPD649_Final = D620B_Final * Frac_NPD649 }    !D620B at RM130
+
+
+
+
+

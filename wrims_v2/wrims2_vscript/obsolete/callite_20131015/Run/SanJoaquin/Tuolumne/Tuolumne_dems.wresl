@@ -1,0 +1,791 @@
+! Tuolumne_dems.wresl
+
+! Nancy Parker
+! USBR
+! Date: 09/03/2002
+! Deliveries and operations for Tuolumne River demands.
+
+/*
+This file uses a water budget method for determining water demands and
+operations of Tuolumne River water users.  Main water users incorporated in
+this file are Modesto Irrigation District and Turlock Irrigation District.
+The water budget can be explained as follows:
+
+  CUAW
++ Deep Percolation                                      River Diversion
++ District Losses (Seepage) = Diversion Requirement = + District GW Pumping
++ Spills                                              + Private GW Pumping
++ Non-Recoverable Losses
+
+The diversion requirement can be met by surface water diversions, district
+ground water pumping, and private ground water pumping. Minimum and maximum
+constraints are placed on ground water pumping. The diversion requirement
+is satisfied using the following delivery order (for both Turlock ID and
+Modesto ID):  1. Minimum private pumping, 2. Minimum district pumping,
+3. Surface supply, 4. Maximum district pumping, 5. Maximum private pumping.
+
+Surface supplies are taken as the available storage in New Don Pedro
+Reservoir and channel flow above the minimum flow requirement. Surface
+supply allocations are given as a percent of demand based on the New Don
+Pedro Storage and forecasted inflow.
+
+
+Notes:  * CUAW is predetermined using DWR's consumptive use model
+    * Deep percolation is estimated to be 30% of CUAW
+    * Non-recoverable losses are assumed to be 10% of CUAW
+    * Factors accounting for diversion requirements in excess of CUAW,
+      deep percolation, and non-recoverable losses are estimated and
+      implemented into the model
+
+*/
+
+
+/*
+Revised by: R. Field, USBR, 09/25/03
+Purpose: Indclude addtional M&I, groundwater and M&I return flow arcs.
+Revised by: T. Crawford, USBR, 03/10/03
+Purpose: Review and comment code
+*/
+
+!############################################################################
+
+! Retrieve FERC min flows from predefined timeseries (excludes Apr-May pulse)
+define FERCBASE {timeseries kind 'flow-min-required' units 'cfs' }
+
+! In April, forecast Apr-July inflow to New Don Pedro Reservoir
+define TuolAprJulForc_1 {
+    case April {
+        condition month==apr
+        sum(i=0,3,1) I_PEDRO(i)*cfs_taf(i) }
+    case otherwise {
+        condition always
+        value 0. }
+    }
+
+define TuolAprJulForc {
+    case April {
+        condition month==apr
+        value TuolAprJulForc_1 + S_PEDRO(-1) }
+    case otherwise {
+        condition always
+        value 0. }
+    }
+
+! Decision variable for New Don Pedro Water Supply
+define NDP_WSdv {std kind 'WATER-SUPPLY' units 'none'}
+
+/*
+Surface water allocation (as a percent of demand); based on New Don Pedro
+water supply:  If end-of-March New Don Pedro storage is greater than 950,
+allocation is based on Apr-Jul inflow forecast and is looked up in a
+table. If end-of March NDP storage is less than 950 and the inflow forecast
+is less than 900, allocation is 55% of demand.
+*/
+define NDP_WS {
+    case firstyear {
+        condition wateryear==beginWY .and. month<=mar
+        value 1. }
+    case April {
+        condition month==apr
+        select NDP_WS from TuolAllocNormal given ForInf=TuolAprJulForc use linear }
+    case otherwise {
+        condition always
+        value NDP_WSdv(-1) }
+}
+
+! save New Don Pedro water supply to dvar
+goal setNDP_WSdv {NDP_WSdv = NDP_WS}
+
+
+/*
+*************************River Diversion and Returns*************************
+*/
+
+! Retrieve predefined CUAW timeseries values for SJR demand node 545A
+define cuaw_545A_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Decision variable defining 545A return flow of district losses
+define dloss_545A_pag {std kind 'local-loss' units 'cfs'}
+
+/*
+Determine district losses that are returned to the system using an NRL
+of 10% and a 75% efficiency:  Deliveries * (1 - (1 + nrl)*efficiency)
+*/
+goal set_dloss_545A_pag {dloss_545A_pag = D_TUOLC * (1.-(1.1*.75))}
+
+! Define deep percolation as 30% of CUAW (assumed value)
+define dperc_545A_pag {value cuaw_545A_pag * .3}
+
+! Limit deliveries at node 545A to the river diversion requirement
+goal set_D_TUOLC_A_riv {D_TUOLC_A_riv < 1.1*CUAW_545A_pag + dperc_545A_pag}
+
+! Set the return flow variable equal to the above defined district loss
+goal set_R_SJRTUOLj {R_SJRTUOLj = dloss_545A_pag}
+
+! Estimate volume of seepage from Turlock Reservoir using lookup table
+define S79_seep { select seep_79 from seep_rates where month=month}
+
+! Convert seepage volume to flow rate
+goal set_D79_seep {D79_SEEP = S79_seep * taf_cfs}
+
+/*
+Tuolumne River Diversion M&I pumping- all met by GW (A)
+*/
+! Define Tuolumne River Diversion M&I demand
+define demand_D_TUOLC_A_MI_A {select dem545A_MI_A from urban_demand3 where month = month}
+
+! Set East of Turlock M & I delivery to meet demand
+goal meet_D_TUOLC_A_MI_A {D_TUOLC_A_MI_A = demand_D_TUOLC_A_MI_A*taf_cfs}
+
+! Set groundwater M & I pumping to meet East of Turlock M&I demand
+goal set_GP545A_MI_A {GP545A_MI_A = D_TUOLC_A_MI_A}
+
+
+
+/*
+**********************Turlock Non-District GW Pumping************************
+*/
+
+! Retrieve predefined CUAW timeseries values for Turlock non-district demands
+define cuaw_549_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Define deep percolation as 30% of CUAW (assumed value)
+define dperc_549_ND {value cuaw_549_ND * .3}
+
+! Limit non-district deliveries to the diversion requirement
+goal set_D549_ND {D549_ND < 1.1*CUAW_549_ND + dperc_549_ND}
+
+! All non-district demands are satisfied by ground water pumping
+goal set_GP548_ND {GP548_ND = D549_ND}
+
+/*
+East of Turlock ID M&I pumping- all met by GW (A)
+*/
+! Define East of Turlock ID M & I demand
+define demand_D549_MI_A {
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select dem549_MI_A from urban_demand2_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select dem549_MI_A from urban_demand2_Ext where month = month}
+}
+
+! Set East of Turlock M & I delivery to meet demand
+goal meet_D549_MI_A {D549_MI_A = demand_D549_MI_A*taf_cfs}
+
+! Set groundwater M & I pumping to meet East of Turlock M&I demand
+goal set_GP548_MI_A {GP548_MI_A = D549_MI_A}
+
+/*
+*******************************Turlock ID************************************
+*/
+
+! Retrieve predefined CUAW timeseries values for Turlock ID demands
+define cuaw_549_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+/*
+Factor accounting for all other applied water requirements in excess of CUAW
+and NCL. Except for during March, factors are dependent only on month, and
+are looked up in a table. During March, the factor is dependent on the
+amount of CUAW for that month.
+*/
+define D549_pag_factor {
+    case march1 {
+        condition month==mar .and. cuaw_549_pag<18.*taf_cfs
+        value .3}
+    case march2 {
+        condition month==mar .and. cuaw_549_pag>=18.*taf_cfs .and. cuaw_549_pag<25.*taf_cfs
+        value .5 }
+    case march3 {
+        condition month==mar .and. cuaw_549_pag>=25.*taf_cfs
+        value .6 }
+    case FUTURE {
+        condition LOD_Future == 1 
+        select factD549 from sjr_monthly_data_Fut where month=month }
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select factD549 from sjr_monthly_data_Ext where month=month }
+}
+
+    
+! Determine from lookup table minimum Turlock ID ground water pumping
+define GP548_min_pag_limit{
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select min548pag from TuolGWPUMP_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select min548pag from TuolGWPUMP_Ext where month = month}
+}
+    
+! Determine from lookup table maximum Turlock ID ground water pumping
+define GP548_max_pag_lim1{
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select max548pag  from TuolGWPUMP_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select max548pag  from TuolGWPUMP_Ext where month = month}
+}
+
+! Allowable ground water pumping after min pumping has occurred
+define GP548_max_pag_limit {value GP548_max_pag_lim1 - GP548_min_pag_limit}
+
+! Determine from lookup table minimum private ground water pumping
+define GP548_min_prv_limit{
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select min548prv  from TuolGWPUMP_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select min548prv from TuolGWPUMP_Ext where month = month}
+}
+
+! Limit the Turlock ID min ground water pumping to previously defined value
+goal setGP548_min_pag {GP548_min_pag < GP548_min_pag_limit}
+
+! Limit the Turlock ID max ground water pumping to previously defined value
+goal setGP548_max_pag {GP548_max_pag < GP548_max_pag_limit}
+
+! Limit the private min ground water pumping to previously defined value
+goal setGP548_min_prv {GP548_min_prv < GP548_min_prv_limit}
+
+/*
+Turlock ID M&I pumping - all met by GW (B)
+*/
+! Define Turlock ID M & I demand
+define demand_D549_MI_B{
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select dem549_MI_B from urban_demand2_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select dem549_MI_B from urban_demand2_Ext where month = month}
+}
+    
+! Set Turlock ID M & I delivery to meet demand
+goal meet_D549_MI_B {D549_MI_B = demand_D549_MI_B*taf_cfs}
+
+! Set groundwater M & I pumping to meet Turlock ID M & I demand
+goal set_GP548_MI_B {GP548_MI_B = D549_MI_B}
+
+/*
+If diversion requirement cannot be satisfied by minimum ground water pumping
+(private and district), surface water is applied to help satisfy demand.
+District losses are assumed to be the first 800 acre-feet of surface water
+deliveries.
+*/
+define dloss_549_pag {
+    case canal_flow {
+        condition 1.1*cuaw_549_pag/D549_pag_factor - GP548_min_prv_limit > 0.
+        value .8 * taf_cfs }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! Spills to node 566 are estimated from lookup table
+define spill_566_pag {select sp566_ag from TuolSpills where yrtype=WYT_SJR, month=month}
+
+! Spills to node 630 are estimated from lookup table
+define spill_630L_pag {select sp630L_ag from TuolSpills where yrtype=WYT_SJR, month=month}
+
+! Spills to node 545 are estimated from lookup table
+define spill_545A_pag {select sp545A_ag from TuolSpills where yrtype=WYT_SJR, month=month}
+
+/*
+When CUAW is 0, there is no delivery requirement so there are no spills. When
+CUAW is not 0, deliveries occur and consequently, there are spills. Total
+spill is the sum of spills to nodes 566, 630, and 545.
+*/
+define spill_549_pag {
+    case zero_cuaw {
+        condition cuaw_549_pag < .01
+        value 0. }
+    case otherwise {
+        condition always
+        value spill_566_pag + spill_630L_pag + spill_545A_pag }
+}
+
+! Limit Turlock ID deliveries to Turlock ID demands
+goal set_D549_pag {D549_pag < 1.1*CUAW_549_pag/d549_pag_factor + dloss_549_pag}
+
+/*
+Surface water diversions from Turlock Lake to Turlock ID is 0 if CUAW is 0;
+otherwise the surface water delivery is limited to a percentage of the
+diversion requirement (based on NDP supply) plus return flow, minus that
+which has been previously satisfied by minimum ground water pumping.
+*/
+goal limitD79 {
+    lhs D79
+    case zero_cuaw {
+        condition cuaw_549_pag < .01
+        rhs 0. }
+    case otherwise {
+        condition always
+        rhs max(0.,NDP_WS*(1.1*cuaw_549_pag/D549_pag_factor) + spill_549_pag*taf_cfs + dloss_549_pag
+                    - GP548_min_prv_limit - GP548_min_pag_limit)
+        lhs<rhs penalty 0. }
+}
+
+/*
+Return flows from Turlock ID to Merced River at Stevinson are defined as
+0 if CUAW is 0; otherwise return flow equals the spill to node 566
+(previously defined from lookup table).
+*/
+goal set_R_MERCED2C {
+    lhs R_MERCED2C
+    case zero_cuaw {
+        condition cuaw_549_pag < .01
+        rhs  0. }
+    case otherwise {
+        condition always
+        rhs spill_566_pag*taf_cfs }
+}
+
+/*
+Return flows from Turlock ID to Tuolumne River at Modesto are defined as
+0 if CUAW is 0; otherwise return flow equals the spill to node 545
+(previously defined from lookup table).
+*/
+goal set_R_TUOLA {
+    lhs R_TUOLA
+    case zero_cuaw {
+        condition cuaw_549_pag < .01
+        rhs  0. }
+    case otherwise {
+        condition always
+        rhs spill_545A_pag*taf_cfs }
+}
+
+/*
+Return flows from Turlock ID to San Joaquin River above Maze are defined
+as 0 if CUAW is 0; otherwise return flow equals the spill to node 630
+(previously defined from lookup table).
+*/
+goal set_R_SJRTUOLL {
+    lhs R_SJRTUOLL
+    case zero_cuaw {
+        condition cuaw_549_pag < .01
+        rhs  0. }
+    case otherwise {
+        condition always
+        rhs spill_630L_pag*taf_cfs }
+}
+
+
+/*
+**************************West of Turlock  DAU 208***************************
+*/
+
+! Retrieve predefined CUAW timeseries values for demand node 551
+define cuaw_551_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Deep percolation assumed to be 30% of CUAW
+define dperc_551_pag {value cuaw_551_pag * .3}
+
+! Decision variable defining return flow of non-district losses
+define dloss_551_pag {std kind 'local-loss' units 'cfs'}
+
+/*
+Determine non-district losses that are returned to the system using an NRL
+of 10% and a 75% efficiency;
+
+(Deliveries - Ground water pumping) * [1 - (1 + NRL)*efficiency]
+*/
+goal set_dloss_551 {dloss_551_pag = C550 * (1.-(1.1*.75)) - GP550_pag * (1.-(1.1*.75))}
+
+! Limit on diversions from SJR to DAU 208 is 50 cfs (defined in lookup table)
+define D_SJRMER_limit {
+    case FUTURE {
+        condition LOD_Future == 1 
+        select D_SJRMER_lim from sjr_monthly_data_Fut where month=month }
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select D_SJRMER_lim from sjr_monthly_data_Ext where month=month } ! NO  D_SJRMER_lim in sjr_monthly_data_Ext.table
+}
+
+! Ensure diversions from SJR to DAU do not exceed 50 cfs constraint
+goal set_D_SJRMERA {D_SJRMERA < D_SJRMER_limit}
+
+! Ensure DAU 208 deliveries do not exceed demands
+goal set_D551 {D551_pag < 1.1*CUAW_551_pag + dperc_551_pag}
+
+! Set the return flow variable equal to the above defined non-district losses
+goal set_R_SJRTUOLk {R_SJRTUOLk = dloss_551_pag}
+
+/*
+East bank of San Joaquin, Merced to Tuolumne M&I pumping - all met by GW (A)
+*/
+! Define East bank of San Joaquin, Merced to Tuolumne M & I demand
+define demand_D551_MI_A{
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select dem551_MI_A from urban_demand2_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select dem551_MI_A from urban_demand2_Ext where month = month}
+    }
+    
+! Set East bank of San Joaquin, Merced to Tuolumne M & I delivery to meet demand
+goal meet_D551_MI_A {D551_MI_A = demand_D551_MI_A*taf_cfs}
+
+! Set groundwater M & I pumping to meet East bank of San Joaquin, Merced to Tuolumne M & I demand
+goal set_GP550_MI_A {GP550_MI_A = D551_MI_A}
+
+
+/*
+*******************************Modesto MI************************************
+*/
+
+! Estimate Modesto Reservoir seepage volume from lookup table
+define S78_seep { select seep_78 from seep_rates where month=month}
+
+! Convert seepage volume to flow rate
+goal set_D78_seep {D78_SEEP = S78_seep * taf_cfs}
+
+! Determine Modesto MI demand from lookup table
+define demand_D78A_mi {
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select demand_d78_mi from sjr_monthly_data_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select demand_d78_mi from sjr_monthly_data_Ext where month = month}
+}
+
+
+! Limit on Modesto MI deliveries given in lookup table
+define  D78_MI_limit {
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select limit_d78_mi from sjr_monthly_data_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select limit_d78_mi from sjr_monthly_data_Ext where month = month}
+}
+
+! Ensure Modesto MI deliveries do not exceed the limit
+goal set_D79_MI {D78_MI < D78_MI_limit*taf_cfs}
+
+! Modesto MI demand not satisfied by surface water is met through GW pumping
+goal set_GP78A_MI {GP78A_MI = demand_D78A_mi*taf_cfs - D78_MI}
+
+! 0% of deliveries to Modesto Area MI are reused or returned
+goal set_R550a {R550a = D78A * 0.}
+
+! Retrieve non-distric M&I demands within Modesto District Boundaries
+!define demand_D533_mi_A {select dem533_mi_A from urban_demand1 where month = month}
+
+define demand_D533_mi_A  {
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select dem533_mi_A  from urban_demand1_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select dem533_mi_A  from urban_demand1_Ext where month = month}
+}
+
+! Meet all non-district M&I demands within Modesto District Boundaries
+goal set_ModestoMI_A {D533_MI_A = demand_D533_MI_A*taf_cfs}
+
+! Satisfy all non-district M&I demands by ground water pumping
+goal set_GP532_MI_A {GP532_MI_A = D533_MI_A}
+
+! 0% of non-district deliveries are reused or returned
+goal set_R550b {R550b = D533_MI_A * 0.}
+
+
+/*
+*******************************Modesto ID************************************
+*/
+
+! Retrieve predefined CUAW timeseries values for Modesto ID
+define cuaw_533_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+/*
+Factor accounting for all other applied water requirements in excess of CUAW
+and NCL. Except for during March, factors are dependent only on month, and
+are looked up in a table. During March, the factor is dependent on the
+amount of CUAW for that month.
+*/
+define D533_pag_factor {
+    case march1 {
+        condition month==mar .and. cuaw_533_pag<9.*taf_cfs
+        value .35}
+    case march2 {
+        condition month==mar .and. cuaw_533_pag>=9.*taf_cfs .and. cuaw_533_pag<12.*taf_cfs
+        value .5 }
+    case march3 {
+        condition month==mar .and. cuaw_533_pag>=12.*taf_cfs
+        value .6 }
+   case FUTURE {
+        condition LOD_Future == 1 
+        select factD533 from sjr_monthly_data_Fut where month=month }
+   case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select factD533 from sjr_monthly_data_Ext where month=month }
+}
+
+/*
+Modesto ID demand delivery is 1. min private pumping, 2. min district pumping,
+3. surface supply, ! 4. max district pumping, and 5. max private pumping.
+*/
+! Determine from lookup table minimum private ground water pumping
+define GP532_min_prv_limit{
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select min532prv  from TuolGWPUMP_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select min532prv from TuolGWPUMP_Ext where month = month}
+}
+
+! Determine from lookup table minimum Modesto ID ground water pumping
+define GP532_min_pag_limit{
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select min532pag  from TuolGWPUMP_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select min532pag from TuolGWPUMP_Ext where month = month}
+}
+
+! Determine from lookup table maximum Modesto ID ground water pumping
+define GP532_max_pag_lim1{
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select max532pag  from TuolGWPUMP_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select max532pag from TuolGWPUMP_Ext where month = month}
+}
+
+! Allowable ground water pumping after min pumping has occurred
+define GP532_max_pag_limit {value GP532_max_pag_lim1 - GP532_min_pag_limit}
+
+! Limit the private min ground water pumping to previously defined value
+goal set_GP532_min_prv {GP532_min_prv < GP532_min_prv_limit}
+
+! Limit the Modesto ID min ground water pumping to previously defined value
+goal set_GP532_min_pag {GP532_min_pag < GP532_min_pag_limit}
+
+! Limit the Modesto ID max ground water pumping to previously defined value
+goal set_GP532_max_pag {GP532_max_pag < GP532_max_pag_limit}
+
+/*
+If diversion requirement cannot be satisfied by minimum ground water pumping
+(private and district), surface water is applied to help satisfy demand.
+District losses are assumed to be the first 100 acre-feet of surface water
+deliveries.
+*/
+define dloss_533_pag {
+    case canal_flow {
+        condition 1.1*cuaw_533_pag/D533_pag_factor - GP532_min_prv_limit > 0.
+        value .1 * taf_cfs }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! Spills to node 545 are estimated from lookup table
+define spill_545c_pag {select sp545c_ag from TuolSpills where yrtype=WYT_SJR, month=month}
+
+! Spills to node 636 are estimated from lookup table
+define spill_636a_pag {select sp636a_ag from TuolSpills where yrtype=WYT_SJR, month=month}
+
+! Spills to node 534 are estimated from lookup table
+define spill_534a_pag {select sp534a_ag from TuolSpills where yrtype=WYT_SJR, month=month}
+
+! Spills to node 637 are estimated from lookup table
+define spill_637a_pag {select sp637a_ag from TuolSpills where yrtype=WYT_SJR, month=month}
+
+! Spills to node STANRIPN are estimated from lookup table
+define spill_STANRIPNc_pag {select spSTANRIPNc_ag from TuolSpills where yrtype=WYT_SJR, month=month}
+
+/*
+When CUAW is 0, there is no delivery requirement so there are no spills. When
+CUAW is not 0, deliveries occur and consequently, there are spills. Total
+spill is the sum of spills to nodes 545, 636, 637, STANRIPN, and 534.
+*/
+define spill_533_pag {
+    case zero_cuaw {
+        condition cuaw_533_pag < .01
+        value 0. }
+    case otherwise {
+        condition always
+        value spill_545c_pag + spill_636a_pag + spill_534a_pag + spill_637a_pag + spill_STANRIPNc_pag}
+}
+
+/*
+Surface water diversions from Modesto Lake to Modesto ID is 0 if CUAW is 0;
+otherwise the surface water delivery is limited to a percentage of the
+diversion requirement (based on NDP supply) plus return flow, minus that
+which has been previously satisfied by minimum ground water pumping.
+*/
+goal limitD78 {
+    lhs D78
+    case zero_cuaw {
+        condition cuaw_533_pag < .01
+        rhs 0. }
+    case otherwise {
+        condition always
+        rhs NDP_WS*(1.1*cuaw_533_pag/D533_pag_factor) + spill_533_pag*taf_cfs + dloss_533_pag
+                    - GP532_min_prv_limit - GP532_min_pag_limit - R532 - D530_VAMP
+        lhs<rhs penalty 0. }
+}
+
+! Limit deliveries to the diversion requirement
+goal set_D533_pag {D533_pag < 1.1*CUAW_533_pag/D533_pag_factor + dloss_533_pag }
+
+/*
+Return flows from Modesto ID to Tuolumne River at Modesto are defined as
+0 if CUAW is 0; otherwise return flow equals the spill to node 545
+(previously defined from lookup table).
+*/
+goal set_R_TUOLC {
+    lhs R_TUOLC
+    case no_cuaw  {
+        condition cuaw_533_pag < .01
+        rhs 0. }
+    case otherwise {
+        condition always
+        rhs spill_545c_pag*taf_cfs}
+}
+
+/*
+Return flows from Modesto ID to San Joaquin River at Maze are defined as
+0 if CUAW is 0; return flow equals the spill to node 636 (previously
+defined from lookup table).
+*/
+goal set_R_SJRMAZEA {
+    lhs R_SJRMAZEA
+    case no_cuaw  {
+        condition cuaw_533_pag < .01
+        rhs 0. }
+    case otherwise {
+        condition always
+        rhs spill_636a_pag*taf_cfs}
+}
+
+/*
+Return flows from Modesto ID to San Joaquin River at the Stanislaus
+confluence are defined as 0 if CUAW is 0; otherwise return flow equals the
+spill to node 637 (previously defined from lookup table).
+*/
+goal set_R_SJRSTANA {
+    lhs R_SJRSTANA
+    case no_cuaw  {
+        condition cuaw_533_pag < .01
+        rhs 0. }
+    case otherwise {
+        condition always
+        rhs spill_637a_pag*taf_cfs}
+}
+
+/*
+Return flows from Modesto ID to Stanislaus River at Ripon are defined as
+0 if CUAW is 0; otherwise return flow equals the spill to node STANRIPN
+(previously defined from lookup table).
+*/
+goal set_R_STANRIPNC {
+    lhs R_STANRIPNC
+    case no_cuaw  {
+        condition cuaw_533_pag < .01
+        rhs 0. }
+    case otherwise {
+        condition always
+        rhs spill_STANRIPNc_pag*taf_cfs}
+}
+
+/*
+Return flows from Modesto ID to non-district areas within the district
+are defined as 0 if CUAW is 0, otherwise they equal the spills to node
+534 (previously defined from lookup table).
+*/
+goal set_R534a {
+    lhs R534a
+    case no_cuaw  {
+        condition cuaw_533_pag < .01
+        rhs 0. }
+    case otherwise {
+        condition always
+        rhs spill_534a_pag*taf_cfs}
+}
+
+
+/*
+**************************NW of Modesto (node 534)***************************
+*/
+
+! Retrieve predefined CUAW timeseries values for non-district demand node 535
+define cuaw_535_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Decision variable defining 535 return flow of non-district losses
+define dloss_535_pag {std kind 'local-loss' units 'cfs'}
+
+/*
+Determine non-district losses that are returned to the system using an NRL
+of 10% and a 75% efficiency:
+
+(Deliveries - Ground water pumping) * [1 - (1 + NRL)*efficiency]
+*/
+goal set_dloss_535 {dloss_535_pag = C534 * (1.-(1.1*.75)) - GP534_pag * (1.-(1.1*.75))}
+
+! Deep percolation assumed to be 30% of CUAW
+define dperc_535_pag {value cuaw_535_pag * .3}
+
+! Ensure deliveries to lands NW of Modesto are less than demand
+goal set_D535 {D535_pag < 1.1*CUAW_535_pag + dperc_535_pag}
+
+! Set the return flow variable equal to the above defined return flow
+goal set_R_SJRSTANb {R_SJRSTANb = dloss_535_pag }
+
+! From lookup table, place limit on SJR diversions for non-district use
+define D_SJRTUOLA_limit {
+    case FUTURE {
+        condition LOD_Future == 1 
+        select D_SJRTUOLA_lim from sjr_monthly_data_Fut where month=month }
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select D_SJRTUOLA_lim from sjr_monthly_data_Ext where month=month }
+}
+
+! Ensure SJR non-district diversions do not exceed the above-defined limit
+goal set_D_SJRTUOLA {D_SJRTUOLA < D_SJRTUOLA_limit}
+
+/*
+East Bank of San Joaquin Tuolumne to Stanislaus M&I pumping - all met by GW (A)
+*/
+! Define East Bank of San Joaquin Tuolumne to Stanislaus M & I demand
+!define demand_D535_MI_A {select dem535_MI_A from urban_demand1 where month = month}
+
+define demand_D535_MI_A {
+    case Future {
+        condition LOD_Future == 1   ! future condition
+        select dem535_MI_A   from urban_demand1_Fut where month = month}
+    case Existing{
+        condition LOD_Future == 0   ! existing condition
+        select dem535_MI_A  from urban_demand1_Ext where month = month}
+}
+    
+! Set SSJID North non district M & I demand to meet D535_mi_A
+goal meet_D535_MI_A {D535_MI_A = demand_D535_MI_A*taf_cfs}
+! Set groundwater M & I pumping to meet Oakdale ID North non district M & I pumping
+goal set_GP534_MI_A {GP534_MI_A = D535_MI_A}
+
+/*
+Ensure that return flow into lands west of Modesto is less than the sum
+of return flow from Modesto ID to Stanislaus River non-project and return
+flow from Oakdale ID to Stanislaus River non-project; this is a mass
+balance constraint.
+*/
+goal limit_R_SJRMAZEB {R_SJRMAZEb < R534A + R534B}
+
+/*
+Ensure that return flow into SJR from lands NW of Modesto is less than
+the return flow from Oakdale ID to Modesto ID; this is a mass balance
+constraint.
+*/
+goal limit_R_SJRMAZEC {R_SJRMAZEc < R532}

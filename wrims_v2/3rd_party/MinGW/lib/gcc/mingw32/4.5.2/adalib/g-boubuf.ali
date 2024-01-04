@@ -1,0 +1,54 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R vnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnv2nnnnnnnnnnnn
+
+U gnat.bounded_buffers%b  g-boubuf.adb		7b1e1105 NE OL PK GE
+W gnat%s		gnat.ads		gnat.ali
+
+U gnat.bounded_buffers%s  g-boubuf.ads		c9e4e7aa BN NE OL PU PK GE
+W gnat%s		gnat.ads		gnat.ali
+W system%s		system.ads		system.ali
+
+D gnat.ads		20050905075126 96410e68
+D g-boubuf.ads		20060215092844 e74eb101
+D g-boubuf.adb		20060215092844 9c50a004
+D system.ads		20090410155748 b8eb58c3
+X 1 gnat.ads
+36K9*GNAT 39e9 2|48r9 103r5 3|33r14 92r5
+X 2 g-boubuf.ads
+45+9 Element 51r49 69r28 72r32 3|45r28 56r32
+48k14*Bounded_Buffers 1|36k9 2|45z9 103l10 103e25 3|33b19 92l10 92t25
+51A9*Content(45+9)<integer> 90r18
+55i4*Default_Ceiling{4|98I12}
+58W19*Bounded_Buffer 59d8 63d7 101l8 101e22 3|39b19 90l8 90t22
+59i8 Capacity{positive} 90r32 3|45r51 48r34 59r36 78r25
+63i7 Ceiling{4|98I12} 67r24
+69Y13 Insert 69>21 3|45b13 50l11 50t17
+69*21 Item{45+9} 3|47r30
+72Y13 Remove 72<21 3|56b13 61l11 61t17
+72*21 Item{45+9} 3|58m10
+76V16 Empty{boolean} 3|67b16 70l11 70t16
+80V16 Full{boolean} 3|76b16 79l11 79t15
+84V16 Extent{natural} 3|85b16 88l11 88t17
+90a7 Values{51A9} 3|47m10 58r18
+93i7 Next_In{positive} 3|47r18 48m10 48r22
+96i7 Next_Out{positive} 3|58r26 59m10 59r23
+99i7 Count{natural} 3|45r42 49m10 49r19 56r46 60m10 60r19 69r17 78r17 87r17
+X 3 g-boubuf.adb
+45*21 Item{2|45+9}
+56*21 Item{2|45+9}
+X 4 system.ads
+37K9*System 2|42w6 55r31 55r50 63r17 4|197e11
+97I12*Any_Priority{integer}
+98I12*Priority{97I12} 2|55r38 63r24
+101i4*Default_Priority{98I12} 2|55r57
+

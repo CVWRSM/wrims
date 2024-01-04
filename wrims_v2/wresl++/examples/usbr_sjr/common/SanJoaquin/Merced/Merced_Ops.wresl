@@ -1,0 +1,308 @@
+! MercedOps.wresl
+
+! Nancy Parker
+! USBR
+! 09/03/2002
+! Deliveries and Operations for Merced River Demands.
+
+/*
+This file determines surface water diversions from The Merced River.
+Main water users incorporated in this file are Merced Irrigation District
+and sphere of influence users including, El Nido Irrigation District, 
+Stevinson, and parts of Merced NWR.
+
+The diversion requirements can be met by surface water diversions or ground 
+water pumping. The diversion requirement is satisfied using the following 
+delivery order:  1. Minimum gw pumping, 2. Surface supply, 3. Additional gw
+pumping.
+
+Allocation priority is given on an equal level to Merced ID, Bear Creek
+Refuge, and Stevinson. If surface supplies cannot meet district demand, a
+percent delivery is computed and applied to both the district and Stevinson.
+El Nido surface supply allocation is up to 40 TAF if district demand can be
+fully met.
+
+/*
+Revised by: R. Field, USBR, 09/25/03
+Purpose: Incorporate additional M&I, groundwater and M&I return flow arcs.
+Revised by: T. Crawford, USBR, 03/03/03
+Purpose: Review and comment file
+Revised : A Draper for CaSim-III 04/21/07
+Revised : N Parker for CalSimIII 12/09
+*/
+
+!############################################################################
+
+/*
+Each April, define the April thru September totals for for Merced ID & Refuge
+demands and 
+*/
+define MercedDemTS_part {
+    case april {
+        condition month == apr
+        sum(i=0,5,1) (AWO_62_NA6(i)+AWR_62_NA6(i))*cfs_taf(i) + (AWO_63_NA3(i)+AWR_63_NA3(i))*cfs_taf(i)}
+    case otherwise {
+        condition   always
+        value 0. }
+        }
+define Dem63PR2TS_part {
+    case april {
+        condition month == apr
+        sum(i=0,5,1) (AWO_63_PR2(i)+AWR_63_PR2(i)+AWW_63_PR2(i))*cfs_taf(i)}
+    case otherwise {
+        condition   always
+        value 0. }
+        }
+
+/*
+Available Water Supply from McClure Reservoir
+Define total April thru September surface water demand from Lake McClure.
+total demand =   Merced ID diversion requirement  (MercedDemTS_part)
+               + MID responsibility for 15 taf delivery to Merced NWR (Dem63PR2TS_part)
+               + District losses (120 taf)
+               + El Nido ID + other sphere-of-influence deliveries contract (40 taf)
+               + Stevinson sphere-of-influence deliveries contract (26.4 taf)
+               - Minimum district ground water pumping (9 taf)
+               - Minimum private ground water pumping (45 taf)
+*/
+define Merced_surface_demand {
+    case April {
+        condition month==apr
+        value max(0., MercedDemTS_part + min(15.,Dem63PR2TS_part) + 120. + 40. + 26.4 - 9. - 45.) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+/*
+Forecast total April thru September increase in available water based on
+inflows and minimum downstream channel flows.
+Usable water = Inflow (taf) - Minimum channel flow (taf)
+*/
+define MercedForTS_part {
+    case aprthrusep {
+        condition   month >= apr .and. month <= sep
+        sum(i=apr-month,12-month,1) (I_MCLRE(i)+I_MCD055(i)-minflow_C_MCD052(i))*cfs_taf(i) }
+    case otherwise {
+        condition   always
+        value 0. }
+        }
+! Determine evaporation volume estimate from lookup table
+define S_MCLREevap_est {select Mclre from evap_est where yrtype=wyt_SJR}
+
+/*
+In April, determine Lake McClure (S_MCLRE) total available water for diversion
+for the remainder of the water year.
+S_MCLREAvail = current storage + inflow - min release - min storage req - evap
+*/
+define S_MCLREAvail {
+    case April {
+        condition month == apr
+        value         max(0., S_MCLRE(-1) + MercedForTS_part - S_MCLRElevel2 - S_MCLREevap_est)}
+    case otherwise {
+        condition always
+        value 0.
+        }
+}
+
+/*
+MID is responsible for delivery of up to 15 taf/yr to the Refuge demand
+Refuge allocation is 1.0 if there is at least 15 taf of water supply.
+
+*/
+define Alloc63_PR2dv  {std kind 'percent-delivery' units 'none'}
+define Alloc63_PR2 {
+    case firstyear {
+        condition wateryear == 1922 .and. month<APR
+        value 1.}
+    case April {
+        condition month==APR
+        value min(1.0, S_MCLREAvail/min(15., Dem63PR2TS_part))}
+    case otherwise {
+        condition always
+        value Alloc63_PR2dv(-1)}
+}
+goal set_Alloc63_PR2dv {Alloc63_PR2dv = Alloc63_PR2}
+
+
+/*
+El Nido is allocated up to 40 taf if the available water in Lake McClure is enough to
+satisfy Merced ID & Stevinson demands first.
+*/
+define ElNidoAllocdv  {std kind 'allocation' units 'taf'}
+define ElNidoAlloc {
+    case firstyear {
+        condition wateryear == 1922 .and. month<=mar
+        value 40. }
+    case April {  
+        condition month == apr
+        value max(0., min(40., S_MCLREAvail - (Merced_surface_demand - 40.))) }
+    case otherwise {
+        condition always
+        value ElNidoAllocdv(-1) }
+}
+
+! Set calculated El Nido allocations equal to the decision variable
+goal set_ElNidoAllocdv {ElNidoAllocdv = ElNidoAlloc}
+
+! Decision variable for Merced ID & Stevinson demands
+define MercedDem2dv {std kind 'demand' units 'taf' }
+
+! Subtract out El Nido Allocations and Refuge Req't from Merced Surface Demands
+define MercedDem2 {
+    case firstyear {
+        condition wateryear == 1922 .and. month <= mar
+        value Merced_surface_demand }
+    case April {
+        condition month == apr
+        value Merced_surface_demand - 40. - min(15., Dem63PR2TS_part) }
+    case otherwise {
+        condition always
+        value MercedDem2dv(-1) }
+}
+
+! Set Merced demands equal to the decision variable
+goal set_MercedDem2dv {MercedDem2dv = MercedDem2}
+
+! Decision variable for Merced ID & Stevinson deliveries as a percentage of demand
+define perdv_MercedID {std kind 'percent-delivery' units 'none'}
+
+! Water available for Merced ID and Stevinson is any supply remaining after  
+! 15 taf is allocated to the refuge.  
+define perdel_MercedID {
+    case firstyear {
+        condition wateryear == 1922 .and. month <= Mar
+        value 1. }
+    case April {
+        condition month == apr
+        ! value min(1., max(0., S_MCLREAvail-min(15., Dem63PR2TS_part))/MercedDem2) }
+        value max(0., min(1., (S_MCLREAvail-min(15., Dem63PR2TS_part))/MercedDem2)) }
+    case otherwise {
+        condition always
+        value perdv_MercedID(-1) }
+}
+define perdel_MercedID_A {alias perdel_MercedID kind 'PERCENT-DELIVERY' units 'NONE'}
+
+! Set the percent deliveries equal to the decision variable
+goal set_perdv_MercedID {perdv_MercedID = perdel_MercedID}
+
+/*
+Merced ID Diversion and Returns
+*/
+! Limit the surface delivery to the percent computed in the allocation process
+goal limitD_MIDa {D_MID021_63_NA3 < perdel_MercedID*AW_63_NA3
+                                  + perdel_MercedID*RP_63_NA3
+                                  + perdel_MercedID*DL_63_NA3
+                                  - perdel_MercedID*RU_63_NA3
+                                  - perdel_MercedID*min((AWO_63_NA3+AWR_63_NA3),(GPmin_63_NA3_D+GPmin_63_NA3_P))}
+
+goal limitD_MIDb {D_MCD055_62_NA6 < perdel_MercedID*(AWO_62_NA6+AWR_62_NA6) ! AW_62_NA6
+                                  + perdel_MercedID*RP_62_NA6
+                                  + perdel_MercedID*DL_62_NA6
+                                  - perdel_MercedID*RU_62_NA6
+                                  - perdel_MercedID*min((AWO_62_NA6+AWR_62_NA6),(GPmin_62_NA6_D+GPmin_62_NA6_P))}
+define GPmin_62_NA6_A {alias min((AWO_62_NA6+AWR_62_NA6),(GPmin_62_NA6_D+GPmin_62_NA6_P)) kind 'DEBUG' units 'CFS'}
+           
+/*
+Refuge Deliveries
+63_PR1 and 63_PR3 surface delivery limited to return flows and surface runoff 
+63_PR2 has a 15 taf allocation from Merced ID (max 45 cfs) - remainder from 
+other surface sources and GW pumping
+*/ 
+! 63_PR1 - Arena Unit of Merced NWR
+! goal avoids circular flow at ESC000 
+goal limit63_PR1b {D_ESC000_63_PR1 < R_AWWWTP_ESC000 + D_BCK006_ESC000}
+! 63_PR2 - Merced and Lone Tree Units of Merced NWR
+! limit merced delivery to 45 cfs and to a distribution of the annual 15 taf allocation
+! make sure merced delivery is routed to the refuge diversion on Deadman Creek
+goal limit63_PR2a {D_MID021_DED012 < 45.}
+goal limit63_PR2b {D_MID021_DED012 < Alloc63_PR2 * AW_63_PR2}
+goal route63_PR2  {D_DED010_63_PR2 > D_MID021_DED012}
+
+/*
+WBA 63 NA4 Surface Supply Allocation
+Plainsburg ID, El Nido ID, Lagrande-Athlone, Turner Island WD, Stevinson WD,
+Non-District, and Merced Riparian
+*/
+
+! Determine April thru September total AW for DAU 212
+define cum_AW_63_NA4 {
+    case aprthrusep {
+        condition   month >= apr .and. month <= sep
+        sum(i=apr-month,12-month,1) ((AWO_63_NA4(i)+AWR_63_NA4(i))*cfs_taf(i)) }
+    case otherwise {
+        condition   always
+        value 0. }
+}
+! Determine monthly distribution of El Nido Allocations
+define ElNidoEntitlement {
+    case aprthrusep {
+        condition month >= apr .and. month <= sep
+        value (ElNidoAlloc *((AWO_63_NA4+AWR_63_NA4)*cfs_taf)/cum_AW_63_NA4) *  taf_cfs }
+    case otherwise {
+        condition   always
+        value 0. }
+}
+
+! Stevinson deliveries are cut by the same percentage as Merced ID
+! The monthly demands indicated below have an april-sept sum of 26.4
+! which is the contract entitlement for Stevinson WD
+define StevEntitlement { ! demand in cfs
+    case AprSep {
+        condition month == apr .or. month == sep
+        value 54.44 * perdel_MercedID}
+    case MayAug {
+        condition month >= may .and. month <= aug
+        value 81.66 * perdel_MercedID}
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+
+! Limit surface supplies to allocation
+! OLD -- goal set_D_MID021_63_NA4  {D_MID021_63_NA4 < ElNidoEntitlement + StevEntitlement}
+! IMF -- Added +StevEntitlement to next goal to be consistent with goals on R573 in CSII
+!        (D_MID021_63_NA4 ~ R573)
+goal set_D_MID021_63_NA4  {D_MID021_63_NA4 < ElNidoEntitlement + StevEntitlement}
+! IMF -- remove this goal to be consistent with goals on D620C in CSII
+!        (CSII limits D620C to 50 cfs, no limit wrt StevEntitlement)
+goal set_D_MCD002_63_NA4  {D_MCD002_63_NA4 < StevEntitlement}
+
+! IMF -- 
+! In CSII, D620C was defined with upper bound of 50 cfs...
+! Set as goal here (instead of as DV bounds)
+goal lim_D_MCD002_63_NA4  {D_MCD002_63_NA4 < 50.}         
+
+
+! No diversions at MCD052 if reservoir is lower than 115 taf
+! IMF -- 
+! Is this supposed to limit all diversions above MCD052? 
+define D_MCD052_max {value max(0.,S_MCLRE(-1) - 115.)*taf_cfs}
+goal limit_MCD052   {D_MCD055_62_NA6 + D_MCD052_MID021 < D_MCD052_max}
+
+
+! Limit Merced River Riparian diversions to DAU 212
+! IMF -- 
+! Implementing dynamic return-flow calculations made R_62_NA2 and R_63_NA3 DVs 
+! DV's can't be used in value defs...
+! Can't mimick def+goal with DVs b/c of max() in def statement...
+! Nancy dug back and isn't sure where this constraint comes from...
+! For now, just set D_MCD021<100. (ignore the D_MCD021_max calculation)
+! define D_MCD021_max {value min(100., max(0.,(minflow_C_MCD052 - (AWO_62_NA2+AWR_62_NA2) - (AWO_63_NA2+AWR_63_NA2) +
+!                          R_62_NA2 + R_63_NA2 + SR_62_MCD021 + SR_63_MCD021))/ 2.)}
+! goal limit_D_MCD021 {D_MCD021_63_NA4 < D_MCD021_max}
+
+! IMF --
+! Limit riparian diversion to the lesser of 100 cfs 
+! or half of the difference between the riparian demand and the min flow + inflows
+! (consistent with CSII, we ignore return flows -- only consider natural runoff terms)
+! NOTE -- seepage (SG) terms are all DVs...can't be used in max/min or value statements...ignored here for now???
+define D_MCD021_max {value min(100., 
+                               max(0.,(minflow_C_MCD052 - (AWO_62_NA2+AWR_62_NA2) - (AWO_63_NA2+AWR_63_NA2)
+                                   + SR_62_MCD050 + SR_63_MCD050 + SR_62_MCD021 + SR_63_MCD021 + I_DCM027))/ 2.) }
+goal limitD_MCD021 {D_MCD021_63_NA4 < D_MCD021_max}
+! goal limitD_MCD021 {D_MCD021_63_NA4 < 100.}
+
+
+

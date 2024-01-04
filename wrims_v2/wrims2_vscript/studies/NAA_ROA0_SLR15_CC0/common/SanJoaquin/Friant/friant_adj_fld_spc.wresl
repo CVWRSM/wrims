@@ -1,0 +1,51 @@
+! Friant_adj_fld_spc.wresl
+! Created for the Upper San Joaquin River Basin Storage Investigation Project
+! Adjust required flood space in Millerton based on Mammoth storage
+! Revised by C. Hsu, 02/25/03, USBR, for review and documentation project
+!##############################################################################
+
+! Read flood control storage level (S18level4) from table
+define Friant_fs_req {
+    select flood_pool
+    from USJRS_FP_REQ
+    where contract_month = contract_month }
+
+! Storage in Mammoth Pool
+define mammoth_storage {timeseries kind 'Storage' units 'TAF'}
+
+! Maximum Storage in Mammoth Pool, value = 120 TAF
+define mam_max_stor { value 120.0 }
+
+/*
+Mammoth Pool Credit - if required Friant flood space exceeds 85 TAF, allow for up to 85 TAF of
+the remaining required Friant space to be made available in Mammoth Pool
+*/
+define mam_fc_credit {
+    case mammoth_storage_allowed {
+    condition Friant_fs_req > 85.
+       value max(0.0, min ((mam_max_stor - mammoth_storage), (Friant_fs_req - 85.0))) }
+    case mammoth_storage_not_allowed {
+    condition always
+        value 0. }}
+
+!Balance Millerton and TF storage and Flood pool
+define S18level2_max {select target from res_level where res_num=18,level=2,month=month}
+define S18level3_max {select target from res_level where res_num=18,level=3,month=month}
+
+define S18level2 {std kind 'storage-level' units 'taf'}
+define S18level3 {std kind 'storage-level' units 'taf'}
+define S18level4 {std kind 'storage-level' units 'taf'}
+define S17level2 {std kind 'storage-level' units 'taf'}
+
+goal ub_S18level2 {S18level2 < S18level2_max}
+goal ub_S18level3 {S18level3 < S18level3_max}
+goal ub_USJRS_fp  {S18level4 + S17level2 < S18level5 + S17level3 + mam_fc_credit  - Friant_fs_req}
+
+goal S18Zone2 {S18_2 < S18level2-S18level1}
+goal S18Zone3 {S18_3 < S18level3-S18level2}
+goal S18Zone4 {S18_4 < S18level4-S18level3}
+goal S18Zone5 {S18_5 < S18level5-S18level4}
+
+goal S17Zone2 {S17_2 < S17level2-S17level1}
+goal S17Zone3 {S17_3 < S17level3-S17level2}
+

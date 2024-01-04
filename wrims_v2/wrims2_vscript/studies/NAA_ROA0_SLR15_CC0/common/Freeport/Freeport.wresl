@@ -1,0 +1,8 @@
+!Freeport.wresl
+! This is the main file which 'includes' all Freeport Operations and Constraints code
+INCLUDE 'EBMUD\EBMUD.wresl'
+INCLUDE 'CCWD\CCWD.wresl'
+INCLUDE 'SCWA\SCWA.wresl'
+
+goal split_D168B {D168B = D168B_ebmud + D168B_ccwd}
+define D168 {ALIAS D168a + D168b + D168c KIND 'FLOW-DELIVERY' UNITS 'CFS'}  !total Freeport diversion

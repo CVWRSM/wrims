@@ -1,0 +1,51 @@
+/*
+CALSIM III
+YUBA.WRESL
+
+Edited ajdraper, MWH, November 15, 2006
+*/
+
+/*
+CalSim-III does not simulate storage operations at Englebright Reservoir.
+Within the model, storage is held constant from month to month. Each month's release equals inflow.
+The inflows to Englebright Reservoir are based on the YRDP model developed for YCWA by MWH
+Reservoir evaporation is set to zero and the inflow is set to equal the YRDP Englebright release.
+*/
+
+/*
+CalSim-III does not simulate Merle Collins Reservoir.
+Reservoir releases are an input model based on a reservoir operations model developed by MBK
+*/
+
+goal set_D_NFY001_SLYCK		{D_NFY001_SLYCK 		= D_NFY001_SLYCK_SV}
+goal set_S_NBLDB				{S_NBLDB 				= S_NBLDB_SV}
+
+! Englebright Reservoir is not dynamically simulated. Storage is kept contant at 60 TAF.
+goal set_E_ENGLB {E_ENGLB =  0.0}
+goal set_S_ENGLB {S_ENGLB = 60.0}
+goal set_F_ENGLB {F_ENGLB =  0.0}
+
+!Diversions from the Yuba River to WBAs 14, 15N, and 15S are pre-processed based on MWH Yuba spreadsheet model.
+!Yuba Model diversions include diversions to BVID at the PumpLine Diversion and diversions to the City of Marysville
+define D_DGPTDAM_SV    {timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'} 
+define ALLOC_YCWAMU   {timeseries kind 'ALLOCATION' units 'FRACTION'} 
+
+
+!Set upper bound on surface water deliveries to preprocessed value
+!   Diversion at the PumpLine Canal to Browns Valley Irrigation District 
+! + Diversion at Daguerre Point Dam to Hallwood Irrigation District, and Ramirez Water District
+! + diversion at Daguerre Point Dam to Brophy Water District, South Yuba Water District, and Dry Creek Mutual Water District 
+! + diversion to the City of Marysville (Lake Ellis)
+
+goal set_YUBTotalDiv { D_YUB013_14_NA + D_YUB011_15N_NA2 + D_YUB011_15S_NA2 + D_YUB003_15N_NU < D_DGPTDAM_SV}
+
+
+! Smartsville gage (USGS ####), flow requirement
+!define	Qmin_YUB024	{timeseries kind 'RIVER-MIN_FLOW' units 'CFS'}		
+!define	C_YUB024_MIF	{std kind 'RIVER-MIN-INSTREAM' units 'CFS'}	
+!define	C_YUB024_EXC	{std kind 'RIVER-ADDITIONAL-INSTREAM' units 'CFS'}
+
+! Marysville gage (USGS ####), flow requirement
+!define	Qmin_YUB006	{timeseries kind 'RIVER-MIN_FLOW' units 'CFS'}		
+!define	C_YUB006_MIF	{std kind 'RIVER-MIN-INSTREAM' units 'CFS'}	
+!define	C_YUB006_EXC	{std kind 'RIVER-ADDITIONAL-INSTREAM' units 'CFS'}

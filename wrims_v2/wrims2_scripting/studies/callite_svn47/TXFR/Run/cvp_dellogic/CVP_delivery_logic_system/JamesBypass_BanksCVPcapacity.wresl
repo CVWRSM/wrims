@@ -1,0 +1,111 @@
+/*************************************
+JamesBypass_BanksCVPcapacity.wresl
+
+Tom FitzHugh BOR 5/7/2010
+
+-Calculates water available from James Bypass to satisfy local demands.  This is minimum of 
+inflow from bypass and demands.  Is computed during Mar, Apr, and May as total from that month
+through August, then May-Aug value is used the rest of the summer.
+
+-Calculates dedicated capacity for CVP at Banks (Mar-Aug total is used in Mar-May).  Currently 
+this is always 0, but could be added in the future.
+*************************************/
+
+
+define jbypass_del {
+  case Mar {
+    condition month== MAR
+    value     min(I_JamesBP*cfs_taf,dem_d607a_pag + dem_d607b_pex + dem_d607c_prf + dem_d607d_pls + dem_d608b_pex + dem_d608c_prf) +
+              min(I_JamesBP(1)*cfs_taf(1),dem_d607a_pag(1) + dem_d607b_pex(1) + dem_d607c_prf(1) + dem_d607d_pls(1) + dem_d608b_pex(1) + dem_d608c_prf(1)) +
+              min(I_JamesBP(2)*cfs_taf(2),dem_d607a_pag(2) + dem_d607b_pex(2) + dem_d607c_prf(2) + dem_d607d_pls(2) + dem_d608b_pex(2) + dem_d608c_prf(2)) +
+              min(I_JamesBP(3)*cfs_taf(3),dem_d607a_pag(3) + dem_d607b_pex(3) + dem_d607c_prf(3) + dem_d607d_pls(3) + dem_d608b_pex(3) + dem_d608c_prf(3)) +
+              min(I_JamesBP(4)*cfs_taf(4),dem_d607a_pag(4) + dem_d607b_pex(4) + dem_d607c_prf(4) + dem_d607d_pls(4) + dem_d608b_pex(4) + dem_d608c_prf(4)) +
+              min(I_JamesBP(5)*cfs_taf(5),dem_d607a_pag(5) + dem_d607b_pex(5) + dem_d607c_prf(5) + dem_d607d_pls(5) + dem_d608b_pex(5) + dem_d608c_prf(5)) }
+  case Apr {
+    condition month== APR
+    value     min(I_JamesBP*cfs_taf,dem_d607a_pag + dem_d607b_pex + dem_d607c_prf + dem_d607d_pls + dem_d608b_pex + dem_d608c_prf) +
+              min(I_JamesBP(1)*cfs_taf(1),dem_d607a_pag(1) + dem_d607b_pex(1) + dem_d607c_prf(1) + dem_d607d_pls(1) + dem_d608b_pex(1) + dem_d608c_prf(1)) +
+              min(I_JamesBP(2)*cfs_taf(2),dem_d607a_pag(2) + dem_d607b_pex(2) + dem_d607c_prf(2) + dem_d607d_pls(2) + dem_d608b_pex(2) + dem_d608c_prf(2)) +
+              min(I_JamesBP(3)*cfs_taf(3),dem_d607a_pag(3) + dem_d607b_pex(3) + dem_d607c_prf(3) + dem_d607d_pls(3) + dem_d608b_pex(3) + dem_d608c_prf(3)) +
+              min(I_JamesBP(4)*cfs_taf(4),dem_d607a_pag(4) + dem_d607b_pex(4) + dem_d607c_prf(4) + dem_d607d_pls(4) + dem_d608b_pex(4) + dem_d608c_prf(4)) }
+  case May {
+    condition month== MAY
+    value     min(I_JamesBP*cfs_taf,dem_d607a_pag + dem_d607b_pex + dem_d607c_prf + dem_d607d_pls + dem_d608b_pex + dem_d608c_prf) +
+              min(I_JamesBP(1)*cfs_taf(1),dem_d607a_pag(1) + dem_d607b_pex(1) + dem_d607c_prf(1) + dem_d607d_pls(1) + dem_d608b_pex(1) + dem_d608c_prf(1)) +
+              min(I_JamesBP(2)*cfs_taf(2),dem_d607a_pag(2) + dem_d607b_pex(2) + dem_d607c_prf(2) + dem_d607d_pls(2) + dem_d608b_pex(2) + dem_d608c_prf(2)) +
+              min(I_JamesBP(3)*cfs_taf(3),dem_d607a_pag(3) + dem_d607b_pex(3) + dem_d607c_prf(3) + dem_d607d_pls(3) + dem_d608b_pex(3) + dem_d608c_prf(3)) }
+  case other {
+    condition always
+    value     0. }
+}
+
+define jbypass_deldv {alias jbypass_del kind 'DELIV-CAPACITY' units 'TAF'}
+
+define BanksMaxCVP6 {select CVPDedCap from BanksLimits where month=6 } !Mar
+define BanksMaxCVP7 {select CVPDedCap from BanksLimits where month=7 } !Apr
+define BanksMaxCVP8 {select CVPDedCap from BanksLimits where month=8 } !May
+define BanksMaxCVP9 {select CVPDedCap from BanksLimits where month=9 } !Jun
+define BanksMaxCVP10 {select CVPDedCap from BanksLimits where month=10 } !Jul
+define BanksMaxCVP11 {select CVPDedCap from BanksLimits where month=11 } !Aug
+
+define AnnualBanksCVPdv {std kind 'flow' units 'taf'}
+
+define AnnualBanksCVP {
+  case Mar {
+    condition month== MAR
+    value     BanksMaxCVP6*cfs_taf(1) + BanksMaxCVP7*cfs_taf(2) + BanksMaxCVP8*cfs_taf(3) + BanksMaxCVP9*cfs_taf(4) +
+          BanksMaxCVP10*cfs_taf(5) + BanksMaxCVP11*cfs_taf(6) }
+  case AprMay {
+    condition month==Apr .or. month==May
+    value     AnnualBanksCVPdv(-1) }
+  case other {
+    condition always
+    value     0. }
+}
+
+goal setAnnualBanksCVPdv {AnnualBanksCVPdv = AnnualBanksCVP}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

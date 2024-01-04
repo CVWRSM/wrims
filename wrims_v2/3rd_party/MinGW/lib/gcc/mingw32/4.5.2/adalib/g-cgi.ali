@@ -1,0 +1,250 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnvnnnnnnnnvnnvnnvnnnvvnnvnvnnnnnnnnnvnnvnnnnnnnnnnnnnnnnvnvnnnnnnnnnnnnnnnn
+
+U gnat.cgi%b		g-cgi.adb		a216f3d2 OL PK
+W ada%s			ada.ads			ada.ali
+W ada.characters%s	a-charac.ads		a-charac.ali
+W ada.characters.handling%s  a-chahan.adb	a-chahan.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.strings%s		a-string.ads		a-string.ali
+W ada.strings.fixed%s	a-strfix.adb		a-strfix.ali
+W ada.strings.maps%s	a-strmap.adb		a-strmap.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W ada.unchecked_conversion%s
+W gnat%s		gnat.ads		gnat.ali
+W gnat.os_lib%s		g-os_lib.ads		g-os_lib.ali
+W gnat.table%s
+W system%s		system.ads		system.ali
+W system.img_enum_new%s	s-imenne.adb		s-imenne.ali
+W system.memory%s	s-memory.adb		s-memory.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.val_int%s	s-valint.adb		s-valint.ali
+
+U gnat.cgi%s		g-cgi.ads		ba612c94 BN EE OL PK
+W ada.tags%s		a-tags.adb		a-tags.ali
+W gnat%s		gnat.ads		gnat.ali
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-charac.ads		20070912115822 506ce725
+D a-chahan.ads		20090409150020 dcb15e96
+D a-chlat1.ads		20070912115822 e9ee6d0a
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-string.ads		20070406091342 87b4230b
+D a-strfix.ads		20070406091342 253a46ca
+D a-strmap.ads		20090409150020 5253a637
+D a-tags.ads		20090409150020 bfa07446
+D a-textio.ads		20091028140912 7065b2f2
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D gnat.ads		20050905075126 96410e68
+D g-cgi.ads		20090611154814 2c2022fc
+D g-cgi.adb		20090619103208 3a728a36
+D g-os_lib.ads		20090409150020 c015094d
+D g-table.ads		20090506092936 afec5ecc
+D g-table.adb		20090506092936 436f58ca
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-imenne.ads		20090417131548 ef3ea0ac
+D s-memory.ads		20090417131548 c68306b3
+D s-os_lib.ads		20091027135146 6320e1c3
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-string.ads		20090417130712 14d97e8c
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-valint.ads		20090409150020 d23209d2
+D s-wchcon.ads		20090417130712 30c48dc1
+X 1 ada.ads
+16K9*Ada 19e8 19|34r6 35r6 36r6 37r6 44r8
+X 2 a-charac.ads
+16K13*Characters 18e19 19|36r10 116r21 117r21 174r26
+X 3 a-chahan.ads
+36K24*Handling 144e28 19|36w21 116r32 117r32 174r37
+54V13*Is_Hexadecimal_Digit{boolean} 19|116r41 117r41
+67V13*To_Upper{string} 19|174r46
+X 10 a-string.ads
+16K13*Strings 35e16 19|35r10 37r10 232r24 232r51 244r41 263r20
+X 11 a-strfix.ads
+18K21*Fixed 242e22 19|35w18 232r32 244r49 263r28
+36V13*Index{natural} 19|244r55 263r34
+98V13*Count{natural} 19|232r38
+X 12 a-strmap.ads
+38K21*Maps 412e21 19|37w18 232r59
+47A9*Character_Set(boolean)
+99V13*To_Set{47A9} 19|232r64
+X 14 a-textio.ads
+49K13*Text_IO 472e16 19|34w10 216r13 412r10 413r10
+167U14*New_Line 19|413r18
+241U14*Get 19|216r21
+264U14*Put_Line 19|412r18
+X 17 gnat.ads
+36K9*GNAT 39e9 18|106r9 257r5 19|39r6 40r6 42r14 496r5
+X 18 g-cgi.ads
+106K14*CGI 17|36k9 18|257l10 257e13 19|42b19 175r43 209r58 496l10 496t13
+108X4*Data_Error 19|99r16 248r22
+117X4*Parameter_Not_Found 19|308r16 361r16 471r16 488r16
+120a4*Default_Header{string} 176r27 19|406r27
+125E9*Method_Type 125e35 188r27 19|52r21 386r27
+125n25*Get{125E9} 19|196r28
+125n30*Post{125E9} 19|213r28
+131E9*Metavariable_Name 166e23 192r18 198r41 19|334r18 353r35 371r41
+132n7*Auth_Type{131E9}
+133n7*Content_Length{131E9} 19|209r62
+134n7*Content_Type{131E9}
+135n7*Document_Root{131E9}
+136n7*Gateway_Interface{131E9}
+137n7*HTTP_Accept{131E9}
+138n7*HTTP_Accept_Encoding{131E9}
+139n7*HTTP_Accept_Language{131E9}
+140n7*HTTP_Connection{131E9}
+141n7*HTTP_Cookie{131E9}
+142n7*HTTP_Extension{131E9}
+143n7*HTTP_From{131E9}
+144n7*HTTP_Host{131E9}
+145n7*HTTP_Referer{131E9}
+146n7*HTTP_User_Agent{131E9}
+147n7*Path{131E9}
+148n7*Path_Info{131E9}
+149n7*Path_Translated{131E9}
+150n7*Query_String{131E9} 19|194r50
+151n7*Remote_Addr{131E9}
+152n7*Remote_Host{131E9}
+153n7*Remote_Port{131E9}
+154n7*Remote_Ident{131E9}
+155n7*Remote_User{131E9}
+156n7*Request_Method{131E9} 19|175r47
+157n7*Request_URI{131E9}
+158n7*Script_Filename{131E9}
+159n7*Script_Name{131E9} 19|449r25
+160n7*Server_Addr{131E9}
+161n7*Server_Admin{131E9}
+162n7*Server_Name{131E9} 19|447r25
+163n7*Server_Port{131E9} 19|448r44
+164n7*Server_Protocol{131E9}
+165n7*Server_Signature{131E9}
+166n7*Server_Software{131E9}
+175U14*Put_Header 176>7 177>7 19|405b14 416l8 416t18
+176s7 Header{string} 19|406b7 412r28
+177b7 Force{boolean} 19|407b7 410r38
+183V13*Ok{boolean} 19|396b13 399l8 399t10
+188V13*Method{125E9} 19|386b13 390l8 390t14
+191V13*Metavariable{string} 192>7 193>7 19|175r29 194r36 209r44 333b13 365l8
+. 365t20 375r10 447r11 448r30 449r11
+192e7 Name{131E9} 19|334b7 353r60
+193b7 Required{boolean} 19|335b7 360r31
+198V13*Metavariable_Exists{boolean} 198>34 19|371b13 380l8 380t27
+198e34 Name{131E9} 19|371b34 375r24
+202V13*URL{string} 19|422b13 450l8 450t11
+206V13*Argument_Count{natural} 19|86b13 90l8 90t22
+215V13*Value{string} 216>7 217>7 19|456b13 475l8 475t13
+216s7 Key{string} 19|457b7 465r49
+217b7 Required{boolean} 19|458b7 470r10
+222V13*Value{string} 222>20 19|481b13 490l8 490t13
+222i20 Position{positive} 19|481b20 485r10 486r40
+227V13*Key_Exists{boolean} 227>25 19|316b13 327l8 327t18
+227s25 Key{string} 19|316b25 321r49
+230V13*Key{string} 230>18 19|301b13 310l8 310t11
+230i18 Position{positive} 19|301b18 305r10 306r40
+237U8 Action 238>11 239>11 240>11 241=11 19|157r10
+238s11 Key{string}
+239s11 Value{string}
+240i11 Position{positive}
+241b11 Quit{boolean}
+242u14*For_Every_Parameter 19|147b14 165l8 165t27
+250V13 Decode{string} 250>21 19|107b13 141l8 141t14 252r41 253r41
+250s21 S{string} 19|107b21 108r24 109r28 113r18 114r22 115r22 116r63 117r63
+. 123r39 128r16 133r27
+X 19 g-cgi.adb
+46b4 Valid_Environment{boolean} 98r14 285m10 294m10 398r14
+52e4 Current_Method{18|125E9} 196m10 213m10 389r14
+55b4 Header_Sent{boolean} 410r10 414m10
+60P9 String_Access(string) 63r15 64r15
+62R9 Key_Value 65e14 67r42 252r18
+63p7*Key{60P9} 157r44 306r50 321r39 465r39
+64p7*Value{60P9} 158r44 466r46 486r50
+67K12 Key_Value_Table[21|58] 89r14 153r21 157r18 158r18 251r16 260r10 305r22
+. 306r17 320r21 321r13 464r21 465r13 466r20 485r22 486r17
+73U14 Check_Environment 74r19 88r7 96b14 101l8 101t25 151r7 303r7 318r7 358r7
+. 373r7 388r7 411r10 444r7 462r7 483r7
+77U14 Initialize 171b14 295l8 295t18 494r4
+108a7 Result{string} 110r28 122m13 129m13 133m13 140r14 140r22
+109i7 K{positive} 113r13 114r13 115r25 116r66 117r66 123r42 123r51 124m13
+. 124r18 128r19 130m13 130r18 133r30 134m13 134r18
+110i7 J{positive} 122r21 129r21 133r21 137m10 137r15 140r38
+148b7 Quit{boolean} 155m10 160m18 162r20
+153i11 K{integer} 157r41 158r41 159r18
+173a7 Request_Method{string} 278r10 281r13
+177U17 Initialize_GET 193b17 201l11 201t25 279r10
+181U17 Initialize_POST 207b17 219l11 219t26 282r10
+186U17 Set_Parameter_Table 186>38 199r13 217r13 225b17 273l11 273t30
+186s38 Data{string} 225b38 232r45 236r30 263r41 263r56 265r31 272r32 272r47
+194a10 Data{string} 198r13 199r34
+208i10 Content_Length{natural} 210r30 215r13
+210a10 Data{string} 216m26 217r34
+227U20 Add_Parameter 227>35 227>49 243b20 255l14 255t27 265r13 272r10
+227i35 K{positive} 243b35 251r39
+227s49 P{string} 243b49 244r62 252r49 252r52 253r49 253r65
+231i10 Count{positive} 260r36 262r24 272r25
+236i10 Index{positive} 263r47 265r37 267m13 272r38
+237i10 Amp{natural} 263m13 265r46 267r22
+244i13 Equal{natural} 247r16 252r63 253r52
+262i14 K{integer} 265r28
+320i11 K{integer} 321r36
+337V16 Get_Environment{string} 337>33 344b16 350l11 350t26 353r18
+337s33 Variable_Name{string} 344b33 345r58
+345p10 Value{33|67P12} 346r38 348m23
+346a10 Result{string} 349r17
+352a7 Result{string} 360r10 363r17
+424V16 Exists_And_Not_80{string} 424>35 432b16 439l11 439t28 448r11
+424s35 Server_Port{string} 432b35 434r13 437r26
+464i11 K{integer} 465r36 466r43
+X 20 g-os_lib.ads
+51K14*OS_Lib=51:36 19|39w11 345r19 345r43 348r10
+X 21 g-table.ads
+58k14*Table 19|40w11 67r35 21|206e15
+106A9*Table_Type(19|62R9)<integer>
+108A12*Big_Table_Type{106A9[19|67]}<integer>
+117P9*Table_Ptr(108A12[19|67])
+122p4*Table{117P9[19|67]} 19|157r33[67] 157r34[67] 158r33[67] 158r34[67]
+. 251r32[67] 306r33[67] 321r29[67] 465r29[67] 466r36[67] 486r33[67]
+142V13*Last{integer} 19|89r30[67] 153r37[67] 305r38[67] 320r37[67] 464r37[67]
+. 485r38[67]
+162U14*Set_Last 19|260r26[67]
+X 33 s-os_lib.ads
+67P12*String_Access{42|45P9} 19|345r26
+72U14*Free=72:62 19|348r17
+833V13*Getenv{67P12} 19|345r50
+X 42 s-string.ads
+45P9*String_Access(string)
+

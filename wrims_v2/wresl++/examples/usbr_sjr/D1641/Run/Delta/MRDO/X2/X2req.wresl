@@ -1,0 +1,202 @@
+! Armin Munevar 7/8/98
+
+! THIS DOCUMENT CONTAINS THE X2 STANDARD MODELING IN CALSIM
+! X2 DAYS WITH FLOW-WEIGHTING PROCEDURE IS USED AS IN DWRSIM
+
+! X2 is the 2ppt bottom isohaline line used to describe the entrapment zone.  Kimmerer-
+! Monismith equation is used to compute the position as a function of last month's position
+! and current month's Net Delta outflow
+
+!CB define NDO {alias D_NDO - C_SAC041_WQ + C_NDO KIND 'FLOW-NDO' UNITS 'CFS'} ! total of mrdo and surplus !CB altered to eliminate alias
+define NDO {std kind 'FLOW-NDO' units 'CFS'}
+goal setNDO {NDO = D_NDO /*- C_SAC041_WQ*/ + C_NDO}
+
+define X2_prv {std kind 'X2-POSITION-PREV' units 'KM'}
+!define X2_prv_NDS {std kind 'X2-POSITION-PREV' units 'KM'}
+
+! coefficients used in K-M equation
+define a_x2_coef {value 122.2}
+define b_x2_coef {value 0.3278}
+define c_x2_coef {value 17.65}
+
+! set the distances from Golden Gate for each location (km)
+define km_roe {value 64. }     ! km to Roe Island/Port Chicago
+define km_chs {value 74. }     ! km to Chipps Island
+define km_cnf {value 81. }     ! km to Confluence (Sac & SJR)
+
+! set the flow cap for each station (cfs). this is max flow to meet X2 at each station
+define flowcap_roe {value 29200. }     ! cfs for Roe Island/Port Chicago
+define flowcap_chs {value 11400. }     ! cfs for Chipps Island
+define flowcap_cnf {value 7100.  }     ! cfs for Confluence (Sac & SJR)
+
+! set the trigger value which activates the operation of Roe X2 standard
+define trigger_x2roe {value 66.3 } ! km to just beyond Roe Island
+
+! set the minimum flow for the circumstances in which there is no requirement at the confluence
+!   ie. May_SRI < 8.1 maf, then no X2 standard
+define flowmin_specX2 {value 4000. }         ! cfs for months (feb-june) in which no confluence req
+
+! ******************************************************************************************
+! Get last month's X2 position using K-M equation
+
+define X2_last {value a_x2_coef + b_x2_coef*X2_prv(-1) - c_x2_coef*LOG10(NDO(-1))     }
+
+goal X2lastperiod {X2_prv=X2_last}      ! output purposes only (need previous value)--could also be an alias
+
+! ******************************************************************************************
+! Compute last month's X2 position using K-M equation using total flow including the WQ release from NODOS
+!define X2_last_NDS {value a_x2_coef + b_x2_coef*X2_prv_NDS(-1) - c_x2_coef*LOG10(NDO(-1)+C400_WQ(-1)) } !includes NODOS WQ release
+!goal setX2_prv_NDS {X2_prv_NDS=X2_last_NDS}
+
+! ******************************************************************************************
+! Get the days required for X2 at each location (Roe, Chipps, Confluence)
+
+define daysX2_roe {
+     case FebtoJun {
+          condition      month >= FEB .and. month <= JUN
+          select         roe_days
+          from           x2days
+          where          wateryear=wateryear,month=month    }
+     case StandardOff {
+          condition      always
+          value          0    }    }
+
+define daysX2_chs {
+     case FebtoJun {
+          condition      month >= FEB .and. month <= JUN
+          select         chs_days
+          from           x2days
+          where          wateryear=wateryear,month=month    }
+     case StandardOff {
+          condition      always
+          value          0    }    }
+
+define daysX2_cnf {
+     case FebtoJun {
+          condition      month >= FEB .and. month <= JUN
+          select         cnf_days
+          from           x2days
+          where          wateryear=wateryear,month=month    }
+     case StandardOff {
+          condition      always
+          value          0    }    }
+
+! ******************************************************************************************
+! Modify the days at each location depending on whether the trigger for Roe has been tripped
+! If   X2last > trigger then,
+!              roe_days=0, chs_days=orig, cnf_days=daysinperiod - chs_days
+! If   X2last < trigger then,
+!              roe_days=orig, chs_days=orig-roe_days, cnf_days=daysin period-chs_days-roe_days
+!
+! NOTE: THE DAY MODIFICATION ASSUMES THAT CHS_DAYS >= ROE_DAYS.  IE.  WHEN YOU MEET ROE YOU
+! AUTOMATICALLY MEET CHIPPS. BE SURE TABLE 'X2DAYS' IS SET PROPERLY.
+
+define daysX2_roe_mod {
+     case RoeOff {
+         condition      x2_last > trigger_x2roe
+          value          0    }
+     case RoeOn {
+          condition      always
+          value          daysX2_roe  }    }
+
+define daysX2_chs_mod {
+     case RoeOff {
+          condition      x2_last > trigger_x2roe
+          value          daysX2_chs  }
+     case RoeOn {
+          condition      always
+          value          daysX2_chs - daysX2_roe  }    }
+
+define daysX2_cnf_mod {
+    case SpecialStd {
+        condition       daysX2_cnf > 0.5
+        value           daysin - daysX2_chs_mod - daysX2_roe_mod  }     ! days here make up the balance
+    case StandardOff {                                                      ! for the period unless the original
+        condition       always                                              ! days at cnf are zero.  in this case
+        value           0   }   }                                           ! there is no standard!!
+
+
+! ******************************************************************************************
+! Now compute the Delta outflow required to meet the Roe standard
+
+define DO_req_X2roe {
+     case StandardOn {
+          condition      month >= FEB .and. month <= JUN !.and. daysX2_roe_mod > 0.5
+          value          min(flowcap_roe, POW(10.0, (a_x2_coef + b_x2_coef*X2_last - km_roe)/c_x2_coef) ) }
+     case StandardOff {
+          condition      always
+          value          0.0  }    }
+
+! Set the begin and end day for the standard -- Roe always met first
+
+define begday_roe {value     1 }
+define endday_roe {value    begday_roe + daysX2_roe_mod - 1 }
+
+! Compute the resulting X2 if this flow was the Delta outflow for the entire period
+
+define X2_roe  {
+     case StandardOn {
+          condition      month >= FEB .and. month <= JUN .and. daysX2_roe_mod > 0.5
+          value          a_x2_coef + b_x2_coef*X2_last - c_x2_coef*LOG10(DO_req_X2roe)   }
+     case StandardOff {
+          condition      always
+          value          X2_last  }    }
+
+! ******************************************************************************************
+! Now compute the Delta outflow required to meet the Chipps standard
+
+define DO_req_X2chs {
+     case StandardOn {
+          condition      month >= FEB .and. month <= JUN .and. daysX2_chs_mod > 0.5
+          value          min(flowcap_chs, POW(10.0, (a_x2_coef + b_x2_coef*X2_roe - km_chs)/c_x2_coef) ) }
+     case StandardOff {
+          condition      always
+          value          0.0  }    }
+
+! Set the begin and end day for the standard -- Chipps always met second
+
+define begday_chs {value     endday_roe + 1 }
+define endday_chs {value    begday_chs + daysX2_chs_mod - 1 }
+
+! Compute the resulting X2 if this flow was the Delta outflow for the entire period
+
+define X2_chs  {
+     case StandardOn {
+          condition      month >= FEB .and. month <= JUN .and. daysX2_chs_mod > 0.5
+          value          a_x2_coef + b_x2_coef*X2_last - c_x2_coef*LOG10(DO_req_X2chs)   }
+     case StandardOff {
+          condition      always
+          value          X2_roe   }    }
+
+! ******************************************************************************************
+! Now compute the Delta outflow required to meet the Confluence standard
+
+define DO_req_X2cnf {
+     case StandardOn {
+          condition      month >= FEB .and. month <= JUN .and. daysX2_cnf_mod > 0.5
+          value          min(flowcap_cnf, POW(10.0, (a_x2_coef + b_x2_coef*X2_chs - km_cnf)/c_x2_coef) ) }
+     case SpecFlowStd {
+         condition       month >= FEB .and. month <= JUN .and. daysX2_cnf < 0.5      ! if no days at confluence
+         value           flowmin_specX2 }                                            ! May_SRI < 8.1 maf
+     case StandardOff {
+         condition       always
+         value           0.0  }   }
+
+! Set the begin and end day for the standard -- Confluence always met last
+
+define begday_cnf {
+    case SpecFlowStd {
+        condition       month >= FEB .and. month <= JUN .and. daysX2_cnf < 0.5      ! if no days at confluence
+        value           1 }                                                         ! May_SRI < 8.1 maf
+    case otherwise {
+        condition       always
+        value             endday_chs + 1 }
+}
+define endday_cnf {
+    case SpecFlowStd {
+        condition       month >= FEB .and. month <= JUN .and. daysX2_cnf < 0.5      ! if no days at confluence
+        value           daysin }                                                    ! May_SRI < 8.1 maf
+    case otherwise {
+        condition       always
+        value             begday_cnf + daysX2_cnf_mod - 1 }
+}

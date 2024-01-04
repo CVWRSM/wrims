@@ -1,0 +1,106 @@
+define dem_MDOTA_SACK {timeseries kind 'DEMAND-CVP-TOTAL' units 'TAF'}
+
+! define collective variables for James Bypass and Fresno Slough inflows
+define FSLJBP {value I_FSL012 + I_JBP006}
+define FSLJBP1 {value I_FSL012(1) + I_JBP006(1)}
+define FSLJBP2 {value I_FSL012(2) + I_JBP006(2)}
+define FSLJBP3 {value I_FSL012(3) + I_JBP006(3)}
+define FSLJBP4 {value I_FSL012(4) + I_JBP006(4)}
+define FSLJBP5 {value I_FSL012(5) + I_JBP006(5)}
+
+define jbypass_del {
+  case Mar {
+    condition month== MAR
+    value     min(FSLJBP*cfs_taf,dem_MDOTA_SACK) + min(FSLJBP1*cfs_taf(1),dem_MDOTA_SACK(1)) + min(FSLJBP2*cfs_taf(2),dem_MDOTA_SACK(2)) +
+              min(FSLJBP3*cfs_taf(3),dem_MDOTA_SACK(3)) + min(FSLJBP4*cfs_taf(4),dem_MDOTA_SACK(4)) + min(FSLJBP5*cfs_taf(5),dem_MDOTA_SACK(5)) }
+  case Apr {
+    condition month== APR
+    value     min(FSLJBP*cfs_taf,dem_MDOTA_SACK) + min(FSLJBP1*cfs_taf(1),dem_MDOTA_SACK(1)) + min(FSLJBP2*cfs_taf(2),dem_MDOTA_SACK(2)) +
+              min(FSLJBP3*cfs_taf(3),dem_MDOTA_SACK(3)) + min(FSLJBP4*cfs_taf(4),dem_MDOTA_SACK(4))}
+  case May {
+    condition month== MAY
+    value     min(FSLJBP*cfs_taf,dem_MDOTA_SACK) + min(FSLJBP1*cfs_taf(1),dem_MDOTA_SACK(1)) + min(FSLJBP2*cfs_taf(2),dem_MDOTA_SACK(2)) +
+              min(FSLJBP3*cfs_taf(3),dem_MDOTA_SACK(3)) }
+  case other {
+    condition always
+    value     0. }
+}
+
+define jbypass_deldv {alias jbypass_del kind 'DELIV-CAPACITY' units 'TAF'}
+
+
+define BanksMaxCVP6 {select CVPDedCap from BanksLimits where month=6 } !Mar
+define BanksMaxCVP7 {select CVPDedCap from BanksLimits where month=7 } !Apr
+define BanksMaxCVP8 {select CVPDedCap from BanksLimits where month=8 } !May
+define BanksMaxCVP9 {select CVPDedCap from BanksLimits where month=9 } !Jun
+define BanksMaxCVP10 {select CVPDedCap from BanksLimits where month=10 } !Jul
+define BanksMaxCVP11 {select CVPDedCap from BanksLimits where month=11 } !Aug
+
+define AnnualBanksCVPdv {std kind 'flow' units 'taf'}
+
+define AnnualBanksCVP {
+  case Mar {
+    condition month== MAR
+    value     BanksMaxCVP6*cfs_taf(1) + BanksMaxCVP7*cfs_taf(2) + BanksMaxCVP8*cfs_taf(3) + BanksMaxCVP9*cfs_taf(4) +
+          BanksMaxCVP10*cfs_taf(5) + BanksMaxCVP11*cfs_taf(6) }
+  case AprMay {
+    condition month==Apr .or. month==May
+    value     AnnualBanksCVPdv(-1) }
+  case other {
+    condition always
+    value     0. }
+}
+
+goal setAnnualBanksCVPdv {AnnualBanksCVPdv = AnnualBanksCVP}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

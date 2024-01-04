@@ -1,0 +1,15 @@
+! Pre-CVPIA minimum flow requirement
+! see *.table for documentation
+! Dustin Jones 11/22/99
+! Revised SRS 12/14/99
+!
+! ==========================================================================
+! American River @ H Street
+
+!done in the hist Q file for nimbus
+!define HMin {select HStMin
+!             from   HSt_base
+!             where  month=month, AmerD893=wyt_AMERd893_cvp
+!}
+
+goal meet_HStQ {C_AMR004_MIF < HMin}

@@ -1,0 +1,30 @@
+define S4level3 {value 2500.}
+
+define ShaInf {value (I4)*cfs_taf }
+define ShaInfEst {sum(i=0,SEP-month,1) (I4(i))*cfs_taf(i) }
+
+!define ShaSupEst {value max(0.0,ShaInfEst + S4(-1) + S44(-1) +S4mod - S4level3(SEP-month))} !S44level 3 is zero.
+define ShaSupEst {value max(0.0,ShaInfEst + S4(-1) + S44(-1) +S4mod - S4level3)} !S44level 3 is zero.
+
+define ShaSupEstdv {alias ShaSupEst kind 'FORECAST' units 'TAF'}
+
+!define ShaFlowTarg {value min((ShaSupEst/cfs_taf)/(Sep-month+1.),15000.)}
+define ShaFlowTarg {value (ShaSupEst/cfs_taf)/(Sep-month+1.) }
+
+define ShaRuleCalc {
+     case JunthruSep {
+          condition month >= may .and. month <= sep
+          value     max(S4__z5 + S44__z5, ShaInf + S4(-1) + S44(-1) +S4mod - ShaFlowTarg*cfs_taf) }
+     case Other {
+          condition always
+          value     S4level3}}
+define ShaRuleCalcdv {alias ShaRuleCalc kind 'RULE' units 'TAF'}
+
+define S4level3adj {value min(max(ShaRuleCalc,S4level2),S4level4)}
+define S4level3dv {alias S4level3adj kind 'STORAGE-LEVEL' units 'TAF'}
+
+goal S4Zone3 {S4_3 < max(S4level3adj - S4level2,0.)}
+goal S4Zone4 {S4_4 < max(S4level4 - S4level3adj,0.)}
+goal S4Zone5 {S4_5 < max(S4level5 - S4level4,0.)}
+goal S4Zone6 {S4_6 < max(S4level6 - S4level5,0.)}
+

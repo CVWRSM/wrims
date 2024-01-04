@@ -1,0 +1,26 @@
+/************************************
+weir_steps_dailyops_SETUP.wresl
+
+Tom FitzHugh BOR 5/18/2010
+
+Does some setup for running daily weir operations code for the Sacramento and 
+Fremont weirs in cycle 2
+*************************************/
+
+!Definition of daily fraction to map daily pattern
+include 'read_dailypattern_SacRFreeport.wresl'
+
+! reads in monthly flows from previous cycle
+! total flow entering SacFeather node prior to Fremont weir spills
+define QSacFth_prv {value QsacFth[BASE]}
+! total flow entering SacAmerican node prior to Sacramento weir spills
+define QSacAme_prv {value QsacAme[BASE]}
+
+!Daily upstream flow estimation from a previous cycle corrected monthly flow and using the daily fractions.
+!Previous cycle monthly upstream flow is corrected with the difference of previous and current estimated Fremont weir spills
+
+! Computes how much flow would be entering SacAmerican node if there weren't Fremont weir spills
+define QSacAmenospill{value QSacAme[BASE]+ D_FreWeir[BASE]}
+define QSacAmenospilldv {alias QSacAmenospill kind 'debug' units 'cfs'}
+
+include 'weir_steps_dailyops.wresl'

@@ -1,0 +1,172 @@
+/*
+ASSURE CONTINUITY IN DELIVERY ARCS
+
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60N     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 60N_NA1 - Jackson Valley ID - Ag
+!============================== 
+! gross surface water diversions
+goal setDG_60N_NA1  {DG_60N_NA1 = D_AMADR_60N_NA1}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60N_NA1  {DN_60N_NA1 = DG_60N_NA1 - DL_60N_NA1}
+! meet minimum groundwater pumping
+goal meetGPmin_60N_NA1  {GP_60N_NA1 > min((AWO_60N_NA1+AWR_60N_NA1),GPmin_60N_NA1)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetAW_60N_NA1 {AW_60N_NA1 + RP_60N_NA1 = DN_60N_NA1 + GP_60N_NA1 + RU_60N_NA1 - OS_60N_NA1}
+
+
+!==============================
+! 60N_NA2 - Omochumne-Hartnell WD, Galt ID, Clay WD - Ag
+! Contract amount, not a land-based demand
+!============================== 
+! gross surface water diversions
+goal setDG_60N_NA2  {DG_60N_NA2 = D_FSC015_60N_NA2}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60N_NA2  {DN_60N_NA2 = DG_60N_NA2 - DL_60N_NA2}
+! meet minimum groundwater pumping
+goal meetGPmin_60N_NA2  {GP_60N_NA2 > min((AWO_60N_NA2+AWR_60N_NA2),GPmin_60N_NA2)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetAW_60N_NA2  {AW_60N_NA2 + RP_60N_NA2 = DN_60N_NA2 + GP_60N_NA2 + RU_60N_NA2 - OS_60N_NA2}
+
+
+!==============================
+! 60N_NA3 - North San Joaquin WCD - Ag
+!============================== 
+! gross surface water diversions
+goal setDG_60N_NA3  {DG_60N_NA3 = D_MOK050_60N_NA3}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60N_NA3  {DN_60N_NA3 = DG_60N_NA3 - DL_60N_NA3}
+! meet minimum groundwater pumping
+goal meetGPmin_60N_NA3  {GP_60N_NA3 > min((AWO_60N_NA3+AWR_60N_NA3),GPmin_60N_NA3)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetAW_60N_NA3 {AW_60N_NA3 + RP_60N_NA3 = DN_60N_NA3 + GP_60N_NA3 + RU_60N_NA3 - OS_60N_NA3}
+
+
+!==============================
+! 60N_NA4 - Woodbridge ID - Ag
+!============================== 
+! gross surface water diversions
+goal setDG_60N_NA4  {DG_60N_NA4 = D_MOK035_60N_NA4}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60N_NA4  {DN_60N_NA4 = DG_60N_NA4 - DL_60N_NA4}
+! meet minimum groundwater pumping
+goal meetGPmin_60N_NA4  {GP_60N_NA4 > min((AWO_60N_NA4+AWR_60N_NA4),GPmin_60N_NA4)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetAW_60N_NA4 {AW_60N_NA4 + RP_60N_NA4 = DN_60N_NA4 + GP_60N_NA4 + RU_60N_NA4 - OS_60N_NA4}
+
+
+!==============================
+! 60N_NA5 - Non-District - Ag
+!============================== 
+! gross surface water diversions
+goal setDG_60N_NA5      {DG_60N_NA5 = D_MOK050_60N_NA5 + D_MOK034_60N_NA5}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60N_NA5      {DN_60N_NA5 = DG_60N_NA5 - DL_60N_NA5}
+! meet minimum groundwater pumping
+goal meetGPmin_60N_NA5  {GP_60N_NA5 > min((AWO_60N_NA5+AWR_60N_NA4),GPmin_60N_NA3)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetAW_60N_NA5     {AW_60N_NA5 + RP_60N_NA5 = DN_60N_NA5 + GP_60N_NA5 + RU_60N_NA5 - OS_60N_NA5}
+
+
+!==============================
+! 60N_NU1 - Galt, Lodi, small communities - M&I 
+!============================== 
+! No surface water delivery
+! Total Applied Water = groundwater pumping
+goal meetUD_60N_NU1     {UD_60N_NU1 = GP_60N_NU1}
+
+
+!==============================
+! 60N_NU2 - Rancho Murieta - M&I 
+!============================== 
+! gross surface water diversions
+goal setDG_60N_NU2      {DG_60N_NU2 = D_CSM033_60N_NU2}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60N_NU2      {DN_60N_NU2 = DG_60N_NU2 - DL_60N_NU2}
+! meet minimum groundwater pumping
+goal meetGPmin_60N_NU2  {GP_60N_NU2 > min((UD_60N_NU2),GPmin_60N_NU2)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetUD_60N_NU2     {UD_60N_NU2 = DN_60N_NU2 + GP_60N_NU2}
+
+
+!==============================
+! 60N_PU - SMUD Rancho Seco - M&I 
+!============================== 
+! gross surface water diversions
+goal setDG_60N_PU       {DG_60N_PU = D_FSC025_60N_PU}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60N_PU       {DN_60N_PU = DG_60N_PU - DL_60N_PU}
+! meet minimum groundwater pumping
+goal meetGPmin_60N_PU   {GP_60N_PU > min(UD_60N_PU,GPmin_60N_PU)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetUD_60N_PU      {UD_60N_PU = DN_60N_PU + GP_60N_PU}
+
+
+!======================================================================
+! EBMUD
+!======================================================================
+! gross surface water diversions
+goal setDG_EBMUD    {DG_EBMUD = C_EBA000}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_EBMUD    {DN_EBMUD = DG_EBMUD - DL_EBMUD}
+! meet minimum groundwater pumping
+goal setGP_EBMUD    {GP_EBMUD > min(UD_EBMUD,GPmin_EBMUD)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetUD_EBMUD   {UD_EBMUD = DN_EBMUD + GP_EBMUD}
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60S     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 60S_NA1 - East of Turlock, DAU 209 - Ag
+!==============================
+! No surface water delivery
+! Total Applied Water = groundwater pumping
+goal meetAW_60S_NA1      {AW_60S_NA1 = GP_60S_NA1}
+
+
+!==============================
+! 60S_NA2 - East of Turlock, DAU 209 - Ag
+!==============================
+! No surface water delivery
+! Total Applied Water = groundwater pumping
+goal meetAW_60S_NA2      {AW_60S_NA2 = GP_60S_NA2}
+
+
+!==============================
+! 60S_PA1 - Stockton East WD - Ag
+!============================== 
+! gross surface water diversions
+goal setDG_60S_PA1       {DG_60S_PA1 = D_CLV023_60S_PA1}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60S_PA1       {DN_60S_PA1 = DG_60S_PA1 - DL_60S_PA1}
+! meet minimum groundwater pumping
+goal meetGPmin_60S_PA1   {GP_60S_PA1 > min((AWO_60S_PA1+AWR_60S_PA1),GPmin_60S_PA1)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetAW_60S_PA1      {AW_60S_PA1 + RP_60S_PA1 = DN_60S_PA1 + GP_60S_PA1 + RU_60S_PA1 - OS_60S_PA1}
+
+
+!==============================
+! 60S_NU1 - City of Stockton via SEWD - M&I 
+!============================== 
+! gross surface water diversions
+goal setDG_60S_NU1       {DG_60S_NU1 = D_WTPWDH_60S_NU1 + D_WTPDWS_60S_NU1}
+! net surface delivery = surface diversion - conveyance losses
+goal setDN_60S_NU1       {DN_60S_NU1 = DG_60S_NU1 - DL_60S_NU1}
+! meet minimum groundwater pumping
+goal meetGPmin_60S_NU1   {GP_60S_NU1 > min(UD_60S_NU1,GPmin_60S_NU1)}
+! Total Applied Water = net surface delivery + groundwater pumping
+goal meetUD_60S_NU1      {UD_60S_NU1 = DN_60S_NU1 + GP_60S_NU1}
+! Total Applied Water = groundwater pumping
+goal zeroDN_60S_NU1      {DN_60S_NU1 = 0.0 }
+
+

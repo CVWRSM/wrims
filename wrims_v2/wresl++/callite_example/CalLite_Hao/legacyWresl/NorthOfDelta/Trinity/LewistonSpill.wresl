@@ -1,0 +1,5 @@
+define C_Lwstn_EXC1 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+define C_Lwstn_EXC2 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Lwstn_exctotal {C_Lwstn_EXC=C_Lwstn_EXC1+C_Lwstn_EXC2}
+
+!!! goal boundC_Lwstn_EXC1 {C_Lwstn_EXC1 < int_cweir * 9999999.}  !!!Will revisit when weir logic for CALITE is set up

@@ -1,0 +1,73 @@
+/*
+
+Both pumping plant unit outages and aqueduct restrictions place conveyance
+limits to the ability to move water through the State Water Project facilities.
+
+Unit outages, both scheduled or unscheduled, come from historical 2001-2006 monthly
+outage reports.
+
+Source of data: DWR SWP-OCO; Tuan Bui and Tio Zasso were consulted in Feb 2007;
+based on reports provided by Dick Oravetz.
+
+Ryan Wilbur
+
+*/
+
+!Oroville Complex
+!Hyatt Power Plant
+!Thermalito Power Plant
+
+!Delta
+!Banks Pumping Plant
+define max_ba {select data from swp_limits where plant=1,month=month}
+goal max_ba2 {D_Banks < max_ba} ! {D419 < max_ba}
+!Gianelli
+
+!Aqueduct
+!Dos Amigos Pumping Plant - split swp=54.2%; cvp=45.8%
+!(per 1981 "Operating procedure between DWR-OCO & USBR CVO for
+!scheduling and dispatching San Luis joint use facilitites")
+define max_da {select data from swp_limits where plant=2,month=month}
+goal max_da_swp {C_DsAmgS + D829_PRJ+D828_PRJ+D827_PRJ+D826_PRJ < 0.542*max_da}
+               !{C825 < 0.542*max_da} !< 8465 (C825+C838 < 13100); max_da Jan=12390, June=12880, 
+
+goal max_da_cvp {C_DsAmgC +D839_PRJ+D840_PRJ+D841_PRJ+D842_PRJ+D843_PRJ+D844_PRJ+D845_PRJ <  0.458*max_da}
+               !{C838 < 0.458*max_da} !< 4635
+
+!Buena Vist Pumping Plant
+define max_bv {select data from swp_limits where plant=4,month=month}
+goal max_bv2 {C_CVC-D859_PRJ+I_Kern  < max_bv}          !< 5405      max_bv 4803 ~ 5266
+            !{C860 < max_bv}          !< 5405      max_bv 4803 ~ 5266
+!Teerink (Wheeler Ridge) Pumping Plant
+define max_tr {select data from swp_limits where plant=5,month=month}
+goal max_tr2  {C_CVC-D859_PRJ+I_Kern-D862_PRJ  < max_tr}          !< 5405      max_bv 4803 ~ 5266
+             !{C862 < max_tr}          !< 4600      max_tr 4645 ~ 5018
+!Chrisman (Wind Gap) Pumping Plant
+define max_ch {select data from swp_limits where plant=6,month=month}
+goal max_cd2  {C_ChrisPP < max_ch} 
+             !{C864 < max_ch}          !< 4400     max_ch 3835 ~ 4087
+!Edmonston Pumping Plant
+define max_ed {select data from swp_limits where plant=7,month=month}
+goal max_ed2 {C_ChrisPP < max_ed} 
+            !{C865 < max_ed}          !< 4480    max_ed 3432 ~ 4179
+
+!Coastal Branch
+!Las Perillas Pumping Plant
+define max_lp {select data from swp_limits where plant=3,month=month}
+goal max_lp2   {C_CoastAqdct < max_lp}                         ! {D850 < max_lp}         !<        max_lp 
+
+!West Branch
+!Oso Pumping Plant
+define max_os {select data from swp_limits where plant=10,month=month}
+goal max_os2 {C_OSO < max_os}  !{C890 < max_os}
+
+!East Branch
+!Pearblossom Pumping Plant
+define max_pb {select data from swp_limits where plant=8,month=month}
+goal max_pb2 {C_PearBlPP < max_pb}     !{C880 < max_pb}
+
+!Pool 49 - cannot get more than 2105 cfs due to channel restrictions
+!Mojave Siphon
+define max_mj {select data from swp_limits where plant=9,month=month}
+goal max_mj2 {C_PearBlPP - D881_PRJ - D882_PRJ < max_mj}   !{C882 < max_mj}
+

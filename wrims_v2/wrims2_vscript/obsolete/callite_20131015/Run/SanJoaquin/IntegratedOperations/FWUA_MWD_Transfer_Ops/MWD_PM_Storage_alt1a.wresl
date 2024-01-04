@@ -1,0 +1,141 @@
+!This is a Diamond Valley storage account to be coordinated with a Millerton account.
+
+define S999 {lower -100 upper 300 kind 'storage' units 'taf'}  !Incremental storage balance
+
+define C999 {upper 1000 kind 'flow-channel' units 'cfs'} !diversion from storage
+
+define D25A {upper 1000 kind 'flow-delivery' units 'cfs'} !diversion to storage
+
+!Subdivide incremental storage into FWUA and MWD components.
+define S999_MWD {lower -100 upper 0 kind 'storage' units 'taf'}
+define S999_FWUA {lower 0 upper 300 kind 'storage' units 'taf'}
+define C999_MWD {upper 1000 kind 'flow-channel' units 'cfs'}
+define C999_FWUA {upper 1000 kind 'flow-channel' units 'cfs'}
+define D25A_MWD {upper 1000 kind 'flow-delivery' units 'cfs'}
+define D25A_FWUA {upper 1000 kind 'flow-delivery' units 'cfs'}
+define D25A_SPR {upper 1000 kind 'flow-delivery' units 'cfs'} !implemented for recovery of MWD spills
+
+!Split storage, diversion, and discharge arcs.
+goal split_S999 {S999 = S999_MWD + S999_FWUA}
+goal split_D25A {D25A = D25A_MWD + D25A_SPR + D25A_FWUA}
+goal split_C999 {C999 = C999_MWD + C999_FWUA}
+
+!Insert flexible bounds on incremental storage.
+define F999_MWD {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+define I999_MWD {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+
+!Continuity for MWD storage.
+goal balance_MWD_account {D25A_MWD + D25A_SPR - C999_MWD - F999_MWD + I999_MWD = S999_MWD*taf_cfs - S999_MWD(-1)*taf_cfs}
+
+!Need to provide separate accounting mechanisms for drawdown and spill capture.
+define D25A_FWUA_DD {std kind 'flow-delivery' units 'cfs'}
+define D25A_FWUA_SC {std kind 'flow-delivery' units 'cfs'}
+define D999_DB_to_SD {std kind 'flow-delivery' units 'cfs'}
+define C999_FWUA_DB {std kind 'flow-channel' units 'cfs'}
+define C999_FWUA_SD {std kind 'flow-channel' units 'cfs'}
+define S999_FWUA_DB {std kind 'STORAGE' units 'TAF'}
+define S999_FWUA_SD {std kind 'STORAGE' units 'TAF'}
+define F999_FWUA_DB {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+define I999_FWUA_DB {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+define F999_FWUA_SD {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+define I999_FWUA_SD {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+goal splitD25A_FWUA {D25A_FWUA = D25A_FWUA_DD + D25A_FWUA_SC}
+goal splitC999_FWUA {C999_FWUA = C999_FWUA_DB + C999_FWUA_SD}
+goal splitS999_FWUA {S999_FWUA = S999_FWUA_DB + S999_FWUA_SD}
+
+goal balance_FWUA_DD_account {D25A_FWUA_DD - C999_FWUA_DB - D999_DB_to_SD - F999_FWUA_DB + I999_FWUA_DB = S999_FWUA_DB*taf_cfs - S999_FWUA_DB(-1)*taf_cfs}
+goal balance_FWUA_SD_account {D25A_FWUA_SC - C999_FWUA_SD + D999_DB_to_SD - F999_FWUA_SD + I999_FWUA_SD = S999_FWUA_SD*taf_cfs - S999_FWUA_SD(-1)*taf_cfs}
+
+!In event of Millerton spill, transfer DD storage to SD.
+define DB_SD_transfer {
+	case no_spill {
+		condition C_MLRTNF(-1) + C_MLRTNA(-1) + D18_SC(-1) < 0.1
+		value	0.
+	}
+	case spill {
+		condition always
+		value S999_FWUA_DB(-1)*taf_cfs
+	}
+}
+goal account_transfer {D999_DB_to_SD = DB_SD_transfer}
+
+!Available capacity to FWUA is limited based on SWP allocations.
+define MWD_max_increase {timeseries kind 'storage-limit' units 'taf'}
+goal cap_S999_FWUA {S999_FWUA < max(S999_FWUA(-1), MWD_max_increase)}
+
+!For Alt1a, provide for both pre-banking and drawdown opportunities, limit pre-banking when MWD storage is available.
+define MWD_max_decrease {
+	case	MWD_full {
+		condition	mwd_max_increase < 50
+		value		-99999
+	}
+	case	otherwise {
+		condition	always
+		value		0
+	}
+}
+goal cap_S999_FWUA_debt {S999_MWD > MWD_max_decrease}
+
+!Route MWD water between Millerton and MWD storage 
+goal MWD_prebank {C999_MWD = D18_DTS_WQ}
+goal MWD_return {D25A_MWD = D18_DFS_WQ + D18_DFS_SP_WQ_M + D18_DFS_SP_WS_M}
+
+!Keep track of MWD spill for recovery.
+define MWD_loss {std kind 'spill-account' units 'taf'}
+goal track_loss {MWD_loss = max(0.,MWD_loss(-1) + D18_DFS_SP_WQ_G(-1)*cfs_taf(-1) + F18_WQ(-1)*cfs_taf(-1) - D25A_SPR(-1)*cfs_taf(-1))}
+goal makeup_loss {D25A_SPR < MWD_loss*taf_cfs}
+
+!Route FWUA water between Millerton and MWD storage
+goal route_DD_S {D25A_FWUA_DD = D18_DD_S}
+goal route_SC_S {D25A_FWUA_SC = D18_SC_S}
+goal FWUA_drawback {C999_FWUA_DB + D999_DB_to_SD = D18_DB}
+goal route_FR {C999_FWUA = C848_TVC_FR + C855_CVC_FR + C851_SW_FR + C861_AEI_FR}
+
+!Limit drawback of drawdown and MWD Millerton prebanking to FWUA demand.
+goal lim_DTSandDB_dem {D_FKCNL + C999_MWD + C999_FWUA_DB < demand_D_FKCNL*taf_cfs}
+
+!Limit DB to July-Sep.
+define db_switch {
+	case no_DB {
+		condition range(month,oct,jun)
+		value	0.
+	}
+	case DB {
+		condition always
+		value	1000.
+	}
+}
+goal set_db_switch {C999_FWUA_DB < db_switch}
+
+!Subdivide spill recovery diversions into Delta surplus component and groundwater pumping component.
+define D25A_SPR_SU {std kind 'flow-delivery' units 'cfs'}
+define D25A_SPR_GWP {std kind 'flow-delivery' units 'cfs'}
+goal split_D25A_SPR {D25A_SPR = D25A_SPR_SU + D25A_SPR_GWP}
+
+!MWD incremental storage should be in fill or withdrawl mode,both should not occur at the same time
+!May need to implement in lieu transfers.
+
+define int_D25A_dir {INTEGER STD kind 'INTEGER' units 'NONE'}
+goal fill_S999 {D25A < int_D25A_dir*10000.}
+goal with_S999 {C999 < 10000. - int_D25A_dir*10000.}
+
+!Set up supplemental demand increased FWUA storage (SD).
+define tule_wet_indx {timeseries kind 'FRIANT-INDX' units 'taf'}
+define demand_SD_FR {
+	case wet {condition tule_wet_indx > 40 .or. FK_add > 1 .or. range(month,oct,jun) value 0.}
+	case dry {condition always value S999_FWUA_SD(-1)}
+}
+
+define demand_SD_FR_ {alias demand_SD_FR kind 'demand' units 'taf'}
+
+goal lim_D910_SD_FR {D910_SD_FR < demand_SD_FR * taf_cfs * dist_910_c2/100.}
+goal lim_D920_SD_FR {D920_SD_FR < demand_SD_FR * taf_cfs * dist_920_c2/100.}
+goal lim_D932_SD_FR {D932_SD_FR < demand_SD_FR * taf_cfs * dist_932_c2/100.}
+goal lim_D937_SD_FR {D937_SD_FR < demand_SD_FR * taf_cfs * dist_937_c2/100.}
+goal lim_D950_SD_FR {D950_SD_FR < demand_SD_FR * taf_cfs * dist_950_c2/100.}
+
+!Restrict supplemental deliveries to FWUA drawdown in MWD storage..
+goal FWUA_MWD_withdrawl {D910_SD_FR + D920_SD_FR + D932_SD_FR + D937_SD_FR + D950_SD_FR = C999_FWUA_SD}
+
+
+

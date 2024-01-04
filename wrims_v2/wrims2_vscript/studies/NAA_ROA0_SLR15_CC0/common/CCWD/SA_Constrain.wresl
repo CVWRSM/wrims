@@ -1,0 +1,7 @@
+!First, connect the Rock Slough, Old River and Victoria Canal intakes to D416 and D408.
+define D408 {alias D408_OR + D408_VC kind 'flow-delivery' units 'cfs'}
+define D416 {alias D408_RS kind 'flow-delivery' units 'cfs'}
+
+
+!Limit LV water right to Delta Surplus
+goal lim_LVright_toDS {D408_DS < Delta_Surplus}

@@ -1,0 +1,131 @@
+! LONGFIN_SMELT.wresl
+!
+! Implements Longfin Smelt Proposal by DFG.
+/*The following X2 criteria and OMR actions by month are assumed:
+December:
+X2<85 km, no action;
+X2>=85, OMR no more negative than -5000 after Dec 20
+January:
+X2 < 80 km, no action
+X2 ? 80 km, OMR no more negative than -3500 cfs
+February through June (see April and May exception below):
+X2 < 80 km, no action;
+80 km ? X2 ? 85 km, OMR no more negative than -3500 cfs
+X2 > 85 km, OMR no more negative than -2500 cfs
+April and May:
+More restrictive of February through June criteria or VAMP requirements during the Apr 15 - May 15 VAMP period
+Suspension/Resumption of Action:  The action would not trigger or would cease if previously required when
+the Sacramento River at Rio Vista exceeds 55,000 cfs OR San Joaquin River at Vernalis exceeds 8,000 cfs.
+If flows go below 40,000 cfs in Sacramento River at Rio Vista or 5,000 cfs in San Joaquin River at Vernalis,
+the action would resume if triggered previously.*/
+!************************************************************************************************
+! LONGFIN SMELT PROPOSAL
+
+define LF_smelt1 {
+	case Dec{
+                condition month==DEC .and. X2_last >= 85.
+		value (OMR_background*20.+(-5000)*(daysin-20.))/daysin}
+        case Jan{
+                condition month==JAN .and. X2_last >= 80.
+		value -3500}
+	case FebJun{
+                condition month>=FEB .and. month<=JUN .and. X2_last >= 80. .and. X2_last<=85.
+		value -3500}
+	case FebJun2{
+                condition month>=FEB .and. month<=JUN .and. X2_last>85.
+		value -2500}
+	case otherwise {
+		condition always
+		value -99999}
+}
+define LF_smelt1dv {alias LF_smelt1 kind 'FLOW' units 'CFS'}
+
+! Decide whether or not to suspend the action.
+! A similar approach to Hutton's methodology(12/16/08 appendix 4)need to be developed and incorporated here.
+!define RV_Freq_Susp {value 0.}
+ define RV_Freq_Susp {
+	case RVSusp{
+		condition Freeport>55000.
+        	value 1.}
+        case otherwise{
+		condition always
+        	value 0.}
+ }
+!define Vern_Freq_Susp {value 0.}
+ define Vern_Freq_Susp {
+	case VSusp{
+		condition Vernalis>8000.
+        	value 1.}
+        case otherwise{
+		condition always
+        	value 0.}
+ }
+
+define RV_Freq_Suspdv {alias RV_Freq_Susp kind 'FREQUENCY' units 'NONE'}
+define Vern_Freq_Suspdv {alias Vern_Freq_Susp kind 'FREQUENCY' units 'NONE'}
+
+!define RV_Freq_Res {value 0.}   !Freq. ABOVE 40K in SACR or 5k in SJR
+define RV_Freq_Res {
+	case RVres{
+		condition Freeport>40000.
+        	value 1.}
+        case otherwise{
+		condition always
+        	value 0.}
+ }
+
+!define Vern_Freq_Res {value 0.}
+define Vern_Freq_Res {
+	case VRes{
+		condition Vernalis>5000.
+        	value 1.}
+        case otherwise{
+		condition always
+        	value 0.}
+ }
+
+define RV_Freq_Resdv {alias RV_Freq_Res kind 'FREQUENCY' units 'NONE'}
+define Vern_Freq_Resdv {alias Vern_Freq_Res kind 'FREQUENCY' units 'NONE'}
+
+
+! Suspension Trigger
+define Suspen_triglfdv {std kind 'TRIGGER' units 'NONE'}
+define Suspen_triglf {
+	case initialize {
+                condition month==OCT .and. wateryear==1922
+		value 0.}
+	case suspension1 {
+                condition RV_Freq_Susp>=0.5
+		value 1.}
+	case suspension2 {
+                condition Vern_Freq_Susp >= 0.5
+		value 1.}
+	case susp_contd1 {
+                condition RV_Freq_Res>=0.5 .and. Suspen_triglfdv(-1)==1
+		value 1.}
+	case susp_contd2 {
+                condition Vern_Freq_Res >= 0.5 .and. Suspen_triglfdv(-1)==1
+		value 1.}
+	case otherwise {
+		condition always
+		value 0.}
+}
+
+goal setSuspTdv {Suspen_triglfdv = Suspen_triglf}
+
+
+
+! Longfin smelt requirement taking suspension into account
+define OMR_RPA_LF {
+	case no_susp{
+                condition month>=DEC .and. month<=JUN .and. Suspen_triglf==0
+		value LF_smelt1}
+	case otherwise{
+		condition always
+		value -99999.}
+}
+
+!QA/QC
+define OMR_RPA_LFdv {alias OMR_RPA_LF kind 'FLOW-REG' units 'CFS'}
+
+

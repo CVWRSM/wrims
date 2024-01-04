@@ -1,0 +1,35 @@
+/*
+B2Action6.wresl
+
+Nazrul islam; DWR; 10/14/2010 
+
+B2 Action 6: CVP VAMP Export Extension (Apr 1-14)
+
+*/
+
+!**** VAMP Export Restriction Extension (Apr1-14) ****************
+
+! Monthly VAMP export restriction for CVP during April 1-14
+goal b2action6_1 {
+  lhs D_Jones_cvp + D_Banks_cvp
+  case Apr {
+    condition  month==APR .and. int(B2Action6On)==1 .and. int(B2Action6)==1
+    rhs        max(800.0,PulseExpRes*0.5)
+    lhs<rhs    penalty 0 }
+}
+
+!for output only:
+define b2_6_1cap {std kind 'OUTPUT' units 'CFS'}
+goal setb2_6_1 {
+  lhs b2_6_1cap
+  case Apr {
+    condition  month==APR .and. int(B2Action6On)==1 .and. int(B2Action6)==1
+    rhs        max(800.0,PulseExpRes*0.5)
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+  case other {
+    condition  always
+    rhs        20000.
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+}

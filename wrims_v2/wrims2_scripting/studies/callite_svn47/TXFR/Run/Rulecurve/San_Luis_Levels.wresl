@@ -1,0 +1,23 @@
+/************************************************
+
+San_Luis_Levels.wresl
+
+Author: Cody L. Milligan BOR 05/20/10
+
+This code defines storage zones in San Luis Reservoir 
+for bothe CVP and SWP where Level 3 is defined as equal 
+to the value obtained in cvp_delivery_rule_curve.wresl
+
+************************************************/
+
+define S_SLCVPLevel3 {value CVPRuleCalc1}
+
+goal S_SLCVPZone3 {S_SLCVP_3 < max(0.0,S_SLCVPLevel3 - S_SLCVPLevel2)}
+goal S_SLCVPZone4 {S_SLCVP_4 < S_SLCVPLevel4 - S_SLCVPLevel3}
+goal S_SLCVPZone5 {S_SLCVP_5 < S_SLCVPLevel5 - S_SLCVPLevel4}
+
+define S_SLSWPLevel3 {value SWPRuleCalc1}
+
+goal S_SLSWPZone3 {S_SLSWP_3 < max(0.0,S_SLSWPLevel3 - S_SLSWPLevel2)}
+goal S_SLSWPZone4 {S_SLSWP_4 < S_SLSWPLevel4 - S_SLSWPLevel3}
+goal S_SLSWPZone5 {S_SLSWP_5 < S_SLSWPLevel5 - S_SLSWPLevel4}

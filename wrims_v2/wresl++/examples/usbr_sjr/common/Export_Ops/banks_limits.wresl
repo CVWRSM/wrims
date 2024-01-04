@@ -1,0 +1,25 @@
+!    E. Reyes 7/13/98
+!    A. Munevar 11/13/99
+
+! This is the permit export and physical capacity for Banks.
+
+! Banks Permitted Pumping Amount
+!define BanksCapPermit {select PermitCap from BanksLimits where month=month}
+
+! Banks Permitted Pumping Amount with dynamic EWA capacity dedication
+define BanksCapPermit1 {select PermitCap from BanksLimits where month=month}
+define BanksCapPermit {
+  case JulSep {
+    condition month>= JUL .and. month<= SEP .and. BanksCapPermit1 > 7180.
+    value BanksCapPermit1 - 500.}
+  case other {
+    condition always
+    value BanksCapPermit1 }
+}
+
+! Banks Physical Capactiy
+define BanksCapPhys {select PhysCap from BanksLimits where month=month }
+
+! CVP dedicated capacity
+define BanksMaxAllowCVP {select CVPDedCap from BanksLimits where month=month}
+define BanksMaxCVPdv {alias BanksMaxAllowCVP kind 'flow' units 'CFS'}

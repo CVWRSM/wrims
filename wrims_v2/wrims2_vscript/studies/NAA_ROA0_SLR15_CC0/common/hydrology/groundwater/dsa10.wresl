@@ -1,0 +1,101 @@
+! This file contains the groundwater flow equations for DSA 10
+
+! define stream-aquifer interaction term (units = thousand acres/month)
+!define lamda_10 {VALUE (kmstream_10*lstream_10*wstream_10)/(43560.0*1000.0) }
+
+! define storage term (units =  thousand-acres)
+define beta_10 {VALUE area_10*sy_10/1000.0 }
+define beta_10s {VALUE area_10s*sy_10s/1000.0 }
+
+! define maximum groundwater storage (units = TAF)
+define maxg_10 {VALUE beta_10*gse_10 - beta_10*b_10 }
+
+! define current month groundwater storage (units = TAF)
+goal storage_10 { g_10 = beta_10*h_10 - beta_10*b_10}
+goal storage_10s { g_10s = beta_10s*h_10s - beta_10s*b_10s}
+
+!define previous month groundwater storage (units = TAF)
+define g_10_previous {VALUE beta_10*h_10(-1) - beta_10*b_10 }
+define g_10s_previous {VALUE beta_10s*h_10s(-1) - beta_10s*b_10s }
+
+! restrict groundwater storage to maximum  (units = TAF)
+!goal maxstore_10 {g_10 < maxg_10 }
+
+! restrict head of stream recharge to stream bed elevation (units = feet)
+
+define hmax_10s_last {
+
+       case      less_than {
+       condition h_10s(-1) < rbot_10
+       value     rbot_10 }
+
+       case      otherwise {
+       condition always
+       value     h_10s(-1) }
+       }
+
+! Define stream - groundwater interaction
+
+! first determine stream depth of the previous timestep
+define depth_10_last {SELECT   depth
+                      FROM     stream_elev
+                      GIVEN    flow=c118(-1)
+                      USE      linear
+                      WHERE    DSA=10 }
+
+! now determine the total stream elevation of the previous timestep
+define hstream_10_last {value rbot_10 + depth_10_last }
+define hstream_10_old {alias hstream_10_last kind 'elevation-stream' units 'feet'}
+
+! last, calculate the stream - groundwater interaction
+define gs61_taf {VALUE lamda_10*hstream_10_last - lamda_10*hmax_10s_last }   ! groundwater model is TAF
+goal set_gs61 { gs61 < gs61_taf*taf_cfs }                                 ! streamflow is CFS
+
+! groundwater pumping
+goal set_gp61 {gp61 = gp61_taf*taf_cfs}   ! streamflow is CFS
+
+! Define the Basin Recharge
+goal set_gr61AW_taf {gr61AW_taf = DP_DSA10*cfs_taf}   ! groundwater model is TAF, streamflow is CFS
+
+! Define interaction between groundwater basins (units = TAF)
+! see file parameters.wresl for other parameter values
+
+goal set_basin_strip10 { basin_strip10 = alpha10_10s*phi10_10s*h_10 -
+                                         alpha10_10s*phi10_10s*h_10s }
+
+goal set_interbasin58_10 { interbasin58_10 = alpha58_10*phi58_10*h_58 -
+                                             alpha58_10*phi58_10*h_10 }
+
+goal set_interbasin15_10 { interbasin15_10 = alpha10_15*phi10_15*h_15 -
+                                             alpha10_15*phi10_15*h_10 }
+
+goal set_interbasin12_10 { interbasin12_10 = alpha10_12*phi10_12*h_12 -
+                                             alpha10_12*phi10_12*h_10 }
+
+goal set_interbasin69_10 { interbasin69_10 = alpha10_69*phi10_69*h_69 -
+                                             alpha10_69*phi10_69*h_10 }
+
+
+goal set_interstrip58_10 { interstrip58_10 = alpha58s_10s*phi58s_10s*h_58s -
+                                             alpha58s_10s*phi58s_10s*h_10s }
+
+goal set_interstrip15_10 { interstrip15_10 = alpha10s_15s*phi10s_15s*h_15s -
+                                             alpha10s_15s*phi10s_15s*h_10s }
+
+
+goal set_gi61_taf { gi61_taf = basin_strip10 }
+
+
+goal set_gw61_taf { gw61_taf = interbasin58_10
+                             + interbasin15_10
+                             + interbasin12_10
+                             + interbasin69_10 }
+
+
+goal set_gw61s_taf { gw61s_taf = interstrip58_10
+                               + interstrip15_10 }
+
+
+! define groundwater continuity for DSA10  (Units = TAF)
+goal continuity_10  {gw61_taf  - 1.*gp61_taf + 1.*gr61_taf + 1.*gr61AW_taf + bnd_10   - gi61_taf - gf_61  = g_10 - g_10_previous }
+goal continuity_10s {gw61s_taf - 0.*gp61_taf + 0.*gr61_taf + 0.*gr61AW_taf + gs61_taf + gi61_taf - gf_61s = g_10s - g_10s_previous }

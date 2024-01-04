@@ -1,0 +1,79 @@
+define D859WYMax {select D859WYvol from Kern_GW_RechLim where wateryear=wateryear}
+
+define D859monthlydv  {std kind 'RECHARGE' units 'TAF' }
+define D859Accountdv  {std kind 'RECHARGE' units 'TAF' }
+
+define D859Account {
+                case Oct {
+                        condition month==OCT
+                        value D859WYMax }
+                case Other {
+                        condition always
+                        value max(D859Accountdv(-1) - D859monthlydv(-1),0.) }
+}
+!upper bound the groundwater recharge
+define Total_Rech_Cap {select TOTRechCap from KernGW_NODStor where month=month}
+define D859RechCap {value min(Total_Rech_Cap*cfs_taf, D859Account)}
+
+!Define the percentage of groundwater relative to available water in NOD
+define SWPGWPerc {select SWPGWFact from KernGW_NODStor where month=month}
+define CVPGWPerc {select CVPGWFact from KernGW_NODStor where month=month}
+
+!Define the storage threshold
+define SWP_Storage_OKAY {select SWPStorOk from KernGW_NODStor where month=month}
+define CVP_Storage_OKAY {select CVPStorOk from KernGW_NODStor where month=month}
+
+!no more than a certain fraction of NOD storages
+define D859SWPGWFact {value SWPGWPerc*(S31(-1)+S6(-1) - SWP_Storage_OKAY)}                       ! Need to determine a method to adjust delivery logic for storage dedicated to GW Recharge
+define D859CVPGWFact {value CVPGWPerc*(S32(-1)+S1(-1)+S4(-1)+S44(-1) - CVP_Storage_OKAY)}        ! Need to determine a method to adjust delivery logic for storage dedicated to GW Recharge
+
+! The following is to allow recharges only when the allocations are high enough.
+define D859SWPGWRechTarget {
+   case SWP_okay {
+   condition S31(-1)+S6(-1) > SWP_Storage_OKAY
+   value D859SWPGWFact*PERDEL_SWP_AG1 }
+   case Other {
+   condition always
+   value 0. }
+ }
+define SWPGWRechTargdv {alias D859SWPGWRechTarget kind 'GW-RECH-TARGET' UNITS 'TAF'}
+
+define D859CVPGWRechTarget {
+   case CVP_okay {
+   condition S32(-1)+S1(-1)+S4(-1)+S44(-1) > CVP_Storage_OKAY
+   value D859CVPGWFact*PERDEL_CVPAG_SYS }
+   case Other {
+   condition always
+   value 0. }
+ }
+define CVPGWRechTargdv {alias D859CVPGWRechTarget kind 'GW-RECH-TARGET' UNITS 'TAF'}
+
+!Maximum recharge limit
+goal maxD859GWRECHARGE {D859_GWRECHARGE < D859RechCap*taf_cfs}
+
+!Minimum recharge limit for SWP
+goal minD859GWRechSWP {
+    lhs D859_GWRECH_SWP
+    rhs D859SWPGWRechTarget*taf_cfs
+    lhs>rhs penalty 0.
+    lhs<rhs penalty 1200.
+}
+!Minimum recharge limit for CVP
+goal minD859GWRechCVP {
+    lhs D859_GWRECH_CVP
+    rhs D859CVPGWRechTarget*taf_cfs
+    lhs>rhs penalty 0.
+    lhs<rhs penalty 1200.
+}
+
+!Define the max capacities for groundwater recharge
+define SWP_Rech_Cap {select SWPRechCap from KernGW_NODStor where month=month}
+define CVP_Rech_Cap {select CVPRechCap from KernGW_NODStor where month=month}
+
+goal maxD859GWRechSWP {D859_GWRECH_SWP < SWP_Rech_Cap}
+goal maxD859GWRechCVP {D859_GWRECH_CVP < CVP_Rech_Cap}
+
+! accounting
+goal set_D859monthlydv {D859monthlydv = D859_GWRECHARGE*cfs_taf }
+goal set_D859Accountdv {D859Accountdv = D859Account }
+

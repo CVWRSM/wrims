@@ -1,0 +1,54 @@
+! WheelingZeroOps_Cyc1thru5.wresl
+! This file handles cvp water in the caa in cycle 1
+! included locally in cycle 1 as the code is updated in later cycles for wheeling
+
+! limit delivery from oneill forbay to the dmc to intertie and SL release
+goal ONFB1               { D_CAA069_DMC070 < C_SLUIS_CVP + C_CAA067_CVP - CAA000_CVC }
+define ONFB1_limitval    { alias C_SLUIS_CVP+C_CAA067_CVP-CAA000_CVC     kind 'TESTING' units 'CFS' }
+
+! limit CVP deliv to San Luis to be less than intertie and deliberate dmc diversion
+goal ONFB2               { D_CAA069_SLUIS_F < D_DMC070_CAA069 + C_CAA067_CVP - CAA000_CVC }
+define ONFB2_limitval    { alias D_DMC070_CAA069+C_CAA067_CVP-CAA000_CVC kind 'TESTING' units 'CFS' }
+
+! sum of cvp joint use branch deliveries (INCLUDE CVP LOSSES!)
+! MOVED to imf_fixes-StandAlone-Part2.wresl -- define CVP_JUB_delivs   { std kind 'delivery' units 'cfs' }
+! MOVED to imf_fixes-StandAlone-Part2.wresl -- goal setCVP_JUB_delivs  { CVP_JUB_delivs = D_CAA087_73_PA1 + D_CAA095_72_PU  + D_CAA109_73_PA3
+!                                                                                       + D_CAA109_90_PA1 + D_CAA143_90_PA1 + D_CAA155_90_PA1 + D_CAA172_90_PA1
+!                                                                                       + D_CAA143_90_PA2 + D_CAA143_90_PU  + D_CAA156_90_PU  + D_CAA165_90_PU 
+!                                                                                       + SG_R3_CVP       + SG_R4_CVP       + SG_R5_CVP       + SG_R6_CVP       + SG_R7_CVP + err_pos - err_neg}
+                                        
+
+! balance of cvp water in the caa
+goal limit_caa_cvp       { CAA000_CVP        + D_DMC007_CAA009  + D_DMC070_CAA069 + C_SLUIS_CVP    ! CVP inflows to CAA
+                         = D_CAA012_71_PU1   + D_CAA046_71_PA7  + D_CAA066_71_PU2                  ! CVP deliv/loss from upper CAA
+                         + D_CAA069_SLUIS_F  + D_CAA069_DMC070  + CVP_JUB_delivs  + CAA000_CVC}    ! CVP deliv/loss from ONFB, lower CAA
+! MOVED to imf_fixes-StandAlone-Part2.wresl -- define caa_cvp_INFLOWS  { alias CAA000_CVP+D_DMC007_CAA009+D_DMC070_CAA069+C_SLUIS_CVP                                                     kind 'TESTING' units 'CFS' }
+! MOVED to imf_fixes-StandAlone-Part2.wresl -- define caa_cvp_OUTFLOWS { alias D_CAA012_71_PU1+D_CAA046_71_PA7+D_CAA066_71_PU2+D_CAA069_SLUIS_F+D_CAA069_DMC070+CVP_JUB_delivs+CAA000_CVC kind 'TESTING' units 'CFS' }
+
+
+! balance of swp water in the caa
+define SWP_JUB_losses    { lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'cfs' }
+goal   setSWP_JUB_losses { SWP_JUB_losses = SG_R3_SWP + SG_R4_SWP + SG_R5_SWP + SG_R6_SWP + SG_R7_SWP }
+goal   limit_caa_swp     { C_CAA003 - CAA000_CVP + C_SLUIS_SWP                                  ! SWP inflows to CAA
+                         = SG_R1R2_SWP      + D_CAA005_SBA000                                   ! SWP deliv/loss from upper CAA
+                         + D_CAA069_SLUIS_S + SWP_JUB_losses      + C_CAA172 - CAA000_CVC }     ! SWP deliv/losses from ONFB, lower CAA
+
+
+!Temporary include if code from swp_dellogic.wresl - conveyance_limits.wresl
+!for handling joint use branch conveyance of CVP and SWP water.
+
+!Dos Amigos Pumping Plant - split swp=54.2%; cvp=45.8%
+!(per 1981 "Operating procedure between DWR-OCO & USBR CVO for
+!scheduling and dispatching San Luis joint use facilitites")
+define C_CAA087_SWP      {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!DOS AMIGOS PP.  DELIVERY TO SAN LUIS WD (S)/PACHECO WD/PANOCHE WD
+define C_CAA087_CVP      {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!DOS AMIGOS PP.  DELIVERY TO SAN LUIS WD (S)/PACHECO WD/PANOCHE WD
+goal totC_CAA087         {C_CAA087     = C_CAA087_SWP    + C_CAA087_CVP}
+goal totC_CAA087_CVP     {C_CAA087_CVP = D_CAA109_73_PA3 + D_CAA109_90_PA1 + D_CAA143_90_PA1 + D_CAA155_90_PA1
+                                       + D_CAA143_90_PA2 + D_CAA143_90_PU  + D_CAA156_90_PU  + D_CAA165_90_PU
+                                       + D_CAA172_90_PA1 + D_CAA095_72_PU  + CAA000_CVP
+                                       + SG_R3_CVP       + SG_R4_CVP       + SG_R5_CVP       + SG_R6_CVP       + SG_R7_CVP }
+
+define max_da            {select data from swp_limits where plant=2,month=month}
+goal max_da_swp          {C_CAA087_SWP < 0.542*max_da}
+goal max_da_cvp          {C_CAA087_CVP < 0.458*max_da}
+

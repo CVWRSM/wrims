@@ -1,0 +1,16 @@
+! LVE_OpsFixStep4.wresl
+! A. Draper
+! 05/13/2005
+! MWH
+
+
+! Do not route LV deliveries along SBA (this is done in EWA step)
+! Isolates LV operations from weights on deliveries to SBA contractors
+
+goal set_D426   { D426 = 0.  }
+goal setD805LVE {D805_LVE = 0.}
+
+
+! In the JPOD step, LVR release to SBA reliability or EWA is removed from system
+goal D426_LV_Total { D426_LV = D426_REL + D426_EWA }
+

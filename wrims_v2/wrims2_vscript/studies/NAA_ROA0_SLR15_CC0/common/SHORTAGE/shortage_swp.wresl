@@ -1,0 +1,220 @@
+! Water Rights Shortage
+define short_d6_pwr    {alias target_d6_pwr    -    d6_pwr  kind 'delivery-shortage' units 'cfs'}
+define short_d7a_pwr   {alias target_d7a_pwr   -   d7a_pwr  kind 'delivery-shortage' units 'cfs'}
+define short_d7b_pwr   {alias target_d7b_pwr   -   d7b_pwr  kind 'delivery-shortage' units 'cfs'}
+define short_d206b_pwr {alias target_d206b_pwr - d206b_pwr  kind 'delivery-shortage' units 'cfs'}
+define short_d206c_pwr {alias target_d206c_pwr - d206c_pwr  kind 'delivery-shortage' units 'cfs'}
+define short_d202_pwr  {alias target_d202_pwr  -  d202_pwr  kind 'delivery-shortage' units 'cfs'}
+
+define short_swp_pwr {alias short_d6_pwr + short_d7a_pwr + short_d7b_pwr + short_d206b_pwr +
+                       short_d206c_pwr+ short_d202_pwr kind  'delivery-shortage-swp' units 'cfs'}
+
+define del_swp_pwr {alias d6_pwr + d7a_pwr + d7b_pwr + d206b_pwr + d206c_pwr + d202_pwr
+                     kind  'delivery-swp' units 'cfs'}
+
+! AG Shortage
+define short_d7a_pag   {alias target_d7a_pag   - d7a_pag   kind 'delivery-shortage' units 'cfs'}
+define short_d7b_pag   {alias target_d7b_pag   - d7b_pag - WTS_DSA69
+                              - EWA_GW69dv - EWA_CI69dv  kind 'delivery-shortage' units 'cfs'}
+define short_d206a_pag {alias target_d206a_pag - d206a_pag kind 'delivery-shortage' units 'cfs'}
+define short_d206b_pag {alias target_d206b_pag - d206b_pag kind 'delivery-shortage' units 'cfs'}
+define short_d206c_pag {alias target_d206c_pag - d206c_pag kind 'delivery-shortage' units 'cfs'}
+
+define short_swp_pag_n {alias short_d7a_pag + short_d7b_pag + short_d206a_pag + short_d206b_pag + short_d206c_pag
+                         kind 'delivery-shortage-swp' units 'cfs'}
+
+define del_swp_pag_n {alias d7a_pag + d7b_pag + d206a_pag + d206b_pag + d206c_pag
+                         kind 'delivery-swp' units 'cfs'}
+
+! MI Shortage
+define short_d201_pimi  {alias target_d201_pimi - d201_pimi kind 'delivery-shortage' units 'cfs'}
+define short_d201_pomi  {alias target_d201_pomi - d201_pomi kind 'delivery-shortage' units 'cfs'}
+define short_d204_pimi  {alias target_d204_pimi - d204_pimi kind 'delivery-shortage' units 'cfs'}
+define short_d204_pomi  {alias target_d204_pomi - d204_pomi kind 'delivery-shortage' units 'cfs'}
+
+
+define short_swp_pmi_n {alias short_d201_pimi + short_d201_pomi + short_d204_pimi + short_d204_pomi kind 'delivery-shortage-swp' units 'cfs'}
+
+define del_swp_pmi_n {alias d201_pimi + d201_pomi + d204_pimi + d204_pomi kind 'delivery-swp' units 'cfs'}
+
+!*** For the South of Delta *************************************************************
+
+! AG Shortage
+define short_D802A_PAG {alias dem_D802A_PAG*taf_cfs*perdel_28 - D802A_PAG kind 'delivery-shortage' units 'cfs'}
+define short_D846_PAG  {alias dem_D846_PAG *taf_cfs*perdel_14 - D846_PAG  kind 'delivery-shortage' units 'cfs'}
+define short_D847_PAG  {alias dem_D847_PAG *taf_cfs*perdel_10 - D847_PAG  kind 'delivery-shortage' units 'cfs'}
+define short_D848_PAG  {alias dem_D848_PAG *taf_cfs*perdel_37 - D848_PAG  kind 'delivery-shortage' units 'cfs'}
+define short_D849_PAG  {alias dem_D849_PAG *taf_cfs*perdel_13 - D849_PAG  kind 'delivery-shortage' units 'cfs'}
+define short_D851_PAG  {alias dem_D851_PAG *taf_cfs*perdel_16 - D851_PAG  kind 'delivery-shortage' units 'cfs'}
+define short_D859_PAG  {alias dem_D859_PAG *taf_cfs*perdel_17 - D859_PAG  kind 'delivery-shortage' units 'cfs'}
+define short_D863_PAG  {alias dem_D863_PAG *taf_cfs*perdel_18 - D863_PAG  kind 'delivery-shortage' units 'cfs'}
+define short_D867_PAG  {alias dem_D867_PAG *taf_cfs*perdel_19 - D867_PAG  kind 'delivery-shortage' units 'cfs'}
+define short_D868_PAG  {alias dem_D868_PAG *taf_cfs*perdel_5  - D868_PAG  kind 'delivery-shortage' units 'cfs'}
+
+define short_swp_pag_s {alias short_D802A_PAG + short_D846_PAG + short_D847_PAG + short_D848_PAG +
+                            short_D849_PAG + short_D867_PAG + short_D868_PAG + short_D851_PAG +
+                            short_D859_PAG + short_D863_PAG
+                      kind  'delivery-shortage-swp'
+                      units 'cfs'}
+
+define del_swp_pag_s {alias D802A_PAG + D846_PAG + D847_PAG + D848_PAG +
+                          D849_PAG + D867_PAG + D868_PAG + D851_PAG +
+                          D859_PAG + D863_PAG
+                    kind  'delivery-swp'
+                    units 'cfs'}
+
+
+! MI Shortage
+define short_D27_PMI   {alias dem_D27_PMI  *taf_cfs*perdel_21 - D27_PMI   kind 'delivery-shortage' units 'cfs'}
+define short_D25_PMI   {alias dem_D25_PMI  *taf_cfs*perdel_11 - D25_PMI   kind 'delivery-shortage' units 'cfs'}
+define short_D28_PMI   {alias dem_D28_PMI  *taf_cfs*perdel_38 - D28_PMI   kind 'delivery-shortage' units 'cfs'}
+define short_D29_PMI   {alias dem_D29_PMI  *taf_cfs*perdel_39 - D29_PMI   kind 'delivery-shortage' units 'cfs'}
+define short_D403B_PMI {alias dem_D403B_PMI*taf_cfs*perdel_27 - D403B_PMI kind 'delivery-shortage' units 'cfs'}
+define short_D403C_PMI {alias dem_D403C_PMI*taf_cfs*perdel_36 - D403C_PMI kind 'delivery-shortage' units 'cfs'}
+define short_D851A_PMI {alias dem_D851A_PMI *taf_cfs*perdel_15 - D851A_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D851B_PMI {alias dem_D851B_PMI *taf_cfs*perdel_22 - D851B_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D885_PMI  {alias dem_D885_PMI *taf_cfs*perdel_23 - D885_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D895_PMI  {alias dem_D895_PMI *taf_cfs*perdel_24 - D895_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D899_PMI  {alias dem_D899_PMI *taf_cfs*perdel_25 - D899_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D810_PMI  {alias dem_D810_PMI *taf_cfs*perdel_1  - D810_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D813_PMI  {alias dem_D813_PMI *taf_cfs*perdel_2  - D813_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D814_PMI  {alias dem_D814_PMI *taf_cfs*perdel_3  - D814_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D815_PMI  {alias dem_D815_PMI *taf_cfs*perdel_35 - D815_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D869_PMI  {alias dem_D869_PMI *taf_cfs*perdel_33 - D869_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D870_PMI  {alias dem_D870_PMI *taf_cfs*perdel_34 - D870_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D877_PMI  {alias dem_D877_PMI *taf_cfs*perdel_4  - D877_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D878_PMI  {alias dem_D878_PMI *taf_cfs*perdel_29 - D878_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D879_PMI  {alias dem_D879_PMI *taf_cfs*perdel_20 - D879_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D881_PMI  {alias dem_D881_PMI *taf_cfs*perdel_26 - D881_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D883_PMI  {alias dem_D883_PMI *taf_cfs*perdel_8  - D883_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D884_PMI  {alias dem_D884_PMI *taf_cfs*perdel_12 - D884_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D886_PMI  {alias dem_D886_PMI *taf_cfs*perdel_30 - D886_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D887_PMI  {alias dem_D887_PMI *taf_cfs*perdel_31 - D887_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D888_PMI  {alias dem_D888_PMI *taf_cfs*perdel_32 - D888_PMI  kind 'delivery-shortage' units 'cfs'}
+define short_D896_PMI  {alias dem_D896_PMI *taf_cfs*perdel_6  - D896_PMI  kind 'delivery-shortage' units 'cfs'}
+
+define short_swp_pmi_s {alias short_D25_PMI   + short_D27_PMI   + short_D28_PMI  + short_D29_PMI +
+                              short_D403B_PMI + short_D403C_PMI + short_D869_PMI +
+                              short_D870_PMI  + short_D851A_PMI + short_D851B_PMI + short_D877_PMI + short_D878_PMI + short_D879_PMI +
+                              short_D881_PMI  + short_D883_PMI  + short_D884_PMI + short_D885_PMI +
+                              short_D886_PMI  + short_D887_PMI  + short_D888_PMI + short_D899_PMI +
+                              short_D895_PMI  + short_D896_PMI  + short_D810_PMI + short_D813_PMI +
+                              short_D814_PMI  + short_D815_PMI
+                     kind  'delivery-shortage-swp'
+                     units 'cfs'}
+
+define del_swp_pmi_s {alias D25_PMI  + D27_PMI  +
+                            D28_PMI  + D29_PMI  + D403B_PMI + D403C_PMI + D869_PMI +
+                            D870_PMI + D851A_PMI + D851B_PMI + D877_PMI  + D878_PMI  + D879_PMI +
+                            D881_PMI + D883_PMI + D884_PMI  + D885_PMI  +
+                            D886_PMI + D887_PMI + D888_PMI  + D899_PMI  +
+                            D895_PMI + D896_PMI + D810_PMI  + D813_PMI  +
+                            D814_PMI + D815_PMI
+                    kind  'delivery-swp'
+                    units 'cfs'}
+
+
+
+define short_swp_mwd {alias short_D27_PMI + short_D851B_PMI + short_D885_PMI + short_D899_PMI + short_D895_PMI
+                      kind  'delivery-shortage-swp'
+                      units 'cfs'}
+
+
+define del_swp_mwd {alias D27_PMI + D851B_PMI + D885_PMI + D899_PMI + D895_PMI
+                    kind  'delivery-swp'
+                    units 'cfs'}
+
+
+define short_swp_oth {alias short_swp_pmi_n + short_swp_pmi_s - short_swp_mwd
+                      kind  'delivery-shortage-swp'
+                      units 'cfs'}
+
+
+define del_swp_oth {alias del_swp_pmi_n + del_swp_pmi_s - del_swp_mwd
+                    kind  'delivery-swp'
+                    units 'cfs'}
+
+
+
+
+
+! LOSS SHORTAGE
+define short_D403B_PLS {alias dem_D403B_PLS - D403B_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D803_PLS {alias dem_D803_PLS - D803_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D824_PLS {alias dem_D824_PLS - D824_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D826_PLS {alias dem_D826_PLS - D826_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D827_PLS {alias dem_D827_PLS - D827_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D828_PLS {alias dem_D828_PLS - D828_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D829_PLS {alias dem_D829_PLS - D829_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D854_PLS {alias dem_D854_PLS - D854_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D862_PLS {alias dem_D862_PLS - D862_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D864_PLS {alias dem_D864_PLS - D864_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D880_PLS {alias dem_D880_PLS - D880_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D882_PLS {alias dem_D882_PLS - D882_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D889_PLS {alias dem_D889_PLS - D889_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D891_PLS {alias dem_D891_PLS - D891_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D893_PLS {alias dem_D893_PLS - D893_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D894_PLS {alias dem_D894_PLS - D894_PLS kind 'delivery-shortage' units 'cfs'}
+define short_D816_PLS {alias dem_D816_PLS - D816_PLS kind 'delivery-shortage' units 'cfs'}
+
+define short_swp_pls {alias short_D403B_PLS + short_D803_PLS + short_D824_PLS + short_D826_PLS +
+                            short_D827_PLS + short_D828_PLS + short_D829_PLS + short_D854_PLS +
+                            short_D862_PLS + short_D864_PLS + short_D880_PLS + short_D882_PLS +
+                            short_D889_PLS + short_D891_PLS + short_D893_PLS + short_D894_PLS +
+                            short_D816_PLS
+                     kind  'delivery-shortage-swp'
+                     units 'cfs'}
+
+
+define del_swp_pls {alias D403B_PLS + D803_PLS + D824_PLS + D826_PLS +
+                          D827_PLS + D828_PLS + D829_PLS + D854_PLS +
+                          D862_PLS + D864_PLS + D880_PLS + D882_PLS +
+                          D889_PLS + D891_PLS + D893_PLS + D894_PLS +
+                          D816_PLS
+                    kind  'delivery-swp'
+                    units 'cfs'}
+
+
+
+ /*
+ ! INTERRRUPTIBLE SHORTAGE
+ define short_D27_PIN {alias dem_d27_pin*perdel_swp_int - D27_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D403B_PIN {alias dem_D403B_PIN*perdel_swp_int - D403B_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D846_PIN {alias dem_D846_PIN*perdel_swp_int - D846_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D848_PIN {alias dem_D848_PIN*perdel_swp_int - D848_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D849_PIN {alias dem_D849_PIN*perdel_swp_int - D849_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D868_PIN {alias dem_D868_PIN*perdel_swp_int - D868_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D859_PIN {alias dem_D859_PIN*perdel_swp_int - D859_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D877_PIN {alias dem_D877_PIN*perdel_swp_int - D877_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D883_PIN {alias dem_D883_PIN*perdel_swp_int - D883_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D884_PIN {alias dem_D884_PIN*perdel_swp_int - D884_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D885_PIN {alias dem_D885_PIN*perdel_swp_int - D885_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D899_PIN {alias dem_D899_PIN*perdel_swp_int - D899_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D895_PIN {alias dem_D895_PIN*perdel_swp_int - D895_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D810_PIN {alias dem_D810_PIN*perdel_swp_int - D810_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D814_PIN {alias dem_D814_PIN*perdel_swp_int - D814_PIN kind 'delivery-shortage' units 'cfs'}
+ define short_D815_PIN {alias dem_D815_PIN*perdel_swp_int - D815_PIN kind 'delivery-shortage' units 'cfs'}
+*/
+
+define del_swp_pin {alias D27_PIN + D403B_PIN + D846_PIN + D848_PIN +
+                          D849_PIN + D868_PIN + D859_PIN + D877_PIN +
+                          D883_PIN + D884_PIN + D885_PIN + D899_PIN +
+                          D895_PIN + D810_PIN + D814_PIN + D815_PIN
+                    kind  'delivery-swp'
+                    units 'cfs'}
+
+
+
+! TOTAL
+define short_swp_tot_n {alias short_swp_pwr + short_swp_pag_n + short_swp_pmi_n kind  'delivery-shortage-swp' units 'cfs'}
+define short_swp_tot_s {alias short_swp_pag_s + short_swp_pmi_s + short_swp_pls kind  'delivery-shortage-swp' units 'cfs'}
+define short_swp_pag   {alias short_swp_pag_n + short_swp_pag_s kind  'delivery-shortage-swp' units 'cfs'}
+define short_swp_pmi   {alias short_swp_pmi_n + short_swp_pmi_s kind  'delivery-shortage-swp' units 'cfs'}
+define short_swp_total {alias short_swp_pwr + short_swp_pag + short_swp_pmi + short_swp_pls kind  'delivery-shortage-swp' units 'cfs'}
+
+define del_swp_tot_n {alias del_swp_pwr + del_swp_pag_n + del_swp_pmi_n kind  'delivery-swp' units 'cfs'}
+define del_swp_tot_s {alias del_swp_pag_s + del_swp_pmi_s + del_swp_pls kind  'delivery-swp' units 'cfs'}
+define del_swp_pag   {alias del_swp_pag_n + del_swp_pag_s kind  'delivery-swp' units 'cfs'}
+define del_swp_pmi   {alias del_swp_pmi_n + del_swp_pmi_s kind  'delivery-swp' units 'cfs'}
+define del_swp_total {alias del_swp_pag   + del_swp_pmi + del_swp_pls kind 'delivery-swp' units 'cfs'}
+

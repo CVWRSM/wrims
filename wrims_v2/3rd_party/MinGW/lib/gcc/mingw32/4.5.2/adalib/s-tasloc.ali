@@ -1,0 +1,45 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U system.task_lock%b	s-tasloc.adb		a4b809d7 NE OL PK
+W system%s		system.ads		system.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+
+U system.task_lock%s	s-tasloc.ads		a88c66b9 BN EB NE OL PK
+W system%s		system.ads		system.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-parame.ads		20091130110856 6cdeed25
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-tasloc.ads		20070606101414 10673e7a
+D s-tasloc.adb		20080326073520 d53afe45
+D s-traent.ads		20090417130712 a66ef260
+X 4 system.ads
+37K9*System 197e11 11|48r9 100r5 12|34r6 36r14 44r7 53r7 56r5
+X 6 s-soflin.ads
+45K16*Soft_Links 397e22 12|34w13 44r14 53r14
+60P9*No_Param_Proc
+185p4*Lock_Task{60P9} 12|44r25
+195p4*Unlock_Task{60P9} 12|53r25
+X 11 s-tasloc.ads
+48K16*Task_Lock 4|37k9 11|100l12 100e21 12|36b21 56l12 56t21
+51U14*Lock 52r19 12|42b14 45l8 45t12
+56U14*Unlock 57r19 12|51b14 54l8 54t14
+

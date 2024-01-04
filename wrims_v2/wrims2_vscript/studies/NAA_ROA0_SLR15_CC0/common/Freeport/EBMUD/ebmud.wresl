@@ -1,0 +1,10 @@
+!EBMUD.wresl
+!Sets up EBMUD Requested Diversions from Freeport
+!This information is from an EBMUDSIM study
+
+define D168B_ebmud {std kind 'flow-delivery' units 'cfs'}
+
+define alloc_d168b_ebmud  {timeseries kind 'ALLOC-CVP-MI' units 'TAF' convert 'CFS'}      !Allocation amount for EBMUD Freeport
+
+goal capD168Bebmud {D168B_ebmud < 154.7 } !EBMUD use of capacity set to max of 100 MGD
+goal setD168Bebmud {D168B_ebmud < alloc_D168B_ebmud}

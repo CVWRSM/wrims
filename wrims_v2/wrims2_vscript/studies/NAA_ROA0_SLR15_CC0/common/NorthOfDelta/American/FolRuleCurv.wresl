@@ -1,0 +1,72 @@
+define OctMarRunoffEst {select OctMar from SacValleyIndex where wateryear=wateryear}
+
+define S8level3 {
+    case OctthruDec {
+             condition month >= Oct .and. month <= Mar .and. OctMarRunoffEst > 14.33 !25% Exceedence level for Oct-Mar 40-30-30 Runoff
+        value 300.0 }
+    case Other {
+        condition always
+        value 400.0 }
+}
+
+define FolInf {value (I8 + I9 + I300)*cfs_taf }
+define FolInfEst {sum(i=0,SEP-month,1) (I8(i)+I9(i)+I300(i))*cfs_taf(i) }
+
+define FolDiv {value (DEM_D300_WR_ANN + DEM_D300_PMI_ANN) * perdem_70pcwa +
+                      DEM_D8A_WR_ANN * perdem_70nrwd +
+                     (DEM_D8B_WR_ANN + DEM_D8B_PMI_ANN) * perdem_70fol +
+                      DEM_D8C_WR_ANN * perdem_70folp +
+                      DEM_D8D_WR_ANN * perdem_70sjwdp +
+                     (DEM_D8E_WR_ANN + DEM_D8E_PMI_ANN) * perdem_70sjwds +
+                     (DEM_D8F_WR_ANN + DEM_D8F_PMI_ANN) * perdem_70eldor +
+                     (DEM_D8G_WR_ANN + DEM_D8G_PMI_ANN) * perdem_70rose +
+                      DEM_D8h_PMI_ANN * perdem_70pcwa +
+                      DEM_D8i_PMI_ANN * perdem_70eldorco +
+                      DEM_D9AA_WR_ANN * perdem_70scwc +
+                      DEM_D9AB_PMI_ANN * perdem_70carec +
+                      DEM_D9A_PLS * cfs_taf +
+!                      DEM_D9BG_PAG_ANN * perdem_70 +
+                      DEM_D9B_PMI_ANN * perdem_70smud}
+
+define FolDivEst {sum(i=0,SEP-month,1)
+            ((DEM_D300_WR_ANN(i) + DEM_D300_PMI_ANN(i)) * perdem_70pcwa(i) +
+                      DEM_D8A_WR_ANN(i) * perdem_70nrwd(i) +
+                     (DEM_D8B_WR_ANN(i) + DEM_D8B_PMI_ANN(i)) * perdem_70fol(i) +
+                      DEM_D8C_WR_ANN(i) * perdem_70folp(i) +
+                      DEM_D8D_WR_ANN(i) * perdem_70sjwdp(i) +
+                     (DEM_D8E_WR_ANN(i) + DEM_D8E_PMI_ANN(i)) * perdem_70sjwds(i) +
+                     (DEM_D8F_WR_ANN(i) + DEM_D8F_PMI_ANN(i)) * perdem_70eldor(i) +
+                     (DEM_D8G_WR_ANN(i) + DEM_D8G_PMI_ANN(i)) * perdem_70rose(i) +
+                      DEM_D8h_PMI_ANN(i) * perdem_70pcwa(i) +
+                      DEM_D8i_PMI_ANN(i) * perdem_70eldorco(i) +
+                      DEM_D9AA_WR_ANN(i) * perdem_70scwc(i) +
+                      DEM_D9AB_PMI_ANN(i) * perdem_70carec(i) +
+                      DEM_D9A_PLS(i) * cfs_taf(i) +
+!                      DEM_D9BG_PAG_ANN(i) * perdem_70(i) +
+                      DEM_D9B_PMI_ANN(i) * perdem_70smud(i)) }
+
+!define FolSupEst {value max(0.0,FolInfEst - FolDivEst + S8(-1)+S8mod - S8level3(sep-month))}
+define FolSupEst {value max(0.0,FolInfEst - FolDivEst + S8(-1)+S8mod - S8level3)}
+
+define FolSupEstdv {alias FolSupEst kind 'FORECAST' units 'TAF'}
+
+!define FolFlowTarg {value min((FolSupEst/cfs_taf)/(Sep-month+1.),5000.)}
+define FolFlowTarg {value (FolSupEst/cfs_taf)/(Sep-month+1.) }
+
+define FolRuleCalc {
+     case JunthruSep {
+          condition month >= may .and. month <= sep
+          value     FolInf - FolDiv + S8(-1)+S8mod - FolFlowTarg*cfs_taf }
+     case Other {
+          condition always
+          value     S8level3}}
+define FolRuleCalcdv {alias FolRuleCalc kind 'RULE' units 'TAF'}
+
+define S8level3adj {value min(max(FolRuleCalc,S8level2),S8level4)}
+define S8level3dv {alias S8level3adj kind 'STORAGE-LEVEL' units 'TAF'}
+
+goal S8Zone3 {S8_3 < max(S8level3adj - S8level2,0.)}
+goal S8Zone4 {S8_4 < max(S8level4 - S8level3adj,0.)}
+goal S8Zone5 {S8_5 < max(S8level5 - S8level4,0.)}
+goal S8Zone6 {S8_6 < max(S8level6 - S8level5,0.)}
+

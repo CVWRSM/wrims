@@ -1,0 +1,214 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U interfaces.fortran.blas%b  i-forbla.adb	cd5dea71 NE OL PK
+W interfaces.fortran%s	i-fortra.adb		i-fortra.ali
+L "-lgnala"
+L "-llapack"
+L "-lblas"
+L "-lm"
+
+U interfaces.fortran.blas%s  i-forbla.ads	574aad9d EB NE OL PU PK
+W interfaces.fortran%s	i-fortra.adb		i-fortra.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-numeri.ads		20080324174808 1cf3e608
+D a-ngcoty.ads		20090409150020 1dba9865
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-fortra.ads		20070406092324 e2d82a0c
+D i-forbla.ads		20090409150020 b5928791
+D i-forbla.adb		20090409150020 78cf6de0
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-stalib.ads		20090422095704 9cbc334a
+X 3 a-ngcoty.ads
+42R9*Complex
+X 5 interfac.ads
+36K9*Interfaces 171e15 7|45r9 261r5 8|37r14 42r5
+X 6 i-fortra.ads
+19K20*Fortran 5|36k9 6|69e23 7|45r20 261r16 8|37r25 42r16
+23F9*Real<float> 7|55r52 67r9 85r36 111r36 121r36 134r15 139r15 190r17 195r17
+24F9*Double_Precision<long_float> 7|60r9 70r9 92r36 116r36 126r36 147r15
+. 152r15 205r17 210r17
+41R9*Complex<3|42R9[35]> 7|57r55 73r9 99r36 160r15 165r15 220r17 225r17
+43R9*Double_Complex<3|42R9[38]> 7|62r62 76r9 106r36 173r15 178r15 235r17
+. 240r17
+X 7 i-forbla.ads
+45K28*BLAS 6|19k20 7|261l24 261e28 8|37b33 42l24 42t28
+49e4*No_Trans{character}
+50e4*Trans{character}
+51e4*Conj_Trans{character}
+55A9*Real_Vector(6|23F9)<integer> 82r15 84r15 110r15 137r15 140r22
+57A9*Complex_Vector(6|41R9)<integer> 96r15 98r15 120r15 163r15 166r22
+59A9*Double_Precision_Vector(6|24F9)<integer> 89r15 91r15 115r15 150r15 153r22
+62A9*Double_Complex_Vector(6|43R9)<integer> 103r15 105r15 125r15 176r15 179r22
+66A9*Real_Matrix(6|23F9)<integer><integer> 135r15 191r17 193r17 196r24
+69A9*Double_Precision_Matrix(6|24F9)<integer><integer> 148r15 206r17 208r17
+. 211r24
+72A9*Complex_Matrix(6|41R9)<integer><integer> 161r15 221r17 223r17 226r24
+75A9*Double_Complex_Matrix(6|43R9)<integer><integer> 174r15 236r17 238r17
+. 241r24
+80V13*sdot{6|23F9} 81>7 82>7 83>7 84>7 85>7 254b28
+81i7 N{positive}
+82a7 X{55A9}
+83i7 Inc_X{integer}
+84a7 Y{55A9}
+85i7 Inc_Y{integer}
+87V13*ddot{6|24F9} 88>7 89>7 90>7 91>7 92>7 248b28
+88i7 N{positive}
+89a7 X{59A9}
+90i7 Inc_X{integer}
+91a7 Y{59A9}
+92i7 Inc_Y{integer}
+94V13*cdotu{6|41R9} 95>7 96>7 97>7 98>7 99>7 245b28
+95i7 N{positive}
+96a7 X{57A9}
+97i7 Inc_X{integer}
+98a7 Y{57A9}
+99i7 Inc_Y{integer}
+101V13*zdotu{6|43R9} 102>7 103>7 104>7 105>7 106>7 258b28
+102i7 N{positive}
+103a7 X{62A9}
+104i7 Inc_X{integer}
+105a7 Y{62A9}
+106i7 Inc_Y{integer}
+108V13*snrm2{6|23F9} 109>7 110>7 111>7 257b28
+109i7 N{natural}
+110a7 X{55A9}
+111i7 Inc_X{integer}
+113V13*dnrm2{6|24F9} 114>7 115>7 116>7 251b28
+114i7 N{natural}
+115a7 X{59A9}
+116i7 Inc_X{integer}
+118V13*scnrm2{6|23F9} 119>7 120>7 121>7 253b28
+119i7 N{natural}
+120a7 X{57A9}
+121i7 Inc_X{integer}
+123V13*dznrm2{6|24F9} 124>7 125>7 126>7 252b28
+124i7 N{natural}
+125a7 X{62A9}
+126i7 Inc_X{integer}
+130U14*sgemv 131^7 132>7 133>7 134>7 135>7 136>7 137>7 138>7 139>7 140=7
+. 141>7 256b28
+131p7 Trans(character)
+132i7 M{natural}
+133i7 N{natural}
+134f7 Alpha{6|23F9}
+135a7 A{66A9}
+136i7 Ld_A{positive}
+137a7 X{55A9}
+138i7 Inc_X{integer}
+139f7 Beta{6|23F9}
+140a7 Y{55A9}
+141i7 Inc_Y{integer}
+143U14*dgemv 144^7 145>7 146>7 147>7 148>7 149>7 150>7 151>7 152>7 153=7
+. 154>7 250b28
+144p7 Trans(character)
+145i7 M{natural}
+146i7 N{natural}
+147f7 Alpha{6|24F9}
+148a7 A{69A9}
+149i7 Ld_A{positive}
+150a7 X{59A9}
+151i7 Inc_X{integer}
+152f7 Beta{6|24F9}
+153a7 Y{59A9}
+154i7 Inc_Y{integer}
+156U14*cgemv 157^7 158>7 159>7 160>7 161>7 162>7 163>7 164>7 165>7 166=7
+. 167>7 247b28
+157p7 Trans(character)
+158i7 M{natural}
+159i7 N{natural}
+160r7 Alpha{6|41R9}
+161a7 A{72A9}
+162i7 Ld_A{positive}
+163a7 X{57A9}
+164i7 Inc_X{integer}
+165r7 Beta{6|41R9}
+166a7 Y{57A9}
+167i7 Inc_Y{integer}
+169U14*zgemv 170^7 171>7 172>7 173>7 174>7 175>7 176>7 177>7 178>7 179=7
+. 180>7 260b28
+170p7 Trans(character)
+171i7 M{natural}
+172i7 N{natural}
+173r7 Alpha{6|43R9}
+174a7 A{75A9}
+175i7 Ld_A{positive}
+176a7 X{62A9}
+177i7 Inc_X{integer}
+178r7 Beta{6|43R9}
+179a7 Y{62A9}
+180i7 Inc_Y{integer}
+184U14*sgemm 185^7 186^7 187>7 188>7 189>7 190>7 191>7 192>7 193>7 194>7
+. 195>7 196=7 197>7 255b28
+185p7 Trans_A(character)
+186p7 Trans_B(character)
+187i7 M{positive}
+188i7 N{positive}
+189i7 K{positive}
+190f7 Alpha{6|23F9}
+191a7 A{66A9}
+192i7 Ld_A{integer}
+193a7 B{66A9}
+194i7 Ld_B{integer}
+195f7 Beta{6|23F9}
+196a7 C{66A9}
+197i7 Ld_C{integer}
+199U14*dgemm 200^7 201^7 202>7 203>7 204>7 205>7 206>7 207>7 208>7 209>7
+. 210>7 211=7 212>7 249b28
+200p7 Trans_A(character)
+201p7 Trans_B(character)
+202i7 M{positive}
+203i7 N{positive}
+204i7 K{positive}
+205f7 Alpha{6|24F9}
+206a7 A{69A9}
+207i7 Ld_A{integer}
+208a7 B{69A9}
+209i7 Ld_B{integer}
+210f7 Beta{6|24F9}
+211a7 C{69A9}
+212i7 Ld_C{integer}
+214U14*cgemm 215^7 216^7 217>7 218>7 219>7 220>7 221>7 222>7 223>7 224>7
+. 225>7 226=7 227>7 246b28
+215p7 Trans_A(character)
+216p7 Trans_B(character)
+217i7 M{positive}
+218i7 N{positive}
+219i7 K{positive}
+220r7 Alpha{6|41R9}
+221a7 A{72A9}
+222i7 Ld_A{integer}
+223a7 B{72A9}
+224i7 Ld_B{integer}
+225r7 Beta{6|41R9}
+226a7 C{72A9}
+227i7 Ld_C{integer}
+229U14*zgemm 230^7 231^7 232>7 233>7 234>7 235>7 236>7 237>7 238>7 239>7
+. 240>7 241=7 242>7 259b28
+230p7 Trans_A(character)
+231p7 Trans_B(character)
+232i7 M{positive}
+233i7 N{positive}
+234i7 K{positive}
+235r7 Alpha{6|43R9}
+236a7 A{75A9}
+237i7 Ld_A{integer}
+238a7 B{75A9}
+239i7 Ld_B{integer}
+240r7 Beta{6|43R9}
+241a7 C{75A9}
+242i7 Ld_C{integer}
+

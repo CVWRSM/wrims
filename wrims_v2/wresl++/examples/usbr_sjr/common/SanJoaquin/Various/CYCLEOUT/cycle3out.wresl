@@ -1,0 +1,90 @@
+! cycle3out.wresl
+! Edward Chang
+! 5/01/2000
+! The following WRESL code is used in cycle 6 to write out intermediate solver computations that are made in the SJR module
+! Revised by C. Hsu, 3/7/03, USBR, for review and documentation project
+!################################################################################################################
+
+/* Cycle 3
+The following WRESL code is used in cycle 6 to write out intermediate solver computations
+that are made in the SJR module.  This may be needed to verify output computations that
+are based on cycle3 because the final output is the monthly weighted flows and storages,
+not what may be in each 10, 14, 15, or 16 day period.
+*/
+! Define  New Melones flows for cycle 3 output
+define C_MELONcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones mainstem flows for cycle 3 output
+define C_MELONmcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones water quality flows for cycle 3 output
+define C_MELONWQcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones dissolved oxygen flows for cycle 3 output
+define C_MELONDOcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones VAMP flows for cycle 3 output
+define C_STS059VAMPcyc3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Lower DMC flow for cycle 3 output
+define C_DMC116cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Merced River below McClure flow for cycle 3 output
+define C_MCLREcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Don Pedro mian channel flow for cycle 3 output
+define C_PEDROcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define McClure main channel flow for cycle 3 output
+define C_MCLREmcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Don Pedro mian channel flow for cycle 3 output
+define C_PEDROmcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define McClure VAMP flow for cycle 3 output
+define C_MCLREvampcyc3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Don Pedro VAMP flow for cycle 3 output
+define C_PEDROvampcyc3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Goodwin flow for cycle 3 output
+define C_STS059cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define flow for Reach C_STS017 for cycle 3 output
+define C_STS017cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define flow below Vernalis for cycle 3 output
+define C_SJR070cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Set New Melones flow for cycle 3output 
+goal outC_MELONcycle3 {C_MELONcycle3 = C_MELON[SJR_PULSE]}
+! Set New Melones main channel flow for cycle 3 output 
+goal outC_MELONmcycle3 {C_MELONMcycle3 = C_MELONM[SJR_PULSE]} 
+! Set New Melones water quality flow for cycle 3 output
+goal outC_MELONWQcycle3 {C_MELONWQcycle3 = C_MELONWQ[SJR_PULSE]}
+! Set New Melones DO flow for cycle 3 output 
+goal outC_MELONDOcycle3 {C_MELONDOcycle3 = C_MELONDO[SJR_PULSE]}
+!goal outC_MELONVAMPcycle3 {C_MELONVAMPcycle3 = C_MELONVAMP[SJR_PULSE]}
+! New Melones Reach C_STS059 VAMP cycle 3 output
+goal outC_STS059VAMPcyc3 {C_STS059VAMPcyc3 = C_STS059VAMP[SJR_PULSE]}
+! Lower DMC to Mendota Pool cycle 32 output
+goal outC_DMC116cycle3 {C_DMC116cycle3 = C_DMC116[SJR_PULSE]}
+! Merced River cycle 3 output
+goal outC_MCLREcycle3 {C_MCLREcycle3 = C_MCLRE[SJR_PULSE]}
+! Don Pedro cycle3 output
+goal outC_PEDROcycle3 {C_PEDROcycle3 = C_PEDRO[SJR_PULSE]}
+! McClure cycle 3 output
+goal outC_MCLREmcycle3 {C_MCLREMcycle3 = C_MCLREM[SJR_PULSE]}
+! Don Pedro mainstem cycle 3 output
+goal outC_PEDROmcycle3 {C_PEDROMcycle3 = C_PEDROM[SJR_PULSE]}
+! McClure VAMP cycle 3 output
+goal outC_MCLREvampcyc3 {C_MCLREVAMPcyc3 = C_MCLREVAMP[SJR_PULSE]}
+! Don Pedro VAMP cycle 3 output
+goal outC_PEDROvampcyc3 {C_PEDROVAMPcyc3 = C_PEDROVAMP[SJR_PULSE]}
+! New Melones Reach C_STS059 cycle 3 output
+goal outC_STS059cycle3 {C_STS059cycle3 = C_STS059[SJR_PULSE]}
+! New Melones Reach C_STS017 cycle 3 output
+goal outC_STS017cycle3 {C_STS017cycle3 = C_STS017[SJR_PULSE]}
+! SJR below Vernalis cycle 3 output
+goal outC_SJR070cycle3 {C_SJR070cycle3 = C_SJR070[SJR_PULSE]}
+! New Melones mainstem VAMP cycle 3 output 
+define C_MELONVAMP_Mcy3 {std kind 'flow-cycle3' units 'cfs' }
+! New Melones mainstem VAMP transfer cycle 3 output 
+define C_MELONVAMP_Tcy3 {std kind 'flow-cycle3' units 'cfs' }
+! Don Pedro Stanislaus VAMP cycle 3 output
+define C_PEDROstsvampc3 {std kind 'flow-cycle3' units 'cfs' }
+! New Melones VAMP cycle 3 output (Pulse period)
+goal outC_MELONVAMP_Mcy3 {C_MELONVAMP_Mcy3 = C_MELONVAMP_M[SJR_PULSE]}
+! New Melones VAMP transfer cycle 3 output (Pulse period)
+goal outC_MELONVAMP_Tcy3 {C_MELONVAMP_Tcy3 = C_MELONVAMP_T[SJR_PULSE]}
+! Don Pedro Stanislaus VAMP cycle 3 output (Pulse period)
+goal outC_PEDRO_STS_VAMPcycle3 {C_PEDROstsvampc3 = C_PEDRO_STS_VAMP[SJR_PULSE]}
+! Define Don Pedro minflow for cycle 3
+define C_TUO054_MIFcyc3 {std kind 'flowmin-cycle3' units 'cfs'}
+! Don Pedro minflow cycle 3 output
+goal outC_TUO054_MIFcyc3 {C_TUO054_MIFcyc3 = C_TUO054_MIF[SJR_PULSE]}

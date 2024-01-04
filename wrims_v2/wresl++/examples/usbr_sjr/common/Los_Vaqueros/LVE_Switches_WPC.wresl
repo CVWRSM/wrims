@@ -1,0 +1,46 @@
+! LVE_Switches.wresl
+
+! Set switches and flags that control the Los Vaqueros System's interaction within
+! the CVP/SWP system.
+
+! *****************************************************************************
+! Switch to set type of run
+! Condition: Existing = 0; Future No Action = 1; With Project = 2
+define LVESwitch { value 2. }
+
+! *****************************************************************************
+! Switch to set particular plan for WithProject runs
+! Condition: Existing or FNA = 0; PlanA = 1; PlanB = 2; PlanC = 3; PlanD = 4
+define LVEPlan     { value 3. }
+
+! *****************************************************************************
+! Switch to set whether or not LVE is used for SBA reliability
+! value = 1 to activate LVE release to SBA Reliability Demand
+! value = 0 to deactivate this release
+! Used in LVE_Demands.wresl to determine the constraint on D426_REL
+define LV_SBA_REL_Flag1 { value 0. }
+
+! *****************************************************************************
+! Switch to define and limit LVE exchange
+! value = 1 to allow exchange with SBA + CA Aqueduct partners
+! value = 0 to limit exchange to SBA partners only, and only up to D801[WHEELJPOD]
+define LVE_Exch_Flag1   { value 1. }
+
+goal limD427A {D427A < D426*abs(1.-LVE_Exch_Flag1)} !release to SBA below SBA Pumping Plant
+goal limD427B {D427B < D426*LVE_Exch_Flag1        } !release to Bethany at head of both SBA and CA Aqueduct
+define maxExchange      {value 1000.}               !(cfs) if switch = 1, then this sets max Exchange to SBA+CA
+
+! *****************************************************************************
+! Switch to set whether or not LVE can exchange water for EWA
+! value = 1 to activate LVE_EWA exchange
+! value = 0 to deactivate this exchange
+define LVE_Exch_Flag2   { value 1. }
+
+! *****************************************************************************
+! If LVE exchange for EWA is enabled, set what assets it is targeted to offset
+! value = 0, LVE_EWA exchange targeted to offset SOD purchase
+! value = 1, LVE_EWA exchange targeted to offset NOD purchase
+! value = 2, LVE_EWA exchange targeted to offset SOD+NOD purchase
+! value = 3, LVE_EWA exchange targeted to offset EWA debt
+define LVE_Exch_Flag3   { value 2. }
+

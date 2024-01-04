@@ -1,0 +1,66 @@
+/* This code computes monthly Black Butte Flood Control Storage based on the
+precipitation parameter storage requirement (S_BLKBTlevel4) and creditable space
+in East Park and Stony Gorge Reservoirs
+*/
+
+define S_BLKBTlevel3 {select target from res_level where res_num=42,level=3,month=month}
+define S_BLKBTlevel4 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+
+! Compute creditable space in East Park Reservoir
+define credit_EPdv {
+       CASE      EP_1 {
+       CONDITION 48.2 - S_EPARK(-1) > 10.0
+       value     10.0 }  ! TAF
+       CASE      EP_2 {
+       CONDITION 48.2 - S_EPARK(-1) < 0.0
+       value     0.0 }  ! TAF
+       CASE      EP_3 {
+       CONDITION always
+       value     48.2 - S_EPARK(-1) } } ! TAF
+
+! Compute creditable space in Stony Gorge Reservoir
+define credit_SGdv {
+       CASE      SG_1 {
+       CONDITION 28.4 - S_SGRGE(-1) < 0.0 .and. MONTH >= FEB .and. MONTH <= AUG
+       value     0.0 }  ! TAF
+       CASE      SG_2 {
+       CONDITION always
+       value     28.4 - S_SGRGE(-1) } } ! TAF
+
+! Compute total creditable space
+define total_FC_credit {
+       CASE      total_1 {
+       CONDITION credit_EPdv + credit_SGdv > 40.0
+       value     40.0 }  ! TAF
+       CASE      total_2 {
+       CONDITION always
+       value     credit_EPdv + credit_SGdv } } ! TAF
+
+! Compute Black Butte Flood Control Storage
+define S_BLKBTlevel4adj {
+       CASE      BLB_1 {
+       CONDITION S_BLKBTLEVEL4 + total_FC_credit < S_BLKBTlevel2
+       value     S_BLKBTlevel2 }  ! TAF
+       CASE      BLB_2 {
+       CONDITION S_BLKBTLEVEL4 + total_FC_credit > 136.2
+       value     136.2 }  ! TAF
+       CASE      BLB_3 {
+       CONDITION always
+       value     S_BLKBTLEVEL4 + total_FC_credit } } ! TAF
+
+define S_BLKBTlevel4dv {alias S_BLKBTlevel4adj kind 'RULE' units 'TAF'}
+
+! Limit Level 3 storage to adjusted Level 4 storage or less
+define S_BLKBTlevel3adj {
+       CASE      Level3_1 {
+       CONDITION S_BLKBTlevel4adj - S_BLKBTLEVEL3 < 0.0
+       value     S_BLKBTlevel4adj }  ! TAF
+       CASE      Level3_2 {
+       CONDITION always
+       value     S_BLKBTLEVEL3 } } ! TAF
+
+define S_BLKBTlevel3dv {alias S_BLKBTlevel3adj kind 'STORAGE-LEVEL' units 'TAF'}
+
+goal S_BLKBTZone3 {S_BLKBT_3 < S_BLKBTlevel3adj - S_BLKBTlevel2}
+goal S_BLKBTZone4 {S_BLKBT_4 < S_BLKBTlevel4adj - S_BLKBTlevel3adj}
+goal S_BLKBTZone5 {S_BLKBT_5 < S_BLKBTlevel5 - S_BLKBTlevel4adj}

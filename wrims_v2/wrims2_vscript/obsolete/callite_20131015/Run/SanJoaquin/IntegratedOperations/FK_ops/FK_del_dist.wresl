@@ -1,0 +1,139 @@
+!Distribute Diversions and Losses along the Friant Kern
+
+!Friant to Kings
+
+define D910_C1 {std kind 'flow-delivery' units 'cfs'}
+define D910_C2 {std kind 'flow-delivery' units 'cfs'}
+define D910_215 {std kind 'flow-delivery' units 'cfs'}
+define D910_SD {std kind 'flow-delivery' units 'cfs'}
+
+goal split_D910 {D910 = D910_C1 + D910_C2 + D910_215 + D910_SD }
+
+define dist_910_c1 {select C1 from FK_delivery_dist where NODE = 910}
+define dist_910_c2 {select C2 from FK_delivery_dist where NODE = 910}
+define dist_910_215 {select C215 from FK_delivery_dist where NODE = 910}
+
+goal lim_D910_c1 {D910_C1 < FK_C1_DEL * taf_cfs * dist_910_c1/100.}
+goal lim_D910_c2 {D910_C2 < FK_final_C2 * taf_cfs * dist_910_c2/100.}
+goal lim_D910_215 {D910_215 < FK_add * taf_cfs * dist_910_215/100.}
+goal lim_L910 {L910 < FK_Loss * taf_cfs * dist_910_c1/100.}
+
+!Kings to Tule
+
+define D920_C1 {std kind 'flow-delivery' units 'cfs'}
+define D920_C2 {std kind 'flow-delivery' units 'cfs'}
+define D920_215 {std kind 'flow-delivery' units 'cfs'}
+define D920_SD {std kind 'flow-delivery' units 'cfs'}
+
+goal split_D920 {D920 = D920_C1 + D920_C2 + D920_215 + D920_SD}
+
+define dist_920_c1 {select C1 from FK_delivery_dist where NODE = 920}
+define dist_920_c2 {select C2 from FK_delivery_dist where NODE = 920}
+define dist_920_215 {select C215 from FK_delivery_dist where NODE = 920}
+
+goal lim_D920_c1 {D920_C1 < FK_C1_DEL * taf_cfs * dist_920_c1/100.}
+goal lim_D920_c2 {D920_C2 < FK_final_C2 * taf_cfs * dist_920_c2/100.}
+goal lim_D920_215 {D920_215 < FK_add * taf_cfs * dist_920_215/100.}
+goal lim_L920 {L920 < FK_Loss * taf_cfs * dist_920_c1/100.}
+
+!Tule to EQ
+
+define D932_C1 {std kind 'flow-delivery' units 'cfs'}
+define D932_C2 {std kind 'flow-delivery' units 'cfs'}
+define D932_215 {std kind 'flow-delivery' units 'cfs'}
+define D932_SD {std kind 'flow-delivery' units 'cfs'}
+
+goal split_D932 {D932 = D932_C1 + D932_C2 + D932_215 + D932_SD}
+
+define dist_932_c1 {select C1 from FK_delivery_dist where NODE = 932}
+define dist_932_c2 {select C2 from FK_delivery_dist where NODE = 932}
+define dist_932_215 {select C215 from FK_delivery_dist where NODE = 932}
+
+goal lim_D932_c1 {D932_C1 < FK_C1_DEL * taf_cfs * dist_932_c1/100.}
+goal lim_D932_c2 {D932_C2 < FK_final_C2 * taf_cfs * dist_932_c2/100.}
+goal lim_D932_215 {D932_215 < FK_add * taf_cfs * dist_932_215/100.}
+goal lim_L930 {L930 < FK_Loss * taf_cfs * dist_932_c1/100.}
+
+!EQ to Kern
+
+define D937_C1 {std kind 'flow-delivery' units 'cfs'}
+define D937_C2 {std kind 'flow-delivery' units 'cfs'}
+define D937_215 {std kind 'flow-delivery' units 'cfs'}
+define D937_SD {std kind 'flow-delivery' units 'cfs'}
+
+goal split_D937 {D937 = D937_C1 + D937_C2 + D937_215 + D937_SD}
+
+define dist_937_c1 {select C1 from FK_delivery_dist where NODE = 937}
+define dist_937_c2 {select C2 from FK_delivery_dist where NODE = 937}
+define dist_937_215 {select C215 from FK_delivery_dist where NODE = 937}
+
+goal lim_D937_c1 {D937_C1 < FK_C1_DEL * taf_cfs * dist_937_c1/100.}
+goal lim_D937_c2 {D937_C2 < FK_final_C2 * taf_cfs * dist_937_c2/100.}
+goal lim_D937_215 {D937_215 < FK_add * taf_cfs * dist_937_215/100.}
+goal lim_L935 {L935 < FK_Loss * taf_cfs * dist_937_c1/100.}
+
+!Kern to Arvin
+
+define D950_C1 {std kind 'flow-delivery' units 'cfs'}
+define D950_C2 {std kind 'flow-delivery' units 'cfs'}
+define D950_215 {std kind 'flow-delivery' units 'cfs'}
+define D950_SD {std kind 'flow-delivery' units 'cfs'}
+
+goal split_D950 {D950 = D950_C1 + D950_C2 + D950_215 + D950_SD}
+
+define dist_950_c1 {select C1 from FK_delivery_dist where NODE = 950}
+define dist_950_c2 {select C2 from FK_delivery_dist where NODE = 950}
+define dist_950_215 {select C215 from FK_delivery_dist where NODE = 950}
+
+goal lim_D950_c1 {D950_C1 < FK_C1_DEL * taf_cfs * dist_950_c1/100.}
+goal lim_D950_c2 {D950_C2 < FK_final_C2 * taf_cfs * dist_950_c2/100.}
+goal lim_D950_215 {D950_215 < FK_add * taf_cfs * dist_950_215/100.}
+goal lim_L950 {L950 < FK_Loss * taf_cfs * dist_950_c1/100.}
+
+!Limit supplemental delivery to distibuted supplemental C2 demand.
+!First subdivide supplemental deliveries into groundwater and return
+!from mwd incremental storage.  We'll define the groundwater demand here.
+!The demand for FWUA water in MWD storage will be dependent on the water available.
+
+define D910_SD_GWP {std kind 'flow-delivery' units 'cfs'}
+define D920_SD_GWP {std kind 'flow-delivery' units 'cfs'}
+define D932_SD_GWP {std kind 'flow-delivery' units 'cfs'}
+define D937_SD_GWP {std kind 'flow-delivery' units 'cfs'}
+define D950_SD_GWP {std kind 'flow-delivery' units 'cfs'}
+
+define D910_SD_FR {std kind 'flow-delivery' units 'cfs'}
+define D920_SD_FR {std kind 'flow-delivery' units 'cfs'}
+define D932_SD_FR {std kind 'flow-delivery' units 'cfs'}
+define D937_SD_FR {std kind 'flow-delivery' units 'cfs'}
+define D950_SD_FR {std kind 'flow-delivery' units 'cfs'}
+
+goal splitD910_SD {D910_SD = D910_SD_GWP + D910_SD_FR}
+goal splitD920_SD {D920_SD = D920_SD_GWP + D920_SD_FR}
+goal splitD932_SD {D932_SD = D932_SD_GWP + D932_SD_FR}
+goal splitD937_SD {D937_SD = D937_SD_GWP + D937_SD_FR}
+goal splitD950_SD {D950_SD = D950_SD_GWP + D950_SD_FR}
+
+define demand_SD_gwp {
+	!case October {condition month == oct value max(0.,11. - FK_final_C2)}
+	!case November {condition month == nov value max(0.,3. - FK_final_C2)}
+	!case December {condition month == dec value max(0.,4. - FK_final_C2)}
+	!case January {condition month == jan value max(0.,4. - FK_final_C2)}
+	!case February {condition month == feb value max(0.,18. - FK_final_C2)}
+	!case March {condition month == mar value max(0.,15. - FK_final_C2)}
+	case NoDemand {condition range(month,oct,mar) .or. Fr_snow_rel > 1 .or. S_MLRTN(-1) > 450 value 0.}
+	case April {condition month == apr value max(0.,33. - FK_final_C2)}
+	case May {condition month == may value max(0.,43. - FK_final_C2)}
+	case June {condition month == jun value max(0.,48. - FK_final_C2)}
+	case July {condition month == jul value max(0.,41. - FK_final_C2)}
+	case August {condition month == aug value max(0.,37. - FK_final_C2)}
+	case September {condition always value max(0.,21. - FK_final_C2)}
+}
+
+define demand_SD_gwp_ {alias demand_SD_gwp kind 'demand' units 'taf'}
+
+goal lim_D910_SD_GWP {D910_SD_GWP < demand_SD_gwp * taf_cfs * dist_910_c2/100.}
+goal lim_D920_SD_GWP {D920_SD_GWP < demand_SD_gwp * taf_cfs * dist_920_c2/100.}
+goal lim_D932_SD_GWP {D932_SD_GWP < demand_SD_gwp * taf_cfs * dist_932_c2/100.}
+goal lim_D937_SD_GWP {D937_SD_GWP < demand_SD_gwp * taf_cfs * dist_937_c2/100.}
+goal lim_D950_SD_GWP {D950_SD_GWP < demand_SD_gwp * taf_cfs * dist_950_c2/100.}
+

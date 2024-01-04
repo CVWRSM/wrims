@@ -1,0 +1,124 @@
+/*  This file calculates the monthly refuge demands for North of Delta
+    Refuges.  Return flows are based on non recoverable losses and
+    basin efficiencies.
+    Orginal Logic coded by RAJ 9/99
+    Modified by DJE 12/7/00
+*/
+/*
+! Annual Refuge demands (without losses)  UNITS = TAF
+define sutter {SELECT sutter FROM refuge WHERE type=1 }
+define gray   {SELECT gray FROM refuge WHERE type=1 }
+define sacramento {SELECT sacramento FROM refuge WHERE type=1 }
+define delevan {SELECT delevan FROM refuge WHERE type=1 }
+define colusa {SELECT colusa FROM refuge WHERE type=1 }
+*/
+
+define dem_c142ba_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Sacramento 
+define dem_c142bb_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Delevan
+define dem_c142bc_prf {timeseries kind 'demand-cvp-rf' units 'taf'} !Colusa
+define dem_c136b_prf  {timeseries kind 'demand-rf' units 'taf'} !Sutter
+define dem_c216b_prf  {timeseries kind 'demand-rf' units 'taf'} !Gray
+!(DJE) Change demand to C221.
+define dem_c221_prf  {timeseries kind 'demand-rf' units 'taf'} !Butte
+
+
+! Define annual conveyance loss percent
+define sacramento_lp {SELECT sacramento FROM refuge WHERE type=2 }
+define delevan_lp {SELECT delevan FROM refuge WHERE type=2 }
+define colusa_lp {SELECT colusa FROM refuge WHERE type=2 }
+define sutter_lp {SELECT sutter FROM refuge WHERE type=2 }
+define gray_lp   {SELECT gray FROM refuge WHERE type=2 }
+define butte_lp {SELECT butte FROM refuge WHERE type=2 }
+
+/*
+! define distribution percents
+define sutter_per     {SELECT sutter FROM refuge_per WHERE month=month }
+define gray_per       {SELECT gray FROM refuge_per WHERE month=month }
+define sacramento_per {SELECT sacramento FROM refuge_per WHERE month=month }
+define delevan_per    {SELECT delevan FROM refuge_per WHERE month=month }
+define colusa_per     {SELECT colusa FROM refuge_per WHERE month=month }
+
+! define monthly demand for each refuge including conveyance losses
+define dem_sutter {VALUE (sutter/(1.0-sutter_lp))*sutter_per }
+define dem_gray   {VALUE (gray/(1.0-gray_lp))*gray_per }
+define dem_sacramento {VALUE (sacramento/(1.0-sacramento_lp))*sacramento_per }
+define dem_delevan  {VALUE (delevan/(1.0-delevan_lp))*delevan_per }
+define dem_colusa {VALUE (colusa/(1.0-colusa_lp))*colusa_per }
+
+! add up OCT - JAN flow in Butte Creek (Forecast)
+define sum_buttedv {std kind 'demand-annual' units 'taf'}
+
+define sum_butte {
+
+       CASE      october  {
+       CONDITION MONTH == OCT
+       sum(i=0,3,1) i217(i)*cfs_taf }  ! add up annual flow in TAF
+       
+       CASE      other  {
+       CONDITION always
+       value     sum_buttedv(-1) }
+       }
+
+goal save_sum_butte {sum_buttedv = sum_butte}
+
+! define monthly Western Canal demands for Butte Sink Duck Clubs (units = TAF)
+! These values were taken from the DWRSIM hydrology based on Butte Creek OCT - JAN  flows.
+define dem_butte {
+
+       CASE      normal_1 {
+       CONDITION sum_butte >= 30.0 .and. sum_butte <= 130.0 .and. MONTH >= NOV .and. MONTH <= DEC
+       value     12.0 }  ! TAF
+
+       CASE      normal_2 {
+       CONDITION sum_butte >= 30.0 .and. sum_butte <= 130.0 .and. MONTH == JAN
+       value     2.0 }  ! TAF
+
+       CASE      normal_3 {
+       CONDITION sum_butte >= 30.0 .and. sum_butte <= 130.0
+       value     0.0 }  ! TAF
+
+       CASE      dry_1 {
+       CONDITION sum_butte < 30.0 .and. MONTH == OCT
+       value     6.0 }  ! TAF
+
+       CASE      dry_2 {
+       CONDITION sum_butte < 30.0 .and. MONTH >= NOV .and. MONTH <= DEC
+       value     12.0 }  ! TAF
+
+       CASE      dry_3 {
+       CONDITION sum_butte < 30.0 .and. MONTH == JAN
+       value     10.0 }  ! TAF
+
+       CASE      dry_4 {
+       CONDITION sum_butte < 30.0
+       value     0.0 }  ! TAF
+
+       CASE      wet_1 {
+       CONDITION sum_butte >130.0 .and. MONTH == NOV
+       value     12.0 }  ! TAF
+
+       CASE      wet_2 {
+       CONDITION always ! actually the condition by default is: sum_butte >130.0
+       value     0.0 }  ! TAF
+       }
+*/
+! set diversion requirement for refuges
+goal set_c142b {c142b < dem_c142ba_prf*taf_cfs + dem_c142bb_prf*taf_cfs + dem_c142bc_prf*taf_cfs}  ! Sacramento Valley refuges (Sac, Delevan, Colusa)
+goal set_c136b {c136b < dem_c136b_prf*taf_cfs }       ! Sutter Refuge
+goal set_c216b {c216b < dem_c216b_prf*taf_cfs }       ! Gray Lodge
+!(DJE) Remove demand constraint on C220a and place on c221.
+!goal set_C220a {c220A < dem_c220a_prf*taf_cfs }       ! Butte Sink Duck Clubs Western Canal Supply
+goal set_c221  {c221 < dem_c221_prf*taf_cfs }	!Will be met first by Butte Creek (C217b) and supplemented by Western Canal (D7a_prf)
+
+! define refuge return flow factors
+define rf_sac  {VALUE 1 - (1+sacramento_lp)*eff_10 }
+define rf_sut  {VALUE 1 - (1+sutter_lp)*eff_69 }
+define rf_gray {VALUE 1 - (1+gray_lp)*eff_69 }
+define rf_butte {VALUE 1 - (1+butte_lp)*eff_69  }
+
+! Refuge Return Flows
+GOAL set_r148B {r148B = rf_sac*C142B  }   ! Sacramento Refuges
+GOAL set_r137  {r137  = rf_sut*C136B  }   ! Sutter Refuge
+GOAL set_r135a {r135a = rf_gray*C216B }   ! Gray Lodge Refuge
+GOAL set_r135B {r135B = rf_butte*C221 }   ! Butte Sink Duck Clubs
+

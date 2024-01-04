@@ -1,0 +1,47 @@
+
+!MONTHLYWEIGHTED cycle4
+define[local] QsacFth_C4TXFR {alias QsacFth[MONTHLYWEIGHTED] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C166_C4TXFR {alias C166[MONTHLYWEIGHTED] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C169IFMIN_C4TXFR {alias C169_IFMIN[MONTHLYWEIGHTED] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C169IF400_C4TXFR {alias C169_IF400[MONTHLYWEIGHTED] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C169_C4TXFR {alias C169[MONTHLYWEIGHTED] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] D160_C4TXFR {alias D160[MONTHLYWEIGHTED] kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D166A_C4TXFR {alias D166A[MONTHLYWEIGHTED] kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D400_C4TXFR {alias D400[MONTHLYWEIGHTED] kind 'FLOW-DELIVERY' units 'CFS'}
+
+!TRANSFERS_STAGE2 cycle 5
+define[local] QsacFth_C5TXFR {alias QsacFth[TRANSFERS_STAGE2] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C166_C5TXFR {alias C166[TRANSFERS_STAGE2] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] Qsac166ns_c7 {alias Qsac166nospilldv[TRANSFERS_STAGE2] kind 'DEBUG' units 'CFS'}
+define[local] Qsac166corr_c7 {alias Qsac166corrdv[TRANSFERS_STAGE2] kind 'DEBUG' units 'CFS'}
+define[local] C169_C5TXFR {alias C169[TRANSFERS_STAGE2] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C169IFMIN_C5TXFR {alias C169_IFMIN[TRANSFERS_STAGE2] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C169IF400_C5TXFR {alias C169_IF400[TRANSFERS_STAGE2] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] Qsac169ns_c7 {alias Qsac169nospilldv[TRANSFERS_STAGE2] kind 'DEBUG' units 'CFS'}
+define[local] Qsac169corr_c7 {alias Qsac169corrdv[TRANSFERS_STAGE2] kind 'DEBUG' units 'CFS'}
+define[local] D160_C5TXFR {alias D160[TRANSFERS_STAGE2] kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D166A_C5TXFR {alias D166A[TRANSFERS_STAGE2] kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D400_C5TXFR {alias D400[TRANSFERS_STAGE2] kind 'FLOW-DELIVERY' units 'CFS'}
+
+
+!WHEELCVC cycle6
+define[local] QsacFth_C6TXFR {alias QsacFth[WHEELCVC] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C166_C6TXFR {alias C166[WHEELCVC] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] Qsac166ns_c8 {alias Qsac166nospilldv[WHEELCVC] kind 'DEBUG' units 'CFS'}
+define[local] Qsac166corr_c8 {alias Qsac166corrdv[WHEELCVC] kind 'DEBUG' units 'CFS'}
+define[local] C169_C6TXFR {alias C169[WHEELCVC] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C169IFMIN_C6TXFR {alias C169_IFMIN[WHEELCVC] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] C169IF400_C6TXFR {alias C169_IF400[WHEELCVC] kind 'FLOW-CHANNEL' units 'CFS'}
+define[local] Qsac169ns_c8 {alias Qsac169nospilldv[WHEELCVC] kind 'DEBUG' units 'CFS'}
+define[local] Qsac169corr_c8 {alias Qsac169corrdv[WHEELCVC] kind 'DEBUG' units 'CFS'}
+define[local] D160_C6TXFR {alias D160[WHEELCVC] kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D166A_C6TXFR {alias D166A[WHEELCVC] kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D400_C6TXFR {alias D400[WHEELCVC] kind 'FLOW-DELIVERY' units 'CFS'}
+
+! Outputs for US FWS RPA Verification
+define NDO_cyc_MW {alias NDO[monthlyweighted] kind 'flow-ndo' units 'cfs'}
+define D418_cyc_MW {alias D418[monthlyweighted] kind 'flow-delivery' units 'cfs'}
+define D419_cyc_MW {alias D419[monthlyweighted] kind 'flow-delivery' units 'cfs'}
+define D408_cyc_MW {alias D408[monthlyweighted] kind 'flow-delivery' units 'cfs'}
+define D409_cyc_MW {alias D409[monthlyweighted] kind 'flow-delivery' units 'cfs'}
+

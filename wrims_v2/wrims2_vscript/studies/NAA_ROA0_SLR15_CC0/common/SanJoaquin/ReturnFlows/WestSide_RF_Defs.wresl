@@ -1,0 +1,434 @@
+! WESTSIDE_RF_DEFS.wresl
+
+! Nancy Parker
+! USBR
+! 02/2003
+! Westside contract demands and percent return flow
+
+/*
+This code accomplishes 4 main objects:
+
+1.  Defines individual annual contract amounts
+2.  Sums individual annual contract amounts to define total contract demands
+3.  Defines return flow segments as a percentage of each individual contract*
+4.  Defines the monthly percentage return flow for each return flow segment
+
+This file references several lookup tables; all variables are assigned
+values from the tables. Those values are used to define the actual return
+flows in the WestSideReturns.wresl file.
+
+*Clarification: Some water users' return flows are not all returned to the
+system in one general location. For example, returns from West Stanislaus WD
+accumulate in 2 locations: the San Joaquin River at Maze and the San Joaquin
+River above Maze. Thus, 2 return flow segments are created for that
+individual contract; 55% of the flows are returned to Node 636 (at Maze) and
+45% to Node 630 (above Maze). For the most part, however, one return flow
+segment characterizes an individual contract.
+
+
+*/
+
+/*
+Revised by:  T. Crawford, USBR, 03/06/03
+Purpose:  Review and document code
+*/
+
+!############################################################################
+
+
+/*
+**********************Individual Annual Contract Amounts*********************
+*/
+
+! Annual contract amount for Plainview WD is 20,600 af; ag water
+define Annual700_1  {select Annual from CVPAnnual where node=700, contr=1 }
+
+! Annual contract amount for City of Tracy is 10,000 af; M&I water
+define Annual700_2  {select Annual from CVPAnnual where node=700, contr=2 }
+
+! Annual contract amount for Banta Carbona ID is 25,000 af; ag water
+define Annual700_3  {select Annual from CVPAnnual where node=700, contr=3 }
+
+! Annual contract amount for West Side ID is 7,500 af; ag water
+define Annual700_4  {select Annual from CVPAnnual where node=700, contr=4 }
+
+! Annual contract amount for Davis WD is 5,400 af; ag water
+define Annual701_1  {select Annual from CVPAnnual where node=701, contr=1 }
+
+! Annual contract amount for Del Puerto WD is 12,060 af; ag water
+define Annual701_2  {select Annual from CVPAnnual where node=701, contr=2 }
+
+! Annual contract amount for Hospital WD is 34,105 af; ag water
+define Annual701_3  {select Annual from CVPAnnual where node=701, contr=3 }
+
+! Annual contract amount for Kern Canon WD is 7,700 af; ag water
+define Annual701_4  {select Annual from CVPAnnual where node=701, contr=4 }
+
+! Annual contract amount for Salado WD is 9,130 af; ag water
+define Annual701_5  {select Annual from CVPAnnual where node=701, contr=5 }
+
+! Annual contract amount for Sunflower WD is 16,625 af; ag water
+define Annual701_6  {select Annual from CVPAnnual where node=701, contr=6 }
+
+! Annual contract amount for West Stanislaus WD is 50,000 af; ag water
+define Annual701_7  {select Annual from CVPAnnual where node=701, contr=7 }
+
+! Annual contract amount for Mustang WD is 14,680 af; ag water
+define Annual701_8  {select Annual from CVPAnnual where node=701, contr=8 }
+
+! Annual contract amount for Orestimba WD is 15,860 af; ag water
+define Annual701_9  {select Annual from CVPAnnual where node=701, contr=9 }
+
+! Annual contract amount for Patterson WD Water Rights is 6,000 af
+define Annual701_10  {select Annual from CVPAnnual where node=701, contr=10 }
+
+! Annual contract amount for Patterson WD is 16,500 af; ag water
+define Annual701_11  {select Annual from CVPAnnual where node=701, contr=11 }
+
+! Annual contract amount for Foothill WD is 10,840 af; ag water
+define Annual701_12  {select Annual from CVPAnnual where node=701, contr=12 }
+
+! Annual contract amount for Quinto WD is 8,620 af; ag water
+define Annual701_13  {select Annual from CVPAnnual where node=701, contr=13 }
+
+! Annual contract amount for Romero WD is 5,190 af; ag water
+define Annual701_14  {select Annual from CVPAnnual where node=701, contr=14 }
+
+! Annual contract amount for Centinella WD is 2,500 af; ag water
+define Annual701_15  {select Annual from CVPAnnual where node=701, contr=15 }
+
+! Annual contract amount for Exchange Contractors is 140,000 af
+define Annual707_1  {select Annual from CVPAnnual where node=707, contr=1 }
+
+! Annual contract amount for Panoche WD is 6,580 af; ag water
+define Annual706_1  {select Annual from CVPAnnual where node=706, contr=1 }
+
+! Annual contract amount for San Luis WD is 65,000 af; ag water
+define Annual706_2  {select Annual from CVPAnnual where node=706, contr=2 }
+
+! Annual contract amount for Broadview WD is 27,000 af; ag water
+define Annual706_3  {select Annual from CVPAnnual where node=706, contr=3 }
+
+! Annual contract amount for Laguna WD is 800 af; ag water
+define Annual706_4  {select Annual from CVPAnnual where node=706, contr=4 }
+
+! Annual contract amount for Eagle Field WD is 4,550 af; ag water
+define Annual706_5  {select Annual from CVPAnnual where node=706, contr=5 }
+
+! Annual contract amount for Mercy Springs WD is 13,300 af; ag water
+define Annual706_6  {select Annual from CVPAnnual where node=706, contr=6 }
+
+! Annual contract amount for Oro Loma WD is 4,600 af; ag water
+define Annual706_7  {select Annual from CVPAnnual where node=706, contr=7 }
+
+! Annual contract amount for Widren WD is 2,990 af; ag water
+define Annual706_8  {select Annual from CVPAnnual where node=706, contr=8 }
+
+! Annual contract amount for Westlands WD is 50,000 af; ag water
+define Annual6071_1  {select Annual from CVPAnnual where node=6071, contr=1 }
+
+! Annual contract amount for Fresno Slough WD is 4,000 af; ag water
+define Annual6071_2  {select Annual from CVPAnnual where node=6071, contr=2 }
+
+! Annual contract amount for James ID is 35,300 af; ag water
+define Annual6071_3  {select Annual from CVPAnnual where node=6071, contr=3 }
+
+! Annual contract amount for Traction Ranch/F&G is 2,080 af; ag water
+define Annual6071_4  {select Annual from CVPAnnual where node=6071, contr=4 }
+
+! Annual contract amount for Tranquillity ID is 13,800 af; ag water
+define Annual6071_5  {select Annual from CVPAnnual where node=6071, contr=5 }
+
+! Annual contract amount for Melvin Hughes is 70 af; ag water
+define Annual6071_6  {select Annual from CVPAnnual where node=6071, contr=6 }
+
+! Annual contract amount for R.D. 1606 is 228 af; ag water
+define Annual6071_7  {select Annual from CVPAnnual where node=6071, contr=7 }
+
+! Annual contract amount for Exchange Contractors is 700,000 af
+define Annual6072_1  {select Annual from CVPAnnual where node=6072, contr=1 }
+
+! Annual contract amount for Sch. II W.R. Exchange Contractors is 34,813 af
+define Annual6072_2  {select Annual from CVPAnnual where node=6072, contr=2 }
+
+
+/*
+******************Total Annual Contract Amount By Group**********************
+*/
+
+! Total annual contract amount for Upstream DMC (Node 700)
+define TotAnnual700 { value Annual700_1 + Annual700_2 + Annual700_3 + Annual700_4 }
+
+! Total annual contract amount for Upstream DMC (Node 701)
+define TotAnnual701 { value Annual701_1 + Annual701_2 + Annual701_3 + Annual701_4 +
+                            Annual701_5 + Annual701_6 + Annual701_7 + Annual701_8 +
+                            Annual701_9 + Annual701_10 + Annual701_11 + Annual701_12 +
+                            Annual701_13 + Annual701_14 + Annual701_15 }
+
+! Total annual contract amount for Lower DMC Exchange (Node 707)
+define TotAnnual707 { value Annual707_1 }
+
+! Total annual contract amount for Lower DMC Agriculture (Node 706)
+define TotAnnual706 { value Annual706_1 + Annual706_2 + Annual706_3 + Annual706_4 +
+                            Annual706_5 + Annual706_6 + Annual706_7 + Annual706_8 }
+
+! Total annual contract amount for Pool Ag and WR (Node 607)
+define TotAnnual6071 {value Annual6071_1 + Annual6071_2 + Annual6071_3 + Annual6071_4 +
+                            Annual6071_5 + Annual6071_6 + Annual6071_7 }
+
+! Total annual contract amount for Pool Exchange (Node 607)
+define TotAnnual6072 {value Annual6072_1 + Annual6072_2 }
+
+
+/*
+*******Individual Contract Percentage Representing Return Flow Segment*******
+*/
+
+! 100% of Plainview WD return flows to SJR below Vernalis
+define conpct_700_1_644  {select RF1_Pct from CVP_RF_Split where node=700, contr=1, month=month}
+
+! 100% of City of Tracy return flows to SJR below Vernalis
+define conpct_700_2_644  {select RF1_Pct from CVP_RF_Split where node=700, contr=2, month=month}
+
+! 100% of Banta Carbona ID return flows to SJR below Vernalis
+define conpct_700_3_644  {select RF1_Pct from CVP_RF_Split where node=700, contr=3, month=month}
+
+! 100% of West Side ID return flows to SJR below Vernalis
+define conpct_700_4_644  {select RF1_Pct from CVP_RF_Split where node=700, contr=4, month=month}
+
+! 100% of Davis WD return flows to SJR at Merced
+define conpct_701_1_619  {select RF1_Pct from CVP_RF_Split where node=701, contr=1, month=month}
+
+! 100% of Del Puerto WD return flows to SJR above Maze
+define conpct_701_2_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=2, month=month}
+
+! 100% of Hospital WD return flows to SJR above Maze
+!define conpct_701_3_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=3, month=month} ! 701_3 goes to Node 639
+define conpct_701_3_639  {select RF1_Pct from CVP_RF_Split where node=701, contr=3, month=month}
+
+! 100% of Kern Canon WD return flows to SJR above Maze
+define conpct_701_4_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=4, month=month}
+
+! 100% of Salado WD return flows to SJR above Maze
+define conpct_701_5_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=5, month=month}
+
+! 100% of Sunflower WD return flows to SJR above Maze
+define conpct_701_6_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=6, month=month}
+
+! 55% of West Stanislaus return flows to SJR at Maze
+! 45% of West Stanislaus return flows to SJR above Maze
+!define conpct_701_7_636  {select RF1_Pct from CVP_RF_Split where node=701, contr=7, month=month} ! All return flow of 701_7 goes to Node 630
+!define conpct_701_7_630  {select RF2_Pct from CVP_RF_Split where node=701, contr=7, month=month} ! CVP_RF_Split.table adjusted
+define conpct_701_7_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=7, month=month}
+
+! 100% of Mustang WD return flows to SJR at Merced
+define conpct_701_8_619  {select RF1_Pct from CVP_RF_Split where node=701, contr=8, month=month}
+
+! 100% of Orestimba WD return flows to SJR above Maze
+!define conpct_701_9_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=9, month=month} ! 701_9 goes to node 619
+define conpct_701_9_619  {select RF1_Pct from CVP_RF_Split where node=701, contr=9, month=month}
+
+! 100% of Patterson WD WR return flows to SJR above Maze
+define conpct_701_10_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=10, month=month}
+
+! 100% of Patterson WD return flows to SJR above Maze
+define conpct_701_11_630  {select RF1_Pct from CVP_RF_Split where node=701, contr=11, month=month}
+
+! 100% of Foothill WD return flows to SJR at Merced
+define conpct_701_12_619  {select RF1_Pct from CVP_RF_Split where node=701, contr=12, month=month}
+
+! 100% of Quinto WD return flows to SJR at Merced
+define conpct_701_13_619  {select RF1_Pct from CVP_RF_Split where node=701, contr=13, month=month}
+
+! 100% of Romero WD return flows to SJR at Merced
+define conpct_701_14_619  {select RF1_Pct from CVP_RF_Split where node=701, contr=14, month=month}
+
+! 100% of Centinella WD return flows to SJR at Merced
+define conpct_701_15_619  {select RF1_Pct from CVP_RF_Split where node=701, contr=15, month=month}
+
+! 7% of Lower DMC Exchange Contractors return flows to SJR at Merced
+define conpct_707_1_619  {select RF1_Pct from CVP_RF_Split where node=707, contr=1, month=month}
+
+! 93% of Lower DMC Exchange Contractors return flows to SJR at Salt Slough
+define conpct_707_1_614  {select RF2_Pct from CVP_RF_Split where node=707, contr=1, month=month}
+
+! 100% of Panoche WD return flows to SJR at Salt Slough
+define conpct_706_1_614  {select RF1_Pct from CVP_RF_Split where node=706, contr=1, month=month}
+
+! 100% of San Luis WD return flows to SJR at Salt Slough
+define conpct_706_2_614  {select RF1_Pct from CVP_RF_Split where node=706, contr=2, month=month}
+
+! 100% of Broadview WD return flows to SJR at Salt Slough
+define conpct_706_3_614  {select RF1_Pct from CVP_RF_Split where node=706, contr=3, month=month}
+
+! 100% of Laguna WD return flows to SJR at Salt Slough
+define conpct_706_4_614  {select RF1_Pct from CVP_RF_Split where node=706, contr=4, month=month}
+
+! 100% of Eagle Field WD return flows to SJR at Salt Slough
+define conpct_706_5_614  {select RF1_Pct from CVP_RF_Split where node=706, contr=5, month=month}
+
+! 100% of Mercy Springs WD return flows to SJR at Salt Slough
+define conpct_706_6_614  {select RF1_Pct from CVP_RF_Split where node=706, contr=6, month=month}
+
+! 100% of Oro Loma WD return flows to SJR at Salt Slough
+define conpct_706_7_614  {select RF1_Pct from CVP_RF_Split where node=706, contr=7, month=month}
+
+! 100% of Widren WD return flows to SJR at Salt Slough
+define conpct_706_8_614  {select RF1_Pct from CVP_RF_Split where node=706, contr=8, month=month}
+
+! 100% of Westlands WD (incl. Barcellos) return flows to SJR at Mendota Pool
+define conpct_6071_1_607  {select RF1_Pct from CVP_RF_Split where node=6071, contr=1, month=month}
+
+! 100% of Fresno Slough WD return flows to SJR at Mendota Pool
+define conpct_6071_2_607  {select RF1_Pct from CVP_RF_Split where node=6071, contr=2, month=month}
+
+! 100% of James ID return flows to SJR at Mendota Pool
+define conpct_6071_3_607  {select RF1_Pct from CVP_RF_Split where node=6071, contr=3, month=month}
+
+! 100% of Traction Ranch/F&G return flows to SJR at Mendota Pool
+define conpct_6071_4_607  {select RF1_Pct from CVP_RF_Split where node=6071, contr=4, month=month}
+
+! 100% of Tranquillity ID return flows to SJR at Mendota Pool
+define conpct_6071_5_607  {select RF1_Pct from CVP_RF_Split where node=6071, contr=5, month=month}
+
+! 100% of Melvin Hughes' return flows to SJR at Mendota Pool
+define conpct_6071_6_607  {select RF1_Pct from CVP_RF_Split where node=6071, contr=6, month=month}
+
+! 100% of R.D. 1606 return flows to SJR at Mendota Pool
+define conpct_6071_7_607  {select RF1_Pct from CVP_RF_Split where node=6071, contr=7, month=month}
+
+! 7% of Pool Exchange Contractors return flows to SJR at Merced
+define conpct_6072_1_619  {select RF1_Pct from CVP_RF_Split where node=6072, contr=1, month=month}
+
+! 93% of Pool Exchange Contractors return flows to SJR at Salt Slough
+define conpct_6072_1_614  {select RF2_Pct from CVP_RF_Split where node=6072, contr=1, month=month}
+
+! 100% of Sch. II WR Exchange Contractors return flows to SJR at Salt Slough
+define conpct_6072_2_607  {select RF1_Pct from CVP_RF_Split where node=6072, contr=2, month=month}
+
+
+/*
+*********Monthly Percentage Return Flow for Each Return Flow Segment*********
+*/
+
+! Plainview WD monthly percentage of return flows to SJR below Vernalis
+define SJRF_700_1_644  {select mon_pct from CVPcontractRF where node=700, contr=1, month=month}
+
+! City of Tracy monthly percentage of return flows to SJR below Vernalis
+define SJRF_700_2_644  {select mon_pct from CVPcontractRF where node=700, contr=2, month=month}
+
+! Banta Carbona ID monthly percentage of return flows to SJR below Vernalis
+define SJRF_700_3_644  {select mon_pct from CVPcontractRF where node=700, contr=3, month=month}
+
+! West Side ID monthly percentage of return flows to SJR below Vernalis
+define SJRF_700_4_644  {select mon_pct from CVPcontractRF where node=700, contr=4, month=month}
+
+! Davis WD monthly percentage of return flows to SJR at Merced
+define SJRF_701_1_619  {select mon_pct from CVPcontractRF where node=701, contr=1, month=month}
+
+! Del Puerto WD monthly percentage of return flows to SJR above Maze
+define SJRF_701_2_630  {select mon_pct from CVPcontractRF where node=701, contr=2, month=month}
+
+! Hospital WD monthly percentage of return flows to SJR above Maze
+!define SJRF_701_3_630  {select mon_pct from CVPcontractRF where node=701, contr=3, month=month}
+define SJRF_701_3_639  {select mon_pct from CVPcontractRF where node=701, contr=3, month=month}
+
+! Kern Canon WD monthly percentage of return flows to SJR above Maze
+define SJRF_701_4_630  {select mon_pct from CVPcontractRF where node=701, contr=4, month=month}
+
+! Salado WD monthly percentage of return flows to SJR above Maze
+define SJRF_701_5_630  {select mon_pct from CVPcontractRF where node=701, contr=5, month=month}
+
+! Sunflower WD monthly percentage of return flows to SJR above Maze
+define SJRF_701_6_630  {select mon_pct from CVPcontractRF where node=701, contr=6, month=month}
+
+! West Stanislaus WD monthly percentage of return flows to SJR at Maze
+!define SJRF_701_7_636  {select mon_pct from CVPcontractRF where node=701, contr=7, month=month}
+
+! West Stanislaus WD monthly percentage of return flows to SJR above Maze
+define SJRF_701_7_630  {select mon_pct from CVPcontractRF where node=701, contr=7, month=month}
+
+! Mustang WD monthly percentage of return flows to SJR at Merced
+define SJRF_701_8_619  {select mon_pct from CVPcontractRF where node=701, contr=8, month=month}
+
+! Orestimba WD monthly percentage of return flows to SJR above Maze
+!define SJRF_701_9_630  {select mon_pct from CVPcontractRF where node=701, contr=9, month=month}
+define SJRF_701_9_619  {select mon_pct from CVPcontractRF where node=701, contr=9, month=month}
+
+! Patterson WD Water Rights monthly percentage of return flows to SJR above Maze
+define SJRF_701_10_630  {select mon_pct from CVPcontractRF where node=701, contr=10, month=month}
+
+! Patterson WD monthly percentage of return flows to SJR above Maze
+define SJRF_701_11_630  {select mon_pct from CVPcontractRF where node=701, contr=11, month=month}
+
+! Foothill WD monthly percentage of return flows to SJR at Merced
+define SJRF_701_12_619  {select mon_pct from CVPcontractRF where node=701, contr=12, month=month}
+
+! Quinto WD monthly percentage of return flows to SJR at Merced
+define SJRF_701_13_619  {select mon_pct from CVPcontractRF where node=701, contr=13, month=month}
+
+! Romero WD monthly percentage of return flows to SJR at Merced
+define SJRF_701_14_619  {select mon_pct from CVPcontractRF where node=701, contr=14, month=month}
+
+! Centinella monthly percentage of return flows to SJR at Merced
+define SJRF_701_15_619  {select mon_pct from CVPcontractRF where node=701, contr=15, month=month}
+
+! Lower DMC Exchange Contractors monthly percentage of return flows to SJR at Merced
+define SJRF_707_1_619  {select mon_pct from CVPcontractRF where node=707, contr=1, month=month}
+
+! Lower DMC Exchange Contractors monthly percentage of return flows to SJR at Salt Slough
+define SJRF_707_1_614  {select mon_pct from CVPcontractRF where node=707, contr=1, month=month}
+
+! Panoche WD monthly percentage of return flows to SJR at Salt Slough
+define SJRF_706_1_614  {select mon_pct from CVPcontractRF where node=706, contr=1, month=month}
+
+! San Luis WD monthly percentage of return flows to SJR at Salt Slough
+define SJRF_706_2_614  {select mon_pct from CVPcontractRF where node=706, contr=2, month=month}
+
+! Broadview WD monthly percentage of return flows to SJR at Salt Slough
+define SJRF_706_3_614  {select mon_pct from CVPcontractRF where node=706, contr=3, month=month}
+
+! Laguna WD monthly percentage of return flows to SJR at Salt Slough
+define SJRF_706_4_614  {select mon_pct from CVPcontractRF where node=706, contr=4, month=month}
+
+! Eagle Field WD monthly percentage of return flows to SJR at Salt Slough
+define SJRF_706_5_614  {select mon_pct from CVPcontractRF where node=706, contr=5, month=month}
+
+! Mercy Springs WD monthly percentage of return flows to SJR at Salt Slough
+define SJRF_706_6_614  {select mon_pct from CVPcontractRF where node=706, contr=6, month=month}
+
+! Oro Loma WD monthly percentage of return flows to SJR at Salt Slough
+define SJRF_706_7_614  {select mon_pct from CVPcontractRF where node=706, contr=7, month=month}
+
+! Widren WD monthly percentage of return flows to SJR at Salt Slough
+define SJRF_706_8_614  {select mon_pct from CVPcontractRF where node=706, contr=8, month=month}
+
+! Westlands WD (incl Barcellos) monthly percentage of return flows to SJR at Mendota Pool
+define SJRF_6071_1_607  {select mon_pct from CVPcontractRF where node=6071, contr=1, month=month}
+
+! Fresno Slough WD monthly percentage of return flows to SJR at Mendota Pool
+define SJRF_6071_2_607  {select mon_pct from CVPcontractRF where node=6071, contr=2, month=month}
+
+! James ID monthly percentage of return flows to SJR at Mendota Pool
+define SJRF_6071_3_607  {select mon_pct from CVPcontractRF where node=6071, contr=3, month=month}
+
+! Traction Ranch/F&G monthly percentage of return flows to SJR at Mendota Pool
+define SJRF_6071_4_607  {select mon_pct from CVPcontractRF where node=6071, contr=4, month=month}
+
+! Tranquillity ID monthly percentage of return flows to SJR at Mendota Pool
+define SJRF_6071_5_607  {select mon_pct from CVPcontractRF where node=6071, contr=5, month=month}
+
+! Melvin Hughes monthly percentage of return flows to SJR at Mendota Pool
+define SJRF_6071_6_607  {select mon_pct from CVPcontractRF where node=6071, contr=6, month=month}
+
+! R.D. 1606 monthly percentage of return flows to SJR at Mendota Pool
+define SJRF_6071_7_607  {select mon_pct from CVPcontractRF where node=6071, contr=7, month=month}
+
+! Pool Exchange Contractors monthly percentage of return flows to SJR at Merced
+define SJRF_6072_1_619  {select mon_pct from CVPcontractRF where node=6072, contr=1, month=month}
+
+! Pool Exchange Contractors monthly percentage of return flows to SJR at Salt Slough
+define SJRF_6072_1_614  {select mon_pct from CVPcontractRF where node=6072, contr=1, month=month}
+
+! Sch. II WR Exchange Contractors monthly percentage of return flows to SJR at Mendota Pool
+define SJRF_6072_2_607  {select mon_pct from CVPcontractRF where node=6072, contr=2, month=month}

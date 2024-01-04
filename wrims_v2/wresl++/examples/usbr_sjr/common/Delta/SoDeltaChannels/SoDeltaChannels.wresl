@@ -1,0 +1,74 @@
+! SoDeltaChannels.wresl
+! This file implements the C_SJR053A and B flow split
+! This flow split combined with the added Delta Net Depletion input at node OMR027
+! and the reconfiguration of the south Delta flow schematic in CALSIM 3.0
+! provides the appropriate flow to the new representation of the combined Old and
+! and Middle River flow arc at C_OMR002.
+!
+! Flow equations are based on Old River/Middle River functions defined by Paul Hutton (Sep 2007)
+
+!San Joaquin Vernalis Flows from previous model cycles
+define VernQ {
+     case April {
+          condition month == apr
+          value     C_SJR070[SJR_WQ1]*14./daysin + C_SJR070[VAMP_AND_DO]*(daysin-14.)/daysin }
+     case MayOnly {
+          condition month == may
+          value     C_SJR070[VAMP_AND_DO]*15./daysin + C_SJR070[SJR_WQ1]*(daysin-15.)/daysin }
+     case otherwise {
+          condition always
+          value     C_SJR070[VAMP_AND_DO]}
+                    }
+
+! Calculate So Delta Channel net DICU for flow split calculations
+! Newly defined splits of Delta Net Depletion for So Delta Channel calculations
+define netDICU_SOD{ value DND_1 }
+
+!Define case to use appropriate coef. for flow splits
+define casedef {
+     case GLC_on{
+     condition  month >= JUN .AND. month <= AUG
+     value  4.}
+!
+! HORB Spring operations and appropriate coefficients for spring months - barriers are in and operated
+! May need to remove or revise based upon change in HORB operations for Delta Smelt
+     case SpringHORB{
+         condition  month == APR .OR. month == MAY
+         value  5.}
+!
+     case FallHORB{
+     condition  month == OCT .OR. month == NOV .OR. month == SEP
+     value  6.}
+     case LowVernalis {
+     condition  VernQ <= 16000
+     value  1.}
+     case MidVernalis{
+    condition  VernQ > 16000 .AND. VernQ < 28000
+     value  2.}
+     case HiVernalis{
+     condition  VernQ >= 28000
+     value  3.}
+      case error {
+     condition  always
+     value  9999.}
+   }
+define casedef_dv {lower unbounded upper unbounded kind 'INTEGER' units 'NONE'}
+goal setCaseDef {casedef_dv =  casedef}
+
+!Get Coefficients based on defined case
+define coefA { select coefA from OMRiverFlowEq2 where cond = casedef}
+define coefB { select coefB from OMRiverFlowEq2 where cond = casedef}
+define coefC { select coefC from OMRiverFlowEq2 where cond = casedef}
+
+! Total South of Delta Pumping and Depletions
+define Qsod {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal setQsod { Qsod = SOD_EXP + D_RSL004_CCC004 + D_OMR021_ORP000 + D_VCT002_ORP000 + netDICU_SOD}
+
+! Flow split from San Joaquin to the Export pool
+goal setC_SJR053B { C_SJR053B = coefA * C_SJR070 + coefc } ! Vernalis and regression constant components of OMR flow equation
+
+! Flow split through Indian Slough
+goal setC_RSL001B { C_RSL001B = coefb * Qsod + Qsod } ! Indian Slough component of OMR flow equation
+
+define OMFlow    {alias C_OMR014 kind 'FLOW-CHANNEL' units 'CFS'} ! for output
+define QWestFlow {alias C_SJR013 kind 'FLOW-CHANNEL' units 'CFS'} ! for output

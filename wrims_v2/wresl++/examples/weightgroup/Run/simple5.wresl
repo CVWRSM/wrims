@@ -1,0 +1,40 @@
+SEQUENCE CYCLE1 {
+    model   first
+    order   1
+    }
+
+	
+MODEL first { 
+
+
+	define[local] D3 { lower -3  kind 'FLOW-CHANNEL' units 'CFS'}
+	define[local] D4 { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define[local] M5 { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define[local] M6 { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define[local] M7 { std kind 'FLOW-CHANNEL' units 'CFS'}
+  
+
+	goal[local] g1 { D3 + D4 + M5 + M6 + M7  = 7 }
+	goal[local] g2 { D3 + D4 = 4 }
+
+	Objective TTT {
+		weight 1
+		!DeviationPenalty 0.1
+		variable 
+			D_Group { 
+				!DeviationPenalty 0.1
+				variable D3 D4 
+			}
+
+			! M_group dvar is not needed if main group and sub group has no DeviationPenalty
+            ! M_group dvar is needed if main group has DeviationPenalty
+			! M_group dvar is needed if sub group has DeviationPenalty
+			M_Group { 
+			    DeviationPenalty 0.1
+				variable M5 M6 M7
+			}
+	}
+  
+}
+
+

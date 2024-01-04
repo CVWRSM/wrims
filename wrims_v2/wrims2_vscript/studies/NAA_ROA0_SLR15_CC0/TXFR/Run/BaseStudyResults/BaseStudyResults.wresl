@@ -1,0 +1,83 @@
+/*
+Retrieve results from base studies
+*/
+
+! STUDY 3 RESULTS
+! Minimum Required flows
+define C3MIF__z3 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C5MIF__z3 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C9MIF__z3 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+! B2 action triggers
+define B2Action2On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action3On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action4On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action5On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action6On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action7On__z3 {timeseries kind 'TRIGGER' units 'NONE'}
+! Export Restrictions to repeat
+define MayExportRest__z3 {timeseries kind 'Export-Restriction' units 'cfs'}
+define JunePumpRest__z3 {timeseries kind 'Export-Restriction' units 'cfs'}
+
+! STUDY 4 RESULTS
+! New Melones forecast
+define NMforecast1__z4 {timeseries kind 'forecast' units 'TAF'}
+! delivery target and san luis rule curve
+define swp_alloc__z4 {timeseries kind 'swp-delivery' units 'TAF'}
+define ndsswpdeladj__z4 {timeseries kind 'swp-delivery' units 'TAF'}
+define deltar_cvp_sys1__z4 {timeseries kind 'DEL-TARGET' units 'TAF'}
+define deltar_cvp_s1__z4 {timeseries kind 'DEL-TARGET' units 'TAF'}
+define cvprulecv__z4 {timeseries kind 'RULECURVE' units 'TAF'}
+define swprulecv__z4 {timeseries kind 'RULECURVE' units 'TAF'}
+! Cross-valley canal delivery
+!define D855__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+! interruptible deliveries
+define D27_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D403B_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D810_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D814_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D815_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D846_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D848_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D849_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D859_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D868_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D877_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D883_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D884_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D885_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D895_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D899_PIN__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+!Integrated operations inputs
+define C5_SWP__z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define S4_SWPdv__z4 {timeseries kind 'STORAGE' units 'TAF'}
+! Intermediate export information
+define D419_swp_TDc7__z4 {timeseries kind 'FLOW-DELIVERY' units 'cfs'}
+define D419_EXP2_TDc7__z4 {timeseries kind 'FLOW-DELIVERY' units 'cfs'}
+define D419_cvp_TDc7__z4 {timeseries kind 'FLOW-DELIVERY' units 'cfs'}
+define D418_cvp_TDc7__z4 {timeseries kind 'FLOW-DELIVERY' units 'cfs'}
+! STAGE1 TRANSFERS DATA
+define D418_WTS_Stg1__z4 {timeseries kind 'FLOW-DELIVERY' units 'cfs'}
+define D419_WTS_Stg1__z4 {timeseries kind 'FLOW-DELIVERY' units 'cfs'}
+define WTS_SWPAlloc__Z4 {timeseries kind 'percent-delivery' units 'none'}
+! NODOS REOPERATIONAL OPERATION INPUTS
+define C3__Z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define C5__Z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define C109__Z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define D112__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define C114__Z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define D114__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define C124__Z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define C129__Z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define C169__Z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define C406__Z4 {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+! FWS
+define D407__z4 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define flowmin_DecA4__Z4 {timeseries kind 'FLOW-FWSBOA4-MIN' units 'CFS'}
+define DO_req_X2chs__Z4 {timeseries kind 'FLOW-FWSBOA4-CAP' units 'CFS'}
+define DO_req_X2cnf__Z4 {timeseries kind 'FLOW-FWSBOA4-CAP' units 'CFS'}
+define FWSMaxExpX2__Z4 {timeseries kind 'Export-Limit' units 'cfs'}
+! NMFS
+define NMFSdaysopen__Z4 {timeseries kind 'DCC-DAYS-OPEN' UNITS 'NONE'}
+define NMFSMaxExpDCC__Z4 {timeseries kind 'Export-Limit' units 'cfs'}
+! LYRA
+define ApMySWPExpCng__Z4 {timeseries kind 'Volume-CumImpact' units 'taf'}

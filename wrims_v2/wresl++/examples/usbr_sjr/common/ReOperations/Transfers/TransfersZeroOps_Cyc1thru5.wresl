@@ -1,0 +1,7 @@
+! TransfersPreOps_cyc1thru5.wresl
+
+define I_MDOTA_WTS {std kind 'FLOW-INFLOW' units 'CFS'} !Water Transfer from Mendota Pool
+define I_MDOTA_EWA {std kind 'FLOW-INFLOW' units 'CFS'} !EWA Transfer from Mendota Pool
+
+goal setI_MDOTA_WTS {I_MDOTA_WTS = 0.}
+goal setI_MDOTA_EWA {I_MDOTA_EWA = 0.}

@@ -1,0 +1,561 @@
+! Merced_Dems.wresl
+
+! Nancy Parker
+! USBR
+! 09/03/2002
+! Deliveries and Operations for Merced River Demands.
+
+/*
+This file uses a water budget method for determining water demands and
+operations of Merced River water users.  Main water users incorporated in
+this file are Merced Irrigation District and sphere of influence users
+including, El Nido Irrigation District, Stevinson, and Bear Creek Refuge.
+
+The water budget can be explained as follows:
+
+  CUAW
++ Deep Percolation                                      River Diversion
++ District Losses (Seepage) = Diversion Requirement = + District GW Pumping
++ Spills                                              + Private GW Pumping
++ Non-Recoverable Losses
+
+The diversion requirement can be met by surface water diversions, district
+ground water pumping, and private ground water pumping. Minimum and maximum
+constraints are placed on ground water pumping. The diversion requirement
+is satisfied using the following delivery order:  1. Minimum district
+pumping, 2. Minimum private pumping, 3. Surface supply, 4. Maximum district
+pumping, 5. Maximum private pumping.
+
+Allocation priority is given on an equal level to Merced ID, Bear Creek
+Refuge, and Stevinson. If surface supplies cannot meet district demand, a
+percent delivery is computed and applied to both the district and Stevinson.
+El Nido surface supply allocation is up to 40 TAF if district demand can be
+fully met.
+
+Notes:  CUAW is predetermined using DWR's consumptive use model
+        Deep percolation is estimated to be 25% of CUAW
+    Non-recoverable losses are assumed to be 10% of CUAW
+
+ River Diversion and Returns:
+ return flow of district loss. Factor = (1 - (1 + nrl)*efficiency) Eff = 75%
+*/
+
+/*
+Revised by: R. Field, USBR, 09/25/03
+Purpose: Incorporate additional M&I, groundwater and M&I return flow arcs.
+Revised by: T. Crawford, USBR, 03/03/03
+Purpose: Review and comment file
+*/
+
+!############################################################################
+
+/*
+Merced River Riparian Depletion (D_MERCED1B)
+*/
+
+! Retrieve predefined CUAW timeseries values for SJR demand node 562A
+define cuaw_562A_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Decision variable that defines 562A return flow of district losses
+define dloss_562A_pag {std kind 'local-loss' units 'cfs'}
+
+/*
+Determine the district losses that are returned to the system using an NRL
+of 10% and a 75% efficiency:  Deliveries * (1 - (1 + nrl)*efficiency)
+*/
+goal set_dloss_562A_pag {dloss_562A_pag = D_MERCED1B * (1.-(1.1*.75))}
+
+! Define deep percolation as 25% of CUAW (assumed value)
+define dperc_562A_pag {value cuaw_562A_pag * .25}
+
+! Limit deliveries at node 562A to the sum of CUAW, NRL, and deep percolation
+goal set_D_MERCED1A_riv {D_MERCED1A_riv < 1.1*CUAW_562A_pag + dperc_562A_pag}
+
+! Set the return flow variable equal to the above defined district loss.
+goal set_R_MERCED2A {R_MERCED2A = dloss_562A_pag}
+
+define D_MERCED1B_EST {value 1.1*CUAW_562A_pag + dperc_562A_pag + (1.1*CUAW_562A_pag + dperc_562A_pag)*0.175/0.825}
+
+goal C_MERCED1minflow {C_MERCED1_MIF < MAX(0.,MAX(minflow_C_MERCED1C+I_MERCED1B-D_MERCED1B_EST, minflow_C_MERCED1B))} 
+
+/*
+Merced River Diversion M&I pumping- all met by GW (A)
+*/
+! Merced River Diversion M&I demand
+define demand_D_MERCED1A_MI_A {select dem562A_MI_A from urban_demand3 where month = month}
+
+! Set Merced River Diversion M&I delivery to meet demand
+goal meet_D_MERCED1A_MI_A {D_MERCED1A_MI_A = demand_D_MERCED1A_MI_A*taf_cfs}
+
+! Set groundwater M&I pumping to meet Merced River Diversion M&I demand
+goal set_GP562A_MI_A {GP562A_MI_A = D_MERCED1A_MI_A}
+
+! 0% of non-district deliveries are reused or returned
+!goal set_R_ {R_ = D_MERCED1A_MI_A * 0.}
+
+
+/*
+Merced ID Area - including Bear Creek Refuge and DAU 212
+*/
+
+! Retrieve predefined CUAW timeseries values for Merced ID demand node 571
+define cuaw_571_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+/*
+Each April, define the April thru September Merced ID demands the sum of
+CUAW (plus 10% for NRL and 25% for deep percolation) and Bear Creek Refuge
+demands.
+*/
+define MercedDemTS_part {
+    case april {
+        condition month == apr
+        sum(i=0,5,1) 1.35*cuaw_571_pag(i)*cfs_taf(i) + demand_D572(i)*cfs_taf(i) }
+    case otherwise {
+        condition   always
+        value 0. }
+        }
+/*
+Available Water Supply from McClure Reservoir
+*/
+/*
+Define total April thru September surface water demand from Lake McClure.
+
+total demand =   Merced ID diversion requirement  (MercedDemTS_part)
+               + District losses (120 taf)
+               + El Nido ID + other sphere-of-influence deliveries (40 taf)
+               + Stevinson sphere-of-influence deliveries (26.4 taf)
+               - District ground water pumping (9 taf)
+               - Minimum private ground water pumping (45 taf)
+*/
+define Merced_surface_demand {
+    case April {
+        condition month==apr
+        value max(0., MercedDemTS_part + 120. + 40. + 26.4 - 9. - 45.) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+/*
+Forecast total April thru September increase in available water based on
+inflows and minimum downstream channel flows.
+
+Usable water = Inflow (taf) - Minimum channel flow (taf)
+*/
+define MercedForTS_part {
+    case aprthrusep {
+        condition   month >= apr .and. month <= sep
+        sum(i=apr-month,12-month,1) (I_MCLRE(i)+I_MERCED1C(i)-minflow_C_MERCED1C(i))*cfs_taf(i) }
+    case otherwise {
+        condition   always
+        value 0. }
+        }
+
+! Determine evaporation volume estimate from lookup table
+define S_MCLREevap_est {select S_MCLRE from evap_est where yrtype=wyt_SJR}
+
+/*
+In April, determine Lake McClure (S_MCLRE) total available water for diversion
+for the remainder of the water year.
+
+S_MCLREAvail = current storage + inflow - min release - min storage req - evap
+*/
+define S_MCLREAvail {
+    case April {
+        condition month == apr
+        value         max(0., S_MCLRE(-1) + MercedForTS_part - S_MCLRElevel2 - S_MCLREevap_est)}
+    case otherwise {
+        condition always
+        value 0.
+        }
+}
+
+
+/*
+El Nido Surface Supply Allocation
+*/
+
+! Define El Nido allocations decision variable
+define ElNidoAllocdv {std kind 'allocation' units 'taf'}
+
+/*
+El Nido is allocated up to 40 taf if the available water in Lake McClure is enough to
+satisfy Merced ID & Stevinson demands first.
+*/
+define ElNidoAlloc{
+    case firstyear {
+        condition wateryear==beginWY .and. month<=mar
+        value 40. }
+    case April_cut {
+        condition month == apr .and. Merced_surface_demand - 40. - 26.4 >= S_MCLREAvail
+        value 0. }
+    case April_limit {
+        condition month == apr .and. Merced_surface_demand - 40. <= S_MCLREAvail
+        value max(0., min(40.,S_MCLREAvail - Merced_surface_demand)) }
+    case April_ok {
+        condition month == apr .and. Merced_surface_demand < S_MCLREAvail
+        value 40. }
+    case otherwise {
+        condition always
+        value ElNidoAllocdv(-1) }
+}
+
+! Set calculated El Nido allocations equal to the decision variable
+goal set_ElNidoAllocdv {ElNidoAllocdv = ElNidoAlloc}
+
+! Decision variable for Merced ID & Stevinson demands
+define MercedDem2dv {std kind 'demand' units 'taf' }
+
+! Subtract out El Nido Allocations from Merced Surface Demands
+define MercedDem2 {
+    case firstyear {
+        condition wateryear==beginWY .and. month <= mar
+        value Merced_surface_demand }
+    case April {
+        condition month == apr
+        value Merced_surface_demand - ElNidoAlloc }
+    case otherwise {
+        condition always
+        value MercedDem2dv(-1) }
+}
+
+! Set Merced demands equal to the decision variable
+goal set_MercedDem2dv {MercedDem2dv = MercedDem2}
+
+! Decision variable for Merced ID & Stevinson deliveries as a percentage of demand
+define perdv_MercedID {std kind 'percent-delivery' units 'none'}
+
+! Calculate the Merced ID & Stevinson percent of demand that is actually delivered
+define perdel_MercedID {
+    case firstyear {
+        condition wateryear==beginWY .and. month <= Mar
+        value 1. }
+    case April {
+        condition month == apr
+        value max(0., min(1., S_MCLREAvail/MercedDem2)) }
+    case otherwise {
+        condition always
+        value perdv_MercedID(-1) }
+}
+
+! Set the percent deliveries equal to the decision variable
+goal set_perdv_MercedID {perdv_MercedID = perdel_MercedID}
+
+
+/*
+MercedID Diversion and Returns
+*/
+
+! Decision variable for Merced ID annual CUAW
+define ann_571_pagdv {std kind 'annual-demand' units 'taf'}
+
+! Determine annual CUAW at node 571 by summing Apr thru Sept monthly CUAW
+define ann_cuaw_571_pag {
+    case firstyear {
+        condition wateryear==beginWY .and. month<=mar
+        value 256. }
+    case april  {
+        condition month==apr
+        sum(i=0,5,1) cuaw_571_pag(i)*cfs_taf(i) }
+    case otherwise {
+        condition always
+        value ann_571_pagdv(-1) }
+}
+
+! Divide monthy CUAW by annual CUAW to determine the monthly distribution
+define MID_distrib {value cuaw_571_pag*cfs_taf/ann_cuaw_571_pag}
+
+! Set Merced ID annual CUAW equal to the decision variable
+goal set_ann_571_pagdv {ann_571_pagdv = ann_cuaw_571_pag}
+
+! District loss is 120 taf/year distributed Apr-Oct via CUAW pattern
+define dloss_571_pag {
+    case AprthruOct {
+        condition month >= Apr .or. month==Oct
+        value MID_distrib * 120. * taf_cfs }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! Deep percolation in Merced ID is assumed to be 25% of CUAW
+define dperc_571_pag {value cuaw_571_pag * .25}
+
+! Minimum annual district ground water pumping is assumed to be 9 taf
+define annual_GP570_min_pag {value 9.}
+
+/*
+Minimum district ground water pumping distributed by month using predefined
+distribution variable
+*/
+goal set_GP570_min_pag {GP570_min_pag < annual_GP570_min_pag * taf_cfs * MID_distrib}
+
+! Minimum annual private ground water pumping is assumed to be 45 taf for existing LOD and 25 for 2030 LOD
+!define annual_GP570_min_prv {select demand from Merced_GP570_ann_demand where number = 1}
+
+/* ---------- add a switch for future and existing conditions ----------------- */
+
+define annual_GP570_min_prv{
+
+        case Future {
+        condition LOD_Future == 1   ! future condition
+        select demand  from Merced_GP570_ann_demand_Fut where number = 1}
+        case Existing{
+        condition LOD_Future == 0   ! existing condition
+	select demand  from Merced_GP570_ann_demand_Ext where number = 1}
+}
+
+/*
+Minimum private ground water pumping distributed by month using predefined
+distribution variable
+*/
+goal set_GP570_min_prv {GP570_min_prv < annual_GP570_min_prv * taf_cfs * MID_distrib}
+
+! Maximum annual private ground water pumping is assumed to be 205 taf
+define annual_GP570_max_prv {value 205.}
+
+/*
+Maximum private groundwater pumping distributed by month using predefined
+distribution variable
+*/
+goal set_GP570_max_prv {GP570_max_prv < annual_GP570_max_prv * taf_cfs * MID_distrib}
+
+! Limit deliveries to sum of CUAW, NRL, district losses, and deep percolation
+goal set_D571_pag1  {D571_pag < 1.1*CUAW_571_pag + dloss_571_pag + dperc_571_pag}
+
+! Spills (flows leaving the district) are estimated from lookup table.
+define spill_571_pag {select sp571_ag from SoSJRSpills where yrtype=WYT_SJR, month=month}
+
+! If CUAW = 0 then R_MERCED2B return flows are zero, Else they equal node 571 spills
+goal set_R_MERCED2B {
+    lhs R_MERCED2B
+    case zero_cuaw {
+        condition cuaw_571_pag < .01
+        rhs 0. }
+    case otherwise {
+        condition always
+        rhs spill_571_pag*taf_cfs }
+}
+
+/*
+Mass balance that ensures ground water pumping and diversions from Merced
+River are adequate to meet the Merced River return flows and Merced ID
+demands.
+*/
+goal set_D571_pag2 {D571_pag + R_MERCED2B = GP570_min_pag + GP570_max_pag
+                                     + GP570_min_prv + GP570_max_prv + D_MERCED1C_pag }
+
+! Limit the surface delivery to the percent computed in the allocation process
+goal limitD_MERCED1C_pag {D_MERCED1C_pag < perdel_MercedID*(1.1*CUAW_571_pag + dloss_571_pag
+                                                + dperc_571_pag + spill_571_pag*taf_cfs)
+                             - perdel_MercedID*GP570_min_pag - perdel_MercedID*GP570_min_prv }
+
+
+/*
+Bear Ck Refuge
+*/
+
+! Set refuge diversions from Merced River equal to refuge deliveries
+goal set_D_MERCED1C_BCR {D_MERCED1C_BCR = D572}
+
+! Limit Bear Creek Refuge delivery to Bear Creek Refuge demand
+goal set_D572a   {D572 < demand_D572}
+
+! Limit Bear Creek Refuge delivery to 45 cfs
+goal set_D572b   {D572 < 45.}
+
+
+/*
+Non-District GW Pumping
+*/
+
+! Retrieve non-district CUAW from predefined timeseries
+define cuaw_571_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Define non-district deep percolation as 25% of non-district CUAW
+define dperc_571_nd {value cuaw_571_ND * .25}
+
+! Limit non-district deliveries to the sum of NRL, CUAW, and deep percolation
+goal set_D571_ND {D571_ND < 1.1*cuaw_571_ND + dperc_571_ND}
+
+! All non-district deliveries satisfied by ground water pumping
+goal set_GP570_ND {GP570_ND = D571_ND}
+
+! Define East of Merced ID M&I demand
+!define demand_D571_MI_B {select dem571_MI_B from urban_demand2 where month = month}
+
+define demand_D571_MI_B {
+
+        case Future {
+        condition LOD_Future == 1   ! future condition
+        select dem571_MI_B from urban_demand2_Fut where month = month}
+        case Existing{
+        condition LOD_Future == 0   ! existing condition
+	select dem571_MI_B from urban_demand2_Ext where month = month}
+    }
+
+
+
+! Set East of Merced ID M&I deliveries to meet demand
+goal meet_D571_MI_B {D571_MI_B = demand_D571_MI_B*taf_cfs}
+
+! Set groundwater M&I pumping to meet East of Merced ID M&I demand
+goal set_GP570_MI_B {GP570_MI_B = D571_MI_B}
+
+! 0% of non-district deliveries are reused or returned
+!goal set_R_ {R_ = D571_MI_B * 0.}
+
+
+/*
+M&I for City of Merced - met by groundwater
+*/
+
+
+! Define Merced ID M&I demand
+!define demand_D571_MI_A {select dem571_MI_A from urban_demand2 where month = month}
+
+define demand_D571_MI_A {
+
+        case Future {
+        condition LOD_Future == 1   ! future condition
+        select dem571_MI_A from urban_demand2_Fut where month = month}
+        case Existing{
+        condition LOD_Future == 0   ! existing condition
+	select dem571_MI_A from urban_demand2_Ext where month = month}
+    }
+
+! Set Merced ID M&I deliveries to meet demand
+goal meet_D571_MI_A {D571_MI_A = demand_D571_MI_A*taf_cfs}
+
+! Set groundwater M&I pumping to meet Merced ID M&I demand
+goal set_GP570_MI_A {GP570_MI_A = D571_MI_A}
+
+! 0% of non-district deliveries are reused or returned
+!goal set_R_ {R_ = D571_MI_A * 0.}
+
+
+/*
+DAU212 at Node 573 - Stevenson, El Nido, etc
+*/
+
+! Retrieve CUAW values for DAU 212 from predefined timeseries
+define cuaw_574_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Determine April thru September total CUAW for DAU 212
+define cum_cuaw_574_pag {
+    case aprthrusep {
+        condition   month >= apr .and. month <= sep
+        sum(i=apr-month,12-month,1) (cuaw_574_pag(i)*cfs_TAF(i)) }
+    case otherwise {
+        condition   always
+        value 0. }
+}
+
+! Determine monthly distribution of El Nido Allocations
+define ElNidoEntitlement {
+    case aprthrusep {
+        condition month >= apr .and. month <= sep
+        value (ElNidoAlloc *(cuaw_574_pag*cfs_taf)/cum_cuaw_574_pag) *  taf_cfs }
+    case otherwise {
+        condition   always
+        value 0. }
+}
+
+/*
+When surface water supplies are not adequate to meet Merced ID demands,
+Stevinson deliveries are cut by the same percentage as Merced ID
+deliveries. The percentage of demand that will be delivered was
+determined above in the perdel_MercedID variable.
+*/
+define StevEntitlement { ! demand in cfs
+    case AprSep {
+        condition month == apr .or. month == sep
+        value 54.44 * perdel_MercedID}
+    case MayAug {
+        condition month >= may .and. month <= aug
+        value 81.66 * perdel_MercedID}
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+
+/*
+West of Merced ID and Non-District areas in DAU 210 and 212 M&I pumping- all met by GW (A)
+*/
+! Define West of Merced ID and Non-District areas in DAU 210 and 212 M&I demand
+!define demand_D574_MI_A {select dem574_MI_A from urban_demand2 where month = month}
+
+define demand_D574_MI_A{
+
+        case Future {
+        condition LOD_Future == 1   ! future condition
+        select dem574_MI_A from urban_demand2_Fut where month = month}
+        case Existing{
+        condition LOD_Future == 0   ! existing condition
+	select dem574_MI_A from urban_demand2_Ext where month = month}
+    }
+
+
+
+
+! Set West of Merced ID and Non-District areas in DAU 210 and 212 M&I delivery to meet demand
+goal meet_D574_MI_A {D574_MI_A = demand_D574_MI_A*taf_cfs}
+
+! Set groundwater M&I pumping to meet West of Merced ID and Non-District areas in DAU 210 and 212 M&I demand
+goal set_GP573_MI_A {GP573_MI_A = D574_MI_A}
+
+! 0% of non-district deliveries are reused or returned
+!goal set_R_ {R_ = D574_MI_A * 0.}
+
+
+! Route surface contribution to DAU212
+goal set_R573_1 {R573 = D_MERCED1C_DAU212}
+
+! Limit surface supply to allocation
+goal set_R573_2  {R573 < ElNidoEntitlement + StevEntitlement}
+
+! Define deep percolation as 25% of CUAW
+define dperc_574_pag {value cuaw_574_pag * .25}
+
+! Limit DAU 212 deliveries to the sum of NRL, CUAW, and deep percolation
+goal set_D574 { D574_pag < 1.1*CUAW_574_pag + dperc_574_pag }
+
+! Return flow of sphere of influence losses
+goal set_R_SJRMER {R_SJRMER = R573*(1-(1.1*.75)) + D_SJRMERC*(1-(1.1*.75))}
+
+
+! Limit on diversions if reservoir is lower than 115 taf
+goal limit_D_MERCED1C {D_MERCED1C < max(0.,S_MCLRE(-1)-115.)*taf_cfs}
+
+! determine Merced River diversion to DAU 212
+
+define D_MERCED2_LIM {value min(100.,  max(0.,(minflow_C_MERCED1C - 1.1*CUAW_562A_pag + dperc_562A_pag + I_MERCED1B + I_MERCED2)) / 2.)}
+
+!define AL_D_MERCED2_LIM {alias D_MERCED2_LIM kind 'temp' units 'cfs'}
+
+goal limit_D_MERCED2 {D_MERCED2 < D_MERCED2_lim}
+
+
+
+! Alias variables used for debuging purposes
+define cuaw_562A_pag_a      {alias cuaw_562A_pag units 'cfs'}
+define dperc_562A_pag_a     {alias dperc_562A_pag units 'cfs'}
+define cuaw_571_pag_a       {alias cuaw_571_pag units 'cfs'}
+define demand_D572_a        {alias demand_D572 units 'taf'}
+define MercDemTS_prt_a      {alias MercedDemTS_part units 'cfs'}
+define MercForTS_prt_a      {alias MercedForTS_part units 'cfs'}
+define S_MCLREevap_est_a        {alias S_MCLREevap_est units 'cfs'}
+define S_MCLREAvail_a           {alias S_MCLREAvail units 'cfs'}
+define MID_distrib_a        {alias MID_distrib units 'cfs'}
+define dloss_571_pag_a      {alias dloss_571_pag units 'cfs'}
+define dperc_571_pag_a      {alias dperc_571_pag units 'cfs'}
+define spill_571_pag_a      {alias spill_571_pag units 'cfs'}
+define cuaw_571_ND_a        {alias cuaw_571_ND units 'cfs'}
+define dperc_571_nd_a       {alias dperc_571_nd units 'cfs'}
+!define dem_D571_MI_a        {alias demand_D571_MI units 'cfs'}
+!define cuaw_574_pag_a       {alias cuaw_574_pag units 'cfs'}
+!define cumcuaw574pag_a      {alias cum_cuaw_574_pag units 'cfs'}
+define ElNidoEntitle_a      {alias ElNidoEntitlement units 'cfs'}
+define StevEntitle_a        {alias StevEntitlement units 'cfs'}
+

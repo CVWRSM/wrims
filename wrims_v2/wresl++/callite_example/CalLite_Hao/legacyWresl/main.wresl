@@ -1,0 +1,58 @@
+! THIS IS THE MAIN WRESL FILE 
+
+SEQUENCE CYCLE1 {
+    model   BASE
+    order   1
+    }
+
+
+MODEL BASE {         !CYCLE 1
+
+Include 'Assumption\assumption.wresl'
+Include 'Wytypes\wytypes.wresl'
+Include 'swp_dellogic\Allocation\swp_feather_perdel.wresl'
+Include 'hydrology\FORECAST\CVPforecasts.WRESL'
+
+INCLUDE 'system\inflow-table.wresl'
+INCLUDE 'system\channel-table.wresl'
+INCLUDE 'system\reservoir-table.wresl'
+INCLUDE 'system\delivery-table.wresl'
+INCLUDE 'system\return-table.wresl'
+INCLUDE 'system\connectivity-table.wresl'
+
+Include 'hydrology\Demands\demands_69_defs.wresl'
+Include 'hydrology\Demands\demands_69.wresl'
+Include 'hydrology\Demands\demands_70.wresl'
+
+Include 'NorthOfDelta\Feather\OroRuleCurv.wresl'
+Include 'NorthOfDelta\American\FolRuleCurv.wresl'
+Include 'NorthOfDelta\Feather\feather_special.wresl'
+Include 'NorthOfDelta\Feather\ThermalitoPower.wresl'
+
+Include 'NorthOfDelta\American\FMPInput.wresl'
+Include 'NorthOfDelta\American\FMStandard.wresl'
+Include 'NorthOfDelta\American\NimbusHistMinQ.wresl'
+Include 'NorthOfDelta\American\NimbusPower.wresl'
+Include 'NorthOfDelta\American\HSt_base.wresl'
+
+Include 'NorthOfDelta\Clear_Creek\clear_ck_min.wresl'
+Include 'NorthOfDelta\Trinity\TrinRuleCurv.wresl'
+Include 'NorthOfDelta\Sacramento\ShaRuleCurv.wresl'
+
+Include 'NorthOfDelta\Trinity\Trinitymin.wresl'
+Include 'NorthOfDelta\Trinity\TrinityDamPower.wresl'
+Include 'NorthOfDelta\Trinity\LewistonSpill.wresl'
+Include 'NorthOfDelta\Trinity\trinity_import.wresl'
+
+Include 'NorthOfDelta\Sacramento\keswickmin.wresl'
+Include 'NorthOfDelta\Sacramento\KeswickPower.wresl'
+Include 'NorthOfDelta\Sacramento\redbluff_base.wresl'
+Include 'NorthOfDelta\Sacramento\ncp_relax.wresl'
+Include 'NorthOfDelta\Sacramento\setnodminflows.wresl'
+
+Include 'hydrology\WEIRS\weir_steps.wresl'
+
+Include 'swp_dellogic\deliveries\swp_bound_del.wresl'
+
+INCLUDE 'system\weight-table.wresl'
+}

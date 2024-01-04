@@ -1,0 +1,66 @@
+/* This code computes monthly Black Butte Flood Control Storage based on the
+precipitation parameter storage requirement (S42level4) and creditable space
+in East Park and Stony Gorge Reservoirs
+*/
+
+define S42level3 {select target from res_level where res_num=42,level=3,month=month}
+define S42level4 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+
+! Compute creditable space in East Park Reservoir
+define credit_EPdv {
+       CASE      EP_1 {
+       CONDITION 48.2 - S40(-1) > 10.0
+       value     10.0 }  ! TAF
+       CASE      EP_2 {
+       CONDITION 48.2 - S40(-1) < 0.0
+       value     0.0 }  ! TAF
+       CASE      EP_3 {
+       CONDITION always
+       value     48.2 - S40(-1) } } ! TAF
+
+! Compute creditable space in Stony Gorge Reservoir
+define credit_SGdv {
+       CASE      SG_1 {
+       CONDITION 28.4 - S41(-1) < 0.0 .and. MONTH >= FEB .and. MONTH <= AUG
+       value     0.0 }  ! TAF
+       CASE      SG_2 {
+       CONDITION always
+       value     28.4 - S41(-1) } } ! TAF
+
+! Compute total creditable space
+define total_FC_credit {
+       CASE      total_1 {
+       CONDITION credit_EPdv + credit_SGdv > 40.0
+       value     40.0 }  ! TAF
+       CASE      total_2 {
+       CONDITION always
+       value     credit_EPdv + credit_SGdv } } ! TAF
+
+! Compute Black Butte Flood Control Storage
+define S42level4adj {
+       CASE      BLB_1 {
+       CONDITION S42LEVEL4 + total_FC_credit < S42level2
+       value     S42level2 }  ! TAF
+       CASE      BLB_2 {
+       CONDITION S42LEVEL4 + total_FC_credit > 136.2
+       value     136.2 }  ! TAF
+       CASE      BLB_3 {
+       CONDITION always
+       value     S42LEVEL4 + total_FC_credit } } ! TAF
+
+define S42level4dv {alias S42level4adj kind 'RULE' units 'TAF'}
+
+! Limit Level 3 storage to adjusted Level 4 storage or less
+define S42level3adj {
+       CASE      Level3_1 {
+       CONDITION S42level4adj - S42LEVEL3 < 0.0
+       value     S42level4adj }  ! TAF
+       CASE      Level3_2 {
+       CONDITION always
+       value     S42LEVEL3 } } ! TAF
+
+define S42level3dv {alias S42level3adj kind 'STORAGE-LEVEL' units 'TAF'}
+
+goal S42Zone3 {S42_3 < S42level3adj - S42level2}
+goal S42Zone4 {S42_4 < S42level4adj - S42level3adj}
+goal S42Zone5 {S42_5 < S42level5 - S42level4adj}

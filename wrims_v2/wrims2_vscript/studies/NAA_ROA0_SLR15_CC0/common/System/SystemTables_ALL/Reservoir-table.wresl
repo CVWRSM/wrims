@@ -1,0 +1,668 @@
+define S1level1 {value 240}
+define S1_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S1Zone1 {S1_1 < S1level1}
+define S1level2 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S1_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S1Zone2 {S1_2 < S1level2-S1level1}
+define S1_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S1level4 {select target from res_level where res_num=1,level=4,month=month}
+define S1_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S1level5 {value 2447}
+define S1_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S1 {std kind 'STORAGE' units 'TAF'} !TRINITY RESERVOIR
+goal storage1 {S1=S1_1+S1_2+S1_3+S1_4+S1_5}
+define F1 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E1 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A1 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S1 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A1last {select area from res_info given storage=1000*S1(-1) use linear where res_num=1}
+define A1forward {select area from res_info given storage=1050*S1(-1) use linear where res_num=1}
+define A1back {select area from res_info given storage=950*S1(-1) use linear where res_num=1}
+define coefev1 {value (A1forward - A1back)/(100*max(0.01,S1(-1)))}
+goal area1 {A1=A1last+1000*coefev1*S1-1000*coefev1*S1(-1)}
+goal evap1 {E1*cfs_af=(evap_S1/24)*A1last+(evap_S1/24)*A1}
+define relcap1 {select discharge from res_info given storage=1000*S1(-1) use linear where res_num=1}
+goal maxrelease1 {C1<relcap1}
+define S3level1 {value 180}
+define S3_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S3Zone1 {S3_1 < S3level1}
+define S3level2 {select target from res_level where res_num=3,level=2,month=month}
+define S3_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S3Zone2 {S3_2 < S3level2-S3level1}
+define S3level3 {select target from res_level where res_num=3,level=3,month=month}
+define S3_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S3Zone3 {S3_3 < S3level3-S3level2}
+define S3level4 {select target from res_level where res_num=3,level=4,month=month}
+define S3_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S3Zone4 {S3_4 < S3level4-S3level3}
+define S3level5 {value 240}
+define S3_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S3Zone5 {S3_5 < S3level5-S3level4}
+define S3 {std kind 'STORAGE' units 'TAF'} !WHISKEYTOWN LAKE
+goal storage3 {S3=S3_1+S3_2+S3_3+S3_4+S3_5}
+define F3 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E3 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A3 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S3 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A3last {select area from res_info given storage=1000*S3(-1) use linear where res_num=3}
+define A3forward {select area from res_info given storage=1050*S3(-1) use linear where res_num=3}
+define A3back {select area from res_info given storage=950*S3(-1) use linear where res_num=3}
+define coefev3 {value (A3forward - A3back)/(100*max(0.01,S3(-1)))}
+goal area3 {A3=A3last+1000*coefev3*S3-1000*coefev3*S3(-1)}
+goal evap3 {E3*cfs_af=(evap_S3/24)*A3last+(evap_S3/24)*A3}
+define relcap3 {select discharge from res_info given storage=1000*S3(-1) use linear where res_num=3}
+goal maxrelease3 {C3<relcap3}
+define S4level1 {value 550}
+define S4_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S4Zone1 {S4_1 < S4level1}
+define S4level2 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S4_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S4Zone2 {S4_2 < S4level2-S4level1}
+define S4_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S4level4 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S4_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S4level5 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S4_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S4level6 {value 4552}
+define S4_6 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S4 {std kind 'STORAGE' units 'TAF'} !SHASTA LAKE
+goal storage4 {S4=S4_1+S4_2+S4_3+S4_4+S4_5+S4_6}
+define F4 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E4 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A4 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S4 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A4last {select area from res_info given storage=1000*(S4(-1) + S44(-1)) use linear where res_num=4}
+define A4forward {select area from res_info given storage=1050*(S4(-1) + S44(-1)) use linear where res_num=4}
+define A4back {select area from res_info given storage=950*(S4(-1) + S44(-1)) use linear where res_num=4}
+define coefev4 {value (A4forward - A4back)/(100*max(0.01,(S4(-1) + S44(-1))))}
+goal area4 {A4=A4last+1000*coefev4*S4+1000*coefev4*S44-1000*coefev4*S4(-1)-1000*coefev4*S44(-1)}
+goal evap4 {E4*cfs_af=(evap_S4/24)*A4last+(evap_S4/24)*A4}
+define relcap4 {select discharge from res_info given storage=1000*S4(-1) use linear where res_num=4}
+goal maxrelease4 {C4<relcap4}
+define S44level1 {value 0.0}
+define S44_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S44Zone1 {S44_1 < S44level1}
+define S44level2 {value 0.0}
+define S44_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S44Zone2 {S44_2 < S44level2-S44level1}
+define S44level3 {value 0.0}
+define S44_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S44Zone3 {S44_3 < S44level3-S44level2}
+define S44level4 {value 0.0}
+define S44_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S44Zone4 {S44_4 < S44level4-S44level3}
+define S44level5 {value 0.0}
+define S44_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S44Zone5 {S44_5 < S44level5-S44level4}
+define S44 {std kind 'STORAGE' units 'TAF'} !SHASTA ENLARGEMENT
+goal storage44 {S44=S44_1+S44_2+S44_3+S44_4+S44_5}
+define F44 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E44 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+/*
+define A44 {std kind 'SURFACE-AREA' units 'ACRES'}
+define A44last {select area from res_info given storage=1000*S44(-1) use linear where res_num=44}
+define A44forward {select area from res_info given storage=1050*S44(-1) use linear where res_num=44}
+define A44back {select area from res_info given storage=950*S44(-1) use linear where res_num=44}
+define coefev44 {value (A44forward - A44back)/(100*max(0.01,S44(-1)))}
+goal area44 {A44=A44last+1000*coefev44*S44-1000*coefev44*S44(-1)}
+*/
+goal evap44 {E44*cfs_af=0.0}
+define relcap44 {select discharge from res_info given storage=1000*S44(-1) use linear where res_num=44}
+goal maxrelease44 {C4402<relcap44}
+define S5level1 {value 0.014}
+define S5_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S5Zone1 {S5_1 < S5level1}
+define S5level2 {value 16.3}
+define S5_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S5Zone2 {S5_2 < S5level2-S5level1}
+define S5level3 {value 16.3}
+define S5_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S5Zone3 {S5_3 < S5level3-S5level2}
+define S5level4 {value 23.8}
+define S5_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S5Zone4 {S5_4 < S5level4-S5level3}
+define S5level5 {value 23.8}
+define S5_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S5Zone5 {S5_5 < S5level5-S5level4}
+define S5 {std kind 'STORAGE' units 'TAF'} !KESWICK RESERVOIR
+goal storage5 {S5=S5_1+S5_2+S5_3+S5_4+S5_5}
+define F5 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E5 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A5 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S5 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A5last {select area from res_info given storage=1000*S5(-1) use linear where res_num=5}
+define A5forward {select area from res_info given storage=1050*S5(-1) use linear where res_num=5}
+define A5back {select area from res_info given storage=950*S5(-1) use linear where res_num=5}
+define coefev5 {value (A5forward - A5back)/(100*max(0.01,S5(-1)))}
+goal area5 {A5=A5last+1000*coefev5*S5-1000*coefev5*S5(-1)}
+goal evap5 {E5*cfs_af=(evap_S5/24)*A5last+(evap_S5/24)*A5}
+define relcap5 {select discharge from res_info given storage=1000*S5(-1) use linear where res_num=5}
+goal maxrelease5 {C5<relcap5}
+define S6level1 {value 29.6}
+define S6_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S6Zone1 {S6_1 < S6level1}
+define S6level2 {value 852}
+define S6_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S6Zone2 {S6_2 < S6level2-S6level1}
+define S6_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S6_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S6level5 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S6_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S6level6 {value 3538}
+define S6_6 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S6 {std kind 'STORAGE' units 'TAF'} !LAKE OROVILLE
+goal storage6 {S6=S6_1+S6_2+S6_3+S6_4+S6_5+S6_6}
+define F6 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E6 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A6 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S6 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A6last {select area from res_info given storage=1000*S6(-1) use linear where res_num=6}
+define A6forward {select area from res_info given storage=1050*S6(-1) use linear where res_num=6}
+define A6back {select area from res_info given storage=950*S6(-1) use linear where res_num=6}
+define coefev6 {value (A6forward - A6back)/(100*max(0.01,S6(-1)))}
+goal area6 {A6=A6last+1000*coefev6*S6-1000*coefev6*S6(-1)}
+goal evap6 {E6*cfs_af=(evap_S6/24)*A6last+(evap_S6/24)*A6}
+define relcap6 {select discharge from res_info given storage=1000*S6(-1) use linear where res_num=6}
+goal maxrelease6 {C6<relcap6}
+define S7level1 {value 15.1}
+define S7_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S7Zone1 {S7_1 < S7level1}
+define S7level2 {value 20.0}
+define S7_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S7Zone2 {S7_2 < S7level2-S7level1}
+define S7level3 {value 30.0}
+define S7_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S7Zone3 {S7_3 < S7level3-S7level2}
+define S7level4 {value 55.0}
+define S7_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S7Zone4 {S7_4 < S7level4-S7level3}
+define S7level5 {value 55.0}
+define S7_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S7Zone5 {S7_5 < S7level5-S7level4}
+define S7 {std kind 'STORAGE' units 'TAF'} !THERMALITO FOREBAY
+goal storage7 {S7=S7_1+S7_2+S7_3+S7_4+S7_5}
+define F7 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E7 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A7 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S7 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A7last {select area from res_info given storage=1000*S7(-1) use linear where res_num=7}
+define A7forward {select area from res_info given storage=1050*S7(-1) use linear where res_num=7}
+define A7back {select area from res_info given storage=950*S7(-1) use linear where res_num=7}
+define coefev7 {value (A7forward - A7back)/(100*max(0.01,S7(-1)))}
+goal area7 {A7=A7last+1000*coefev7*S7-1000*coefev7*S7(-1)}
+goal evap7 {E7*cfs_af=(evap_S7/24)*A7last+(evap_S7/24)*A7}
+define relcap7 {select discharge from res_info given storage=1000*S7(-1) use linear where res_num=7}
+goal maxrelease7 {C7<relcap7}
+define S8level1 {value 90}
+define S8_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S8Zone1 {S8_1 < S8level1}
+define S8level2 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S8_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S8Zone2 {S8_2 < S8level2-S8level1}
+define S8_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S8level4 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S8_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S8level5 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S8_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S8level6 {value 975}
+define S8_6 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S8 {std kind 'STORAGE' units 'TAF'} !FOLSOM LAKE
+goal storage8 {S8=S8_1+S8_2+S8_3+S8_4+S8_5+S8_6}
+define F8 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E8 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A8 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S8 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A8last {select area from res_info given storage=1000*S8(-1) use linear where res_num=8}
+define A8forward {select area from res_info given storage=1050*S8(-1) use linear where res_num=8}
+define A8back {select area from res_info given storage=950*S8(-1) use linear where res_num=8}
+define coefev8 {value (A8forward - A8back)/(100*max(0.01,S8(-1)))}
+goal area8 {A8=A8last+1000*coefev8*S8-1000*coefev8*S8(-1)}
+goal evap8 {E8*cfs_af=(evap_S8/24)*A8last+(evap_S8/24)*A8}
+define relcap8 {select discharge from res_info given storage=1000*S8(-1) use linear where res_num=8}
+goal maxrelease8 {C8<relcap8}
+define S9level1 {value 1.75}
+define S9_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S9Zone1 {S9_1 < S9level1}
+define S9level2 {value 6.5}
+define S9_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S9Zone2 {S9_2 < S9level2-S9level1}
+define S9level3 {value 6.5}
+define S9_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S9Zone3 {S9_3 < S9level3-S9level2}
+define S9level4 {value 8.8}
+define S9_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S9Zone4 {S9_4 < S9level4-S9level3}
+define S9level5 {value 8.8}
+define S9_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S9Zone5 {S9_5 < S9level5-S9level4}
+define S9 {std kind 'STORAGE' units 'TAF'} !LAKE NATOMA
+goal storage9 {S9=S9_1+S9_2+S9_3+S9_4+S9_5}
+define F9 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E9 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A9 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S9 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A9last {select area from res_info given storage=1000*S9(-1) use linear where res_num=9}
+define A9forward {select area from res_info given storage=1050*S9(-1) use linear where res_num=9}
+define A9back {select area from res_info given storage=950*S9(-1) use linear where res_num=9}
+define coefev9 {value (A9forward - A9back)/(100*max(0.01,S9(-1)))}
+goal area9 {A9=A9last+1000*coefev9*S9-1000*coefev9*S9(-1)}
+goal evap9 {E9*cfs_af=(evap_S9/24)*A9last+(evap_S9/24)*A9}
+define relcap9 {select discharge from res_info given storage=1000*S9(-1) use linear where res_num=9}
+goal maxrelease9 {C9<relcap9}
+define S11level1 {value 45}
+define S11_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S11Zone1 {S11_1 < S11level1}
+define S11level2 {value 45}
+define S11_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S11Zone2 {S11_2 < S11level2-S11level1}
+define S11_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S11level4 {value 972}
+define S11_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S11level5 {value 972}
+define S11_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S11 {std kind 'STORAGE' units 'TAF'} !CVP SAN LUIS RESERVOIR
+goal storage11 {S11=S11_1+S11_2+S11_3+S11_4+S11_5}
+define F11 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E11 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A11 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S11 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A11last {select area from res_info given storage=1000*S11(-1) use linear where res_num=11}
+define A11forward {select area from res_info given storage=1050*S11(-1) use linear where res_num=11}
+define A11back {select area from res_info given storage=950*S11(-1) use linear where res_num=11}
+define coefev11 {value (A11forward - A11back)/(100*max(0.01,S11(-1)))}
+goal area11 {A11=A11last+1000*coefev11*S11-1000*coefev11*S11(-1)}
+goal evap11 {E11*cfs_af=(evap_S11/24)*A11last+(evap_S11/24)*A11}
+define relcap11 {select discharge from res_info given storage=1000*S11(-1) use linear where res_num=11}
+goal maxrelease11 {C11<relcap11}
+define S12level1 {value 55}
+define S12_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S12Zone1 {S12_1 < S12level1}
+define S12level2 {value 55}
+define S12_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S12Zone2 {S12_2 < S12level2-S12level1}
+define S12_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S12level4 {value 1067}
+define S12_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S12level5 {value 1067}
+define S12_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S12 {std kind 'STORAGE' units 'TAF'} !SWP SAN LUIS RESERVOIR
+goal storage12 {S12=S12_1+S12_2+S12_3+S12_4+S12_5}
+define F12 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E12 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A12 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S12 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A12last {select area from res_info given storage=1000*S12(-1) use linear where res_num=12}
+define A12forward {select area from res_info given storage=1050*S12(-1) use linear where res_num=12}
+define A12back {select area from res_info given storage=950*S12(-1) use linear where res_num=12}
+define coefev12 {value (A12forward - A12back)/(100*max(0.01,S12(-1)))}
+goal area12 {A12=A12last+1000*coefev12*S12-1000*coefev12*S12(-1)}
+goal evap12 {E12*cfs_af=(evap_S12/24)*A12last+(evap_S12/24)*A12}
+define relcap12 {select discharge from res_info given storage=1000*S12(-1) use linear where res_num=12}
+goal maxrelease12 {C12<relcap12}
+define S15level1 {value 9.8}
+define S15_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S15Zone1 {S15_1 < S15level1}
+define S15level2 {value 9.8}
+define S15_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S15Zone2 {S15_2 < S15level2-S15level1}
+define S15level3 {select target from res_level where res_num=15,level=3,month=month}
+define S15_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S15Zone3 {S15_3 < S15level3-S15level2}
+define S15level4 {value 40}
+define S15_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S15Zone4 {S15_4 < S15level4-S15level3}
+define S15level5 {value 77}
+define S15_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S15Zone5 {S15_5 < S15level5-S15level4}
+define S15 {std kind 'STORAGE' units 'TAF'} !LAKE DEL VALLE
+goal storage15 {S15=S15_1+S15_2+S15_3+S15_4+S15_5}
+define F15 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E15 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A15 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S15 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A15last {select area from res_info given storage=1000*S15(-1) use linear where res_num=15}
+define A15forward {select area from res_info given storage=1050*S15(-1) use linear where res_num=15}
+define A15back {select area from res_info given storage=950*S15(-1) use linear where res_num=15}
+define coefev15 {value (A15forward - A15back)/(100*max(0.01,S15(-1)))}
+goal area15 {A15=A15last+1000*coefev15*S15-1000*coefev15*S15(-1)}
+goal evap15 {E15*cfs_af=(evap_S15/24)*A15last+(evap_S15/24)*A15}
+define relcap15 {select discharge from res_info given storage=1000*S15(-1) use linear where res_num=15}
+goal maxrelease15 {C15<relcap15}
+define S25level1 {value 44}
+define S25_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S25Zone1 {S25_1 < S25level1}
+define S25level2 {value 44}
+define S25_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S25Zone2 {S25_2 < S25level2-S25level1}
+define S25level3 {select target from res_level where res_num=25,level=3,month=month}
+define S25_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S25Zone3 {S25_3 < S25level3-S25level2}
+define S25level4 {value 72}
+define S25_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S25Zone4 {S25_4 < S25level4-S25level3}
+define S25level5 {value 75}
+define S25_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S25Zone5 {S25_5 < S25level5-S25level4}
+define S25 {std kind 'STORAGE' units 'TAF'} !SILVERWOOD LAKE
+goal storage25 {S25=S25_1+S25_2+S25_3+S25_4+S25_5}
+define F25 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E25 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A25 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S25 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A25last {select area from res_info given storage=1000*S25(-1) use linear where res_num=25}
+define A25forward {select area from res_info given storage=1050*S25(-1) use linear where res_num=25}
+define A25back {select area from res_info given storage=950*S25(-1) use linear where res_num=25}
+define coefev25 {value (A25forward - A25back)/(100*max(0.01,S25(-1)))}
+goal area25 {A25=A25last+1000*coefev25*S25-1000*coefev25*S25(-1)}
+goal evap25 {E25*cfs_af=(evap_S25/24)*A25last+(evap_S25/24)*A25}
+define relcap25 {select discharge from res_info given storage=1000*S25(-1) use linear where res_num=25}
+goal maxrelease25 {C25<relcap25}
+define S27level1 {value 31}
+define S27_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S27Zone1 {S27_1 < S27level1}
+define S27level2 {value 85}
+define S27_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S27Zone2 {S27_2 < S27level2-S27level1}
+define S27level3 {select target from res_level where res_num=27,level=3,month=month}
+define S27_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S27Zone3 {S27_3 < S27level3-S27level2}
+define S27level4 {value 122}
+define S27_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S27Zone4 {S27_4 < S27level4-S27level3}
+define S27level5 {value 131}
+define S27_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S27Zone5 {S27_5 < S27level5-S27level4}
+define S27 {std kind 'STORAGE' units 'TAF'} !LAKE PERRIS
+goal storage27 {S27=S27_1+S27_2+S27_3+S27_4+S27_5}
+define F27 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E27 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A27 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S27 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A27last {select area from res_info given storage=1000*S27(-1) use linear where res_num=27}
+define A27forward {select area from res_info given storage=1050*S27(-1) use linear where res_num=27}
+define A27back {select area from res_info given storage=950*S27(-1) use linear where res_num=27}
+define coefev27 {value (A27forward - A27back)/(100*max(0.01,S27(-1)))}
+goal area27 {A27=A27last+1000*coefev27*S27-1000*coefev27*S27(-1)}
+goal evap27 {E27*cfs_af=(evap_S27/24)*A27last+(evap_S27/24)*A27}
+define relcap27 {select discharge from res_info given storage=1000*S27(-1) use linear where res_num=27}
+goal maxrelease27 {D27<relcap27}
+define S28level1 {value 95}
+define S28_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S28Zone1 {S28_1 < S28level1}
+define S28level2 {value 120}
+define S28_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S28Zone2 {S28_2 < S28level2-S28level1}
+define S28level3 {value 165}
+define S28_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S28Zone3 {S28_3 < S28level3-S28level2}
+define S28level4 {value 165}
+define S28_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S28Zone4 {S28_4 < S28level4-S28level3}
+define S28level5 {value 171}
+define S28_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S28Zone5 {S28_5 < S28level5-S28level4}
+define S28 {std kind 'STORAGE' units 'TAF'} !PYRAMID LAKE
+goal storage28 {S28=S28_1+S28_2+S28_3+S28_4+S28_5}
+define F28 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E28 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A28 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S28 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A28last {select area from res_info given storage=1000*S28(-1) use linear where res_num=28}
+define A28forward {select area from res_info given storage=1050*S28(-1) use linear where res_num=28}
+define A28back {select area from res_info given storage=950*S28(-1) use linear where res_num=28}
+define coefev28 {value (A28forward - A28back)/(100*max(0.01,S28(-1)))}
+goal area28 {A28=A28last+1000*coefev28*S28-1000*coefev28*S28(-1)}
+goal evap28 {E28*cfs_af=(evap_S28/24)*A28last+(evap_S28/24)*A28}
+define relcap28 {select discharge from res_info given storage=1000*S28(-1) use linear where res_num=28}
+goal maxrelease28 {C28<relcap28}
+define S29level1 {value 280}
+define S29_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S29Zone1 {S29_1 < S29level1}
+define S29level2 {value 280}
+define S29_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S29Zone2 {S29_2 < S29level2-S29level1}
+define S29level3 {select target from res_level where res_num=29,level=3,month=month}
+define S29_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S29Zone3 {S29_3 < S29level3-S29level2}
+define S29level4 {value 315}
+define S29_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S29Zone4 {S29_4 < S29level4-S29level3}
+define S29level5 {value 324}
+define S29_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S29Zone5 {S29_5 < S29level5-S29level4}
+define S29 {std kind 'STORAGE' units 'TAF'} !CASTAIC LAKE
+goal storage29 {S29=S29_1+S29_2+S29_3+S29_4+S29_5}
+define F29 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E29 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A29 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S29 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A29last {select area from res_info given storage=1000*S29(-1) use linear where res_num=29}
+define A29forward {select area from res_info given storage=1050*S29(-1) use linear where res_num=29}
+define A29back {select area from res_info given storage=950*S29(-1) use linear where res_num=29}
+define coefev29 {value (A29forward - A29back)/(100*max(0.01,S29(-1)))}
+goal area29 {A29=A29last+1000*coefev29*S29-1000*coefev29*S29(-1)}
+goal evap29 {E29*cfs_af=(evap_S29/24)*A29last+(evap_S29/24)*A29}
+define relcap29 {select discharge from res_info given storage=1000*S29(-1) use linear where res_num=29}
+goal maxrelease29 {C29<relcap29}
+define S22level1 {value 200.1}
+define S22_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S22Zone1 {S22_1 < S22level1}
+define S22level2 {value 200.1}
+define S22_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S22Zone2 {S22_2 < S22level2-S22level1}
+define S22level3 {value 200.1}
+define S22_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S22Zone3 {S22_3 < S22level3-S22level2}
+define S22level4 {value 200.1}
+define S22_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S22Zone4 {S22_4 < S22level4-S22level3}
+define S22level5 {value 200.1}
+define S22_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S22Zone5 {S22_5 < S22level5-S22level4}
+define S22 {std kind 'STORAGE' units 'TAF'} !EWA GW
+goal storage22 {S22=S22_1+S22_2+S22_3+S22_4+S22_5}
+define F22 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E22 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A22 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S22 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A22last {select area from res_info given storage=1000*S22(-1) use linear where res_num=22}
+define A22forward {select area from res_info given storage=1050*S22(-1) use linear where res_num=22}
+define A22back {select area from res_info given storage=950*S22(-1) use linear where res_num=22}
+define coefev22 {value (A22forward - A22back)/(100*max(0.01,S22(-1)))}
+goal area22 {A22=A22last+1000*coefev22*S22-1000*coefev22*S22(-1)}
+goal evap22 {E22*cfs_af=(evap_S22/24)*A22last+(evap_S22/24)*A22}
+define relcap22 {select discharge from res_info given storage=1000*S22(-1) use linear where res_num=22}
+goal maxrelease22 {C22<relcap22}
+define S13level1 {value 0}
+define S13_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S13Zone1 {S13_1 < S13level1}
+define S13level2 {value 0}
+define S13_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S13Zone2 {S13_2 < S13level2-S13level1}
+define S13level3 {value 0}
+define S13_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S13Zone3 {S13_3 < S13level3-S13level2}
+define S13_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S13level5 {value 2038}
+define S13_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S13 {std kind 'STORAGE' units 'TAF'} !EWA SAN LUIS
+goal storage13 {S13=S13_1+S13_2+S13_3+S13_4+S13_5}
+define F13 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E13 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A13 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S13 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A13last {select area from res_info given storage=1000*S13(-1) use linear where res_num=13}
+define A13forward {select area from res_info given storage=1050*S13(-1) use linear where res_num=13}
+define A13back {select area from res_info given storage=950*S13(-1) use linear where res_num=13}
+define coefev13 {value (A13forward - A13back)/(100*max(0.01,S13(-1)))}
+goal area13 {A13=A13last+1000*coefev13*S13-1000*coefev13*S13(-1)}
+goal evap13 {E13*cfs_af=(evap_S13/24)*A13last+(evap_S13/24)*A13}
+define relcap13 {select discharge from res_info given storage=1000*S13(-1) use linear where res_num=13}
+goal maxrelease13 {D13_SWP2<relcap13}
+! NODOS
+define S30 {std kind 'STORAGE' units 'TAF'} !NODOS LOCAL
+define S31 {std kind 'STORAGE' units 'TAF'} !NODOS SWP
+define S32 {std kind 'STORAGE' units 'TAF'} !NODOS CVP
+define S33 {std kind 'STORAGE' units 'TAF'} !NODOS EWA
+define S34 {std kind 'STORAGE' units 'TAF'} !NODOS WQ
+define A30 {std kind 'SURFACE-AREA' units 'ACRES'} !represents the surface area for the entire NODOS Reservoir
+define evap_S30 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define EvapNODOS {lower unbounded kind 'EVAPORATION' units 'CFS'} !represents the evaporation for the entire NODOS Reservoir
+define A30last {select area from res_info given storage=1000*(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1)) use linear where res_num=30}
+define A30forward {select area from res_info given storage=1050*(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1)) use linear where res_num=30}
+define A30back {select area from res_info given storage=950*(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1)) use linear where res_num=30}
+define coefev30 {value (A30forward - A30back)/(100*max(0.01,S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1)))}
+goal area30 {A30=A30last+1000*coefev30*S30+1000*coefev30*S31+1000*coefev30*S32+1000*coefev30*S33+1000*coefev30*S34
+                -1000*coefev30*(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1))}
+goal evapNODOS {EvapNODOS*cfs_af=(evap_S30/24)*A30last+(evap_S30/24)*A30}
+define relcap30 {select discharge from res_info given storage=1000*(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1)) use linear where res_num=30} !represents the release capacity for the entire NODOS Reservoir
+goal maxrelease30 {C30+C30A+C30C+D30+C31+C31A+C32+C32A+C32B+C32C+D32+C33+D33+C34+D34<relcap30}
+!
+define S30level1 {value DeadPoolLocal}
+define S30_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S30Zone1 {S30_1 < S30level1}
+define S30level2 {value DeadPoolLocal}
+define S30_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S30Zone2 {S30_2 < S30level2-S30level1}
+define S30_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S30_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S30_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal storage30 {S30=S30_1+S30_2+S30_3+S30_4+S30_5}
+define F30 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E30 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+goal evap30 {E30=EvapNODOS * S30(-1)/(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1))}
+define S31level1 {value 0.0}
+define S31_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S31Zone1 {S31_1 < S31level1}
+define S31level2 {value 0.0}
+define S31_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S31Zone2 {S31_2 < S31level2-S31level1}
+define S31_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S31_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S31_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal storage31 {S31=S31_1+S31_2+S31_3+S31_4+S31_5}
+define F31 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E31 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+goal evap31 {E31=EvapNODOS * S31(-1)/(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1))}
+define S32level1 {value 0.0}
+define S32_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S32Zone1 {S32_1 < S32level1}
+define S32level2 {value 0.0}
+define S32_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S32Zone2 {S32_2 < S32level2-S32level1}
+define S32_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S32_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S32_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal storage32 {S32=S32_1+S32_2+S32_3+S32_4+S32_5}
+define F32 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E32 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+goal evap32 {E32=EvapNODOS * S32(-1)/(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1))}
+define S33level1 {value 0.0}
+define S33_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S33Zone1 {S33_1 < S33level1}
+define S33level2 {value 0.0}
+define S33_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S33Zone2 {S33_2 < S33level2-S33level1}
+define S33_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S33_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S33_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal storage33 {S33=S33_1+S33_2+S33_3+S33_4+S33_5}
+define F33 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E33 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+goal evap33 {E33=EvapNODOS * S33(-1)/(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1))}
+define S34level1 {value 0.0}
+define S34_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S34Zone1 {S34_1 < S34level1}
+define S34level2 {value 0.0}
+define S34_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S34Zone2 {S34_2 < S34level2-S34level1}
+define S34_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S34_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S34_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal storage34 {S34=S34_1+S34_2+S34_3+S34_4+S34_5}
+define F34 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E34 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+goal evap34 {E34=EvapNODOS * S34(-1)/(S30(-1)+S31(-1)+S32(-1)+S33(-1)+S34(-1))}
+!
+define S40level1 {value 1.5}
+define S40_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S40Zone1 {S40_1 < S40level1}
+define S40level2 {value 5.0}
+define S40_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S40Zone2 {S40_2 < S40level2-S40level1}
+define S40level3 {select target from res_level where res_num=40,level=3,month=month}
+define S40_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S40Zone3 {S40_3 < S40level3-S40level2}
+define S40level4 {select target from res_level where res_num=40,level=4,month=month}
+define S40_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S40Zone4 {S40_4 < S40level4-S40level3}
+define S40level5 {value 50.9}
+define S40_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S40Zone5 {S40_5 < S40level5-S40level4}
+define S40 {std kind 'STORAGE' units 'TAF'} !East Park Reservoir
+goal storage40 {S40=S40_1+S40_2+S40_3+S40_4+S40_5}
+define F40 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E40 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A40 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S40 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A40last {select area from res_info given storage=1000*S40(-1) use linear where res_num=40}
+define A40forward {select area from res_info given storage=1050*S40(-1) use linear where res_num=40}
+define A40back {select area from res_info given storage=950*S40(-1) use linear where res_num=40}
+define coefev40 {value (A40forward - A40back)/(100*max(0.01,S40(-1)))}
+goal area40 {A40=A40last+1000*coefev40*S40-1000*coefev40*S40(-1)}
+goal evap40 {E40*cfs_af=(evap_S40/24)*A40last+(evap_S40/24)*A40}
+define relcap40 {select discharge from res_info given storage=1000*S40(-1) use linear where res_num=40}
+goal maxrelease40 {C40<relcap40}
+define S41level1 {value 1.5}
+define S41_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S41Zone1 {S41_1 < S41level1}
+define S41level2 {value 7.5}
+define S41_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S41Zone2 {S41_2 < S41level2-S41level1}
+define S41level3 {select target from res_level where res_num=41,level=3,month=month}
+define S41_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S41Zone3 {S41_3 < S41level3-S41level2}
+define S41level4 {select target from res_level where res_num=41,level=4,month=month}
+define S41_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S41Zone4 {S41_4 < S41level4-S41level3}
+define S41level5 {value 50.4}
+define S41_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S41Zone5 {S41_5 < S41level5-S41level4}
+define S41 {std kind 'STORAGE' units 'TAF'} !Stony Gorge Reservoir
+goal storage41 {S41=S41_1+S41_2+S41_3+S41_4+S41_5}
+define F41 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E41 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A41 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S41 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A41last {select area from res_info given storage=1000*S41(-1) use linear where res_num=41}
+define A41forward {select area from res_info given storage=1050*S41(-1) use linear where res_num=41}
+define A41back {select area from res_info given storage=950*S41(-1) use linear where res_num=41}
+define coefev41 {value (A41forward - A41back)/(100*max(0.01,S41(-1)))}
+goal area41 {A41=A41last+1000*coefev41*S41-1000*coefev41*S41(-1)}
+goal evap41 {E41*cfs_af=(evap_S41/24)*A41last+(evap_S41/24)*A41}
+define relcap41 {select discharge from res_info given storage=1000*S41(-1) use linear where res_num=41}
+goal maxrelease41 {C41<relcap41}
+define S42level1 {value 1.5}
+define S42_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S42Zone1 {S42_1 < S42level1}
+define S42level2 {value 20.0}
+define S42_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+goal S42Zone2 {S42_2 < S42level2-S42level1}
+define S42_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S42_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S42level5 {value 136.2}
+define S42_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S42 {std kind 'STORAGE' units 'TAF'} !Black Butte Lake
+goal storage42 {S42=S42_1+S42_2+S42_3+S42_4+S42_5}
+define F42 {std kind 'FLOW-SPILL-NON-RECOV' units 'CFS'}
+define E42 {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A42 {std kind 'SURFACE-AREA' units 'ACRES'}
+define evap_S42 {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A42last {select area from res_info given storage=1000*S42(-1) use linear where res_num=42}
+define A42forward {select area from res_info given storage=1050*S42(-1) use linear where res_num=42}
+define A42back {select area from res_info given storage=950*S42(-1) use linear where res_num=42}
+define coefev42 {value (A42forward - A42back)/(100*max(0.01,S42(-1)))}
+goal area42 {A42=A42last+1000*coefev42*S42-1000*coefev42*S42(-1)}
+goal evap42 {E42*cfs_af=(evap_S42/24)*A42last+(evap_S42/24)*A42}
+define relcap42 {select discharge from res_info given storage=1000*S42(-1) use linear where res_num=42}
+goal maxrelease42 {C42<relcap42}

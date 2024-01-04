@@ -1,0 +1,48 @@
+
+sequence CYCLE1 {
+    model   first
+    order   1
+    }
+
+sequence CYCLE2 {
+    model   second
+    order   2
+    }
+	
+model globalModel { 
+
+  define a { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define b { std kind 'FLOW-CHANNEL' units 'CFS'} 
+}
+	
+model first { 
+
+  include model globalModel
+  define c { std kind 'FLOW-CHANNEL' units 'CFS'}
+  
+  goal g1 { a+b+c < 100 }
+  
+  objective simple {
+	[a, 5 ]
+	[b, 5 ]
+	[c, 5 ] 
+  } 
+}
+
+model second { 
+
+  ! you can use dvar instead of define
+  dvar x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  include model globalModel
+  
+  goal g1 { x+y+a+b < 200 }
+  
+  objective simple {
+	[x, 5 ] 
+	[y, 5 ] 
+	[a, 5 ]
+	[b, 5 ]
+  } 
+}
+

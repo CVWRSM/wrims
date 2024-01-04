@@ -1,0 +1,158 @@
+! cycle3out.wresl
+! Edward Chang
+! 5/01/2000
+! The following WRESL code is used in cycle 6 to write out intermediate solver computations that are made in the SJR module
+! Revised by C. Hsu, 3/7/03, USBR, for review and documentation project
+!################################################################################################################
+
+/* Cycle 3
+The following WRESL code is used in cycle 6 to write out intermediate solver computations
+that are made in the SJR module.  This may be needed to verify output computations that
+are based on cycle3 because the final output is the monthly weighted flows and storages,
+not what may be in each 10, 14, 15, or 16 day period.
+*/
+! Define  New Melones flows for cycle 3 output
+define C10cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones mainstem flows for cycle 3 output
+define C10mcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones water quality flows for cycle 3 output
+define C10WQcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones dissolved oxygen flows for cycle 3 output
+define C10DOcycle3 {std kind 'flow-cycle3' units 'cfs' }
+!define C10VAMPcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Melones VAMP flows for cycle 3 output
+define C520VAMPcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Mendota Pool/Exchange Contractors flows for cycle 3 output
+define D607Bcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Sack Dam/Exchange Contractors flows for cycle 3 output
+define D608Bcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Lower DMC flow for cycle 3 output
+define C708cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Mendota Pool VAMP flow for cycle 2 output
+define C607BVAMPcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Delivery to SSJID area cycle 3 output
+define C522cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Merced River below McClure flow for cycle 3 output
+define C20cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Don Pedro mian channel flow for cycle 3 output
+define C81cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define McClure main channel flow for cycle 3 output
+define C20mcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Don Pedro mian channel flow for cycle 3 output
+define C81mcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define McClure VAMP flow for cycle 3 output
+define C20vampcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define New Don Pedro VAMP flow for cycle 3 output
+define C81vampcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define Goodwin flow for cycle 3 output
+define C520cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define flow for Reach C528 for cycle 3 output
+define C528cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Define flow below Vernalis for cycle 3 output
+define C639cycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Set New Melones flow for cycle 3output 
+goal outC10cycle3 {C10cycle3 = C10[SJR_PULSE]}
+! Set New Melones main channel flow for cycle 3 output 
+goal outC10mcycle3 {C10Mcycle3 = C10M[SJR_PULSE]} 
+! Set New Melones water quality flow for cycle 3 output
+goal outC10WQcycle3 {C10WQcycle3 = C10WQ[SJR_PULSE]}
+! Set New Melones DO flow for cycle 3 output 
+goal outC10DOcycle3 {C10DOcycle3 = C10DO[SJR_PULSE]}
+!goal outC10VAMPcycle3 {C10VAMPcycle3 = C10VAMP[SJR_PULSE]}
+! New Melones Reach C520 VAMP cycle 3 output
+goal outC520VAMPcycle3 {C520VAMPcycle3 = C520VAMP[SJR_PULSE]}
+! Mendota Pool/Exchange Contractors cycle 3 output
+goal outD607Bcycle3 {D607Bcycle3 = D607B[SJR_PULSE]}
+! Sack Dam/Exchange Contractors cycle 3 output
+goal outD608Bcycle3 {D608Bcycle3 = D608B[SJR_PULSE]}
+! Lower DMC to Mendota Pool cycle 32 output
+goal outC708cycle3 {C708cycle3 = C708[SJR_PULSE]}
+! Mendota Pool VAMP cycle 3 output
+goal outC607BVAMPcycle3 {C607BVAMPcycle3 = C607BVAMP[SJR_PULSE]}
+! Merced River cycle 3 output
+goal outC20cycle3 {C20cycle3 = C20[SJR_PULSE]}
+! Don Pedro cycle3 output
+goal outC81cycle3 {C81cycle3 = C81[SJR_PULSE]}
+! McClure cycle 3 output
+goal outC20mcycle3 {C20Mcycle3 = C20M[SJR_PULSE]}
+! Don Pedro mainstem cycle 3 output
+goal outC81mcycle3 {C81Mcycle3 = C81M[SJR_PULSE]}
+! McClure VAMP cycle 3 output
+goal outC20vampcycle3 {C20VAMPcycle3 = C20VAMP[SJR_PULSE]}
+! Don Pedro VAMP cycle 3 output
+goal outC81vampcycle3 {C81VAMPcycle3 = C81VAMP[SJR_PULSE]}
+! New Melones Reach C520 cycle 3 output
+goal outC520cycle3 {C520cycle3 = C520[SJR_PULSE]}
+! New Melones Reach C528 cycle 3 output
+goal outC528cycle3 {C528cycle3 = C528[SJR_PULSE]}
+! SJR below Vernalis cycle 3 output
+goal outC639cycle3 {C639cycle3 = C639[SJR_PULSE]}
+! New Melones mainstem VAMP cycle 3 output 
+define C10VAMP_Mcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! New Melones mainstem VAMP transfer cycle 3 output 
+define C10VAMP_Tcycle3 {std kind 'flow-cycle3' units 'cfs' }
+! Don Pedro Stanislaus VAMP cycle 3 output
+define C81_stan_vampc3 {std kind 'flow-cycle3' units 'cfs' }
+! New Melones VAMP cycle 3 output (Pulse period)
+goal outC10VAMP_Mcycle3 {C10VAMP_Mcycle3 = C10VAMP_M[SJR_PULSE]}
+! New Melones VAMP transfer cycle 3 output (Pulse period)
+goal outC10VAMP_Tcycle3 {C10VAMP_Tcycle3 = C10VAMP_T[SJR_PULSE]}
+! Don Pedro Stanislaus VAMP cycle 3 output (Pulse period)
+goal outC81_stan_vampcycle3 {C81_STAN_VAMPc3 = C81_STAN_VAMP[SJR_PULSE]}
+! Define Westside cycle 3 flow
+define Westside_c3 {std kind 'flow-cycle1' units 'cfs' }
+! Set Westside cycle 3 output (pulse flow)
+goal outWestside_c3 {Westside_c3 = Westside[SJR_PULSE]}
+! Define mainstem cycle 3 flow 
+define Mainstem_c3 {lower -99999 upper 99999 kind 'flow-cycle1' units 'cfs' }
+! Mainstem cycle 3 output (pulse flow)
+goal outMainstem_c3 {Mainstem_c3 = Mainstem[SJR_PULSE]}
+! Define Stanislaus accretion in cycle 3 for output
+define Accr_c3 {std kind 'flow-cycle1' units 'cfs' }
+! Set Stanislaus accretion in cycle 3 for output
+goal outAccr_c3 {Accr_c3 = Accr[SJR_PULSE]}
+! Define Don Pedro minflow for cycle 3
+define C540_MIFcycle3 {std kind 'flowmin-cycle3' units 'cfs'}
+! Don Pedro minflow cycle 3 output
+goal outC540_MIFc3 {C540_MIFcycle3 = C540_MIF[SJR_PULSE]}
+! Define Tuolumne to Modesto turnout in cycle 3
+define d540b_cycle3 {std kind 'flow-cycle3' units 'cfs'}
+! Tuolumne to Modesto turnout for cycle 3 output
+goal outd540b_c3 {d540b_cycle3 = d540b[SJR_PULSE]}
+
+
+define C18M_c3          {std kind 'flow-cycle3' units 'cfs'}
+define C18A_c3          {std kind 'flow-cycle3' units 'cfs'}
+define C18F_c3          {std kind 'flow-cycle3' units 'cfs'}
+define C603_c3          {std kind 'flow-cycle3' units 'cfs'}
+define C603_loss_c3     {std kind 'flow-cycle3' units 'cfs'}
+define C603_main_c3     {std kind 'flow-cycle3' units 'cfs'}
+define C603_mainsjrrc3  {std kind 'flow-cycle3' units 'cfs'}
+define C603_mainsmflc3  {std kind 'flow-cycle3' units 'cfs'}
+define C605a_c3         {std kind 'flow-cycle3' units 'cfs'}
+define C605a_main_c3    {std kind 'flow-cycle3' units 'cfs'}
+define C605a_flood_c3   {std kind 'flow-cycle3' units 'cfs'}
+define C605b_c3         {std kind 'flow-cycle3' units 'cfs'}
+define C605c_c3         {std kind 'flow-cycle3' units 'cfs'}
+
+goal set_c38M_c3            {C18M_c3 = C18M[SJR_PULSE]}
+goal set_c38A_c3            {C18A_c3 = C18A[SJR_PULSE]}
+goal set_c38F_c3            {C18F_c3 = C18F[SJR_PULSE]}
+goal set_C603_c3            {C603_c3 = C603[SJR_PULSE]}
+goal set_C603_loss_c3       {C603_loss_c3 = C603_loss[SJR_PULSE]}
+goal set_C603_main_c3       {C603_main_c3 = C603_main[SJR_PULSE]}
+goal set_C603_mainsjrrc3    {C603_mainsjrrc3 = C603_mainsjrr[SJR_PULSE]}
+goal set_C603_mainsmflc3    {C603_mainsmflc3 = C603_mainsmfl[SJR_PULSE]}
+goal set_C605a_c3           {C605a_c3 = C605a[SJR_PULSE]}
+goal set_C605a_main_c3      {C605a_main_c3 = C605a_main[SJR_PULSE]}
+goal set_C605a_flood_c3     {C605a_flood_c3 = C605a_flood[SJR_PULSE]}
+goal set_C605b_c3           {C605b_c3 = C605b[SJR_PULSE]}
+goal set_C605c_c3           {C605c_c3 = C605c[SJR_PULSE]}
+
+define C18_c3 {alias C18[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+define C607_c3 {alias C607[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+define C608_c3 {alias C608[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+define C611_c3 {alias C611[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+define C540_c3 {alias C540[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}
+
+define I18_rest_bal_c3 {alias I18_rest_bal[SJR_PULSE] kind 'flow-cycle3' units 'cfs'}

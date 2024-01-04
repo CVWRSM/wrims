@@ -1,0 +1,120 @@
+define volS_TRNTYZone2 {value S_TRNTYlevel2-S_TRNTYlevel1 }
+define volS_SHSTAZone2 {value S_SHSTAlevel2-S_SHSTAlevel1 }
+define volS_FOLSMZone2 {value S_FOLSMlevel2-S_FOLSMlevel1 }
+
+define S_TRNTY_2_coeff {
+	case GreaterThanZero {
+		condition	volS_TRNTYZone2 >= 0.001
+		value		volS_SHSTAZone2/volS_TRNTYZone2
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal balS_TRNTYS_SHSTAZone2 {
+	lhs S_TRNTY_2_coeff*S_TRNTY_2
+	rhs S_SHSTA_2
+	lhs>rhs penalty 2*taf_cfs
+	lhs<rhs penalty 2*taf_cfs
+}
+
+define S_FOLSM_2_coeff {
+	case GreaterThanZero {
+		condition	volS_FOLSMZone2 >= 0.001
+		value		volS_SHSTAZone2/volS_FOLSMZone2
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal balS_FOLSMS_SHSTAZone2 {
+	lhs S_FOLSM_2_coeff*S_FOLSM_2
+	rhs S_SHSTA_2
+	lhs>rhs penalty 2*taf_cfs
+	lhs<rhs penalty 2*taf_cfs
+}
+
+define volS_TRNTYZone3 {value S_TRNTYlevel3adj-S_TRNTYlevel2 }
+define volS_SHSTAZone3 {value S_SHSTAlevel3adj-S_SHSTAlevel2 }
+define volS_FOLSMZone3 {value S_FOLSMlevel3adj-S_FOLSMlevel2 }
+
+define S_TRNTY_3_coeff {
+	case GreaterThanZero {
+		condition	volS_TRNTYZone3 >= 0.001
+		value		volS_SHSTAZone3/volS_TRNTYZone3
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal balS_TRNTYS_SHSTAZone3 {
+	lhs S_TRNTY_3_coeff*S_TRNTY_3
+	rhs S_SHSTA_3
+	lhs>rhs penalty 2*taf_cfs
+	lhs<rhs penalty 2*taf_cfs
+}
+
+define S_FOLSM_3_coeff {
+	case GreaterThanZero {
+		condition	volS_FOLSMZone3 >= 0.001
+		value		volS_SHSTAZone3/volS_FOLSMZone3
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+
+goal balS_FOLSMS_SHSTAZone3 {
+	lhs S_FOLSM_3_coeff*S_FOLSM_3
+	rhs S_SHSTA_3
+	lhs>rhs penalty 2*taf_cfs
+	lhs<rhs penalty 2*taf_cfs
+}
+
+define volS_TRNTYZone4 {value S_TRNTYlevel4-S_TRNTYlevel3adj }
+define volS_SHSTAZone4 {value S_SHSTAlevel4-S_SHSTAlevel3adj }
+define volS_FOLSMZone4 {value S_FOLSMlevel4-S_FOLSMlevel3adj }
+
+define S_TRNTY_4_coeff {
+	case GreaterThanZero {
+		condition	volS_TRNTYZone4 >= 0.001
+		value		volS_SHSTAZone4/volS_TRNTYZone4
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal balS_TRNTYS_SHSTAZone4 {
+	lhs S_TRNTY_4_coeff*S_TRNTY_4
+	rhs S_SHSTA_4
+	lhs>rhs penalty 2*taf_cfs
+	lhs<rhs penalty 2*taf_cfs
+}
+
+define S_FOLSM_4_coeff {
+	case GreaterThanZero {
+		condition	volS_FOLSMZone4 >= 0.001
+		value		volS_SHSTAZone4/volS_FOLSMZone4
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal balS_FOLSMS_SHSTAZone4 {
+	lhs S_FOLSM_4_coeff*S_FOLSM_4
+	rhs S_SHSTA_4
+	lhs>rhs penalty 2*taf_cfs
+	lhs<rhs penalty 2*taf_cfs
+}

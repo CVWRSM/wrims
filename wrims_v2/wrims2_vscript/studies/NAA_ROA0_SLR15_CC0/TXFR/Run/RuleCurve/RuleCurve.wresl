@@ -1,0 +1,27 @@
+
+define CvpRuleCalc {
+      value max(S11level2,
+                cvprulecv__z4)
+}
+define CvpRuleCalc1 {value CvpRuleCalc}
+
+define S11level3 {value CvpRuleCalc1}
+define cvprulecv {alias S11level3 kind 'RULECURVE' units 'TAF'}
+
+goal S11Zone3 {S11_3 < max(0.0,S11level3 - S11level2)}
+goal S11Zone4 {S11_4 < S11level4 - S11level3}
+goal S11Zone5 {S11_5 < S11level5 - S11level4}
+
+
+define SwpRuleCalc {
+      value max(S12level2,
+                swprulecv__z4)
+}
+define SWPRuleCalc1 {value SWPRuleCalc}
+
+define S12level3 {value SwpRuleCalc1}
+define swprulecv {alias S12level3 kind 'RULECURVE' units 'TAF'}
+
+goal S12Zone3 {S12_3 < max(0.0,S12level3 - S12level2)}
+goal S12Zone4 {S12_4 < S12level4 - S12level3}
+goal S12Zone5 {S12_5 < S12level5 - S12level4}

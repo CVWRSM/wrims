@@ -1,0 +1,22 @@
+! LYRA_accounts.wresl
+
+! Impact of NMFS and FWS BO on April and May SWP Exports
+define ApMySWPExpCngdv {std kind 'Volume-CumImpact' units 'taf'}
+define ApMySWPExpCng {value ApMySWPExpCng__Z4}
+goal setApMySWPExpCngdv {ApMySWPExpCngdv = ApMySWPExpCng}
+
+! Cumulative LYRA C1 Transfer that has also been Exported
+define LYRA_SWPExpCumdv {std kind 'Volume-Transfer' units 'taf'}
+define LYRA_SWPExp_Cum {
+    case beforeMay {
+        condition month < MAY
+        value 0. }
+    case otherwise {
+        condition always
+        value LYRA_SWPExpCumdv(-1) + min(D419_WTS_Stg1(-1),WTS_YubaSW(-1))*cfs_taf(-1) }
+}
+goal set_LYRA_SWPExpCumdv {LYRA_SWPExpCumdv = LYRA_SWPExp_Cum}
+
+
+! Remaining after export of LYRA C1
+define RemSWPExpCng {value max(ApMySWPExpCng - LYRA_SWPExp_Cum,0.) }

@@ -1,0 +1,334 @@
+!This file subdivides cross valley conveyance facilities for accounting purposes.
+
+!Split Trans Valley Canal diversions
+define C848_TVC_F {std kind 'flow-channel' units 'cfs'} !Forward flow
+define C848_TVC_R {std kind 'flow-channel' units 'cfs'}  !Reverse flow
+define C848_TVC_F_SWP {std kind 'flow-channel' units 'cfs'} !SWP forward flow
+define C848_TVC_F_CVP {std kind 'flow-channel' units 'cfs'} !CVP forward flow
+define C848_TVC_R_SWP {std kind 'flow-channel' units 'cfs'} !SWP reverse flow
+define C848_TVC_R_CVP {std kind 'flow-channel' units 'cfs'} !CVP reverse flow
+goal splitC848_TVC {C848_TVC = C848_TVC_F - C848_TVC_R}
+goal splitC848_TVC_F {C848_TVC_F = C848_TVC_F_SWP + C848_TVC_F_CVP}
+goal splitC848_TVC_R {C848_TVC_R = C848_TVC_R_SWP + C848_TVC_R_CVP}
+
+!Split TVC - FK connection
+DEFINE C931_TVC_F {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+DEFINE C931_TVC_R {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+GOAL SPLIT_C931_TVC {C931_TVC = C931_TVC_F  - C931_TVC_R}
+
+!Split Shafter-Wasco diversions
+define C851_SW_F {std kind 'flow-channel' units 'cfs'} !Forward flow
+define C851_SW_R {std kind 'flow-channel' units 'cfs'}  !Reverse flow
+define C851_SW_F_SWP {std kind 'flow-channel' units 'cfs'} !SWP forward flow
+define C851_SW_F_CVP {std kind 'flow-channel' units 'cfs'} !CVP forward flow
+define C851_SW_R_SWP {std kind 'flow-channel' units 'cfs'} !SWP reverse flow
+define C851_SW_R_CVP {std kind 'flow-channel' units 'cfs'} !CVP reverse flow
+goal splitC851_SW {C851_SW = C851_SW_F - C851_SW_R}
+goal splitC851_SW_F {C851_SW_F = C851_SW_F_SWP + C851_SW_F_CVP}
+goal splitC851_SW_R {C851_SW_R = C851_SW_R_SWP + C851_SW_R_CVP}
+
+!Split SW - FK connection
+DEFINE C936_SW_F {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+DEFINE C936_SW_R {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+GOAL SPLIT_C936_SW {C936_SW = C936_SW_F  - C936_SW_R}
+
+!Split Cross Valley Canal diversions
+define C855_CVC_F {std kind 'flow-channel' units 'cfs'} !Forward flow
+define C855_CVC_R {std kind 'flow-channel' units 'cfs'}  !Reverse flow
+define C855_CVC_F_SWP {std kind 'flow-channel' units 'cfs'} !SWP forward flow
+define C855_CVC_F_CVP {std kind 'flow-channel' units 'cfs'} !CVP forward flow
+define C855_CVC_R_SWP {std kind 'flow-channel' units 'cfs'} !SWP reverse flow
+define C855_CVC_R_CVP {std kind 'flow-channel' units 'cfs'} !CVP reverse flow
+goal splitC855_CVC {C855_CVC = C855_CVC_F - C855_CVC_R}
+goal splitC855_CVC_F {C855_CVC_F = C855_CVC_F_SWP + C855_CVC_F_CVP}
+goal splitC855_CVC_R {C855_CVC_R = C855_CVC_R_SWP + C855_CVC_R_CVP}
+
+!Split CVC - FK connections
+DEFINE C941A_CVC_F {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+DEFINE C941A_CVC_R {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+GOAL SPLIT_C941A_CVC {C941A_CVC = C941A_CVC_F  - C941A_CVC_R}
+
+DEFINE C941B_CVC_F {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+DEFINE C941B_CVC_R {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+GOAL SPLIT_C941B_CVC {C941B_CVC = C941B_CVC_F  - C941B_CVC_R}
+
+!Split Arvin-Edison Canal diversions
+define C861_AEI_F {std kind 'flow-channel' units 'cfs'} !Forward flow
+define C861_AEI_R {std kind 'flow-channel' units 'cfs'}  !Reverse flow
+define C861_AEI_F_SWP {std kind 'flow-channel' units 'cfs'} !SWP forward flow
+define C861_AEI_F_CVP {std kind 'flow-channel' units 'cfs'} !CVP forward flow
+define C861_AEI_R_SWP {std kind 'flow-channel' units 'cfs'} !SWP reverse flow
+define C861_AEI_R_CVP {std kind 'flow-channel' units 'cfs'} !CVP reverse flow
+goal splitC861_AEI {C861_AEI = C861_AEI_F - C861_AEI_R}
+goal splitC861_AEI_F {C861_AEI_F = C861_AEI_F_SWP + C861_AEI_F_CVP}
+goal splitC861_AEI_R {C861_AEI_R = C861_AEI_R_SWP + C861_AEI_R_CVP}
+
+!Group forward and reverse cross valley flows.
+
+define CV_IO_F_SWP {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_SWP {std kind 'flow-channel' units 'cfs'}
+
+goal setCV_IO_F_SWP {CV_IO_F_SWP = C848_TVC_F_SWP + C851_SW_F_SWP + C855_CVC_F_SWP + C861_AEI_F_SWP}
+goal setCV_IO_R_SWP {CV_IO_R_SWP = C848_TVC_R_SWP + C851_SW_R_SWP + C855_CVC_R_SWP + C861_AEI_R_SWP}
+
+define CV_IO_F_CVP {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_CVP {std kind 'flow-channel' units 'cfs'}
+
+goal setCV_IO_F_CVP {CV_IO_F_CVP = C848_TVC_F_CVP + C851_SW_F_CVP + C855_CVC_F_CVP + C861_AEI_F_CVP}
+goal setCV_IO_R_CVP {CV_IO_R_CVP = C848_TVC_R_CVP + C851_SW_R_CVP + C855_CVC_R_CVP + C861_AEI_R_CVP}
+
+goal route_CV_IO_F_SWP {CV_IO_F_SWP = DIO_F_S}
+goal route_CV_IO_F_CVP {CV_IO_F_CVP = DIO_F_C}
+goal route_CV_IO_R_SWP {D_FKCNL_SWP = CV_IO_R_SWP}
+goal route_CV_IO_R_CVP {D_FKCNL_CVP = CV_IO_R_CVP}
+goal trans_CVP_to_SWP {DIO_SL_C_S = CV_IO_F_CVP}
+goal trans_SWP_to_CVP {DIO_SL_S_C = CV_IO_R_CVP}
+
+!Reduce Millerton releases by same amount exchanged.
+define slk_D_FKCNL_FWUA {std kind 'flex-bound' units 'cfs'}
+define sur_D_FKCNL_FWUA {std kind 'flex-bound' units 'cfs'}
+goal reduce_D_FKCNL_FWUA {D_FKCNL_FWUA + slk_D_FKCNL_FWUA - sur_D_FKCNL_FWUA = D_FKCNL_FWUA[SJR_WQ1] - DIO_F_S - DIO_F_C}
+
+!Allow either forward or reverse flow in one month based on highest objective value.
+define int_CV_f {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal lim_CV_f {CV_IO_F_SWP + CV_IO_F_CVP < int_CV_f*10000.}
+goal lim_CV_r {CV_IO_R_SWP + CV_IO_R_CVP < 10000. - int_CV_f*10000.}
+
+define S6_base {timeseries kind 'storage' units 'taf'}
+define S4_base {timeseries kind 'storage' units 'taf'}
+
+
+!Is there space in USJRS for SWP or CVP storage
+define Fr_for_spill_io {
+    case Febthrujun {
+         condition   month >= Feb .and. month <= jun
+         value max(0.0, I_MLRTN_mon_thru_jun - Fr_del_est_jun - SJRR_mon_jun - FR_losses_jun
+                 - Fr_Evap_jun + SIO(-1) - S_MLRTNlevel5 - S17level3) }
+    case otherwise {
+        condition always
+        value 0.0 } }
+
+define  IO_cap_avail {
+        case    available {
+                condition       Fr_for_spill_io < 0.1 .and. S17(-1) + S_MLRTN(-1) < 0.9*(S_MLRTNlevel5 + S17level3 + mam_fc_credit  - Friant_fs_req) .and. fk_add <0.01
+                value           1.
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+/*
+define frcst_fea_may {
+    case JantoMay  {
+        condition   month >= JAN .and. month <=SEP
+        select      frcst_fea
+        from        feather_runoff_forecast
+        where       wateryear=wateryear, month=may  }
+  case other {
+    condition   always
+    value       0.0 }
+}
+*/
+
+define IO_draw_SWPSL_sur {
+        case    critical {
+                condition       wyt_sac==critical .and. range(month,jan,oct)
+                value           0.
+        }
+        case    draw_SL_surplus {
+                condition       range(month,sep,mar) .or. /*frcst_fea_may > 800*/ S6(-1) > 1800
+                value           1.
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+
+define IO_draw_CVPSL_sur {
+        case    critical {
+                condition       wyt_sac==critical .and. range(month,jan,sep)
+                value           0.
+        }
+        case    draw_SL_surplus {
+                condition       range(month,sep,mar) .or. /*frcst_fea_may > 800*/ S4(-1) > 2400
+                value           1.
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+
+define IO_draw_Oro {
+        case FallAndNODHigh {
+                condition       range(month,sep,dec) .and. S6(-1) > 1800
+                value           1.
+!               value           0.
+        }
+        case NODHigh {
+                condition       S6_base (prevSEP + 12) > 1800 + S6_base(-1) - S6(-1)
+                value           1.
+!               value           0.
+        }
+        case otherwise {
+                condition       always
+                value           0.
+        }
+}
+define IO_draw_Sha {
+        case FallAndNODHigh {
+                condition       range(month,sep,dec) .and. S4(-1) > 2400
+                value           1.
+        }
+        case NODHigh {
+                condition       S4_base (prevSEP + 12) > 2400 + S4_base(-1) - S4(-1)
+                value           1.
+        }
+        case otherwise {
+                condition       always
+                value           0.
+        }
+}
+/*
+define IO_draw_SWPSL_rc {
+        case  HighSLTarg {
+                condition       range(month,jul,sep) .and. swpruledraintar > 100
+                value           1.
+        }
+        case otherwise {
+                condition       always
+                value           0.
+        }
+}
+
+define IO_draw_CVPSL_rc {
+        case  HighSLTarg {
+                condition       range(month,jul,sep) .and. swpruledraintar > 100
+                value           1.
+        }
+        case otherwise {
+                condition       always
+                value           0.
+        }
+}
+*/
+
+define io_cap_avail_ {alias IO_cap_avail kind 'ops-switch' units 'none'}
+define io_dr_SWPSLsur_ {alias IO_draw_SWPSL_sur kind 'ops-switch' units 'none'}
+define io_dr_CVPSLsur_ {alias IO_draw_CVPSL_sur kind 'ops-switch' units 'none'}
+define IO_draw_Oro_ {alias IO_draw_Oro kind 'ops-switch' units 'none'}
+define IO_draw_SHA_ {alias IO_draw_SHA kind 'ops-switch' units 'none'}
+!define IO_draw_SL_rc_ {alias IO_draw_SL_rc kind 'ops-switch' units 'none'}
+
+define CV_IO_F_SWP_SLR {std kind 'flow-channel' units 'cfs'}
+define CV_IO_F_SWP_ORO {std kind 'flow-channel' units 'cfs'}
+define CV_IO_F_SWP_SLS {std kind 'flow-channel' units 'cfs'}
+define CV_IO_F_SWP_SUR {std kind 'flow-channel' units 'cfs'}
+goal split_cv_io_f_swp {cv_io_f_swp = cv_io_f_swp_slr + cv_io_f_swp_oro + cv_io_f_swp_sls + cv_io_f_swp_sur}
+
+define CV_IO_F_CVP_SLR {std kind 'flow-channel' units 'cfs'}
+define CV_IO_F_CVP_SHA {std kind 'flow-channel' units 'cfs'}
+define CV_IO_F_CVP_SLS {std kind 'flow-channel' units 'cfs'}
+define CV_IO_F_CVP_SUR {std kind 'flow-channel' units 'cfs'}
+goal split_cv_io_f_CVP {cv_io_f_CVP = cv_io_f_CVP_slr + cv_io_f_CVP_sha + cv_io_f_CVP_sls + cv_io_f_CVP_sur}
+
+define transfer_ub {value MAX(0.,0.9*(S_MLRTNlevel5 + S17level3 + mam_fc_credit  - Friant_fs_req)-(S17(-1) + S_MLRTN(-1)))*TAF_CFS}
+
+define lim_F_SWP_SLS {value IO_cap_avail*IO_draw_SWPSL_sur*transfer_ub}
+define lim_F_SWP_ORO {value IO_cap_avail*IO_draw_SWPSL_sur*IO_draw_Oro*transfer_ub}
+!define lim_F_SWP_SLR {value IO_cap_avail*IO_draw_SL_sur*IO_draw_Oro*IO_draw_SL_rc*transfer_ub}
+define lim_F_SWP_SUR {value IO_cap_avail*transfer_ub }
+
+define lim_F_CVP_SLS {value IO_cap_avail*IO_draw_CVPSL_sur*transfer_ub}
+define lim_F_CVP_SHA {value IO_cap_avail*IO_draw_CVPSL_sur*IO_draw_SHA*transfer_ub}
+define lim_F_CVP_SUR {value IO_cap_avail*transfer_ub}
+
+define lim_F_SWP_SLS_ {alias lim_F_SWP_SLS kind 'IO-limit' units 'cfs'}
+define lim_F_SWP_ORO_ {alias lim_F_SWP_ORO kind 'IO-limit' units 'cfs'}
+define lim_F_SWP_SUR_ {alias lim_F_SWP_SUR kind 'IO-limit' units 'cfs'}
+define lim_F_CVP_SLS_ {alias lim_F_CVP_SLS kind 'IO-limit' units 'cfs'}
+define lim_F_CVP_SHA_ {alias lim_F_CVP_SHA kind 'IO-limit' units 'cfs'}
+define lim_F_CVP_SUR_ {alias lim_F_CVP_SUR kind 'IO-limit' units 'cfs'}
+
+goal set_lim_F_SWP_SLS {CV_IO_F_SWP_SLS < lim_F_SWP_SLS}
+goal set_lim_F_SWP_ORO {CV_IO_F_SWP_ORO < lim_F_SWP_ORO}
+goal set_lim_F_SWP_SUR {CV_IO_F_SWP_SUR < lim_F_SWP_SUR}
+goal set_lim_F_CVP_SLS {CV_IO_F_CVP_SLS < lim_F_CVP_SLS}
+goal set_lim_F_CVP_SHA {CV_IO_F_CVP_SHA < lim_F_CVP_SHA}
+goal set_lim_F_CVP_SUR {CV_IO_F_CVP_SUR < lim_F_CVP_SUR}
+
+!Need to add logic in later cycles for San Luis drawdown below rulecurve.               
+goal turn_off_F_SWP_SLR {CV_IO_F_SWP_SLR < 0}
+goal turn_off_F_CVP_SLR {CV_IO_F_CVP_SLR < 0}
+
+define lim_R_SWP_SLR {
+        case    June {
+                condition       month == jun
+                value max(0., swpdemfinal_jun + swpdemfinal_jul + swpdemfinal_aug + swpdemfinal_sep - S12(-1) + 100. - 1094.)/4. * taf_cfs
+        }
+        case    July {
+                condition       month == jul
+                value max(0., swpdemfinal_jul + swpdemfinal_aug + swpdemfinal_sep - S12(-1) + 100. - 878.)/3. * taf_cfs
+        }
+        case    August {
+                condition       month == aug
+                value max(0., swpdemfinal_aug + swpdemfinal_sep - S12(-1) + 100. - 568.)/2. * taf_cfs
+        }
+        case    otherwise {
+                condition       always
+                value           0.
+        }
+}
+
+define IO_return_SL_rc {
+        case JuneToAug {
+                condition       range(month,jun,aug)
+                value           1.
+        }
+        case Otherwise {
+                condition       always
+                value           0.
+        }
+}
+
+
+define CV_IO_R_SWP_SLR {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_SWP_ORO {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_SWP_SLS {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_SWP_SH {std kind 'flow-channel' units 'cfs'}
+goal split_cv_io_r_swp {cv_io_r_swp = cv_io_r_swp_slr + cv_io_r_swp_oro + cv_io_r_swp_sls + cv_io_r_swp_sh}
+
+define CV_IO_R_CVP_SLR {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_CVP_SHA {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_CVP_SLS {std kind 'flow-channel' units 'cfs'}
+define CV_IO_R_CVP_SH {std kind 'flow-channel' units 'cfs'}
+goal split_cv_io_r_CVP {cv_io_r_cvp = cv_io_r_cvp_slr + cv_io_r_cvp_sha + cv_io_r_cvp_sls + cv_io_r_cvp_sh}
+
+define lim_R_SWP_SLS {value max(0., 10000.-IO_cap_avail*IO_draw_SWPSL_sur*10000.)}
+define lim_R_SWP_ORO {value max(0., 10000.-IO_cap_avail*IO_draw_SWPSL_sur*IO_draw_Oro*10000.)}
+!define lim_R_SWP_SLR {value IO_return_SL_rc*10000.}
+define lim_R_CVP_SLS {value max(0., 10000.-IO_cap_avail*IO_draw_CVPSL_sur*10000.)}
+define lim_R_CVP_SHA {value max(0., 10000.-IO_cap_avail*IO_draw_CVPSL_sur*IO_draw_SHA*10000.)}
+define lim_R_CVP_SLR {value IO_return_SL_rc*10000.}
+
+!goal set_lim_R_SWP_SLS {CV_IO_R_SWP_SLS < lim_F_SWP_SLS}
+goal set_lim_R_SWP_ORO {CV_IO_R_SWP_ORO < lim_R_SWP_ORO}
+goal set_lim_R_CVP_SHA {CV_IO_R_CVP_SHA < lim_R_CVP_SHA}
+goal set_lim_R_SWP_SLR {CV_IO_R_SWP_SLR < lim_R_SWP_SLR  }
+goal set_lim_R_CVP_SLR {CV_IO_R_CVP_SLR < lim_R_CVP_SLR}
+
+!Need to add logic in later cycles for filling surplus San Luis capacity to prevent drawdown of Oroville in later months.
+goal turn_off_R_SWP_SLS {CV_IO_R_SWP_SLS < 0}
+goal turn_off_R_CVP_SLS {CV_IO_R_CVP_SLS < 0}
+!goal turn_off_R_SWP_SLR {CV_IO_R_SWP_SLR < 0}
+!goal turn_off_R_CVP_SLR {CV_IO_R_CVP_SLR < 0}
+
+!Don't allow loss exchange.
+
+goal no_loss_exchange {CV_IO_F_SWP + CV_IO_F_CVP < D910_C1 + D920_C1 + D932_C1 + D937_C1 + D950_C1 + D910_C2 + D920_C2 + D932_C2 + D937_C2 + D950_C2}
+
+
+
+

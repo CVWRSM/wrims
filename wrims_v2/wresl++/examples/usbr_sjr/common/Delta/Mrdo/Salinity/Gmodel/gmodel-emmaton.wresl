@@ -1,0 +1,147 @@
+! Armin Munevar 11/21/98
+
+! G-MODEL BELOW IS FOR EMMATON (EMT)
+! ****************************************************************************
+! ****************************************************************************
+
+! Coefficients for Emmaton       
+define qwest        {value 0.0      }                                 ! cfs -- this is assumed fixed for Greverse as in DWRSIM
+define g_So_emt     {value 24.0     }                                 ! millimhos/cm
+define g_Sb_emt     {value 0.150    }                                 ! millimhos/cm
+define g_alpha_emt  {value 0.00067 - 0.0001*EXP(0.00035*qwest)}       ! 1/cfs (emt correction)
+define g_beta_emt   {value 500.0    }                                 ! ft^3
+define g_n_emt      {value 1.0      }                                 ! no units
+
+! define Dvars needed for this station's G model
+define Go_emt {std kind 'GMODEL-PARAM' units 'CFS'}
+
+! **************************************************************************************
+! Calculate Go for the current period. This is the beginning of period G value based upon
+! last month's flow and beginning of last month's G value, Go(-1). Units are cfs
+
+define Go_hist_emt {value   NDO(-1)/(1 + (NDO(-1)/Go_emt(-1) - 1)
+                          *EXP(-NDO(-1)*g_delT/g_beta_emt))           }
+
+goal setGo_emt {Go_emt = Go_hist_emt}
+
+! *************************************************************************************
+! Get salinity standard for this particular station.
+! Standard may specify two salinity requirements for different days of the month. In 
+! this case, 2 standards are read from the table along with their corresponding dates.
+
+! the first standard
+define EC_std_emt1 {
+       case Apr_thru_Aug {
+         condition         month >=APR .and. month <=AUG
+         select            ECstandard1
+         from              salinity_std_emt 
+         where             month=month,wyt_SAC=wyt_SAC }
+       case no_standard {                       
+         condition         always
+         value             g_So_emt }  }        ! this makes the req'mt = 0
+
+! get the dates for this standard
+define begday_emt1 {
+      case Apr_thru_Aug {
+        condition       month >=APR .and. month <=AUG
+        select          beginday1
+        from            salinity_std_emt
+        where           month=month,wyt_SAC=wyt_SAC }
+      case no_standard {
+        condition         always
+        value             0 }
+}
+define endday_emt1 {
+      case Apr_thru_Aug {
+        condition       month >=APR .and. month <=AUG
+        select          endday1
+        from            salinity_std_emt
+        where           month=month,wyt_SAC=wyt_SAC }
+      case no_standard {
+        condition         always
+        value             0 }
+}
+
+
+! the second standard
+define EC_std_emt2 {
+       case Apr_thru_Aug {
+         condition         month >=APR .and. month <=AUG
+         select            ECstandard2
+         from              salinity_std_emt 
+         where             month=month,wyt_SAC=wyt_SAC }
+       case no_standard {                       
+         condition         always
+         value             g_So_emt }  }        ! this makes the req'mt = 0
+
+! get the dates for this standard
+define begday_emt2 {
+      case Apr_thru_Aug {
+        condition       month >=APR .and. month <=AUG
+        select          beginday2
+        from            salinity_std_emt
+        where           month=month,wyt_SAC=wyt_SAC }
+      case no_standard {
+        condition         always
+        value             0 }
+}
+define endday_emt2 {
+      case Apr_thru_Aug {
+        condition       month >=APR .and. month <=AUG
+        select          endday2
+        from            salinity_std_emt
+        where           month=month,wyt_SAC=wyt_SAC }
+      case no_standard {
+        condition         always
+        value             0 }
+}
+
+! *************************************************************************************
+! Get the Delta Outflow required to meet salinity standard -- uses EXTERNAL function
+! Place cap on required flow.
+
+define DO_req_emt1 {
+     case standardON {
+          condition      month >=APR .and. month <=AUG
+          value          min(flowcap_salt, GET_REQ_DO(Go_hist_emt,EC_std_emt1,g_So_emt,
+                                                      g_Sb_emt,g_alpha_emt,g_beta_emt,g_n_emt) ) }
+     case standardOFF {
+          condition      always
+          value          0.0      }    }
+
+define DO_req_emt2 {
+     case standardON {
+          condition      month >=APR .and. month <=AUG
+          value          min(flowcap_salt, GET_REQ_DO(Go_hist_emt,EC_std_emt2,g_So_emt,
+                                                      g_Sb_emt,g_alpha_emt,g_beta_emt,g_n_emt) ) }
+     case standardOFF {
+          condition      always
+          value          0.0      }    }
+          
+! *****************************************************************************************
+! Get Salinity at this location at the end of last period (beginning of this period).  
+! This is for output purposes only.
+
+define salinity_prv_emt {std kind 'SALINITY-PREV-EMT' units 'MMHOS/CM'}
+
+! get actual QWEST so that alpha at Emmaton can be modified for true salinity last period
+define qwest_act {value C_SAC030B(-1)+C_MOK022(-1)+C644(-1)-D408(-1)-D418(-1)-D419(-1)-0.69*(DND1(-1) + DND2(-1) + DND3(-1) + DND4(-1) + DND5(-1))    }
+                                                                                  !^^                     Net Delta CU                  ^^
+define g_alpha_act_emt  {
+     case largeQWEST {
+          condition      qwest_act >= 2700
+          value          0.0004    }
+     case smallQWEST {
+          condition      qwest_act <= -6000
+          value          0.00066   }
+     case otherwise {
+          condition      always
+          value          0.00067 - 0.0001*EXP(0.00035*qwest_act)   }}    ! 1/cfs (emt correction)
+
+define Gavg_prv_emt {value  NDO(-1) + (g_beta_emt/g_delT)*log((1+(NDO(-1)/Go_emt(-1) - 1)*
+                                EXP(-NDO(-1)*g_delT/g_beta_emt))/(NDO(-1)/Go_emt(-1)))   }
+   
+goal salinity_prv_emt {salinity_prv_emt = (g_So_emt - g_Sb_emt)*EXP(-g_alpha_act_emt*POW(Gavg_prv_emt,g_n_emt)) 
+                                           + g_Sb_emt}
+
+define westq {alias qwest_act KIND 'FLOW-QWEST' UNITS 'CFS'}

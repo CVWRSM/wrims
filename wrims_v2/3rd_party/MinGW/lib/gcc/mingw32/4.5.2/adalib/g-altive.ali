@@ -1,0 +1,126 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnn
+
+U gnat.altivec%s	g-altive.ads		02c22f62 NE OL PK
+W gnat%s		gnat.ads		gnat.ali
+W system%s		system.ads		system.ali
+
+D gnat.ads		20050905075126 96410e68
+D g-altive.ads		20090409150020 2c6879c9
+D system.ads		20090410155748 b8eb58c3
+X 1 gnat.ads
+36K9*GNAT 39e9 2|219r9 477r5
+X 2 g-altive.ads
+219K14*Altivec 1|36k9 2|477l10 477e17
+226N4*VECTOR_BIT
+237N4*VECTOR_ALIGNMENT
+263N4*CHAR_BIT 264r37 265r36 266r35 269r31 272r29
+264N4*SCHAR_MIN 271r30
+265N4*SCHAR_MAX 271r43
+266N4*UCHAR_MAX 268r30
+268M9*unsigned_char 269r8 274r25 384r42 403r53 427r39
+271I9*signed_char<short_short_integer> 272r8 383r42 402r53 424r37
+274M12*bool_char{268M9} 280r31 280r44 281r31
+280m4*bool_char_True{274M12}
+281m4*bool_char_False{274M12}
+287N4*SHORT_BIT 288r37 289r36 290r35 293r32 298r30
+288N4*SSHORT_MIN 297r31
+289N4*SSHORT_MAX 297r45
+290N4*USHORT_MAX 292r31
+292M9*unsigned_short 293r8 295r34 302r26 355r21 388r42 407r53 433r40
+295M12*unsigned_short_int{292M9}
+297I9*signed_short<short_integer> 298r8 300r32 387r42 406r53 430r38
+300I12*signed_short_int{297I9}
+302M12*bool_short{292M9} 305r32 305r46 306r32 308r30
+305m4*bool_short_True{302M12}
+306m4*bool_short_False{302M12}
+308M12*bool_short_int{302M12}
+314N4*INT_BIT 315r37 316r36 317r35 320r30 323r28
+315N4*SINT_MIN 322r29
+316N4*SINT_MAX 322r41
+317N4*UINT_MAX 319r29
+319M9*unsigned_int 320r8 325r24 392r42 411r53 439r38
+322I9*signed_int<integer> 323r8 361r21 391r42 410r53 436r36
+325M12*bool_int{319M9} 328r30 328r42 329r30
+328m4*bool_int_True{325M12}
+329m4*bool_int_False{325M12}
+335N4*FLOAT_BIT 341r25
+336N4*FLOAT_DIGIT 340r27
+337N4*FLOAT_MIN 340r45
+338N4*FLOAT_MAX 340r58
+340F9*C_float<short_float> 341r8
+355M12*pixel{292M9}
+361I12*c_int{322I9} 362r23 390r42 409r53
+362I12*c_short{361I12} 386r42 405r53
+364N4*LONG_BIT 368r35 369r35 370r34
+368N4*SLONG_MIN 372r32
+369N4*SLONG_MAX 372r45
+370N4*ULONG_MAX 373r30
+372I9*signed_long<integer> 375r22 395r42 414r53 442r37
+373M9*unsigned_long 396r42 415r53 445r39
+375I12*c_long{372I9} 394r42 413r53
+377M12*c_ptr{3|64M9}
+383P9*signed_char_ptr(271I9)
+384P9*unsigned_char_ptr(268M9)
+386P9*short_ptr(362I12)
+387P9*signed_short_ptr(297I9)
+388P9*unsigned_short_ptr(292M9)
+390P9*int_ptr(361I12)
+391P9*signed_int_ptr(322I9)
+392P9*unsigned_int_ptr(319M9)
+394P9*long_ptr(375I12)
+395P9*signed_long_ptr(372I9)
+396P9*unsigned_long_ptr(373M9)
+398P9*float_ptr(float)
+402P9*const_signed_char_ptr(271I9)
+403P9*const_unsigned_char_ptr(268M9)
+405P9*const_short_ptr(362I12)
+406P9*const_signed_short_ptr(297I9)
+407P9*const_unsigned_short_ptr(292M9)
+409P9*const_int_ptr(361I12)
+410P9*const_signed_int_ptr(322I9)
+411P9*const_unsigned_int_ptr(319M9)
+413P9*const_long_ptr(375I12)
+414P9*const_signed_long_ptr(372I9)
+415P9*const_unsigned_long_ptr(373M9)
+417P9*const_float_ptr(float)
+421F9*volatile_float<float> 422r21 464r46
+424I9*volatile_signed_char<271I9> 425r21 448r54 449r54
+427M9*volatile_unsigned_char<268M9> 428r21 450r54
+430I9*volatile_signed_short<297I9> 431r21 452r54 453r54
+433M9*volatile_unsigned_short<292M9> 434r21 454r54
+436I9*volatile_signed_int<322I9> 437r21 456r54 457r54
+439M9*volatile_unsigned_int<319M9> 440r21 458r54
+442I9*volatile_signed_long<372I9> 443r21 460r54 461r54
+445M9*volatile_unsigned_long<373M9> 446r21 462r54
+448P9*constv_char_ptr(424I9)
+449P9*constv_signed_char_ptr(424I9)
+450P9*constv_unsigned_char_ptr(427M9)
+452P9*constv_short_ptr(430I9)
+453P9*constv_signed_short_ptr(430I9)
+454P9*constv_unsigned_short_ptr(433M9)
+456P9*constv_int_ptr(436I9)
+457P9*constv_signed_int_ptr(436I9)
+458P9*constv_unsigned_int_ptr(439M9)
+460P9*constv_long_ptr(442I9)
+461P9*constv_signed_long_ptr(442I9)
+462P9*constv_unsigned_long_ptr(445M9)
+464P9*constv_float_ptr(421F9)
+472N4 CR6_EQ
+473N4 CR6_EQ_REV
+474N4 CR6_LT
+475N4 CR6_LT_REV
+X 3 system.ads
+37K9*System 2|217w6 377r21 3|197e11
+64M9*Address 2|377r28
+

@@ -1,0 +1,252 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnnvnnvnnnnnnnnnnnnnnvnnnnnnnnnvnnnvnnnnvnnnnnnnnnnnnnnnn
+
+U gnat.sockets.thin_common%b  g-sothco.adb	a0c90828 NE OL PK
+W ada.tags%s		a-tags.adb		a-tags.ali
+W gnat.sockets%s	g-socket.adb		g-socket.ali
+
+U gnat.sockets.thin_common%s  g-sothco.ads	ac263fdc BN EE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_conversion%s
+W gnat.sockets%s	g-socket.adb		g-socket.ali
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c%s	i-c.adb			i-c.ali
+W interfaces.c.pointers%s
+W interfaces.c.strings%s  i-cstrin.adb		i-cstrin.ali
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D gnat.ads		20050905075126 96410e68
+D g-socket.ads		20091201095252 37ffb9fb
+D g-sothco.ads		20091130103824 88e0be01
+D g-sothco.adb		20080808125928 2829b629
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cpoint.ads		20090409150020 2ed052b5
+D i-cpoint.adb		20090409150020 6a25fbbe
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-oscons.ads		20110107202130 b5e9bbe8
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 11|37r6 150r31 151r31
+X 7 a-unccon.ads
+20v14*Unchecked_Conversion 11|37w10 150r35 151r35
+X 9 gnat.ads
+36K9*GNAT 39e9 11|43r9 373r5 12|34r14 79r5
+X 10 g-socket.ads
+60K14*Sockets 9|36k9 10|1229e17 11|43r14 373r10 12|34r19 79r10
+375K12*SOSC=375:32 11|54r23 55r23 56r28 60r23 61r23 62r33 81r34 82r34 85r34
+. 86r34 216r50 261r21 262r21 280r24 363r33 12|57r46
+460E9*Family_Type 460e51 11|80r31 84r31 117r27 12|54r27
+460n25*Family_Inet{460E9} 11|81r18 85r18
+460n38*Family_Inet6{460E9} 11|82r18 86r18
+1114A9*Fd_Set(28|64M9) 11|292r23 302r23 307r32 313r21 321r51 324r45
+X 11 g-sothco.ads
+43K22*Thin_Common 10|60k14 11|373l18 373e29 12|34b27 79l18 79t29
+45K12*C=45:33 47r13 50r23 51r23 80r47 84r47 105r27 106r27 109r28 125r17 125r54
+. 142r32 144r30 150r57 151r66 160r40 164r43 165r7 172r18 178r18 178r54 193r14
+. 207r35 208r14 211r11 211r23 211r33 212r23 227r34 233r34 236r34 240r16 248r16
+. 252r17 259r21 278r24 282r24 283r24 293r23 294r23 303r16 308r16 308r30 314r21
+. 321r68 331r39 346r13 347r13 348r36 351r13 352r13 353r20 353r34 12|56r18
+. 61r44 63r44 73r14
+50i4*Success{14|35I9}
+51i4*Failure{14|35I9}
+53I9*time_t<integer> 56r8 57r26 66r17
+59I9*suseconds_t<integer> 62r8 63r26 67r17
+65R9*Timeval 68e14 69r26 71r38 74r24
+66i7*Tv_Sec{53I9}
+67i7*Tv_Usec{59I9}
+71P9*Timeval_Access(65R9) 72r26
+74r4*Immediat{65R9}
+80a4*Families(14|35I9) 12|56r32
+84a4*Lengths(14|47M9) 12|60r44
+100R9*Sockaddr_Length_And_Family 101d7 111e14 112r28 113r26 116r31 122r19
+. 169r20 12|53r31
+101b7*Has_Sockaddr_Len{boolean} 103r12
+105m13*Length{14|47M9} 12|60m28
+106m13*Char_Family{14|47M9} 12|61m28
+109m13*Short_Family{14|44M9} 12|63m28
+115U14*Set_Family 116<7 117>7 12|52b14 65l8 65t18
+116r7 Length_And_Family{100R9} 12|53b7 60m10 61m10 63m10
+117e7 Family{10|460E9} 12|54b7 56r42 60r53
+121R9*Sockaddr 129e14 130r26 133r39
+122r7*Sa_Family{100R9}
+125a7*Sa_Data{14|79A9}
+133P9*Sockaddr_Access(121R9) 134r26
+141R9*In_Addr 143e14 144r8 145r26 150r64 151r57 153r38 157r34 175r18 199r17
+. 12|42r17
+142m7*S_B1{14|47M9}
+142m13*S_B2{14|47M9}
+142m19*S_B3{14|47M9}
+142m25*S_B4{14|47M9}
+150V13*To_In_Addr[7|20]{141R9}
+151V13*To_Int[7|20]{14|35I9}
+153P9*In_Addr_Access(141R9) 154r26 161r17 165r17
+157r4*Inaddr_Any{141R9}
+160A9*In_Addr_Access_Array(153P9)<14|60M9> 162r26 165r33
+164K12*In_Addr_Access_Pointers[15|42] 263r21
+168R9*Sockaddr_In 183e14 184r26 187r42
+169r7*Sin_Family{100R9}
+172m7*Sin_Port{14|44M9} 12|76m11
+175r7*Sin_Addr{141R9} 12|45m11
+178a7*Sin_Zero{14|79A9}
+187P9*Sockaddr_In_Access(168R9) 188r26 192r14 198r17 12|41r17 72r14
+191U14*Set_Port 192>7 193>7 194r19 12|71b14 77l8 77t16
+192p7 Sin{187P9} 12|72b7 76r7
+193m7 Port{14|44M9} 12|73b7 76r23
+197U14*Set_Address 198>7 199>7 200r19 12|40b14 46l8 46t19
+198p7 Sin{187P9} 12|41b7 45r7
+199r7 Address{141R9} 12|42b7 45r23
+207A9*Chars_Ptr_Array(17|46P9)<14|60M9> 211r54
+210K12*Chars_Ptr_Pointers[15|42] 230r34 244r19 260r21
+215A9*Servent<28|70A9><28|54I9> 217r8 222r38
+222P9*Servent_Access(215A9) 223r26 227r11 230r11 233r11 236r11 239r16 243r19
+. 247r16 251r17
+226V13*Servent_S_Name{17|46P9} 227>7 365b<c,__gnat_servent_s_name>22
+227p7 E{222P9}
+229V13*Servent_S_Aliases{15|45P9[210]} 230>7 366b<c,__gnat_servent_s_aliases>22
+230p7 E{222P9}
+232V13*Servent_S_Port{14|35I9} 233>7 367b<c,__gnat_servent_s_port>22
+233p7 E{222P9}
+235V13*Servent_S_Proto{17|46P9} 236>7 368b<c,__gnat_servent_s_proto>22
+236p7 E{222P9}
+238U14*Servent_Set_S_Name 239>7 240>7 369b<c,__gnat_servent_set_s_name>22
+239p7 E{222P9}
+240p7 S_Name{17|46P9}
+242U14*Servent_Set_S_Aliases 243>7 244>7 370b<c,__gnat_servent_set_s_aliases>22
+243p7 E{222P9}
+244p7 S_Aliases{15|45P9[210]}
+246U14*Servent_Set_S_Port 247>7 248>7 371b<c,__gnat_servent_set_s_port>22
+247p7 E{222P9}
+248i7 S_Port{14|35I9}
+250U14*Servent_Set_S_Proto 251>7 252>7 372b<c,__gnat_servent_set_s_proto>22
+251p7 E{222P9}
+252p7 S_Proto{17|46P9}
+258R9*Hostent 264e14 265r26 268r38
+259p7*H_Name{17|46P9}
+260p7*H_Aliases{15|45P9[210]}
+261i7*H_Addrtype{22|232I12}
+262i7*H_Length{22|233I12}
+263p7*H_Addr_List{15|45P9[164]}
+268P9*Hostent_Access(258R9) 269r26
+276R9*Msghdr 284e14 285r26
+277m7*Msg_Name{18|64M9}
+278m7*Msg_Namelen{14|43M9}
+279m7*Msg_Iov{18|64M9}
+280m7*Msg_Iovlen{22|236M12}
+281m7*Msg_Control{18|64M9}
+282m7*Msg_Controllen{14|60M9}
+283i7*Msg_Flags{14|35I9}
+291U14*Get_Socket_From_Set 292^7 293^7 294^7 356b<c,__gnat_get_socket_from_set>22
+292p7 Set(10|1114A9)
+293p7 Last(14|35I9)
+294p7 Socket(14|35I9)
+301U14*Insert_Socket_In_Set 302^7 303>7 359b<c,__gnat_insert_socket_in_set>22
+302p7 Set(10|1114A9)
+303i7 Socket{14|35I9}
+306V14*Is_Socket_In_Set{14|35I9} 307^7 308>7 357b<c,__gnat_is_socket_in_set>22
+307p7 Set(10|1114A9)
+308i7 Socket{14|35I9}
+312U14*Last_Socket_In_Set 313^7 314^7 358b<c,__gnat_last_socket_in_set>22
+313p7 Set(10|1114A9)
+314p7 Last(14|35I9)
+321U14*Remove_Socket_From_Set 321^38 321>59 360b<c,__gnat_remove_socket_from_set>22
+321p38 Set(10|1114A9)
+321i59 Socket{14|35I9}
+324U14*Reset_Socket_Set 324^32 361b<c,__gnat_reset_socket_set>22
+324p32 Set(10|1114A9)
+331A9*Two_Ints(14|35I9)<integer> 332r26 335r23
+335A12*Fd_Pair{331A9}<integer>
+340N4*Read_End
+341N4*Write_End
+345V13*Inet_Pton{14|35I9} 346>7 347>7 348>7 363b<c,__gnat_inet_pton>22
+346i7 Af{14|35I9}
+347p7 Cp{17|46P9}
+348m7 Inp{18|64M9}
+350V13*C_Ioctl{14|35I9} 351>7 352>7 353^7 362b<c,__gnat_socket_ioctl>22
+351i7 Fd{14|35I9}
+352i7 Req{14|35I9}
+353p7 Arg(14|35I9)
+X 12 g-sothco.adb
+56i7 C_Family=56:32{14|35I9} 61r62 63r62
+57b7 Has_Sockaddr_Len{boolean} 59r10
+X 13 interfac.ads
+36K9*Interfaces 11|39r6 40r6 41r6 45r22 13|171e15
+X 14 i-c.ads
+18K20*C 11|39w17 40r17 41r17 45r33 14|230e17
+35I9*int<integer> 11|47r15 50r25 51r25 80r49 144r32 150r59 151r68 233r36
+. 248r18 283r26 293r25 294r25 303r18 308r18 308r32 314r23 321r70 331r41 346r15
+. 348r38 351r15 352r15 353r22 353r36 12|56r20
+36I9*short<short_integer>
+43M9*unsigned 11|278r26
+44M9*unsigned_short 11|109r30 172r20 193r16 12|63r46 73r16
+47M9*unsigned_char 11|84r49 105r29 106r29 142r34 12|61r46
+60M9*size_t 11|160r42 165r9 207r37 211r25 282r26
+72E9*char<character>
+74e4*nul{72E9} 11|125r56 178r56
+79A9*char_array(72E9)<60M9> 11|125r19 178r20
+X 15 i-cpoint.ads
+42k22*Pointers 11|40w19 164r45 211r13 15|99e26
+45P9*Pointer(17|46P9) 11|230r53[210] 244r38[210] 260r40[210] 263r45[164]
+X 17 i-cstrin.ads
+36K22*Strings 11|41w19 208r16 211r35 212r25 227r36 236r36 240r18 252r19 259r23
+. 347r15 17|102e25
+46P9*chars_ptr(character) 11|208r24 211r43 227r44 236r44 240r26 252r27 259r31
+. 347r23
+50p4*Null_Ptr{46P9} 11|212r33
+X 18 system.ads
+37K9*System 11|216r6 277r24 279r24 281r24 348r13 18|197e11
+64M9*Address 11|277r31 279r31 281r31 348r20
+X 22 s-oscons.ads
+147N4*AF_INET 11|81r39
+148N4*AF_INET6 11|82r39
+222N4*SIZEOF_tv_sec 11|54r28 55r28 56r33
+223N4*SIZEOF_tv_usec 11|60r28 61r28 62r38
+226N4*SIZEOF_sockaddr_in 11|85r39
+227N4*SIZEOF_sockaddr_in6 11|86r39
+229N4*SIZEOF_struct_servent 11|216r55
+232I12*H_Addrtype_T{14|36I9} 11|261r26
+233I12*H_Length_T{14|36I9} 11|262r26
+236M12*Msg_Iovlen_T{14|60M9} 11|280r29
+243N4*Has_Sockaddr_Len 12|57r51
+247a4*Inet_Pton_Linkname{string} 11|363r38
+X 28 s-stoele.ads
+42K16*Storage_Elements 11|216r13 28|117e28
+64M9*Storage_Element
+70A9*Storage_Array(64M9)<54I9> 11|216r30
+

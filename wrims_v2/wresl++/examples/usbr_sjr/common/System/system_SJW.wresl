@@ -1,0 +1,58 @@
+
+
+! THIS FILE CONTAINS THE NAMES OF ALL INCLUDE FILES FOR THE SYSTEM DESCRIPTION
+! NOTE -- In this setup, we have one top-level system file and two system directories, 
+!         one for West-Side SJW and one for East-Side SJW. Completely splitting 
+!         East/West SJW (with two top-level system files) would be tedious and isn't
+!         worth doing at this time...
+
+!*******ARCS*******
+
+INCLUDE 'SystemTables_West\arcs-Inflows.wresl'       
+INCLUDE 'SystemTables_East\arcs-Inflows.wresl'
+INCLUDE 'SystemTables_West\arcs-Channels.wresl'
+INCLUDE 'SystemTables_East\arcs-Channels.wresl'
+INCLUDE 'SystemTables_West\arcs-Contracts.wresl'
+INCLUDE 'SystemTables_East\arcs-Contracts.wresl'
+INCLUDE 'SystemTables_West\imf_fixes-StandAlone-Part1.wresl'   ! IMF -- ONLY FOR WEST SIDE, NOT FOR EAST
+INCLUDE 'SystemTables_West\arcs-Deliveries.wresl'
+INCLUDE 'SystemTables_East\arcs-Deliveries.wresl'
+INCLUDE 'SystemTables_West\arcs-Diversions.wresl'
+INCLUDE 'SystemTables_East\arcs-Diversions.wresl'
+INCLUDE 'SystemTables_West\arcs-Reservoirs.wresl'
+INCLUDE 'SystemTables_East\arcs-Reservoirs.wresl'
+INCLUDE 'SystemTables_West\arcs-Returns.wresl'
+INCLUDE 'SystemTables_East\arcs-Returns.wresl'
+INCLUDE 'SystemTables_West\arcs-Seepage.wresl'
+INCLUDE 'SystemTables_East\arcs-Seepage.wresl'
+INCLUDE 'SystemTables_West\arcs-Errors.wresl'  ! IMF -- kept for SLUIS SWP error terms              
+INCLUDE 'SystemTables_East\arcs-Errors.wresl'  ! IMF -- kept for WDWRD error terms
+INCLUDE 'SystemTables_East\arcs-OperationalSpills.wresl'       ! IMF -- ONLY FOR EAST SIDE, NOT FOR WEST
+INCLUDE 'SystemTables_West\arcs-DivLosses.wresl'
+INCLUDE 'SystemTables_East\arcs-DivLosses.wresl'
+INCLUDE 'SystemTables_East\imf_fixes-StandAlone-Part2.wresl'   
+INCLUDE 'SystemTables_West\imf_fixes-StandAlone-Part2.wresl'   
+INCLUDE 'SystemTables_East\arcs-Spills.wresl'                  ! IMF -- ONLY FOR EAST SIDE, NOT FOR WEST
+
+
+!****CONSTRAINTS****
+
+INCLUDE 'SystemTables_West\constraints-Reservoirs.wresl'
+INCLUDE 'SystemTables_East\constraints-Reservoirs.wresl'
+INCLUDE 'SystemTables_East\constraints-OperationalSpills.wresl' ! IMF -- ONLY FOR EAST SIDE, NOT FOR WEST
+INCLUDE 'SystemTables_West\constraints-DivLosses.wresl'
+INCLUDE 'SystemTables_East\constraints-DivLosses.wresl'
+INCLUDE 'SystemTables_West\constraints-Deliveries.wresl'
+INCLUDE 'SystemTables_East\constraints-Deliveries.wresl'
+INCLUDE 'SystemTables_West\constraints-Returns.wresl'
+INCLUDE 'SystemTables_East\constraints-Returns.wresl'
+INCLUDE 'SystemTables_West\constraints-Connectivity.wresl'
+INCLUDE 'SystemTables_East\constraints-Connectivity.wresl'
+INCLUDE 'SystemTables_West\constraints-Contracts.wresl'         ! IMF -- NO CONTRACT LIMITS ON WESTSIDE FOR NOW...
+INCLUDE 'SystemTables_East\constraints-Contracts.wresl'
+INCLUDE 'SystemTables_East\constraints-MinFlows.wresl'          ! IMF -- ONLY FOR EAST SIDE, NOT FOR WEST
+INCLUDE 'SystemTables_West\constraints-DeepPercolation.wresl'  
+INCLUDE 'SystemTables_East\constraints-DeepPercolation.wresl'
+
+
+

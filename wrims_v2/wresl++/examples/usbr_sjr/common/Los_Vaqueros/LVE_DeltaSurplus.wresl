@@ -1,0 +1,106 @@
+! LVE_DeltaSurplus.wresl
+! A. Draper
+! 08/26/2006
+! MWH
+! Calculates Delta Surplus
+
+
+define EIReqSac  { value (D418[WHEELJPOD]+D419[WHEELJPOD])/EXPRATIO_[WHEELJPOD] }
+define EISurplus { value (max(0.,(Inflow[WHEELJPOD] - EIReqSac)*EXPRATIO_[WHEELJPOD])) }
+
+! Calculate ANN Requirements based on estimated exports
+define ANNReq     { value max(0., JP_MRDO[WHEELJPOD], EM_MRDO[WHEELJPOD], RS_MRDO_1[WHEELJPOD],
+                RS_MRDO_2[WHEELJPOD],RS_MRDO_3[WHEELJPOD],CO_MRDO[WHEELJPOD])  }
+
+! Check ANN pushing constraint in the Jun -> Sep period
+define SacAnnCondition {
+    case JunSep {
+    condition month>=Jun .and. month<=Sep .and. C400_exc[WHEELJPOD]<=1.
+    value 0.}
+    case other {
+    condition always
+    value 999999.}
+}
+
+! Calculate ANNSurplus based on estimated exports
+define ANNSurplus { value max(0., min(C_NDO[WHEELJPOD] + D_NDO[WHEELJPOD] - ANNReq, SacAnnCondition)) }
+
+!Check X2 position
+define X2EST {value a_x2_coef + b_x2_coef*X2_prv[WHEELJPOD] - c_x2_coef*LOG10(NDO[WHEELJPOD]) }
+
+define LVX2REQ1 {
+    ! For existing reservoir X2 requirement may not be met in Jan or in May/June
+    ! when D1641 requirement is relaxed. At other times assume D1641 requiremennts met.
+    case OCT_DEC {
+         condition month >= OCT .and. month <= DEC
+         value 1.0 }
+    case JAN {
+        condition month == JAN .and. X2EST > 81.
+        value 0.0 }
+    case FEB_APR {
+        condition month >= FEB .and. month <= APR
+        value 1.0 }
+    case MAY1 {
+        condition month == MAY .and. daysX2_CNF > 1.
+        value 1.0 }
+    case MAY2 {
+        condition month == MAY .and. daysX2_CNF < 1. .and. X2EST > 74.
+        value 0.0 }
+    case JUN1 {
+        condition month == JUN .and. daysX2_CNF > 1.
+        value 1.0 }
+    case JUN2 {
+            condition month == JUN .and. daysX2_CNF < 1. .and. X2EST > 81.
+        value 0.0 }
+    case JUL_SEP {
+            condition month >= JUL .and. month <= SEP
+        value 1.0 }
+    case others  {
+        condition   always
+        value       1.0}
+}
+
+
+define LVX2REQ2 {
+    ! Adjust X2 Requirement based on flow
+    case JAN {
+        condition month == JAN .and. NDO[WHEELJPOD] > 7100.
+        value 1.0 }
+    case MAY {
+        condition month == MAY .and. daysX2_CNF < 1. .and. NDO[WHEELJPOD] > 11400.
+        value 1.0 }
+    case JUN {
+         condition month == JUN .and. daysX2_CNF < 1. .and. NDO[WHEELJPOD] > 7100.
+         value 1.0 }
+    case others  {
+         condition   always
+         value       0.0}
+}
+
+define LVX2REQ { value max(LVX2REQ1, LVX2REQ2 )}
+
+define DeltaSurpAvail {
+    case Exist_FNA {
+        condition LVESwitch < 1.5
+        value max(0., ANNSurplus)
+        }
+    case otherwise {
+        condition always
+        value max(0., min(EISurplus,ANNSurplus))
+        }
+}
+
+/*
+! For output
+define EIReqSacdv    { alias EIReqSac   kind 'flow' units 'cfs' }
+define EISurplusdv   { alias EISurplus  kind 'flow' units 'cfs' }
+define ANNReqdv      { alias ANNReq     kind 'flow' units 'cfs' }
+define ANNSurplusdv  { alias ANNSurplus kind 'flow' units 'cfs' }
+define ANNSurplusdv    { alias ANNSurplus   kind 'flow' units 'cfs' }
+define X2ESTdv       { alias X2EST      kind 'flow' units 'cfs' }
+define LVX2REQ1dv    { alias LVX2REQ1   kind 'switch' units 'none' }
+define LVX2REQ2dv    { alias LVX2REQ2   kind 'switch' units 'none' }
+define LVX2REQdv     { alias LVX2REQ    kind 'switch' units 'none' }
+define DeltaSurpAvaildv  { alias DeltaSurpAvail kind 'flow' units 'cfs' }
+*/
+

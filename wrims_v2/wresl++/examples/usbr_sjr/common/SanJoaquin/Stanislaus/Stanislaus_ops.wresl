@@ -1,0 +1,365 @@
+! Stanislaus_ops.wresl
+! This file replaces both Stan_defs.wresl and Stanislaus_dems.wresl files
+! used in Calsim-II.
+/*
+
+This file contains code that defines allocation of water supply to Oakdale Irrigation
+District, South San Joaquin Irrigation District, Stockton East Water District, Central
+San Joaquin Water District, and develops monthly targets and limits for deliveries to 
+these entities.  Sale of OID water to SEWD and contributions by OID and SSJID to river
+flows and VAMP are considered in setting the monthly limits on deliveries.  
+
+Basin deliveries which are not subject to allocations or which are served only by 
+groundwater supplies are controlled by code in constraints-deliveries.wresl in the 
+system directory.
+
+ Revised by: R. Field. 1/02/04, Reclamation,
+ Purpose: Revise CSJSEWD_PAGyr logic to incorporate STANMOD IOP logic.
+ Revised by: R. Field. 9/25/03, USBR
+ Purpose: Incorporated additional M&I variable names and added M&I
+ return flow capabilities.
+ Revised by C. Hsu, 3/09/03, USBR,
+ Purpose: Review and comment.
+ Revised by C. Olson for Calsim-III, 5/1/2007
+ Revised by N. Parker for CalSimIII, 12/09
+*/
+!#################################################################################
+
+
+/*
+****Oakdale Irrigation District and South San Joaquin Irrigation District*****
+
+Allocations and cuts for Oakdale ID (north) and South San Joaquin ID are determined 
+independantly, however they are represented as a single demand unit (61_PA1) in Calsim-III.
+
+The allocation to Oakdale Irrigation District and South San Joaquin Irrigation District
+is determined using the New Melones forecast, NMforecast2.  Monthly delivery of surface
+water is limited by distributing the annual allocation by the pattern of applied water
+demand through the year.  This is based on the 1998 San Joaquin River Agreement.
+*/
+
+! Define annual OSSJID delivery allocation based on October forecast and monthly distributions
+define OSSJID_yr        {select OSSJID from stan_yrossjid given NMF2=NMforecast2 use linear}
+define OSSJID_yrdv      {alias  OSSJID_yr kind 'allocation' units 'taf'}
+
+! Define annual OID South demand (sum of Oct - Sept demands)
+define TotLossFactor_61_PA2  {value (EVF_OAK020_61_PA2 + DPF_OAK020_61_PA2 + LFF_OAK020_61_PA2 + OSF_OAK020_61_PA2)}
+define ann_OID_Sdv      {std kind 'annual-demand' units 'taf'}
+define ann_OID_S {
+    case oct {
+        condition month == oct
+        sum(i=0,11,1) max(0.0, (AWO_61_PA2(i)+AWR_61_PA2(i))*(1.0+TotLossFactor_61_PA2)*cfs_taf(i)               ! demands + losses
+                               - min( GPmin_61_PA2_P(i)*cfs_taf(i),(AWO_61_PA2(i)+AWR_61_PA2(i))*cfs_taf(i) )    ! minus gpmin [P]
+                               - min( GPmin_61_PA2_D(i)*cfs_taf(i),(AWO_61_PA2(i)+AWR_61_PA2(i))*cfs_taf(i) ) )  ! minus gpmin [D]
+        }
+    case otherwise {
+        condition   always
+        value ann_OID_Sdv(-1) }
+        }
+goal set_ann_OID_Sdv {ann_OID_Sdv = ann_OID_S}
+
+
+! Define annual OID North demand (sum of Oct - Sept demands)
+define TotLossFactor_61_PA1  {value (EVF_WDWRD_61_PA1  + DPF_WDWRD_61_PA1  + LFF_WDWRD_61_PA1  + OSF_WDWRD_61_PA1)}
+define TotLossFactor_61_NU2  {value (EVF_WTPDGT_61_NU2 + DPF_WTPDGT_61_NU2 + LFF_WTPDGT_61_NU2)} ! NO OS FOR 61_NU2 ... + OSF_WDWRD_61_PA1)}
+define ann_OID_Ndv           {std kind 'annual-demand' units 'taf'}
+define ann_OID_N {
+    case oct {
+        condition month == oct
+
+        ! IMF --
+        ! (1) Assumes LOSSES are split between OID/SSJ based on demands
+        !     But...still assumes GPmin is split evenly between OID/SSJ (as in CSII)
+        ! (2) Does NOT include M&I demands in limit calculation. In CSII, OID North M&I demands (demand_D523_MI_B)
+        !     are met entirely by groundwater pumping. M&I demands are now lumped into 61_NU2, but no M&I is included here, only in SSJ limit.  
+        sum(i=0,11,1) max(0.0, (AWO_61_PA1_OID(i)+AWR_61_PA1_OID(i))*(1.0+TotLossFactor_61_PA1)*cfs_taf(i)                      ! OID portion of AW_61_PA1 + losses
+                               - min( (GPmin_61_PA1_P(i)/2.0)*cfs_taf(i), (AWO_61_PA1_OID(i)+AWR_61_PA1_OID(i))*cfs_taf(i) )    ! min gw [P]
+                               - min( (GPmin_61_PA1_D(i)/2.0)*cfs_taf(i), (AWO_61_PA1_OID(i)+AWR_61_PA1_OID(i))*cfs_taf(i) ) )  ! min gw [D]
+        }
+    case otherwise {
+        condition   always
+        value ann_OID_Ndv(-1) }
+        }
+goal set_ann_OID_Ndv {ann_OID_Ndv = ann_OID_N}
+
+
+! Define annual SSJID demand (sum of Oct - Sept demands)
+define ann_SSJdv        {std kind 'annual-demand' units 'taf'}
+define ann_SSJ {
+    case oct {
+        condition month == oct
+        
+        ! IMF --
+        ! (1) Assumes LOSSES are split between OID/SSJ based on demands
+        !     But...still assumes GPmin is split evenly between OID/SSJ (as in CSII)
+        ! (2) Includes M&I demands for 61_NU2 in limit calculation. In CSII, SSJ M&I demands (demand_D523_MI_A)
+        !     were included in summation. Here all M&I demands are included, as D523_MI_A and D523_MI_B have been lumped together.  
+        sum(i=0,11,1) max(0.0, (AWO_61_PA1_SSJ(i)+AWR_61_PA1_SSJ(i))*(1.0+TotLossFactor_61_PA1)*cfs_taf(i)                      ! SSJ portion of ag demands + losses                
+                               + (UD_61_NU2(i))*(1.0+TotLossFactor_61_NU2)*cfs_taf(i)                                           ! SSJ M&I demand + losses
+                               - min( (UD_61_NU2(i)),(GPmin_61_NU2(i)))*cfs_taf(i)                                              ! min gw M&I
+                               - min( (GPmin_61_PA1_P(i)/2.0)*cfs_taf(i), (AWO_61_PA1_SSJ(i)+AWR_61_PA1_SSJ(i))*cfs_taf(i) )    ! min gw Ag[P]
+                               - min( (GPmin_61_PA1_D(i)/2.0)*cfs_taf(i), (AWO_61_PA1_SSJ(i)+AWR_61_PA1_SSJ(i))*cfs_taf(i) ) )  ! min gw Ag[D]
+        }
+        
+    case otherwise {
+        condition   always
+        value ann_SSJdv(-1) }
+        }
+goal set_ann_SSJdv   {ann_SSJdv = ann_SSJ}
+
+
+! Define annual OID demands
+define ann_OID       {value ann_OID_S + ann_OID_N}
+define ann_OIDdv     {std kind 'annual-demand' units 'taf'}
+goal   set_ann_OIDdv {ann_OIDdv = ann_OID}
+
+
+! Apportion OID's Allocation between the North and South sides
+define OID_South_pct {value ann_OID_S/(ann_OID_S + ann_OID_N)}
+! OID South side allocation
+define OID_South_yr  {value (OSSJID_yr/2.) * OID_South_pct}
+! OID South side allocation
+define OID_North_yr  {value (OSSJID_yr/2.) * (1-OID_South_pct)}
+
+
+! Define annual Woodward seepage
+define ann_WDWRD_seepdv {std kind 'annual-demand' units 'taf'}
+define ann_WDWRD_seep {
+    case oct {
+        condition month == oct
+        sum(i=0,11,1) SG_WDWRD_seep(i) }
+    case otherwise {
+        condition   always
+        value ann_WDWRD_seepdv(-1) }
+        }
+goal set_ann_WDWRD_seepdv {ann_WDWRD_seepdv = ann_WDWRD_seep}
+
+
+/*
+*****************   OID and SSJID Allocation Cuts   ********************
+
+Reductions in Delivery Allocation due to contributions for VAMP, etc....
+OID contributes 15 taf every year to increased FW release in October.
+Diversion limits are reduced by a total of 15 taf in March/April/Sept/October
+OID also contributes 11 taf every year for VAMP and other uses.
+Diversion limits are reduced by a total of 11 in Sept/Oct (in addition
+to the portion of the 15 already limiting)
+*/
+
+! Define Annual Oakdale Irrigation District reductions in delivery, and apportion
+! between the north and south.  These annual values will be used to reduce the 
+! annual allocation to each delivery area.  
+define OIDredAnnual {value 26.0}
+define OIDcut_N_ann {value OIDredAnnual * (1.-OID_South_pct) }
+define OIDcut_S_ann {value OIDredAnnual *  OID_South_pct}
+
+
+! SSJID only cuts delivery capacity in Sept and Oct and only if it contributed water to VAMP
+! Define monthly cuts (as opposed to annual allocation cuts defined for OID above)
+define SSJIDcut_mon {
+    case first_month {
+        condition month<=oct .and. wateryear==1922
+        value       0. }
+    case October {
+        condition   month == oct
+        value       ((C_MELONvamp_m(-5)*cfs_TAF(-5) + C_MELONvamp_M(-6)*cfs_TAF(-6) +
+                      C_PEDRO_STS_VAMP(-5)*cfs_TAF(-5) + C_PEDRO_STS_VAMP(-6)*cfs_taf(-6))/2.0)
+                      * (AWO_61_PA1_SSJ+AWR_61_PA1_SSJ)/((AWO_61_PA1_SSJ(-1)+AWR_61_PA1_SSJ(-1))+(AWO_61_PA1_SSJ+AWR_61_PA1_SSJ))}  
+    case September {
+        condition   month == sep
+        value       ((C_MELONvamp_m(-4)*cfs_TAF(-4) + C_MELONvamp_M(-5)*cfs_TAF(-5) +
+                      C_PEDRO_STS_VAMP(-4)*cfs_TAF(-4) + C_PEDRO_STS_VAMP(-5)*cfs_taf(-5))/2.0)
+                      * (AWO_61_PA1_SSJ+AWR_61_PA1_SSJ)/((AWO_61_PA1_SSJ+AWR_61_PA1_SSJ)+(AWO_61_PA1_SSJ(1)+AWR_61_PA1_SSJ(1)))}  
+    case otherwise {
+        condition   always
+        value       0. }
+          }
+define SSJIDcut_mondv    { std kind 'delivery-cut' units 'TAF' }
+goal   setSSJIDcut_mondv { SSJIDcut_mondv = SSJIDcut_mon }
+
+
+
+/*
+****  Stockton East Water District and Central San Joaquin Water District  ****
+
+The demands for Stockton East and the Central San Joaquin are determined using the New Melones
+forecast variable NMforecast1.  From NMforecast1, an annual delivery request is determined
+from a look-up table.  Another look-up table distributes the annual delivery requests 
+throughout the year.  
+*/
+
+! Define annual SEWD M & I demand
+define SEWD_PMIyr       {select  SEWD from stan_yr given NMF=NMforecast1 use linear }
+! Define SEWD monthly M & I delivery pattern
+define SEWD_PMImonth    { select  SEWD from stan_mon where month=month }
+! Define SEWD annual M & I demand
+define demand_SEWD_PMI  { value SEWD_PMIyr * SEWD_PMImonth * TAF_cfs }
+! Set limits on SEWD maximum M & I delivery
+goal maxdelivSEWD_PMI   { D_LJC022_WTPWDHa < demand_SEWD_PMI }
+! Sale of OIDSSJID water to Stockton East from lookup table
+define ann_SEWD_sale    { select sale from SEWD_sale given NM_Inf=NMforecast2 use minimum}
+! Define SEWD sale percentage
+define SEWD_sale_pct    { select percent from SEWD_sale_mon where month=month}
+! SEWD sale limits
+goal meet_SEWD_sale     { D_LJC022_WTPWDHb < (ann_SEWD_sale * SEWD_sale_pct) * taf_cfs}
+! total SEWD Deliveries
+goal totD_LJC022_WTPWDH { D_LJC022_WTPWDH = D_LJC022_WTPWDHa + D_LJC022_WTPWDHb}
+
+
+/*
+CSJID demands and operation
+*/
+
+! Define CSJSEWD annual Ag delivery based on New Melones forecast 1
+/* revised to read from table (to match CSII BO setup in Stanislaus_dems.wresl)
+define CSJSEWD_PAGyr {
+    case below2000 {
+        condition NMforecast1 < 2000.0
+        value 0. }
+    case below2500 {
+        condition NMforecast1 >= 2000.0 .and. NMforecast1 <=2500.0
+        select CSJSEWD from stan_yr given NMF=NMforecast1 use linear}
+    case otherwise {
+        condition always
+        value 80.0 }
+}
+*/
+define CSJSEWD_PAGyr    { select CSJSEWD from stan_yr given NMF = NMforecast1 use linear}
+define CSJSEWD_PAGyr_a  { alias CSJSEWD_PAGyr kind 'temp' units 'taf'}
+
+
+! Total CSJID annual demand decision variable
+define ann_CSJIDdv      { std kind 'annual-demand' units 'taf'}
+define ann_CSJID {
+    case initial {
+          condition month < mar .and. wateryear == 1922
+          value 132.0 }   ! set to annual average
+    case mar {
+        condition month == mar
+        sum(i=0,11,1) max(0.,((AWO_60S_PA2(i)+AWR_60S_PA2(i)) 
+                              - min(I_LJC022(i), (AWO_60S_PA2(i)+AWR_60S_PA2(i))))) * cfs_taf(i)}
+    case otherwise {
+        condition   always
+        value ann_CSJIDdv(-1) }
+        }
+goal set_ann_CSJIDdv  { ann_CSJIDdv = ann_CSJID }
+
+! define monthly distribution of annual Stanislaus allocation
+define CSJID_pattern  { value max(0.,((AWO_60S_PA2+AWR_60S_PA2) - min(I_LJC022, (AWO_60S_PA2+AWR_60S_PA2)))) * cfs_taf/ ann_CSJID}
+
+! Calculate CSJSID maximum Ag delivery
+define demand_CSJSEWD_pag {value CSJSEWD_PAGyr * CSJID_pattern * TAF_cfs}
+
+! Limit CSJSID delivery to CSJSID max plus surface runoff
+goal limit_D_LJC010_60S_PA2 { D_LJC010_60S_PA2  < demand_CSJSEWD_pag + max(0., I_LJC022) }
+
+! combined diversion from Stanislaus to CSJSEWD_pag and SEWD_mi
+goal limit_D_STS059_UFC000  { D_STS059_UFC000   < demand_CSJSEWD_pag + demand_SEWD_PMI  
+                                                + (ann_SEWD_sale * SEWD_sale_pct) * taf_cfs}
+
+
+/*
+*********************Oakdale South District Deliveries********************************
+*/
+
+! Limit Stanislaus River delivery to Oakdale ID (south) based on allocation
+define OID_S_ANN_Alloc    {value max(0.0,(OID_South_yr - OID_South_pct*ann_SEWD_sale/2. - OIDcut_S_ann))}
+
+! define OID_S_SW_Dem       {value max(0.0,(AWO_61_PA2+AWR_61_PA2)*(1.0+TotLossFactor_61_PA2) - GPmin_61_PA2_D - GPmin_61_PA2_P)*cfs_taf}
+define OID_S_SW_Dem       {value max(0.0,(AWO_61_PA2+AWR_61_PA2)*(1.0+TotLossFactor_61_PA2)*cfs_taf       ! demands + losses
+                                         - min(GPmin_61_PA2_P*cfs_taf,(AWO_61_PA2+AWR_61_PA2)*cfs_taf)    ! minus gpmin [P]
+                                         - min(GPmin_61_PA2_D*cfs_taf,(AWO_61_PA2+AWR_61_PA2)*cfs_taf) )} ! minus gpmin [D]
+
+define OID_S_Mon_Pattn    {std kind 'DEMAND-FRACTION' units 'NONE'}
+
+goal set_OID_S_Mon_Pattn  {OID_S_Mon_Pattn * ann_OID_S = OID_S_SW_Dem}
+
+define OID_S_Limit        {std kind 'DELIVERY-LIMIT'  units 'TAF'}
+
+goal set_limit_OID_S      {OID_S_Limit = OID_S_Ann_Alloc*OID_S_Mon_Pattn}
+
+goal limitD_STS059_OAK001 {D_STS059_OAK001 < OID_S_Limit*taf_cfs + D_OAK020_61_NA2}
+
+
+/*
+********************Oakdale North / SSJID Deliveries (Ag)*****************************
+*/
+
+! Define Oakdale ID North water delivery from Stanislaus River limits
+! IMF -- See notes above re: split between losses and GPmin @ OID North Limit.  
+define OID_N_ANN_Alloc   {value max(0., (OID_North_yr - (1.-OID_South_pct)*ann_SEWD_sale/2. - OIDcut_N_ann))}
+
+! define OID_N_SW_Dem      {value max(0., ((AWO_61_PA1_OID+AWR_61_PA1_OID)*(1.0+TotLossFactor_61_PA1)) - GPmin_61_PA1_P/2. - GPmin_61_PA1_D/2.)*cfs_taf} 
+define OID_N_SW_Dem      {value max(0.0, (AWO_61_PA1_OID+AWR_61_PA1_OID)*(1.0+TotLossFactor_61_PA1)*cfs_taf              ! OID portion of AW_61_PA1 + losses
+                                         - min( (GPmin_61_PA1_P/2.0)*cfs_taf, (AWO_61_PA1_OID+AWR_61_PA1_OID)*cfs_taf)    ! min gw [P]
+                                         - min( (GPmin_61_PA1_D/2.0)*cfs_taf, (AWO_61_PA1_OID+AWR_61_PA1_OID)*cfs_taf) ) }! min gw [D]
+
+
+define OID_N_Mon_Pattn   {std kind 'DEMAND-FRACTION' units 'NONE'}
+
+goal set_OID_N_Mon_Pattn {OID_N_Mon_Pattn * ann_OID_N = OID_N_SW_Dem} 
+
+define OID_N_Limit       {std kind 'DELIVERY-LIMIT'  units 'TAF'}
+
+goal set_OID_N_Limit     {OID_N_Limit = OID_N_ANN_Alloc*OID_N_Mon_Pattn}
+
+! Define South San Joaquin ID water delivery from Stanislaus River 
+! IMF -- See notes above re: split between losses and GPmin @ SSJ Limit.  
+define SSJ_ANN_Alloc     {value max(0., (OSSJID_yr/2. - ann_SEWD_sale/2. - ann_WDWRD_seep))}
+
+define SSJ_SW_Dem        {value max(0.0, (AWO_61_PA1_SSJ+AWR_61_PA1_SSJ)*(1.0+TotLossFactor_61_PA1)*cfs_taf             ! SSJ portion of ag demands + losses                
+                                         + (UD_61_NU2)*(1.0+TotLossFactor_61_NU2)*cfs_taf                               ! SSJ M&I demand + losses
+                                         - min((UD_61_NU2),(GPmin_61_NU2))*cfs_taf                                      ! min gw M&I
+                                         - min((GPmin_61_PA1_P/2.0)*cfs_taf,(AWO_61_PA1_SSJ+AWR_61_PA1_SSJ)*cfs_taf )   ! min gw Ag[P]
+                                         - min((GPmin_61_PA1_D/2.0)*cfs_taf,(AWO_61_PA1_SSJ+AWR_61_PA1_SSJ)*cfs_taf )) }! min gw Ag[D] 
+
+define SSJ_Mon_Pattn     {std kind 'DEMAND-FRACTION' units 'NONE'}
+
+goal   set_SSJ_Mon_Pattn {SSJ_Mon_Pattn * ann_SSJ = SSJ_SW_Dem} 
+
+define SSJ_Limit         {std kind 'DELIVERY-LIMIT'  units 'TAF'}
+
+goal set_SSJ_Limit       {SSJ_Limit = SSJ_ANN_Alloc*SSJ_Mon_Pattn}
+
+
+! Set limits on South San Joaquin ID/Oakdale ID North water delivery limits
+goal limit_D_WDWRD_61_PA1 {D_WDWRD_61_PA1 < OID_N_Limit*taf_cfs 
+                                          + SSJ_Limit*taf_cfs }
+
+! IMF -- limit diversion from WDWRD to M&I users (WTPDG --> 61_NU2, 50_PU)
+
+! goal limit_D_WDWRD_WTPDG  {D_WDWRD_WTPDGT = 0.0}
+
+
+/*
+*********  Other Stanislaus River Diversions     ****************
+D_STS030_61_NA4 - Stanislaus Riparian Demands
+D_WTPDGT_61_NU2 - Cities of Lathrop, Manteca, Escalon
+These demands are not subject to allocations of water supply in the Stanislaus River
+Code in constraints-deliveries.wresl in the system files appropriately limits delivery
+and weights guide delivery of water in priority.  
+*/
+
+
+define OID_North_yr_A      {alias OID_North_yr         kind 'DEBUG' units 'NA'}
+define OID_South_Pct_A     {alias OID_South_Pct        kind 'DEBUG' units 'NA'}
+define ann_SEWD_sale_A     {alias ann_SEWD_sale        kind 'DEBUG' units 'NA'}
+define OIDcut_N_A          {alias OIDcut_N_ann         kind 'DEBUG' units 'NA'}
+define ann_OID_N_A         {alias ann_OID_N            kind 'DEBUG' units 'NA'}
+define OID_N_Limit_A       {alias OID_N_Limit*taf_cfs  kind 'DEBUG' units 'NA'}
+define OSSJID_yr_A         {alias OSSJID_yr            kind 'DEBUG' units 'NA'}
+define ann_SSJ_A           {alias ann_SSJ              kind 'DEBUG' units 'NA'}
+define SSJIDcut_A          {alias SSJIDcut_mon         kind 'DEBUG' units 'NA'}
+define SSJ_Limit_A         {alias SSJ_Limit*taf_cfs    kind 'DEBUG' units 'NA'}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,10 @@
+define D607c_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D607c_PRF    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D607c_NDS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD607c     { D607c = D607c_PRJ + D607c_NDS}
+goal totalD607c_prj { D607c_prj = D607c_PRF }
+
+define D608c_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D608c_PRF    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD608c     { D608c = D608c_PRJ}
+goal totalD608c_prj { D608c_prj = D608c_PRF }

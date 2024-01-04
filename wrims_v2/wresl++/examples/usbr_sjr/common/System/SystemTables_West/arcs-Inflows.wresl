@@ -1,0 +1,69 @@
+/*
+CALSIM 3.0 SYSTEM FILE
+ARCS-INFLOWS.WRESL
+
+NAMING TAKES THE FOLLOWING FORMS:
+
+I_{DESTINATION NODE}  - boundary inflow
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! BOUNDARY INFLOWS  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!********************** WEST SIDE ***********************************************
+! Reservoir Inflows (alphabetically)
+define I_SLUIS  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !SAN LUIS RESERVOIR
+define I_BANOS  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LOS BANOS RESERVOIR
+
+! IMF @ debug
+define I_SLUISa {alias I_SLUIS kind 'INFLOW' units 'CFS' }
+
+! Other Tributary Inflows (alphabetically)
+define I_ORT014 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !ORESTIMBA CREEK
+define I_GRZ012 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !GARZAS CREEK
+define I_DPC008 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !DEL PUERTO CREEK
+define I_SLO007 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !SALIDO CREEK
+define I_CHC000 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !CORRAL HOLLOW AMD MINOR CREEKS
+define I_CAP000 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !CAPITA CANYON
+define I_LPC007 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LITTLE PANOCHE CREEK
+define I_ORG000 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !ORTIGALITA CREEK
+define I_QNT005 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !QUINTO CREEK
+define I_ING008 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !HOSPITAL AND INGRAM CREEKS
+
+define I_CHW031 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LOCAL INFLOW TO CHOWCHILLA AT CHW031
+define I_TUO054 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LOCAL INFLOW TO TUOLUMNE AT TUO054  
+
+
+define SR_71_MSN004 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_71_OMR039 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_71_SJR117 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_71_SJR106 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_71_SJR091 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_71_SJR075 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_71_SJR070 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+                
+define SR_72_MSN004 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_72_SAL006 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_72_SJR117 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_72_SJR106 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_72_SJR091 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+                
+define SR_73_MSN004 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_73_SLD027 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}
+
+
+! TEMPORARY -- for west side only...
+! Other Tributary Inflows (alphabetically)
+/*
+East side stuff...here for west-side-only model...
+define I_FSL012 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !INFLOW TO FRESNO SLOUGH
+define I_JBP006 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !INFLOW TO JAMES BYPASS
+define SR_64_SJR180 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+*/
+
+
+

@@ -1,0 +1,7 @@
+define D18A_16B_A {std kind 'flow-delivery' units 'cfs'}
+define D18A_16B_F {std kind 'flow-delivery' units 'cfs'}
+define D18B_16B_A {std kind 'flow-delivery' units 'cfs'}
+define D18B_16B_F {std kind 'flow-delivery' units 'cfs'}
+
+goal split_D18A_16B {D18A_16B = D18A_16B_A + D18A_16B_F}
+goal split_D18B_16B {D18B_16B = D18B_16B_A + D18B_16B_F}

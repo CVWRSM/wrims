@@ -1,0 +1,37 @@
+/*
+ 
+References data from cycle BASE to reduce ANN function calls to reduce runtime.
+
+See the *_data.wresl file for how these parameters are calculated.
+
+*/
+
+!****************************************************************************************
+
+! calculate previous month's value of salinity
+define JP_EC_Month {std kind 'SALINITY' units 'UMHOS/CM'}
+define JP_EC_Month_sv {value JP_EC_Month[BASE]}
+goal setJP_EC_MON {JP_EC_Month = JP_EC_Month_sv}
+
+!****************************************************************************************
+
+! define the EC standard for Jersey Point (millimhos/cm)
+define JP_EC_STD {std kind 'SALINITY' units 'UMHOS/CM'}
+define JP_EC_STD_sv {value JP_EC_STD[BASE]}
+goal JPECstandout {JP_EC_STD = JP_EC_STD_sv}
+
+!****************************************************************************************
+
+!get slope and intercept for constraint exp<=m*sac+b
+define JP_m {lower unbounded upper unbounded kind 'SLOPE' units 'NONE'}
+define JP_b {lower unbounded upper unbounded kind 'INTERCEPT' units 'NONE'}
+define JP_m_sv {value JP_m[BASE]}
+define JP_b_sv {value JP_b[BASE]}
+goal setJP_m {JP_m = JP_m_sv}
+goal setJP_b {JP_b = JP_b_sv}
+
+!****************************************************************************************
+!Get the required Sac flow for ZERO exports
+define JP_Sac_ZeroExp {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define JP_Sac_ZeroExp_sv2 {value JP_Sac_ZeroExp[BASE]}
+goal setJP_Sac_ZeroExp {JP_Sac_ZeroExp = JP_Sac_ZeroExp_sv2}

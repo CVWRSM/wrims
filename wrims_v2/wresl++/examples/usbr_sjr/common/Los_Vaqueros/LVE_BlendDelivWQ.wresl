@@ -1,0 +1,156 @@
+! LVE_BlendDelivWQ.wresl
+! R. Field
+! 04/14/2004
+! Reclamation
+! Revised Becky Fedak February 2007 MWH
+! File adjusts Delta pumping and LVR Fill/Release to meet CCWD delivered WQ target 
+
+!#################################################################
+! 1.  Water Quality Conditions given Max Diversion (first cycle solution)
+!#################################################################
+
+! Calculate salinity of Transfer Pt#1 deliveries to CCWD (Node 432) from cycle 1 results
+define sal_432_c1 {
+    case flow {
+        condition (C433A[LV_BASE]+C434A[LV_BASE]) > 0.001
+        value (C433A[LV_BASE]*WQ408_AIP+C434A[LV_BASE]*WQ408_OR)/(C433A[LV_BASE]+C434A[LV_BASE])
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_432_c1dv { std kind 'SALINITY' units 'MG/L' }
+goal sal_432_c1     { sal_432_c1dv = sal_432_c1 }
+
+! Calculate salinity of Transfer Pt#1 deliveries to LV (Node 431) from cycle 1 results
+define sal_431_c1 {
+    case flow {
+        condition (C433B[LV_BASE] + C434B[LV_BASE] + D408_OR2[LV_BASE]) > 0.001
+        value (C433B[LV_BASE]*WQ408_AIP+(C434B[LV_BASE]+D408_OR2[LV_BASE])*WQ408_OR)
+            /(C433B[LV_BASE] + C434B[LV_BASE] + D408_OR2[LV_BASE])
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_431_c1dv { std kind 'SALINITY' units 'MG/L' }
+goal sal_431_c1     { sal_431_c1dv = sal_431_c1 }
+
+! Calculate salinity of Transfer Pt#2 (Node 430) from cycle 1 results
+define sal_430_c1 {
+    case flow {
+        condition C431[LV_BASE] > 0.001
+        value sal_431_c1
+    } 
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+define sal_430_c1dv { std kind 'SALINITY' units 'MG/L' }
+goal sal_430_c1     { sal_430_c1dv = sal_430_c1 }
+
+! Calculate the salinity of the reservoir in cycle 1 
+define sal_LV_c1 {
+    case storage {
+        condition S422[LV_BASE]+C422[LV_BASE]*cfs_TAF > 0.001
+        value (  S422(-1)*sal_prv_LV_c1dv[LV_BASE]
+               + C430A[LV_BASE]*cfs_TAF*sal_430_c1
+               + C428B[LV_BASE]*cfs_TAF*Mok_WQ
+               + I422A*cfs_TAF*WQ422
+               + I422B[LV_BASE]*I422B_WQ*cfs_taf)
+              /(S422[LV_BASE]+C422[LV_BASE]*cfs_TAF)
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_LV_c1dv   { std kind 'SALINITY' units 'MG/L' }
+goal set_sal_LV_c1dv { sal_LV_c1dv = sal_LV_c1 }
+
+! Calculate CCWD Blending Pt#2 (node 421) from cycle 1 results
+define sal_421_c1 { 
+    case flow {
+        condition C432[LV_BASE]+D425_TS[LV_BASE]+C428A[LV_BASE] > 0.001
+        value (C432[LV_BASE]*sal_432_c1+D425_TS[LV_BASE]*sal_prv_LV_c1dv[LV_BASE]+C428A[LV_BASE]*Mok_WQ)
+            /(C432[LV_BASE]+D425_TS[LV_BASE]+C428A[LV_BASE])
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_421_c1dv { std kind 'SALINITY' units 'MG/L'}
+goal set_sal_421_c1 { sal_421_c1dv = sal_421_c1 }
+
+! Calculate CCWD Blending Pt#1 (node 420) from cycle 1 results
+define sal_420_c1 { 
+    case flow {
+        condition (D408_RS[LV_BASE]+C421[LV_BASE]) > 0.001
+        value (D408_RS[LV_BASE]*WQ408_RS+C421[LV_BASE]*sal_421_c1)/(D408_RS[LV_BASE]+C421[LV_BASE])
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_420_c1dv { std kind 'SALINITY' units 'MG/L' }
+goal set_sal_420_c1 { sal_420_c1dv = sal_420_c1 }
+
+
+!#################################################################
+!  2 BLENDING REQUIREMENTS 
+!#################################################################
+
+goal CCWD_WQ {
+    lhs D425_TS*sal_prv_LV_c1 + D408_RS*WQ408_RS + C433A*WQ408_AIP + C434A*WQ408_OR + C428A*Mok_WQ
+    rhs D420[LV_BASE]*CCWD_WQ_trgt
+    lhs>rhs penalty 999999
+    lhs<rhs penalty 0
+    }           
+
+!Old River penalty setting...
+goal prioritize_OR { 
+    lhs C434A 
+    case OR_best_wq {
+        condition WQ408_OR <= WQ408_RS .and. WQ408_OR <= WQ408_AIP .and. WQ408_OR > CCWD_WQ_trgt
+        rhs min(ORPP1_Cap,D420[LV_BASE])
+        lhs>rhs penalty 30000
+        lhs<rhs penalty 30000
+    }
+}
+
+!AIP penalty setting...
+goal prioritize_AIP { 
+    lhs C433A 
+    case AIP_best_wq {
+        condition WQ408_AIP <= WQ408_RS .and. WQ408_AIP <= WQ408_OR .and. WQ408_AIP > CCWD_WQ_trgt
+        rhs min(AIP_Cap,D420[LV_BASE])
+        lhs>rhs penalty 30000
+        lhs<rhs penalty 30000
+    }
+}
+
+    
+! To ensure weights on salt load do not upset weights on delivery, storage, diversion
+! add additional constraints:
+goal set_D420 { D420 = D420[LV_BASE] }
+! This constraint prevents the use of emergency storage for blending operations.
+! Tolerance of 0.001 included to overcome infeasibility due to numerical rounding 
+goal set_S422 { S422 > min(S422[LV_BASE] , S422level1) - 0.001 }
+
+
+/*!Stop filling reservoir with bad quality water
+goal stop_filling { 
+    lhs C430A 
+    case poor_quality {
+        condition sal_430_c1 > 65.
+        rhs 0.0
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0 
+    }
+}*/
+

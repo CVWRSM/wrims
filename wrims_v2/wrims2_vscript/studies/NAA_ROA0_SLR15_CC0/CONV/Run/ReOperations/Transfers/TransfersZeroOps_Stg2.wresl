@@ -1,0 +1,53 @@
+! TransferZeroOps_Stg2.wresl
+
+!******************************************************************************
+! Zero Storage Accounting
+! Shasta
+define SP4_WTS_Stg2 {value 0.}
+goal setS4_WTS_Stg2  {S4_WTS_Stg2 < 0.}
+goal zeroI4_WTS_Stg2 {I4_WTS_Stg2 < 0.}
+goal zeroC5_WTS_Stg2 {C5_WTS_Stg2 < 0.}
+! Oroville
+define SP6_WTS_Stg2 {value 0.}
+goal setS6_WTS_Stg2  {S6_WTS_Stg2 < 0.}
+goal zeroI6_WTS_Stg2 {I6_WTS_Stg2 < 0.}
+goal zeroC6_WTS_Stg2 {C6_WTS_Stg2 < 0.}
+! total storage
+goal split_S4_WTS { S4_WTS = S4_WTS_Stg1 + S4_WTS_Stg2 }
+goal split_S6_WTS { S6_WTS = S6_WTS_Stg1 + S6_WTS_Stg2 }
+! total spills
+goal split_SP4_WTS { SP4_WTS = SP4_WTS_Stg1 + SP4_WTS_Stg2 }
+goal split_SP6_WTS { SP6_WTS = SP6_WTS_Stg1 + SP6_WTS_Stg2 }
+! COA adjustment
+goal zeroC203_WTS_Stg2 {C203_WTS_Stg2 < 0.}
+
+!******************************************************************************
+goal zero_BUFF12_Stg2 {WTS_BUFF12_Stg2 = 0.}
+goal zero_INC12_Stg2 {WTS_INC12_Stg2 = 0.}
+goal zero_DEC12_Stg2 {WTS_DEC12_Stg2 = 0.}
+
+goal zero_BUFF15_Stg2 {WTS_BUFF15_Stg2 = 0.}
+goal zero_INC15_Stg2 {WTS_INC15_Stg2 = 0.}
+goal zero_DEC15_Stg2 {WTS_DEC15_Stg2 = 0.}
+
+goal zero_BUFF69_Stg2 {WTS_BUFF69_Stg2 = 0.}
+goal zero_INC69_Stg2 {WTS_INC69_Stg2 = 0.}
+goal zero_DEC69_Stg2 {WTS_DEC69_Stg2 = 0.}
+
+goal zero_BUFF70_Stg2 {WTS_BUFF70_Stg2 = 0.}
+goal zero_INC70_Stg2 {WTS_INC70_Stg2 = 0.}
+goal zero_DEC70_Stg2 {WTS_DEC70_Stg2 = 0.}
+!******************************************************************************
+! Zero Delta terms
+goal Zero_D418_WTS_Stg2 {D418_WTS_Stg2 < 0.}
+goal Zero_D419_WTS_Stg2 {D419_WTS_Stg2 < 0.}
+goal Zero_CWcost_Stg2 {C407_WTS_Stg2 < 0.}
+goal zero_BalanceError2 {WTS_Bal_Err_stg2 = 0.}
+! Spill
+goal zero_Spill_Stg2 {WTS_Spill_stg2 = 0.}
+
+!******************************************************************************
+! Zero each delivery
+goal Zero_SoBay    {D815_WTS < 0.}
+goal Zero_SoCoast1 {D885_WTS < 0.}
+goal Zero_SoCoast2 {D895_WTS < 0.}

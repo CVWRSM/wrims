@@ -1,0 +1,652 @@
+/*
+ CALCULATE OPERATIONAL SPILLS
+
+Operational spills account for surface water that is delivered, but not used "on field".
+This water returns to the system via return flows.
+
+Several different conceptual models were used in Calsim-II to represent operational
+spills.  For consistency, those models were adopted for Calsim-III.
+
+****************************Conceptual Model #1************************************
+
+Operational spills are calculated based upon a 10% non-recoverable loss (NRL) factor 
+and 75% delivery efficiency using the equation:
+
+Operational Spills = Deliveries * (1-(1.1 * 0.75))
+
+****************************Conceptual Model #2************************************
+
+Operational spills are defined in a lookup table and dependant upon water year type.
+In most cases, operational spills do not occur unless the applied water demand > 0.
+ 
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60N     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 60_NA1 - Calaveras River - Riparian Ag
+!============================== 
+!goal setOS_60N_NA1 {OS_60N_NA1 = 0.0 }
+
+
+!==============================
+! 60_NA2 - Calaveras County WD - Ag
+!==============================
+!goal setOS_60N_NA2 {OS_60N_NA2 = 0.0 }
+
+
+!==============================
+! 60_NA3 - East of CSJWD and SEWD - Non District Ag
+!============================== 
+!GW supply only
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60S     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 60S_PA2 - CSJWCD - Ag
+!==============================
+! OSF set to zero to match CSII
+goal setOS_LJC010_60S_PA2 {OS_LJC010_60S_PA2 =  D_LJC010_60S_PA2 * OSF_LJC010_60S_PA2}
+goal setOS_60S_PA2        {OS_60S_PA2        = OS_LJC010_60S_PA2 }
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 61      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 61_PA1 - Oakdale ID, North of Stanislaus River & SSJID - Ag 
+!==============================
+goal setOS_WDWRD_61_PA1   {OS_WDWRD_61_PA1 = D_WDWRD_61_PA1 * OSF_WDWRD_61_PA1}
+goal setOS_61_PA1         {OS_61_PA1       = OS_WDWRD_61_PA1}
+goal setOS_61_PA1_a       {OS_61_PA1_a     = OS_61_PA1 * 0.30}
+goal setOS_61_PA1_b       {OS_61_PA1_b     = OS_61_PA1 * 0.70}
+
+/*
+! NOTE -- kept old spill setup, no update to new OSF*D_ format 
+! Operational spills are the minimum of AW or defined spill.
+define OS_61_PA1_a_sv {timeseries kind 'FLOW-RETURN' units 'taf'} !sp528b_ag
+define OS_61_PA1_b_sv {timeseries kind 'FLOW-RETURN' units 'taf'} !sp526_ag
+define OS_61_PA1_tot  {value min((AWO_61_PA1+AWR_61_PA1), (OS_61_PA1_a_sv + OS_61_PA1_b_sv)*taf_cfs)}
+
+goal setOS_61_PA1_a   {
+    lhs OS_61_PA1_a
+    case zero_aw {
+        condition AWO_61_PA1+AWR_61_PA1 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_PA1_a_sv*min(1.0, (AWO_61_PA1+AWR_61_PA1)/OS_61_PA1_tot)*taf_cfs}
+}
+goal setOS_61_PA1_b  {
+    lhs OS_61_PA1_b
+    case zero_aw {
+        condition AWO_61_PA1+AWR_61_PA1 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_PA1_b_sv*min(1.0, (AWO_61_PA1+AWR_61_PA1)/OS_61_PA1_tot)*taf_cfs}
+}
+
+goal setOS_61_PA1         {OS_61_PA1 = OS_61_PA1_a + OS_61_PA1_b}
+*/
+
+
+!==============================
+! 61_PA2 - Oakdale ID, South of Stanislaus River - Ag
+!==============================
+goal setOS_OAK020_61_PA2  {OS_OAK020_61_PA2 = D_OAK020_61_PA2 * OSF_OAK020_61_PA2}
+goal setOS_61_PA2         {OS_61_PA2        = OS_OAK020_61_PA2}
+goal setOS_61_PA2_a       {OS_61_PA2_a      = OS_61_PA2 * 0.35}
+goal setOS_61_PA2_b       {OS_61_PA2_b      = OS_61_PA2 * 0.30}
+goal setOS_61_PA2_c       {OS_61_PA2_c      = OS_61_PA2 * 0.25}
+goal setOS_61_PA2_d       {OS_61_PA2_d      = OS_61_PA2 * 0.10}
+
+/*
+! NOTE -- kept old spill setup, no update to new OSF*D_ format 
+!Operational spills are the minimum of AW or defined spill.
+define OS_61_PA2_a_sv   {timeseries kind 'FLOW-RETURN' units 'taf'} ! (sp545b_pag)  Operations spills from Oakdale ID to Tuolumne River
+define OS_61_PA2_b_sv   {timeseries kind 'FLOW-RETURN' units 'taf'} ! (sp532_pag)   Operations spills from Oakdale ID to Modesto ID
+define OS_61_PA2_c_sv   {timeseries kind 'FLOW-RETURN' units 'taf'} ! (sp528a_pag)  Operations spills from Oakdale ID to Stanislaus River
+define OS_61_PA2_d_sv   {timeseries kind 'FLOW-RETURN' units 'taf'} ! (sp534b_pag)  Operations spills from Oakdale ID to SJR Riparian delivery area
+define OS_61_PA2_tot    {value min((AWO_61_PA2+AWR_61_PA2),(OS_61_PA2_a_sv + OS_61_PA2_b_sv + OS_61_PA2_c_sv + OS_61_PA2_d_sv)*taf_cfs)}
+
+goal setOS_61_PA2_a  {
+    lhs OS_61_PA2_a
+    case zero_aw {
+        condition AWO_61_PA2+AWR_61_PA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_PA2_a_sv*min(1.0, (AWO_61_PA2+AWR_61_PA2)/OS_61_PA2_tot)*taf_cfs}
+}
+goal setOS_61_PA2_b  {
+    lhs OS_61_PA2_b
+    case zero_aw {
+        condition AWO_61_PA2+AWR_61_PA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_PA2_b_sv*min(1.0, (AWO_61_PA2+AWR_61_PA2)/OS_61_PA2_tot)*taf_cfs}
+}
+goal setOS_61_PA2_c  {
+    lhs OS_61_PA2_c
+    case zero_aw {
+        condition AWO_61_PA2+AWR_61_PA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_PA2_c_sv*min(1.0, (AWO_61_PA2+AWR_61_PA2)/OS_61_PA2_tot)*taf_cfs}
+}
+goal setOS_61_PA2_d  {
+    lhs OS_61_PA2_d
+    case zero_aw {
+        condition AWO_61_PA2+AWR_61_PA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_PA2_d_sv*min(1.0, (AWO_61_PA2+AWR_61_PA2)/OS_61_PA2_tot)*taf_cfs}
+}
+
+goal setOS_61_PA2        {OS_61_PA2 = OS_61_PA2_a + OS_61_PA2_b + OS_61_PA2_c + OS_61_PA2_d}
+
+! Single source -- all spills applied ot diversion from OAK020
+goal setOS_OAK020_61_PA2 {OS_OAK020_61_PA2 = OS_61_PA2}
+*/
+
+
+!==============================
+! 61_NA1 - East of Modesto ID and Oakdale ID - Ag
+!==============================
+!GW supply only
+
+
+!==============================
+! 61_NA2 - Modesto ID - Ag
+!==============================
+! Operational spills are defined in lookup table, according to water year type.
+! No spills occur if there is no demand (AW) at the demand unit.
+!
+! NOTE: 
+! This setup results in OS greater than DG during most of the non-irrigation season (Oct-Mar).
+! Diversions are completely lost in conveyance (DG<OS+DP+LF+EV) and extra groundwater is being pumped to meet losses/spills.
+! This doesn’t make sense. Original formulation commented...
+! Setup revised to use factor-based template for OS terms. 
+! Old template kept (commented) for future reference/comparison.
+
+goal setOS_OAK020_61_NA2  {OS_OAK020_61_NA2  = D_OAK020_61_NA2 * OSF_OAK020_61_NA2}
+goal setOS_RFS61B_61_NA2  {OS_RFS61B_61_NA2  = D_RFS61B_61_NA2 * OSF_RFS61B_61_NA2}
+goal setOS_MDSTO_61_NA2   {OS_MDSTO_61_NA2   = D_MDSTO_61_NA2  * OSF_MDSTO_61_NA2 }
+goal setOS_61_NA2         {OS_61_NA2         = OS_OAK020_61_NA2 + OS_RFS61B_61_NA2 + OS_MDSTO_61_NA2}
+goal setOS_61_NA2_a       {OS_61_NA2_a       = 0.13 * OS_61_NA2} ! Splits for returns 
+goal setOS_61_NA2_b       {OS_61_NA2_b       = 0.20 * OS_61_NA2} ! (fractions based on splits of old table values)
+goal setOS_61_NA2_c       {OS_61_NA2_c       = 0.30 * OS_61_NA2}
+goal setOS_61_NA2_d       {OS_61_NA2_d       = 0.13 * OS_61_NA2}
+goal setOS_61_NA2_e       {OS_61_NA2_e       = 0.24 * OS_61_NA2}
+
+/* OLD TEMPLATE @ 61_NA2 (SEE NOTES ABOVE)
+define OS_61_NA2_a_sv {select NA2_61a from TuolSpills where yrtype=WYT_SJR, month=month }
+define OS_61_NA2_b_sv {select NA2_61b from TuolSpills where yrtype=WYT_SJR, month=month }
+define OS_61_NA2_c_sv {select NA2_61c from TuolSpills where yrtype=WYT_SJR, month=month }
+define OS_61_NA2_d_sv {select NA2_61d from TuolSpills where yrtype=WYT_SJR, month=month }
+define OS_61_NA2_e_sv {select NA2_61e from TuolSpills where yrtype=WYT_SJR, month=month }
+define OS_61_NA2_tot  {value min((AWO_61_NA2*cfs_taf+AWR_61_NA2*cfs_taf), (OS_61_NA2_a_sv + OS_61_NA2_b_sv + OS_61_NA2_c_sv 
+                                          + OS_61_NA2_d_sv + OS_61_NA2_e_sv)*taf_cfs)}
+
+goal setOS_61_NA2_a {
+    lhs OS_61_NA2_a
+    case zero_aw {
+        condition AWO_61_NA2+AWR_61_NA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_NA2_a_sv*min(1.0, (AWO_61_NA2*cfs_taf+AWR_61_NA2*cfs_taf)/OS_61_NA2_tot)*taf_cfs }
+}
+goal setOS_61_NA2_b {
+    lhs OS_61_NA2_b
+    case zero_aw {
+        condition AWO_61_NA2+AWR_61_NA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_NA2_b_sv*min(1.0, (AWO_61_NA2*cfs_taf+AWR_61_NA2*cfs_taf)/OS_61_NA2_tot)*taf_cfs }
+}
+goal setOS_61_NA2_c {
+    lhs OS_61_NA2_c
+    case zero_aw {
+        condition AWO_61_NA2+AWR_61_NA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_NA2_c_sv*min(1.0, (AWO_61_NA2*cfs_taf+AWR_61_NA2*cfs_taf)/OS_61_NA2_tot)*taf_cfs }
+}
+goal setOS_61_NA2_d {
+    lhs OS_61_NA2_d
+    case zero_aw {
+        condition AWO_61_NA2+AWR_61_NA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_NA2_d_sv*min(1.0, (AWO_61_NA2*cfs_taf+AWR_61_NA2*cfs_taf)/OS_61_NA2_tot)*taf_cfs }
+}
+goal setOS_61_NA2_e {
+    lhs OS_61_NA2_e
+    case zero_aw {
+        condition AWO_61_NA2+AWR_61_NA2 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_61_NA2_e_sv*min(1.0, (AWO_61_NA2*cfs_taf+AWR_61_NA2*cfs_taf)/OS_61_NA2_tot)*taf_cfs }
+}
+
+goal setOS_61_NA2  {OS_61_NA2 = OS_61_NA2_a + OS_61_NA2_b + OS_61_NA2_c + OS_61_NA2_d + OS_61_NA2_e}
+*/
+
+
+
+!==============================
+! 61_NA3 - Tuolumne River Diversions (north bank) - Riparian Ag
+!============================== 
+goal setOS_TUO017_61_NA3 {OS_TUO017_61_NA3 = D_TUO017_61_NA3 * OSF_TUO017_61_NA3}
+goal setOS_61_NA3        {OS_61_NA3 = OS_TUO017_61_NA3}
+
+!! NOTE -- kept old spill setup, no update to new OSF*D_ format
+!! goal setOS_61_NA3   {OS_61_NA3 = D_TUO017_61_NA3 *OSF_TUO017_61_NA3 }
+!goal setOS_TUO017_61_NA3 {OS_TUO017_61_NA3 = D_TUO017_61_NA3 * (1.-(1.1*0.75))}
+!
+!! Single source -- all spills applied ot diversion from OAK020
+!goal setOS_61_NA3        {OS_61_NA3 = OS_TUO017_61_NA3}
+
+
+!==============================
+! 61_NA4 - Stanislaus River Diversions - Riparian Ag
+!==============================
+goal setOS_STS030_61_NA4 {OS_STS030_61_NA4 = D_STS030_61_NA4 * OSF_STS030_61_NA4}
+goal setOS_61_NA4        {OS_61_NA4 = OS_STS030_61_NA4}
+
+!! NOTE -- kept old spill setup, no update to new OSF*D_ format
+!! goal setOS_61_NA4   {OS_61_NA4 = D_STS030_61_NA4*OSF_STS030_61_NA4}
+!goal setOS_STS030_61_NA4 {OS_STS030_61_NA4 = D_STS030_61_NA4 * (1.-(1.1*0.75))}
+!
+!! Single source -- all spills applied ot diversion from OAK020
+!goal setOS_61_NA4        {OS_61_NA4 = OS_STS030_61_NA4}
+
+
+!==============================
+! 61_NA5 - East Bank of SJR, Tuolumne to Stanislaus - Riparian Ag
+!==============================
+goal setOS_SJR081_61_NA5 {OS_SJR081_61_NA5 = OSF_SJR081_61_NA5 * D_SJR081_61_NA5}
+goal setOS_RFS61D_61_NA5 {OS_RFS61D_61_NA5 = OSF_RFS61D_61_NA5 * D_RFS61D_61_NA5}
+goal setOS_61_NA5        {OS_61_NA5        = OS_SJR081_61_NA5  + OS_RFS61D_61_NA5}
+goal setOS_61_NA5_a      {OS_61_NA5_a      < OS_SJR081_61_NA5}
+goal setOS_61_NA5_b      {OS_61_NA5_b      < OS_RFS61D_61_NA5}
+
+!! split this OS into two parts - part a is really the return associated with the applied water demand
+!! while part b is any portion of the D_RFS61D_61_NA5 that exceeds what is needed by the 61_NA5 demand
+!! part A has no weight, and part B has a small negative weight.  Otherwise, the solution is driven by
+!! mass balance in the connectivity and deliveries constraints files
+!
+!! NOTE -- kept old spill setup, no update to new OSF*D_ format
+!! goal setOS_61_NA5         {OS_61_NA5      = D_SJR081_61_NA5*OSF_SJR081_61_NA5
+!!                                           + D_RFS61D_61_NA5*OSF_RFS61D_61_NA5}
+!goal setOS_61_NA5_a1  {OS_61_NA5_a < D_SJR081_61_NA5 * (1.-(1.1*0.75)) + D_RFS61D_61_NA5 * (1.-(1.1*0.75))}
+!goal setOS_61_NA5_a2  {OS_61_NA5_a < (AWO_61_NA5+AWR_61_NA5) * (1.-(1.1*0.75))/(1.1*0.75)}
+!goal setOS_61_NA5_b   {OS_61_NA5_b < D_RFS61D_61_NA5 }
+!goal sumOS_61_NA5     {OS_61_NA5 = OS_61_NA5_a + OS_61_NA5_b}
+!
+!! Splits for computing EC..
+!! Assume OS_71_NA5_a is spill from D_SJR081_61_NA5
+!! Assume OS_71_NA5_b is spill from D_RFS61D_61_NA5
+!! NOTE -- THESE SPLITS ARE ROUGH GUESSES...NEED TO BE VERIFIED!!
+!goal setOS_SJR081_61_NA5 {OS_SJR081_61_NA5 = OS_61_NA5_a}
+!goal setOS_RFS61D_61_NA5 {OS_RFS61D_61_NA5 = OS_61_NA5_b}
+
+
+!==============================
+! 61_NA6 - East Bank of SJR, Downstream of Stanislaus - Riparian Ag
+!==============================
+goal setOS_SJR070_61_NA6 {OS_SJR070_61_NA6 = D_SJR070_61_NA6 * OSF_SJR070_61_NA6}
+goal setOS_61_NA6        {OS_61_NA6 = OS_SJR070_61_NA6}
+
+!! NOTE: set to zero in previous CalSim-III code...leaving for now.
+!goal setOS_61_NA6        {OS_61_NA6 = 0.0 }
+!
+!! Single source -- all spills applied ot diversion from SJR070
+!goal setOS_SJR070_61_NA6 {OS_SJR070_61_NA6 = OS_61_NA6}
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 62      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 62_NA1 - East of Turlock, DAU 209 - Ag
+!==============================
+! GW supply only
+
+
+!==============================
+! 62_NA2 - Merced River Diversions (north bank) - Riparian Ag
+!==============================
+goal setOS_MCD050_62_NA2 {OS_MCD050_62_NA2 = D_MCD050_62_NA2 * OSF_MCD050_62_NA2}
+goal setOS_62_NA2        {OS_62_NA2 = OS_MCD050_62_NA2}
+
+!! NOTE -- kept old spill setup, no update to new OSF*D_ format
+!! goal setOS_62_NA2   {OS_62_NA2 = D_MCD050_62_NA2*OSF_MCD050_62_NA2}
+!goal setOS_MCD050_62_NA2 {OS_MCD050_62_NA2 = D_MCD050_62_NA2 * (1.-(1.1*0.75))}
+!
+!! Single source -- all spills applied ot diversion from OAK020
+!goal setOS_62_NA2        {OS_62_NA2 = OS_MCD050_62_NA2}
+
+
+!==============================
+! 62_NA3 - Turlock ID - Ag
+!==============================
+!Operational spills are defined in lookup table, according to water year type.
+!No spills occur if there is no demand (AW) at the demand unit.
+
+! NOTE: 
+! This setup results in OS greater than DG and AW during some months (some Octobsers, some Marchs)
+! In these cases, diversions are completely lost in conveyance (DG<OS+DP+LF+EV) and extra groundwater is being pumped to meet losses/spills.
+! This doesn’t make sense. Original formulation commented...
+! Setup revised to use factor-based template for OS terms. 
+! Old template kept (commented) for future reference/comparison.
+
+goal setOS_TRLCH_62_NA3   {OS_TRLCH_62_NA3   = D_TRLCH_62_NA3  * OSF_TRLCH_62_NA3 }
+goal setOS_62_NA3         {OS_62_NA3         = OS_TRLCH_62_NA3 }
+goal setOS_62_NA3_a       {OS_62_NA3_a       = 0.08 * OS_62_NA3} ! Splits for returns 
+goal setOS_62_NA3_b       {OS_62_NA3_b       = 0.11 * OS_62_NA3} ! (fractions based on constant splits of old table values)
+goal setOS_62_NA3_c       {OS_62_NA3_c       = 0.81 * OS_62_NA3}
+
+/*
+define OS_62_NA3_a_sv {select NA3_62a from TuolSpills where yrtype=WYT_SJR, month=month }
+goal setOS_62_NA3_a {
+    lhs OS_62_NA3_a
+    case zero_aw {
+        condition AWO_62_NA3+AWR_62_NA3 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_62_NA3_a_sv *taf_cfs }
+}
+
+define OS_62_NA3_b_sv {select NA3_62b from TuolSpills where yrtype=WYT_SJR, month=month }
+goal setOS_62_NA3_b {
+    lhs OS_62_NA3_b
+    case zero_aw {
+        condition AWO_62_NA3+AWR_62_NA3 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_62_NA3_b_sv *taf_cfs}
+}
+
+define OS_62_NA3_c_sv {select NA3_62c from TuolSpills where yrtype=WYT_SJR, month=month }
+goal setOS_62_NA3_c {
+    lhs OS_62_NA3_c
+    case zero_aw {
+        condition AWO_62_NA3+AWR_62_NA3 <= 0.
+        rhs 0.0 }
+    case otherwise {
+        condition always
+        rhs OS_62_NA3_c_sv *taf_cfs}
+}
+
+goal setOS_62_NA3   {OS_62_NA3 = OS_62_NA3_a + OS_62_NA3_b + OS_62_NA3_c}
+*/
+
+
+!==============================
+! 62_NA4 - Tuolumne River Diversions (south bank) - Riparian Ag
+!==============================
+goal setOS_TUO017_62_NA4 {OS_TUO017_62_NA4 = D_TUO017_62_NA4 * OSF_TUO017_62_NA4}
+goal setOS_62_NA4        {OS_62_NA4 = OS_TUO017_62_NA4}
+
+!! NOTE -- kept old spill setup, no update to new OSF*D_ format
+!! goal setOS_62_NA4   {OS_62_NA4 = D_TUO017_62_NA4*OSF_TUO017_62_NA4}
+!goal setOS_TUO017_62_NA4 {OS_TUO017_62_NA4 = D_TUO017_62_NA4 * (1.-(1.1*0.75))}
+!
+!! Single source -- all spills applied ot diversion from TUO017
+!goal setOS_62_NA4        {OS_62_NA4 = OS_TUO017_62_NA4}
+
+
+!==============================
+! 62_NA5 - East Bank of SJR, Merced to Tuolumne - Riparian Ag
+!==============================
+goal setOS_SJR114_62_NA5 {OS_SJR114_62_NA5 = D_SJR114_62_NA5 * OSF_SJR114_62_NA5}
+goal setOS_62_NA5        {OS_62_NA5 = OS_SJR114_62_NA5}
+
+!! NOTE -- kept old spill setup, no update to new OSF*D_ format
+!! goal setOS_62_NA5   {OS_62_NA5 = D_SJR114_62_NA5*OSF_SJR114_62_NA5}
+!goal setOS_SJR114_62_NA5 {OS_SJR114_62_NA5 = D_SJR114_62_NA5 * (1.-(1.1*0.75))}
+!
+!! Single source -- all spills applied ot diversion from SJR114
+!goal setOS_62_NA5        {OS_62_NA5 = OS_SJR114_62_NA5}
+
+
+!==============================
+! 62_NA6 - Merced ID (north of Merced River) - Ag
+!==============================
+goal setOS_MCD055_62_NA6 {OS_MCD055_62_NA6 = D_MCD055_62_NA6 * OSF_MCD055_62_NA6}
+goal setOS_62_NA6        {OS_62_NA6 = OS_MCD055_62_NA6}
+
+!!Operational spills are defined in lookup table, according to water year type.
+!!Operational spills for 62_NA6 represent 3.5% of total spills from Merced ID ag.
+!!No spills occur if there is no demand (AW) at the demand unit.
+!define OS_62_NA6_sv {select Merced_ID from SoSJRSpills where yrtype=WYT_SJR, month=month}
+!
+!! IMF -- ALLOWS OS>DN...CAUSES INFEASIBILITY.
+!! goal setOS_62_NA6 {
+!!     lhs OS_62_NA6
+!!     case zero_aw {
+!!         condition AWO_62_NA6+AWR_62_NA6 <= 0.
+!!         rhs 0.0 }
+!!     case otherwise {
+!!         condition always
+!!         rhs OS_62_NA6_sv*taf_cfs*0.035}
+!! }
+!
+!define OS_62_NA6_sva {alias OS_62_NA6_sv*taf_cfs*0.035 kind 'TESTING' units 'CFS'}
+!goal   set1OS_62_NA6 {OS_MCD055_62_NA6 < OS_62_NA6_sv*taf_cfs*0.035}
+!goal   set2OS_62_NA6 {OS_MCD055_62_NA6 < AWO_62_NA6 + AWR_62_NA6}
+!goal   set3OS_62_NA6 {OS_MCD055_62_NA6 < DG_62_NA6}
+!
+!! Single source -- all spills applied ot diversion from SJR114
+!goal setOS_62_NA6    {OS_62_NA6 = OS_MCD055_62_NA6}
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 63      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 63_PR1 - Arena Plains Unit of Merced NWR - Refuge
+!==============================
+goal setOS_ESC000_63_PR1 {OS_ESC000_63_PR1 = D_ESC000_63_PR1 * OSF_ESC000_63_PR1}
+goal setOS_63_PR1        {OS_63_PR1 = OS_ESC000_63_PR1}
+
+
+!==============================
+! 63_PR2 - Merced and Lone Tree Units of Merced NWR - Refuge
+!==============================
+goal setOS_DED010_63_PR2 {OS_DED010_63_PR2 = D_DED010_63_PR2 * OSF_DED010_63_PR2}
+goal setOS_63_PR2        {OS_63_PR2 = OS_DED010_63_PR2}
+
+
+!==============================
+! 63_PR3 - East Bear Unit of San Luis NWR - Refuge
+!==============================
+goal setOS_EBP048_63_PR3 {OS_EBP048_63_PR3 = D_EBP048_63_PR3 * OSF_EBP048_63_PR3}
+goal setOS_63_PR3        {OS_63_PR3 = OS_EBP048_63_PR3}
+
+
+!==============================
+! 63_NA1 - East of Merced ID, DAU 211 - Ag
+!==============================
+! GW supply only
+
+
+!==============================
+! 63_NA2 - Merced River Diversions (south bank) - Riparian Ag
+!==============================
+goal setOS_MCD042_63_NA2  {OS_MCD042_63_NA2 = D_MCD042_63_NA2 * OSF_MCD042_63_NA2} 
+goal setOS_63_NA2         {OS_63_NA2 = OS_MCD042_63_NA2}
+
+
+!==============================
+! 63_NA3 - Merced ID (south of Merced River) - Ag
+!==============================
+goal setOS_MID021_63_NA3  {OS_MID021_63_NA3 = D_MID021_63_NA3 * OSF_MID021_63_NA3}
+goal setOS_63_NA3         {OS_63_NA3 = OS_MID021_63_NA3}
+
+!!Operational spills are defined in lookup table, according to water year type.
+!!Operational spills for 63_NA3 represent 96.5% of total spills from Merced ID ag.
+!!No spills occur if there is no demand (AW) at the demand unit.
+!define OS_63_NA3_sv {select Merced_ID from SoSJRSpills where yrtype=WYT_SJR, month=month}
+!
+!goal setOS_MID021_63_NA3 {
+!    lhs OS_MID021_63_NA3
+!    case zero_aw {
+!        condition (AWO_63_NA3+AWR_63_NA3) <= 0.
+!        rhs 0.0 }
+!    case otherwise {
+!        condition always
+!        rhs OS_63_NA3_sv*taf_cfs*0.965 }
+!}
+!
+!goal setOS_63_NA3        {OS_63_NA3 = OS_MID021_63_NA3}
+
+
+!==============================
+! 63_NA4 - West of Merced ID and Non District Areas in DAU 210 & 212 - Ag
+!==============================
+goal setOS_MCD002_63_NA4  {OS_MCD002_63_NA4 = D_MCD002_63_NA4 * OSF_MCD002_63_NA4}
+goal setOS_MCD021_63_NA4  {OS_MCD021_63_NA4 = D_MCD021_63_NA4 * OSF_MCD021_63_NA4}
+goal setOS_MID021_63_NA4  {OS_MID021_63_NA4 = D_MID021_63_NA4 * OSF_MID021_63_NA4}
+goal setOS_63_NA4         {OS_63_NA4        = OS_MCD002_63_NA4 + OS_MCD021_63_NA4 + OS_MID021_63_NA4}
+
+!goal setOS_MCD002_63_NA4 {OS_MCD002_63_NA4 = D_MCD002_63_NA4 * (1.-(1.1*0.75))}
+!goal setOS_MCD021_63_NA4 {OS_MCD021_63_NA4 = D_MCD021_63_NA4 * (1.-(1.1*0.75))}
+!goal setOS_MID021_63_NA4 {OS_MID021_63_NA4 = D_MID021_63_NA4 * (1.-(1.1*0.75))}
+!goal setOS_63_NA4        {OS_63_NA4        = OS_MCD002_63_NA4 + OS_MCD021_63_NA4 + OS_MID021_63_NA4}
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 64      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 64_PA1 - Madera ID - Ag
+!==============================
+!Operational spills are defined in lookup table, according to water year type.
+!No spills occur if there is no demand (AW) at the demand unit.
+
+! NOTE: 
+! Old setup using look-up table doesn't allow splitting OS between individual
+! surface water diversions (DBC014,FRS036,MDC006,MDC032). Split is needed for EC
+! calcs. Changed to use factor-based template...old code commented below. 
+
+
+goal setOS_DBC014_64_PA1   {OS_DBC014_64_PA1 = D_DBC014_64_PA1 * OSF_DBC014_64_PA1}
+goal setOS_FRS036_64_PA1   {OS_FRS036_64_PA1 = D_FRS036_64_PA1 * OSF_FRS036_64_PA1}
+goal setOS_MDC006_64_PA1   {OS_MDC006_64_PA1 = D_MDC006_64_PA1 * OSF_MDC006_64_PA1}
+goal setOS_MDC032_64_PA1   {OS_MDC032_64_PA1 = D_MDC032_64_PA1 * OSF_MDC032_64_PA1}
+goal setOS_64_PA1          {OS_64_PA1        = OS_DBC014_64_PA1 + OS_FRS036_64_PA1 + OS_MDC006_64_PA1 + OS_MDC032_64_PA1}
+
+
+
+/* OLD TEMPLATE @ 64_PA1 (SEE NOTES ABOVE)
+define OS_64_PA1_sv {select PA_64 from SoSJRSpills where yrtype=WYT_SJR, month=month }
+
+! goal setOS_64_PA1 {
+!     lhs OS_64_PA1
+!     case zero_aw {
+!         condition AW_64_PA1 <= 0.
+!         rhs 0.0 }
+!     case otherwise {
+!         condition always
+!         rhs OS_64_PA1_sv*taf_cfs }
+! }
+
+goal set1OS_64_PA1 {OS_64_PA1 < OS_64_PA1_sv*taf_cfs}
+goal set2OS_64_PA1 {OS_64_PA1 < AW_64_PA1}
+goal set3OS_64_PA1 {OS_64_PA1 < D_FRS036_64_PA1 + D_MDC006_64_PA1 + D_MDC032_64_PA1 + D_DBC014_64_PA1}
+*/
+
+!==============================
+! 64_PA2 - Chowchilla ID - Ag
+!==============================
+!Operational spills are defined in lookup table, according to water year type.
+!No spills occur if there is no demand (AW) at the demand unit.
+
+! NOTE: 
+! Old setup using look-up table doesn't allow splitting OS between individual
+! surface water diversions (DBC014,FRS036,MDC006,MDC032). Split is needed for EC
+! calcs. Changed to use factor-based template...old code commented below. 
+
+
+goal setOS_CHW017_64_PA2   {OS_CHW017_64_PA2 = D_CHW017_64_PA2 * OSF_CHW017_64_PA2}
+goal setOS_ASL013_64_PA2   {OS_ASL013_64_PA2 = D_ASL013_64_PA2 * OSF_ASL013_64_PA2}
+goal setOS_BRS018_64_PA2   {OS_BRS018_64_PA2 = D_BRS018_64_PA2 * OSF_BRS018_64_PA2}
+goal setOS_64_PA2          {OS_64_PA2        = OS_CHW017_64_PA2 + OS_ASL013_64_PA2 + OS_BRS018_64_PA2}
+
+
+/* OLD TEMPLATE @ 64_PA2 (SEE NOTES ABOVE)
+define OS_64_PA2_sv {select PA_64 from SoSJRSpills where yrtype=WYT_SJR, month=month }
+ 
+! goal setOS_64_PA2 {
+!     lhs OS_64_PA2
+!     case zero_aw {
+!         condition AW_64_PA2 <= 0.
+!         rhs 0.0 }
+!     case otherwise {
+!         condition always
+!         rhs OS_64_PA2_sv*taf_cfs }
+! }
+
+goal   set1OS_64_PA2 {OS_64_PA2 < OS_64_PA2_sv*taf_cfs}
+goal   set2OS_64_PA2 {OS_64_PA2 < AW_64_PA2}
+goal   set3OS_64_PA2 {OS_64_PA2 < D_CHW017_64_PA2 + D_ASL013_64_PA2 + D_BRS018_64_PA2}
+*/
+
+
+!==============================
+! 64_PA3 - Gravelly Ford and Rocky Creek Water Districts - Ag
+!==============================
+goal setOS_MDC006_64_PA3   {OS_MDC006_64_PA3 = D_MDC006_64_PA3 * OSF_MDC006_64_PA3}
+goal setOS_SJR227_64_PA3   {OS_SJR227_64_PA3 = D_SJR227_64_PA3 * OSF_SJR227_64_PA3}
+goal setOS_64_PA3          {OS_64_PA3        = OS_MDC006_64_PA3 + OS_SJR227_64_PA3}
+
+
+!==============================
+! 64_XA - Columbia Canal Co. (Exchange Contractor) - Ag
+!==============================
+goal setOS_MDOTA_64_XA     {OS_MDOTA_64_XA   = D_MDOTA_64_XA  * OSF_MDOTA_64_XA }
+goal setOS_64_XA           {OS_64_XA         = OS_MDOTA_64_XA}
+
+
+!==============================
+! 64_NA1 - East of Madera ID and Non District DAU 213 - Ag
+!==============================
+! No Spill - GW supply only
+
+
+!==============================
+! 64_NA2 - West of Madera ID and Chowchilla ID - Ag
+!==============================
+goal setOS_EBP016_64_NA2   {OS_EBP016_64_NA2 = D_EBP016_64_NA2 * OSF_EBP016_64_NA2}
+goal setOS_RFS64_64_NA2    {OS_RFS64_64_NA2  = D_RFS64_64_NA2  * OSF_RFS64_64_NA2}
+goal setOS_64_NA2          {OS_64_NA2 = OS_EBP016_64_NA2 + OS_RFS64_64_NA2}

@@ -1,0 +1,47 @@
+/************************************
+Antioch_data.wresl
+
+Hao Xie DWR 6/24/2010
+
+ARTIFICIAL NEURAL NETWORK IMPLEMENTATION - ANTIOCH
+
+Antioch salinity standard:
+Average mean daily EC may not exceed 1.5 mmhos during the April 15 to May 5 period.
+
+This standard is applied during the whole month of April only.
+
+************************************/
+
+
+! calculate previous month's value of salinity
+define AN_EC_Month_sv {
+  case lastWaterYear {
+    condition  month == Oct
+      value  AnnEC(C_Hood(-5),C_Hood(-4),C_Hood(-3),C_Hood(-2),C_Hood(-1),
+               D_ExpTD(-5),D_ExpTD(-4),D_ExpTD(-3),D_ExpTD(-2),D_ExpTD(-1),
+               SJR_ANN(-5),SJR_ANN(-4),SJR_ANN(-3),SJR_ANN(-2),SJR_ANN(-1),
+               DXC_daysopen(-5),DXC_daysopen(-4),DXC_daysopen(-3),DXC_daysopen(-2),DXC_daysopen(-1),
+               net_DICU(-5),net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),
+               sac_oth(-5),sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),
+               exp_oth(-5),exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),
+               VERNWQFINAL(-5),VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),
+               int(daysindv(-5)),int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),
+               int(AN),int(monthly_avg),12,(wateryear-1))}
+
+  case others {
+    condition always
+      value  AnnEC(C_Hood(-5),C_Hood(-4),C_Hood(-3),C_Hood(-2),C_Hood(-1),
+               D_ExpTD(-5),D_ExpTD(-4),D_ExpTD(-3),D_ExpTD(-2),D_ExpTD(-1),
+               SJR_ANN(-5),SJR_ANN(-4),SJR_ANN(-3),SJR_ANN(-2),SJR_ANN(-1),
+               DXC_daysopen(-5),DXC_daysopen(-4),DXC_daysopen(-3),DXC_daysopen(-2),DXC_daysopen(-1),
+               net_DICU(-5),net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),
+               sac_oth(-5),sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),
+               exp_oth(-5),exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),
+               VERNWQFINAL(-5),VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),
+               int(daysindv(-5)),int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),
+               int(AN),int(monthly_avg),(month-1),wateryear)}
+}
+
+define AN_EC_Month {std kind 'SALINITY' units 'UMHOS/CM'}
+goal setAN_EC_MON {AN_EC_Month = AN_EC_Month_sv}
+

@@ -1,0 +1,52 @@
+! THIS IS THE MAIN WRESL FILE FOR CALSIM III D1641 Study
+! SJW Stand-Alone Version (westside + eastside + mokelumne)
+!
+! latest revision...
+! Ian Ferguson (08/12/2011)
+
+
+SEQUENCE CYCLE1 {
+    model   SJRBASE
+    order   1
+    }
+
+! CYCLE 1 --------------------------------------------------------------------------------------    
+MODEL SJRBASE {         !CYCLE 1
+
+    ! System inputs (Eastside SJW, Westside SJW, Mokelumne)
+    INCLUDE        '..\..\common\WYtypes\WYtypes.wresl'                                  
+    INCLUDE        '..\..\common\System\System_SJW.wresl'
+    INCLUDE        '..\..\common\System\System_MOK.wresl'
+
+    ! Wheeling
+    INCLUDE[local] '..\..\common\ReOperations\Wheeling\WheelingZeroOps_Cyc1thru5.wresl'      
+
+    ! Groundwater
+    INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-Seepage.wresl' 
+    INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-Seepage.wresl' 
+    
+    ! Stuff needed for east side    
+    INCLUDE        '..\..\common\SanJoaquin\Various\definitions\SJR_ChannelSplits.wresl' 
+    INCLUDE        '..\..\common\sanjoaquin\SanJoaquinCore.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\definitions\SJR_restrict_cycle1.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\Stanislaus\stan_FW_min.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\Tuolumne\tuol_FERC_min.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_cycle1.wresl'
+    INCLUDE        '..\..\common\SanJoaquin\Mokulumne\MokelumneOps.wresl'
+    INCLUDE        '..\..\common\SanJoaquin\EastsideOpsMimick_CII.wresl'
+    
+    ! Weights
+    INCLUDE        '..\..\common\System\SystemTables_West\Weight-table.wresl'
+    INCLUDE        '..\..\common\System\SystemTables_East\Weight-table.wresl'
+    INCLUDE        '..\..\common\System\SystemTables_Mok\Weight-table.wresl'
+
+    ! SLUIS rules 
+    INCLUDE        '..\..\common\PreEWAStorageMod.wresl'   
+    INCLUDE        '..\..\common\rulecurve\rulecv_SJW_StandAlone.wresl'
+
+    ! IMF @ Define aliases for debugging
+    INCLUDE        '..\..\common\System\SystemTables_West\imf_aliases-StandAlone.wresl'
+    INCLUDE        '..\..\common\System\SystemTables_East\imf_aliases-StandAlone.wresl'
+    INCLUDE        '..\..\common\System\SystemTables_MOK\imf_aliases-StandAlone.wresl'
+}
+

@@ -1,0 +1,42 @@
+! Rich Juricich & Ajay Dev 10/19/1999
+
+! wsi_cvp_sys
+! Copied by Dustin Jones 11/15/1999 for use in CVP NOD
+
+!************************************* DEFINES *******************************************
+
+/*
+The Water Supply Index (WSI) for the CVP SYS is the sum of the beginning of month storages
+(BOM) for Trinity Lake (S1), Shasta Lake (S4), Folsom Lake (S8), and the CVP-San Luis
+Reservoir (S11) and the Forecast of Runoff for the Sacramento River.  The sum of the CVP Storage
+is defined as: WSI_CVP_Storage = S1 + S4 + S8 + S11.
+
+Forecast of Runoff for the CVP NOD is defined as: [ Shasta Lake Inflow forecast based on the
+Sacramento R. component of SRI - Sum of Shasta Lake Inflows (I4) since 1-OCT ].
+*/
+
+
+! Water Supply Index for Central Valley Project
+define WSI_CVP_sys  {
+    case MarToMay {
+           condition  month >= MAR .and. month <= MAY
+           value      WSI_CVP_Storage(-1) + frcst_sac + frcst_amr + jbypass_del  ! Previous month storage plus forecast inflow
+               }
+    case JunToFeb {
+           condition  always
+           value      0 }
+               }
+
+define WSI_CVP_sysdv {alias WSI_CVP_sys kind 'water-supply-index' units 'taf'}
+
+define WSI_CVP_SYS_IO  {
+    case MarToMay {
+           condition  month >= MAR .and. month <= MAY
+           value      WSI_CVP_Storage(-1) + frcst_sac + frcst_amr + jbypass_del + min(SIO_CVP(-1), max_return_cvp)  ! Previous month storage plus forecast inflow
+               }
+    case JunToFeb {
+           condition  always
+           value      0 }
+               }
+
+define WSI_CVP_IO_ {alias WSI_CVP_sys_IO kind 'water-supply-index' units 'taf'}

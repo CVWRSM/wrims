@@ -1,0 +1,38 @@
+/*************************************
+Delivery_carryover_split_CVP_south.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+An annual delivery target is determined by dividing the adjusted Export Index by the 
+fraction of total Annual CVP Delivery in Mar-Aug.  This is necessary because the Export 
+Index was computed for Mar-Aug only, but here we need an annual delivery target.
+
+A delivery target is set in March and can be increased (but NOT decreased) in
+April and May.  Delivery targets in June through the next February will be equal
+to the value used in the previous month, which is always the value used in May. 
+*************************************/
+
+define initial_del_target_cvp_s {value Export_Index_CVP_adj/0.694}  ! initial target adjusted by fraction of delivery in Mar-Aug
+
+define deltar_cvp_sdv {std kind 'DEL-TARGET' units 'taf'}  ! This saves deltar_cvp_s to access past values - See goal statement further down
+
+define acvpdem_total_s_ {alias acvpdem_total_s kind 'annual-demand' units 'taf'}
+
+define final_del_target_cvp_s {
+    case initialdel {                                   ! Use the total annual contract  
+        condition month <= FEB .and. wateryear==beginWY  ! amount until the first   
+            value  acvpdem_total_s }                    ! delivery target is assigned
+    case March {
+        condition month == MAR                            ! use the minimum of the initial target  
+            value  min(initial_del_target_cvp_s, acvpdem_total_s) }  ! and total contract demands
+    case AprtoMay {
+        condition month == APR .or. month == MAY       ! use the maximum of last months target AND the minimum of 
+            value  max(deltar_cvp_sdv(-1), min(initial_del_target_cvp_s, acvpdem_total_s)) } ! the initial target
+    case otherwise {                                                            ! and the total contract demands
+        condition always
+            value  deltar_cvp_sdv(-1) }       ! after May, repeat same target for rest of WY
+}
+
+define deltar_cvp_s {value final_del_target_cvp_s }  ! This is the final value that is passed to cvpcut logic
+
+goal save_deltar_cvp_s {deltar_cvp_sdv = deltar_cvp_s}   ! sets DECISION VARIABLE del_tar_cvp_sdv equal to STATE VARIABLE del_target_cvp_s

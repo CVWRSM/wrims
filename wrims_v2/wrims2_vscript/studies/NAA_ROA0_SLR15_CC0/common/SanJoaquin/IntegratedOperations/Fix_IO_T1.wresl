@@ -1,0 +1,18 @@
+goal fixCV_IO_R_SWP {
+  	lhs     CV_IO_R_SWP
+	case	FavorOroville {
+		condition	IO_cap_avail*IO_draw_SWPSL_sur*IO_draw_Oro < 0.5
+                rhs     CV_IO_R_SWP[DELTA]
+  		lhs>rhs penalty 99999
+  		lhs<rhs penalty 99999
+  	}
+}
+goal fixCV_IO_R_CVP {
+  	lhs     CV_IO_R_CVP
+	case	FavorShasta {
+		condition	IO_cap_avail*IO_draw_CVPSL_sur*IO_draw_Sha < 0.5
+                rhs     CV_IO_R_CVP[DELTA]
+  		lhs>rhs penalty 99999
+  		lhs<rhs penalty 99999
+  	}
+}

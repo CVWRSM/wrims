@@ -1,0 +1,17 @@
+/*
+Minimum Flow Constraint on Arc C1
+*/
+
+! Define the required minimum flow
+define minflow_C1 {
+  case OctJan {
+    condition month>=OCT .and. month<= JAN
+    value     3250. } ! cfs
+  case other {
+    condition always ! "always" evaluates to true
+    value     2000. } ! cfs
+}
+
+! Meet the minimum flow target
+! written as "<" because variable C1_MIF is weighted
+goal meetMinflowC1 { C1_MIF < minflow_C1 }

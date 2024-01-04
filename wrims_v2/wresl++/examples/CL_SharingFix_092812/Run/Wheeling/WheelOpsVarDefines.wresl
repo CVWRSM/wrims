@@ -1,0 +1,36 @@
+/*************************************
+WheelOpsVarDefines.wresl
+
+Z.Q. Richard Chen DWR (12/8/2010)
+Defines Wheeling Variables
+**************************************/
+
+define C_Wkytn_m {std kind 'FLOW' UNITS 'CFS'}  
+define D_Spring_m {std kind 'FLOW' UNITS 'CFS'}  
+define C_Kswck_m {std kind 'FLOW' UNITS 'CFS'}
+define C_Nimbus_m {std kind 'FLOW' UNITS 'CFS'}
+
+define C_Wkytn_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'} 
+define D_Spring_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'} 
+define C_Kswck_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_Nimbus_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+
+define C_Wkytn_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define D_Spring_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_Kswck_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_Nimbus_whljp {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+
+define C_Delta_whljp {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_Delta_whlcv {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+goal ClrcrkWhl { C_Wkytn = C_Wkytn_m + C_Wkytn_whlcv + C_Wkytn_whljp }
+goal SprcrkWhl { D_Spring = D_Spring_m + D_Spring_whlcv + D_Spring_whljp }
+goal ShastaWhl { C_Kswck = C_Kswck_m + C_Kswck_whlcv + C_Kswck_whljp}
+goal FolsomWhl { C_Nimbus = C_Nimbus_m + C_Nimbus_whlcv + C_Nimbus_whljp}
+
+goal wheeling1a {D_Spring_whlcv < C_Kswck_whlcv}
+goal wheeling1b {D_Spring_whljp < C_Kswck_whljp}
+
+
+
+

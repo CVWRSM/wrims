@@ -1,0 +1,103 @@
+! cycle5out.wresl
+! Edward Chang
+! 5/01/2000
+! This file writes selective cycle 1 output to DSS
+! Revised by C. Hsu, 3/12/03, USBR, for review and documentation project
+!##########################################################################
+/*
+Cycle 5
+The following WRESL code is used in cycle 6 to write out intermediate solver computations
+that are made in the SJR module.  This may be needed to verify output computations that
+are based on cycle5 because the final output is the monthly weighted flows and storages,
+not what may be in each 10, 14, 15, or 16 day period.
+*/
+! Define New Melones flows for cycle 5 output
+define C_MELONcycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define New Melones main channelm flows for cycle 5 output
+define C_MELONmcycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define New Melones water quality flows for cycle 5 output
+define C_MELONWQcycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define New Melones dissolved oxygen flows for cycle 5 output
+define C_MELONDOcycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define New Melones VAMP flows for cycle 5 output
+define C_STS059VAMPcyc5 {std kind 'flow-cycle5' units 'cfs' }
+! Define Lower DMC flow for cycle 5 output
+define C_DMC116CYCLE5 {std kind 'flow-cycle5' units 'cfs' }
+! Define Merced River below McClure flow for cycle 5 output
+define C_MCLREcycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define Don Pedro main channel flow for cycle 5 output
+define C_PEDROcycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define McClure main channel flow for cycle 5 output
+define C_MCLREmcycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define New Don Pedro main channel flow for cycle 5 output
+define C_PEDROmcycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define McClure VAMP flow for cycle 5 output
+define C_MCLREvampcyc5 {std kind 'flow-cycle5' units 'cfs' }
+! Define New Don Pedro VAMP flow for cycle 5 output
+define C_PEDROvampcyc5 {std kind 'flow-cycle5' units 'cfs' }
+! Define flow in Reach C_STS059 for cycle 5 output
+define C_STS059cycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define flow in Reach C_STS017 for cycle 5 output
+define C_STS017cycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Define flow below Vernalis for cycle 5 output
+define C_SJR070cycle5 {std kind 'flow-cycle5' units 'cfs' }
+! Set New Melones flow for cycle 5 output (VAMP and DO) 
+goal outC_MELONcycle5 {C_MELONcycle5 = C_MELON[VAMP_AND_DO]}
+! New Melones main channel flow for cycle 5 output (VAMP and DO) 
+goal outC_MELONmcycle5 {C_MELONMcycle5 = C_MELONM[VAMP_AND_DO]} 
+! Set New Melones water quality flow for cycle 5 output (VAMP and DO) 
+goal outC_MELONWQcycle5 {C_MELONWQcycle5 = C_MELONWQ[VAMP_AND_DO]}
+! Set New Melones DO flow for cycle 5 output (VAMP and DO)  
+goal outC_MELONDOcycle5 {C_MELONDOcycle5 = C_MELONDO[VAMP_AND_DO]}
+! New Melones Reach C_STS059 VAMP cycle 5 output (VAMP and DO)  
+goal outC_STS059VAMPcyc5 {C_STS059VAMPcyc5 = C_STS059VAMP[VAMP_AND_DO]}
+! Lower DMC to Mendota Pool cycle 5 output
+goal outC_DMC116cycle5 {C_DMC116cycle5 = C_DMC116[VAMP_AND_DO]}
+! Set Merced River cycle 5 output
+goal outC_MCLREcycle5 {C_MCLREcycle5 = C_MCLRE[VAMP_AND_DO]}
+! Don Pedro cycle 5 output
+goal outC_PEDROcycle5 {C_PEDROcycle5 = C_PEDRO[VAMP_AND_DO]}
+! McClure main channel cycle 5 output
+goal outC_MCLREmcycle5 {C_MCLREMcycle5 = C_MCLREM[VAMP_AND_DO]}
+! Don Pedro VAMP cycle 5 output
+goal outC_PEDROmcycle5 {C_PEDROMcycle5 = C_PEDROM[VAMP_AND_DO]}
+! McClure VAMP cycle 5 output
+goal outC_MCLREvampcyc5 {C_MCLREVAMPcyc5 = C_MCLREVAMP[VAMP_AND_DO]}
+! Don Pedro VAMP cycle 5 output
+goal outC_PEDROvampcyc5 {C_PEDROVAMPcyc5 = C_PEDROVAMP[VAMP_AND_DO]}
+! New Melones Reach C_STS059 cycle 5 output
+goal outC_STS059cycle5 {C_STS059cycle5 = C_STS059[VAMP_AND_DO]}
+! New Melones Reach C_STS017 cycle 5 output
+goal outC_STS017cycle5 {C_STS017cycle5 = C_STS017[VAMP_AND_DO]}
+! SJR below Vernalis cycle 5 output
+goal outC_SJR070cycle5 {C_SJR070cycle5 = C_SJR070[VAMP_AND_DO]}
+! Define New Melones mainstem VAMP cycle 5 flow for output
+define C_MELONVAMP_Mcy5 {std kind 'flow-cycle5' units 'cfs' }
+! Define New Melones VAMP transfer cycle 5 flow for output
+define C_MELONVAMP_Tcy5 {std kind 'flow-cycle5' units 'cfs' }
+! Define Don Pedro Stanislaus VAMP cycle 5 for output
+define C_PEDROstsvampc5 {std kind 'flow-cycle5' units 'cfs' }
+! Set New Melones mainstem VAMP cycle 5 for output 
+goal outC_MELONVAMP_Mcy5 {C_MELONVAMP_Mcy5 = C_MELONVAMP_M[VAMP_AND_DO]}
+! Set New Melones mainstem VAMP transfer cycle 5 for output 
+goal outC_MELONVAMP_Tcy5 {C_MELONVAMP_Tcy5 = C_MELONVAMP_T[VAMP_AND_DO]}
+! Set Don Pedro Stanislaus VAMP cycle 5 for output
+goal outC_PEDRO_STS_VAMPcycle5 {C_PEDROstsvampc5 = C_PEDRO_STS_VAMP[VAMP_AND_DO]}
+! Define Don Pedro minflow for cycle 5
+define C_TUO054_MIFcyc5 {std kind 'flowmin-cycle5' units 'cfs'}
+! Set Don Pedro minflow cycle 5 for output 
+goal outC_TUO054_MIFcyc5 {C_TUO054_MIFcyc5 = C_TUO054_MIF[VAMP_AND_DO]}
+
+define VAMP_req_c5 {std kind 'flow-requirement' units 'cfs'}
+goal outVAMP_req_c5 {
+    lhs VAMP_req_c5
+    case OctMar {
+        condition month<APR
+        rhs 0.0 }
+    case AprMay {
+        condition month==APR .or. month==MAY
+        rhs VAMP_reqdv[VAMP_AND_DO]}
+    case JunSep {
+        condition month>MAY
+        rhs 0. }
+}

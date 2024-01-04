@@ -1,0 +1,83 @@
+! OMR_constraint.wresl
+!
+! **********************************************************************************************
+define OMR_RPA {value max(OMR_RPA_FWS,OMR_RPA_LF)}
+!
+! Special calcs for VAMP Action
+define Qexp_pulseperiod  {
+       case VAMP {
+!                condition month>=APR .and. month<=MAY .and. OMR_RPA >= -12000.
+                condition month>=APR .and. month<=MAY .and. int(B2Action3On)==1 .and. OMR_RPA >= -12000.
+                value PulseExpRes}
+       case None {
+                condition always
+                value BanksCapPermit + maxTracycalc}
+}
+
+! Special calcs for NMFS Action
+define Qexp_Max {value min(MAXEXP_RPA,Qexp_pulseperiod) }
+
+! How much of CCWD estimated demand will impact OMR flows?
+define CCWDFraction {value (D408_OR_max + D408_VC_max)/(D408_RS_max + D408_OR_max + D408_VC_max)}
+!
+define Qsod_VAMPperiod { value Qexp_Max + D408D416_est*CCWDFraction + netDICU_SOD}
+define Qomr_VAMPperiod { value coefA*C639[VAMP_AND_DO]+coefb*Qsod_VAMPperiod+coefc}
+define Qomr_VAMPperiodv {alias Qomr_VAMPperiod kind 'FLOW-CHANNEL' units 'CFS'}
+!
+! Action triggers
+define C408_limit_init {
+     case DEC_MAR{
+          condition month>=DEC .and. month<=MAR .and. OMR_RPA >= -12000.
+          value OMR_RPA}
+     case Apr{
+          condition month==APR .and. OMR_RPA >= -12000.
+!  doing full 60 day NMFS Action at the pumps so this calc does not matter
+!          value OMR_RPA*14./daysin + max(Qomr_VAMPperiod,OMR_RPA)*(daysin-14.)/daysin}
+          value OMR_RPA}
+     case May{
+          condition month==MAY .and. OMR_RPA >= -12000.
+!  doing full 60 day NMFS Action at the pumps so this calc does not matter
+!          value max(Qomr_VAMPperiod,OMR_RPA)*15./daysin + OMR_RPA*(daysin-15.)/daysin}
+          value OMR_RPA}
+     case Jun{
+          condition month==JUN .and. OMR_RPA >= -12000.
+          value OMR_RPA}
+     case otherwise{
+          condition always
+          value -99999.}
+}
+!
+! **********************************************************************************************
+!
+define Qsod_HandS { value max(tracyminpump + banksminpump,HandS_minpump) + D408D416_est*CCWDFraction + netDICU_SOD}
+define Qomr_HandS { value coefA*C639[VAMP_AND_DO]+coefb*Qsod_HandS+coefc}
+define Qomr_HandSdv {alias Qomr_HandS kind 'FLOW-CHANNEL' units 'CFS'}
+define C408_limit {value min(C408_limit_init,Qomr_HandS)}
+define C408_LBound  {alias C408_limit kind 'FLOW-LBOUND' units 'CFS'}
+!
+goal bound_Qomr { C408 > C408_limit }
+!
+! Split arcs and Goals to force impacts of actions at pumps
+!*********************************************************************************************
+! C408_Base represents the OMR flow not including COA related pumping at Banks or Tracy
+define C408_NoEXP1  {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_C408NoEXP1 {C408_NoEXP1 - C408 = D419_EXP1_TD + D418_EXP1_TD + D419_CVPDEDEX1TD}
+!
+goal bound_D419 {
+  lhs     D419_EXP1_TD
+  case FWSBOActions{
+  condition month>=dec .or. month<=jun
+    rhs     0.5*C408_NoEXP1 - 0.5*C408_limit
+    lhs>rhs    penalty 1285
+    lhs<rhs penalty    0}
+}
+!
+goal bound_D418 {
+  lhs     D418_EXP1_TD + D419_CVPDEDEX1TD
+  case FWSBOActions{
+    condition month>=dec .or. month<=jun
+    rhs     0.5*C408_NoEXP1 - 0.5*C408_limit
+    lhs>rhs    penalty 1285
+    lhs<rhs penalty    0}
+}
+

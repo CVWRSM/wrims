@@ -1,0 +1,102 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnvvnnnnnnnnnnnnnnnnnn
+
+U gnat.byte_swapping%b	g-bytswa.adb		efd5e0f4 NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.unchecked_conversion%s
+W gnat%s		gnat.ads		gnat.ali
+W interfaces%s		interfac.ads		interfac.ali
+W system%s		system.ads		system.ali
+W system.machine_code%s	s-maccod.ads		s-maccod.ali
+
+U gnat.byte_swapping%s	g-bytswa.ads		94284bd3 BN NE OL PU PK
+W gnat%s		gnat.ads		gnat.ali
+W system%s		system.ads		system.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-unccon.ads		20070406091342 51e09df2
+D gnat.ads		20050905075126 96410e68
+D g-bytswa.ads		20070912115918 ba821d78
+D g-bytswa.adb		20070912115918 c7bdf856
+D interfac.ads		20090409150020 a69cad5c
+D system.ads		20090410155748 b8eb58c3
+D s-maccod.ads		20090409150020 65963574
+X 1 ada.ads
+16K9*Ada 19e8 5|39r6 56r30 59r31 77r30 80r31 98r30 106r31
+X 2 a-unccon.ads
+17+9 Source 5|57r11 60r11 78r11 81r11 99r11 107r10
+18+9 Target 5|57r27 60r34 78r27 81r34 99r27 107r31
+20v14*Unchecked_Conversion 5|39w10 56r34 59r35 77r34 80r35 98r34 106r35
+X 3 gnat.ads
+36K9*GNAT 39e9 4|162r9 206r5 5|41r14 194r5
+X 4 g-bytswa.ads
+162K14*Byte_Swapping 3|36k9 4|206l10 206e23 5|41b19 194l10 194t23
+178+12 Item 179r31 179r44 5|54r31 54r44 57r21 60r44
+179v13*Swapped2 179>23 204r40 5|54b13 69l8 69t16
+179*23 Input{178+12} 5|54b23 62r34
+183+12 Item 184r31 184r44 5|75r31 75r44 78r21 81r44
+184v13*Swapped4 184>23 204r50 5|75b13 90l8 90t16
+184*23 Input{183+12} 5|75b23 83r34
+188+12 Item 189r31 189r44 5|96r31 96r44 99r21 107r41
+189v13*Swapped8 189>23 204r60 5|96b13 122l8 122t16
+189*23 Input{188+12} 5|96b23 101r43
+192U14*Swap2 192>21 204r19 5|128b14 137l8 137t13
+192m21 Location{7|64M9} 5|128b21 131r25
+196U14*Swap4 196>21 204r26 5|143b14 152l8 152t13
+196m21 Location{7|64M9} 5|143b21 146r25
+200U14*Swap8 200>21 204r33 5|171b14 192l8 192t13
+200m21 Location{7|64M9} 5|171b21 174r25 180r29
+X 5 g-bytswa.adb
+47V13 Swapped32{6|57M9} 47>24 48r26 118r17 120r17 158b13 165l8 165t17 189r17
+. 191r17
+47m24 Value{6|57M9} 158b24 159r26
+56V16 As_U16[2|20]{6|54M9} 62r26
+59V16 As_Item[2|20]{4|178+12} 68r14
+62m7 X{6|54M9} 66m42 67r40 68r23
+77V16 As_U32[2|20]{6|57M9} 83r26
+80V16 As_Item[2|20]{4|183+12} 89r14
+83m7 X{6|57M9} 87m42 88r40 89r23
+98V16 As_U64[2|20]{6|60M9} 101r35
+101m7 X{6|60M9} 118r41 120r54
+103A12 Two_Words(6|57M9)<integer> 104r11 107r20 109r16
+106V16 As_Item[2|20]{4|188+12} 121r14
+109a7 Result{103A12} 114m44 115m44 121r23
+130m7 X{6|54M9} 131m11 135m42 136r40
+145m7 X{6|57M9} 146m11 150m42 151r40
+159m7 X{6|57M9} 162m42 163r40 164r14
+173m7 X{6|60M9} 174m11 189r41 191r54
+176A12 Two_Words(6|57M9)<integer> 177r11 179r15
+179a7 Words{176A12} 180m11 185m44 186m44
+X 6 interfac.ads
+36K9*Interfaces 5|37w6 37r31 6|171e15
+54M9*Unsigned_16 5|57r37 60r21 62r11 66r12 67r12 130r11 135r12 136r12
+57M9*Unsigned_32 5|47r32 47r52 78r37 81r21 83r11 87r12 88r12 103r43 104r40
+. 114r14 115r14 117r14 118r28 119r14 120r28 145r11 150r12 151r12 158r32 158r52
+. 159r11 162r12 163r12 176r43 177r40 185r14 186r14 188r14 189r28 190r14 191r28
+60M9*Unsigned_64 5|99r37 101r20 173r11
+127V13*Shift_Right{60M9} 5|120r41 191r41
+X 7 system.ads
+37K9*System 4|160w6 192r32 196r32 200r32 5|38r6 38r31 128r32 143r32 171r32
+. 7|197e11
+64M9*Address 4|192r39 196r39 200r39 5|128r39 143r39 171r39
+X 8 s-maccod.ads
+36K16*Machine_Code 5|38w13 38r38 8|126e24
+39I9*Asm_Input_Operand
+40I9*Asm_Output_Operand
+47A9*Asm_Input_Operand_List(39I9)<integer>
+50A9*Asm_Output_Operand_List(40I9)<integer>
+57U14*Asm 5|112r7 183r7
+59a6 Outputs{50A9} 5|113r10 184r10
+60a6 Inputs{47A9} 5|116r10 187r10
+78U14*Asm 5|65r7 86r7 134r7 149r7 161r7
+

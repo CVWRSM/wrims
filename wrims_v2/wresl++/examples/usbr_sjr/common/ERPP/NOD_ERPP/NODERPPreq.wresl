@@ -1,0 +1,59 @@
+!WRESL statements for ERPP operations
+!NODERPPREQ
+!Edward Chang
+!6/23/99	2:00pm
+!
+!This code defines the ERPP requirement from a look-up table
+!******************************************************************************************
+define ERPP151 {    !Sacramento - Knights Landing
+     case march {
+          condition month == mar   !March 1-10; 10 day cfs
+          select    target from ERPP where CP = 151, wytype = wyt_SAC }
+     case otherwise {
+          condition always
+          value     0 }
+          }
+define ERPP152 {    !Yuba - Marysville
+     case march {
+          condition month == mar   !March 1-10; 10 day cfs
+          select    target from ERPP where CP = 152, wytype = wyt_SAC }
+     case otherwise {
+          condition always
+          value     0 }
+          }
+define ERPP153 {    !Feather - Gridley
+     case march {
+          condition month == mar   !March 1-10; 10 day cfs
+          select    target from ERPP where CP = 153, wytype = wyt_SAC }
+     case otherwise {
+          condition always
+          value     0 }
+          }
+define ERPP157 {    !American - Nimbus
+     case march {
+          condition month == mar   !March 1-10; 10 day cfs
+          select    target from ERPP where CP = 157, wytype = wyt_SAC }
+     case otherwise {
+          condition always
+          value     0 }
+          }
+define ERPP154 {    !Sacramento - Freeport
+     case MayOnly {
+          condition month == may   !May 1-31; 31 day cfs
+          select    target from ERPP where CP = 154, wytype = wyt_SAC }
+     case otherwise {
+          condition always
+          value     0 }
+          }
+define ERPP158 {    !Sacramento - Delta Outflow
+    case march {
+          condition month == mar   !March 1-10; 10 day cfs
+          select    target from ERPP where CP = 1581, wytype = wyt_SAC }
+     case MayOnly {
+          condition month == may   !May 1-10; 10 day cfs
+          select    target from ERPP where CP = 1582, wytype = wyt_SAC }  
+     case otherwise {
+          condition always
+          value     0 }
+          }
+

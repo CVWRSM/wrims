@@ -1,0 +1,314 @@
+/****************************
+weir_steps_dailyops.wresl
+
+Tom FitzHugh BOR 5/18/2010
+
+Operates Freemont and Sacramento Weirs using disaggregated daily flows.  Code works by
+computing a daily flow using the monthly flow from cycle 1 and a daily flow fraction.  
+Then weir spills are computed for each day, and summed for the month.
+****************************/
+
+!*******************************************************************************
+!Estimated Overflow Rating for Fremont Weir to the Yolo Bypass (River Mile 82), DSA 69.
+
+!Estimate of daily flow entering SacFeather node in CFS
+!Disaggregates monthly flow from cycle 1 using daily fractions
+define qsacFth1 {value QsacFth_prv*daysin*day1}
+define qsacFth2 {value QsacFth_prv*daysin*day2}
+define qsacFth3 {value QsacFth_prv*daysin*day3}
+define qsacFth4 {value QsacFth_prv*daysin*day4}
+define qsacFth5 {value QsacFth_prv*daysin*day5}
+define qsacFth6 {value QsacFth_prv*daysin*day6}
+define qsacFth7 {value QsacFth_prv*daysin*day7}
+define qsacFth8 {value QsacFth_prv*daysin*day8}
+define qsacFth9 {value QsacFth_prv*daysin*day9}
+define qsacFth10 {value QsacFth_prv*daysin*day10}
+define qsacFth11 {value QsacFth_prv*daysin*day11}
+define qsacFth12 {value QsacFth_prv*daysin*day12}
+define qsacFth13 {value QsacFth_prv*daysin*day13}
+define qsacFth14 {value QsacFth_prv*daysin*day14}
+define qsacFth15 {value QsacFth_prv*daysin*day15}
+define qsacFth16 {value QsacFth_prv*daysin*day16}
+define qsacFth17 {value QsacFth_prv*daysin*day17}
+define qsacFth18 {value QsacFth_prv*daysin*day18}
+define qsacFth19 {value QsacFth_prv*daysin*day19}
+define qsacFth20 {value QsacFth_prv*daysin*day20}
+define qsacFth21 {value QsacFth_prv*daysin*day21}
+define qsacFth22 {value QsacFth_prv*daysin*day22}
+define qsacFth23 {value QsacFth_prv*daysin*day23}
+define qsacFth24 {value QsacFth_prv*daysin*day24}
+define qsacFth25 {value QsacFth_prv*daysin*day25}
+define qsacFth26 {value QsacFth_prv*daysin*day26}
+define qsacFth27 {value QsacFth_prv*daysin*day27}
+define qsacFth28 {value QsacFth_prv*daysin*day28}
+define qsacFth29 {value QsacFth_prv*daysin*day29}
+define qsacFth30 {value QsacFth_prv*daysin*day30}
+define qsacFth31 {value QsacFth_prv*daysin*day31}
+
+define qsacFth1dv {alias qsacFth1 kind 'flow-channel' units 'cfs'}
+define qsacFth2dv {alias qsacFth2 kind 'flow-channel' units 'cfs'}
+define qsacFth3dv {alias qsacFth3 kind 'flow-channel' units 'cfs'}
+define qsacFth4dv {alias qsacFth4 kind 'flow-channel' units 'cfs'}
+define qsacFth5dv {alias qsacFth5 kind 'flow-channel' units 'cfs'}
+define qsacFth6dv {alias qsacFth6 kind 'flow-channel' units 'cfs'}
+define qsacFth7dv {alias qsacFth7 kind 'flow-channel' units 'cfs'}
+define qsacFth8dv {alias qsacFth8 kind 'flow-channel' units 'cfs'}
+define qsacFth9dv {alias qsacFth9 kind 'flow-channel' units 'cfs'}
+define qsacFth10dv {alias qsacFth10 kind 'flow-channel' units 'cfs'}
+define qsacFth11dv {alias qsacFth11 kind 'flow-channel' units 'cfs'}
+define qsacFth12dv {alias qsacFth12 kind 'flow-channel' units 'cfs'}
+define qsacFth13dv {alias qsacFth13 kind 'flow-channel' units 'cfs'}
+define qsacFth14dv {alias qsacFth14 kind 'flow-channel' units 'cfs'}
+define qsacFth15dv {alias qsacFth15 kind 'flow-channel' units 'cfs'}
+define qsacFth16dv {alias qsacFth16 kind 'flow-channel' units 'cfs'}
+define qsacFth17dv {alias qsacFth17 kind 'flow-channel' units 'cfs'}
+define qsacFth18dv {alias qsacFth18 kind 'flow-channel' units 'cfs'}
+define qsacFth19dv {alias qsacFth19 kind 'flow-channel' units 'cfs'}
+define qsacFth20dv {alias qsacFth20 kind 'flow-channel' units 'cfs'}
+define qsacFth21dv {alias qsacFth21 kind 'flow-channel' units 'cfs'}
+define qsacFth22dv {alias qsacFth22 kind 'flow-channel' units 'cfs'}
+define qsacFth23dv {alias qsacFth23 kind 'flow-channel' units 'cfs'}
+define qsacFth24dv {alias qsacFth24 kind 'flow-channel' units 'cfs'}
+define qsacFth25dv {alias qsacFth25 kind 'flow-channel' units 'cfs'}
+define qsacFth26dv {alias qsacFth26 kind 'flow-channel' units 'cfs'}
+define qsacFth27dv {alias qsacFth27 kind 'flow-channel' units 'cfs'}
+define qsacFth28dv {alias qsacFth28 kind 'flow-channel' units 'cfs'}
+define qsacFth29dv {alias qsacFth29 kind 'flow-channel' units 'cfs'}
+define qsacFth30dv {alias qsacFth30 kind 'flow-channel' units 'cfs'}
+define qsacFth31dv {alias qsacFth31 kind 'flow-channel' units 'cfs'}
+
+!Estimation of Freemont weir monthly average spill based on daily spill estimations for flows over 62,000 cfs
+define frespill_1 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth1 use linear}
+define frespill_2 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth2 use linear}
+define frespill_3 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth3 use linear}
+define frespill_4 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth4 use linear}
+define frespill_5 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth5 use linear}
+define frespill_6 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth6 use linear}
+define frespill_7 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth7 use linear}
+define frespill_8 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth8 use linear}
+define frespill_9 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth9 use linear}
+define frespill_10 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth10 use linear}
+define frespill_11 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth11 use linear}
+define frespill_12 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth12 use linear}
+define frespill_13 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth13 use linear}
+define frespill_14 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth14 use linear}
+define frespill_15 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth15 use linear}
+define frespill_16 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth16 use linear}
+define frespill_17 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth17 use linear}
+define frespill_18 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth18 use linear}
+define frespill_19 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth19 use linear}
+define frespill_20 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth20 use linear}
+define frespill_21 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth21 use linear}
+define frespill_22 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth22 use linear}
+define frespill_23 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth23 use linear}
+define frespill_24 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth24 use linear}
+define frespill_25 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth25 use linear}
+define frespill_26 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth26 use linear}
+define frespill_27 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth27 use linear}
+define frespill_28 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth28 use linear}
+define frespill_29 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth29 use linear}
+define frespill_30 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth30 use linear}
+define frespill_31 {select Spill from FRE_weir_No_Notch given Sac_Flow=qsacFth31 use linear}
+
+!Fremont spill daily outputs
+define frespill_1dv {alias frespill_1 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_2dv {alias frespill_2 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_3dv {alias frespill_3 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_4dv {alias frespill_4 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_5dv {alias frespill_5 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_6dv {alias frespill_6 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_7dv {alias frespill_7 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_8dv {alias frespill_8 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_9dv {alias frespill_9 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_10dv {alias frespill_10 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_11dv {alias frespill_11 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_12dv {alias frespill_12 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_13dv {alias frespill_13 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_14dv {alias frespill_14 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_15dv {alias frespill_15 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_16dv {alias frespill_16 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_17dv {alias frespill_17 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_18dv {alias frespill_18 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_19dv {alias frespill_19 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_20dv {alias frespill_20 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_21dv {alias frespill_21 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_22dv {alias frespill_22 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_23dv {alias frespill_23 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_24dv {alias frespill_24 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_25dv {alias frespill_25 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_26dv {alias frespill_26 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_27dv {alias frespill_27 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_28dv {alias frespill_28 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_29dv {alias frespill_29 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_30dv {alias frespill_30 kind 'FLOW-DELIVERY' units 'CFS'}
+define frespill_31dv {alias frespill_31 kind 'FLOW-DELIVERY' units 'CFS'}
+
+!Sums daily weir spills into monthly spills
+define frespill { value (frespill_1 + frespill_2 + frespill_3 + frespill_4 + frespill_5 + frespill_6 + frespill_7 + frespill_8 + frespill_9 + frespill_10 +
+          frespill_11 + frespill_12 + frespill_13 + frespill_14 + frespill_15 + frespill_16 + frespill_17 + frespill_18 + frespill_19 + frespill_20 +
+          frespill_21 + frespill_22 + frespill_23 + frespill_24 + frespill_25 + frespill_26 + frespill_27 + frespill_28 + frespill_29 + frespill_30 + frespill_31)/daysin }
+
+define frespilldv {alias frespill kind 'FLOW-DELIVERY' units 'cfs'}
+
+goal actfwflow_day {D_FreWeir = frespill}
+
+! total flow entering SacFeather node
+define QSacFth {alias C_Wilkns + C_YubFea + AD_SacFea kind 'flow-channel' units 'cfs'}
+
+!*******************************************************************************
+!Estimated Overflow Rating for Sacramento Weir to the Yolo Bypass
+!(River Mile 63), DSA 70.
+
+!Estimate of daily flow that would enter SacAmerican node if Fremont weir wasn't spilling (in CFS)
+!Disaggregates monthly flow from cycle 1 using daily fractions
+define qsacAme_1 {value (QsacAmenospill)*daysin*day1-frespill_1}
+define qsacAme_2 {value (QsacAmenospill)*daysin*day2-frespill_2}
+define qsacAme_3 {value (QsacAmenospill)*daysin*day3-frespill_3}
+define qsacAme_4 {value (QsacAmenospill)*daysin*day4-frespill_4}
+define qsacAme_5 {value (QsacAmenospill)*daysin*day5-frespill_5}
+define qsacAme_6 {value (QsacAmenospill)*daysin*day6-frespill_6}
+define qsacAme_7 {value (QsacAmenospill)*daysin*day7-frespill_7}
+define qsacAme_8 {value (QsacAmenospill)*daysin*day8-frespill_8}
+define qsacAme_9 {value (QsacAmenospill)*daysin*day9-frespill_9}
+define qsacAme_10 {value (QsacAmenospill)*daysin*day10-frespill_10}
+define qsacAme_11 {value (QsacAmenospill)*daysin*day11-frespill_11}
+define qsacAme_12 {value (QsacAmenospill)*daysin*day12-frespill_12}
+define qsacAme_13 {value (QsacAmenospill)*daysin*day13-frespill_13}
+define qsacAme_14 {value (QsacAmenospill)*daysin*day14-frespill_14}
+define qsacAme_15 {value (QsacAmenospill)*daysin*day15-frespill_15}
+define qsacAme_16 {value (QsacAmenospill)*daysin*day16-frespill_16}
+define qsacAme_17 {value (QsacAmenospill)*daysin*day17-frespill_17}
+define qsacAme_18 {value (QsacAmenospill)*daysin*day18-frespill_18}
+define qsacAme_19 {value (QsacAmenospill)*daysin*day19-frespill_19}
+define qsacAme_20 {value (QsacAmenospill)*daysin*day20-frespill_20}
+define qsacAme_21 {value (QsacAmenospill)*daysin*day21-frespill_21}
+define qsacAme_22 {value (QsacAmenospill)*daysin*day22-frespill_22}
+define qsacAme_23 {value (QsacAmenospill)*daysin*day23-frespill_23}
+define qsacAme_24 {value (QsacAmenospill)*daysin*day24-frespill_24}
+define qsacAme_25 {value (QsacAmenospill)*daysin*day25-frespill_25}
+define qsacAme_26 {value (QsacAmenospill)*daysin*day26-frespill_26}
+define qsacAme_27 {value (QsacAmenospill)*daysin*day27-frespill_27}
+define qsacAme_28 {value (QsacAmenospill)*daysin*day28-frespill_28}
+define qsacAme_29 {value (QsacAmenospill)*daysin*day29-frespill_29}
+define qsacAme_30 {value (QsacAmenospill)*daysin*day30-frespill_30}
+define qsacAme_31 {value (QsacAmenospill)*daysin*day31-frespill_31}
+
+!Estimation of monthly QsacAme flow for QA purposes
+define QsacAmecorr { value (qsacAme_1 + qsacAme_2 + qsacAme_3 + qsacAme_4 + qsacAme_5 + qsacAme_6 + qsacAme_7 + qsacAme_8 + qsacAme_9 + qsacAme_10 +
+          qsacAme_11 + qsacAme_12 + qsacAme_13 + qsacAme_14 + qsacAme_15 + qsacAme_16 + qsacAme_17 + qsacAme_18 + qsacAme_19 + qsacAme_20 +
+          qsacAme_21 + qsacAme_22 + qsacAme_23 + qsacAme_24 + qsacAme_25 + qsacAme_26 + qsacAme_27 + qsacAme_28 + qsacAme_29 + qsacAme_30 + qsacAme_31)/daysin }
+
+define QsacAmecorrdv {alias QsacAmecorr kind 'debug' units 'cfs'}
+
+define qsacAme_1dv {alias qsacAme_1 kind 'flow-channel' units 'cfs'}
+define qsacAme_2dv {alias qsacAme_2 kind 'flow-channel' units 'cfs'}
+define qsacAme_3dv {alias qsacAme_3 kind 'flow-channel' units 'cfs'}
+define qsacAme_4dv {alias qsacAme_4 kind 'flow-channel' units 'cfs'}
+define qsacAme_5dv {alias qsacAme_5 kind 'flow-channel' units 'cfs'}
+define qsacAme_6dv {alias qsacAme_6 kind 'flow-channel' units 'cfs'}
+define qsacAme_7dv {alias qsacAme_7 kind 'flow-channel' units 'cfs'}
+define qsacAme_8dv {alias qsacAme_8 kind 'flow-channel' units 'cfs'}
+define qsacAme_9dv {alias qsacAme_9 kind 'flow-channel' units 'cfs'}
+define qsacAme_10dv {alias qsacAme_10 kind 'flow-channel' units 'cfs'}
+define qsacAme_11dv {alias qsacAme_11 kind 'flow-channel' units 'cfs'}
+define qsacAme_12dv {alias qsacAme_12 kind 'flow-channel' units 'cfs'}
+define qsacAme_13dv {alias qsacAme_13 kind 'flow-channel' units 'cfs'}
+define qsacAme_14dv {alias qsacAme_14 kind 'flow-channel' units 'cfs'}
+define qsacAme_15dv {alias qsacAme_15 kind 'flow-channel' units 'cfs'}
+define qsacAme_16dv {alias qsacAme_16 kind 'flow-channel' units 'cfs'}
+define qsacAme_17dv {alias qsacAme_17 kind 'flow-channel' units 'cfs'}
+define qsacAme_18dv {alias qsacAme_18 kind 'flow-channel' units 'cfs'}
+define qsacAme_19dv {alias qsacAme_19 kind 'flow-channel' units 'cfs'}
+define qsacAme_20dv {alias qsacAme_20 kind 'flow-channel' units 'cfs'}
+define qsacAme_21dv {alias qsacAme_21 kind 'flow-channel' units 'cfs'}
+define qsacAme_22dv {alias qsacAme_22 kind 'flow-channel' units 'cfs'}
+define qsacAme_23dv {alias qsacAme_23 kind 'flow-channel' units 'cfs'}
+define qsacAme_24dv {alias qsacAme_24 kind 'flow-channel' units 'cfs'}
+define qsacAme_25dv {alias qsacAme_25 kind 'flow-channel' units 'cfs'}
+define qsacAme_26dv {alias qsacAme_26 kind 'flow-channel' units 'cfs'}
+define qsacAme_27dv {alias qsacAme_27 kind 'flow-channel' units 'cfs'}
+define qsacAme_28dv {alias qsacAme_28 kind 'flow-channel' units 'cfs'}
+define qsacAme_29dv {alias qsacAme_29 kind 'flow-channel' units 'cfs'}
+define qsacAme_30dv {alias qsacAme_30 kind 'flow-channel' units 'cfs'}
+define qsacAme_31dv {alias qsacAme_31 kind 'flow-channel' units 'cfs'}
+
+!Estimation of Sacramento weir monthly average spill based on daily spill estimations for flows over 73,000 cfs
+
+!Estimation of Sacramento weir daily spill
+define sacspill_1 {select Spill from SAC_weir given Sac_Flow=qsacAme_1 use linear}
+define sacspill_2 {select Spill from SAC_weir given Sac_Flow=qsacAme_2 use linear}
+define sacspill_3 {select Spill from SAC_weir given Sac_Flow=qsacAme_3 use linear}
+define sacspill_4 {select Spill from SAC_weir given Sac_Flow=qsacAme_4 use linear}
+define sacspill_5 {select Spill from SAC_weir given Sac_Flow=qsacAme_5 use linear}
+define sacspill_6 {select Spill from SAC_weir given Sac_Flow=qsacAme_6 use linear}
+define sacspill_7 {select Spill from SAC_weir given Sac_Flow=qsacAme_7 use linear}
+define sacspill_8 {select Spill from SAC_weir given Sac_Flow=qsacAme_8 use linear}
+define sacspill_9 {select Spill from SAC_weir given Sac_Flow=qsacAme_9 use linear}
+define sacspill_10 {select Spill from SAC_weir given Sac_Flow=qsacAme_10 use linear}
+define sacspill_11 {select Spill from SAC_weir given Sac_Flow=qsacAme_11 use linear}
+define sacspill_12 {select Spill from SAC_weir given Sac_Flow=qsacAme_12 use linear}
+define sacspill_13 {select Spill from SAC_weir given Sac_Flow=qsacAme_13 use linear}
+define sacspill_14 {select Spill from SAC_weir given Sac_Flow=qsacAme_14 use linear}
+define sacspill_15 {select Spill from SAC_weir given Sac_Flow=qsacAme_15 use linear}
+define sacspill_16 {select Spill from SAC_weir given Sac_Flow=qsacAme_16 use linear}
+define sacspill_17 {select Spill from SAC_weir given Sac_Flow=qsacAme_17 use linear}
+define sacspill_18 {select Spill from SAC_weir given Sac_Flow=qsacAme_18 use linear}
+define sacspill_19 {select Spill from SAC_weir given Sac_Flow=qsacAme_19 use linear}
+define sacspill_20 {select Spill from SAC_weir given Sac_Flow=qsacAme_20 use linear}
+define sacspill_21 {select Spill from SAC_weir given Sac_Flow=qsacAme_21 use linear}
+define sacspill_22 {select Spill from SAC_weir given Sac_Flow=qsacAme_22 use linear}
+define sacspill_23 {select Spill from SAC_weir given Sac_Flow=qsacAme_23 use linear}
+define sacspill_24 {select Spill from SAC_weir given Sac_Flow=qsacAme_24 use linear}
+define sacspill_25 {select Spill from SAC_weir given Sac_Flow=qsacAme_25 use linear}
+define sacspill_26 {select Spill from SAC_weir given Sac_Flow=qsacAme_26 use linear}
+define sacspill_27 {select Spill from SAC_weir given Sac_Flow=qsacAme_27 use linear}
+define sacspill_28 {select Spill from SAC_weir given Sac_Flow=qsacAme_28 use linear}
+define sacspill_29 {select Spill from SAC_weir given Sac_Flow=qsacAme_29 use linear}
+define sacspill_30 {select Spill from SAC_weir given Sac_Flow=qsacAme_30 use linear}
+define sacspill_31 {select Spill from SAC_weir given Sac_Flow=qsacAme_31 use linear}
+
+!Sacramento weir daily spill outputs
+define sacspill_1dv {alias sacspill_1 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_2dv {alias sacspill_2 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_3dv {alias sacspill_3 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_4dv {alias sacspill_4 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_5dv {alias sacspill_5 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_6dv {alias sacspill_6 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_7dv {alias sacspill_7 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_8dv {alias sacspill_8 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_9dv {alias sacspill_9 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_10dv {alias sacspill_10 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_11dv {alias sacspill_11 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_12dv {alias sacspill_12 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_13dv {alias sacspill_13 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_14dv {alias sacspill_14 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_15dv {alias sacspill_15 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_16dv {alias sacspill_16 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_17dv {alias sacspill_17 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_18dv {alias sacspill_18 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_19dv {alias sacspill_19 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_20dv {alias sacspill_20 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_21dv {alias sacspill_21 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_22dv {alias sacspill_22 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_23dv {alias sacspill_23 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_24dv {alias sacspill_24 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_25dv {alias sacspill_25 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_26dv {alias sacspill_26 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_27dv {alias sacspill_27 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_28dv {alias sacspill_28 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_29dv {alias sacspill_29 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_30dv {alias sacspill_30 kind 'FLOW-DELIVERY' units 'CFS'}
+define sacspill_31dv {alias sacspill_31 kind 'FLOW-DELIVERY' units 'CFS'}
+
+!Sums daily weir spills into monthly spills
+define sacspill { value (sacspill_1 + sacspill_2 + sacspill_3 + sacspill_4 + sacspill_5 + sacspill_6 + sacspill_7 + sacspill_8 + sacspill_9 + sacspill_10 +
+          sacspill_11 + sacspill_12 + sacspill_13 + sacspill_14 + sacspill_15 + sacspill_16 + sacspill_17 + sacspill_18 + sacspill_19 + sacspill_20 +
+          sacspill_21 + sacspill_22 + sacspill_23 + sacspill_24 + sacspill_25 + sacspill_26 + sacspill_27 + sacspill_28 + sacspill_29 + sacspill_30 + sacspill_31)/daysin }
+
+define sacspilldv {alias sacspill kind 'debug' units 'cfs'}
+
+goal actswflow_day {D_SacWeir = sacspill}
+
+! total flow entering SacAmerican node
+define QSacAme {alias C_SacFea + C_HSt + AD_SacAme - D_SacAme kind 'flow-channel' units 'cfs'}
+

@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>options</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<B><U><FONT SIZE=4><P>Options Panel</P>
+</B></U></FONT><P>The options panel is used to select how the settings for a run. It is divided into five areas: The main options (at the bottom of the panel), Solver Output, State Variable Output, DSS Options, and Stack/Surplus Output.</P>
+<U><P>Main Options:</P></U>
+<P>Click the Generate Water Supply Index-Delivery Index ('Gen WSI-DI Tables') checkbox if a major change affecting supply has been made to study assumptions. This will perform a run involving essentially three runs </P>
+<P>Click the 'LF90 Output' checkbox to output Fortran 90 compiler messages (on the Run/Result panel).</P>
+<P>Type any desired 'XA Options' in the textbox. Make sure you know what you are doing first.</P>
+<U><P>Position Analysis:</P></U>
+<P>Click the 'Position Analysis' checkbox, to perform a position analysis (pseudo-random probability analysis).  Check the run box in the positions analysis panel.  Select the month that each year of the analysis should start at.  Enter the number of periods to run after start month for each run.  Set the start and stop years for the full position analysis run. </P>
+<U><P>Solver Output:</P>
+</U><P>Click the 'Save Report' checkbox if the solver messages are desired to be saved (in Run/XA.log). This is useful for debugging.</P>
+<P>Choose the type of listing (variables, constraints, or both) for the solver output in the 'Listing' drop-down list.</P>
+<U><P>State Variable Output:</P>
+</U><P>Click the 'Save Report' checkbox to save the values of State variables for the last month of the run (in Run/Statevars.out). Also check the 'Save All' checkbox to save the values of State variable for every month of the run (in Run/Statevars.out).</P>
+<U><P>DSS Options:</P>
+</U><P>Click the 'Debug' checkbox for to create a log for debugging the dss files.  This is used for programming purposes. </P>
+</B><P>Click the 'Save Old' to prevent the dv.dss (decision variables) file from being cleared before the run begins.  If the run's time window is smaller than the time window of the existing dv.dss file, selecting this option will result in the dv.dss file containing data from both the run and the portion of the previous run(s) outside the current run's time window.  Therefore, use this option with great caution.</P></BODY>
+</HTML>

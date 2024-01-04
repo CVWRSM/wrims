@@ -1,0 +1,24 @@
+! Filename: IntegratedOperationsCyc6.wresl
+
+! Add Friant-Kern canal and cross valley conveyance for integrated operations.
+!    INCLUDE 'exports.wresl'
+!    INCLUDE 'system\CA\connectivity-table.wresl'
+!    INCLUDE 'CVC_IO_Off.wresl'
+!    INCLUDE 'GWB_IO_Off.wresl'
+!    INCLUDE 'FK_del_dist.wresl'
+!    INCLUDE 'CrossValleyConveyanceArcs2.WRESL'
+!    INCLUDE 'IO_Transfer_Rules.wresl'
+    INCLUDE 'CrossValleyConveyanceOps.WRESL'
+!    INCLUDE 'DirectCirculation.WRESL'
+!    INCLUDE 'MWD_PM_delivery_arcs.WRESL'
+!    INCLUDE 'Millerton_PM_Ops.WRESL'
+!    INCLUDE 'MWD_PM_STORAGE_Alt1A.WRESL'
+!    INCLUDE 'GroundwaterBanking.WRESL'
+!    INCLUDE 'system\CA\Weight-table.wresl'
+    INCLUDE 'IO_Control.wresl'
+!    INCLUDE 'Fix_IO_T1.wresl'
+
+    goal off_16B {D_FKCNL_16B + D_MDRCNL_16B < 0} !Turn off 16B capture
+    goal bypass_off {C16_TFB < 0}
+!    goal lim_Oro_impact {C6_WTS < IO_draw_SWPSL_sur*IO_draw_Oro*10000.}
+!    goal lim_Sha_impact {C5_WTS < IO_draw_CVPSL_sur*IO_draw_Sha*10000.}

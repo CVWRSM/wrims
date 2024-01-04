@@ -1,0 +1,106 @@
+define C_Trnty {lower 0. upper 1845.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !DOWNSTREAM OF TRINITY LAKE
+define C_Lwstn {lower 0. upper 6000. kind 'FLOW-CHANNEL' units 'CFS'} !TRINITY RIVER (C100)
+define C_Lwstn_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Lwstn_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Lwstntotal {C_Lwstn=C_Lwstn_MIF+C_Lwstn_EXC}
+define C_Wkytn {lower 0. upper 3000. kind 'FLOW-CHANNEL' units 'CFS'} !CLEAR CREEK (C3)
+define C_Wkytn_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Wkytn_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Wkytntotal {C_Wkytn=C_Wkytn_MIF+C_Wkytn_EXC}
+define C_Shsta {lower 0. upper 4858.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !SACRAMENTO RIVER DOWNSTREAM OF SHASTA LAKE
+define C_Kswck {lower 0. upper 100000. kind 'FLOW-CHANNEL' units 'CFS'} !SACRAMENTO RIVER DOWNSTREAM OF KESWICK RESERVOIR (C5)
+define C_Kswck_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Kswck_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Kswcktotal {C_Kswck=C_Kswck_MIF+C_Kswck_EXC}
+define C_RedBlf {lower 0. upper 150000. kind 'FLOW-CHANNEL' units 'CFS'} !SACRAMENTO RIVER DOWNSTREAM OF REDBLUFF DIVERSION DAM (C112)
+define C_RedBlf_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_RedBlf_MIF_DAILY {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_RedBlf_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_RedBlftotal {C_RedBlf=C_RedBlf_MIF+C_RedBlf_MIF_DAILY+C_RedBlf_EXC}
+define C_Wilkns {lower 0. upper 6150.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !"SACRAMENTO RIVER DOWNSTREAM OF WILKINS SLOUGH (C114
+define C_Wilkns_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Wilkns_MIF_DAILY {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Wilkns_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Wilknstotal {C_Wilkns=C_Wilkns_MIF+C_Wilkns_MIF_DAILY+C_Wilkns_EXC}
+define C_Orovl {lower 0. upper 12913.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !FEATHER RIVER DOWNSTREAM OF OROVILLE
+define minflow_C_Orovl {select minflow from minflow where C_arc=200.1,month=month} !use values in the range of 700-800 to replace 600 cfs
+define C_Orovl_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Orovl_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Orovltotal {C_Orovl=C_Orovl_MIF+C_Orovl_EXC}
+goal C_Orovlminflow {C_Orovl_MIF < minflow_C_Orovl}
+define C_Therm {lower 0. upper 12913.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River Downstream of  THERMOLITO  Return
+define C_Therm_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Therm_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Thermtotal {C_Therm=C_Therm_MIF+C_Therm_EXC}
+define C_YubFea {lower 0. upper 19676.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !FEATHER RIVER (CS C223)
+define C_YubFea_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_YubFea_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_YubFeatotal {C_YubFea=C_YubFea_MIF+C_YubFea_EXC}
+define C_Daguer {lower 0. upper 6150.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !YUBA RIVER
+define C_SacFea {lower 0. upper 6150.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !SACRAMENTO RIVER DOWNSTREAM OF FEATHER RIVER CONFLUENCE
+define C_SacAme {lower 0. upper 11000.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !SACRAMENTO RIVER DOWNSTREAM OF AMERICAN RIVER CONFLUENCE
+define C_Folsm {lower 0. upper 7071.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !AMERICAN RIVER DOWNSTREAM OF FOLSOM LAKE
+define C_Nimbus {lower 0. upper 7071.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !AMERICAN RIVER BELOW NATOMA
+define C_Nimbus_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Nimbus_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Nimbustotal {C_Nimbus=C_Nimbus_MIF+C_Nimbus_EXC}
+define C_HSt {lower 0. upper 7071.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !AMERICAN RIVER FLOW TO SACRAMENTO RIVER
+define C_HSt_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_HSt_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_HSttotal {C_HSt=C_HSt_MIF+C_HSt_EXC}
+define C_YoloBP {std kind 'FLOW-CHANNEL' units 'CFS'} !YOLO BYPASS
+define C_Hood {lower 0. upper 11000.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River at Hood
+define C_Hood_ANN{lower 0 upper 11000*taf_cfs kind 'FLOW-ANN' units 'CFS'} !For ANN calculations
+goal C_HoodTotal {C_Hood = C_Hood_Ann}
+define C_DXC {std kind 'FLOW-CHANNEL' units 'CFS'} !Delta Cross Channel
+define C_SacDXC {std kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Delta Cross Channel
+define C_NBA {lower 0. upper 175. kind 'FLOW-CHANNEL' units 'CFS'} !North Bay Aqueduct
+define C_SacND {lower 0. upper 25000.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of North Delta
+define C_SacBI {std kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River Downstream of Branna Island
+define C_SacRV {std kind 'FLOW-CHANNEL' units 'CFS'} !Sacramento River D/S of Rio Vista
+define C_SacRV_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_SacRV_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_SacRVtotal {C_SacRV=C_SacRV_MIF+C_SacRV_EXC}
+define C_SacSJR {std kind 'FLOW-CHANNEL' units 'CFS'} !D/S of Confluence of Sacramento River and San Joaquin River
+define C_Delta {std kind 'FLOW-CHANNEL' units 'CFS'} !Delta Outflow
+define C_Moklmn {std kind 'FLOW-CHANNEL' units 'CFS'} !Central Delta - D/S of DXC (C414)
+define C_Trmns {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Terminous (C413)
+define C_SJRVI {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !San Joaquin River D/S of Venice Island (CCWD diversion point)
+define C_SJRCD {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !San Joaquin River D/S of Central Delta
+define C_SJRMI {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !San Joaquin River D/S of Modford Island
+define C_SJRSTo {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !San Joaquin River D/S of Stockton
+define C_SJRCal {std kind 'FLOW-CHANNEL' units 'CFS'} !San Joaquin River D/S of Calaveras
+define C_SJRVer {std kind 'FLOW-CHANNEL' units 'CFS'} !San Joaquin River D/S of Vernalis
+define C_Vrnlis {std kind 'FLOW-CHANNEL' units 'CFS'} !Between Vernalis and Coney Island
+define C_IndnSl {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Indian Slough component of OMR (CCWD)
+define C_OMR {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Old and Middle Rivers from Rock Slough to Venice Island (CCWD)
+define C_ConyIS {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Coney Island to Rock Slough (neg. flow is towards the pumps)
+define D_ExpTD {std kind 'FLOW-DELIVERY' units 'CFS'} !Between Coney Island and Pumping Plants
+define C_BnkExp {lower 0. upper 25000. kind 'FLOW-CHANNEL' units 'CFS'} !Banks Exports from Delta
+define C_SBay {lower 0. upper 10000.*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !SWP Aqueduct Downstream of South Bay Aqueduct (C803)
+define C_UpDMC {lower 0. upper 4200. kind 'FLOW-CHANNEL' units 'CFS'} !Upper DMC
+define C_Intrti {lower 0. upper 10000. kind 'FLOW-CHANNEL' units 'CFS'} !DMC/CA Intertie
+define C_OFBSWP {lower 0. upper 10000. kind 'FLOW-CHANNEL' units 'CFS'} !SWP bypass flow to California Aquect  (C805)
+define C_ONlFB {lower 0. upper 10000. kind 'FLOW-CHANNEL' units 'CFS'} !SWP Wheeling for CVP Dummy (C818 < C805)
+define C_OFBCVP {lower 0. upper 10000. kind 'FLOW-CHANNEL' units 'CFS'} !CVP bypass flow to DMC (C703)
+define C_SLSWP {lower 0. upper 8900. kind 'FLOW-CHANNEL' units 'CFS'} !SWP SAN LUIS RESERVOIR Release (C12)
+define C_SLCVP {lower 0. upper 8000. kind 'FLOW-CHANNEL' units 'CFS'} !CVP SAN LUIS RESERVOIR Release (C11)
+define C_SWPJU {lower 0. upper 8465. kind 'FLOW-CHANNEL' units 'CFS'} !SWP Joint Use (C807)
+define C_CVPJU {std kind 'FLOW-CHANNEL' units 'CFS'} !CVP Joint Use (D704)
+define C_CVPDMC {lower 0 upper 3500 kind 'FLOW-CHANNEL' units 'CFS'} !DMC to Mendota Pool (C708)
+define C_MPool {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !Flow to Exchange Contractors and Refuges from Sack Dam
+define C_DsAmgS {lower 0. upper 8465. kind 'FLOW-CHANNEL' units 'CFS'} !Dos Amigos SWP
+define C_DsAmgC {lower 0. upper 4635. kind 'FLOW-CHANNEL' units 'CFS'} !Dos Amigos CVP
+define C_JtUTerm {lower 0. upper 8100. kind 'FLOW-CHANNEL' units 'CFS'} !End of Joint Use
+define C_LasPer {lower 0. upper 7300. kind 'FLOW-CHANNEL' units 'CFS'} !Las Perillas Point
+define C_CoastAqdct {lower 0. upper 450. kind 'FLOW-CHANNEL' units 'CFS'} !Coastal Aquaduct (866)
+define C_KCWA {lower 0. upper 5950. kind 'FLOW-CHANNEL' units 'CFS'} !Kern County Water Agency Diversion
+define C_CVC {lower 0. upper 5350. kind 'FLOW-CHANNEL' units 'CFS'} !California Aqueduct downstream CVP Refuge and Cross Valley Canal (857)
+define C_ChrisPP {lower 0. upper 4480. kind 'FLOW-CHANNEL' units 'CFS'} !California Aqueduct downstream Crisman PP (864)
+define C_Alamo {lower 0. upper 3150. kind 'FLOW-CHANNEL' units 'CFS'} !California Aqueduct East Branch downstream Bifuraction Point (876) Alamo
+define C_OSO {lower 0. upper 3130. kind 'FLOW-CHANNEL' units 'CFS'} !California Aqueduct West Branch downstream Bifuraction Point (890) OSO
+define C_PearBlPP {lower 0. upper 2105. kind 'FLOW-CHANNEL' units 'CFS'} !California Aqueduct East Branch downstream Pearblossom PP (880)
+define C_WarnePP {lower 0. upper 1565. kind 'FLOW-CHANNEL' units 'CFS'} !California Aqueduct West Branch downstream Warne PP (892)
+define D_ClearTu {lower 0. upper 3300. kind 'FLOW-TUNNEL' units 'CFS'} !Clear Creek Turnnel (D100) with a capacity of 3300 cfs and it is split into _import  <trin_imorts2
+define D_Spring {lower 0. upper 4200. kind 'FLOW-TUNNEL' units 'CFS'} !Spring Creek Tunnel (D3) with a  capacity of 4200 cfs and D3 = D3_m + D3_whlcv + D3_whljp
+

@@ -1,0 +1,16 @@
+!Daily upstream flow estimation from a previous cycle corrected monthly flow and using the daily fractions.
+!Previous cycle monthly upstream flow is corrected with the difference of previous and current estimated Fremont weir spills
+
+define C169_IFMIN {upper 99999. lower 0. kind 'flow-channel' units 'cfs'} !Minimum flow at SAC, cannot be diverted into IF
+define C169_IF400 {upper 99999. kind 'flow-channel' units 'cfs'} !Max Flow that will be diverted at D400
+
+define C169__Z4   {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define D166A__Z4   {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+
+define Qsac169nospill{value C169__Z4+ D160__Z4+ D166A__Z4}
+
+define Qsac169nospilldv {alias Qsac169nospill kind 'debug' units 'cfs'}
+
+!Estimate Daily flow conditions, bypass requirements and bounds on IF Diversion
+INCLUDE '..\..\..\..\common\Delta\IsolatedFacility\IFDiversionCriteria_DailyOps.wresl'
+

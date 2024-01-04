@@ -1,0 +1,134 @@
+! Armin Munevar 7/8/98
+
+! G-MODEL BELOW IS FOR JERSEY POINT (JPT)
+! ****************************************************************************
+! ****************************************************************************
+! Coefficients for this station  
+define g_So_jpt     {value 20.0     }        ! millimhos/cm
+define g_Sb_jpt     {value 0.200    }        ! millimhos/cm
+define g_alpha_jpt  {value 0.00060  }        ! 1/cfs
+define g_beta_jpt   {value 550.0    }        ! ft^3
+define g_n_jpt      {value 1.0      }        ! no units
+
+! define Dvars needed for this station's G model
+
+define Go_jpt {std kind 'GMODEL-PARAM' units 'CFS'}
+
+! **************************************************************************************
+! Calculate Go for the current period. This is the beginning of period G value based upon
+! last month's flow and beginning of last month's G value, Go(-1). Units are cfs
+
+define Go_hist_jpt {value	NDO(-1)/(1 + (NDO(-1)/Go_jpt(-1) - 1)
+                          *EXP(-NDO(-1)*g_delT/g_beta_jpt))           }
+
+goal setGo_jpt {Go_jpt = Go_hist_jpt}
+
+! *************************************************************************************
+! Get salinity standard for this particular station.
+! Standard may specify two salinity requirements for different days of the month. In 
+! this case, 2 standards are read from the table along with their corresponding dates.
+! AG standard is read from table.  FW standard of 0.44 EC in April and May is essentially
+! incorporated the AG standards of 0.45 EC. It is not modeled directly.
+
+! the first standard
+define EC_std_jpt1 {
+       case Apr_thru_Aug {
+         condition         month >=APR .and. month <=AUG
+         select            ECstandard1
+         from              salinity_std_jpt 
+         where             month=month,wyt_SAC=wyt_SAC }
+       case no_standard {                       
+         condition         always
+         value             g_So_jpt }  }        ! this makes the req'mt = 0
+
+! get the dates for this standard
+define begday_jpt1 {
+      case Apr_thru_Aug {
+        condition       month >=APR .and. month <=AUG
+        select          beginday1
+        from            salinity_std_jpt
+        where           month=month,wyt_SAC=wyt_SAC }
+      case no_standard {
+        condition        always
+        value            0  }
+}
+define endday_jpt1 {
+      case Apr_thru_Aug {
+        condition       month >=APR .and. month <=AUG
+        select          endday1
+        from            salinity_std_jpt
+        where           month=month,wyt_SAC=wyt_SAC }
+      case no_standard {
+        condition        always
+        value            0  }
+}
+
+! the second standard
+define EC_std_jpt2 {
+       case Apr_thru_Aug {
+         condition         month >=APR .and. month <=AUG
+         select            ECstandard2
+         from              salinity_std_jpt 
+         where             month=month,wyt_SAC=wyt_SAC }
+       case no_standard {                       
+         condition         always
+         value             g_So_jpt }  }        ! this makes the req'mt = 0
+
+! get the dates for this standard
+define begday_jpt2 {
+      case Apr_thru_Aug {
+        condition         month >=APR .and. month <=AUG
+        select          beginday2
+        from            salinity_std_jpt
+        where           month=month,wyt_SAC=wyt_SAC }
+      case no_standard {
+        condition         always
+        value            0  }
+}
+define endday_jpt2 {
+      case Apr_thru_Aug {
+        condition       month >=APR .and. month <=AUG
+        select          endday2
+        from            salinity_std_jpt
+        where           month=month,wyt_SAC=wyt_SAC }
+      case no_standard {
+        condition        always
+        value            0  }
+}
+
+! *************************************************************************************
+! Get required Delta Outflow to meet salinity standard - uses EXTERNAL function
+! Place cap on required flow.
+
+define DO_req_jpt1 {
+     case standardON {
+          condition      month >=APR .and. month <=AUG
+          value          min(flowcap_salt, GET_REQ_DO(Go_hist_jpt,EC_std_jpt1,g_So_jpt,
+          											  g_Sb_jpt,g_alpha_jpt,g_beta_jpt,g_n_jpt) ) }
+     case standardOFF {
+          condition      always
+          value          0.0      }    }
+
+define DO_req_jpt2 {
+     case standardON {
+          condition      month >=APR .and. month <=AUG
+          value          min(flowcap_salt, GET_REQ_DO(Go_hist_jpt,EC_std_jpt2,g_So_jpt,
+          											  g_Sb_jpt,g_alpha_jpt,g_beta_jpt,g_n_jpt) ) }
+     case standardOFF {
+          condition      always
+          value          0.0      }    }
+          
+! *****************************************************************************************
+! Get Salinity at this location at the end of last period (beginning of this period).  
+! This is to verify that the standard was met last period and allows the variable to be used
+! in the Rock Slough model.
+
+define salinity_prv_jpt {std kind 'SALINITY-PREV-JPT' units 'MMHOS/CM'}
+
+define Gavg_prv_jpt {value	NDO(-1) + (g_beta_jpt/g_delT)*log((1+(NDO(-1)/Go_jpt(-1) - 1)*
+                         		EXP(-NDO(-1)*g_delT/g_beta_jpt))/(NDO(-1)/Go_jpt(-1)))   }
+
+define salin_prv_jpt {value (g_So_jpt - g_Sb_jpt)*EXP(-g_alpha_jpt*POW(Gavg_prv_jpt,g_n_jpt)) 
+                             + g_Sb_jpt}
+                          
+goal salinity_prv_jpt {salinity_prv_jpt = salin_prv_jpt}

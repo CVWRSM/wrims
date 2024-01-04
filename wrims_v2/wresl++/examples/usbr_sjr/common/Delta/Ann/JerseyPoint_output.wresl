@@ -1,0 +1,76 @@
+! R.Wilbur & S. Wu 5/10/05
+
+!****************************************************************************************
+
+! maximum export given the sacramento river flow
+
+define JP_MaxExport {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setJPMax {
+  lhs JP_MaxExport
+  case NoSalinityControlPossible{
+    condition abs(JP_m_sv) <= 0.001 .and. int(JP_b_sv) == 0
+    rhs ExportCap}
+  case NegSlope{
+    condition JP_m_sv <= 0.0
+    rhs 999999.}
+  case HighCost{
+    condition JP_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap}
+  case NegCarriage{
+    condition JP_m_sv >= 1.0
+    rhs 999999.}
+  case Normal {
+    condition always
+    rhs JP_m_sv*C_SAC041_ANN + JP_b_sv}
+}
+
+
+!****************************************************************************************
+
+! required delta outflow given exports
+
+define JP_MRDO {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setJPmrdo {
+  lhs JP_MRDO
+  case NoSalinityControlPossible{
+    condition abs(JP_m_sv) <= 0.001 .and. int(JP_b_sv) == 0
+    rhs 0.}
+  case NegSlope{
+    condition JP_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition JP_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  case NegCarriage{
+    condition JP_m_sv >= 1.0
+    rhs 0.}
+  case Normal {
+    condition always
+    rhs ((1-JP_m_sv)/JP_m_sv)*SOD_EXP - JP_b_sv/JP_m_sv + C_SJR038 + C_MOK019 + C_YBP002 + SR_25_CSL005 + I_MSH015 - D_RSL004_CCC004 - C_CSL005B - net_delta_cu}
+}
+
+!****************************************************************************************
+
+! required sac flow given exports
+
+define JP_ReqSac {lower unbounded upper unbounded kind 'FLOW' units 'cfs'}
+goal set_JP_ReqSac {
+  lhs JP_ReqSac
+  case NoSalinityControlPossible{
+    condition abs(JP_m_sv) <= 0.001 .and. int(JP_b_sv) == 0
+    rhs 0.}
+  case NegSlope{
+    condition JP_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition JP_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  case NegCarriage{
+    condition JP_m_sv >= 1.0
+    rhs 0.}
+  case Normal {
+    condition always
+    rhs SOD_EXP/JP_m_sv - JP_b_sv/JP_m_sv}
+}
+
+

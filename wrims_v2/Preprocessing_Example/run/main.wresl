@@ -1,0 +1,19 @@
+/*
+  EXAMPLE 2
+  Main WRESL File
+*/
+
+! SEQUENCE block defines the model solution sequence
+SEQUENCE One {
+    MODEL   Mod1
+    ORDER   1
+}
+
+! MODEL block defines files included in model "MOD1"
+MODEL Mod1 {
+	define testdllfunction {EXTERNAL test.dll}
+	INCLUDE 'system\system.wresl'
+	INCLUDE 'wytypes\wytypes.wresl'
+  include 'misc\minflowC1.wresl'
+	INCLUDE 'system\weight-table.wresl'
+}

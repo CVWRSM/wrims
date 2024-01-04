@@ -1,0 +1,89 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnn
+
+U ada.real_time.delays%b  a-retide.adb		14ca3495 OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.real_time%s	a-reatim.adb		a-reatim.ali
+W system%s		system.ads		system.ali
+W system.task_primitives%s  s-taspri.ads	s-taspri.ali
+W system.task_primitives.operations%s  s-taprop.adb  s-taprop.ali
+W system.tasking%s	s-taskin.adb		s-taskin.ali
+
+U ada.real_time.delays%s  a-retide.ads		1ce98077 EE NE OL PK
+W ada.real_time%s	a-reatim.adb		a-reatim.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-reatim.ads		20090409150020 7c462ab4
+D a-retide.ads		20090409150020 60afaac3
+D a-retide.adb		20090409150020 1d7eb6f4
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-atacco.ads		20090409150020 60789a20
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-osinte.ads		20090422121236 e19b549f
+D s-parame.ads		20091130110856 6cdeed25
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stausa.ads		20090429103054 146a8ff1
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-tasinf.ads		20090409150020 ff3904e8
+D s-taspri.ads		20090409150020 f6de4d95
+D s-taprop.ads		20090409150020 25a7965c
+D s-taskin.ads		20090707124244 78c4deed
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-win32.ads		20100128134454 4b10300f
+X 1 ada.ads
+16K9*Ada 19e8 4|37r9 48r5 5|32r6 37r14 62r10 84r5
+X 2 a-except.ads
+55K13*Exceptions 370e19 5|32w10 62r14
+95U14*Raise_Exception 5|62r25
+X 3 a-reatim.ads
+39K13*Real_Time 1|16k9 3|139e18 4|37r13 39r30 48r9 5|37r18 84r9
+41O9*Time 4|39r40 42r31 5|51r31 73r30
+46O9*Time_Span 5|75r27
+80V13*To_Duration{duration} 5|75r14
+X 4 a-retide.ads
+37K23*Delays 3|39k13 4|48l19 48e25 5|37b28 84l19 84t25
+39V13*To_Duration{duration} 39>26 5|65r37 73b13 76l8 76t19
+39o26 T{3|41O9} 5|73b26 75r38
+42U14*Delay_Until 42>27 5|51b14 67l8 67t19
+42o27 T{3|41O9} 5|51b27 65r50
+X 5 a-retide.adb
+39K12 STPO=39:48 52r52 65r10
+45N4 Absolute_RT 65r54
+52p7 Self_Id{24|106P9} 60r18 65r28
+X 10 system.ads
+37K9*System 5|34r6 35r6 39r25 52r26 59r10 83r4 10|197e11
+X 22 s-taspri.ads
+41K16*Task_Primitives 5|35r13 39r32 22|124e27
+X 23 s-taprop.ads
+39K32*Operations 5|35w29 39r48 23|546e38
+120V13*Self{24|106P9} 5|52r57
+374U14*Timed_Delay 5|65r15
+X 24 s-taskin.ads
+46K16*Tasking 5|34w13 52r33 59r17 83r11 24|1117e19
+104R9*Ada_Task_Control_Block 1072e14
+106P9*Task_Id(104R9) 5|52r41
+393V13*Detect_Blocking{boolean} 5|59r25
+491i7*Protected_Action_Nesting{natural} 5|60r33
+880r7*Common{449R9} 5|60r26
+1078U14*Initialize 5|83r19
+

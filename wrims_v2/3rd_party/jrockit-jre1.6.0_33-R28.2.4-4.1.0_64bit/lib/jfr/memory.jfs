@@ -1,0 +1,78 @@
+// Additional settings for enabling more verbose GC/memory management logging
+{
+        "http://www.oracle.com/jrockit/jvm/" : {
+
+                //////// Garbage collection and memory management related events
+
+		// All GC events are enabled by default, except the exceptions below.
+		"vm/gc/*" : {
+		     "enable" : true,
+		     "threshold" : 0ms, // All GCs should be included by default, even very short ones.
+		     "period" : 0       // Requestable events should only be send at start+end of recordings.
+		},
+
+                // Statistics for contiguous blocks of heap memory (used, free, dark matter) and per class
+                // Requested at start+end of recording.
+		"vm/gc/heap_statistics/*" : {
+		     "enable" : true
+		},
+
+                // Semiref related events off
+		"vm/gc/semiref/*" : {
+		     "enable" : false
+		},
+
+                // Allow semiref totals
+		"vm/gc/semiref/total" : {
+		     "enable" : true
+		},
+
+                // Allow semiref state counts
+		"vm/gc/semiref/counts_state" : {
+		     "enable" : true
+		},
+
+                // GC sub-level phase related events
+		"vm/gc/phases_sublevels/*" : {
+		     "enable" : true,
+                     "threshold" : 0
+		},
+
+                // GC top-level phase related events
+		"vm/gc/phases/transition_*" : {
+		     "enable" : true,
+		     "threshold" : 0
+		},
+                
+
+                //////// Freemem related events
+
+                // Summary of free memory on the freemem list, excluding the freemem cache and TLA cache
+		"vm/freemem/list_total" : {
+		     "enable" : true
+		},
+
+                // Summary of free memory on the freemem cache, excluding the freemem list and TLA cache
+		"vm/freemem/cache_total" : {
+		     "enable" : true
+		},
+
+                // Summary of an individual bucket in the freemem cache
+		"vm/freemem/cache_bucket_total" : {
+		     "enable" : true
+		},
+
+                //////// Java object allocation related events
+
+                // Summary of how many bytes and TLAs that have been allocated, for all threads and total
+		"java/statistics/alloc_*" : {
+		     "enable" : true
+		},
+
+                // Object allocation, both inside TLA and outside TLA
+		"java/object_alloc_*" : {
+		     "enable" : true,
+                     "threshold" : 100ms
+		}
+	}
+}

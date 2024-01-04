@@ -1,0 +1,22 @@
+! Rich Juricich & Ajay Dev 10/19/1999
+
+! di_cvp_s
+
+! ********************************* DEFINES *******************************************
+
+! Demand Index (DI) is the sum of CVP-SOD Annual Delivery and System Carryover and is 
+! estimated from the WSI versus DI Curve. 
+define DI_CVP_s {
+    case MartoMay {
+           condition  month >= MAR .and. month <= MAY 
+           select     di
+           from       wsi_di_cvp_s
+           given      wsi=wsi_cvp_s 
+           use        linear }      
+                               
+    case JuntoFeb { 
+           condition  always 
+           value      0 }                  
+              }
+
+define DI_CVP_sdv {alias DI_CVP_s kind 'demand-index' units 'taf'}  

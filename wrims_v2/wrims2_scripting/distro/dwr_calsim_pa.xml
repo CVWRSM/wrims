@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="Standalone_CalSimPA" name="Create Standalone CalSimPA">
+
+	<target name="Standalone_CalSimPA" depends="Clean_files, Generate_version, Copy_files, Build_zip">
+
+		<echo message="Finish Standalone_CalSimPA" />
+		
+	</target>	
+
+	<target name="Standalone_CalSimPA_debug" depends="Clean_files, Generate_version_debug, Copy_files, Build_zip">
+
+		<echo message="Finish Standalone_CalSimPA_debug" />
+		
+	</target>
+	
+	<target name="Clean_files" >
+		<echo message="Running Clean_Files" />
+		<delete file="../../out/CalSimPA/version/version.xml" />
+		<delete dir= "../../out/CalSimPA" />
+		<mkdir dir=  "../../out" />
+		<mkdir dir=  "../../zip_out" />
+		<mkdir dir=  "../../out/CalSimPA" />
+		<mkdir dir=  "../../out/CalSimPA/version" />
+	</target>
+
+	<target name="Generate_version" >
+		<echo message="Running Generate_version" />
+		<exec dir="." executable="python" failonerror="true">
+			<arg line="generate_version.py" />
+		</exec>
+
+	</target>
+
+	<target name="Generate_version_debug" >
+		<echo message="Running Generate_version_debug" />
+		<exec dir="." executable="python" failonerror="true">
+			<arg line="generate_version_debug.py" />
+		</exec>
+
+	</target>
+				
+	<target name="Copy_files" >
+
+		<available file="../../out/CalSimPA/version/version.xml" property="version_file.present" />
+		<fail>
+			<condition>
+				<not>
+					<isset property="version_file.present" />
+				</not>
+			</condition>
+		</fail>
+
+		<echo message="Running Copy_files" />
+
+		<copy todir="../../out/CalSimPA">
+		  <fileset dir="../../calsim_pa/">
+		  	<include name="scripts/**/*.py"/>
+		  	<include name="templates/**/*.template"/>
+		  	<include name="*.py"/>
+		  	<include name="*.cmd"/>
+
+		  	<include name="hecdss/**"/>
+		  	<include name="jre6/**"/>
+		  	<include name="jython252/**"/>
+		  	
+		  	<exclude name="jython252/**/*.class"/>
+		  	<exclude name="jython252/**/*.pkc"/>
+		  	<exclude name="jython252/cachedir/packages/*.idx"/>
+
+		  	<exclude name="**/.svn"/>
+		  	
+		  </fileset>
+		</copy>
+		
+		<echo message="Finished Copy_files" />
+
+	</target>
+	
+	<target name="Build_zip">
+	    <ant antfile="build_zip.xml" dir="."/>
+	</target>
+
+</project>

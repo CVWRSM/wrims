@@ -1,0 +1,130 @@
+!Millerton Prebanking, drawdown, and spills
+
+!Diversion to storage
+goal route_dts {D18_DTS = C848_TVC_DS + C855_CVC_DS + C851_SW_DS + C861_AEI_DS}
+
+!Allow DTS or DFS but not both.
+define int_D18_DTS {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal lim_DTS {D18_DTS < int_D18_DTS * 10000.}
+goal lim_DFS {D18_DFS < 10000. - int_D18_DTS * 10000.}
+
+!Allow DD or DB but not both.
+define int_D18_DD {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal lim_DD {D18_DD < int_D18_DD * 10000.}
+goal lim_DB {D18_DB < 10000. - int_D18_DD * 10000.}
+
+
+!Divert water to storage for later water quality releases during the summer.
+define lim_DTS_WQ {
+	case summer {
+		condition	range(month,jul,sep)
+		value		10000.
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal set_lim_DTS_WQ {D18_DTS_WQ < lim_DTS_WQ}
+
+
+!Release storage for water quality every oct to jan
+define lim_DFS_WQ {
+	case fall {
+		condition	range(month,oct,dec)
+		value		10000.
+	}
+	case otherwise{
+		condition	always
+		value		0.
+	}
+}
+goal set_lim_DFS_WQ {D18_DFS_WQ < lim_DFS_WQ}
+
+!Reduce Friant spill of MWD water by routing to MWD storage or groundwater bank.
+define D18_DFS_SP_WQ_M {std kind 'flow-delivery' units 'cfs'} !MWD Spill prevention at Millerton
+define D18_DFS_SP_WQ_G {std kind 'flow-delivery' units 'cfs'} !MWD Spill prevention at Millerton
+define D18_DFS_SP_WS_M {std kind 'flow-delivery' units 'cfs'} !SWP Spill prevention at Temperance Flat
+define D18_DFS_SP_WS_G {std kind 'flow-delivery' units 'cfs'} !SWP Spill prevention at Temperance Flat
+goal split_D18_DFS_SP_WQ {D18_DFS_SP_WQ = D18_DFS_SP_WQ_M + D18_DFS_SP_WQ_G}
+goal split_D18_DFS_SP_WS {D18_DFS_SP_WS = D18_DFS_SP_WS_M + D18_DFS_SP_WS_G}
+
+define lim_spill_ctrl {
+	case no_forcasted_spill {
+		condition	fr_for_spill < 1
+		value		0.
+	}
+	case otherwise {
+		condition	always
+		value		10000.
+	}
+}
+
+goal lim_D18_dfs_sp {D18_dfs_sp < lim_spill_ctrl}
+goal lim_D18_dts_sp {D18_dts < max(0., 10000. - lim_spill_ctrl)}
+
+!Cap Diversion to storage in TF from the SWP to 100 TAF total
+
+define sum_ds_swp_TF {std kind 'total-ds-deficit' units 'taf'}
+define sum_ds_swp_TF_ {value max(0., min(s12level5 - S12(-1),sum_ds_swp_TF(-1) + D18_DTS_WS(-1)*cfs_taf(-1)))}
+goal save_sum_ds_swp_TF {sum_ds_swp_TF = sum_ds_swp_TF_}
+
+goal cap_ds_swp_TF1 {D18_DTS_WS*cfs_taf < max(0.,100. - sum_ds_swp_TF_)}
+
+!Don't divert to storage in TF from SWP when S_MLRTN(-1) > 1000 TAF
+define lim_ds_swp_TF2 {
+	case low_S_MLRTN {
+		condition	S_MLRTN(-1) < 1000.
+		value		99999.
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal lim_TF_spills {D18_DTS_WS < lim_ds_swp_TF2}
+
+!Turn off SWP divesion to Millerton storage
+goal div_SWP_off {D18_DTS_WS = 0}
+
+!Limit drawdown (TAF).
+
+define lim_DD {
+	case OctToNov {condition range(month,oct,nov) value max(0., S_MLRTN(-1) - 200.)}
+	case December {condition month == dec value max(0., S_MLRTN(-1) - 250.)}
+	case January {condition month == jan value max(0., S_MLRTN(-1) - 350.)}
+	case FebToApr {condition range(month,feb,apr) value max(0., S_MLRTN(-1) - 9999.)}
+	case MaytoSep {condition always value max(0., S_MLRTN(-1) - 999.)}
+}
+
+goal set_lim_DD {D18_DD < lim_DD*taf_cfs}
+
+!Define subarcs for routing spill capture to MWD storage or groundwater bank for FWUA use.
+define D18_SC_S {std kind 'flow-delivery' units 'cfs'}
+define D18_SC_G {std kind 'flow-delivery' units 'cfs'}
+goal split2_D18_SC {D18_SC = D18_SC_S + D18_SC_G}
+
+!Limit spill capture to flood and snow release
+
+goal lim_sn {D18_SN < C_MLRTNA[SJRBase] - C_MLRTNA}
+goal lim_fl {D18_FL < C_MLRTNF[SJRBase] - C_MLRTNF}
+goal lim_sc {D18_SC < C_MDOTA[SJRBase] + C_Chowbyp1[SJRBase]}
+
+!Define subarcs for routing fall drawdown to MWD storage or groundwater bank for FWUA use.
+define D18_DD_S {std kind 'flow-delivery' units 'cfs'}
+define D18_DD_G {std kind 'flow-delivery' units 'cfs'}
+goal split_D18_DD {D18_DD = D18_DD_S + D18_DD_G}
+
+!Turn off drawdown to ground.  If turned back on, will have to separate DD and SC.
+goal off_DD_G {D18_DD_G < 0.}
+
+!Routing of Millerton diversions to Aqueduct.
+goal route_D18_DFS {C861_AEI_R_DFS + C851_SW_R_DFS + C848_TVC_R_DFS + C855_CVC_R_DFS = D18_DFS_WQ + D18_DFS_WS + D18_DFS_SH + D18_DFS_SP_WQ_M + D18_DFS_SP_WS_M}
+goal route_D18_DD {C861_AEI_R_DD_S + C851_SW_R_DD_S + C848_TVC_R_DD_S + C855_CVC_R_DD_S = D18_DD_S}
+goal route_D18_SC_S {C861_AEI_R_SC_S + C851_SW_R_SC_S + C848_TVC_R_SC_S + C855_CVC_R_SC_S = D18_SC_S}
+
+
+
+

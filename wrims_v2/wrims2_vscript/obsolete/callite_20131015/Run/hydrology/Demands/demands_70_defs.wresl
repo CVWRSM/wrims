@@ -1,0 +1,57 @@
+/*************************************
+demands_70_defs.wresl
+ 
+Tom FitzHugh BOR 5/20/2010
+
+Defines variables for DSA70 delivery logic.  The deliveries covered here are aggregated into 
+CalLite deliveries at nodes SacAmerican, Folsom, and Nimbus.
+**************************************/
+
+!Deliveries by type
+define D_SacAme_pmi {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_SacAme_psc {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_Folsm_pmi {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_Nimbus_pmi {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+!Monthly delivery pattern for each of the water purveyors
+define perdem_70       {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !AG monthly distribution--DSA 70
+define perdem_70smud   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--SMUD Folsom South Canal
+define perdem_70Sac    {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--City of Sacramento
+define perdem_70Fol    {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Folsom City
+define perdem_70SJWDS   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--San Juan WD (Sac County)
+define perdem_70SJWDP  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--San Juan WD (Placer County)
+define perdem_70Rose   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Roseville City
+define perdem_70ArcWD  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Arcade WD
+define perdem_70NRWD   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Northridge WD
+define perdem_70Carm   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Carmichael WD
+define perdem_70PCWA   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Placer County WA
+define perdem_70FolP   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Folsom Prison
+define perdem_70ElDor  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--El Dorado ID
+define perdem_70ElDorCo {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--El Dorado County WA
+define perdem_70CARec  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--CA Parks & Rec
+define perdem_70SCWC   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--SCWC/ACWC
+define perdem_70SCWA   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Sac County WA
+
+!The following are monthly demands on the Sacramento River
+define dem_D162a_psc   {timeseries kind 'DEMAND-CVP-SC' units 'CFS'} !Settlement contract demand--Settlement Contracts
+define dem_D162b_psc   {timeseries kind 'DEMAND-CVP-SC' units 'CFS'} !Settlement contract demand--Natomas Central MWC
+define dem_D162c_psc   {timeseries kind 'DEMAND-CVP-SC' units 'CFS'} !Settlement contract demand--Pleasant Grove-Verona MWC
+
+!The following are annual demands on the Sacramento River (below American) 
+define dem_D167b_pmi_a   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual demands for Sac County WA
+
+!The following are demands on the American River
+define dem_D8b_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Folsom City
+define dem_D8e_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--SJWD Sac County
+define dem_D8f_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--El Dorado ID
+define dem_D8g_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Roseville City (American)
+define dem_D8h_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--PCWA at Folsom
+define dem_D8i_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--El Dorado County PL 101-514
+define dem_D9ab_pmi_ann  {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--Cal Parks & Rec
+define dem_D9b_pmi_ann   {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}  !Annual project demand--SMUD Folsom South Canal
+
+! Timeseries for defining diversion requirements
+define prj_dr70 {timeseries kind 'DIV-REQUIREMENT' units 'TAF'} ! project diversion requirement
+define minpump_70_prj {timeseries kind 'MINPUMP' units 'TAF'} ! project portion of minimum gw pumping 
+define prj_dr70_imi {timeseries kind 'DEM-CVP-INDOORMI' units 'TAF'} ! Additional project diversion requirement for indoor M&I demand
+

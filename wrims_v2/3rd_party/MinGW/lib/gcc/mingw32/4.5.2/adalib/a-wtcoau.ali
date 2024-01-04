@@ -1,0 +1,131 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnvnnvvnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.wide_text_io.complex_aux%b  a-wtcoau.adb	933136d1 NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.wide_text_io%s	a-witeio.adb		a-witeio.ali
+W ada.wide_text_io.float_aux%s  a-wtflau.adb	a-wtflau.ali
+W ada.wide_text_io.generic_aux%s  a-wtgeau.adb	a-wtgeau.ali
+W system%s		system.ads		system.ali
+W system.img_real%s	s-imgrea.adb		s-imgrea.ali
+
+U ada.wide_text_io.complex_aux%s  a-wtcoau.ads	8a55721d NE OL PK
+W ada.wide_text_io%s	a-witeio.adb		a-witeio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-witeio.ads		20091028133152 e90583d1
+D a-wtcoau.ads		20090409150020 6350f1cc
+D a-wtcoau.adb		20090409150020 26bab2fc
+D a-wtflau.ads		20090409150020 5b86b8a9
+D a-wtgeau.ads		20090409150020 57d57fb7
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-imgrea.ads		20090409150020 da88b2ff
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-wchcon.ads		20090417130712 30c48dc1
+X 1 ada.ads
+16K9*Ada 19e8 10|40r9 69r5 11|32r6 32r40 33r6 37r14 39r24 202r5
+X 9 a-witeio.ads
+52K13*Wide_Text_IO 1|16k9 9|496e21 10|40r13 69r9 11|32r10 32r44 33r10 37r18
+. 39r28 202r9
+54P9*File_Type(373R9) 10|43r15 55r15 11|46r15 141r15
+76I12*Field{integer} 10|46r15 58r15 59r15 60r15 66r15 67r15 11|49r15 51r28
+. 144r15 145r15 146r15 164r16 165r16 167r35 168r35
+210U14*Put 11|149r7 151r7 153r7
+301X4*Data_Error 11|66r22 86r22 129r19
+302X4*Layout_Error 11|184r16
+X 10 a-wtcoau.ads
+40K26*Complex_Aux 9|52k13 10|69l22 69e33 11|37b31 202l22 202t33
+42U14*Get 43>7 44<7 45<7 46>7 11|45b14 90l8 90t11
+43p7 File{9|54P9} 11|46b7 61r22 73r21 75r16 76r19 77r21 78r16 79r19 82r24
+. 83r19
+44f7 ItemR{long_long_float} 11|47b7 62m33 76m25
+45f7 ItemI{long_long_float} 11|48b7 62m40 79m25
+46i7 Width{9|76I12} 11|49b7 60r10 61r28
+48U14*Gets 49>7 50<7 51<7 52<7 11|62r10 96b14 134l8 134t12
+49s7 From{string} 11|97b7 106r20 108r10 115r17 115r30 117r20 117r37 119r10
+. 123r17 123r30 126r23 126r40 128r13
+50f7 ItemR{long_long_float} 11|98b7 115m42
+51f7 ItemI{long_long_float} 11|99b7 123m42
+52i7 Last{positive} 11|100b7 133m7
+54U14*Put 55>7 56>7 57>7 58>7 59>7 60>7 11|140b14 154l8 154t11
+55p7 File{9|54P9} 11|141b7 149r12 150r16 151r12 152r16 153r12
+56f7 ItemR{long_long_float} 11|142b7 150r22
+57f7 ItemI{long_long_float} 11|143b7 152r22
+58i7 Fore{9|76I12} 11|144b7 150r29 152r29
+59i7 Aft{9|76I12} 11|145b7 150r35 152r35
+60i7 Exp{9|76I12} 11|146b7 150r40 152r40
+62U14*Puts 63<7 64>7 65>7 66>7 67>7 11|160b14 200l8 200t12
+63s7 To{string} 11|161b7 183r28 189m7 189r11 190m7 190r11 190r27 191m7 191r11
+. 193m7 193r11 195m7 195r11 195r29 197r16 197r39 198m10
+64f7 ItemR{long_long_float} 11|162b7 177r23
+65f7 ItemI{long_long_float} 11|163b7 179r23
+66i7 Aft{9|76I12} 11|164b7 177r49 179r49
+67i7 Exp{9|76I12} 11|165b7 177r54 179r54
+X 11 a-wtcoau.adb
+39K12 Aux=39:41 76r10 79r10 115r7 123r7 150r7 152r7
+51a7 Buf{string} 61m35 62r16 65r30 75m22 78m22 83m25
+52i7 Stop{integer} 61m40 62r26 64r30
+53i7 Ptr{integer} 62m47 64r19 74m10 75m27 78m27 83m30
+54b7 Paren{boolean} 75m37 81r13 83m40 85r20
+64i14 J{integer} 65r35
+102b7 Paren{boolean} 110m10 112m10 125r10
+103i7 Pos{integer} 106m26 108r16 109m10 109r17 115r23 115m49 117r26 117m49
+. 119r16 120m10 120r17 123r23 123m49 126r29 126m52 128r19 133r15
+167a7 I_String{string} 179m30 195r45
+168a7 R_String{string} 177m30 190r47
+170i7 Iptr{natural} 178m7 179m40 183r17 195r21 195r60 197r49
+171i7 Rptr{natural} 176m7 177m40 183r10 190r38 190r62 191r22 197r27
+197i11 J{integer} 198r14
+X 12 a-wtflau.ads
+40K34*Float_Aux 11|33w23 39r41 12|72e31
+49U14*Get 11|76r14 79r14
+54U14*Gets 11|115r11 123r11
+59U14*Put 11|150r11 152r11
+X 13 a-wtgeau.ads
+41K26*Generic_Aux 11|32w23 32r57 13|184e33
+75V13*Is_Blank{boolean} 11|65r20
+78U14*Load_Width 11|61r10
+85U14*Load_Skip 11|73r10 77r10 82r13
+90U14*Load 11|75r10 83r13
+99U14*Load 11|78r10
+169U14*String_Skip 11|106r7 117r7 126r10
+X 16 system.ads
+37K9*System 11|35r6 35r27 16|197e11
+X 22 s-imgrea.ads
+34K16*Img_Real 11|35w13 35r34 22|76e20
+61U14*Set_Image_Real 11|177r7 179r7
+

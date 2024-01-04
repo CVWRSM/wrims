@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="dev" name="Create Standalone Runnable Jar for WRIMSv2">
+
+	<target name="dev" depends="Clean_files, Build_scripting_jar">
+
+		<echo message="Finish dev" />
+		
+	</target>
+
+	<target name="Clean_files" >
+		<echo message="Running Clean_Files" />
+		<delete file="lib/misc/*.jar"/>
+		<delete file="zip_out/*.zip"/>
+		<delete dir="zip_out"/>
+		<mkdir dir="zip_out"/>
+	</target>
+
+	<target name="Build_scripting_jar" >
+
+
+		<echo message="Running Build_scripting_jar" />
+
+		<jar destfile="lib/misc/wscripting.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+			<fileset dir="D:/cvwrsm/trunk/wrims2_scripting/bin_dev">
+				<include name="scripting/**/*.class"/>
+				<exclude name="**/*.g"/>
+			</fileset>
+			<zipfileset excludes="META-INF/*.SF" src="D:/cvwrsm/trunk/wrims_v2/wrims_v2/src/wrimsv2/lib/antlr-runtime-3.2.jar"/>
+		</jar>
+		
+		<echo message="Finished Build_scripting_jar" />
+
+	</target>
+
+</project>

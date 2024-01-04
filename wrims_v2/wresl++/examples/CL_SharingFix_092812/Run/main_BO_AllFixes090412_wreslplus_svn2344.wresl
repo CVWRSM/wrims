@@ -1,0 +1,118 @@
+! Main WRESL Files containes the paths to run the model.
+!Date Modified: 04/23/2010; By: Hao Xie
+! 5/18/10 Added logic for two cycles to accomodate daily weir flows Tom FitzHugh BOR
+! comment out daily weir flows for corroboration study; Richard Chen DWR
+! 4/25/11 Cleanup Codes to remove CS2CL,CL, and change Ave to AVG. Richard Chen, DWR
+
+SEQUENCE CYCLE1 {
+    model   Upstream
+    order   1
+    }
+
+SEQUENCE CYCLE2 {
+    model   BASE
+    order   2
+    }
+
+SEQUENCE CYCLE3 {
+    model   B2_BO_DailyWeir
+    order   3
+    }
+
+model inc1 {
+	define[LOCAL] getFinalMrdo {EXTERNAL f90}  ! OBJ code file must be located in run\external directory for compilation
+	INCLUDE[LOCAL]  'Delta\DeltaExtFuncs_7inpANN.wresl'
+	INCLUDE[LOCAL]  'swp_dellogic\allocation\co_extfcn.wresl'
+
+	!Swithes applyed to all cycle
+	INCLUDE[LOCAL] 'Assumptions\Options_Switches.wresl'
+	INCLUDE[LOCAL] 'wytypes\wytypes.wresl'
+	!=====================
+	INCLUDE[LOCAL] 'System\System.wresl'
+	INCLUDE[LOCAL] 'hydrology\forecast\CVPforecasts.wresl'	
+}
+
+model inc2 {
+	INCLUDE[LOCAL] 'Assumptions\assumption.wresl'
+	INCLUDE[LOCAL] 'hydrology\demands\demands_defs.wresl'
+	INCLUDE[LOCAL] 'swp_dellogic\SwpDeliveryLogic.wresl'
+	INCLUDE[LOCAL] 'cvp_dellogic\CVP_delivery_Logic_system.wresl'
+	INCLUDE[LOCAL] 'cvp_dellogic\CVP_delivery_Logic_south.wresl' 
+	INCLUDE[LOCAL] 'swp_dellogic\conveyance_limits.wresl'
+	INCLUDE[LOCAL] 'hydrology\demands\demands.wresl'
+	INCLUDE[LOCAL] 'NorthofDelta\NOD.wresl'
+	INCLUDE[LOCAL] 'Rulecurve\rulecurve.wresl'
+	INCLUDE[LOCAL] 'Rulecurve\cvp_delivery_rule_curve.wresl'
+	INCLUDE[LOCAL] 'Rulecurve\San_Luis_Levels.wresl'
+	INCLUDE[LOCAL] 'Export_Ops\export_ops.wresl'
+	INCLUDE[LOCAL] 'Wheeling\WheelOpsVarDefines.wresl'
+}
+
+model inc3 {
+	INCLUDE[LOCAL] 'B2Actions\BaseStudyResults.wresl' 
+	INCLUDE[LOCAL] 'B2Actions\B2Action1Repeat.wresl'
+	INCLUDE[LOCAL] 'system\weight-table.wresl'
+}
+    
+MODEL Upstream {         !CYCLE 1
+include model inc1
+INCLUDE[LOCAL] 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+!INCLUDE 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+include model inc2
+INCLUDE [LOCAL] 'Wheeling\WheelzeroCVC.wresl'
+INCLUDE [LOCAL] 'Wheeling\WheelzeroJPOD.wresl' 
+INCLUDE [LOCAL]'COA\coa_Up.wresl'
+INCLUDE[LOCAL]'Delta\Ann\ExportEstimate1_up.wresl'
+INCLUDE [LOCAL] 'Delta\Delta.wresl'
+INCLUDE [LOCAL] 'Delta\X2_BO_WQ.wresl'
+include model inc3
+}
+
+MODEL BASE {         !CYCLE 2
+include model inc1
+include model inc2
+include model inc3
+INCLUDE[LOCAL] 'hydrology\WEIRS\weir_steps_monthops.wresl' 
+INCLUDE [LOCAL] 'Wheeling\WheelzeroCVC.wresl'
+INCLUDE [LOCAL] 'Wheeling\WheelzeroJPOD.wresl' 
+INCLUDE [LOCAL]'COA\coa.wresl'
+INCLUDE[LOCAL]'Delta\Ann\ExportEstimate1.wresl'
+INCLUDE [LOCAL] 'Delta\Delta.wresl'
+INCLUDE [LOCAL] 'Delta\X2_BO_WQ.wresl'
+}
+
+
+MODEL B2_BO_DailyWeir {         !CYCLE 3
+include model inc1
+include model inc2
+include model inc3
+INCLUDE[LOCAL] 'hydrology\WEIRS\weir_steps_dailyops_SETUP.wresl'  
+INCLUDE[LOCAL] 'B2Actions\B2SetBaseline.wresl'                    
+INCLUDE[LOCAL] 'B2Actions\B2ActionsDeltaRepeat.wresl'      
+INCLUDE[LOCAL] 'B2Actions\B2BanksFix.wresl' 
+INCLUDE[LOCAL] 'Delta\Ann\ExportEstimate1_B2.wresl'
+INCLUDE[LOCAL] 'Delta\Delta_reduced_calls.wresl'
+INCLUDE[LOCAL] 'Delta\X2_BO_WQ.wresl'
+
+! BO Code
+INCLUDE[LOCAL] 'Export_Ops\OMR\DELTA_RPA_init.wresl'
+INCLUDE [LOCAL] 'Export_Ops\FWS_SMELT_BO_FallX2check.wresl'
+INCLUDE [LOCAL] 'Export_Ops\NMFS_SALMON_BO_DCC.wresl'
+INCLUDE [LOCAL] 'Export_Ops\NMFS_SALMON_BO_Def.wresl'
+INCLUDE [LOCAL] 'Export_Ops\NMFS_SALMON_BO_SJR.wresl'
+
+INCLUDE[LOCAL] 'Export_Ops\OMR\FWS_SMELT_BO.wresl' 
+INCLUDE[LOCAL] 'Export_Ops\OMR\EXP_constraint.wresl'
+INCLUDE[LOCAL] 'Export_Ops\OMR\OMR_constraint.wresl'
+INCLUDE[LOCAL]'COA\coa_BO.wresl'
+
+INCLUDE[LOCAL] 'Delta\xc-gates.wresl'                 
+INCLUDE[LOCAL] 'Wheeling\Wheelcap.wresl'
+INCLUDE[LOCAL] 'Wheeling\wheelfixes.wresl'
+INCLUDE[LOCAL] 'output\cycle_output.wresl'
+INCLUDE[LOCAL] 'Shortage\ShortWarning.wresl'
+INCLUDE[LOCAL] 'FlowCriteria\FlowCriteria.wresl'
+
+INCLUDE[LOCAL] 'output\DV_ouput.wresl'
+}
+

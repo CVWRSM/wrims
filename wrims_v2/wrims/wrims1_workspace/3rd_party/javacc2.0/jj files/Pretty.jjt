@@ -1,0 +1,1577 @@
+/**
+* JJTree file: Pretty
+*              A Pretty Printer for Java
+*              Based on the Java1.1 grammar
+*
+* <p>
+* See the readme file accompanying the Pretty source for an introduction to
+* what's going on in this dauntingly large file.
+*
+* <p>
+* Last change:  ALM  26 Aug 97    5:24 pm
+**/
+
+
+options {
+    STATIC                 =  true;
+
+    MULTI                  =  true;
+    NODE_PREFIX            =  "AST_";
+    // NODE_PACKAGE           =  "nodePackageName";
+    // OUTPUT_FILE            =  "outputFileName";
+    NODE_DEFAULT_VOID      =         false;
+    NODE_SCOPE_HOOK        =  true;
+
+    LOOKAHEAD              =  1;
+    CHOICE_AMBIGUITY_CHECK =  2;
+    OTHER_AMBIGUITY_CHECK  =  1;
+    DEBUG_PARSER           =         false;
+    DEBUG_LOOKAHEAD        =         false;
+    DEBUG_TOKEN_MANAGER    =         false;
+    ERROR_REPORTING        =  true;
+    BUILD_PARSER           =  true;
+    BUILD_TOKEN_MANAGER    =  true; // !!!
+    COMMON_TOKEN_ACTION    =         false;
+    USER_TOKEN_MANAGER     =         false;
+    USER_CHAR_STREAM       =         false;
+    JAVA_UNICODE_ESCAPE    =  true;
+    UNICODE_INPUT          =         false;
+    IGNORE_CASE            =         false;
+    FORCE_LA_CHECK         =         false;
+    SANITY_CHECK           =  true;         // ha!
+}// options
+
+
+PARSER_BEGIN(Pretty)
+
+import java.io.*;
+
+public class Pretty {
+
+    public static final String VERSION  =  "0.0.113 BETA Thu 14-Aug-97 ALMA";
+    public static final String MODULE   =  Pretty.class.getName();
+    public static final String BEL      =  "\007";
+
+
+    public static void main(String[] args) {
+        Pretty parser;
+        SimpleNode node;
+
+        System.out.println(MODULE + " " + VERSION);
+
+        if (args.length >= 1) {
+            System.out.println("    Reformatting \"" + args[0] + "\" ...");
+
+            try {
+                parser = new Pretty(new FileInputStream(args[0]));
+            } catch (FileNotFoundException e) {
+                System.out.println("    File not found:  \"" + args[0] + '\"');
+                return;
+            }//endtry
+        } else {
+            System.out.println();
+            System.out.println("This is a sourcecode formatter (Pretty Printer) for Java 1.1 source code.");
+            System.out.println();
+            System.out.println("    This version is not complete, has no options, but is still useful.");
+            System.out.println();
+            System.out.println("    It does not handle comments perfectly.  Nothing will be lost, but comment");
+            System.out.println("    layout may look rough.  Also, inner classes used in allocation expressions");
+            System.out.println("    ('new') can upset the layout.  Heavily nested structured statements (like");
+            System.out.println("    'if', 'while', 'do', 'for') that contain singleton statements (ie. they're");
+            System.out.println("    not blocks) can also produce wierd looking code that marches off to the");
+            System.out.println("    right.  Similarly, array initializers ('{1, 2, 3, 4}') will march off to");
+            System.out.println("    the right.");
+            System.out.println();
+            System.out.println("                                     Sandy Anderson <sandy@almide.demon.co.uk>");
+            System.out.println();
+            System.out.println();
+            System.out.println("    Usage:  \"java "+ MODULE + " <javaSourceFile> [<PrettySourceFile>]\"");
+            System.out.println();
+            return;
+        }//endif
+
+        try {
+            parser.CompilationUnit();
+
+            node = (AST_CompilationUnit) jjtree.rootNode();
+
+            PrintStream ostr;
+
+            if (args.length == 1) {
+                ostr =  System.out;
+            } else {
+                ostr =  new PrintStream(new FileOutputStream(args[1]));
+            }//endif
+
+            // node.process(ostr);
+
+            // node.dump("");
+
+            if (SimpleNode.DEBUG) {
+                int n =  node.nodeCount();
+                int l =  node.leafCount();
+
+                System.out.println("DEBUGGING INFO");
+                System.out.println("--------------");
+                System.out.println();
+                System.out.println("Total Nodes       : " + n);
+                System.out.println("Total Leaves      : " + l);
+                System.out.println();
+                System.out.println("Nodes/Leaves ratio: " + (float)n/l);
+            }//endif
+
+            System.out.println();
+
+            node.prettyPrint(ostr);
+
+            System.out.println();
+            System.out.println(MODULE + " completed successfully.");
+            ostr.close();
+        } catch (ParseError e) {
+            System.out.println();
+            System.out.println(e);
+            System.out.println();
+            System.out.println("The golden rule is:");
+            System.out.println("    If it doesn't compile under javac, Pretty can't reformat it.");
+            System.out.println();
+            System.out.println(MODULE + ":  Encountered a Java syntax error.");
+            System.out.println();
+            System.out.println(BEL + "Reformatting abandoned!");
+        } catch (IOException e) {
+            System.out.println(BEL + MODULE + ":  Could not create file \"" + args[1] + "\"");
+        }//endtry
+    }// main(String[])
+
+
+    public static void jjtreeOpenNodeScope (SimpleNode n) {
+        // skip
+    }
+
+
+    public static void jjtreeCloseNodeScope (SimpleNode n) {
+        // skip
+    }
+
+}// Pretty
+
+PARSER_END(Pretty)
+
+
+/*
+TOKEN_MGR_DECLS: {
+
+    static void CommonTokenAction (Token t) {
+        // skip
+    }// CommonTokenAction(Token)
+
+}// TOKEN_MGR_DECLS
+*/
+
+
+
+
+//--------------------------------------------------------------------//
+//                           LEXICAL TOKENS                           //
+//--------------------------------------------------------------------//
+
+
+
+
+SKIP : /* WHITE SPACE */
+{
+    " "
+    |
+    "\t"
+    |
+    "\n"
+    |
+    "\r"
+    |
+    "\f"
+}// WHITE SPACE
+
+
+SPECIAL_TOKEN : /* COMMENTS */
+{
+    <SLASH_SLASH_COMMENT :  "//" (~["\n","\r"])*                                        >
+    // <SINGLE_LINE_COMMENT :  "//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")                     >
+/*  |
+    <FORMAL_COMMENT      :  "/**" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/" >
+*/
+    |
+    <SLASH_STAR_COMMENT  :  "/*" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/"  > {
+        /*
+        This is not needed, use beginLine and endLine!
+        if (-1 != matchedToken.image.indexOf('\r') || -1 != matchedToken.image.indexOf('\n')) {
+            matchedToken.containsNewline =  true;
+        }//endif
+        */
+    }
+}// COMMENTS
+
+
+TOKEN : /* RESERVED WORDS AND LITERALS */
+{
+      < ABSTRACT     : "abstract"     >
+    | < BOOLEAN      : "boolean"      >
+    | < BREAK        : "break"        >
+    | < BYTE         : "byte"         >
+    | < CASE         : "case"         >
+    | < CATCH        : "catch"        >
+    | < CHAR         : "char"         >
+    | < CLASS        : "class"        >
+    | < CONST        : "const"        >
+    | < CONTINUE     : "continue"     >
+    | < _DEFAULT     : "default"      >
+    | < DO           : "do"           >
+    | < DOUBLE       : "double"       >
+    | < ELSE         : "else"         >
+    | < EXTENDS      : "extends"      >
+    | < FALSE        : "false"        >
+    | < FINAL        : "final"        >
+    | < FINALLY      : "finally"      >
+    | < FLOAT        : "float"        >
+    | < FOR          : "for"          >
+    | < GOTO         : "goto"         >
+    | < IF           : "if"           >
+    | < IMPLEMENTS   : "implements"   >
+    | < IMPORT       : "import"       >
+    | < INSTANCEOF   : "instanceof"   >
+    | < INT          : "int"          >
+    | < INTERFACE    : "interface"    >
+    | < LONG         : "long"         >
+    | < NATIVE       : "native"       >
+    | < NEW          : "new"          >
+    | < NULL         : "null"         >
+    | < PACKAGE      : "package"      >
+    | < PRIVATE      : "private"      >
+    | < PROTECTED    : "protected"    >
+    | < PUBLIC       : "public"       >
+    | < RETURN       : "return"       >
+    | < SHORT        : "short"        >
+    | < STATIC       : "static"       >
+    | < SUPER        : "super"        >
+    | < SWITCH       : "switch"       >
+    | < SYNCHRONIZED : "synchronized" >
+    | < THIS         : "this"         >
+    | < THROW        : "throw"        >
+    | < THROWS       : "throws"       >
+    | < TRANSIENT    : "transient"    >
+    | < TRUE         : "true"         >
+    | < TRY          : "try"          >
+    | < VOID         : "void"         >
+    | < VOLATILE     : "volatile"     >
+    | < WHILE        : "while"        >
+}// RESERVED WORDS AND LITERALS
+
+
+TOKEN : /* LITERALS */
+{
+    < INTEGER_LITERAL:
+        <DECIMAL_LITERAL> (["l","L"])?
+        |
+        <HEX_LITERAL> (["l","L"])?
+        |
+        <OCTAL_LITERAL> (["l","L"])?
+    >
+    |
+    < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+    |
+    < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+    |
+    < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+    |
+    < FLOATING_POINT_LITERAL:
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+        |
+        "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+        |
+        (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+        |
+        (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+    >
+    |
+    < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+    |
+    < CHARACTER_LITERAL:
+        "'"
+        (   (~["'","\\","\n","\r"])
+            |
+            ("\\"
+                (   ["n","t","b","r","f","\\","'","\""]
+                    |
+                    ["0"-"7"] ( ["0"-"7"] )?
+                    |
+                    ["0"-"3"] ["0"-"7"] ["0"-"7"]
+                )
+            )
+        )
+        "'"
+    >
+    |
+    < STRING_LITERAL:
+        "\""
+        (   (~["\"","\\","\n","\r"])
+            |
+            ("\\"
+                (    ["n","t","b","r","f","\\","'","\""]
+                     |
+                     ["0"-"7"] ( ["0"-"7"] )?
+                     |
+                     ["0"-"3"] ["0"-"7"] ["0"-"7"]
+                )
+            )
+        )*
+        "\""
+    >
+}// LITERALS
+
+
+TOKEN : /* IDENTIFIERS */
+{
+    < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
+    |
+    < #LETTER:
+        [
+        "\u0024",
+        "\u0041"-"\u005a",
+        "\u005f",
+        "\u0061"-"\u007a",
+        "\u00c0"-"\u00d6",
+        "\u00d8"-"\u00f6",
+        "\u00f8"-"\u00ff",
+        "\u0100"-"\u1fff",
+        "\u3040"-"\u318f",
+        "\u3300"-"\u337f",
+        "\u3400"-"\u3d2d",
+        "\u4e00"-"\u9fff",
+        "\uf900"-"\ufaff"
+        ]
+    >
+    |
+    < #DIGIT:
+        [
+        "\u0030"-"\u0039",
+        "\u0660"-"\u0669",
+        "\u06f0"-"\u06f9",
+        "\u0966"-"\u096f",
+        "\u09e6"-"\u09ef",
+        "\u0a66"-"\u0a6f",
+        "\u0ae6"-"\u0aef",
+        "\u0b66"-"\u0b6f",
+        "\u0be7"-"\u0bef",
+        "\u0c66"-"\u0c6f",
+        "\u0ce6"-"\u0cef",
+        "\u0d66"-"\u0d6f",
+        "\u0e50"-"\u0e59",
+        "\u0ed0"-"\u0ed9",
+        "\u1040"-"\u1049"
+        ]
+    >
+}// IDENTIFIERS
+
+
+TOKEN : /* SEPARATORS */
+{
+      < LPAREN               : "("    >
+    | < RPAREN               : ")"    >
+    | < LBRACE               : "{"    >
+    | < RBRACE               : "}"    >
+    | < LBRACKET             : "["    >
+    | < RBRACKET             : "]"    >
+    | < SEMICOLON            : ";"    >
+    | < COMMA                : ","    >
+    | < DOT                  : "."    >
+}// SEPARATORS
+
+
+TOKEN : /* OPERATORS */
+{
+      < ASSIGN               : "="    >
+    | < GT                   : ">"    >
+    | < LT                   : "<"    >
+    | < BANG                 : "!"    >
+    | < TILDE                : "~"    >
+    | < HOOK                 : "?"    >
+    | < COLON                : ":"    >
+    | < EQ                   : "=="   >
+    | < LE                   : "<="   >
+    | < GE                   : ">="   >
+    | < NE                   : "!="   >
+    | < SC_OR                : "||"   >
+    | < SC_AND               : "&&"   >
+    | < INCR                 : "++"   >
+    | < DECR                 : "--"   >
+    | < PLUS                 : "+"    >
+    | < MINUS                : "-"    >
+    | < STAR                 : "*"    >
+    | < SLASH                : "/"    >
+    | < BIT_AND              : "&"    >
+    | < BIT_OR               : "|"    >
+    | < XOR                  : "^"    >
+    | < REM                  : "%"    >
+    | < LSHIFT               : "<<"   >
+    | < RSIGNEDSHIFT         : ">>"   >
+    | < RUNSIGNEDSHIFT       : ">>>"  >
+    | < PLUSASSIGN           : "+="   >
+    | < MINUSASSIGN          : "-="   >
+    | < STARASSIGN           : "*="   >
+    | < SLASHASSIGN          : "/="   >
+    | < ANDASSIGN            : "&="   >
+    | < ORASSIGN             : "|="   >
+    | < XORASSIGN            : "^="   >
+    | < REMASSIGN            : "%="   >
+    | < LSHIFTASSIGN         : "<<="  >
+    | < RSIGNEDSHIFTASSIGN   : ">>="  >
+    | < RUNSIGNEDSHIFTASSIGN : ">>>=" >
+}// OPERATORS
+
+
+
+
+//--------------------------------------------------------------------//
+//                      THE JAVA LANGUAGE GRAMMAR                     //
+//--------------------------------------------------------------------//
+
+
+
+
+//--------------------------------------------------------------------//
+//                     PROGRAM STRUCTURING SYNTAX                     //
+//--------------------------------------------------------------------//
+
+
+
+
+void CompilationUnit() : {}
+{
+    [ PackageDeclaration() ]                   #Package_OPTION(true)
+
+    ( ImportDeclaration() )*                   #Import_SEQUENCEOPTION(true)
+
+    ( TypeDeclaration() )*                     #TypeDec_SEQUENCEOPTION(true)
+
+                                        T_EOF()
+}
+
+
+void PackageDeclaration() : {}
+{
+    K_PACKAGE()  Name()  T_SEMICOLON()
+}
+
+
+void ImportDeclaration() : {}
+{
+    K_IMPORT()  Name()  [ T_DOT() T_STAR() ]  T_SEMICOLON()
+}
+
+
+void TypeDeclaration() : {}
+{
+    LOOKAHEAD( ( K_ABSTRACT() | K_FINAL() | K_PUBLIC() )* K_CLASS() )
+    ClassDeclaration()
+    |
+    InterfaceDeclaration()
+    |
+    T_SEMICOLON()
+}
+
+
+
+
+//--------------------------------------------------------------------//
+//                         DECLARATION SYNTAX                         //
+//--------------------------------------------------------------------//
+
+
+
+
+void ClassDeclaration() : {}
+{
+    ( K_ABSTRACT() | K_FINAL() | K_PUBLIC() )* #MODIFIERS(true)
+
+    UnmodifiedClassDeclaration()
+}
+
+
+void UnmodifiedClassDeclaration() : {}
+{
+    K_CLASS()  K_IDENTIFIER()
+    [ K_EXTENDS() Name() ]                     #ClassExtends_OPTION(true)
+    [ K_IMPLEMENTS() NameList() ]              #ClassImplements_OPTION(true)
+
+    ClassBody()
+}
+
+
+void ClassBody() : {}
+{
+    T_LBRACE()
+
+        ( ClassBodyDeclaration() )*            #ClassBodyDecs_SEQUENCEOPTION(true)
+
+    T_RBRACE()
+}
+
+
+void NestedClassDeclaration() : {}
+{
+    ( K_STATIC() | K_ABSTRACT() | K_FINAL() | K_PUBLIC() | K_PROTECTED() | K_PRIVATE() )* #MODIFIERS(true)
+
+    UnmodifiedClassDeclaration()
+}
+
+
+void ClassBodyDeclaration() : {}
+{
+    LOOKAHEAD(2)
+    Initializer()
+    |
+    LOOKAHEAD( ( K_STATIC() | K_ABSTRACT() | K_FINAL() | K_PUBLIC() | K_PROTECTED() | K_PRIVATE() )* K_CLASS() )
+    NestedClassDeclaration()
+    |
+    LOOKAHEAD( ( K_STATIC() | K_ABSTRACT() | K_FINAL() | K_PUBLIC() | K_PROTECTED() | K_PRIVATE() )* K_INTERFACE() )
+    NestedInterfaceDeclaration()
+    |
+    LOOKAHEAD( [ K_PUBLIC() | K_PROTECTED() | K_PRIVATE() ] Name() T_LPAREN() )
+    ConstructorDeclaration()
+    |
+    LOOKAHEAD( MethodDeclarationLookahead() )
+    MethodDeclaration()
+    |
+    Field_DECS()
+    |
+    T_SEMICOLON()
+}
+
+
+/* This production is to determine lookahead only. */
+void MethodDeclarationLookahead() #void : {}
+{
+    ( K_PUBLIC() | K_PROTECTED() | K_PRIVATE() | K_STATIC() | K_ABSTRACT() | K_FINAL() | K_NATIVE() | K_SYNCHRONIZED() )* #MODIFIERS(true)
+
+    ResultType()  K_IDENTIFIER()  T_LPAREN()
+}
+
+
+void InterfaceDeclaration() : {}
+{
+    ( K_ABSTRACT() | K_PUBLIC() )* #MODIFIERS(true)
+
+    UnmodifiedInterfaceDeclaration()
+}
+
+
+void NestedInterfaceDeclaration() : {}
+{
+    ( K_STATIC() | K_ABSTRACT() | K_FINAL() | K_PUBLIC() | K_PROTECTED() | K_PRIVATE() )* #MODIFIERS(true)
+
+    UnmodifiedInterfaceDeclaration()
+}
+
+
+void UnmodifiedInterfaceDeclaration() : {}
+{
+    K_INTERFACE()  K_IDENTIFIER()
+    [ K_EXTENDS() NameList() ]                 #InterfaceExtends_OPTION(true)
+
+    InterfaceBody()
+    // T_LBRACE()  ( InterfaceMemberDeclaration() )* #Node(true) T_RBRACE()
+}
+
+
+/* !!! New production to retain symmetry with ClassBody */
+void InterfaceBody() : {}
+{
+    T_LBRACE()
+
+        ( InterfaceMemberDeclaration() )*      #InterfaceBodyDecs_SEQUENCEOPTION(true)
+
+    T_RBRACE()
+}
+
+
+void InterfaceMemberDeclaration() : {}
+{
+    LOOKAHEAD( ( K_STATIC() | K_ABSTRACT() | K_FINAL() | K_PUBLIC() | K_PROTECTED() | K_PRIVATE() )* K_CLASS() )
+    NestedClassDeclaration()
+    |
+    LOOKAHEAD( ( K_STATIC() | K_ABSTRACT() | K_FINAL() | K_PUBLIC() | K_PROTECTED() | K_PRIVATE() )* K_INTERFACE() )
+    NestedInterfaceDeclaration()
+    |
+    LOOKAHEAD( MethodDeclarationLookahead() )
+    MethodDeclaration()
+    |
+    Field_DECS()
+    |
+    T_SEMICOLON()
+}
+
+
+/* !!! New production !!! */
+void Field_DECS() : {}
+{
+    (
+        LOOKAHEAD( FieldDeclaration() )
+        FieldDeclaration()
+    )+
+}
+
+
+void FieldDeclaration() : {}
+{
+    ( K_PUBLIC() | K_PROTECTED() | K_PRIVATE() | K_STATIC() | K_FINAL() | K_TRANSIENT() | K_VOLATILE() )* #MODIFIERS(true)
+
+    Type()
+
+    VariableDeclarator()
+
+    ( T_COMMA() VariableDeclarator() )*        #NODE(true)
+
+    T_SEMICOLON()
+}
+
+
+void VariableDeclarator() : {}
+{
+    VariableDeclaratorId()
+    [ T_ASSIGN() VariableInitializer() ]       #VariableInitialization_OPTION(true)
+}
+
+
+void VariableDeclaratorId() : {}
+{
+    K_IDENTIFIER()  ( T_LBRACKET() T_RBRACKET() )*
+}
+
+
+void VariableInitializer() : {}
+{
+    ArrayInitializer()
+    |
+    Expression()
+}
+
+
+void ArrayInitializer() : {}
+{
+    T_LBRACE()
+
+        [
+
+            VariableInitializer()
+            ( LOOKAHEAD(2) T_COMMA() VariableInitializer() )*  #ArrayInit_SEQUENCEOPTION(true)
+
+        ]                                      #ArrayInit_OPTION(true)
+
+        [ T_COMMA() ]
+
+    T_RBRACE()
+}
+
+
+void MethodDeclaration() : {}
+{
+    ( K_PUBLIC() | K_PROTECTED() | K_PRIVATE() | K_STATIC() | K_ABSTRACT() | K_FINAL() | K_NATIVE() | K_SYNCHRONIZED() )* #MODIFIERS(true)
+
+    UnmodifiedMethodDeclaration()
+}
+
+
+/* !!! New production to retain symmetry */
+void UnmodifiedMethodDeclaration() : {}
+{
+    ResultType()  MethodDeclarator()
+
+    [ K_THROWS() NameList() ]                  #Throws_OPTION(true)
+
+    (
+        MethodBody()
+        |
+        T_SEMICOLON()
+    )
+
+}
+
+
+/* !!! New production to retain symmetry.  Actually, this is grammatically identical to Block() */
+void MethodBody() : {}
+{
+    Block()
+}
+
+
+void MethodDeclarator() : {}
+{
+    K_IDENTIFIER()  FormalParameters()
+
+    ( T_LBRACKET() T_RBRACKET() )*             #NODE(true)
+}
+
+
+void FormalParameters() : {}
+{
+    T_LPAREN()  [ FormalParameter() ( T_COMMA() FormalParameter() )* ]  T_RPAREN()
+}
+
+
+void FormalParameter() : {}
+{
+    [ K_FINAL() ]                              #NODE(true)
+
+    Type()
+
+    VariableDeclaratorId()
+}
+
+
+void ConstructorDeclaration() : {}
+{
+    [ K_PUBLIC() | K_PROTECTED() | K_PRIVATE() ] #MODIFIERS(true)
+
+    UnmodifiedConstructorDeclaration()
+}
+
+
+void UnmodifiedConstructorDeclaration() : {}
+{
+    K_IDENTIFIER()  FormalParameters()
+
+    [ K_THROWS() NameList() ]                  #Throws_OPTION(true)
+
+    ConstructorBody()
+}
+
+
+void ConstructorBody() : {}
+{
+    T_LBRACE()
+
+          [
+              LOOKAHEAD(ExplicitConstructorInvocation())
+              ExplicitConstructorInvocation()
+          ]                                    #ExplicitConstructor_OPTION(true)
+
+          ( BlockStatement() )*                #BlockStatement_SEQUENCEOPTION(true)
+
+    T_RBRACE()
+}
+
+
+void ExplicitConstructorInvocation() : {}
+{
+    LOOKAHEAD(K_THIS() Arguments() T_SEMICOLON())
+    K_THIS()  Arguments()  T_SEMICOLON()
+    |
+    [ LOOKAHEAD(2) PrimaryExpression() T_DOT() ]  K_SUPER()  Arguments()  T_SEMICOLON()
+}
+
+
+void Initializer() : {}
+{
+    [ K_STATIC() ] #NODE(true)
+
+    Block()
+}
+
+
+
+
+//--------------------------------------------------------------------//
+//                  TYPE, NAME AND EXPRESSION SYNTAX                  //
+//--------------------------------------------------------------------//
+
+
+
+
+void Type() : {}                                                               // !!! PROBLEMATIC don't forget !!!
+{
+    ( PrimitiveType() | Name() )  ( T_LBRACKET() T_RBRACKET() )*
+}
+
+
+void PrimitiveType() : {}
+{
+    K_BOOLEAN()
+    |
+    K_CHAR()
+    |
+    K_BYTE()
+    |
+    K_SHORT()
+    |
+    K_INT()
+    |
+    K_LONG()
+    |
+    K_FLOAT()
+    |
+    K_DOUBLE()
+}
+
+
+void ResultType() : {}
+{
+    K_VOID()
+    |
+    Type()
+}
+
+
+/*
+* A lookahead of 2 is required below since "Name" can be followed
+* by a ".*" when used in the context of an "ImportDeclaration".
+*/
+void Name() : {}
+{
+    K_IDENTIFIER()  ( LOOKAHEAD(2) T_DOT() K_IDENTIFIER() )*
+}
+
+
+void NameList() #NameList(>1) : {}
+{
+    Name()  ( T_COMMA() Name() )*
+}
+
+
+
+
+//--------------------------------------------------------------------//
+//                          EXPRESSION SYNTAX                         //
+//--------------------------------------------------------------------//
+
+
+
+
+/*
+* This expansion has been written this way instead of:
+*     Assignment() | ConditionalExpression()
+* for performance reasons.
+* However, it is a weakening of the grammar for it allows the LHS of
+* assignments to be any conditional expression whereas it can only be
+* a primary expression.  Consider adding a semantic predicate to work
+* around this.
+*/
+void Expression() : {}
+{
+    ConditionalExpression()  [ AssignmentOperator() Expression() ]
+}
+
+
+void AssignmentOperator() : {}
+{
+    T_ASSIGN()
+    |
+    T_STARASSIGN()
+    |
+    T_SLASHASSIGN()
+    |
+    T_REMASSIGN()
+    |
+    T_PLUSASSIGN()
+    |
+    T_MINUSASSIGN()
+    |
+    T_LSHIFTASSIGN()
+    |
+    T_RSIGNEDSHIFTASSIGN()
+    |
+    T_RUNSIGNEDSHIFTASSIGN()
+    |
+    T_ANDASSIGN()
+    |
+    T_XORASSIGN()
+    |
+    T_ORASSIGN()
+}
+
+
+void ConditionalExpression() #ConditionalExpression(>1) : {}
+{
+    ConditionalOrExpression()
+
+    [
+    (
+        T_HOOK()
+
+        Expression()
+
+        T_COLON()
+
+        ConditionalExpression()
+    )                                          #Hook_OP(true)
+    ]
+}
+
+
+void ConditionalOrExpression() #ConditionalOrExpression(>1) : {}
+{
+    ConditionalAndExpression()  ( T_SC_OR() #SPACED_OP(true) ConditionalAndExpression() )*
+}
+
+
+void ConditionalAndExpression() #ConditionalAndExpression(>1) : {}
+{
+    InclusiveOrExpression()  ( T_SC_AND() #SPACED_OP(true) InclusiveOrExpression() )*
+}
+
+
+void InclusiveOrExpression() #InclusiveOrExpression(>1) : {}
+{
+    ExclusiveOrExpression()  ( T_BIT_OR() #SPACED_OP(true) ExclusiveOrExpression() )*
+}
+
+
+void ExclusiveOrExpression() #ExclusiveOrExpression(>1) : {}
+{
+    AndExpression()  ( T_XOR() #SPACED_OP(true) AndExpression() )*
+}
+
+
+void AndExpression() #AndExpression(>1) : {}
+{
+    EqualityExpression()  ( T_BIT_AND() #SPACED_OP(true) EqualityExpression() )*
+}
+
+
+void EqualityExpression() #EqualityExpression(>1) : {}
+{
+    InstanceOfExpression()  ( ( T_EQ() | T_NE() )#SPACED_OP(true) InstanceOfExpression() )*
+}
+
+
+void InstanceOfExpression() #InstanceOfExpression(>1) : {}
+{
+    RelationalExpression()  [ K_INSTANCEOF() #SPACED_OP(true) Type() ]
+}
+
+
+void RelationalExpression() #RelationalExpression(>1) : {}
+{
+    ShiftExpression()  ( ( T_LT() | T_GT() | T_LE() | T_GE() )#SPACED_OP(true) ShiftExpression() )*
+}
+
+
+void ShiftExpression() #ShiftExpression(>1) : {}
+{
+    AdditiveExpression()  ( ( T_LSHIFT() | T_RSIGNEDSHIFT() | T_RUNSIGNEDSHIFT() )#SPACED_OP(true) AdditiveExpression() )*
+}
+
+
+void AdditiveExpression() #AdditiveExpression(>1) : {}
+{
+    MultiplicativeExpression()  ( ( T_PLUS() | T_MINUS() )#SPACED_OP(true) MultiplicativeExpression() )*
+}
+
+
+void MultiplicativeExpression() #MultiplicativeExpression(>1) : {}
+{
+    UnaryExpression()  ( ( T_STAR() | T_SLASH() | T_REM() ) UnaryExpression() )*
+}
+
+
+void UnaryExpression() : {}
+{
+    ( T_PLUS() | T_MINUS() )  UnaryExpression()
+    |
+    PreIncrementExpression()
+    |
+    PreDecrementExpression()
+    |
+    UnaryExpressionNotPlusMinus()
+}
+
+
+void PreIncrementExpression() : {}
+{
+    T_INCR()  PrimaryExpression()
+}
+
+
+void PreDecrementExpression() : {}
+{
+    T_DECR()  PrimaryExpression()
+}
+
+
+void UnaryExpressionNotPlusMinus() : {}
+{
+    ( T_TILDE() | T_BANG() )  UnaryExpression()
+    |
+    LOOKAHEAD( CastLookahead() )
+    CastExpression()
+    |
+    PostfixExpression()
+}
+
+
+/*
+* This production is to determine lookahead only.  The LOOKAHEAD specifications
+* below are not used, but they are there just to indicate that we know about
+* this.
+*/
+void CastLookahead() #void : {}
+{
+    LOOKAHEAD(2)
+    T_LPAREN()  PrimitiveType()
+    |
+    LOOKAHEAD(T_LPAREN() Name() T_LBRACKET())
+    T_LPAREN()  Name()  T_LBRACKET()  T_RBRACKET()
+    |
+    T_LPAREN()  Name()  T_RPAREN()  ( T_TILDE() | T_BANG() | T_LPAREN() | K_IDENTIFIER() | K_THIS() | K_SUPER() | K_NEW() | Literal() )
+}
+
+
+void PostfixExpression() : {}
+{
+    PrimaryExpression()  [ T_INCR() | T_DECR() ]
+}
+
+
+void CastExpression() : {}
+{
+    LOOKAHEAD(T_LPAREN() PrimitiveType())
+    T_LPAREN()  Type()  T_RPAREN()  UnaryExpression()
+    |
+    LOOKAHEAD(T_LPAREN() Name())
+    T_LPAREN()  Type()  T_RPAREN()  UnaryExpressionNotPlusMinus()
+}
+
+
+void PrimaryExpression() : {}
+{
+    PrimaryPrefix()  ( LOOKAHEAD(2) PrimarySuffix() )*
+}
+
+
+void PrimaryPrefix() : {}
+{
+    Literal()
+    |
+    K_THIS()
+    |
+    K_SUPER()  T_DOT()  K_IDENTIFIER()
+    |
+    T_LPAREN()  Expression()  T_RPAREN()
+    |
+    AllocationExpression()
+    |
+    LOOKAHEAD( ResultType() T_DOT() K_CLASS() )
+    ResultType()  T_DOT()  K_CLASS()
+    |
+    Name()
+}
+
+
+void PrimarySuffix() : {}
+{
+    LOOKAHEAD(2)
+    T_DOT()  K_THIS()
+    |
+    LOOKAHEAD(2)
+    T_DOT()  AllocationExpression()
+    |
+    T_LBRACKET()  Expression()  T_RBRACKET()
+    |
+    T_DOT()  K_IDENTIFIER()
+    |
+    Arguments()
+}
+
+
+void Literal() #void : {}
+{
+    K_INTEGER_LITERAL()
+    |
+    K_FP_LITERAL()
+    |
+    K_CHAR_LITERAL()
+    |
+    K_STRING_LITERAL()
+    |
+    BooleanLiteral()
+    |
+    NullLiteral()
+}
+
+
+void BooleanLiteral() #void : {}
+{
+    K_TRUE()
+    |
+    K_FALSE()
+}
+
+
+void NullLiteral() #void : {}
+{
+    K_NULL()
+}
+
+
+void Arguments() : {}
+{
+    T_LPAREN()  [ ArgumentList() ]  T_RPAREN()
+}
+
+
+void ArgumentList() #ArgumentList(>1) : {}
+{
+    Expression()  ( T_COMMA() Expression() )*
+}
+
+
+void AllocationExpression() : {}
+{
+    LOOKAHEAD(2)
+    K_NEW()  PrimitiveType()  ArrayDimensions()  [ ArrayInitializer() ]
+    |
+    K_NEW()  Name()
+    (
+        ArrayDimensions()  [ ArrayInitializer() ]
+        |
+        Arguments()  [ ( ClassBody() )#Alloc_CLASS(true) ]
+    )
+}
+
+
+/*
+* The second LOOKAHEAD specification below is to parse to PrimarySuffix
+* if there is an expression between the "[...]".
+*/
+void ArrayDimensions() : {}
+{
+    ( LOOKAHEAD(2) T_LBRACKET() Expression() T_RBRACKET() )+ ( LOOKAHEAD(2) T_LBRACKET() T_RBRACKET() )*
+}
+
+
+
+
+//--------------------------------------------------------------------//
+//                          STATEMENT SYNTAX                          //
+//--------------------------------------------------------------------//
+
+
+
+
+/* !!! modified */
+void Statement() #void : {}
+{
+    LOOKAHEAD(2)
+    LabeledStatement()
+    |
+    UnlabeledStatement()
+}
+
+
+/* !!! new production */
+void UnlabeledStatement() #void : {}
+{
+    Block()
+    |
+    EmptyStatement()
+    |
+    ( StatementExpression()  T_SEMICOLON() )   #NODE(true) // !!! not a "statement" node
+    |
+    SwitchStatement()
+    |
+    IfStatement()
+    |
+    WhileStatement()
+    |
+    DoStatement()
+    |
+    ForStatement()
+    |
+    BreakStatement()
+    |
+    ContinueStatement()
+    |
+    ReturnStatement()
+    |
+    ThrowStatement()
+    |
+    SynchronizedStatement()
+    |
+    TryStatement()
+}
+
+
+/* !!! modified */
+void LabeledStatement() : {}
+{
+    Labels()  UnlabeledStatement()
+}
+
+
+/* !!! new production */
+void Labels() : {}
+{
+    ( LOOKAHEAD(2) ( K_IDENTIFIER()  T_COLON() )#Label(true) )+
+}
+
+
+void Block() : {}
+{
+    T_LBRACE()
+
+        ( BlockStatement() )*                  #BlockStatement_SEQUENCEOPTION(true)
+
+    T_RBRACE()
+}
+
+
+void BlockStatement() #void : {}
+{
+    LOOKAHEAD([ K_FINAL() ] Type() K_IDENTIFIER())
+    ( LocalVariableDeclaration()  T_SEMICOLON() )  #LocalVar_STATEMENT(true)
+    |
+    Statement()
+    |
+    UnmodifiedClassDeclaration()
+}
+
+
+void LocalVariableDeclaration() : {}
+{
+    [ K_FINAL() ]                              #NODE(true)
+
+    Type()
+
+    VariableDeclarator()
+
+    ( T_COMMA() VariableDeclarator() )*        #NODE(true)
+}
+
+
+void EmptyStatement() : {}
+{
+    T_SEMICOLON()
+}
+
+
+/*
+* The last expansion of this production accepts more than the legal
+* Java expansions for StatementExpression.  This expansion does not
+* use PostfixExpression for performance reasons.
+*/
+void StatementExpression() : {}
+{
+    PreIncrementExpression()
+    |
+    PreDecrementExpression()
+    |
+    PrimaryExpression()
+    [
+        T_INCR()
+        |
+        T_DECR()
+        |
+        AssignmentOperator()  Expression()
+    ]
+}
+
+
+void SwitchStatement() : {}
+{
+    K_SWITCH()  T_LPAREN()  Expression()  T_RPAREN()
+
+        SwitchBody()
+}
+
+
+/* !!! New production to retain symmetry */
+void SwitchBody() : {}
+{
+    T_LBRACE()
+        (
+            (
+                SwitchLabel()
+                (
+                    BlockStatement()
+                )*                             #BlockStatement_SEQUENCEOPTION(true)
+            )                                  #Case_NODE(true)
+        )*                                     #Case_SEQUENCEOPTION(true)
+    T_RBRACE()
+}
+
+
+void SwitchLabel() : {}
+{
+    ( K_CASE()  Expression()  T_COLON() )      #Case_LABEL(true)
+    |
+    ( K_DEFAULT()  T_COLON() )                 #NODE(true)
+}
+
+
+/*
+* The disambiguating algorithm of JavaCC automatically binds dangling
+* else's to the innermost if statement.  The LOOKAHEAD specification
+* is to tell JavaCC that we know what we are doing.
+*/
+void IfStatement() : {}
+{
+    K_IF()  T_LPAREN()  Expression()  T_RPAREN()
+        Statement()
+
+    [
+    LOOKAHEAD(1)
+    (
+    K_ELSE()
+        Statement()
+    )                                          #Else_OPTION(true)
+    ]
+}
+
+
+void WhileStatement() : {}
+{
+    K_WHILE()  T_LPAREN()  Expression()  T_RPAREN()
+        Statement()
+}
+
+
+void DoStatement() : {}
+{
+    K_DO()
+        Statement()
+    K_WHILE()  T_LPAREN()  Expression()  T_RPAREN()  T_SEMICOLON()
+}
+
+
+void ForStatement() : {}
+{
+    K_FOR()  T_LPAREN()
+             (
+               [ ForInit() ]                   #NODE(true)
+               T_SEMICOLON()
+               [ Expression() ]                #NODE(true)
+               T_SEMICOLON()
+               [ ForUpdate() ]                 #NODE(true)
+             )                                 #ForControl_NODE(true)
+             T_RPAREN()
+
+        Statement()
+}
+
+
+void ForInit() : {}
+{
+    LOOKAHEAD( [ K_FINAL() ] Type() K_IDENTIFIER() )
+    LocalVariableDeclaration()
+    |
+    StatementExpressionList()
+}
+
+
+void StatementExpressionList() #StatementExpressionList(>1) : {}
+{
+    StatementExpression()  ( T_COMMA() StatementExpression() )*
+}
+
+
+void ForUpdate() : {}
+{
+    StatementExpressionList()
+}
+
+
+void BreakStatement() : {}
+{
+    K_BREAK()
+
+    [ K_IDENTIFIER() ]                         #NODE(true)
+
+    T_SEMICOLON()
+}
+
+
+void ContinueStatement() : {}
+{
+    K_CONTINUE()
+
+    [ K_IDENTIFIER() ]                         #NODE(true)
+
+    T_SEMICOLON()
+}
+
+
+void ReturnStatement() : {}
+{
+    K_RETURN()
+
+    [ Expression() ]                           #NODE(true)
+
+    T_SEMICOLON()
+}
+
+
+void ThrowStatement() : {}
+{
+    K_THROW()  Expression()  T_SEMICOLON()
+}
+
+
+void SynchronizedStatement() : {}
+{
+    K_SYNCHRONIZED()  T_LPAREN()  Expression()  T_RPAREN()
+        Block()
+}
+
+
+/*
+* Semantic check required here to make sure that at least one
+* finally/catch is present.
+*/
+void TryStatement() : {}
+{
+    K_TRY()
+        Block()
+
+    (
+    (
+    K_CATCH() T_LPAREN() FormalParameter() T_RPAREN()
+        Block()
+    )                                          #Catch_NODE(true)
+    )*
+
+    [
+    (
+    K_FINALLY()
+        Block()
+    )                                          #Finally_NODE(true)
+    ]                                          
+}
+
+
+
+
+//--------------------------------------------------------------------//
+//                               TOKENS                               //
+//--------------------------------------------------------------------//
+
+
+
+
+/* REGULAR EXPRESSION TOKENS */
+
+void K_INTEGER_LITERAL()      #Token   : { Token t; } { t =  <INTEGER_LITERAL>      {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_INTEGER_LITERAL;      } }
+void K_FP_LITERAL()           #Token   : { Token t; } { t =  <FLOATING_POINT_LITERAL> {jjtThis.setToken(t);                jjtThis.tagId =  jjtThis.K_FP_LITERAL;           } }
+void K_CHAR_LITERAL()         #Token   : { Token t; } { t =  <CHARACTER_LITERAL>    {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_CHAR_LITERAL;         } }
+void K_STRING_LITERAL()       #Token   : { Token t; } { t =  <STRING_LITERAL>       {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_STRING_LITERAL;       } }
+
+void K_IDENTIFIER()           #Keyword : { Token t; } { t =  <IDENTIFIER>           {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_IDENTIFIER;           } }
+
+
+/* CONSTANT TOKENS */
+
+/* KEYWORDS */
+
+void K_ABSTRACT()             #Keyword : { Token t; } { t =  <ABSTRACT>             {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_ABSTRACT;             } }
+void K_BOOLEAN()              #Keyword : { Token t; } { t =  <BOOLEAN>              {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_BOOLEAN;              } }
+void K_BREAK()                #Keyword : { Token t; } { t =  <BREAK>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_BREAK;                } }
+void K_BYTE()                 #Keyword : { Token t; } { t =  <BYTE>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_BYTE;                 } }
+void K_CASE()                 #Keyword : { Token t; } { t =  <CASE>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_CASE;                 } }
+void K_CATCH()                #Keyword : { Token t; } { t =  <CATCH>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_CATCH;                } }
+void K_CHAR()                 #Keyword : { Token t; } { t =  <CHAR>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_CHAR;                 } }
+void K_CLASS()                #Keyword : { Token t; } { t =  <CLASS>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_CLASS;                } }
+void K_CONST()                #Keyword : { Token t; } { t =  <CONST>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_CONST;                } } // ???
+void K_CONTINUE()             #Keyword : { Token t; } { t =  <CONTINUE>             {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_CONTINUE;             } }
+void K_DEFAULT()              #Keyword : { Token t; } { t =  <_DEFAULT>             {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_DEFAULT;              } } // !!! stet !!!
+void K_DO()                   #Keyword : { Token t; } { t =  <DO>                   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_DO;                   } }
+void K_DOUBLE()               #Keyword : { Token t; } { t =  <DOUBLE>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_DOUBLE;               } }
+void K_ELSE()                 #Keyword : { Token t; } { t =  <ELSE>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_ELSE;                 } }
+void K_EXTENDS()              #Keyword : { Token t; } { t =  <EXTENDS>              {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_EXTENDS;              } }
+void K_FALSE()                #Keyword : { Token t; } { t =  <FALSE>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_FALSE;                } }
+void K_FINAL()                #Keyword : { Token t; } { t =  <FINAL>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_FINAL;                } }
+void K_FINALLY()              #Keyword : { Token t; } { t =  <FINALLY>              {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_FINALLY;              } }
+void K_FLOAT()                #Keyword : { Token t; } { t =  <FLOAT>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_FLOAT;                } }
+void K_FOR()                  #Keyword : { Token t; } { t =  <FOR>                  {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_FOR;                  } }
+void K_GOTO()                 #Keyword : { Token t; } { t =  <GOTO>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_GOTO;                 } } // ???
+void K_IF()                   #Keyword : { Token t; } { t =  <IF>                   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_IF;                   } }
+void K_IMPLEMENTS()           #Keyword : { Token t; } { t =  <IMPLEMENTS>           {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_IMPLEMENTS;           } }
+void K_IMPORT()               #Keyword : { Token t; } { t =  <IMPORT>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_IMPORT;               } }
+void K_INSTANCEOF()           #Keyword : { Token t; } { t =  <INSTANCEOF>           {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_INSTANCEOF;           } }
+void K_INT()                  #Keyword : { Token t; } { t =  <INT>                  {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_INT;                  } }
+void K_INTERFACE()            #Keyword : { Token t; } { t =  <INTERFACE>            {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_INTERFACE;            } }
+void K_LONG()                 #Keyword : { Token t; } { t =  <LONG>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_LONG;                 } }
+void K_NATIVE()               #Keyword : { Token t; } { t =  <NATIVE>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_NATIVE;               } }
+void K_NEW()                  #Keyword : { Token t; } { t =  <NEW>                  {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_NEW;                  } }
+void K_NULL()                 #Keyword : { Token t; } { t =  <NULL>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_NULL;                 } }
+void K_PACKAGE()              #Keyword : { Token t; } { t =  <PACKAGE>              {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_PACKAGE;              } }
+void K_PRIVATE()              #Keyword : { Token t; } { t =  <PRIVATE>              {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_PRIVATE;              } }
+void K_PROTECTED()            #Keyword : { Token t; } { t =  <PROTECTED>            {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_PROTECTED;            } }
+void K_PUBLIC()               #Keyword : { Token t; } { t =  <PUBLIC>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_PUBLIC;               } }
+void K_RETURN()               #Keyword : { Token t; } { t =  <RETURN>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_RETURN;               } }
+void K_SHORT()                #Keyword : { Token t; } { t =  <SHORT>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_SHORT;                } }
+void K_STATIC()               #Keyword : { Token t; } { t =  <STATIC>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_STATIC;               } }
+void K_SUPER()                #Keyword : { Token t; } { t =  <SUPER>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_SUPER;                } }
+void K_SWITCH()               #Keyword : { Token t; } { t =  <SWITCH>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_SWITCH;               } }
+void K_SYNCHRONIZED()         #Keyword : { Token t; } { t =  <SYNCHRONIZED>         {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_SYNCHRONIZED;         } }
+void K_THIS()                 #Keyword : { Token t; } { t =  <THIS>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_THIS;                 } }
+void K_THROW()                #Keyword : { Token t; } { t =  <THROW>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_THROW;                } }
+void K_THROWS()               #Keyword : { Token t; } { t =  <THROWS>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_THROWS;               } }
+void K_TRANSIENT()            #Keyword : { Token t; } { t =  <TRANSIENT>            {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_TRANSIENT;            } }
+void K_TRUE()                 #Keyword : { Token t; } { t =  <TRUE>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_TRUE;                 } }
+void K_TRY()                  #Keyword : { Token t; } { t =  <TRY>                  {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_TRY;                  } }
+void K_VOID()                 #Keyword : { Token t; } { t =  <VOID>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_VOID;                 } }
+void K_VOLATILE()             #Keyword : { Token t; } { t =  <VOLATILE>             {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_VOLATILE;             } }
+void K_WHILE()                #Keyword : { Token t; } { t =  <WHILE>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.K_WHILE;                } }
+
+
+/* SEPARATORS */
+
+void T_LPAREN()               #Token   : { Token t; } { t =  <LPAREN>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_LPAREN;               } }
+void T_RPAREN()               #Token   : { Token t; } { t =  <RPAREN>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_RPAREN;               } }
+void T_LBRACE()               #Token   : { Token t; } { t =  <LBRACE>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_LBRACE;               } }
+void T_RBRACE()               #Token   : { Token t; } { t =  <RBRACE>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_RBRACE;               } }
+void T_LBRACKET()             #Token   : { Token t; } { t =  <LBRACKET>             {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_LBRACKET;             } }
+void T_RBRACKET()             #Token   : { Token t; } { t =  <RBRACKET>             {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_RBRACKET;             } }
+void T_SEMICOLON()            #Token   : { Token t; } { t =  <SEMICOLON>            {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_SEMICOLON;            } }
+void T_COMMA()                #Token   : { Token t; } { t =  <COMMA>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_COMMA;                } }
+void T_DOT()                  #Token   : { Token t; } { t =  <DOT>                  {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_DOT;                  } }
+
+void T_EOF()                  #Token   : { Token t; } { t =  <EOF>                  {t.image = ""; jjtThis.setToken(t);    jjtThis.tagId =  jjtThis.T_EOF;                  } }
+
+
+/* OPERATORS */
+
+void T_ASSIGN()               #Token   : { Token t; } { t =  <ASSIGN>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_ASSIGN;               } }
+void T_GT()                   #Token   : { Token t; } { t =  <GT>                   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_GT;                   } }
+void T_LT()                   #Token   : { Token t; } { t =  <LT>                   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_LT;                   } }
+void T_BANG()                 #Token   : { Token t; } { t =  <BANG>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_BANG;                 } }
+void T_TILDE()                #Token   : { Token t; } { t =  <TILDE>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_TILDE;                } }
+void T_HOOK()                 #Token   : { Token t; } { t =  <HOOK>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_HOOK;                 } }
+void T_COLON()                #Token   : { Token t; } { t =  <COLON>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_COLON;                } }
+void T_EQ()                   #Token   : { Token t; } { t =  <EQ>                   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_EQ;                   } }
+void T_LE()                   #Token   : { Token t; } { t =  <LE>                   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_LE;                   } }
+void T_GE()                   #Token   : { Token t; } { t =  <GE>                   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_GE;                   } }
+void T_NE()                   #Token   : { Token t; } { t =  <NE>                   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_NE;                   } }
+void T_SC_OR()                #Token   : { Token t; } { t =  <SC_OR>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_SC_OR;                } }
+void T_SC_AND()               #Token   : { Token t; } { t =  <SC_AND>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_SC_AND;               } }
+void T_INCR()                 #Token   : { Token t; } { t =  <INCR>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_INCR;                 } }
+void T_DECR()                 #Token   : { Token t; } { t =  <DECR>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_DECR;                 } }
+void T_PLUS()                 #Token   : { Token t; } { t =  <PLUS>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_PLUS;                 } }
+void T_MINUS()                #Token   : { Token t; } { t =  <MINUS>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_MINUS;                } }
+void T_STAR()                 #Token   : { Token t; } { t =  <STAR>                 {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_STAR;                 } }
+void T_SLASH()                #Token   : { Token t; } { t =  <SLASH>                {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_SLASH;                } }
+void T_BIT_AND()              #Token   : { Token t; } { t =  <BIT_AND>              {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_BIT_AND;              } }
+void T_BIT_OR()               #Token   : { Token t; } { t =  <BIT_OR>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_BIT_OR;               } }
+void T_XOR()                  #Token   : { Token t; } { t =  <XOR>                  {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_XOR;                  } }
+void T_REM()                  #Token   : { Token t; } { t =  <REM>                  {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_REM;                  } }
+void T_LSHIFT()               #Token   : { Token t; } { t =  <LSHIFT>               {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_LSHIFT;               } }
+void T_RSIGNEDSHIFT()         #Token   : { Token t; } { t =  <RSIGNEDSHIFT>         {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_RSIGNEDSHIFT;         } }
+void T_RUNSIGNEDSHIFT()       #Token   : { Token t; } { t =  <RUNSIGNEDSHIFT>       {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_RUNSIGNEDSHIFT;       } }
+void T_PLUSASSIGN()           #Token   : { Token t; } { t =  <PLUSASSIGN>           {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_PLUSASSIGN;           } }
+void T_MINUSASSIGN()          #Token   : { Token t; } { t =  <MINUSASSIGN>          {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_MINUSASSIGN;          } }
+void T_STARASSIGN()           #Token   : { Token t; } { t =  <STARASSIGN>           {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_STARASSIGN;           } }
+void T_SLASHASSIGN()          #Token   : { Token t; } { t =  <SLASHASSIGN>          {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_SLASHASSIGN;          } }
+void T_ANDASSIGN()            #Token   : { Token t; } { t =  <ANDASSIGN>            {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_ANDASSIGN;            } }
+void T_ORASSIGN()             #Token   : { Token t; } { t =  <ORASSIGN>             {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_ORASSIGN;             } }
+void T_XORASSIGN()            #Token   : { Token t; } { t =  <XORASSIGN>            {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_XORASSIGN;            } }
+void T_REMASSIGN()            #Token   : { Token t; } { t =  <REMASSIGN>            {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_REMASSIGN;            } }
+void T_LSHIFTASSIGN()         #Token   : { Token t; } { t =  <LSHIFTASSIGN>         {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_LSHIFTASSIGN;         } }
+void T_RSIGNEDSHIFTASSIGN()   #Token   : { Token t; } { t =  <RSIGNEDSHIFTASSIGN>   {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_RSIGNEDSHIFTASSIGN;   } }
+void T_RUNSIGNEDSHIFTASSIGN() #Token   : { Token t; } { t =  <RUNSIGNEDSHIFTASSIGN> {jjtThis.setToken(t);                  jjtThis.tagId =  jjtThis.T_RUNSIGNEDSHIFTASSIGN; } }
+

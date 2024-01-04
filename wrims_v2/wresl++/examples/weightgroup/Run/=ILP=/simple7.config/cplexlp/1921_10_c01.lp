@@ -1,0 +1,43 @@
+\ Date: 1921.10
+\ Cycle: 01
+\ Solver: LpSolve
+
+\ objective function 
+Maximize
++ 6.0 a
++ 6.0 b
+-0.1 wg__ttt__a__slack
+-0.1 wg__ttt__a__surplus
+-0.1 wg__ttt__b__slack
+-0.1 wg__ttt__b__surplus
+-0.1 wg__ttt__x__slack
+-0.1 wg__ttt__x__surplus
+-0.1 wg__ttt__y__slack
+-0.1 wg__ttt__y__surplus
+-0.1 wg__ttt__z__slack
+-0.1 wg__ttt__z__surplus
++ 6.0 x
++ 6.0 y
++ 6.0 z
+
+\ constraint
+Subject To
+g1:  + a + b + x + y + z <= 100.0
+g2:  + x <= 3.0
+wg__ttt__a__ss:  + a - mean__ttt + wg__ttt__a__slack - wg__ttt__a__surplus = 0
+wg__ttt__b__ss:  + b - mean__ttt + wg__ttt__b__slack - wg__ttt__b__surplus = 0
+wg__ttt__mean:  - a - b + 5.0 mean__ttt - x - y - z = 0
+wg__ttt__x__ss:  - mean__ttt + wg__ttt__x__slack - wg__ttt__x__surplus + x = 0
+wg__ttt__y__ss:  - mean__ttt + wg__ttt__y__slack - wg__ttt__y__surplus + y = 0
+wg__ttt__z__ss:  - mean__ttt + wg__ttt__z__slack - wg__ttt__z__surplus + z = 0
+
+\ dvar
+Bounds
+ -inf <= mean__ttt 
+
+End
+
+
+
+
+\ objective value:   596.5999999999999

@@ -1,0 +1,359 @@
+! Calaveras_dems.wresl
+! R. Field
+! 11/25/03
+! USBR
+! Defines demands on the Calaveras River (City of Stockton SEWD, Calaveras County Water District)
+
+!###################################################################################
+
+/* Calaveras River Operations */
+
+! Each April, forecast April through Sept inflow to New Hogan Reservoir (as the sum of April through Sept inflows)
+define sumI92_part {
+    case apr {
+        condition   month == apr
+        sum(i=0,5,1) I92(i) * cfs_TAF(i) }
+    case otherwise {
+        condition   always
+        value 0. }
+        }
+define sumI506_part {
+    case apr {
+        condition month == apr
+        sum(i=0,5,1) I506(i) * cfs_TAF(i) }
+    case otherwise {
+        condition always
+        value 0. }
+        }
+/*
+Deliveries are reduced to Calaveras AG and M&I in the first year, the second year,
+and again in the third year of drought.Determine from lookup table, monthly percent reduction
+reduction of available ag water given drought conditions.
+*/
+define S92carryovr_trgt {
+     case third_yr_of_drought {
+          condition wyt_SJR >= 4 .and. wyt_SJR_prv1 >= 4 .and. wyt_SJR_prv2 >= 4
+          select S92
+          from S92carryover
+          where yrtype = 4}
+     case second_yr_of_drought {
+          condition wyt_SJR >= 4 .and. wyt_SJR_prv1 >= 4
+          select S92
+          from S92carryover
+          where yrtype = 3}
+     case first_yr_of_drought {
+          condition wyt_SJR >= 5
+          select S92
+          from S92carryover
+          where yrtype = 2}
+     case otherwise {
+          condition always
+          select S92
+          from S92carryover
+          where yrtype = 1}
+     }
+
+! New Hogan Reservoir carryover storage, record as decision variable
+define S92carryoverdv {std kind 'water-supply' units 'taf'}
+
+! Set New Hoagn Reservoir carryover storage target
+goal set_S92carryovr {S92carryoverdv = S92carryovr_trgt}
+
+! New Hogan Reservoir evaporation estimate (from table, based on SJRindex year type)
+define S92evap_est {select S92 from evap_est where yrtype=wyt_SJR}
+
+! Calaveras River seepage estimate is 13 cfs and 6.5 cfs from New Hogan Reservoir to below Bellota
+define Calaveras_seep { value 19.5 }
+
+! Decision variable for New Hoagn Reservoir available water supply
+define S92Availdv {std kind 'water-supply' units 'taf'}
+
+/*
+Apr-Sep available water is forecasted in April; that value is stored in prev92avail_p1
+decision variable each month until it is reforecasted the following April.
+*/
+define prev92avail {std kind 'water-supply' units 'taf'}
+
+/*
+Determine the annual Riparian use available surface water,
+assume 100% is used before end of september (forecast horizon)
+*/
+define annual_D511_riv {value 13.0 }
+
+/*
+Determine the annual Calaveras County Water District available surface water
+assume 100% is used before end of september (forecast horizon)
+*/
+define annual_ccwd {value 3.5}
+
+/*
+New Hogan Reservoir available water supply for Stockton East WD ;
+
+Water Supply Forecast (TAF) =   End-of-March storage
+                        + Apr-Sep inflow
+                        - Carryover target (end of September)
+                        - Calaveras River seepage
+                        + Accretion below New Hogan
+                        - Evap Estimate
+                        - Riparian diversions (13.35)
+                        - Calaveras County WD diversion (3.5)
+*/
+define S92Avail {
+    case first5months {
+        condition month <= mar .and. wateryear == 1922
+        value         S92(-1)}
+    case April {
+        condition month == apr
+        value         S92(-1) + sumI92_part + sumI506_part - S92carryoverdv(-5) - (Calaveras_seep * cfs_taf) - S92evap_est
+                        - annual_D511_riv  - annual_ccwd }
+    case otherwise {
+        condition   always
+        value         prev92Avail(-1) }
+        }
+
+! Store Calaveras April water supply forecast value in prev92avail_p1 decision variable
+goal set_prev92avail {prev92avail = max(0.0, S92Avail)}
+
+! Set WS forecast equal to the decision variable; ensure non-negative value
+goal set_S92Availdv {S92Availdv = max(0.0, S92Avail)}
+
+/*
+Determine the annual SEWD M&I available surface water
+fisrt portion of water available to SEWD goes to M&I (20 taf for 18 months or 13.35 for 12 months)
+assume 100% is used before end of september (forecast horizon)
+*/
+define ann_mi_avail_1 {value max(0.0, min(13.35, s92avail))}
+
+
+! Determine the annual remaining available water
+define annual_S92remain {value max(0.0, s92avail - ann_mi_avail_1)}
+
+/*
+Determine the annual SEWD M&I available surface water including 50% of annual remaining water
+assume 100% is used before end of september (forecast horizon)
+*/
+define ann_mi_avail_2 {value annual_S92remain * 0.5 }
+
+! Limit the annual SEWD M&I available surface water to no more than 40 TAF
+define ann_mi_avail_3 {value min(40.0, ann_mi_avail_2 + ann_mi_avail_1) }
+
+/*
+Reduce annual M&I use of Calaveras River supply by supply available from stanislaus
+Calculate the amount of additional surface water from CVP allocation and purchased
+this value is only used adjust the amount of New Hogan release to use to meet City of Stockton
+use 90% to account for losses and slight variation in delivery pattern
+*/
+define stan_avail_sewd {value ann_SEWD_sale * 0.9 + SEWD_PMIyr * 0.9 }
+
+/*
+Determine the quantity of water available for M&I use as the minimum of the previously computed
+available water or 40 less the water available from the Stanislaus River, which ever is less.
+The available water is the maximum half the forecasted available water or what determined
+previous.
+*/
+define ann_mi_avail {value max(ann_mi_avail_1 /2. , min(ann_mi_avail_3, 40.0 - stan_avail_sewd)) }
+
+! Determine the annual SEWD Ag available surface water including any annual remaining water
+define annual_D511_pag {value min(25.0, max(0., annual_S92remain - ann_mi_avail + ann_mi_avail_1))}
+
+! Determine from lookup table, monthly distribution of available ag water
+define D511_ag_dist {
+    select sewd_ag
+    from calaveras_dist
+    where month = month }
+
+! Calaveras County Water District. Assume 3.5 taf CCWD demand, 60% M&I, 40% AG CCWD_ag  CCWD_mi
+define D506_ag_dist {
+    select ccwd_ag
+    from calaveras_dist
+    where month = month }
+
+! Calaveras County Water District. Assumme 3.5 taf CCWD demand, 60% M&I, 40% AG CCWD_ag  CCWD_mi
+define D506_mi_dist {
+    select ccwd_mi
+    from calaveras_dist
+    where month = month }
+
+! Define the monthly SEWD M&I amount of available water given the annual amount and a monthly distribution
+define month_D506_mi { value (annual_ccwd* taf_cfs * 0.6 * D506_mi_dist/100.) }
+
+! Define the monthly SEWD AG amount of available water given the annual amount and a monthly distribution
+define month_D506_ag { value (annual_ccwd* taf_cfs * 0.4 * D506_ag_dist/100.) }
+
+! Set the monthly diversion limit to supply CCWD AG and M&I
+goal set_limit_D506C { D506C < max(0.,(month_D506_mi + month_D506_ag))}
+
+/*
+Stockton East Water District and Riparian River Users
+Retrieve predefined CUAW timeseries values for SEWD Ag Downstream of Bellota demands
+*/
+define cuaw_511_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Decision variable for SEWD/Riparian Ag losses as 10 cfs ***BOGUS
+define dloss_511_pag {value 10.0}
+
+! Deep percolation is assumed to be 25% of CUAW pag
+define dperc_511_pag {value cuaw_511_pag*.25}
+
+/*
+Determine Stockton East Water District/Riparian Users total demand
+Total demand = NRL + Deep perc + District loss + CUAW
+*/
+define demand_D511_pag {value 1.1 * CUAW_511_pag + dloss_511_pag + dperc_511_pag}
+
+! Limit Stockton East Water District/Riparian users deliveries to demand
+goal set_D511_pag {D511_pag < demand_D511_pag }
+
+! Satisfy SEWD by groundwater pumping if demand is not all met by surface water
+!goal set_GP505_pag {GP505_pag < demand_D511_pag - D511_pag}
+goal set_GP505_pag {GP505_pag < demand_D511_pag - D507}
+
+/*
+Return flows from Stockton East Water District: If there is no demand, there are no deliveries
+and thus no return flow;  ***BOGUS VALUE
+*/
+define Rfactor_514A {value 0.00}
+
+/*
+Determine Return Flows from Stockton East Water District/Riparian Users
+this is wrong, return flow is NOT a fraction of delivery
+*/
+goal set_R514A {R514A = Rfactor_514A*D511_pag}
+
+/*
+Stockton East Water District Ag Non-District Demands
+Retrieve predefined CUAW timeseries values for non-district
+*/
+define cuaw_511_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Deep percolation is assumed to be 25% of CUAW
+define dperc_511_ND {value cuaw_511_nd * 0.25}
+
+! Limit non-district deliveries to the delivery requirement
+goal set_D511_ND {D511_ND < 1.1 * CUAW_511_ND + dperc_511_ND}
+
+! Non-district demands completely satisfied by ground water pumping
+goal set_GP505_ND {GP505_ND < D511_ND}
+
+/*
+City of Stockton/SEWD M&I
+Define City of Stockton/SEWD M&I delivery requriement
+*/
+!define demand_D510_MI {select dem510_MI from urban_demand3 where month = month}
+
+! Set City of Stockton/SEWD M&I delivery to meet delivery requirment
+!goal meet_D510_MI {D510_MI < max(0., demand_D510_MI*taf_cfs)}
+
+! Assume 5% loss of water delivered from Stanislaus
+goal set_loss_509 {L509 = 0.05 * D520_SEWD_PMI + 0.05 * D520A1}
+
+/*
+Stanislaus deliver to CSJID, divert flow here to prevent it from being used by City of stocton or flowing into the Delta
+This will be revised when CSJID is explicity represented in CALSIM
+*/
+! moved to stanislaus_dems.wresl goal set_D509 {D509 = D520_CSJSEWD_PAG }
+
+! Satisfy City of Stockton/SEWD M&I demand by groundwater if not met by surface water
+!goal set_GP509_mi { GP509_mi < demand_D510_mi*taf_cfs }
+
+/*
+Return flows from City of Stockton/SEWD: If there is no demand, there are no deliveries
+and thus no return flow;  ***BOGUS VALUE
+*/
+define Rfactor_508 {value 0.3}
+
+! Set Return flow from City of Stockton/SEWD
+!goal set_R508 { R508 = Rfactor_508 * D510_mi }
+goal set_R508 { R508 = 0.0}
+
+! Define the variable for remaining amount of surface water to SEWD M&I
+define prevremain_mi {std kind 'water-supply' units 'taf'}
+
+/*
+Limit monthly delivery to remaining amount of surface water to SEWD M&I
+ *** need to document better
+*/
+define remain_mi_avail {
+    case first5months {
+        condition month <= mar .and. wateryear == 1922
+        value         13.}
+    case April {
+        condition month == apr
+        value         ann_mi_avail}
+    case otherwise {
+        condition   always
+        value        max(0.0, prevremain_mi(-1) - d506b(-1) * cfs_taf) }
+        }
+
+! Set remaining available surface water equal to decision variable
+goal set_prv_rmn_mi {prevremain_mi = max(0.0, remain_mi_avail)}
+
+! SEWD Ag monthly surface water available
+define month_D511_pag { value (annual_D511_pag * D511_ag_dist/100.) * taf_cfs}
+
+! Riparian Users monthly surface water available
+define month_D511_riv { value (annual_D511_riv * D511_ag_dist/100.) * taf_cfs}
+
+! Set a limit on the Riparian users monthly surface water delivery
+goal set_limit_D511_riv { D511_riv < month_D511_riv}
+
+! Set a limit on the monthly surface water to City of Stockton/SEWD M&I
+!goal set_limit_D506B { D506B < demand_D510_MI * taf_cfs}
+
+! Set a limit on the monthly surface water available to City of Stockton/SEWD M&I from Calaveras
+goal set_limit_D506B2 { D506B < remain_mi_avail * taf_cfs }
+
+! Set a limit on the monthly surface water available to riparian diversions on Calaveras
+goal set_limit_D506A { D506A < month_D511_riv}
+
+! Set limit on the monthly delivery to SEWD Ag as the monthly diversions
+goal set_limit_D507 { D507 < month_D511_pag}
+
+! Define Calaveras River Losses from New Hogan Reservoir to Bellota: 13 cfs if flow in river.
+! More substantial justification is required prior to using the 13 cfs estimated loss.
+define L506_limit{
+     case loss {
+     !condition demand_d510_mi > 1. .or. month_D511_pag > 1. .or. month_D511_riv > 1.
+     !condition  COSMA_MIdmd > 1. .or. month_D511_pag > 1. .or. month_D511_riv > 1.
+     condition  month_D511_pag > 1. .or. month_D511_riv > 1.
+        !value 13.0}
+        value 0.0}
+     case otherwise {
+     condition always
+     value 0.0}
+}
+
+! Set limits on losses from New Hogan Reservoir to Bellota.
+!goal set_loss_506 {L506 < L506_limit}
+goal setLoss_506 {lhs L506
+        rhs L506_limit
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999 }
+
+! Define Calaveras River Losses from Bellota and downstream: 6.5 cfs if flow in river.
+define L507_limit {
+     case loss {
+     condition month_D511_pag > 1.
+     value 6.5 }
+     case otherwise {
+     condition always
+     value 0.0}
+}
+
+! Set limit on losses from Bellota and downstream.
+!goal set_loss_507 {L507 < L507_limit }
+goal setLoss_507 {lhs L507
+        rhs L507_limit
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999 }
+
+! Variables for degubing purposes
+!define ann_mi_avail_1_1 {alias ann_mi_avail_1 kind 'temp' units 'taf'}
+!define ann_S92remain_1 {alias annual_S92remain kind 'temp' units 'taf'}
+!define ann_mi_avail_3_1 {alias ann_mi_avail_3 kind 'temp' units 'taf'}
+!define ann_mi_avail1 {alias ann_mi_avail kind 'temp' units 'taf'}
+!define ann_sewd {alias SEWD_PMIyr kind 'temp' units 'taf'}
+!define ann_SEWD_sale2 {alias ann_SEWD_sale kind 'temp' units 'taf'}
+!define mon_D510_MI {alias demand_d510_MI kind 'temp' units 'taf'}
+define mon_D511_pag_a {alias month_D511_pag kind 'temp' units 'cfs'}
+define mon_D511_riv_a {alias month_D511_riv kind 'temp' units 'cfs'}

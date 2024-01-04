@@ -1,0 +1,3 @@
+define C_Trnty_POW {lower 0 upper 3900 kind 'FLOW-POWER' units 'CFS'}
+define C_Trnty_EXC2 {std kind 'FLOW-SPILL-POWER' units 'CFS'}
+goal C_Trnty_total {C_Trnty=C_Trnty_POW+C_Trnty_EXC2}

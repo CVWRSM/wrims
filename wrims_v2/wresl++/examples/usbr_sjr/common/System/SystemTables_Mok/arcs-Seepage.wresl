@@ -1,0 +1,48 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-SEEPAGE.WRESL
+
+
+NAMING TAKES THE FOLLOWING FORM:
+SG_{CalSim_3 Node}_{corresponding C2VSIM Groundwater Node}
+
+positive seepage = gaining stream
+negative seepage = loosing stream
+
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Cosumnes River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    C2VSIM    C2VSIM
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    Element Node  River Node
+define SG_CSM033_443    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!443  188
+define SG_CSM026_426    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!426  189
+define SG_CSM021_425    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!425  190
+define SG_CSM016_439    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!439  191
+define SG_CSM011_454    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!454  192 
+define SG_CSM005_466    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!466  193 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Dry Creek       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    C2VSIM    C2VSIM
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    Element Node  River Node
+define SG_DSC035_506    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!506  182
+define SG_DSC028_505    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!505  183
+define SG_DSC023_499    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!499  184
+define SG_DSC016_498    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!498  185
+define SG_DSC008_480    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!480  186
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mokelumne River !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    C2VSIM    C2VSIM
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    Element Node  River Node
+define SG_CMCHE_516     {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!516  175
+define SG_MOK055_515    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!515  176
+define SG_MOK050_514    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!514  177
+define SG_MOK044_513    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!513  178
+define SG_MOK035_512    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!512  179
+define SG_MOK028_497    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!497  180
+define SG_MOK022_479    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!479  181/187/194/195
+define SG_MOK019_478    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!478  196
+define SG_MOK014_494    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!494  197
+define SG_MOK004_495    {lower unbounded upper unbounded kind 'RIVER-SEEPAGE' units 'CFS'}!495  198
+

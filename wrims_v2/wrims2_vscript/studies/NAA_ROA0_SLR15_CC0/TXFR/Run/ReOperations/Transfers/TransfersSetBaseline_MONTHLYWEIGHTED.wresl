@@ -1,0 +1,17 @@
+! TransfersSetBaseline.wresl
+define S4_WTSBase {value S4[MONTHLYWEIGHTED]}
+define S6_WTSBase {value S6[MONTHLYWEIGHTED]}
+define C5_WTSBase {value C5[MONTHLYWEIGHTED]}
+define C6_WTSBase {value C6[MONTHLYWEIGHTED]}
+define C203_WTSBase {value C203[MONTHLYWEIGHTED]}
+! Terms to constrain stage2 based on conveyance limits
+define DELTA_ConvPrv {value max(DELTA_ConvLtd[MONTHLYWEIGHTED],0.)}
+define IF_ConvPrv {value max(IF_ConvLtd[MONTHLYWEIGHTED],0.)}
+define BANKS_ConvPrv {value max(BANKS_ConvLtd[MONTHLYWEIGHTED],0.)}
+define TRACY_ConvPrv {value max(TRACY_ConvLtd[MONTHLYWEIGHTED],0.)}
+define BANKS_SB_ConvPrv {value max(BANKS_SB_ConvLtd[MONTHLYWEIGHTED],0.)}
+define BANKS_SC_ConvPrv {value max(BANKS_SC_ConvLtd[MONTHLYWEIGHTED],0.)}
+define CJU_SC_ConvPrv {value max(CJU_SC_ConvLtd[MONTHLYWEIGHTED],0.)}
+define SC_EB_ConvPrv {value max(SC_EB_ConvLtd[MONTHLYWEIGHTED],0.)}
+define SC_WB_ConvPrv {value max(SC_WB_ConvLtd[MONTHLYWEIGHTED],0.)}
+define SC_ConvPrv {value max(SC_ConvLtd[MONTHLYWEIGHTED],0.)}

@@ -1,0 +1,72 @@
+
+initial {
+	const option_A { 3 }  
+	const totalflow { 75 } 
+	const option_weightTable { 2 }
+}
+
+sequence CYCLE1 {
+    model   first
+    order   1
+}
+	
+model first { 
+
+    ! you can use dvar instead of define
+	dvar X { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define Y { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define A { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define B { std kind 'FLOW-CHANNEL' units 'CFS'}
+	goal g_xy { x + y < totalflow }
+	goal g_ab { A + B < totalflow }
+	
+	if int(option_A)==1 {
+		
+		include 'includes\goalX1.wresl' 
+		include 'includes\goalY1.wresl' 
+	
+	} 
+	elseif int(option_A)==2 {
+	
+		include 'includes\goalX2.wresl'
+		include 'includes\goalY2.wresl' 
+	
+	}
+	elseif int(option_A)==3 {
+	
+		include 'includes\goalX3.wresl'
+		include 'includes\goalY3.wresl' 
+	
+	}
+	else {	
+		include 'includes\goalX4.wresl'
+		include 'includes\goalY4.wresl'  
+	
+	}
+
+	objective obj_XY {
+		[x, 10]
+		[y, 10]		
+	}
+		
+  ! choose weight table
+	if int(option_weightTable)==1 {
+		objective obj_AB {
+			[A, 1]
+			[B, 1]
+		}			
+	}
+	elseif int(option_weightTable)==2 {
+		objective obj_AB {
+			[A, 2]
+			[B, 2]
+		}			
+	}
+	else {
+		objective obj_AB {
+			[A, 5]
+			[B, 5]
+		}		
+	}
+  
+}

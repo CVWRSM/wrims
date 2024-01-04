@@ -1,0 +1,45 @@
+/*************************************
+Delivery_carryover_split_CVP_system.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+A contract year based delivery target is determined by splitting the DI estimate 
+into delivery target and estimated carryover values.
+
+A delivery target is set in March and can be increased (but NOT decreased) in
+April and May.  Delivery targets in June through the next February will be equal
+to the value used in the previous month, which is always the value used in May. 
+*************************************/
+
+define initial_del_target_cvp_sys {
+    case MarToMay {                                ! from the delivery-carryover table
+        condition month >= MAR .and. month <= MAY  ! curve in March through May.
+            select del
+            from   delcar_cvp_sys
+            given  di=di_cvp_sys
+            use    linear }
+    case otherwise {
+        condition always
+            value  0 }
+}
+
+define deltar_cvp_sysdv {std kind 'DEL-TARGET' units 'taf'}    ! This saves deltar_cvp_sys to access past values - See goal statement further down
+
+define final_del_target_cvp_sys {
+    case initialdel {                                   ! Use the total annual contract  
+        condition month <= FEB .and. wateryear == 1922  ! amount until the first   
+            value  acvpdem_tot_sys }                    ! delivery target is assigned
+    case March {
+        condition month == MAR                        ! use the minimum of the target from the table 
+            value  min(initial_del_target_cvp_sys, acvpdem_tot_sys) }  ! and total contract demands
+    case AprtoMay {
+        condition month == APR .or. month == MAY   ! use the maximum of last months target AND the minimum of 
+            value  max(deltar_cvp_sysdv(-1), min(initial_del_target_cvp_sys, acvpdem_tot_sys)) } ! the target
+    case otherwise {                                          ! from the table and the total contract demands
+        condition always
+            value  deltar_cvp_sysdv(-1) }          ! after May, repeat same target for rest of WY
+}
+
+define deltar_cvp_sys {value final_del_target_cvp_sys }  ! This is the final value that is passed to cvpcut logic
+
+goal save_deltar_cvp_sysdv {deltar_cvp_sysdv = deltar_cvp_sys} ! Sets DECISION VARIABLE deltar_cvp_sysdv equal to STATE VARIABLE  deltar_cvp

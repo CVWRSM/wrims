@@ -1,0 +1,70 @@
+! SJR_agreg.wresl
+! Edward Chang
+! 6/05/2000
+! Joint Model
+! The following code assigns a group of arcs (not within one arc) a variable for book-keeping
+! Revised by C. Hsu, 4/3/03, USBR, for review and documentation project
+!############################################################################################
+! Stanislaus accretions for use in water quality release computations
+define Accr { std kind 'flow-channel' units 'cfs'}
+
+/*
+R528A/B     OID/SSJID Return
+R528C       Returns from Modesto ID
+I528        Lower Stanislaus Accretion
+D528/R637C  Lower Stanisaus Deliv and Return
+
+Stanislaus accretions =  OID/SSJID Return +  Returns from Modesto ID + maximum amount of accretion to Ripon
+            - Lower Stanisaus Delivery + Lower Stanisaus Return
+*/
+goal setAccr { Accr = R528A + R528B + R528C + max(0.,I528) - D528 + R637C }
+
+
+/*
+Unadjusted West-side returns; will be adjusted in when West-side is being used
+to meet main stem deliveries in water quality release computations
+*/
+! Define West side return flows
+define WestSide { std kind 'flow-channel' units 'cfs'}
+! West side return flow = returns from WSID + Westside and Mendota Pool returns + Mud and Salt Slough accretion + Drain flows from San Luis
+!goal setWestSide { WestSide = R630West + R636D + C619 + R614West + I614}
+goal setWestSide { WestSide = R630West + R639B + C619 + R614West + I614}
+
+/*
+Unadjusted Main-Stem flows; will be adjusted in when West-side is being used
+to meet main stem deliveries in water quality release computations
+*/
+! Define flows on main stem of the San Joaquin River
+define MainStem { lower -99999 upper 99999 kind 'flow-channel' units 'cfs'}
+! Mainstem flow = flow below Vernalis - flows at Ripon - Westside return to mainstem + SJR non project diversion - returns from Westside
+goal setMainStem { MainStem = C637 - C528 - WestSide }
+! Define VAMP release state variable, units = cfs
+define VAMP_release {std kind 'FLOW-RELEASE' units 'cfs'}
+! Sum of VAMP release requirement for April and May
+goal setVAMP_release { VAMP_release = C10VAMP_M + C20VAMP + C81VAMP + C81_STAN_VAMP + C607BVAMP }
+
+/*
+Define VAMP release state variables for use in cycle 6
+*/
+! Instantaneous VAMP release to be set in cycle 6 from Stanislaus
+define DPStanVamprel {std kind 'FLOW-RELEASE' units 'cfs'}
+! Instantaneous VAMP release to be set in cycle 6 from Don Pedro
+define DPVamprelease {std kind 'FLOW-RELEASE' units 'cfs'}
+! Instantaneous VAMP release to be set in cycle 6 from Lake McClure
+define MCVamprelease {std kind 'FLOW-RELEASE' units 'cfs'}
+! Instantaneous VAMP release to be set in cycle 6 form New Melones
+define NMVamprelease {std kind 'FLOW-RELEASE' units 'cfs'}
+! Instantaneous VAMP release to be set in cycle 6 from DMC
+define DMCVamprelease {std kind 'FLOW-RELEASE' units 'cfs'}
+
+/*
+VAMP add-water requirement to be set in cycle 5
+*/
+! Define VAMP add-water for April from DMC
+define ExchangeaddApr {std kind 'add-requirement_VAMP' units 'TAF'}
+! Define VAMP add-water for April from OID
+define OIDaddApr {std kind 'add-requirement_VAMP' units 'TAF'}
+! Define VAMP add-water for April from Merced ID
+define MercedIDaddApr {std kind 'add-requirement_VAMP' units 'TAF'}
+! Define VAMP add-water for April from MID/TID
+define MIDTIDaddApr {std kind 'add-requirement_VAMP' units 'TAF'}

@@ -1,0 +1,46 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-DIVERSIONS.WRESL
+
+NAMING TAKES THE FOLLOWING FORMS:
+
+D_{ORIGIN}_{DESTINATION PREFIX} - diversions from specific location to general area
+
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DIVERSIONS TO WBAS, AND SUB-ARCS
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Cosumnes River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_CSM033_60N_NU2     {std kind 'DIVERSION' units 'cfs'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Dry Creek       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_AMADR_60N_NA1      {std kind 'DIVERSION' units 'cfs'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mokelumne River     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_PARDE_AMADR        {std kind 'DIVERSION' units 'cfs'}
+define D_PARDE_EBA000       {std kind 'DIVERSION' units 'cfs'}
+define D_MOK050_60N_NA3     {std kind 'DIVERSION' units 'cfs'}
+define D_MOK050_60N_NA5     {std kind 'DIVERSION' units 'cfs'}
+define D_MOK035_60N_NA4     {std kind 'DIVERSION' units 'cfs'}
+define D_MOK035_WTPDWS      {std kind 'DIVERSION' units 'cfs'}
+define D_MOK034_60N_NA5     {std kind 'DIVERSION' units 'cfs'}
+
+define D_WTPDWS_60S_NU1     {std kind 'DIVERSION' units 'cfs'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! East Bay Aqueduct   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  D_EBA100_EBMUD  {std kind 'DIVERSION' units 'CFS'}
+
+! Moved here from SAC
+define  D_FSC015_60N_NA2    {std kind 'DIVERSION' units 'CFS'}
+define  D_FSC025_60N_PU     {std kind 'DIVERSION' units 'CFS'}

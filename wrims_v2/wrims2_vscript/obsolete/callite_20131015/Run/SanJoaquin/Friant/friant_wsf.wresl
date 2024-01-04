@@ -1,0 +1,77 @@
+! Friant_wsf.wresl
+! Created for the Upper San Joaquin River Basin Storage Investigation Project
+! Implements Friant water supply forecast logic.
+! Revised by C. Hsu, 02/25/03, USBR, for review and documentation project
+!##############################################################################
+/*
+Determines available water supply for impending irrigation season.
+*/
+
+/*
+Sum of Friant inflow from current month (or from June if current month is after June)
+through September - perfect foresight used for water supply
+*/
+define I_MLRTN_mon_thru_sep {
+    case MarthruSep {
+        condition   month >= mar .and. month <= sep
+        sum(i=0,Sep-month,1) I_MLRTN(i)*cfs_taf(i) }
+    case otherwise  {
+        condition   always
+        value 0.0 } }
+
+! Sum of the average evaporation losses from Friant for current month through September
+define FREvap_sep {
+    case MarthruJun {
+        condition   month >= mar .and. month <= jun
+        select thru_sep
+        from Friant_Evap
+        where contract_month = contract_month }
+    case otherwise {
+        condition   always
+        value 0.0  } }
+
+! Minimum required San Joaquin River release from Friant
+define C_MLRTN_min {
+    select inc
+    from Upper_SJR_losses
+    where contract_month = contract_month }
+! Alias variable for C_MLRTN_min, save input value to DSS
+!define C_MLRTN_min_chk {alias C_MLRTN_min kind 'temp' units 'taf'}
+! Sum of minimum required San Joaquin River releases from current month through September
+define C_MLRTN_min_sep {
+    case MarthruJun {
+        condition   month >= mar .and. month <= jun
+        select thru_sep
+        from Upper_sjr_losses
+        where contract_month = contract_month }
+    case otherwise {
+        condition   always
+        value 0.0  } }
+
+! Sums min flow requirement current month through September added for SETTLEMENT
+!define SJRR_mon_sep {select thruSep from SJRR_Reqs where month=month, YT=wyt_SJRRest}
+
+! Sum of the combined Madera and Friant-Kern canal losses from current month through September
+define FRloss_sep {
+    case MarthruJun {
+        condition   month >= mar .and. month <= jun
+        select thru_sep
+        from Friant_Canal_losses
+        where contract_month = contract_month }
+    case otherwise {
+        condition   always
+        value 0.0  } }
+
+define TREvap_sep {value A17last*FREvap_sep/A_MLRTNlast}
+/*
+Friant water supply forecast used to determine available supply for irrigation season
+*/
+define Fr_WS_for {
+    case MarthruJun {
+       condition  month >= mar .and. month <= jun
+           value max(0.0, I_MLRTN_mon_thru_sep + SIO_FWUA(-1) - S_MLRTNlevel1 - S17level1
+                          - FREvap_sep -TREvap_sep - FRloss_sep - SJRR_mon_sep)  }
+    case JulthruFeb {
+        condition always
+        value 0.0 } }
+

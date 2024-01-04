@@ -1,0 +1,123 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnvnnvnnnnnnnnnnnnnnnnnn
+
+U ada.direct_io.c_streams%b  a-diocst.adb	26234893 NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.direct_io%s
+W ada.unchecked_conversion%s
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c_streams%s  i-cstrea.adb		i-cstrea.ali
+W system%s		system.ads		system.ali
+W system.direct_io%s	s-direio.adb		s-direio.ali
+W system.file_control_block%s  s-ficobl.ads	s-ficobl.ali
+W system.file_io%s	s-fileio.adb		s-fileio.ali
+
+U ada.direct_io.c_streams%s  a-diocst.ads	868db45a BN NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.direct_io%s
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c_streams%s  i-cstrea.adb		i-cstrea.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-direio.ads		20090410151216 998ca0b9
+D a-diocst.ads		20090409150020 fee1704a
+D a-diocst.adb		20090409150020 d0a4f2fd
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-direio.ads		20090409150020 716929ad
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-fileio.ads		20091027141444 42b99b37
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 3|39r9 54r5 4|36r6 38r14 46r27 88r5
+X 2 a-direio.ads
+43k13*Direct_IO 1|16k9 2|191e18 3|39r13 54r9 4|38r18 88r9
+53P9*File_Type(16|53R9) 3|43r27 47r25 4|52r27 63r25
+55E9*File_Mode 55e53 3|48r18 4|46r53 64r18
+167m4 Bytes{13|44M12} 4|85r21
+X 3 a-diocst.ads
+39k23 C_Streams 2|43k13 3|54l19 54e28 4|38b28 88l19 88t28
+41K12*ICS=41:35 43r45 49r18
+43V13*C_Stream{13|41M12} 43>23 4|52b13 56l8 56t16
+43p23 F{2|53P9} 4|52b23 54r32 55r14
+46U14*Open 47=7 48>7 49>7 50>7 51>7 4|62b14 86l8 86t12
+47p7 File{2|53P9} 4|63b7 75m34 85m7
+48e7 Mode{2|55E9} 4|64b7 77r38
+49m7 C_Stream{13|41M12} 4|65b7 83r30
+50s7 Form{string} 4|66b7 79r30
+51s7 Name{string} 4|67b7 78r30
+X 4 a-diocst.adb
+40K12 FIO=40:31 54r7 75r7
+41K12 FCB=41:31 44r18 46r64
+42K12 DIO=42:31 69r34
+44P12 AP{18|80P9} 54r28 75r30
+46V13 To_FCB[11|20]{18|62E9} 77r30
+69r7 Dummy_File_Control_Block{16|53R9} 70r29 76r30
+X 11 a-unccon.ads
+20v14*Unchecked_Conversion 4|36w10 46r31
+X 12 interfac.ads
+36K9*Interfaces 3|36r6 41r24 4|32r6 32r32 12|171e15
+X 13 i-cstrea.ads
+37K20*C_Streams 3|36w17 41r35 4|32w17 32r43 13|274e25
+41M12*FILEs{15|50M12} 3|43r49 49r22 4|52r45 65r18
+44M12*size_t{15|60M9}
+X 14 system.ads
+37K9*System 4|33r6 34r6 35r6 40r24 41r24 42r24 14|197e11
+64M9*Address
+X 15 s-crtl.ads
+50M12*FILEs{14|64M9}
+60M9*size_t
+X 16 s-direio.ads
+41K16*Direct_IO 4|35w13 42r31 16|142e21
+53R9*Direct_AFCB<18|82R9> 4|69r38 16|63e14
+57m7*Bytes{13|44M12} 4|85m12
+X 18 s-ficobl.ads
+42K16*File_Control_Block 4|34w13 41r31 18|160e30
+62E9*File_Mode 4|46r68 18|62e66
+80P9*AFCB_Ptr(82R9) 4|44r22
+84m7*Stream{13|41M12} 4|55r16
+X 19 s-fileio.ads
+39K16*File_IO 4|33w13 40r31 19|254e19
+48U14*Open 4|75r11
+49p7 File_Ptr{18|80P9} 4|75r17
+50c7 Dummy_FCB<18|82R9> 4|76r17
+51e7 Mode{18|62E9} 4|77r17
+52s7 Name{string} 4|78r17
+53s7 Form{string} 4|79r17
+54e7 Amethod{character} 4|80r17
+55b7 Creat{boolean} 4|81r17
+56b7 Text{boolean} 4|82r17
+57m7 C_Stream{13|41M12} 4|83r17
+151U14*Check_File_Open 4|54r11
+

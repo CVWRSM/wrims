@@ -1,0 +1,33 @@
+!SanLuisLimits.wresl
+!N. Parker 
+!11/15/05
+!
+
+! In the initial full-system cycle of a baseline step for EWA studies, limit
+! project pumping into San Luis to the fill potential less the project's 
+! carried over storage debt.    (i.e. reduce san luis capacity by the carryover
+! debt)
+
+! Delivery to interruptible demands is allowed if the project storage reaches
+! this reduced "fill limit".  
+
+! BLCoDebt's are the "baseline" steps' understanding of the remaining SL CO debt.
+! They must be calculated from End-of-Sept EWA step results for JPOD-EWA 
+! storage differences (new debt) plus residual carryover debt. 
+!
+! Variable definitions for this file are in Cycle 1's SanLuisLimitsDefs.wresl.
+!
+! *****************************************************************************
+
+goal limit_S12_Fill {S12 < S12level5 - BLCoDebtSwp}
+
+goal limit_S11_Fill {S11 < S11level5 - BLCoDebtCvp}
+
+! set the BLCoDebt's to a placeholder for now - their real solution comes
+! in the final cycle of a baseline step when they are potentially reduced 
+! if the projects have filled into the carryover debt space.
+
+goal setBLCoDebtSwpdv {BLCoDebtSwpdv = BLCoDebtSwp}
+goal setBLCoDebtCvpdv {BLCoDebtCvpdv = BLCoDebtCvp}
+
+

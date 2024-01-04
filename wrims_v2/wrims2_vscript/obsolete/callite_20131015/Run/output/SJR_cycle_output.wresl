@@ -1,0 +1,47 @@
+
+! SJR Section
+define[local] C_STANGDWNmif_SJRBASE  {alias C_STANGDWN_mif[SJRBASE]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_STANGDWNmif_SJR_WQ1  {alias C_STANGDWN_mif[SJR_WQ1]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_STANGDWNmif_SPULSE  {alias C_STANGDWN_mif[SJR_PULSE]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_STANGDWNmif_SJRWQ2  {alias C_STANGDWN_mif[SJR_WQ2]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_STANGDWNmif_VAMPDO  {alias C_STANGDWN_mif[VAMP_AND_DO]      kind 'FLOW-CHANNEL'  units 'CFS'}
+!define[local] C_STANGDWNmif_MOWEI  {alias C_STANGDWN_mif[MONTHLYWEIGHTED]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] stanfyr2SJRBASE  {alias stanfish_yr2DV[SJRBASE]      kind 'STORAGE'  units 'TAF'}
+define[local] stanmin_c1dv {alias stanmin2DV[sjrbase] kind 'output-cfs' units 'cfs'}
+define[local] stanpulse_c3dv {std kind 'fish-pulse-req' units 'cfs'}
+goal setstanpulsec3 {
+    lhs stanpulse_c3dv
+    case aprmay {
+        condition month==apr .or. month==may
+        rhs stanpulse_dv[SJR_PULSE] }
+    case otherwise {
+        condition month<apr .or. month>may
+        rhs 0.}
+}
+
+define Stan_C_STANGDWNFW_dv {alias Stan_C_STANGDWNFW kind 'output-cfs' units 'cfs'}
+define Stan_C_STANRIPNFW_dv {alias Stan_C_STANRIPNFW kind 'output-cfs' units 'cfs'}
+define C_MELONInstreamTgtdv {alias C_MELONInstrmTgt1dv[sjrbase] kind 'output-cfs' units 'cfs'}
+define C_STANGDWNInstreamC1 {alias C_STANGDWNINSTREAM[sjrbase] kind 'output-cfs' units 'cfs'}
+define C_STANGDWNINSTGTDV {std kind 'output-cfs' units 'cfs'}
+goal setC_STANGDWNINSTGTDV {C_STANGDWNINSTGTDV = C_STANGDWNINSTGTDV[SJRBASE]}
+
+! SJR_WQ1
+define[local] C_SJRCB_SJRWQ1 {alias C_SJRCB[SJR_WQ1]     kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_CVPDMC_SJRWQ1  {alias C_CVPDMC[SJR_WQ1]      kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] D_MDOTAB_SJRWQ1 {alias D_MDOTAB[SJR_WQ1]     kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D608B_SJRWQ1 {alias D608B[SJR_WQ1]     kind 'FLOW-DELIVERY' units 'CFS'}
+!define[local] C_SJRVER_SJRWQ1  {alias C_SJRVER[SJR_WQ1]      kind 'FLOW-CHANNEL'  units 'CFS'}
+! SJR_WQ2
+define[local] C_SJRVER_SJRWQ2  {alias C_SJRVER[SJR_WQ2]      kind 'FLOW-CHANNEL'  units 'CFS'}
+! VAMP_AND_DO
+define[local] C501_VAMPDO  {alias C501[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+!define[local] C503_VAMPDO  {alias C503[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_Calav_VAMPDO  {alias C_Calav[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_SJRCB_VAMPDO {alias C_SJRCB[VAMP_AND_DO]     kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_SJRVER_VAMPDO  {alias C_SJRVER[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] C_CVPDMC_VAMPDO  {alias C_CVPDMC[VAMP_AND_DO]  kind 'FLOW-CHANNEL'  units 'CFS'}
+define[local] D_MDOTAB_VAMPDO {alias D_MDOTAB[VAMP_AND_DO] kind 'FLOW-DELIVERY' units 'CFS'}
+define[local] D608B_VAMPDO {alias D608B[VAMP_AND_DO] kind 'FLOW-DELIVERY' units 'CFS'}
+
+

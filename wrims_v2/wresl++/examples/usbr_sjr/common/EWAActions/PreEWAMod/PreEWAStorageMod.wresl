@@ -1,0 +1,243 @@
+!PreEWAStorageMod.wresl
+!N. Parker & L. Brekke
+!1/25/06
+!
+
+! **************************************************************
+! PreEWAStorageMod.wresl
+! **************************************************************
+!
+! This file sets storage adjustments of NOD storage values to
+! compensate for NOD debt and NOD backed-up water due to EWA actions.
+!
+! This file is called in pre-EWA steps of a multi-step study.
+!
+! The initial condition of upward adjustment for debt
+! and downward adjustment for backed-up water is represented by
+! S*_mod_dv(PrevSep), which is set in the EWA step.
+!
+! This file then checks if the NOD reservoirs encroach on their
+! flood control cap or if SL reservoirs encroach on their capacities.
+! As these encroachments happen, the initial condition adjustment
+! (i.e. S*_mod_dv(PrevSep) gets reduced and possibly erased during the
+! simulated year).  Reduction potential is checked each month
+! (i.e. S*FillAmt).
+
+!Flood Control Caps for NOD reservoirs
+define s1_L4_month {
+    case october {
+        condition month==OCT
+        value 12 }
+    case otherwise {
+        condition always
+        value month-1 }
+}
+define S1level4_prev {select target from res_level where res_num=1,level=4,month=s1_L4_month}
+!define S4level5_temp {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S44level5_temp {value 0.0}
+!define S44level5 {value 0.0}
+!define S6level5_temp {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+!define S8level5_temp {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+
+define S1CoDebtDv {std kind 'debt' units 'taf'}
+define S4CoDebtDv {std kind 'debt' units 'taf'}
+define S6CoDebtDv {std kind 'debt' units 'taf'}
+define S8CoDebtDv {std kind 'debt' units 'taf'}
+
+!CARRYOVER DEBT SHAVING AMOUNTS
+!These fill amounts determine debt-shaving as physical storage approaches flood cap.
+define S1FillAmt {
+    case October {
+        condition month==OCT
+        value 0. }
+    case ResFill {
+        condition S1(-1)+S1CoDebtDv(-1) > S1level4_prev-.5
+        value max(S1(-1)+S1CODebtDv(-1) - S1level4_prev,0.) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+define S4FillAmt {
+    case October {
+        condition month==OCT
+        value 0. }
+    case ResFill {
+        !condition S4(-1)+S44(-1)+S4CoDebtDv(-1) > S4level5_temp(-1)+S44level5_temp-.5
+        !value max(S4(-1)+S44(-1)+S4CODebtDv(-1) - S4level5_temp(-1)-S44level5_temp,0.) }
+        condition S4(-1)+S44(-1)+S4CoDebtDv(-1) > S4level5(-1)+S44level5_temp-.5
+        value max(S4(-1)+S44(-1)+S4CODebtDv(-1) - S4level5(-1)-S44level5_temp,0.) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+define S6FillAmt {
+    case October {
+        condition month==OCT
+        value 0. }
+    case ResFill {
+        !condition S6(-1)+S6CoDebtDv(-1) > S6level5_temp(-1)-.5
+        !value max(S6(-1)+S6CODebtDv(-1) - S6level5_temp(-1),0.) }
+        condition S6(-1)+S6CoDebtDv(-1) > S6level5(-1)-.5
+        value max(S6(-1)+S6CODebtDv(-1) - S6level5(-1),0.) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+define S8FillAmt {
+    case October {
+        condition month==OCT
+        value 0. }
+    case ResFill {
+        !condition S8(-1)+S8CoDebtDv(-1) > S8level5_temp(-1)-.5
+        !value max(S8(-1)+S8CODebtDv(-1) - S8level5_temp(-1),0.) }
+        condition S8(-1)+S8CoDebtDv(-1) > S8level5(-1)-.5
+        value max(S8(-1)+S8CODebtDv(-1) - S8level5(-1),0.) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+define S4_EWA {std kind 'storage' units 'taf'}
+define S6_EWA {std kind 'storage' units 'taf'}
+define S8_EWA {std kind 'storage' units 'taf'}
+
+!ASSET LOSS DUE TO FLOOD RELEASE
+!The following logic checks to see if physical storage approaces flood cap.  If so,
+!all backed-up EWA assets are zero'd out (not precise, but correct in most cases - we can't
+!easily track release portions that are made specifically because the reservoir storage
+!has encountered flood cap - otherwise we'd be more precise).  If the storage doesn't
+!encounter flood cap, then the following variables stay at S*_EWA(prevSep) values for the
+!entire year of the preEWA steps.
+!
+!Tracking of this reduction in EWA asset is necessary for proper accounting of carryover
+!NOD debt - illustrated later in the S*CoDebt definitions.
+!
+define S1__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S4__z5 {timeseries kind 'STORAGE' units 'TAF'}
+!define S44__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S6__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S8__z5 {timeseries kind 'STORAGE' units 'TAF'}
+define S4ewa_preStepsDv {std kind 'storage' units 'taf'}
+define S6ewa_preStepsDv {std kind 'storage' units 'taf'}
+define S8ewa_preStepsDv {std kind 'storage' units 'taf'}
+
+define S4ewa_preSteps {
+    case October {
+        condition month == Oct
+        value S4_EWA(-1) }
+    case ResFill {  ! Assume all asset is spilled if physical storage reaches full…
+        !condition month > Oct .and. S4(-1)+S44(-1) > S4level5_temp(-1)+S44level5_temp-.5
+        condition month > Oct .and. S4(-1)+S44(-1) > S4level5(-1)+S44level5_temp-.5
+        value 0. }
+    case Otherwise {
+        condition always
+        value S4ewa_preStepsdv(-1)}
+    }
+goal setS4ewa_pre {S4ewa_preStepsdv = S4ewa_preSteps}
+
+define S6ewa_preSteps {
+    case October {
+        condition month == Oct
+        value S6_EWA(-1) }
+    case ResFill {  ! Assume all asset is spilled if physical storage reaches full…
+        !condition month > Oct .and. S6(-1) > S6level5_temp(-1)-.5
+        condition month > Oct .and. S6(-1) > S6level5(-1)-.5
+        value 0. }
+    case Otherwise {
+        condition always
+        value S6ewa_preStepsdv(-1)}
+    }
+goal setS6ewa_pre {S6ewa_preStepsdv = S6ewa_preSteps}
+
+define S8ewa_preSteps {
+    case October {
+        condition month == Oct
+        value S8_EWA(-1) }
+    case ResFill {  ! Assume all asset is spilled if physical storage reaches full…
+        !condition month > Oct .and. S8(-1) > S8level5_temp(-1)-.5
+        condition month > Oct .and. S8(-1) > S8level5(-1)-.5
+        value 0. }
+    case Otherwise {
+        condition always
+        value S8ewa_preStepsdv(-1)}
+    }
+goal setS8ewa_pre {S8ewa_preStepsdv = S8ewa_preSteps}
+
+!Compute Awareness of CoDebt for preEWA steps; note that for Shasta, Folsom, and Oroville,
+!the October calculation must compare EOM storage in September from prevYear's Step 4 to Step5.
+!Confounding this is a potential difference in EWA assets persisting through Step 4 of the
+!previous year and the amount of EWA assets persisting through Step 5.  Thus, we've
+!introduced the S*ewa_preSteps variable.
+define S1CoDebt {
+    case FirstOctober {
+        condition month==oct .and. Wateryear==1922
+        value 0. }
+    case OtherOctobers {
+        condition month==oct .and. Wateryear>1922
+        value max(0., S1__z5(-1) - S1(-1)) }
+    case ResFill {
+        condition always
+        value max(0., S1CoDebtdv(-1)-S1FillAmt) }
+}
+define S4CoDebt {
+    case FirstOctober {
+        condition month==oct .and. Wateryear==1922
+        value 0. }
+    case October {
+        condition month==oct .and. Wateryear>1922
+        value max(0., S4CoDebtdv(-1)+(S4__z5(-1)-S4ewa_preStepsDv(-1)) - (S4(-1)-S4_EWA(-1)))}
+    case ResFill {
+        condition always
+        value max(0., S4CoDebtdv(-1)-S4FillAmt) }
+}
+define S6CoDebt {
+    case FirstOctober {
+        condition month==oct .and. Wateryear==1922
+        value 0. }
+    case October {
+        condition month==oct .and. Wateryear>1922
+        value max(0., S6CoDebtdv(-1)+(S6__z5(-1)-S6ewa_preStepsDv(-1)) - (S6(-1)-S6_EWA(-1)))}
+    case ResFill {
+        condition always
+        value max(0., S6CoDebtdv(-1)-S6FillAmt) }
+}
+define S8CoDebt {
+    case FirstOctober {
+        condition month==oct .and. Wateryear==1922
+        value 0. }
+    case October {
+        condition month==oct .and. Wateryear>1922
+        value max(0., S8CoDebtdv(-1)+(S8__z5(-1)-S8ewa_preStepsDv(-1)) - (S8(-1)-S8_EWA(-1)))}
+    case ResFill {
+        condition always
+        value max(0., S8CoDebtdv(-1)-S8FillAmt) }
+}
+
+goal set_S1Codebtdv {S1Codebtdv = S1Codebt}
+goal set_S4Codebtdv {S4Codebtdv = S4Codebt}
+goal set_S6Codebtdv {S6Codebtdv = S6Codebt}
+goal set_S8Codebtdv {S8Codebtdv = S8Codebt}
+
+define S1mod {value S1Codebt}
+define S4mod {value S4Codebt - S4ewa_preSteps - S4_WTS(-1) }  !Piggyback WTS adjustments on S*mod terms
+define S6mod {value S6Codebt - S6ewa_preSteps - S6_WTS(-1) }  !Piggyback WTS adjustments on S*mod terms
+define S8mod {value S8Codebt - S8ewa_preSteps}
+
+define S1_mod_dv {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S4_mod_dv {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S6_mod_dv {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S8_mod_dv {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+
+goal set_S1_mod_dv {S1_mod_dv = S1mod }
+goal set_S4_mod_dv {S4_mod_dv = S4mod }
+goal set_S6_mod_dv {S6_mod_dv = S6mod }
+goal set_S8_mod_dv {S8_mod_dv = S8mod }
+
+!San Luis storage adjustments don't include EWA assets
+define S_SLUIS_CVPmodDV {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_SLUIS_SWPmodDV {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_SLUIS_CVPmod { value min(972.-S_SLUIS_CVP(-1), BLCoDebtCvp) }
+define S_SLUIS_SWPmod { value min(1067.-S_SLUIS_SWP(-1), BLCoDebtSwp) }
+goal set_S_SLUIS_CVPmodDV {S_SLUIS_CVPmodDV = S_SLUIS_CVPmod }
+goal set_S_SLUIS_SWPmodDV {S_SLUIS_SWPmodDV = S_SLUIS_SWPmod }
+

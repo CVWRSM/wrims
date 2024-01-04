@@ -1,0 +1,21 @@
+! Code by E.Reyes   as of 7/10/98
+! Modified by N. Parker 4/01
+!
+!!!  Clear Creek minimum flows from pre-CVPIA operations
+!!!  Jan-Oct 50 cfs
+!!!  Nov-Dec 100 cfs
+
+
+define clear_min {select flow
+                  from   clear_ck_min
+                  where  month=month,wytype=wyt_SHASTA_cvp}
+
+define minflow_C_Wkytn {alias clear_min kind 'flow-min-required' units 'cfs'}  
+
+   
+! goal meet_clearmin {C_Wkytn_mif < clear_min}  ! This goal is set in "setnodminflows.wresl" file in D1641 and D1485 studies and in "b2action1.wresl" file in (b)(2) study.  
+   
+   
+   
+! Limit the Spring Creek tunnel to the capacity.
+goal limit_spring {D_Spring < 4200.0}   !4200 cfs is the Spring Creek tunnel capacity.

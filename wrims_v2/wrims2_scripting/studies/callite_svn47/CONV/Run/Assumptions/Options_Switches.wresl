@@ -1,0 +1,85 @@
+/*************************************
+Options_Switches.wresl
+ 
+Z.Q. Richard Chen DWR (02/07/2011)
+
+Read option switches for lookup table
+**************************************/
+
+/* Hydro Climate Dashboard*/
+define LOD_Future         {select Option from GUI_HydroClimate where Index=1} !Export_Ops\OMR\OMR_constraint_CL.wresl
+define X2_SLR             {select Option from GUI_HydroClimate where Index=2}  
+define  X2_ANN_KM {                                                           !Delta\ANN\lastX2_ANN_KM.wresl 
+    case KM { condition X2_SLR == 0
+    value 1
+    }
+    case SLR { 
+    condition always 
+    value 0}}
+    
+define Climate_Proj       {select Option from GUI_HydroClimate where Index=3} !Place Holder at this time
+
+
+/* South of Delta SWP and CVP options*/
+!Read in user-defined SWP demand type, 1 = not user-defined, 
+!2 = user-defined demand for MWD, Other MI, and AG 
+define SWPdemandswitch {select Option from GUI_SODdemand where Index = 0}
+
+!Read in user-defined demands for SOD
+define SWP_mwd_udef         {select Option from GUI_SODdemand  where Index = 1}
+define SWP_oth_udef         {select Option from GUI_SODdemand  where Index = 2}
+define SWP_ag_udef          {select Option from GUI_SODdemand  where Index = 3}
+define max_user_interrupt   {select Option from GUI_SODdemand where Index = 4}
+
+!Pull in user-defined CVP demand type, 1 = full contract, 2 = user-defined for AG, MI, and Refuge
+define CVPdemandswitch      {select Option from GUI_SODdemand where Index = 5}
+
+define acvpdem_pag_udef_s   {select Option from GUI_SODdemand where Index = 6}
+define acvpdem_pmi_udef_s   {select Option from GUI_SODdemand where Index = 7}
+define acvpdem_prf_udef_s   {select Option from GUI_SODdemand where Index = 8}
+
+/* D1641 Delta Flow Switches*/
+define DCC_DLTSW    {select OPTION from gui_D1641Regs where Index = 1}
+define EI_DLTSW     {select OPTION from gui_D1641Regs where Index = 2}
+define NDO_DLTSW    {select OPTION from gui_D1641Regs where Index = 3}
+define RV_DLTSW     {select OPTION from gui_D1641Regs where Index = 4}
+define X2_DLTSW     {select OPTION from gui_D1641Regs where Index = 5}
+define X2ROE_DLTSW  {
+         case UDefX2 {
+           condition X2_DLTSW == 2
+           value 0 }
+         case others {
+           condition always
+           select OPTION from gui_D1641Regs where Index = 6}
+}
+define VAMP_DLTSW   {select OPTION from gui_D1641Regs where Index = 7}      
+      
+! Delta Salinity      
+define EM_DLTSW     {select OPTION from gui_D1641Regs where Index = 8}
+define JP_DLTSW     {select OPTION from gui_D1641Regs where Index = 9}
+define RS_DLTSW     {select OPTION from gui_D1641Regs where Index = 10}
+define CO_DLTSW     {select OPTION from gui_D1641Regs where Index = 11}
+
+/* BO RPAs and other regulations*/
+define FallX2             {select Option from GUI_RPAsOtherRegs where Index=1} !Delta\ANN\X2days_FWS_WQ.wresl
+define Action_4_1_2       {select Option from GUI_RPAsOtherRegs where Index=2} !Export_Ops\NMFS_SALMON_BO_DCC.wresl
+define Action_4_2_1       {select Option from GUI_RPAsOtherRegs where Index=3} !Export_Ops\NMFS_SALMON_BO_SJR.wresl 
+define OMRBOON            {select Option from GUI_RPAsOtherRegs where Index=4} !whether implement FWS Action : no action: value=0; action: value=1
+define ClearCrkBOswitch   {select Option from GUI_RPAsOtherRegs where Index=5} !B2ActionsB2Action1Repeat.wresl
+!define BOExportEst_switch {select Option from options where Index=6} !cvp_dellogic\CVP_delivery_logic_south\Export_index_delivery_CVP.wresl
+!define BOON_SWP           {select Option from options where Index=7}!swp_dellogic\WSI_DI\delcar_swp.wresl
+/*NON-D1641 Delta Flow Switches     */ 
+define QOMR_DLTSW   {select OPTION from GUI_RPAsOtherRegs where Index = 8}
+define QWEST_DLTSW  {select OPTION from GUI_RPAsOtherRegs where Index = 9}
+define EISJR_DLTSW  {select OPTION from GUI_RPAsOtherRegs where Index = 10}      
+
+/* Operation options*/
+define CVC_ON             {select Option from GUI_Operations where Index=1} !Wheeling\wheelcap.wresl 
+define JPOD_ON            {select Option from GUI_Operations where Index=2} !Wheeling\wheelcap.wresl 
+define IntertieSwitch     {select Option from GUI_Operations where Index=3} !Export_Ops\intertie.wresl
+define CVPDedBanksSwitch  {value 0} ! use as place holder
+define SWPShastaSwitch    {value 0} ! use as place holder
+ 
+ 
+
+ 

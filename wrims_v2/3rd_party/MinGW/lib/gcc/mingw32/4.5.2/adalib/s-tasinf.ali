@@ -1,0 +1,64 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnvnvnnnnnnnnnnnnnnnn
+
+U system.task_info%b	s-tasinf.adb		2d9562d4 NE OL PK
+W system%s		system.ads		system.ali
+W system.os_interface%s	s-osinte.ads		s-osinte.ali
+
+U system.task_info%s	s-tasinf.ads		0cc26c24 EB EE OL PR PK
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+W system.win32%s	s-win32.ads		s-win32.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-osinte.ads		20090422121236 e19b549f
+D s-parame.ads		20091130110856 6cdeed25
+D s-stalib.ads		20090422095704 9cbc334a
+D s-tasinf.ads		20090409150020 ff3904e8
+D s-tasinf.adb		20090409150020 333732a3
+D s-win32.ads		20100128134454 4b10300f
+X 4 i-c.ads
+45M9*unsigned_long
+X 6 system.ads
+37K9*System 197e11 11|44r6 46r9 51r13 81r26 102r5 12|34r6 40r14 65r5
+X 8 s-osinte.ads
+50K16*OS_Interface 363e24 12|34w13
+X 11 s-tasinf.ads
+46K16*Task_Info 6|37k9 11|102l12 102e21 12|40b21 65l12 65t21
+81M12*CPU_Number{13|250M12} 83r23 90r13
+83m4*Any_CPU{81M12} 90r27
+85X4*Invalid_CPU_Number
+89R9*Thread_Attributes 91e14 93r41 95r38
+90m7*CPU{81M12}
+93r4*Default_Thread_Attributes{89R9}
+95P9*Task_Info_Type(89R9) 97r37
+97p4*Unspecified_Task_Info{95P9}
+99V13*Number_Of_Processors{positive} 12|51b13 63l8 63t28
+X 12 s-tasinf.adb
+42i4 N_CPU{natural} 43r19 53r10 58m13 62r14
+55r13 SI{13|252R9} 57m34 58r32
+X 13 s-win32.ads
+39K16*Win32 11|44w13 51r20 81r33 12|55r26 57r13 13|316e17
+60M9*DWORD<4|45M9>
+250M12*ProcessorId{60M9} 11|51r26 81r39
+252R9*SYSTEM_INFO 12|55r32 13|262e14
+258m7*dwNumberOfProcessors{60M9} 12|58r35
+264U14*GetSystemInfo 12|57r19
+

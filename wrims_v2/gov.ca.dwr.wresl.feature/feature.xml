@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="gov.ca.dwr.wresl.feature"
+      label="WreslFeature"
+      version="1.0.0.0"
+      provider-name="California Department of Water Resources">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.navigator"/>
+      <import plugin="org.eclipse.ui.navigator.resources"/>
+      <import plugin="org.eclipse.xtext" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.util"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.antlr.runtime"/>
+      <import plugin="org.eclipse.xtext.common.types"/>
+      <import plugin="org.apache.commons.logging"/>
+      <import plugin="org.eclipse.xtext.xbase.lib"/>
+      <import plugin="org.eclipse.xtext.xtend2.lib"/>
+      <import plugin="org.eclipse.xtext.ui"/>
+      <import plugin="org.eclipse.ui.editors" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui.shared"/>
+      <import plugin="org.eclipse.xtext.builder"/>
+      <import plugin="org.eclipse.xtext.common.types.ui"/>
+      <import plugin="org.eclipse.xtext.ui.codetemplates.ui"/>
+      <import plugin="org.eclipse.compare"/>
+      <import plugin="org.eclipse.ui.views" version="3.6.0" match="greaterOrEqual"/>
+      <import plugin="gov.ca.dwr.wresl.xtext.editor"/>
+      <import plugin="org.eclipse.search"/>
+      <import plugin="org.eclipse.core.resources" version="3.7.100" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="gov.ca.dwr.hecdssvue"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="gov.ca.dwr.wresl.xtext.editor"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="gov.ca.dwr.wresl.xtext.editor.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="gov.ca.dwr.jdiagram"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.0"
+         unpack="false"/>
+
+</feature>

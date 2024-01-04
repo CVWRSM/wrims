@@ -1,0 +1,40 @@
+/*************************************
+Switch_DeltaRegulations.wresl
+ 
+Z.Q. Richard Chen DWR (10/19/2010)
+
+Read switches for D1641 and delta regulations from lookup table
+**************************************/
+! D1641 Delta Flow Switches
+define DCC_DLTSW    {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 1}
+define EI_DLTSW     {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 2}
+define NDO_DLTSW    {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 3}
+define RV_DLTSW     {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 4}
+define X2_DLTSW     {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 5}
+define X2ROE_DLTSW  {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 6}
+define VAMP_DLTSW   {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 7}      
+      
+! Delta Salinity      
+define EM_DLTSW     {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 8}
+define JP_DLTSW     {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 9}
+define RS_DLTSW     {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 10}
+define CO_DLTSW     {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 11}
+      
+! NON-D1641 Delta Flow Switches      
+define QOMR_DLTSW    {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 12}
+define QWEST_DLTSW  {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 13}
+define EISJR_DLTSW  {
+      select OPTION from gui_DLTREGULATION where SWITCHID = 14}      

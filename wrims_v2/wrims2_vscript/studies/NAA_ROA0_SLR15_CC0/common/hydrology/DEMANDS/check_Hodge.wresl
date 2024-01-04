@@ -1,0 +1,57 @@
+!! Code by E.Reyes     as of  3/22/99; modified by S. Sou 10/16/01
+
+!! This file is a Duplicate file of NimbusHistMinQ.wresl.  It is used here just to determine the Nimbus historic
+!! (Modified D893) minflow.  The minflow is then compared against the Hodge Decision flow criteria to determine how much the
+!! City of Sac will pull from the American River and Sacramento River.
+
+!!!  Code for CVP(PROSIM) type lookup tables for minflow on the American below Nimbus.
+!!!  Code for American River Operations based on "modified D-1400" per PROSIM file FWQ_B203.dat
+!!!  Minflow below Nimbus(CP 41) is set according to a CVP Lookup Table that looks at
+!!!  combinations Folsom storage and forecasted inflows and demands (see table below for trigger description).
+!!!  The minflow must also meet Stability criteria.  The November - March minflows must be at least 80% of the
+!!!  preceding month's flow.  If the preceding month's flow exceeds a stability limit, then the stability
+!!!  criteria is ignored.
+
+
+! How Trigger is determined.
+!*******************************************************************************************************************
+!                   Trigger Type = 0:       Trigger Type = 1:
+!       Month:       Equation:               Equation:
+!     OCT     1        +s08                    +w08                  w = previous 1-Oct carryover storage
+!     NOV     2        +s08                    +w08                  s = beginning of month storage
+!     DEC     3        +s08                    +w08                  f = forecast of remaining inflow until 1-Oct
+!     JAN     4        +s08                    +s08                        (includes this month)
+!     FEB     5        +s08                    +s08                        (f08 = sum of I8, I300 and - demand_D300
+!     MAR     6        +s08+f08                +s08+f08                           for the remainder of the year)
+!     APR     7        +s08+f08                +s08+f08
+!     MAY     8        +s08+f08                +s08+f08
+!     JUN     9        +s08+f08                +s08+f08
+!     JUL    10        +s08+f08                +s08+f08
+!     AUG    11        +s08+f08                +s08+f08
+!     SEP    12        +s08+f08                +s08+f08
+!*******************************************************************************************************************
+
+
+
+
+
+define nimbus_trigger1 {
+       case oct_Feb {
+               condition  month >= OCT .and. month <= FEB
+               value        S8(-1)+S8mod }
+        case mar_sep {
+               condition    always
+               value        S8(-1)+S8mod + frcst_amr }
+       }
+
+
+define nimbus_hist_std1 {select minflow
+                          from   nimbus_hist
+                          given  trigger=nimbus_trigger1
+                          use    maximum
+                          where  month=month}
+
+define minflow_C9_ {value nimbus_hist_std1 }
+
+
+

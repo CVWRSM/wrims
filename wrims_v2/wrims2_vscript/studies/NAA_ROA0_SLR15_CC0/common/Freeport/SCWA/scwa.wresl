@@ -1,0 +1,57 @@
+!SCWA.wresl
+!04/10/02
+!Edward Chang (EBMUD)
+!Sets up Requested Diversions from Freeport for Sacramento County (FRWP)
+!This information is based on correspondance with Tad Berkebile at SacCo as of Jan 2002
+
+!priorities:
+!1)  cvp Freeport at D168C_cvp meets Freeport demands
+!2)  Excess at Freeport (D167c_excess) meets total demands unmet by sum of
+!    cvp freeport (D168C_cvp) and SCWA Fazio (D167b).  This logic nees to be in cycle 7
+
+!Excess taken as last priority (i.e. below wheeling, and interruptibles)
+!Unmet shortage calculated for post-processing at node 305)
+
+define dem_scwa_total_pmi  {timeseries kind 'DEMAND-CVP-MI' units 'TAF' convert 'CFS'} !Total allocation amount for cvp mi SCWA
+define dem_d168c_FRWP_pmi  {timeseries kind 'DEMAND-CVP-MI' units 'TAF' convert 'CFS'} !Allocation amount for cvp mi SCWA Freeport
+define dem_d168c_other_pmi {timeseries kind 'DEMAND-CVP-MI' units 'TAF' convert 'CFS'} !Allocation amount for "other" mi SCWA Freeport
+
+!sub-arcs to account for indoor and outdoor components of CVP and excess water
+define d167b            {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}    !SCWA
+define d167b_pmi        {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D168c_FRWP       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D168c_excess     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D168c_other      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D168c_FRWP_pmi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D168c_excess_pmi {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D168c_other_pmi  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+
+!maximum limit on total water diverted for SCWA
+goal aggregD168c_FRWP     {D168c_FRWP = D168c_FRWP_pmi}
+goal aggregD168c_excess   {D168c_excess = D168c_excess_pmi}
+goal aggregD168c_other    {D168c_other = D168c_other_pmi}
+goal limitSCWA            {D167b_pmi + D168c_FRWP_pmi + D168c_excess_pmi + D168c_other_pmi < dem_scwa_total_pmi}
+
+!Aggregating split arcs
+goal aggregD168c {D168c = D168c_FRWP_pmi + D168c_excess_pmi + D168c_other_pmi}
+
+!Bound to capacity share of FRWP
+goal capD168C {D168C < 131.5 } !SCWA use of capacity set to max of 85 MGD
+
+!bound to allocations
+goal setD168c_FRWP_pmi {D168c_FRWP_pmi < dem_D168C_FRWP_pmi*perdel_cvpmi_sys}
+goal setD168c_other_pmi {D168c_other_pmi < dem_D168C_other_pmi}     !Soft constraint, due to infeasibilities
+
+!route
+goal routeD305 {D305 = D168C_FRWP_pmi + D168C_excess_pmi + D168C_other_pmi}  !rleaf, rsr
+
+define r169_frwp_cvp {STD KIND 'FLOW' UNITS 'CFS'}
+define r169_frwp_other {STD KIND 'FLOW' UNITS 'CFS'}
+define r169_frwp_excess {STD KIND 'FLOW' UNITS 'CFS'}
+
+define D168c_exc_ntDep {STD KIND 'FLOW' UNITS 'CFS'}
+define D168c_exc_ntDep1 {STD KIND 'FLOW' UNITS 'CFS'}
+define D168c_exc_ntDep2 {STD KIND 'FLOW' UNITS 'CFS'}
+goal set_D168c_exc_ntDep {D168c_exc_ntDep = D168c_excess - r169_frwp_excess} !rleaf
+goal splt_D168c_exc_ntDep {D168c_exc_ntDep = D168c_exc_ntDep1 + D168c_exc_ntDep2} !rleaf
+

@@ -1,0 +1,38 @@
+! Stan_NMFS_RPA.wresl
+! In April and May, the "base" flows upon which to determine wq releases are 
+! defined as the old dfg flows, not the rpa flows.  Now in cycle 6, after
+! the pulse period wq release and VAMP release, if there is still any shortage
+! to the rpa flow targets, calculate the deficiency and secure a specific 
+! release from New Melones to meet it.  
+
+! define the required flow
+define StanNMFSmin {
+    select  flow from stan_rpa 
+    given   stanyr = stanfish_yrDV[SJRBASE] 
+    use     linear
+    where   month = month }
+define StanNMFSmin_dv {alias StanNMFSmin kind 'fish-flow-req' units 'cfs'}
+
+define StanNMFSpulse {
+    select  pulse from stan_pulse_rpa 
+    given   stanyr = stanfish_yrDV[SJRBASE] 
+    use     linear }
+define StanNMFSpulse_dv {alias StanNMFSpulse kind 'fish-flow-req' units 'cfs'}
+
+! check status of previous flow solutions to see if there is a need for 
+! add'l release from New Melones
+define StanNMFSdef {
+    case April {
+        condition month==APR
+        value max(0., (StanNMFSpulse-C520[VAMP_AND_DO])*16./30., 
+                      (StanNMFSpulse-C528[VAMP_AND_DO])*16./30.)
+            + max(0., (StanNMFSmin-C520[SJR_WQ1])*14./30., 
+                      (StanNMFSmin-C528[SJR_WQ1])*14./30.) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+define StanNMFSdef_dv {alias StanNMFSdef kind 'fish-flow-req' units 'cfs'}
+
+! impose the release requirement on New Melones
+goal set_C10RPA {C10RPA < StanNMFSdef}

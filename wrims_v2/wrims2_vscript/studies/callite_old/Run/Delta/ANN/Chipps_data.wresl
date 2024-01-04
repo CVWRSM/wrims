@@ -1,0 +1,159 @@
+/************************************
+Chipps_data.wresl
+
+Hao Xie DWR 6/24/2010
+
+ARTIFICIAL NEURAL NETWORK IMPLEMENTATION - CHIPPS ISLAND
+
+Chipps Island salinity standard:
+28-day running average of mean daily EC may not exceed standard for the periods listed below (mmhos):
+water-year-type    Jan-May    Oct-Dec
+Wet                12.5       12.5
+Above Normal       12.5       12.5
+Below Normal       12.5       12.5
+Dry                12.5       15.6*
+Critical           12.5       15.6*
+
+*applies only when project users are taking deficiencies in scheduled water supplies, otherwise 12.5 applies.
+
+The 28-day running average is assumed to be identical to the monthly average for the monthly time-step model.
+
+
+************************************/
+
+! calculate previous month's value of salinity
+define CH_EC_Month_sv {
+  case D1485Off{
+    condition CH_DLTSW == 0
+      value 99000.}
+  case lastWaterYear {
+    condition  month == Oct
+      value  AnnEC(C_Hood(-5),C_Hood(-4),C_Hood(-3),C_Hood(-2),C_Hood(-1),
+               D_ExpTD(-5),D_ExpTD(-4),D_ExpTD(-3),D_ExpTD(-2),D_ExpTD(-1),
+               SJR_ANN(-5),SJR_ANN(-4),SJR_ANN(-3),SJR_ANN(-2),SJR_ANN(-1),
+               DXC_daysopen(-5),DXC_daysopen(-4),DXC_daysopen(-3),DXC_daysopen(-2),DXC_daysopen(-1),
+               net_DICU(-5),net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),
+               sac_oth(-5),sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),
+               exp_oth(-5),exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),
+               VERNWQFINAL(-5),VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),
+               int(daysindv(-5)),int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),
+               int(CH),int(monthly_avg),12,(wateryear-1))}
+
+  case others {
+    condition always
+      value  AnnEC(C_Hood(-5),C_Hood(-4),C_Hood(-3),C_Hood(-2),C_Hood(-1),
+               D_ExpTD(-5),D_ExpTD(-4),D_ExpTD(-3),D_ExpTD(-2),D_ExpTD(-1),
+               SJR_ANN(-5),SJR_ANN(-4),SJR_ANN(-3),SJR_ANN(-2),SJR_ANN(-1),
+               DXC_daysopen(-5),DXC_daysopen(-4),DXC_daysopen(-3),DXC_daysopen(-2),DXC_daysopen(-1),
+               net_DICU(-5),net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),
+               sac_oth(-5),sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),
+               exp_oth(-5),exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),
+               VERNWQFINAL(-5),VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),
+               int(daysindv(-5)),int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),
+               int(CH),int(monthly_avg),(month-1),wateryear)}
+}
+
+define CH_EC_Month {std kind 'SALINITY' units 'UMHOS/CM'}
+goal setCH_EC_MON {CH_EC_Month = CH_EC_Month_sv}
+
+/***********************************
+Holly Canada, DWR (05/03/2012)
+
+D-1485 Code modified from OCAP 2008 study.
+************************************/
+
+
+if int(CH_DLTSW)==3 {
+
+!****************************************************************************************
+! define the EC standard for Chipps Island (millimhos/cm)
+
+	define CH_EC_STD_lookup {
+	    case Defic_Oct_thru_Dec {
+	      condition	   month >=OCT .and. month <=DEC .and. int(wyt_defic) == 1
+	      select            ECstandard1
+	      from              salinity_std_chs
+	      where             month=month,wyt=51 }
+	   case Oct_thru_May {
+	      condition         month >=OCT .and. month <=MAY
+	      select            ECstandard2
+	      from              salinity_std_chs
+	      where             month=month,wyt=wyt_D1485 }
+	   case NoStandard {
+	      condition  always
+	      value      99.0}
+	}
+	define CH_EC_STD_sv { value CH_EC_STD_lookup * 1000.0 }
+	define CH_EC_STD {std kind 'SALINITY' units 'UMHOS/CM'}
+	goal CHECstandout {CH_EC_STD = CH_EC_STD_sv}
+
+!****************************************************************************************
+!get slope and intercept for constraint exp<=m*sac+b
+	define CH_b_sv {
+	  case control{
+	    condition month >= Oct .and. month <= May
+	    value  AnnLineGen(C_Hood_ANN(-4),C_Hood_ANN(-3),C_Hood_ANN(-2),C_Hood_ANN(-1),
+			    D_ExpTD(-4),D_ExpTD(-3),D_ExpTD(-2),D_ExpTD(-1),
+			    SJR_ANN(-4),SJR_ANN(-3),SJR_ANN(-2),SJR_ANN(-1),SJR_ann_est,
+			    DXC_daysopen(-4),DXC_daysopen(-3),DXC_daysopen(-2),DXC_daysopen(-1),DXC_est,
+			    net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),net_delta_cu,
+			    sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),sac_oth_est,
+			    exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),exp_oth_est,
+			    VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),VERNWQFINALsv,
+			    int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),daysin,
+			    CH_EC_STD_sv,line_EM_lo,line_EM_hi,
+			    int(CH),int(intercept),int(ann_type),month,wateryear,4)}
+	  case other {
+	    condition  always
+	    value 999999.}
+	}
+	define CH_m_sv {
+	  case reducecalls {
+	    condition  CH_b_sv >= 999990.
+	    value 0.}
+	  case control{
+	    condition month >= Oct .and. month <= May
+	    value  AnnLineGen(C_Hood_ANN(-4),C_Hood_ANN(-3),C_Hood_ANN(-2),C_Hood_ANN(-1),
+			    D_ExpTD(-4),D_ExpTD(-3),D_ExpTD(-2),D_ExpTD(-1),
+			    SJR_ANN(-4),SJR_ANN(-3),SJR_ANN(-2),SJR_ANN(-1),SJR_ann_est,
+			    DXC_daysopen(-4),DXC_daysopen(-3),DXC_daysopen(-2),DXC_daysopen(-1),DXC_est,
+			    net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),net_delta_cu,
+			    sac_oth(-4),sac_oth(-3),sac_oth(-2), sac_oth(-1), sac_oth_est,
+			    exp_oth(-4),exp_oth(-3),exp_oth(-2), exp_oth(-1), exp_oth_est,
+			    VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),VERNWQFINALsv,
+			    int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),daysin,
+			    CH_EC_STD_sv,line_EM_lo,line_EM_hi,
+			    int(CH),int(slope),int(ann_type),month,wateryear,4)}
+	  case other {
+	    condition  always
+	    value 0.}
+	}
+	define CH_m {lower unbounded upper unbounded kind 'SLOPE' units 'NONE'}
+	define CH_b {lower unbounded upper unbounded kind 'INTERCEPT' units 'NONE'}
+	goal setCH_m {CH_m = CH_m_sv}
+	goal setCH_b {CH_b = CH_b_sv}
+
+!********************************************************************
+!Get the required Sac flow for ZERO exports
+	define CH_Sac_ZeroExp_sv1 {
+	  case NoSalinityControlPossible{
+		condition abs(CH_m_sv) <= 0.001 .and. int(CH_b_sv) == 0
+		value 0.}
+	  case NegSlope{
+		condition CH_m_sv <= 0.0
+		value 0.}
+	  case NegCarriage{
+		condition CH_m_sv >= 1.0
+		value 0.}
+	  case control{
+		condition month >= Oct .and. month <= May
+		value -CH_b_sv/CH_m_sv}
+	  case other {
+		condition  always
+		value 0.}
+	}
+	define CH_Sac_ZeroExp_sv2 {value max(0.0,CH_Sac_ZeroExp_sv1)}
+	define CH_Sac_ZeroExp {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+	goal setCH_Sac_ZeroExp {CH_Sac_ZeroExp = CH_Sac_ZeroExp_sv2}
+
+}

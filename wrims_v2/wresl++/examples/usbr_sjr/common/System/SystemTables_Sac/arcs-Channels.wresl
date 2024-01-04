@@ -1,0 +1,718 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-CHANNELS.WRESL
+
+NAMING TAKES THE FOLLOWING FORMS:
+C_{FLOW'S ORIGIN NODE}
+
+Edited DJones, DWR, 04/21/08 (Putah Cr, Cache Cr, Yolo Bypass, Auburn Ravine)
+Edited ajdraper, MWH, November 15, 2006
+*/
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! American River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_FOLSM {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_NTOMA {lower 0 upper 7071*taf_cfs kind 'CHANNEL' units 'CFS'}
+define  C_AMR022    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_AMR020    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_AMR017    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_AMR015    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_AMR009    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}        
+define  C_AMR007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_AMR004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}        
+define  C_ABT002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_NFA016    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_NFA011    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_EMD001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_EMD007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SCR002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_DCK012    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CBC000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CBC001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Antelope Creek  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_ANT011    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_ANT010    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Auburn Ravine & Cross Channel   !!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_ABN027    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_ABN026    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_ABN024    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_ABN010    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_ABN000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCK007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCK022    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCK036    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCK038    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CRC002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Barker and Cache Sloughs    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_CSL005B   {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CSL005A   {lower -99999 upper 999999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Battle Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_BTL006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear Creek North    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_BCN005    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BCN010    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear River, Lower Boardman, Wise and South Canals    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_LBC001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LBC010    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LBC030    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LBC032    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LBC038    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LBC040    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LBC043    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LBC049    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BEC000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BEC021    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BEC022    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BEC024    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_WSE003    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_WSE004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_WSE008    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_STH000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_STH001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_STH004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_STH005    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_STH007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear River      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_BRR074    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR073    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR067    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR066    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR061    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR060    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_RLLNS     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR050    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR049    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CMBIE     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR031    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR028    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR025    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CMPFW     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR017    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+!define C_BRR016    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BRR011    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BRR004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+define  C_DRM000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_DRM001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_DRM002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_DRM008    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_DRM009    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_DRM011    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LVC001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CYN010    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CYN009    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_TWL005    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LBR002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_WLF021    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Big Chico Creek !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_BCC014    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BCC012    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BCC006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BCC004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Briggs-West Gridley Drain and Cherokee Canal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_BGD000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CRK005    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Butte Creek / Butte Slough      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_BTC060    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BTC048    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BTC045    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BTC043    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BTC041    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BTC036    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BTC032    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+!define C_BTC031    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BTC029    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BTC024    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BTC018    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BTC017    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BTC016    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_BTC012    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BTC007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_BTC003    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_BSL001    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_BSL004    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_RFS17     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}        
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Cache Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_CLRLK     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH083    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH075    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH058    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH053    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH052    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH032    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH030    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CCH023    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CCH017    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CCH012    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CCH003    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+! define    C_CCH000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    THIS IS NOT ON 01/22/08 SCHEMATIC (D. JONES)
+
+define  C_INDVL     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_NFC013    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'} ! North Fork Cache Creek
+define  C_NFC005    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+define  C_BRC003    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'} ! Bear Creek
+define  C_BRC002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Clear Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_WKYTN {lower 0 upper 3000 kind 'CHANNEL' units 'CFS'} 
+define  C_CLR011    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CLR009    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CLR025    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Colusa Basin Drain  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_CBD049    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CBD044    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CBD041    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CBD038    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CBD037    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CBD031    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_CBD028    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_CBD023    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_CBD018    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_CBD012    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_CBD005    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CBD001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CBD000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Contra Costa Canal  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_CCC004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Cottonwood Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_SCW008    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CWD018    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CWD009    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_CWD004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CWD003    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Cow Creek       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_COW014    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_COW007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_COW003    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deer Creek      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_DRC012    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_DRC010    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_DRC006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deere Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_DER001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Dry Creek / Hutchison Creek !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_DHC001     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Edgar Slough    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_ESL008    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Elder Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_ELD027    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_ELD022    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_ELD017    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_ELD012    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_ELD005    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Feather River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_FTR074    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}        
+define  C_OROVL     {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR072    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR068    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR067    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_THERM     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_TAB000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_FTR063    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR059    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR053    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR051    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR048    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR045    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR039    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR036    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR031    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR030    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR029    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'}
+define  C_FTR028    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR025    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR021    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR018    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}       
+define  C_FTR016    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR014    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR012    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR008    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}   
+define  C_FTR003    {lower 0 upper 320000 kind 'CHANNEL' units 'CFS'}   
+
+define  C_JBC000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_JBC002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_JBC004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_JBC008    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_PCL000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_RFS11a    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_RFS11b    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_RFS13     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_RFS17N    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+define  C_WBF030    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_WBF015    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LGRSV     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SFF028    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SFF019    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SFF011    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LST004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SLYCK     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SFT000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LST007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Folsom South Canal  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_FSC003    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_FSC013    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_FSC015    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_FSC025    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! French Dry Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_MERLC     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_FDC006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Glenn-Colusa Canal  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_GCC007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC010    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC015    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC022    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC027    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+!define C_GCC032    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC036    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC039    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+!define C_GCC042    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC046    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+!define C_GCC050    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC056    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+!define C_GCC060    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_GCC065    {lower 0 upper 0 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Honcut Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_HON004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_HON021    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! J___ Creek  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_JCK002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Knights Landing Ridgecut    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_KLR005    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Little Dry Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_LDC029    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LDC021    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LDC007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Little Chico Creek  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_LCC038    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LCC029    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LCC026    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LCC024    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LCC016    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Lost Creek      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!define C_LST000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Marsh Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_MSH015    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mill Creek      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_MLC006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_MLC004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Minor Northeast Streams     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_MNS000    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mokelumne River     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MOK018     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+!define C_MOK014     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+!define C_MOK004     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH DELTA CROSS-CHANNEL
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Morman Ravine   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MRM001     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Morman Ravine near Newcastle
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! North Bay Aqueduct  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_NBA009     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_NBA011     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_NBA021     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Paynes Creek        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_PYN001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Putah Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_BRYSA     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_PTH030    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PTH024    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PTH021    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PTH020    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PTH015    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PTH011    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PTH007    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Putah South Canal   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_PSC003    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_PSC006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PSC015    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PSC017    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_PSC020    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_PSC024    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_PSC033    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Sacramento River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_CCT011    {lower 0 upper 3300 kind 'CHANNEL' units 'CFS'}
+define  C_SPT003    {lower 0 upper 4200 kind 'CHANNEL' units 'CFS'}
+define  C_SHSTA     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_KSWCK     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC301    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC299    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC296    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC294    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC289    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC287    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC281    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC277    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC275    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC273    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC271    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC269    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC265    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC259    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC257    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC254    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC250    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC247    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC240    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC232    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC229    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC228    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC224    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC218    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC217    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC214    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC207    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC201    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC196    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC193    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC188    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC185    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC182    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC178    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC174    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC168    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC162    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC159    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC154    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC148    {lower 0 upper 65000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC146    {lower 0 upper 65000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC141    {lower 0 upper 65000 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC134    {lower 0 upper 65000 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC129    {lower 0 upper 65000 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC122    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC121    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC120    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC115    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC109    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC106    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC099    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC097    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC093    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}    
+define  C_SAC092    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC091    {lower 0 upper 30000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC085    {lower 0 upper 210000 kind 'CHANNEL' units 'CFS'} ! C_SAC091 + C_SSL001
+define  C_SAC083    {lower 0 upper 107000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC082    {lower 0 upper 107000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC081    {lower 0 upper 107000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC078    {lower 0 upper 107000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC077    {lower 0 upper 107000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC075    {lower 0 upper 107000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC074    {lower 0 upper 107000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC066    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC065    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC064    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC063    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC062    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC057    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC053    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC050    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC049    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC048    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC041    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC036    {lower 0 upper 110000 kind 'CHANNEL' units 'CFS'}
+define  C_SAC030    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC029A   {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC029B   {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_SAC022    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC017    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+!define C_SAC015    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC011    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC007    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC003    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_SAC000    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Joaquin River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define C_SJR062     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!DELIVERY TO BANTA CARBONA ID/WESTSIDE ID
+define C_SJR056     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR053A    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR053B    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!upstream split to Old and Middle SJR
+define C_SJR048     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR043     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR042     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR038     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!confluence with Calaveras in C2VSIM
+define C_SJR033     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR028     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR026     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR023     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR022     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!confluence with Mokelumne in C2VSIM
+define C_SJR013     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR009     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_SJR006     {lower -99999 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Delta           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_NDO       {lower 0 upper 99999*taf_cfs kind 'CHANNEL' units 'CFS'} ! Set capacity the same as C407
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Sutter Bypass   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_SBP031    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SBP028    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SBP024    {lower 0 upper 150000 kind 'CHANNEL' units 'CFS'}   
+define  C_SBP021    {lower 0 upper 180000 kind 'CHANNEL' units 'CFS'}   
+define  C_SBP018    {lower 0 upper 180000 kind 'CHANNEL' units 'CFS'}   
+define  C_SBP014    {lower 0 upper 180000 kind 'CHANNEL' units 'CFS'}   
+define  C_SBP012    {lower 0 upper 180000 kind 'CHANNEL' units 'CFS'}
+define  C_RD1500    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SSL001    {lower 0 upper 180000 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stony Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_BLKBT     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_EPARK     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_SGRGE     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_STN026    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_STN021    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_STN014    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_STN009    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_STN004    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Tehama-Colusa Canal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_TCC085    {lower 0 upper 2530 kind 'CHANNEL' units 'CFS'} 
+define  C_TCC081    {lower 0 upper 2530 kind 'CHANNEL' units 'CFS'} 
+define  C_TCC066    {lower 0 upper 2530 kind 'CHANNEL' units 'CFS'} 
+define  C_TCC062    {lower 0 upper 2530 kind 'CHANNEL' units 'CFS'} 
+define  C_TCC036    {lower 0 upper 2530 kind 'CHANNEL' units 'CFS'}
+define  C_TCC031    {lower 0 upper 2530 kind 'CHANNEL' units 'CFS'} 
+define  C_TCC022    {lower 0 upper 2530 kind 'CHANNEL' units 'CFS'} 
+define  C_TCC001    {lower 0 upper 2530 kind 'CHANNEL' units 'CFS'} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Thomes Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_THM028    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_THM026    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_THM021    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_THM017    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_THM012    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+define  C_THM005    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Toadtown Canal  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_TTC011     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Trinity River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_TRNTY     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_LWSTN     {lower 0 upper 6000  kind 'CHANNEL' units 'CFS'}
+define  C_TRN111    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Wadsworth Canal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_WWC006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}    
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Willow Slough Bypass    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_WSB000     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Yolo Bypass     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_YBP034    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_YBP032    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_YBP026    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_YBP023    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_YBP020    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_YBP016    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_YBP014    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+define  C_YBP011    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_YBP007    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}
+define  C_YBP002    {lower 0 upper 999999 kind 'CHANNEL' units 'CFS'}   
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Yuba River      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define  C_SCT001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SLT009    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_SLT008    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_CMT001    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_NFY017    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define  C_NBLDB     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'} 
+!define C_ENGLB {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'} !see Yuba_Definition.wresl
+!define C_YUB024    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! Smartsville gage (USGS ####), flow requirement
+define  C_YUB023    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! Confluence: Deere Creek
+define  C_YUB014    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! Confluence: French Dry Creek
+define  C_YUB013    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! BVID Pipeline CHANNEL Diversion
+define  C_YUB011    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! Degeurre Dam & diversions for N. and S. CHANNELs
+define  C_YUB006    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! Marysville gage (USGS ####), flow requirement
+define  C_YUB003    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! Diversion for Marysville's Lake Ellis (presumed)
+define  C_YUB002    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! Yuba River at Marysville

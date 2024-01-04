@@ -1,0 +1,48 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U system.crtl.runtime%s	s-crtrun.ads		de5085bf NE OL PR PK
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c%s	i-c.adb			i-c.ali
+W interfaces.c.strings%s  i-cstrin.adb		i-cstrin.ali
+W system.crtl%s		s-crtl.ads		s-crtl.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-crtrun.ads		20091130102048 b1e4d2ec
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-parame.ads		20091130110856 6cdeed25
+D s-stalib.ads		20090422095704 9cbc334a
+X 3 interfac.ads
+36K9*Interfaces 171e15 8|36r6 41r25
+X 4 i-c.ads
+18K20*C 230e17 8|36r17 41r36
+X 5 i-cstrin.ads
+36K22*Strings 102e25 8|36w19 41r38
+46P9*chars_ptr(character) 8|41r46
+X 6 system.ads
+37K9*System 197e11 8|38r9 46r5
+X 7 s-crtl.ads
+38K16*CRTL 6|37k9 7|196e16 8|38r16 46r12
+53I12*int{integer} 8|43r31
+X 8 s-crtrun.ads
+38K21*Runtime 7|38k16 8|46l17 46e24
+41P12*chars_ptr{5|46P9} 43r43
+43V13*strerror{41P12} 43>23 44b<c,strerror>22
+43i23 errno{7|53I12}
+

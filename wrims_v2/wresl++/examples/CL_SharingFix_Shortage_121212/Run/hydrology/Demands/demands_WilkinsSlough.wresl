@@ -1,0 +1,106 @@
+/*************************************
+demands_WilkinsSlough.wresl
+ 
+Tom FitzHugh BOR 5/13/2010
+ 
+Handles demand/delivery logic for Wilkins Slough.  Deliveries are limited to the minimum of
+contract demand adjusted by contract cuts and diversion requirement adjusted for losses.
+
+For Glen Colusa Canal (GCC), individual deliveries (D143A, D145A) are only constrained to the 
+diversion requirement adjusted for on farm efficiency, reuse, and conveyance losses.  Contract 
+demand x percent delivery limit is applied only to total GCC deliveries (D114), which is the sum 
+of D143A, D145A, and refuge deliveries D143B and D145B.  Losses are also only calculated as 13% 
+if D114, rather than for individual deliveries.
+
+Delivery logic for refuges is handled in refuges.wresl
+**************************************/
+
+! WBA8NN ------------------------------------------------------------------------------------------------
+goal setL122A {L122A = D122A * ConvLs_14301}  !set conveyance loss
+
+define D122A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD122ASC {D122A < perdel_cvpsc_sys * con_14301SC}
+goal limitD122ASC_1 {D122A < target_D14301SC + L122A}
+
+goal splitD122A  {D122A = D122A_psc}
+
+goal setL143A {L143A = 0.0} !conveyance loss are set in the main GCID canal (L143)
+
+define D143A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD143ASC {D143A_psc < target_D14301GCID + L143A}
+goal splitD143A  {D143A = D143A_psc}
+
+! WBA8NS ------------------------------------------------------------------------------------------------
+goal setL122B {L122B = D122B * ConvLs_14501}  !set conveyance loss
+
+define D122B_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD122BSC {D122B < perdel_cvpsc_sys * con_14501SC}
+goal limitD122BSC_1 {D122B < target_D14501SC + L122B}
+
+goal splitD122B  {D122B = D122B_psc}
+
+goal setL145A {L145A = 0.0} !conveyance loss are set in the main GCID canal (L143)
+
+define D145A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD145ASC {D145A_psc < target_D14501GCID + L145A}
+goal splitD145A  {D145A = D145A_psc}
+
+define L182A { value D182A * ConvLs_14501}  !set conveyance loss
+
+define D182A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD182A {D145A_PSC + D122B_PSC < max(0.,target_D14501GCID + target_D14501SC + L182A - D182A) + L145A + L122B}
+
+goal splitD182A  {D182A = D182A_psc}
+
+! GC Canal overall contract demand limit
+define target_114GCID {value perdel_cvpsc_sys * con_114GCID }
+
+define targ114GCIDdv {alias target_114GCID kind 'DELTARGET' units 'CFS'}
+
+/*** equation below mimics Calsim, after removing all terms relating to WTS, EWA, and NODOS 
+Also removed - C17502A and - C17502B, which have to do with TCC/GCID intertie.  Not totally sure
+this is right, but also not sure how to account for this in CalLite ***/
+!limit Diversion at Hamilton City - this balance equation makes sure that the
+!GCC follows contract limits 
+goal limitD114 {D114 < target_114GCID                                          ! GCID contract
+                     + target_14302_prf + target_18201_prf                     ! L2 Refuge demands
+                     - C_TC_GC   }                                    ! TCCA/GCID interties
+
+!constraining D114 to be sum of all deliveries off GCC
+goal totalD114 {D114 = D143A + D143B + D145A + D145B + L143 - C_TC_GC}
+
+goal setL143 {0.87 * L143 = 0.13 * D143A + 0.13 * D143B + 0.13 * D145A + 0.13 * D145B - 0.13 * C_TC_GC}  !set conveyance loss ... in Calsim this is .13 * C142B, but D114 is the closest 
+                                  !thing we have in CalLite to C142B
+
+! WBA8S ------------------------------------------------------------------------------------------------
+goal setL129A {L129A = D129A * ConvLs_18301}  !set conveyance loss
+
+define D129A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD129ASC {D129A < perdel_cvpsc_sys * con_18301SC}
+goal limitD129ASC_1 {D129A < target_D18301SC + L129A}
+
+goal splitD129A  {D129A = D129A_psc}
+
+! WBA 9, 18, 19  East side of DSA 15 ------------------------------------------------------------------------------------------------
+goal setL128 {L128 = D128 * ConvLs_131} !set conveyance loss
+
+define D128_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal limitD128SC {D128 < perdel_cvpsc_sys * con_131SC}
+goal limitD128SC_1 {D128 < target_D131SC + L128}
+
+goal splitD128  {D128 = D128_psc}
+
+! Set total project deliveries for Wilkins Slough, and deliveries by type
+goal setD_Wilkns_P {D_Wilkns_P = D114 + D122A + D122B + D129A + D128}
+
+goal setD_Wilkns_psc {D_Wilkns_psc = D122A_psc + D143A_psc + D122B_psc + D145A_psc + D129A_psc + D128_psc}
+goal setD_Wilkns_SC {D_Wilkns_SC = D122A_psc + D122B_psc + D129A_psc + D128_psc}
+goal setD_Wilkns_GCID {D_Wilkns_GCID = D143A_psc + D145A_psc}
+goal setD_Wilkns_prf {D_Wilkns_prf = D143B_prf + D145B_prf}

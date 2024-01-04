@@ -1,0 +1,24 @@
+! This wresl file defines Red Bluff gate operations.
+! The gate is down during April 15 to September 15.
+!
+! Maximum diversion
+! Apr15-Sep15: 2100 cfs
+! Otherwise:   400 cfs
+!
+! ==========================================================================
+!
+goal RedBluffGate {
+  lhs D_SAC240_TCC001
+  case Apr {
+    condition	month == APR .or. month == SEP
+    rhs         (400. + 2100.) / 2.  ! April and September operations need to be refined.
+    lhs<rhs     penalty 0 }
+  case AprSep {
+    condition	month >= MAY .and. month <= AUG
+    rhs         2100.
+    lhs<rhs     penalty 0 }
+  case otherwise {
+    condition always
+    rhs         400.
+    lhs<rhs     penalty 0 }
+}

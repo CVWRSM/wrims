@@ -1,0 +1,125 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnvnnnnnnnnnnnnnnnnnnvnnnnnvnnnnnnnnnnnnvnnnnnnnnnnvnnvnnnnnnnnnnnnnnnnnnnnn
+
+U ada.text_io.bounded_io%b  a-tiboio.adb	24b2116c NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W ada.unchecked_deallocation%s
+
+U ada.text_io.bounded_io%s  a-tiboio.ads	9c0865ff BN NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.strings%s		a-string.ads		a-string.ali
+W ada.strings.bounded%s	a-strbou.adb		a-strbou.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-charac.ads		20070912115822 506ce725
+D a-chlat1.ads		20070912115822 e9ee6d0a
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-string.ads		20070406091342 87b4230b
+D a-strbou.ads		20090409150020 1d1962a8
+D a-strmap.ads		20090409150020 5253a637
+D a-strsup.ads		20090409150020 9dd84fea
+D a-tags.ads		20090409150020 bfa07446
+D a-textio.ads		20091028140912 7065b2f2
+D a-tiboio.ads		20070406091342 f174b5a5
+D a-tiboio.adb		20090409150020 79c56856
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-wchcon.ads		20090417130712 30c48dc1
+X 1 ada.ads
+16K9*Ada 19e8 15|16r6 20r10 22r9 50r5 16|32r6 32r23 33r6 35r14 50r13 179r5
+X 9 a-string.ads
+16K13*Strings 35e16 15|16r10 20r14
+X 10 a-strbou.ads
+39K21*Bounded 896e24 15|16w18 20r22
+46k12*Generic_Bounded_Length 894e30 15|20r30
+50R12 Bounded_String 15|24r37[19] 27r40[19] 30r26[19] 34r26[19] 37r22[19]
+. 41r22[19] 44r22[19] 48r22[19] 16|64r37[15|19] 74r40[15|19] 85r26[15|19]
+. 112r26[15|19] 138r22[15|19] 150r22[15|19] 161r22[15|19] 173r22[15|19]
+63V16 To_Bounded_String{50R12[15|19]} 16|66r22[15|19] 77r22[15|19] 103r23[15|19]
+. 130r23[15|19]
+67V16 To_String{string} 16|141r20[15|19] 153r26[15|19] 164r25[15|19] 176r31[15|19]
+X 14 a-textio.ads
+49K13*Text_IO 1|16k9 14|472e16 15|22r13 50r9 16|32w10 32r27 35r18 179r9
+52P9*File_Type(370R9) 15|27r14 33r14 40r14 47r14 16|74r14 111r14 149r14 172r14
+242U14*Put 16|153r7
+243U14*Put 16|141r7
+245U14*Get_Line 16|120r7 124r10
+250U14*Get_Line 16|93r7 97r10
+254V13*Get_Line{string} 16|77r41
+257V13*Get_Line{string} 16|66r41
+260U14*Put_Line 16|176r7
+264U14*Put_Line 16|164r7
+X 15 a-tiboio.ads
+19K17 Bounded[10|46] 24r29 27r32 30r18 34r18 37r14 41r14 44r14 48r14 16|64r29
+. 66r14 74r32 77r14 85r18 103r15 112r18 130r15 138r14 141r12 150r14 153r18
+. 161r14 164r17 173r14 176r23
+22k21*Bounded_IO 14|49k13 15|19z17 50l17 50e27 16|35b26 179l17 179t27
+24V13*Get_Line{10|50R12[19]} 16|64b13 67l8 67t16
+26V13*Get_Line{10|50R12[19]} 27>7 16|73b13 78l8 78t16
+27p7 File{14|52P9} 16|74b7 77r51
+29U14*Get_Line 30<7 16|84b14 104l8 104t16
+30r7 Item{10|50R12[19]} 16|85b7 103m7
+32U14*Get_Line 33>7 34<7 16|110b14 131l8 131t16
+33p7 File{14|52P9} 16|111b7 120r17 124r20
+34r7 Item{10|50R12[19]} 16|112b7 130m7
+36U14*Put 37>7 16|137b14 142l8 142t11
+37r7 Item{10|50R12[19]} 16|138b7 141r31
+39U14*Put 40>7 41>7 16|148b14 154l8 154t11
+40p7 File{14|52P9} 16|149b7 153r12
+41r7 Item{10|50R12[19]} 16|150b7 153r37
+43U14*Put_Line 44>7 16|160b14 165l8 165t16
+44r7 Item{10|50R12[19]} 16|161b7 164r36
+46U14*Put_Line 47>7 48>7 16|171b14 177l8 177t16
+47p7 File{14|52P9} 16|172b7 176r17
+48r7 Item{10|50R12[19]} 16|173b7 176r42
+X 16 a-tiboio.adb
+37P9 String_Access(string) 39r32 46r32 50r49 89r16 90r16 116r16 117r16
+39U14 Free 39=20 46b14 58l8 58t12 99r10 126r10
+39p20 SA{37P9} 46b20 55r10 56m22
+47a7 Null_String{string} 55r20
+49U17 Deallocate[18|20] 56r10
+87a7 Buffer{string} 93m17 94r27 96r20 97m20 98r41
+88i7 Last{natural} 93m25 94r40 96r13 97m28 98r54
+89p7 Str1{37P9} 94m7 98r30 99m16 100m10 103r42
+90p7 Str2{37P9} 98m10 100r18
+114a7 Buffer{string} 120m23 121r27 123r20 124m26 125r41
+115i7 Last{natural} 120m31 121r40 123r13 124m34 125r54
+116p7 Str1{37P9} 121m7 125r30 126m16 127m10 130r42
+117p7 Str2{37P9} 125m10 127r18
+X 18 a-uncdea.ads
+20u15*Unchecked_Deallocation 16|33w10 50r17
+

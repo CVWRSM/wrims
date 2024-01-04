@@ -1,0 +1,15 @@
+! amer_demands.wresl
+
+! diviersion restrictions are imposed for H Street minimum flow criteria
+! shift diversion location from American to Sacramento
+
+define res_Amer_div {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define res_Amer_div {
+	case HSt_control {
+		condition C303_EXC[MONTHLYWEIGHTED] < 1.0
+		value 0.0 }
+	case otherwise {
+		condition always
+		value 1.0 }
+}
+

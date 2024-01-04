@@ -1,0 +1,191 @@
+/*************************************
+xc-gates.wresl
+ 
+Tom FitzHugh BOR 4/23/2010
+
+Determines flow through the Delta cross channel and Georgianna Slough using the following equation:
+
+    DXC & Georg. Sl. Flow = (a * Sac Flow) + b
+        where a = 0.293 , b = 2090 cfs ==> OPEN GATE POSITION
+        where a = 0.133 , b = 829 cfs  ==> CLOSED GATE POSITION
+
+ We can break the equation into individual components that will give the same result:
+
+  Georgianna Sl. Flow           = 0.133*Qsac + 829  ==> OPEN OR CLOSED GATE POSITION
+  DXC Flow                              = 0.160*Qsac + 1261 ==> OPEN GATE POSITION
+  DXC Flow                              = 0.0               ==> CLOSED GATE POSITION
+  
+Describe logic for when gates are open or closed here: Following is my draft: WQCP has an initial schedule of how 
+many days each month the gates will be open.  But gates are always closed when flow is above 25,000 cfs, so because
+of this the actual number of days open can vary from the initial schedule.
+
+Z.Q. Richard Chen, DWR 10/04/2010 
+Set DCC_DLTSW switch to control how many days the DCC will open in a month.
+*************************************/
+
+/*
+Hao Xie, 09/21/2011
+The above documented equations are modified based on the flow results from 2009 DSM2 recalibration model
+for estimating the DXC & Georg. Sl flow. The equations are modified as follows:
+
+    DXC & Georg. Sl. Flow = (a * Sac Flow) + b
+        where a = 0.3217 , b = 1051 cfs ==> OPEN GATE POSITION
+        where a = 0.1321 , b = 1087 cfs  ==> CLOSED GATE POSITION
+
+ We can break the equation into individual components that will give the same result:
+
+  Georgianna Sl. Flow           = 0.1321*Qsac + 1087  ==> OPEN OR CLOSED GATE POSITION
+  DXC Flow                              = 0.1896*Qsac - 36 ==> OPEN GATE POSITION
+  DXC Flow                              = 0.0               ==> CLOSED GATE POSITION
+
+*/
+/*
+Hao Xie, 09/21/2011
+Modify the regression equations used to compute flow through the Delta cross channel and Georgiana Sl for the
+BDCP PP (25000ac Restoration was included) scenario derived based on DSM2 outputs
+
+DXC & Georg. Sl. Flow = (a * Sac Flow) + b
+     where a = 0.2842, b = 453 cfs ==> OPEN GATE POSITION
+         where a = 0.1339, b = 745 cfs ==> CLOSED GATE POSITION
+
+We can break the equation into individual component that will give the same result:
+
+  Georgianna Sl. Flow           = 0.1339*Qsac + 745  ==> OPEN OR CLOSED GATE POSITION
+  DXC Flow                              = 0.1503*Qsac - 292 ==> OPEN GATE POSITION
+  DXC Flow                              = 0.0               ==> CLOSED GATE POSITION
+*/
+
+
+! Split arc C_DXC into Georgianna Slough and DXC components
+define DXC_max {value 99999.*taf_cfs} ! over 1,600,000 cfs (plenty big)
+define C_DXC_GEO {std kind 'FLOW-GEORGIANA' units 'CFS'}
+define C_DXC_DXC {std kind 'FLOW-DXC' units 'CFS'}
+goal splitC_DXC {C_DXC = C_DXC_GEO + C_DXC_DXC}
+
+goal GeorgSlough {C_DXC_GEO = 0.1321*C_Hood + 1087.0}  
+!goal GeorgSlough {C_DXC_GEO = 0.1339*C_Hood + 745.0}  ! Implements equation described above
+
+!define WQCP_days_open   {select days_open from xchanneldays where month=month}  ! Number of days in each month that the DXC gate is open
+define WQCP_days_open   {       !DCC_DLTSW switch added 10/04/2010 by Z.Q. Richard Chen, DWR
+    case USERDEF {
+	    condition DCC_DLTSW == 2
+        select days_open from gui_xchanneldays where month=month}
+    case D1641 {
+        condition DCC_DLTSW == 1  
+        select days_open_D1641 from xchanneldays where month=month}  ! Number of days in each month that the DXC gate is open
+    case D1485_Normal{
+    	condition DCC_DLTSW == 3	!
+    	select days_open_D1485 from xchanneldays where month=month}  
+    case NOREGULATION {
+        condition always
+        value 0} 
+       }
+
+define numberofdaysopen {
+	case D1485{
+		condition DCC_DLTSW == 3
+		value WQCP_days_open }
+	case D1641orUserDefined{
+		condition DCC_DLTSW == 1 .or. DCC_DLTSW == 2
+		value min(WQCP_days_open, NMFS_days_open) }
+}
+define DaysOpenStd {alias numberofdaysopen kind 'GATE-DAYS-OPEN' units 'NONE'}
+
+
+if int(DCC_DLTSW)==3 {
+	define fract_open_abv   {value numberofdaysopen/daysin }   ! Fraction of month gates are open if NDOI above 12000
+	define fract_open_blw   {value 1.} !Fraction of month gates are open if NDOI is less thas 12000
+
+	! NDO flow above which D1485 Gate closure specifications apply from January to May.
+	define NDO_threshold  { value 12001.} ! units =cfs 
+
+	! The following variables are zero or one if their corresponding condition is false or true, respectively
+	define int_NDO_below  {INTEGER std kind 'INTEGER' units 'NONE'}                          ! 0: high flow; 1:  low flow
+	define int_NDO_above  {alias 1. - int_NDO_below kind 'INTEGER' units 'NONE'}     ! 1: high flow; 0:  low flow
+	define NDO_above {std kind 'FLOW-NDO-ABV' units 'CFS'}      ! zero if C400 < threshold
+	define NDO_below {std kind 'FLOW-NDO-BEL' units 'CFS'}      ! zero if C400 > threshold
+	define NDO_max {value 999999.}  !cfs
+
+	! following constraints allow only one of the two flow variables to be positive
+	goal NDO_flood_flow {NDO_above - NDO_below = NDO - NDO_threshold }
+	goal NDO_abv_force   {NDO_above < int_NDO_above * NDO_max}
+	goal NDO_bel_force   {NDO_below < int_NDO_below * NDO_max}
+
+	define C_Hood_abv {std kind 'flow-channel' units 'cfs'}
+	define C_Hood_blw {std kind 'flow-channel' units 'cfs'}
+
+	goal split_C_Hood_NDOI {C_Hood = C_Hood_abv + C_Hood_blw}
+	goal lim_C_Hood_abv {C_Hood_abv < 999999.*int_NDO_above}
+	goal lim_C_Hood_blw {C_Hood_blw < 999999.*int_NDO_below}
+	
+	define fract_open_{alias fract_open_abv*int_NDO_above + fract_open_blw*int_NDO_below kind 'DXC-FRACT-OPEN' UNITS 'NONE'}  !for output only
+}
+
+
+
+
+
+if int(DCC_DLTSW)==1 .or. int(DCC_DLTSW)==2 {
+	! The following variables are zero or one if their corresponding condition is false or true, respectively
+	define fract_open   {value numberofdaysopen/daysin }   ! Fraction of month gates are open
+	define SAC_threshold  { value 25000.0} ! Sac flow at which gates will be closed
+	define int_SAC_below  {INTEGER std kind 'INTEGER' units 'NONE'}                  ! 0: high flow; 1:  low flow
+	define int_SAC_above  {alias 1. - int_SAC_below kind 'INTEGER' units 'NONE'}     ! 1: high flow; 0:  low flow
+	define SAC_above {std kind 'FLOW-SAC-ABV' units 'CFS'}      ! zero if C_Hood < threshold
+	define SAC_below {std kind 'FLOW-SAC-BEL' units 'CFS'}      ! zero if C_Hood > threshold
+	define SAC_max {value 99999.*taf_cfs}   ! max flow is over 1,600,000 cfs (plenty big)
+
+	! following constraints allow only one of the two flow variables to be positive
+	goal SAC_flood_flow  {SAC_above - SAC_below = C_Hood - SAC_threshold }
+	goal SAC_abv_force   {SAC_above < int_SAC_above * SAC_max}
+	goal SAC_bel_force   {SAC_below < int_SAC_below * SAC_max}
+	
+	define fract_open_ {alias fract_open kind 'DXC-FRACT-OPEN' UNITS 'NONE'}  !for output only
+}
+
+
+
+! Records actual number of days gates are open (only set when flow is below 25000 cfs)
+define DXC_daysopen {lower unbounded kind 'GATE-DAYS-OPEN' units 'NONE'}
+define DXC_est { 
+	case D1641{
+		condition DCC_DLTSW == 1 .or. DCC_DLTSW == 2
+		value numberofdaysopen}
+	case D1485_Spec {
+		condition C_SacSjr[Upstream] >= 12001 .and. C_Hood[Upstream] < 25000 .and. DCC_DLTSW == 3
+		value numberofdaysopen}
+	case D1485_NDOI_LT_12000 {
+		condition C_SacSjr[Upstream] < 12001 .and. DCC_DLTSW == 3
+		value daysin}
+	case otherwise {
+		condition always
+		value 0.}
+}
+
+define DXC_estdv {alias DXC_est kind 'GATE-DAYS-OPEN' units 'NONE'}
+
+if int(DCC_DLTSW)==3 {goal setDXC {DXC_daysopen = No_flood_DCC_closure*numberofdaysopen*int_NDO_above + No_flood_DCC_closure*daysin*int_NDO_below}}
+if int(DCC_DLTSW)==1 .or. int(DCC_DLTSW)==2 {goal setDXC {DXC_daysopen = DXC_est * int_SAC_below}}
+
+define No_flood_DCC_closure {
+	case D1641{
+		condition DCC_DLTSW == 1 .or. DCC_DLTSW == 2
+		value 0.}
+	case NoFlood_D1485 {
+		condition	DCC_DLTSW == 3 .and. C_Hood[Upstream] < 25000
+		value		1.}
+	case otherwise {
+		condition	always
+		value		0.}
+}
+
+! Determines flow in DXC, implementing equation described above
+! If flow is above 25,000, DXC flow = 0 since the gates are closed
+! If flow is below 25,000, DXC flow is determined using open gate equation, adjusted by fraction of month that gates are open. .
+if int(DCC_DLTSW)==3 {goal open_cond_flow {C_DXC_DXC =  0.1896*C_Hood_abv*fract_open_abv*No_flood_DCC_closure - 36.*fract_open_abv*int_NDO_above*No_flood_DCC_closure +
+		    		 	 		0.1896*C_Hood_blw*fract_open_blw*No_flood_DCC_closure - 36.*fract_open_blw*int_NDO_below*No_flood_DCC_closure }
+}
+if int(DCC_DLTSW)==1 .or. (DCC_DLTSW)==2 {
+	goal open_cond_flow {C_DXC_DXC = 0.1896*SAC_threshold*int_SAC_below*fract_open - 0.1896*SAC_below*fract_open + int_SAC_below*(-36.)*fract_open}
+	GOAL HELP_INTEGER {LHS C_SACDXC RHS 0.0 LHS>RHS PENALTY 0.000001} ! What is this, do we need this?
+}

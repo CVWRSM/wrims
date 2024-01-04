@@ -1,0 +1,10 @@
+! D204_Adjustment_Removed.wresl
+!
+define Yubadv       {std kind 'WTS-Acquisition' units 'taf'}
+define AnnYuba_EWAdv {std kind 'EWA-Acquisition' units 'TAF'}
+define PrevYrYubadv {std kind 'Acquisition' units 'taf'}
+!
+goal setAnnYuba_EWAdv {AnnYuba_EWAdv = 0. }
+goal setPrevYrYubadv  {PrevYrYubadv = 0. }
+!
+goal set_D204_REOP {D204_REOP < 0.}

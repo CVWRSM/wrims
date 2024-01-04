@@ -1,0 +1,56 @@
+! IMF @@@
+! Read inputs to fix pumping + allocations
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! (Read inflows/salinities at Banks and Tracy, outflows at SBA, CAA172)
+! (Variables below are copied straight from CSII DV --> CS3 SV)
+! (Changes: F-part)
+define D418             { timeseries kind 'flow-delivery' units 'cfs'}
+define D419             { timeseries kind 'flow-delivery' units 'cfs'}
+define D419_CVC         { timeseries kind 'flow-delivery' units 'cfs'}
+define D419_CVPwhl      { timeseries kind 'flow-delivery' units 'cfs'}
+define D801             { timeseries kind 'flow-delivery' units 'cfs'}       
+define C830             { timeseries kind 'FLOW-CHANNEL'  units 'cfs'}
+! define C605A            { timeseries kind 'FLOW-CHANNEL'  units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! (Read allocations for CVP, SWP)
+! (NOTE: read SV's, set DV's -- keep types correct!)
+! (Variables below are copied straight from CSII DV --> CS3 SV)
+! (Changes: B-part [perdv->perdel for CVP terms]; F-part [all])
+define perdel_cvpag_s   { timeseries kind 'percent-delivery' units 'none'}
+define perdel_cvpmi_s   { timeseries kind 'percent-delivery' units 'none'}
+define perdel_cvpex_s   { timeseries kind 'percent-delivery' units 'none'}
+define perdel_cvprf_s   { timeseries kind 'percent-delivery' units 'none'}
+define perdel_sdv       { timeseries kind 'percent-delivery' units 'none'}
+define perdel_sysdv     { timeseries kind 'percent-delivery' units 'none'}
+define swp_perdeldv     { timeseries kind 'swp-delivery'     units 'none'}   
+define perdel_sys       { value perdel_sysdv } ! req'd b/c cvp_dellogic_s/* but not INCLUDE'd
+define perdel_s         { value perdel_sdv }   ! req'd b/c cvp_dellogic_s/* not INCLUDE'd
+define swp_perdel       { value swp_perdeldv } ! req'd b/c cvp_dellogic_s/* not INCLUDE'd
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! (Read+Fix SLUIS rules -- used in Cycle6 @ Rulecurve/SanLuis.wresl)
+! (NOTE: read SV's, set DV's -- keep types correct!)
+! (NOTE: needed for SLUIS operations...)
+! (Variables below are copied straight from CSII DV --> CS3 SV)
+! (Changes: B-part [add _Input to both terms]; F-part)
+define CVPRULECV_Input  { timeseries kind 'RULECURVE' units 'TAF' }
+define CVPRuleCalc1     { value CVPRULECV_Input }
+define CVPRuleCalc1_a   { alias CVPRuleCalc1 kind 'RULECURVE' units 'TAF' }
+define CVPRULECV        { std        kind 'rulecurve' units 'TAF' }
+goal   fixCVPRULECV     { CVPRULECV = CVPRuleCalc1 } 
+    
+define SWPRULECV_Input  { timeseries kind 'RULECURVE' units 'TAF' }
+define SWPRuleCalc1     { value SWPRULECV_Input }
+define SWPRuleCalc1_a   { alias SWPRuleCalc1 kind 'RULECURVE' units 'TAF' }
+define SWPRULECV        { std        kind 'rulecurve' units 'TAF' }
+goal   fixSWPRULECV     { SWPRULECV = SWPRuleCalc1 }
+
+
+
+
+

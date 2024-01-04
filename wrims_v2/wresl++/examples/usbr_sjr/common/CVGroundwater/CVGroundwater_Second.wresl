@@ -1,0 +1,44 @@
+
+
+!*********************************************************************
+!*********************************************************************
+!***  Define DU index numbers
+!*********************************************************************
+!*********************************************************************
+define  indxWBA_50   {value  41}
+define  indxWBA_61   {value  31}
+define  indxWBA_62   {value  32}
+define  indxWBA_63   {value  33}
+define  indxWBA_64   {value  34}
+define  indxWBA_71   {value  35}
+define  indxWBA_72   {value  36}
+define  indxWBA_73   {value  37}
+define  indxWBA_90   {value  38}
+define  indxWBA_91   {value  39}
+
+/* NO SMALL WATERSHEDS IN SJR FOR INITIAL SETUP...
+   NEED TO WORK WITH CAN DOGRUL TO FIGURE OUT SMALL WATERSHED AREAS
+define  indxE3	     {value  31}
+define  indxE4	     {value  32}
+define  indxE6	     {value  33}
+*/
+
+
+
+!*********************************************************************
+!*********************************************************************
+!***  Set the forcings on the groundwater system (using previous cycle's values)
+!*********************************************************************
+!*********************************************************************
+INCLUDE 'SetPumping_Second.wresl'
+INCLUDE 'SetDeepPerc_Second.wresl'
+INCLUDE 'SetStrmFlow_Second.wresl'
+
+
+
+!*********************************************************************
+!*********************************************************************
+!***  Simulate groundwater system
+!*********************************************************************
+!*********************************************************************
+define rSimGW {value    SimGW(wateryear,month) }       !Returns value of 0 if successfully executed

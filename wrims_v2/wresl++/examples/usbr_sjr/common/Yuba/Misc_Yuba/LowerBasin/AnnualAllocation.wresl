@@ -1,0 +1,804 @@
+!Coded by Andy Draper June 2004. DP
+!Results from this file are applicable only in the Month of April
+define S_NBB_MAR {std kind 'STORAGE' units 'TAF'} !NEW BULLARDS BAR
+define S_NBB_APR {std kind 'STORAGE' units 'TAF'} !NEW BULLARDS BAR
+define S_NBB_MAY {std kind 'STORAGE' units 'TAF'} !NEW BULLARDS BAR
+define S_NBB_JUN {std kind 'STORAGE' units 'TAF'} !NEW BULLARDS BAR
+define S_NBB_JUL {std kind 'STORAGE' units 'TAF'} !NEW BULLARDS BAR
+define S_NBB_AUG {std kind 'STORAGE' units 'TAF'} !NEW BULLARDS BAR
+define S_NBB_SEP {std kind 'STORAGE' units 'TAF'} !NEW BULLARDS BAR
+define Alloc_YCWAMU {std kind 'FRACTION' units 'NONE'}
+
+goal S_NBB_MAR_Value {S_NBB_MAR=S_NBLDB(-1)}
+
+
+define carryover_NBB_target {select carryover_req from YUBA_carryover where standard=MinFlowCrit,wateryear=wateryear}
+goal set_carryover_NBB { 
+	lhs	S_NBB_SEP
+	rhs	carryover_NBB_target
+		lhs<rhs		penalty 1000*taf_cfs
+		}
+
+/*
+define I31_local {timeseries kind 'FLOW-INFLOW' units 'TAF' convert  'CFS'} !Inflow to New Bullards Bar Reservoir
+define I231_local {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Dry Creek
+define I243_local {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Miscelaneous Inflows to Englebright Reservoir
+define I251_local {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Slate Creek inflow to Slate Creek Reservoir
+define I253_local {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Oregon Creek inflow to Lohman Ridge Tunnel
+define I254_local {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Inflow to Our House Diversion
+*/
+!define demand_D251_local {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+!define demand_D243_local {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+/*
+define I_NBB_APR {value I31_local(1)+I251_local(1)+I253_local(1)+I254_local(1)-demand_D251_local(1)-10}
+define I_NBB_MAY {value I31_local(2)+I251_local(2)+I253_local(2)+I254_local(2)-demand_D251_local(2)-10}
+define I_NBB_JUN {value I31_local(3)+I251_local(3)+I253_local(3)+I254_local(3)-demand_D251_local(3)-10}
+define I_NBB_JUL {value I31_local(4)+I251_local(4)+I253_local(4)+I254_local(4)-demand_D251_local(4)-10}
+define I_NBB_AUG {value I31_local(5)+I251_local(5)+I253_local(5)+I254_local(5)-demand_D251_local(5)-10}
+define I_NBB_SEP {value I31_local(6)+I251_local(6)+I253_local(6)+I254_local(6)-demand_D251_local(6)-10}
+
+define I_EB_APR {value I243_local(1)+10+5+3+2.5+5-0.805*demand_D243_local(1)}
+define I_EB_MAY {value I243_local(2)+10+5+3+2.5+5-0.805*demand_D243_local(2)}
+define I_EB_JUN {value I243_local(3)+10+5+3+2.5+5-0.805*demand_D243_local(3)}
+define I_EB_JUL {value I243_local(4)+10+5+3+2.5+5-0.805*demand_D243_local(4)}
+define I_EB_AUG {value I243_local(5)+10+5+3+2.5+5-0.805*demand_D243_local(5)}
+define I_EB_SEP {value I243_local(6)+10+5+3+2.5+5-0.805*demand_D243_local(6)}
+
+define I_DER001_APR {value I231_local(1)+3}
+define I_DER001_MAY {value I231_local(2)+3}
+define I_DER001_JUN {value I231_local(3)+3}
+define I_DER001_JUL {value I231_local(4)+3}
+define I_DER001_AUG {value I231_local(5)+3}
+define I_DER001_SEP {value I231_local(6)+3}
+
+define I_NBB_APR_out {alias I_NBB_APR units 'cfs'}
+define I_NBB_MAY_out {alias I_NBB_MAY units 'cfs'}
+define I_NBB_JUN_out {alias I_NBB_JUN units 'cfs'}
+define I_NBB_JUL_out {alias I_NBB_JUL units 'cfs'}
+define I_NBB_AUG_out {alias I_NBB_AUG units 'cfs'}
+define I_NBB_SEP_out {alias I_NBB_SEP units 'cfs'}
+
+define I_EB_APR_out {alias I_EB_APR units 'cfs'}
+define I_EB_MAY_out {alias I_EB_MAY units 'cfs'}
+define I_EB_JUN_out {alias I_EB_JUN units 'cfs'}
+define I_EB_JUL_out {alias I_EB_JUL units 'cfs'}
+define I_EB_AUG_out {alias I_EB_AUG units 'cfs'}
+define I_EB_SEP_out {alias I_EB_SEP units 'cfs'}
+
+define I_DER001_APR_out {alias I_DER001_APR units 'cfs'}
+define I_DER001_MAY_out {alias I_DER001_MAY units 'cfs'}
+define I_DER001_JUN_out {alias I_DER001_JUN units 'cfs'}
+define I_DER001_JUL_out {alias I_DER001_JUL units 'cfs'}
+define I_DER001_AUG_out {alias I_DER001_AUG units 'cfs'}
+define I_DER001_SEP_out {alias I_DER001_SEP units 'cfs'}
+*/
+
+define I_NBB_APR {value I_NFY017    + I_CMT001    + I_SLT009    - D_SLT009_SCT001_SV   }
+define I_NBB_MAY {value I_NFY017(1) + I_CMT001(1) + I_SLT009(1) - D_SLT009_SCT001_SV(1)}
+define I_NBB_JUN {value I_NFY017(2) + I_CMT001(2) + I_SLT009(2) - D_SLT009_SCT001_SV(2)}
+define I_NBB_JUL {value I_NFY017(3) + I_CMT001(3) + I_SLT009(3) - D_SLT009_SCT001_SV(3)}
+define I_NBB_AUG {value I_NFY017(4) + I_CMT001(4) + I_SLT009(4) - D_SLT009_SCT001_SV(4)}
+define I_NBB_SEP {value I_NFY017(5) + I_CMT001(5) + I_SLT009(5) - D_SLT009_SCT001_SV(5)}
+
+define I_EB_APR {value I_ENGLB}
+define I_EB_MAY {value I_ENGLB(1)}
+define I_EB_JUN {value I_ENGLB(2)}
+define I_EB_JUL {value I_ENGLB(3)}
+define I_EB_AUG {value I_ENGLB(4)}
+define I_EB_SEP {value I_ENGLB(5)}
+
+define I_DER001_APR {value I_DER001}
+define I_DER001_MAY {value I_DER001(1)}
+define I_DER001_JUN {value I_DER001(2)}
+define I_DER001_JUL {value I_DER001(3)}
+define I_DER001_AUG {value I_DER001(4)}
+define I_DER001_SEP {value I_DER001(5)}
+
+define C_NBB_APR {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_NBB_MAY {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_NBB_JUN {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_NBB_JUL {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_NBB_AUG {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_NBB_SEP {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+define C_EB_APR {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_EB_MAY {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_EB_JUN {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_EB_JUL {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_EB_AUG {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_EB_SEP {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+define C_DER001_APR {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_DER001_MAY {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_DER001_JUN {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_DER001_JUL {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_DER001_AUG {std kind 'FLOW-CHANNEL' units 'CFS'}
+define C_DER001_SEP {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+define D_DER001_APR {std kind 'FLOW-DIVERSION' units 'CFS'}
+define D_DER001_MAY {std kind 'FLOW-DIVERSION' units 'CFS'}
+define D_DER001_JUN {std kind 'FLOW-DIVERSION' units 'CFS'}
+define D_DER001_JUL {std kind 'FLOW-DIVERSION' units 'CFS'}
+define D_DER001_AUG {std kind 'FLOW-DIVERSION' units 'CFS'}
+define D_DER001_SEP {std kind 'FLOW-DIVERSION' units 'CFS'}
+
+define E_NBB_APR {std kind 'EVAPORATION' units 'CFS'}
+define E_NBB_MAY {std kind 'EVAPORATION' units 'CFS'}
+define E_NBB_JUN {std kind 'EVAPORATION' units 'CFS'}
+define E_NBB_JUL {std kind 'EVAPORATION' units 'CFS'}
+define E_NBB_AUG {std kind 'EVAPORATION' units 'CFS'}
+define E_NBB_SEP {std kind 'EVAPORATION' units 'CFS'}
+
+!continuity for New Bullards Bar
+goal continuityNBB_APR {I_NBB_APR-C_NBB_APR-E_NBB_APR=S_NBB_APR*taf_cfs-S_NBB_MAR*taf_cfs}
+goal continuityNBB_MAY {I_NBB_MAY-C_NBB_MAY-E_NBB_MAY=S_NBB_MAY*taf_cfs*30/31-S_NBB_APR*taf_cfs*30/31}
+goal continuityNBB_JUN {I_NBB_JUN-C_NBB_JUN-E_NBB_JUN=S_NBB_JUN*taf_cfs-S_NBB_MAY*taf_cfs}
+goal continuityNBB_JUL {I_NBB_JUL-C_NBB_JUL-E_NBB_JUL=S_NBB_JUL*taf_cfs*30/31-S_NBB_JUN*taf_cfs*30/31}
+goal continuityNBB_AUG {I_NBB_AUG-C_NBB_AUG-E_NBB_AUG=S_NBB_AUG*taf_cfs*30/31-S_NBB_JUL*taf_cfs*30/31}
+goal continuityNBB_SEP {I_NBB_SEP-C_NBB_SEP-E_NBB_SEP=S_NBB_SEP*taf_cfs-S_NBB_AUG*taf_cfs}
+
+!continuity for Englebright
+goal continuityEB_APR {I_EB_APR+C_NBB_APR=C_EB_APR}	
+goal continuityEB_MAY {I_EB_MAY+C_NBB_MAY=C_EB_MAY}	
+goal continuityEB_JUN {I_EB_JUN+C_NBB_JUN=C_EB_JUN}	
+goal continuityEB_JUL {I_EB_JUL+C_NBB_JUL=C_EB_JUL}	
+goal continuityEB_AUG {I_EB_AUG+C_NBB_AUG=C_EB_AUG}	
+goal continuityEB_SEP {I_EB_SEP+C_NBB_SEP=C_EB_SEP}	
+
+!continuity for Daguerre Point
+goal continuityDER001_APR {I_DER001_APR+C_EB_APR=C_DER001_APR+D_DER001_APR}
+goal continuityDER001_MAY {I_DER001_MAY+C_EB_MAY=C_DER001_MAY+D_DER001_MAY}
+goal continuityDER001_JUN {I_DER001_JUN+C_EB_JUN=C_DER001_JUN+D_DER001_JUN}
+goal continuityDER001_JUL {I_DER001_JUL+C_EB_JUL=C_DER001_JUL+D_DER001_JUL}
+goal continuityDER001_AUG {I_DER001_AUG+C_EB_AUG=C_DER001_AUG+D_DER001_AUG}
+goal continuityDER001_SEP {I_DER001_SEP+C_EB_SEP=C_DER001_SEP+D_DER001_SEP}
+
+!Daguerre Point deliveries
+goal set_allocation_upper {Alloc_YCWAMU < 1.0}
+goal set_allocation_lower {Alloc_YCWAMU > 0.5}
+
+goal allocation_APR {D_DER001_APR=Alloc_YCWAMU*demand_D230}
+goal allocation_MAY {D_DER001_MAY=Alloc_YCWAMU*demand_D230(1)}
+goal allocation_JUN {D_DER001_JUN=Alloc_YCWAMU*demand_D230(2)}
+goal allocation_JUL {D_DER001_JUL=Alloc_YCWAMU*demand_D230(3)}
+goal allocation_AUG {D_DER001_AUG=Alloc_YCWAMU*demand_D230(4)}
+goal allocation_SEP {D_DER001_SEP=Alloc_YCWAMU*demand_D230(5)}
+
+!minimum flows d/s of Daguerre Point
+define C_DER001_MIF_APR {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_DER001_MIF_MAY {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_DER001_MIF_JUN {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_DER001_MIF_JUL {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_DER001_MIF_AUG {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_DER001_MIF_SEP {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+
+define C_DER001_ADD_APR {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_DER001_ADD_MAY {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_DER001_ADD_JUN {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_DER001_ADD_JUL {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_DER001_ADD_AUG {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_DER001_ADD_SEP {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+goal continuityCDER001_APR {C_DER001_APR=C_DER001_MIF_APR+C_DER001_ADD_APR}
+goal continuityCDER001_MAY {C_DER001_MAY=C_DER001_MIF_MAY+C_DER001_ADD_MAY}
+goal continuityCDER001_JUN {C_DER001_JUN=C_DER001_MIF_JUN+C_DER001_ADD_JUN}
+goal continuityCDER001_JUL {C_DER001_JUL=C_DER001_MIF_JUL+C_DER001_ADD_JUL}
+goal continuityCDER001_AUG {C_DER001_AUG=C_DER001_MIF_AUG+C_DER001_ADD_AUG}
+goal continuityCDER001_SEP {C_DER001_SEP=C_DER001_MIF_SEP+C_DER001_ADD_SEP}
+
+!minimum flows d/s of Englebright
+define C_EB_MIF_APR {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_EB_MIF_MAY {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_EB_MIF_JUN {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_EB_MIF_JUL {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_EB_MIF_AUG {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_EB_MIF_SEP {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+
+define C_EB_ADD_APR {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_ADD_MAY {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_ADD_JUN {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_ADD_JUL {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_ADD_AUG {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_ADD_SEP {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define C_EB_SPILL_APR {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_SPILL_MAY {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_SPILL_JUN {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_SPILL_JUL {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_SPILL_AUG {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_EB_SPILL_SEP {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define NARROWS_APR {lower 0 upper 4190 kind 'FLOW-CHANNEL' units 'CFS'}
+define NARROWS_MAY {lower 0 upper 4190 kind 'FLOW-CHANNEL' units 'CFS'}
+define NARROWS_JUN {lower 0 upper 4190 kind 'FLOW-CHANNEL' units 'CFS'}
+define NARROWS_JUL {lower 0 upper 4190 kind 'FLOW-CHANNEL' units 'CFS'}
+define NARROWS_AUG {lower 0 upper 4190 kind 'FLOW-CHANNEL' units 'CFS'}
+define NARROWS_SEP {lower 0 upper 4190 kind 'FLOW-CHANNEL' units 'CFS'}
+
+goal continuityCEB_APR {C_EB_APR=C_EB_SPILL_APR+NARROWS_APR}
+goal continuityCEB_MAY {C_EB_MAY=C_EB_SPILL_MAY+NARROWS_MAY}
+goal continuityCEB_JUN {C_EB_JUN=C_EB_SPILL_JUN+NARROWS_JUN}
+goal continuityCEB_JUL {C_EB_JUL=C_EB_SPILL_JUL+NARROWS_JUL}
+goal continuityCEB_AUG {C_EB_AUG=C_EB_SPILL_AUG+NARROWS_AUG}
+goal continuityCEB_SEP {C_EB_SEP=C_EB_SPILL_SEP+NARROWS_SEP}
+
+goal continuityCEB_APR2 {C_EB_APR=C_EB_MIF_APR+C_EB_ADD_APR}
+goal continuityCEB_MAY2 {C_EB_MAY=C_EB_MIF_MAY+C_EB_ADD_MAY}
+goal continuityCEB_JUN2 {C_EB_JUN=C_EB_MIF_JUN+C_EB_ADD_JUN}
+goal continuityCEB_JUL2 {C_EB_JUL=C_EB_MIF_JUL+C_EB_ADD_JUL}
+goal continuityCEB_AUG2 {C_EB_AUG=C_EB_MIF_AUG+C_EB_ADD_AUG}
+goal continuityCEB_SEP2 {C_EB_SEP=C_EB_MIF_SEP+C_EB_ADD_SEP}
+
+!minimum flows d/s of New Bullards Bar
+define C_NBB_MIF_APR {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_NBB_MIF_MAY {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_NBB_MIF_JUN {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_NBB_MIF_JUL {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_NBB_MIF_AUG {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_NBB_MIF_SEP {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+
+define C_NBB_ADD_APR {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_NBB_ADD_MAY {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_NBB_ADD_JUN {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_NBB_ADD_JUL {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_NBB_ADD_AUG {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_NBB_ADD_SEP {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+
+define COLGATE_APR {lower 0 upper 3700 kind 'FLOW-CHANNEL' units 'CFS'}
+define COLGATE_MAY {lower 0 upper 3700 kind 'FLOW-CHANNEL' units 'CFS'}
+define COLGATE_JUN {lower 0 upper 3700 kind 'FLOW-CHANNEL' units 'CFS'}
+define COLGATE_JUL {lower 0 upper 3700 kind 'FLOW-CHANNEL' units 'CFS'}
+define COLGATE_AUG {lower 0 upper 3700 kind 'FLOW-CHANNEL' units 'CFS'}
+define COLGATE_SEP {lower 0 upper 3700 kind 'FLOW-CHANNEL' units 'CFS'}
+
+goal continuityCNBB_APR {C_NBB_APR=C_NBB_MIF_APR+C_NBB_ADD_APR+COLGATE_APR}
+goal continuityCNBB_MAY {C_NBB_MAY=C_NBB_MIF_MAY+C_NBB_ADD_MAY+COLGATE_MAY}
+goal continuityCNBB_JUN {C_NBB_JUN=C_NBB_MIF_JUN+C_NBB_ADD_JUN+COLGATE_JUN}
+goal continuityCNBB_JUL {C_NBB_JUL=C_NBB_MIF_JUL+C_NBB_ADD_JUL+COLGATE_JUL}
+goal continuityCNBB_AUG {C_NBB_AUG=C_NBB_MIF_AUG+C_NBB_ADD_AUG+COLGATE_AUG}
+goal continuityCNBB_SEP {C_NBB_SEP=C_NBB_MIF_SEP+C_NBB_ADD_SEP+COLGATE_SEP}
+
+goal minpowerrelease_APR {COLGATE_APR>(18.500/1.13)*taf_cfs*31/30}
+goal minpowerrelease_MAY {COLGATE_MAY>(18.500/1.13)*taf_cfs}
+goal minpowerrelease_JUN {COLGATE_JUN>(18.500/1.13)*taf_cfs*31/30}
+goal minpowerrelease_JUL {COLGATE_JUL>(18.500/1.13)*taf_cfs}
+goal minpowerrelease_AUG {COLGATE_AUG>(18.500/1.13)*taf_cfs}
+goal minpowerrelease_SEP {COLGATE_SEP>(18.500/1.13)*taf_cfs*31/30}
+
+!minimum instream flow d/s of New Bullards Bar
+define MF_C_NBB {value 5}
+
+goal minflowNBB_APR {C_NBB_MIF_APR<MF_C_NBB}
+goal minflowNBB_MAY {C_NBB_MIF_MAY<MF_C_NBB}
+goal minflowNBB_JUN {C_NBB_MIF_JUN<MF_C_NBB}
+goal minflowNBB_JUL {C_NBB_MIF_JUL<MF_C_NBB}
+goal minflowNBB_AUG {C_NBB_MIF_AUG<MF_C_NBB}
+goal minflowNBB_SEP {C_NBB_MIF_SEP<MF_C_NBB}
+
+!minimum instream flow at Smartsville
+define MIF_C_YUB024_APR {
+	case Wet {
+        	condition wytype_YUBA == 1
+        	select Wet   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=7}
+        case AN {
+	        condition wytype_YUBA == 2
+        	select AN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=7}
+        case BN {
+	        condition wytype_YUBA == 3
+        	select BN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=7}
+        case Dry {
+	        condition wytype_YUBA == 4
+        	select Dry   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=7}
+        case Crit {
+	        condition wytype_YUBA == 5
+        	select Crit  from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=7}
+        case otherwise {
+		condition always
+        	select Ecrit from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=7}
+        }
+       	
+define MIF_C_YUB024_MAY {
+	case Wet {
+	        condition wytype_YUBA == 1
+	        select Wet   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=8}
+	case AN {
+		condition wytype_YUBA == 2
+	        select AN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=8}
+	case BN {
+		condition wytype_YUBA == 3
+	        select BN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=8}
+	case Dry {
+		condition wytype_YUBA == 4
+	        select Dry   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=8}
+	case Crit {
+		condition wytype_YUBA == 5
+	        select Crit  from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=8}
+	case otherwise {
+		condition always
+	        select Ecrit from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=8}
+        }
+
+define MIF_C_YUB024_JUN {
+	case Wet {
+	        condition wytype_YUBA == 1
+	        select Wet   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=9}
+	case AN {
+		condition wytype_YUBA == 2
+	        select AN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=9}
+	case BN {
+		condition wytype_YUBA == 3
+	        select BN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=9}
+	case Dry {
+		condition wytype_YUBA == 4
+	        select Dry   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=9}
+	case Crit {
+		condition wytype_YUBA == 5
+	        select Crit  from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=9}
+	case otherwise {
+		condition always
+	        select Ecrit from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=9}
+        }
+
+define MIF_C_YUB024_JUL {        
+	case Wet {
+        	condition wytype_YUBA == 1
+        	select Wet   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=10}
+        case AN {
+	        condition wytype_YUBA == 2
+        	select AN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=10}
+        case BN {
+	        condition wytype_YUBA == 3
+        	select BN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=10}
+        case Dry {
+	        condition wytype_YUBA == 4
+        	select Dry   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=10}
+        case Crit {
+	        condition wytype_YUBA == 5
+        	select Crit  from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=10}
+        case otherwise {
+		condition always
+        	select Ecrit from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=10}
+        }
+       	
+define MIF_C_YUB024_AUG {      	
+	case Wet {
+        	condition wytype_YUBA == 1
+        	select Wet   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=11}
+        case AN {
+	        condition wytype_YUBA == 2
+        	select AN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=11}
+        case BN {
+	        condition wytype_YUBA == 3
+        	select BN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=11}
+        case Dry {
+	        condition wytype_YUBA == 4
+        	select Dry   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=11}
+        case Crit {
+	        condition wytype_YUBA == 5
+        	select Crit  from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=11}
+        case otherwise {
+		condition always
+        	select Ecrit from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=11}
+        }
+
+define MIF_C_YUB024_SEP {
+	case Wet {
+	        condition wytype_YUBA == 1
+	        select Wet   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=12}
+	case AN {
+		condition wytype_YUBA == 2
+	        select AN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=12}
+	case BN {
+		condition wytype_YUBA == 3
+	        select BN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=12}
+	case Dry {
+		condition wytype_YUBA == 4
+	        select Dry   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=12}
+	case Crit {
+		condition wytype_YUBA == 5
+	        select Crit  from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=12}
+	case otherwise {
+		condition always
+	        select Ecrit from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=12}
+        }
+
+
+goal minflowEB_APR {C_EB_MIF_APR<MIF_C_YUB024_APR}
+goal minflowEB_MAY {C_EB_MIF_MAY<MIF_C_YUB024_MAY}
+goal minflowEB_JUN {C_EB_MIF_JUN<MIF_C_YUB024_JUN}
+goal minflowEB_JUL {C_EB_MIF_JUL<MIF_C_YUB024_JUL}
+goal minflowEB_AUG {C_EB_MIF_AUG<MIF_C_YUB024_AUG}
+goal minflowEB_SEP {C_EB_MIF_SEP<MIF_C_YUB024_SEP}
+
+!minimum instream flow d/s of Daguerre Point
+define MIF_C_YUB006_APR {
+	case Wet {
+        	condition wytype_YUBA == 1
+        	select Wet   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=7}
+        case AN {
+	        condition wytype_YUBA == 2
+        	select AN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=7}
+        case BN {
+	        condition wytype_YUBA == 3
+        	select BN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=7}
+        case Dry {
+	        condition wytype_YUBA == 4
+        	select Dry   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=7}
+        case Crit {
+	        condition wytype_YUBA == 5
+        	select Crit  from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=7}
+        case otherwise {
+		condition always
+        	select Ecrit from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=7}
+        }
+       	
+define MIF_C_YUB006_MAY {
+	case Wet {
+	        condition wytype_YUBA == 1
+	        select Wet   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=8}
+	case AN {
+		condition wytype_YUBA == 2
+	        select AN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=8}
+	case BN {
+		condition wytype_YUBA == 3
+	        select BN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=8}
+	case Dry {
+		condition wytype_YUBA == 4
+	        select Dry   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=8}
+	case Crit {
+		condition wytype_YUBA == 5
+	        select Crit  from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=8}
+	case otherwise {
+		condition always
+	        select Ecrit from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=8}
+        }
+
+define MIF_C_YUB006_JUN {
+	case Wet {
+	        condition wytype_YUBA == 1
+	        select Wet   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=9}
+	case AN {
+		condition wytype_YUBA == 2
+	        select AN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=9}
+	case BN {
+		condition wytype_YUBA == 3
+	        select BN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=9}
+	case Dry {
+		condition wytype_YUBA == 4
+	        select Dry   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=9}
+	case Crit {
+		condition wytype_YUBA == 5
+	        select Crit  from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=9}
+	case otherwise {
+		condition always
+	        select Ecrit from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=9}
+        }
+
+define MIF_C_YUB006_JUL {        
+	case Wet {
+        	condition wytype_YUBA == 1
+        	select Wet   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=10}
+        case AN {
+	        condition wytype_YUBA == 2
+        	select AN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=10}
+        case BN {
+	        condition wytype_YUBA == 3
+        	select BN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=10}
+        case Dry {
+	        condition wytype_YUBA == 4
+        	select Dry   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=10}
+        case Crit {
+	        condition wytype_YUBA == 5
+        	select Crit  from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=10}
+        case otherwise {
+		condition always
+        	select Ecrit from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=10}
+        }
+       	
+define MIF_C_YUB006_AUG {      	
+	case Wet {
+        	condition wytype_YUBA == 1
+        	select Wet   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=11}
+        case AN {
+	        condition wytype_YUBA == 2
+        	select AN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=11}
+        case BN {
+	        condition wytype_YUBA == 3
+        	select BN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=11}
+        case Dry {
+	        condition wytype_YUBA == 4
+        	select Dry   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=11}
+        case Crit {
+	        condition wytype_YUBA == 5
+        	select Crit  from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=11}
+        case otherwise {
+		condition always
+        	select Ecrit from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=11}
+        }
+
+define MIF_C_YUB006_SEP {
+	case Wet {
+	        condition wytype_YUBA == 1
+	        select Wet   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=12}
+	case AN {
+		condition wytype_YUBA == 2
+	        select AN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=12}
+	case BN {
+		condition wytype_YUBA == 3
+	        select BN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=12}
+	case Dry {
+		condition wytype_YUBA == 4
+	        select Dry   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=12}
+	case Crit {
+		condition wytype_YUBA == 5
+	        select Crit  from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=12}
+	case otherwise {
+		condition always
+	        select Ecrit from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=12}
+        }
+
+
+goal minflowDER001_APR {C_DER001_MIF_APR<MIF_C_YUB006_APR}
+goal minflowDER001_MAY {C_DER001_MIF_MAY<MIF_C_YUB006_MAY}
+goal minflowDER001_JUN {C_DER001_MIF_JUN<MIF_C_YUB006_JUN}
+goal minflowDER001_JUL {C_DER001_MIF_JUL<MIF_C_YUB006_JUL}
+goal minflowDER001_AUG {C_DER001_MIF_AUG<MIF_C_YUB006_AUG}
+goal minflowDER001_SEP {C_DER001_MIF_SEP<MIF_C_YUB006_SEP}
+
+define S_NBBlevel1_APR {value 234}
+define S_NBBlevel1_MAY {value 234}
+define S_NBBlevel1_JUN {value 234}
+define S_NBBlevel1_JUL {value 234}
+define S_NBBlevel1_AUG {value 234}
+define S_NBBlevel1_SEP {value 234}
+
+define S_NBBlevel2_APR {value 234}
+define S_NBBlevel2_MAY {value 234}
+define S_NBBlevel2_JUN {value 234}
+define S_NBBlevel2_JUL {value 234}
+define S_NBBlevel2_AUG {value 234}
+define S_NBBlevel2_SEP {value 234}
+
+define S_NBBlevel3_APR {select target from res_level where res_num=31,level=3,month=7}
+define S_NBBlevel3_MAY {select target from res_level where res_num=31,level=3,month=8}
+define S_NBBlevel3_JUN {select target from res_level where res_num=31,level=3,month=9}
+define S_NBBlevel3_JUL {select target from res_level where res_num=31,level=3,month=10}
+define S_NBBlevel3_AUG {select target from res_level where res_num=31,level=3,month=11}
+define S_NBBlevel3_SEP {select target from res_level where res_num=31,level=3,month=12}
+
+define S_NBBlevel4_APR {select target from res_level where res_num=31,level=4,month=7}
+define S_NBBlevel4_MAY {select target from res_level where res_num=31,level=4,month=8}
+define S_NBBlevel4_JUN {select target from res_level where res_num=31,level=4,month=9}
+define S_NBBlevel4_JUL {select target from res_level where res_num=31,level=4,month=10}
+define S_NBBlevel4_AUG {select target from res_level where res_num=31,level=4,month=11}
+define S_NBBlevel4_SEP {select target from res_level where res_num=31,level=4,month=12}
+
+define S_NBBlevel5_APR {select target from res_level where res_num=31,level=5,month=7}
+define S_NBBlevel5_MAY {select target from res_level where res_num=31,level=5,month=8}
+define S_NBBlevel5_JUN {select target from res_level where res_num=31,level=5,month=9}
+define S_NBBlevel5_JUL {select target from res_level where res_num=31,level=5,month=10}
+define S_NBBlevel5_AUG {select target from res_level where res_num=31,level=5,month=11}
+define S_NBBlevel5_SEP {select target from res_level where res_num=31,level=5,month=12}
+
+define S_NBBlevel6_APR {value 966}
+define S_NBBlevel6_MAY {value 966}
+define S_NBBlevel6_JUN {value 966}
+define S_NBBlevel6_JUL {value 966}
+define S_NBBlevel6_AUG {value 966}
+define S_NBBlevel6_SEP {value 966}
+
+define S_NBB_1_APR {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_1_MAY {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_1_JUN {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_1_JUL {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_1_AUG {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_1_SEP {std kind 'STORAGE-ZONE' units 'TAF'}
+
+define S_NBB_2_APR {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_2_MAY {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_2_JUN {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_2_JUL {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_2_AUG {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_2_SEP {std kind 'STORAGE-ZONE' units 'TAF'}
+
+define S_NBB_3_APR {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_3_MAY {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_3_JUN {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_3_JUL {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_3_AUG {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_3_SEP {std kind 'STORAGE-ZONE' units 'TAF'}
+
+define S_NBB_4_APR {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_4_MAY {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_4_JUN {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_4_JUL {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_4_AUG {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_4_SEP {std kind 'STORAGE-ZONE' units 'TAF'}
+
+define S_NBB_5_APR {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_5_MAY {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_5_JUN {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_5_JUL {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_5_AUG {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_5_SEP {std kind 'STORAGE-ZONE' units 'TAF'}
+
+define S_NBB_6_APR {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_6_MAY {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_6_JUN {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_6_JUL {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_6_AUG {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NBB_6_SEP {std kind 'STORAGE-ZONE' units 'TAF'}
+
+goal S_NBBZone1_APR {S_NBB_1_APR < S_NBBlevel1_APR}
+goal S_NBBZone1_MAY {S_NBB_1_MAY < S_NBBlevel1_MAY}
+goal S_NBBZone1_JUN {S_NBB_1_JUN < S_NBBlevel1_JUN}
+goal S_NBBZone1_JUL {S_NBB_1_JUL < S_NBBlevel1_JUL}
+goal S_NBBZone1_AUG {S_NBB_1_AUG < S_NBBlevel1_AUG}
+goal S_NBBZone1_SEP {S_NBB_1_SEP < S_NBBlevel1_SEP}
+
+goal S_NBBZone2_APR {S_NBB_2_APR < S_NBBlevel2_APR-S_NBBlevel1_APR}
+goal S_NBBZone2_MAY {S_NBB_2_MAY < S_NBBlevel2_MAY-S_NBBlevel1_MAY}
+goal S_NBBZone2_JUN {S_NBB_2_JUN < S_NBBlevel2_JUN-S_NBBlevel1_JUN}
+goal S_NBBZone2_JUL {S_NBB_2_JUL < S_NBBlevel2_JUL-S_NBBlevel1_JUL}
+goal S_NBBZone2_AUG {S_NBB_2_AUG < S_NBBlevel2_AUG-S_NBBlevel1_AUG}
+goal S_NBBZone2_SEP {S_NBB_2_SEP < S_NBBlevel2_SEP-S_NBBlevel1_SEP}
+
+goal S_NBBZone3_APR {S_NBB_3_APR < S_NBBlevel3_APR-S_NBBlevel2_APR}
+goal S_NBBZone3_MAY {S_NBB_3_MAY < S_NBBlevel3_MAY-S_NBBlevel2_MAY}
+goal S_NBBZone3_JUN {S_NBB_3_JUN < S_NBBlevel3_JUN-S_NBBlevel2_JUN}
+goal S_NBBZone3_JUL {S_NBB_3_JUL < S_NBBlevel3_JUL-S_NBBlevel2_JUL}
+goal S_NBBZone3_AUG {S_NBB_3_AUG < S_NBBlevel3_AUG-S_NBBlevel2_AUG}
+goal S_NBBZone3_SEP {S_NBB_3_SEP < S_NBBlevel3_SEP-S_NBBlevel2_SEP}
+
+goal S_NBBZone4_APR {S_NBB_4_APR < S_NBBlevel4_APR-S_NBBlevel3_APR}
+goal S_NBBZone4_MAY {S_NBB_4_MAY < S_NBBlevel4_MAY-S_NBBlevel3_MAY}
+goal S_NBBZone4_JUN {S_NBB_4_JUN < S_NBBlevel4_JUN-S_NBBlevel3_JUN}
+goal S_NBBZone4_JUL {S_NBB_4_JUL < S_NBBlevel4_JUL-S_NBBlevel3_JUL}
+goal S_NBBZone4_AUG {S_NBB_4_AUG < S_NBBlevel4_AUG-S_NBBlevel3_AUG}
+goal S_NBBZone4_SEP {S_NBB_4_SEP < S_NBBlevel4_SEP-S_NBBlevel3_SEP}
+
+goal S_NBBZone5_APR {S_NBB_5_APR < S_NBBlevel5_APR-S_NBBlevel4_APR}
+goal S_NBBZone5_MAY {S_NBB_5_MAY < S_NBBlevel5_MAY-S_NBBlevel4_MAY}
+goal S_NBBZone5_JUN {S_NBB_5_JUN < S_NBBlevel5_JUN-S_NBBlevel4_JUN}
+goal S_NBBZone5_JUL {S_NBB_5_JUL < S_NBBlevel5_JUL-S_NBBlevel4_JUL}
+goal S_NBBZone5_AUG {S_NBB_5_AUG < S_NBBlevel5_AUG-S_NBBlevel4_AUG}
+goal S_NBBZone5_SEP {S_NBB_5_SEP < S_NBBlevel5_SEP-S_NBBlevel4_SEP}
+
+goal S_NBBZone6_APR {S_NBB_6_APR < S_NBBlevel6_APR-S_NBBlevel5_APR}
+goal S_NBBZone6_MAY {S_NBB_6_MAY < S_NBBlevel6_MAY-S_NBBlevel5_MAY}
+goal S_NBBZone6_JUN {S_NBB_6_JUN < S_NBBlevel6_JUN-S_NBBlevel5_JUN}
+goal S_NBBZone6_JUL {S_NBB_6_JUL < S_NBBlevel6_JUL-S_NBBlevel5_JUL}
+goal S_NBBZone6_AUG {S_NBB_6_AUG < S_NBBlevel6_AUG-S_NBBlevel5_AUG}
+goal S_NBBZone6_SEP {S_NBB_6_SEP < S_NBBlevel6_SEP-S_NBBlevel5_SEP}
+
+goal storageS_NBB_APR {S_NBB_APR=S_NBB_1_APR+S_NBB_2_APR+S_NBB_3_APR+S_NBB_4_APR+S_NBB_5_APR+S_NBB_6_APR}
+goal storageS_NBB_MAY {S_NBB_MAY=S_NBB_1_MAY+S_NBB_2_MAY+S_NBB_3_MAY+S_NBB_4_MAY+S_NBB_5_MAY+S_NBB_6_MAY}
+goal storageS_NBB_JUN {S_NBB_JUN=S_NBB_1_JUN+S_NBB_2_JUN+S_NBB_3_JUN+S_NBB_4_JUN+S_NBB_5_JUN+S_NBB_6_JUN}
+goal storageS_NBB_JUL {S_NBB_JUL=S_NBB_1_JUL+S_NBB_2_JUL+S_NBB_3_JUL+S_NBB_4_JUL+S_NBB_5_JUL+S_NBB_6_JUL}
+goal storageS_NBB_AUG {S_NBB_AUG=S_NBB_1_AUG+S_NBB_2_AUG+S_NBB_3_AUG+S_NBB_4_AUG+S_NBB_5_AUG+S_NBB_6_AUG}
+goal storageS_NBB_SEP {S_NBB_SEP=S_NBB_1_SEP+S_NBB_2_SEP+S_NBB_3_SEP+S_NBB_4_SEP+S_NBB_5_SEP+S_NBB_6_SEP}
+
+define A_NBB_APR {lower unbounded kind 'SURFACE-AREA' units 'ACRES'}
+define A_NBB_MAY {lower unbounded kind 'SURFACE-AREA' units 'ACRES'}
+define A_NBB_JUN {lower unbounded kind 'SURFACE-AREA' units 'ACRES'}
+define A_NBB_JUL {lower unbounded kind 'SURFACE-AREA' units 'ACRES'}
+define A_NBB_AUG {lower unbounded kind 'SURFACE-AREA' units 'ACRES'}
+define A_NBB_SEP {lower unbounded kind 'SURFACE-AREA' units 'ACRES'}
+
+!define EVAP_NBLDB  {timeseries kind 'EVAPORATION-RATE' units 'IN'}   
+
+define A_NBB_MAR {select area from res_info given storage = 1000*S_NBLDB(-1) use linear where res_num=31}
+define A_NBB_CO  {select area from res_info given storage = 1000*carryover_NBB_target use linear where res_num=31}
+
+define COEF_EVAP_NBB {value abs(A_NBB_CO - A_NBB_MAR)/(max(0.01, abs(carryover_NBB_target - S_NBLDB(-1))))}
+
+goal AREA_NBB_APR {A_NBB_APR = A_NBB_MAR + COEF_EVAP_NBB*S_NBB_APR - COEF_EVAP_NBB*S_NBB_MAR}
+goal AREA_NBB_MAY {A_NBB_MAY = A_NBB_MAR + COEF_EVAP_NBB*S_NBB_MAY - COEF_EVAP_NBB*S_NBB_MAR}
+goal AREA_NBB_JUN {A_NBB_JUN = A_NBB_MAR + COEF_EVAP_NBB*S_NBB_JUN - COEF_EVAP_NBB*S_NBB_MAR}
+goal AREA_NBB_JUL {A_NBB_JUL = A_NBB_MAR + COEF_EVAP_NBB*S_NBB_JUL - COEF_EVAP_NBB*S_NBB_MAR}
+goal AREA_NBB_AUG {A_NBB_AUG = A_NBB_MAR + COEF_EVAP_NBB*S_NBB_AUG - COEF_EVAP_NBB*S_NBB_MAR}
+goal AREA_NBB_SEP {A_NBB_SEP = A_NBB_MAR + COEF_EVAP_NBB*S_NBB_SEP - COEF_EVAP_NBB*S_NBB_MAR}
+
+goal Set_E_NBB_APR {E_NBB_APR*cfs_af*30/31=(EVAP_NBLDB /24)*A_NBB_MAR + (EVAP_NBLDB /24)*A_NBB_APR}
+goal Set_E_NBB_MAY {E_NBB_MAY*cfs_af=(EVAP_NBLDB (1)/24)*A_NBB_APR + (EVAP_NBLDB (1)/24)*A_NBB_MAY}
+goal Set_E_NBB_JUN {E_NBB_JUN*cfs_af*30/31=(EVAP_NBLDB (2)/24)*A_NBB_MAY + (EVAP_NBLDB (2)/24)*A_NBB_JUN}
+goal Set_E_NBB_JUL {E_NBB_JUL*cfs_af=(EVAP_NBLDB (3)/24)*A_NBB_JUN + (EVAP_NBLDB (3)/24)*A_NBB_JUL}
+goal Set_E_NBB_AUG {E_NBB_AUG*cfs_af=(EVAP_NBLDB (4)/24)*A_NBB_JUL + (EVAP_NBLDB (4)/24)*A_NBB_AUG}
+goal Set_E_NBB_SEP {E_NBB_SEP*cfs_af*30/31=(EVAP_NBLDB (5)/24)*A_NBB_AUG + (EVAP_NBLDB (5)/24)*A_NBB_SEP}
+
+define COEF_EVAP_NBB_dv {alias COEF_EVAP_NBB kind 'test' units 'none'}
+
+
+Objective obj = {
+[S_NBB_1_APR,5000*taf_cfs],
+[S_NBB_1_MAY,5000*taf_cfs],
+[S_NBB_1_JUN,5000*taf_cfs],
+[S_NBB_1_JUL,5000*taf_cfs],
+[S_NBB_1_AUG,5000*taf_cfs],
+[S_NBB_1_SEP,5000*taf_cfs],
+
+[S_NBB_2_APR,5000*taf_cfs],
+[S_NBB_2_MAY,5000*taf_cfs],
+[S_NBB_2_JUN,5000*taf_cfs],
+[S_NBB_2_JUL,5000*taf_cfs],
+[S_NBB_2_AUG,5000*taf_cfs],
+[S_NBB_2_SEP,5000*taf_cfs],
+
+[S_NBB_3_APR,100*taf_cfs],
+[S_NBB_3_MAY,100*taf_cfs],
+[S_NBB_3_JUN,100*taf_cfs],
+[S_NBB_3_JUL,100*taf_cfs],
+[S_NBB_3_AUG,100*taf_cfs],
+[S_NBB_3_SEP,100*taf_cfs],
+
+[S_NBB_4_APR,10*taf_cfs],
+[S_NBB_4_MAY,10*taf_cfs],
+[S_NBB_4_JUN,10*taf_cfs],
+[S_NBB_4_JUL,10*taf_cfs],
+[S_NBB_4_AUG,10*taf_cfs],
+[S_NBB_4_SEP,10*taf_cfs],
+
+[S_NBB_5_APR,-2000*taf_cfs],
+[S_NBB_5_MAY,-2000*taf_cfs],
+[S_NBB_5_JUN,-2000*taf_cfs],
+[S_NBB_5_JUL,-2000*taf_cfs],
+[S_NBB_5_AUG,-2000*taf_cfs],
+[S_NBB_5_SEP,-2000*taf_cfs],
+
+[S_NBB_6_APR,-5000*taf_cfs],
+[S_NBB_6_MAY,-5000*taf_cfs],
+[S_NBB_6_JUN,-5000*taf_cfs],
+[S_NBB_6_JUL,-5000*taf_cfs],
+[S_NBB_6_AUG,-5000*taf_cfs],
+[S_NBB_6_SEP,-5000*taf_cfs],
+
+[C_NBB_MIF_APR,5000],
+[C_NBB_MIF_MAY,5000],
+[C_NBB_MIF_JUN,5000],
+[C_NBB_MIF_JUL,5000],
+[C_NBB_MIF_AUG,5000],
+[C_NBB_MIF_SEP,5000],
+ 
+[C_EB_MIF_APR,5000],
+[C_EB_MIF_MAY,5000],
+[C_EB_MIF_JUN,5000],
+[C_EB_MIF_JUL,5000],
+[C_EB_MIF_AUG,5000],
+[C_EB_MIF_SEP,5000],
+
+[C_DER001_MIF_APR,5000],
+[C_DER001_MIF_MAY,5000],
+[C_DER001_MIF_JUN,5000],
+[C_DER001_MIF_JUL,5000],
+[C_DER001_MIF_AUG,5000],
+[C_DER001_MIF_SEP,5000],
+
+[C_EB_SPILL_APR,-500],
+[C_EB_SPILL_MAY,-500],
+[C_EB_SPILL_JUN,-500],
+[C_EB_SPILL_JUL,-500],
+[C_EB_SPILL_AUG,-500],
+[C_EB_SPILL_SEP,-500],
+
+[C_EB_ADD_APR,-500],
+[C_EB_ADD_MAY,-500],
+[C_EB_ADD_JUN,-500],
+[C_EB_ADD_JUL,-500],
+[C_EB_ADD_AUG,-500],
+[C_EB_ADD_SEP,-500],
+
+[COLGATE_APR,75],
+[COLGATE_MAY,75],
+[COLGATE_JUN,75],
+[COLGATE_JUL,75],
+[COLGATE_AUG,75],
+[COLGATE_SEP,75],
+
+[D_DER001_APR,750],
+[D_DER001_MAY,750],
+[D_DER001_JUN,750],
+[D_DER001_JUL,750],
+[D_DER001_AUG,750],
+[D_DER001_SEP,750],
+
+}

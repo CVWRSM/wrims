@@ -1,0 +1,510 @@
+! LVE_BlendReservoirWQ.wresl
+! R. Field
+! 06/17/2004
+! Reclamation
+! Revised Becky Fedak February 2007 MWH
+! Adjusts pumping operations to meet water quality targets in reservoir.
+
+!#################################################################
+! 1.  Water Quality Conditions given
+!      "Max Diversion" adjusted for Delivery-based Blending Constraints
+!#################################################################
+
+! Calculate salinity of Transfer Pt#1 deliveries to CCWD (Node 432) from cycle 2 results
+define sal_432_c2 {
+    case flow {
+        condition (C433A[LV_WQ]+C434A[LV_WQ]) > 0.001
+        value (C433A[LV_WQ]*WQ408_AIP+C434A[LV_WQ]*WQ408_OR)/(C433A[LV_WQ]+C434A[LV_WQ])
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_432_c2dv { std kind 'SALINITY' units 'MG/L' }
+goal sal_432_c2     { sal_432_c2dv = sal_432_c2 }
+
+! Calculate salinity of Transfer Pt#1 deliveries to LV (Node 431) from cycle 2 results
+define sal_431_c2 {
+    case flow {
+        condition (C433B[LV_WQ] + C434B[LV_WQ] + D408_OR2[LV_WQ]) > 0.001
+        value (C433B[LV_WQ]*WQ408_AIP+(C434B[LV_WQ]+D408_OR2[LV_WQ])*WQ408_OR)
+            /(C433B[LV_WQ] + C434B[LV_WQ] + D408_OR2[LV_WQ])
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_431_c2dv { std kind 'SALINITY' units 'MG/L' }
+goal sal_431_c2     { sal_431_c2dv = sal_431_c2 }
+
+! Calculate salinity of Transfer Pt#2 (Node 430) from cycle 2 results
+define sal_430_c2 {
+    case flow {
+        condition C431[LV_WQ] > 0.001
+        value sal_431_c2
+    }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+define sal_430_c2dv { std kind 'SALINITY' units 'MG/L' }
+goal sal_430_c2     { sal_430_c2dv = sal_430_c2 }
+
+! Calculate the salinity of the reservoir in cycle 2
+define sal_LV_c2 {
+    case storage {
+        condition S422[LV_WQ]+C422[LV_WQ]*cfs_TAF > 0.001
+        value (S422(-1)*sal_prv_LV_c1dv[LV_WQ]+C430A[LV_WQ]*cfs_TAF*sal_430_c2+C428B[LV_WQ]*cfs_TAF*Mok_WQ
+            +I422A*cfs_TAF*WQ422+I422B[LV_WQ]*I422B_WQ*cfs_taf)/(S422[LV_WQ]+C422[LV_WQ]*cfs_TAF)
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_LV_c2dv   { std kind 'SALINITY' units 'MG/L' }
+goal set_sal_LV_c2dv { sal_LV_c2dv = sal_LV_c2 }
+
+! Calculate CCWD Blending Pt#2 (node 421) from cycle 2 results
+define sal_421_c2 {
+    case flow {
+        condition C434B[LV_WQ]+D425_TS[LV_WQ]+C428A[LV_WQ] > 0.001
+        value (C434B[LV_WQ]*sal_432_c2+D425_TS[LV_WQ]*sal_prv_LV_c1dv[LV_WQ]+C428A[LV_WQ]*Mok_WQ)
+            /(C434B[LV_WQ]+D425_TS[LV_WQ]+C428A[LV_WQ])
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_421_c2dv { std kind 'SALINITY' units 'MG/L'}
+goal set_sal_421_c2 { sal_421_c2dv = sal_421_c2 }
+
+! Calculate CCWD Blending Pt#1 (node 420) from cycle 2 results
+define sal_420_c2 {
+    case flow {
+        condition (D408_RS[LV_WQ]+C421[LV_WQ]) > 0.001
+        value (D408_RS[LV_WQ]*WQ408_RS+C421[LV_WQ]*sal_421_c2)/(D408_RS[LV_WQ]+C421[LV_WQ])
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_420_c2dv { std kind 'SALINITY' units 'MG/L' }
+goal set_sal_420_c2 { sal_420_c2dv = sal_420_c2 }
+
+
+/*
+This is a third-cycle adjustment to LVE filling and applies only when filling.
+Its understood that we're already maximizing filling, given diversion, conveyance,
+and supply constraints.  Now considering reservoir WQ as an additional constraint.
+*/
+
+! Calculate the BOM storage, including precip and local inflow for the current month
+! This is what storage would be without any deliveries to or releases from the res.
+define S422_start { value (S422(-1)+(I422A+I422B[LV_WQ]+C428B[LV_WQ]-E422[LV_WQ])*cfs_taf) }
+define S422_start_dv {std kind 'STORAGE' units 'TAF'}
+goal set_S422_start_dv { S422_start_dv = S422_start }
+
+! Calculate the BOM LV salt load, including precip and local inflow for the current month
+define salt_S422_start {
+    case firstmonth {
+        condition month == OCT .and. wateryear == 1922
+        value sal_prv_LV_c1dv[LV_WQ]
+    }
+    case otherwise {
+    condition always
+    value (S422(-1)*sal_prv_LV_c1 + I422A*cfs_TAF*WQ422
+                                  + I422B[LV_WQ]*I422B_WQ*cfs_taf
+                                  + C428B[LV_WQ]*cfs_TAF*Mok_WQ)
+    }
+}
+define salt_S422startdv {std kind 'SALT LOAD' units 'NONE'}
+goal set_salt422startdv { salt_S422startdv = salt_S422_start }
+
+! Calculate the flow at Transfer Pt#2 (node 430) if only the diversion point
+! (OR or AIP) with the best WQ is used
+define C430A_best {
+    case AIP_only {
+        condition WQ408_OR > WQ408_AIP
+        value min(C430A[LV_WQ],C433B[LV_WQ])*cfs_TAF
+    }
+    case otherwise {
+        condition always
+        value min(C430A[LV_WQ],C434B[LV_WQ]+D408_OR2[LV_WQ])*cfs_TAF
+    }
+}
+
+! Define the total diversion at the location with best WQ, if best WQ is maximized
+! and other diversion is reduced to meet LV WQ
+define max_best {
+    case AIP {
+        condition WQ408_OR > WQ408_AIP
+        value C433B[LV_WQ]*cfs_TAF
+    }
+    case OR {
+        condition always
+        value (C434B[LV_WQ] + D408_OR2[LV_WQ])*cfs_TAF
+    }
+}
+define max_worst {
+    case AIP {
+        condition WQ408_OR > WQ408_AIP
+        value (C434B[LV_WQ] + D408_OR2[LV_WQ])*cfs_TAF
+    }
+    case OR {
+        condition always
+        value C433B[LV_WQ]*cfs_TAF
+    }
+}
+
+! Define the water quality at the location with best WQ defined above
+define WQ_best {
+    case AIP {
+        condition WQ408_OR > WQ408_AIP
+        value WQ408_AIP
+    }
+    case OR {
+        condition always
+        value WQ408_OR
+    }
+}
+
+! Define the water quality at the location with worst WQ defined above
+define WQ_x {
+    case AIP {
+        condition WQ408_OR > WQ408_AIP
+        value WQ408_OR
+    }
+    case OR {
+        condition always
+        value WQ408_AIP
+    }
+}
+
+! Define diversion capacity at the location with best WQ
+define cap_best {
+    case AIP {
+        condition WQ408_OR > WQ408_AIP
+        value AIP_Cap*cfs_TAF
+    }
+    case OR {
+        condition always
+        value ORPP_Cap*cfs_TAF
+    }
+}
+
+
+/*
+Use the quadratic formula to solve for x.  If able to divert from both AIP and
+OR and meet water quality target, x is the amount allowable at the location with
+worse water quality.  If only the location with the better water quality can be
+used while still meeting the quality target, diversion from the location with
+worse quality is set to zero and x equals the allowable deliveries to LV from the
+better quality location.
+
+Assume reservoir filling.
+
+If mix of two diversion sources is allowed to meet reservoir target, and reservoir
+releases are also being made to meet CCWD WQ target and this action draws the
+reservoir down at or below emergency storage, do not allow direct deliveries to
+SBA/Bethany.  This encourages 'dirtier' water at Transfer which is used to fill
+the reservoir for additional releases to CCWD (cycled through the reservoir) to
+meet delivery target.  To simplify coding, the equations below assume operations
+for CCWD deliveries are the same as Cycle 2 results.
+*/
+define var_a {
+    case both {
+    condition salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+    value (WQ_x - LV_WQ_trgt)
+    }
+    case only_best {
+    condition always
+    value (WQ_best - LV_WQ_trgt)
+    }
+}
+define var_a_dv {alias var_a kind 'VARIABLE' units 'NONE'}
+
+define var_b {
+    case both_emer_mix {
+        condition salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+                .and. D425_TS[LV_WQ] > 0.001 .and. S422[LV_WQ] <= S422level1
+        value ((salt_S422_start-S422_start*LV_WQ_trgt) + max_best*(WQ_best-LV_WQ_trgt)
+            + max_best*(WQ_x-LV_WQ_trgt))
+    }
+    case both {
+        condition salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+        value ((salt_S422_start-S422_start*LV_WQ_trgt) + max_best*(WQ_best-LV_WQ_trgt)
+            + (max_best-C430B[LV_WQ]*cfs_TAF)*(WQ_x-LV_WQ_trgt))
+    }
+    case only_best {
+        condition always
+        value (salt_S422_start-S422_start*LV_WQ_trgt)
+    }
+}
+define var_b_dv {alias var_b kind 'VARIABLE' units 'NONE'}
+
+define var_c {
+    case both_emer_mix {
+        condition salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+                .and. D425_TS[LV_WQ] > 0.001 .and. S422[LV_WQ] <= S422level1
+        value (max_best*((salt_S422_start-S422_start*LV_WQ_trgt) + max_best*(WQ_best-LV_WQ_trgt))
+            - (max_best*WQ_best))
+    }
+    case both {
+        condition salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+        value (max_best*((salt_S422_start-S422_start*LV_WQ_trgt) + max_best*(WQ_best-LV_WQ_trgt)
+            + C430B[LV_WQ]*cfs_TAF*LV_WQ_trgt) - C430B[LV_WQ]*cfs_TAF*(max_best*WQ_best))
+    }
+    case only_best {
+        condition always
+        value 0.0
+    }
+}
+define var_c_dv {alias var_c kind 'VARIABLE' units 'NONE'}
+
+define x {
+    case only_best {
+    condition var_c == 0.0
+    value max(0., -var_b/var_a)
+    }
+    case both {
+    condition always
+    value max(0.,(-var_b+pow(pow(var_b,2.)-4.*var_a*var_c,0.5))/(2.*var_a),
+             (-var_b-pow(pow(var_b,2.)-4.*var_a*var_c,0.5))/(2.*var_a))
+    }
+}
+define x_output_dv {alias x kind 'VARIABLE' units 'NONE'}
+
+
+goal fix_CCWD_WQ {
+    lhs D425_TS*sal_prv_LV_c1 + D408_RS*WQ408_RS
+      + C433A*WQ408_AIP + C434A*WQ408_OR + C428A*Mok_WQ
+    rhs D420[LV_WQ]*CCWD_WQ_trgt
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+
+goal set_AIP {
+    lhs C433B
+        case firstmonth {
+            condition month == OCT .and. wateryear == 1922
+        rhs C433B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        case LV_good {
+        condition (salt_S422_start+C430A[LV_WQ]*cfs_TAF*sal_430_c2)/(S422_start+C430A[LV_WQ]*cfs_TAF) <= LV_WQ_trgt
+        rhs C433B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! Will not decrease diversions if WQ better than target
+        case poorLV_AIPgood {
+        condition WQ408_AIP <= LV_WQ_trgt
+        rhs C433B[LV_WQ]
+        lhs>rhs penalty 0
+        lhs<rhs penalty 17000
+        }
+        ! Reservoir and diversion WQ is above target, no deliveries to LV
+        case all_poor {
+        condition WQ_best > LV_WQ_trgt .and. (salt_S422_start/S422_start) > LV_WQ_trgt
+        rhs LV_SBA_Cap
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! Can use combination of locations to meet reservoir target, WQ_AIP < WQ_OR
+        case AIP_best {
+        condition WQ408_OR > WQ408_AIP .and. salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+        rhs C433B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! WQ_AIP < WQ_OR, can only use AIP supply to meet reservoir target
+        case AIP_only {
+        condition WQ408_OR > WQ408_AIP
+        rhs AIP_Cap
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! Can use combination of locations to meet reservoir target, WQ_AIP > WQ_OR
+        case AIP_worst {
+        condition WQ408_AIP > WQ408_OR .and. salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+        rhs x*TAF_cfs
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! WQ_AIP > WQ_OR, can only use OR supply to meet reservoir target
+        case OR_only {
+        condition WQ408_AIP > WQ408_OR
+        rhs 0.0
+        }
+}
+
+goal set_OR {
+    lhs D408_OR2 + C434B
+        case firstmonth {
+            condition month == OCT .and. wateryear == 1922
+        rhs D408_OR2[LV_WQ] + C434B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        case LV_good {
+        condition (salt_S422_start+C430A[LV_WQ]*cfs_TAF*sal_430_c2)/(S422_start+C430A[LV_WQ]*cfs_TAF) <= LV_WQ_trgt
+        rhs D408_OR2[LV_WQ] + C434B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! Will not decrease diversions if WQ better than target
+        case poorLV_ORgood {
+        condition WQ408_OR <= LV_WQ_trgt
+        rhs D408_OR2[LV_WQ] + C434B[LV_WQ]
+        lhs>rhs penalty 0
+        lhs<rhs penalty 17000
+        }
+        ! Reservoir and diversion WQ is above target, no deliveries to LV
+        case all_poor {
+        condition WQ_best > LV_WQ_trgt .and. (salt_S422_start/S422_start) > LV_WQ_trgt
+        rhs LV_SBA_Cap
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! Can use combination of locations to meet reservoir target, WQ_OR < WQ_AIP
+        case OR_best {
+        condition WQ408_AIP > WQ408_OR .and. salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+        rhs D408_OR2[LV_WQ] + C434B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! WQ_OR < WQ_AIP, can only use OR supply to meet reservoir target
+        case OR_only {
+        condition WQ408_AIP > WQ408_OR
+        rhs ORPP_Cap
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! Can use combination of locations to meet reservoir target, WQ_OR > WQ_AIP
+        case OR_worst {
+        condition WQ408_OR > WQ408_AIP .and. salt_S422_start+C430A_best*WQ_best <= (S422_start+C430A_best)*LV_WQ_trgt
+        rhs x*TAF_cfs
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+        ! WQ_OR > WQ_AIP, can only use AIP supply to meet reservoir target
+        case MR_only {
+        condition WQ408_OR > WQ408_AIP
+        rhs 0.0
+        }
+}
+
+
+! These restrictions are in place to simplify calculations above and allow the use of
+! the quadratic formula.  The constraints may not be entirely correct because as the
+! Delta diversions and filling of LV changes in Cycle 3, the components that are used to
+! calculate these channel arcs in Cycle 2 may change in Cycle 3.
+
+goal setC428B { ! discourage increases in Mok inflow to LV - changes should be at D408
+    lhs C428B
+    case WithProject {
+    condition LVESwitch > 1.5
+    rhs C428B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+}
+
+goal setC430B {
+    lhs C430B
+    case all_poor {
+    condition WQ_best > LV_WQ_trgt .and. (salt_S422_start/S422_start) > LV_WQ_trgt
+    rhs LV_SBA_Cap
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case only_best {
+    condition salt_S422_start+C430A_best*WQ_best > (S422_start+C430A_best)*LV_WQ_trgt
+    rhs (cap_best - min(S422_cap-S422_start,x))*TAF_cfs
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case both_emer_mix {
+    condition D425_TS[LV_WQ] > 0.001 .and. S422[LV_WQ] <= S422level1
+    rhs C430B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case othwerwise {
+    condition always
+    rhs C430B[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+}
+goal setC430A {  ! no filling of LV if WQ is bad
+    lhs C430A
+    case all_poor {
+    condition WQ_best > LV_WQ_trgt .and. (salt_S422_start/S422_start) >= LV_WQ_trgt
+    rhs 0.0
+    }
+}
+goal set2C430A {
+    lhs C430A
+    case LV_good {
+    condition (salt_S422_start+C430A[LV_WQ]*cfs_TAF*sal_430_c2)/(S422_start+C430A[LV_WQ]*cfs_TAF) <= LV_WQ_trgt
+    rhs C430A[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case only_best {
+    condition salt_S422_start+C430A_best*WQ_best > (S422_start+C430A_best)*LV_WQ_trgt
+            .and. WQ_best > LV_WQ_trgt .and. (salt_S422_start/S422_start) < LV_WQ_trgt
+    rhs x*taf_cfs
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+}
+
+/*goal setC433A {
+    lhs C433A
+    rhs C433A[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999
+}
+
+goal setC434A {
+    lhs C434A
+    rhs C434A[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999
+}
+
+goal setD408_RS {
+    lhs D408_RS
+    rhs D408_RS[LV_WQ]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999
+}*/
+
+
+! To ensure weights on salt load do not upset weights on delivery, storage, diversion
+! add additional constraint:
+goal set_D420 { D420 = D420[LV_WQ] }
+
+! This constraint prevents the use of emergency storage for blending operations.
+! Tolerance of 0.001 included to overcome infeasibility due to numerical rounding
+goal set_S422 { S422 > min(S422[LV_WQ] , S422level1, S422_start) - 0.001 }
+
+/*!Stop filling reservoir with bad quality water
+goal stop_filling {
+    lhs C430A
+    case poor_quality {
+        condition sal_430_c2 > 65.
+        rhs 0.0
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+}*/

@@ -1,0 +1,134 @@
+initial {
+
+	const option_A { 4 }
+	const option_B { 2 }
+
+}
+
+sequence CYCLE1 {
+    model   fiRst
+    order   1
+
+}
+
+sequence CYCLE2 {
+    model   second
+    order   2
+
+}
+	
+model first { 
+
+	define X { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define Y { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define W { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+	goal g0 { x + y < 100 }
+  
+	if int(option_A)==1 {
+		
+		include 'goalX1.wresl' 
+		include 'goalY1.wresl' 	
+		
+	} 
+	elseif int(option_A)==2 {
+	
+		include 'goalX2.wresl'
+		include 'goalY2.wresl' 	
+
+	}
+	elseif int(option_A)==3 {
+	
+		include 'goalX3.wresl'
+		include 'goalY3.wresl' 
+
+	}
+	elseif int(option_A)==4 {	
+	
+		include 'goalX4.wresl'
+		include 'goalY4.wresl' 
+		
+	}
+
+	define Z { std kind 'FLOW-CHANNEL' units 'CFS'}
+		
+ 	if int(option_B)==1 {
+		
+		goal goalZ { Z=1 }
+		objective obj {
+			[x, 1] 
+			[y, 1] 
+			[z, 1] 
+		}		
+	} 
+	elseif int(option_B)==2 {
+	
+		goal goalZ { Z=2 }
+		goal goalW {
+			lhs W
+			case BO {
+				condition int(option_A) == 1
+				rhs       x+1000
+				lhs>rhs   constrain
+				lhs<rhs   penalty 99 } 
+			case NO_BO {
+				condition int(option_A) == 4    
+				rhs	      x+4000  
+				lhs>rhs   constrain
+				lhs<rhs   penalty 99 }  
+    }
+		objective obj {
+			[x, 2] 
+			[y, 2] 
+			[z, 2] 
+			[W, 2] 
+		}
+	}
+	else {
+	
+		goal goalZ { Z=3 } 	
+		objective obj {
+			[x, 3] 
+			[y, 3] 
+			[z, 3] 
+		}
+	}
+  
+}
+
+model second {
+
+	dvar x { std kind 'na' units 'na' }
+	dvar y { std kind 'na' units 'na' }
+	dvar z { std kind 'na' units 'na' }
+	goal gx { x = 3 }
+	goal gy { y = 3 }
+
+ 	if int(option_B)==1 {
+		
+		goal goalZ { Z=1 }
+		objective obj {
+			[x, 1] 
+			[y, 1] 
+			[z, 1] 
+		}		
+	} 
+	elseif int(option_B)==2 {
+	
+		goal goalZ { Z=2 }
+		objective obj {
+			[x, 2] 
+			[y, 2] 
+			[z, 2] 
+		}
+	}
+	else {
+	
+		goal goalZ { Z=3 } 	
+		objective obj {
+			[x, 3] 
+			[y, 3] 
+			[z, 3] 
+		}
+	}
+}

@@ -1,0 +1,10 @@
+! Intertie capacity limits
+define maxC17502A {select maxflow from TCGCIntertie where arc=1,month=month}
+define maxC17502B {select maxflow from TCGCIntertie where arc=2,month=month}
+
+goal limitC17502A {C17502A < maxC17502A*taf_cfs}
+goal limitC17502B {C17502B < maxC17502B*taf_cfs}
+
+goal limitC17502   {C17502A + C17502B < C172}
+goal limitC17502A2 {C17502A < C14402B}
+

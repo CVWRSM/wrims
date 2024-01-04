@@ -1,0 +1,42 @@
+
+sequence CYCLE1 {
+    model   First
+    order   1
+    }
+
+	
+model First { 
+
+  define X_ratio { upper 1. kind 'DEMAND-RATIO' units 'NA' }
+  define Y_ratio { upper 1. kind 'DEMAND-RATIO' units 'NA' }
+  define Z_ratio { upper 1. kind 'DEMAND-RATIO' units 'NA' }  
+
+  define X { alias X_ratio *  40  kind 'DELIVERY' units 'CFS' }
+  define Y { alias Y_ratio * 160  kind 'DELIVERY' units 'CFS' }
+  define Z { alias Z_ratio *   0  kind 'DELIVERY' units 'CFS' }  
+  
+  goal G_All {  X+Y+Z  < 30 }  
+  
+  objective Obj1 {
+	weight 5
+	variable X Y Z
+  }
+
+  objective Obj2 {
+	weight 0
+	deviationPenalty 99
+	variable X_ratio Y_ratio Z_ratio
+  }  
+}
+
+! objective 150.
+!
+! X_ratio     0.15
+! y_ratio     0.15
+! z_ratio     0.15
+!
+! x            6
+! y            24
+! z            0
+
+

@@ -1,0 +1,54 @@
+! Code by E. Reyes as of 11/5/99
+
+! This file sets the Trinity import into the Sac Basin
+
+define clair_level {select    level
+                    from      clair_level
+                    given     storage=S1(-1)+S1mod
+                    use       maximum
+                    where     month=month}
+
+define shasta_level {select   level
+                     from     shasta_level
+                     given    storage=S4(-1) + S44(-1) + S4mod
+                     use      maximum
+                     where    month=month}
+
+define trin_import1 {select    flow
+                    from      trinity_import
+                    where     month=month, clair_lev=clair_level, shasta_lev=shasta_level}
+
+define trin_import2 { value min(trin_import1,max(3900.-MINFLOW_C100,0.)) }
+
+define trin_impdv {alias trin_import2 units 'cfs'}
+
+
+
+!Split the Clear Creek tunnel into an import arc and an excess arc that can be used to aid Delta and Exports
+define D100_import {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D100_exc    {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal D100split {D100 = D100_import + D100_exc}
+
+
+!Now set goal for import
+goal set_import {D100_import < trin_import2}
+
+
+
+
+!***************************************************************************
+
+!Do not allow the excess diversion (D100_exc) to exceed 15% of available storage.
+/*
+define Clair_avail { value max(0.0, S1(-1) - S1level1) }
+define trin_exc_limitDV { alias 0.25*Clair_avail*taf_cfs kind 'flow-limit' units 'cfs' }
+
+goal limit_exc { lhs D100_exc
+                 rhs 0.25 * Clair_avail * taf_cfs
+                 lhs<rhs penalty 0
+                 lhs>rhs penalty 2000}
+*/
+goal limit_clear_tun {D100 < 3300.0}  !3300 cfs is the Clear Creek Tunnel capacity.
+
+
+

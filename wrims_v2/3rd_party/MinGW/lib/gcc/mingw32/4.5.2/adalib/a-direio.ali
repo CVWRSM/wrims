@@ -1,0 +1,215 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvvnnnnnvvnnvnnnnnnnnnnnnnnn
+
+U ada.direct_io%b	a-direio.adb		cebd314a NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.unchecked_conversion%s
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c_streams%s  i-cstrea.adb		i-cstrea.ali
+W system%s		system.ads		system.ali
+W system.crtl%s		s-crtl.ads		s-crtl.ali
+W system.direct_io%s	s-direio.adb		s-direio.ali
+W system.file_control_block%s  s-ficobl.ads	s-ficobl.ali
+W system.file_io%s	s-fileio.adb		s-fileio.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+U ada.direct_io%s	a-direio.ads		b07c8785 BN NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.io_exceptions%s	a-ioexce.ads		a-ioexce.ali
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c_streams%s  i-cstrea.adb		i-cstrea.ali
+W system%s		system.ads		system.ali
+W system.direct_io%s	s-direio.adb		s-direio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-direio.ads		20090410151216 998ca0b9
+D a-direio.adb		20090409150020 fcea2962
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-direio.ads		20090409150020 716929ad
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-fileio.ads		20091027141444 42b99b37
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 2|36r6 43r9 191r5 3|44r6 48r14 64r27 65r27 283r5
+X 2 a-direio.ads
+41+9 Element_Type 46r7 50r7 103r18 108r18 112r14 117r14 169r20 3|177r18 190r14
+. 194r19 208r49 216r14 220r19 270r14 278r46
+43k13*Direct_IO 1|16k9 2|41z9 191l9 191e18 3|48b18 283l9 283t18
+53P9*File_Type(15|53R9) 75r21 81r21 86r36 87r36 88r36 89r36 91r26 92r26 93r26
+. 95r29 102r14 107r14 111r14 116r14 119r32 121r27 122r27 124r33 157r27 162r27
+. 165c9 3|73r35 83r21 97r36 106r33 115r26 124r27 133r29 142r26 151r26 161r21
+. 176r14 208r27 236r35 241r35 250r32 259r26 269r14 278r28
+55E9*File_Mode 55e53 61r8 76r14 82r14 88r54 91r44 162r38 3|64r53 65r68 84r14
+. 142r44 162r14 236r53
+55n23*In_File{55E9} 62r7
+55n32*Inout_File{55E9} 63r7 76r27 3|84r27
+55n44*Out_File{55E9} 64r7
+66I9*Count<integer> 68r30 68r47 122r45 3|259r44 261r14
+68I12*Positive_Count{66I9} 104r14 113r14 119r48 121r45 3|124r45 126r14 178r14
+. 250r48 271r14
+74U14*Create 75=7 76>7 77>7 78>7 3|82b14 91l8 91t14
+75p7 File{53P9} 3|83b7 89m23 90m7
+76e7 Mode{55E9} 3|84b7 89r38
+77s7 Name{string} 3|85b7 89r45
+78s7 Form{string} 3|86b7 89r51
+80U14*Open 81=7 82>7 83>7 84>7 3|160b14 169l8 169t12
+81p7 File{53P9} 3|161b7 167m21 168m7
+82e7 Mode{55E9} 3|162b7 167r36
+83s7 Name{string} 3|163b7 167r43
+84s7 Form{string} 3|164b7 167r49
+86U14*Close 86=22 147r20 175r19 3|73b14 76l8 76t13
+86p22 File{53P9} 3|73b21 75r22
+87U14*Delete 87=22 151r20 177r19 3|97b14 100l8 100t14
+87p22 File{53P9} 3|97b22 99r23
+88U14*Reset 88=22 88>47 3|236b14 239l8 239t13
+88p22 File{53P9} 3|236b21 238m22
+88e47 Mode{55E9} 3|236b46 238r37
+89U14*Reset<15|112p14> 89=22 3|241b14 244l8 244t13
+89p22 File{53P9} 3|241b21 243m22
+91V13*Mode{55E9} 91>19 182r19 3|142b13 145l8 145t12
+91p19 File{53P9} 3|142b19 144r36
+92V13*Name{string} 92>19 183r19 3|151b13 154l8 154t12
+92p19 File{53P9} 3|151b19 153r28
+93V13*Form{string} 93>19 179r19 3|115b13 118l8 118t12
+93p19 File{53P9} 3|115b19 117r28
+95V13*Is_Open{boolean} 95>22 181r19 3|133b13 136l8 136t15
+95p22 File{53P9} 3|133b22 135r31
+101U14*Read 102>7 103<7 104>7 3|175b14 206l8 206t12
+102p7 File{53P9} 3|176b7 197r27 204r24
+103*7 Item{41+9} 3|177b7 198m13 204m31
+104i7 From{68I12} 3|178b7 197r63 204r61
+106U14*Read 107>7 108<7 3|208b14 230l8 230t12
+107p7 File{53P9} 3|208b20 223r27 228r24
+108*7 Item{41+9} 3|208b38 224m13 228m31
+110U14*Write 111>7 112>7 113>7 3|268b14 276l8 276t13
+111p7 File{53P9} 3|269b7 274r26 275r22
+112*7 Item{41+9} 3|270b7 275r29 275r43
+113i7 To{68I12} 3|271b7 274r42
+115U14*Write 116>7 117>7 3|278b14 281l8 281t13
+116p7 File{53P9} 3|278b21 280r22
+117*7 Item{41+9} 3|278b39 280r29 280r43
+119U14*Set_Index 119>25 119>43 3|250b14 253l8 253t17
+119p25 File{53P9} 3|250b25 252r26
+119i43 To{68I12} 3|250b43 252r42
+121V13*Index{68I12} 121>20 3|124b13 127l8 127t13
+121p20 File{53P9} 3|124b20 126r45
+122V13*Size{66I9} 122>20 3|259b13 262l8 262t12
+122p20 File{53P9} 3|259b19 261r35
+124V13*End_Of_File{boolean}<15|90p13> 124>26 178r19 3|106b13 109l8 109t19
+124p26 File{53P9} 3|106b26 108r35
+130X4*Status_Error
+131X4*Mode_Error
+132X4*Name_Error
+133X4*Use_Error
+134X4*Device_Error
+135X4*End_Error
+136X4*Data_Error
+167m4 Bytes{12|44M12} 3|51r61 90r21 168r21 197r47 204r45 223r47 228r45
+X 3 a-direio.adb
+50a4 Zeroes{26|70A9} 275r59 280r59
+54K12 FCB=54:31 60r23 64r64 65r53
+55K12 FIO=55:31 75r7 99r7 117r14 135r14 144r22 153r14
+56K12 DIO=56:31 61r23 62r23 89r7 108r14 126r30 167r7 197r13 204r10 223r13
+. 228r10 238r7 243r7 252r7 261r21 274r7 275r7 280r7
+58N4 SU 275r55 280r55
+60P12 AP{17|80P9} 75r18 99r19 117r24 135r27 144r32 153r24
+61P12 FP{15|81P9} 89r19 108r31 126r41 167r17 197r23 204r20 223r23 228r20
+. 238r18 243r18 252r22 261r31 274r22 275r18 280r18
+62I12 DPCount{15|51I12} 197r54 204r52 252r33 274r33
+64V13 To_FCB[10|20]{17|62E9} 89r30 167r28 238r29
+65V13 To_DIO[10|20]{2|55E9} 144r14
+194*13 Buf{2|41+9} 197m34 198r21
+220*13 Buf{2|41+9} 223m34 224r21
+X 7 a-ioexce.ads
+18K13*IO_Exceptions 2|36w10 130r37 131r37 132r37 133r37 134r37 135r37 136r37
+. 7|30e22
+21X4*Status_Error 2|130r51
+22X4*Mode_Error 2|131r51
+23X4*Name_Error 2|132r51
+24X4*Use_Error 2|133r51
+25X4*Device_Error 2|134r51
+26X4*End_Error 2|135r51
+27X4*Data_Error 2|136r51
+X 10 a-unccon.ads
+20v14*Unchecked_Conversion 3|44w10 64r31 65r31
+X 11 interfac.ads
+36K9*Interfaces 2|38r6 167r21 168r14 3|37r6 37r32 11|171e15
+X 12 i-cstrea.ads
+37K20*C_Streams 2|38w17 167r32 168r25 3|37w17 37r43 12|274e25
+43I12*long{14|55I9}
+44M12*size_t{14|60M9} 2|167r42 168r35
+X 13 system.ads
+37K9*System 2|37r6 66r29 165r26 3|38w6 38r32 39r6 40r6 41r6 42r6 43r6 46r10
+. 50r22 51r21 54r24 55r24 56r24 58r21 67r13 13|197e11
+68N4*Storage_Unit 3|58r28
+X 14 s-crtl.ads
+38K16*CRTL 3|39w13 67r20 14|196e16
+55I9*long<integer>
+60M9*size_t 3|67r25
+X 15 s-direio.ads
+41K16*Direct_IO 2|37w13 66r36 165r33 3|42w13 46r17 56r31 15|142e21
+48I12*Count{12|43I12} 2|66r46 3|46r27
+51I12*Positive_Count{48I12} 3|62r27
+57m7*Bytes{12|44M12} 3|90m12 168m12
+81P9*File_Type(53R9) 2|165r43 3|61r27
+84U14*Create 3|89r11
+90V13*End_Of_File{boolean} 3|108r18
+92V13*Index{51I12} 3|126r34
+94U14*Open 3|167r11
+100U14*Read 3|197r17 204r14
+106U14*Read 3|223r17 228r14
+111U14*Reset 3|238r11
+112U14*Reset 3|243r11
+114U14*Set_Index 3|252r11 274r11
+116V13*Size{48I12} 3|261r25
+118U14*Write 3|275r11 280r11
+X 17 s-ficobl.ads
+42K16*File_Control_Block 3|40w13 54r31 17|160e30
+62E9*File_Mode 3|64r68 65r57 17|62e66
+80P9*AFCB_Ptr(82R9) 3|60r27
+X 18 s-fileio.ads
+39K16*File_IO 3|41w13 55r31 18|254e19
+101U14*Close 3|75r11
+111U14*Delete 3|99r11
+120V13*Mode{17|62E9} 3|144r26
+123V13*Name{string} 3|153r18
+127V13*Form{string} 3|117r18
+131V13*Is_Open{boolean} 3|135r18
+X 26 s-stoele.ads
+42K16*Storage_Elements 3|43w13 50r29 51r28 26|117e28
+54I9*Storage_Offset<integer> 3|51r45
+64M9*Storage_Element
+70A9*Storage_Array(64M9)<54I9> 3|50r46
+

@@ -1,0 +1,29 @@
+!define S1level3 {value 1500.}
+define S1level3 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+
+define TrnInf {value (I1)*cfs_taf }
+define TrnInfEst {sum(i=0,SEP-month,1) (I1(i))*cfs_taf(i) }
+
+define TrnSupEst {value max(0.0,TrnInfEst + S1(-1)+S1mod - S1level3(Sep-month))}
+
+define TrnSupEstdv {alias TrnSupEst kind 'FORECAST' units 'TAF'}
+
+define TrnFlowTarg {value (TrnSupEst/cfs_taf)/(Sep-month+1.) }
+
+define TrnRuleCalc {
+     case JunthruSep {
+          condition month >= may .and. month <= sep
+          value     TrnInf + S1(-1)+S1mod - TrnFlowTarg*cfs_taf }
+     case Other {
+          condition always
+          value     S1level3}}
+define TrnRuleCalcdv {alias TrnRuleCalc kind 'RULE' units 'TAF'}
+
+define S1level3adj {value min(max(TrnRuleCalc,S1level2),S1level4)}
+define S1level3dv {alias S1level3adj kind 'STORAGE-LEVEL' units 'TAF'}
+
+goal S1Zone3 {S1_3 < max(S1level3adj - S1level2,0.)}
+goal S1Zone4 {S1_4 < max(S1level4 - S1level3adj,0.)}
+goal S1Zone5 {S1_5 < max(S1level5 - S1level4,0.)}
+!goal S1Zone6 {S1_6 < max(S1level6 - S1level5,0.)}  !only 5 levels
+

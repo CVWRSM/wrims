@@ -1,0 +1,80 @@
+! This file contains the groundwater flow equations for DSA 65
+
+! define storage term (units =  thousand-acres)
+
+define beta_65 {VALUE area_65*sy_65/1000.0 }
+
+! define maximum groundwater storage (units = TAF)
+
+define maxg_65 {VALUE beta_65*gse_65 - beta_65*b_65 }
+
+! define current month groundwater storage (units = TAF)
+
+goal storage_65 { g_65 = beta_65*h_65 - beta_65*b_65}
+
+!define previous month groundwater storage (units = TAF)
+
+define g_65_previous {value beta_65*h_65(-1) - beta_65*b_65 }
+
+! restrict groundwater storage to maximum
+
+!goal maxstore_65 {g_65 < maxg_65 }
+
+! groundwater pumping
+goal set_gp64 {gp64 = gp64_taf*taf_cfs}   ! streamflow is CFS
+
+! Last define the basin recharge
+!goal set_gr64AWprj {gr64AWprj = gr64AW_taf*perc_dr65*taf_cfs  }
+!goal set_gr64AWnp {gr64AWnp = gr64AW_taf*(1-perc_dr65)*taf_cfs  }
+
+goal set_gr64AWprj {
+    lhs gr64AWprj
+        rhs gr64AW_taf*perc_dr65*taf_cfs
+        lhs>rhs        penalty 5000
+        lhs<rhs        penalty 5000 }
+
+goal set_gr64AWnp {
+    lhs gr64AWnp
+        rhs gr64AW_taf*(1-perc_dr65)*taf_cfs
+        lhs>rhs        penalty 5000
+        lhs<rhs        penalty 5000 }
+
+define gr64error {alias gr64AWprj + gr64AWnp - gr64aw_taf*taf_cfs kind 'flow' units 'cfs' }
+
+
+goal set_gr64AW {gr64AW = gr64AWprj+gr64AWnp }
+!goal set_gr64AW_taf {gr64AW_taf = gr64AW*cfs_taf}   ! groundwater model is TAF, streamflow is CFS
+
+! define stream gain for DSA65 - Defined in Demand_65.wresl
+!define gs64_taf {TIMESERIES KIND 'flow' units 'TAF' } ! from 2020 Level CVGSM run
+GOAL set_gs64 {gs64 < gs64_taf*taf_cfs }
+
+! Define interaction between groundwater basins (units = TAF)
+! see file parameters.wresl for other parameter values
+
+goal set_interbasin12_65 { interbasin12_65 = alpha12_65*phi12_65*h_12 -
+                                             alpha12_65*phi12_65*h_65 }
+
+goal set_interbasin15_65 { interbasin15_65 = alpha15_65*phi15_65*h_15 -
+                                             alpha15_65*phi15_65*h_65 }
+
+goal set_interbasin69_65 { interbasin69_65 = alpha69_65*phi69_65*h_69 -
+                                             alpha69_65*phi69_65*h_65 }
+
+goal set_interbasin70_65 { interbasin70_65 = alpha70_65*phi70_65*h_70 -
+                                             alpha70_65*phi70_65*h_65 }
+
+goal set_interbasin55_65 { interbasin55_65 = - alpha65_55*phi65_55*h_65 }
+
+
+goal set_gw64_taf { gw64_taf = interbasin12_65
+                             + interbasin15_65
+                             + interbasin69_65
+                             + interbasin70_65
+                             + interbasin55_65 }
+
+
+! define groundwater continuity for DSA65 (units = TAF)
+goal continuity_65 { gw64_taf - gp64_taf + gr64_taf + gr64AW_taf + bnd_65 - gf_64 + gs64_taf = g_65 - g_65_previous }
+
+

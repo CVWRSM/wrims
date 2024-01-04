@@ -1,0 +1,25 @@
+! code and tables by N. King 9/15/00
+! WATER YEAR TYPE DEFININITIONS
+
+
+! the 50-30-20 index for Yuba River Basin
+/*define wyt_YUBA {
+	case OCTtoDEC {
+		 condition 	month >= OCT .and. month <= DEC
+		 select		YUBAindex
+		 from 		YUBA_wytypes 
+		 where		wateryear=wateryear - 1.}
+	case rest {
+		 condition	always
+		 select		YUBAindex 
+		 from 		YUBA_wytypes 
+		 where		wateryear=wateryear}
+}
+
+! the following year type names can be used to represent the numbers found in the tables
+define WT_YUBA          {value 1}
+define AN_YUBA  	{value 2}
+define BN_YUBA  	{value 3}
+define DR_YUBA          {value 4}
+define CR_YUBA     	{value 5}
+*/

@@ -1,0 +1,114 @@
+!WRESL statements for CVP San Luis Rule Curve
+!
+!This code calculates the target storage level for San Luis reservoir
+!******************************************************************************************
+define CVPRULECV { std kind 'rulecurve' units 'TAF' }   !Decision variable of CVP San Luis rule curve
+
+define CVP_Rule_DelTar {
+  select  RuleCurve
+  from    CVPrule_deltar
+  given   deltar = acvpdel_tot_s
+  use     linear}
+define CVP_rule_1 {alias CVP_Rule_DelTar units 'NONE'}
+
+define CVP_Rule_Max {
+  select  RuleCurve
+  from    CVPrule_deltar
+  given   deltar = 9999
+  use     linear}
+
+define CVP_Rule_Cap_Shasta {
+  select  RuleCurve_Cap
+  from    CVPrule_cap_Shasta
+  given   shasta = S4(-1) + S44(-1) + S4mod
+  use     linear}
+define CVP_rule_Cap {alias CVP_Rule_Cap_Shasta units 'NONE'}
+
+define CVP_Rule_Sha_Cut {
+  select  Cut
+  from    CVPrule_sha
+  given   Northern = S4(prevSep)+S44(prevSep)+S4_mod_dv(prevSep)! + S8(prevSep)+S8_mod_dv(prevSep)
+  use     linear}
+define CVP_rule_2 {alias CVP_Rule_Sha_Cut units 'NONE'}
+
+!estimate the allocation for the current water year.
+!define CVP_deltar_est {
+!    case OctToDec {
+!        condition   month >= oct .and. month <=dec
+!        value   2800}   !uses the average cvp_del_tar_south for these months.
+!        case JanToFeb {
+!            condition   month >= jan .and. month <=feb
+! !           value   DEL_CVP_RULE_2} !forecast
+!            value   deltar_cvp_s} !forecast
+!        case MarToApr {
+!            condition   month >= mar .and. month <= apr
+!            value   deltar_cvp_sdv[SJRBASE]} !actual delivery target
+!        case Other {
+!            condition   always
+!            value   0}}
+!define CVP_deltarest_ {alias CVP_deltar_est units 'NONE'}
+
+define CVPRuleDrainTar {value init_CVPRuleDrainTar
+                            + max(acvpdel_tot_s - 2000.,0.)*0.1}  !10% buffer for delivery in excess of 2 MAF
+
+define ExpAmtMon {value 60.} ! roughly 1000 cfs for the month
+
+!calculate the actual rule curve.
+define CVPRULEcalc {
+     case Oct {
+          condition month == oct
+          value     max(CVPRuleDrainTar, CVP_Rule_Max * CVP_Rule_Sha_Cut * month/6.)}
+     case NovToDec {
+          condition month >= nov .and. month <= dec
+          value     max(CVPRuleDrainTar, CVP_Rule_Max * CVP_Rule_Sha_Cut * month/6., CVPRULECV(-1))}
+     case JanToFeb {
+          condition month >= jan .and. month <= feb
+          value     max(CVPRuleDrainTar, CVP_Rule_Max * CVP_Rule_Sha_Cut * month/6., CVPRULECV(-1))}
+     case MarthruApr {
+          condition month >= mar .and. month <= apr
+          value     max(CVPRuleDrainTar, CVP_Rule_DelTar)}
+     case May {
+          condition month == may
+          value max(CVPRuleDrainTar,
+                    min(max(S11(-1) + S11mod - (cvpdemfinal_may - ExpAmtMon),
+                            CVPRULECV(-1)    - (cvpdemfinal_may - ExpAmtMon)),
+                        CVPRuleDrainTar + (cvpdemfinal_jun + cvpdemfinal_jul + cvpdemfinal_aug + cvpdemfinal_sep - 4. * ExpAmtMon)))}
+     case June {
+          condition month == jun
+          value max(CVPRuleDrainTar,
+                    min(max(S11(-1) + S11mod - (cvpdemfinal_jun - ExpAmtMon)*(1-0.5),  ! push harder in June by 50% of demand if possible
+                            CVPRULECV(-1)    - (cvpdemfinal_jun - ExpAmtMon)*(1-0.5)), ! to avoid shortages due to salinity costs
+                        CVPRuleDrainTar + (cvpdemfinal_jul + cvpdemfinal_aug + cvpdemfinal_sep - 3. * ExpAmtMon)))}
+     case July {
+          condition month == jul
+          value max(CVPRuleDrainTar,
+                    min(max(S11(-1) + S11mod - (cvpdemfinal_jul - ExpAmtMon)*(1-0.75),  ! push harder in July by 75% of demand if possible
+                            CVPRULECV(-1)    - (cvpdemfinal_jul - ExpAmtMon)*(1-0.75)), ! to avoid shortages due to salinity costs
+                        CVPRuleDrainTar + (cvpdemfinal_aug + cvpdemfinal_sep - 2. * ExpAmtMon)))}
+     case August {
+          condition month == aug
+          value max(CVPRuleDrainTar,
+                    min(max(S11(-1) + S11mod - (cvpdemfinal_aug - ExpAmtMon),
+                            CVPRULECV(-1)    - (cvpdemfinal_aug - ExpAmtMon)),
+                        CVPRuleDrainTar + (cvpdemfinal_sep - ExpAmtMon)))}
+     case Sep {
+          condition always
+          value max(CVPRuleDrainTar,
+                    min(max(S11(-1) + S11mod - (cvpdemfinal_sep - ExpAmtMon),
+                            CVPRULECV(-1)    - (cvpdemfinal_sep - ExpAmtMon)),
+                        CVPRuleDrainTar))}
+}
+
+! Cvp Rule Curve set to Drain Target if CVP SOD delivery target was increased
+! This is set to ensure that no NOD water is transferred to satisfy the increase
+!define CvpRuleCalc1 {
+!    case CvpSodDelInc {
+!        condition   delTarIncCVPSAll >= 0.001 .and. month >= MAR .and. month <= SEP
+!        value       max(S11level2, CVPRuleDrainTar) }
+!    case other {
+!        condition   always
+!       value       CvpRuleCalc }
+!}
+
+define CvpRuleCalc1 {value max(S11level2,min(CvpRuleCalc,CVP_Rule_Cap_Shasta,S11level4))}
+goal setCVPRULECV { CVPRULECV = CVPRulecalc1 }

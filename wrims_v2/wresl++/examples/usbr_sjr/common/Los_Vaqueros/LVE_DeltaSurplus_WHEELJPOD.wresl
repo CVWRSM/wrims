@@ -1,0 +1,41 @@
+! LVE_DeltaSurplus_WHEELJPOD.wresl
+! Same Structure as LVE_DeltaSurplus.wresl except X2 removed
+! Calculates Delta Surplus
+
+define EIReqSac  { value (D418[WHEELJPOD]+D419[WHEELJPOD])/EXPRATIO_[WHEELJPOD] }
+define EISurplus { value (max(0.,(Inflow[WHEELJPOD] - EIReqSac)*EXPRATIO_[WHEELJPOD])) }
+
+! Calculate ANN Requirements based on estimated exports
+define ANNReq     { value max(0., JP_MRDO[WHEELJPOD], EM_MRDO[WHEELJPOD], RS_MRDO_1[WHEELJPOD],
+                RS_MRDO_2[WHEELJPOD],RS_MRDO_3[WHEELJPOD],CO_MRDO[WHEELJPOD])  }
+
+! Check ANN pushing constraint in the Jun -> Sep period
+define SacAnnCondition {
+    case JunSep {
+    condition month>=Jun .and. month<=Sep .and. C400_exc[WHEELJPOD]<=1.
+    value 0.}
+    case other {
+    condition always
+    value 999999.}
+}
+
+! Calculate ANNSurplus based on estimated exports
+define ANNSurplus { value max(0., min(C_NDO[WHEELJPOD] + D_NDO[WHEELJPOD] - ANNReq, SacAnnCondition)) }
+
+define DeltaSurpAvail {
+    case Exist_FNA {
+        condition LVESwitch < 1.5
+        value max(0., ANNSurplus)
+        }
+    case otherwise {
+        condition always
+        value max(0., min(EISurplus,ANNSurplus))
+        }
+}
+
+/**
+! For output
+define DeltaSurpAvaildv { alias DeltaSurplusAvail kind 'flow' units 'cfs' }
+define DeltaSurplusdv   { alias DeltaSurplus      kind 'flow' units 'cfs' }
+define EISurplusdv      { alias EISurplus         kind 'flow' units 'cfs' }
+**/

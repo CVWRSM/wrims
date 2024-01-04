@@ -1,0 +1,107 @@
+@{classpath} 
+"D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/.." -deprecation
+-classpath ".;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/..;D:/Java/jdk_x86/jdk1.6.0_21/lib/classes.zip;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/lib/vista.jar;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/lib/COM.jar;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/lib/test.jar;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/lib/jhall.jar;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/lib/collections.jar;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/lib/xml.jar;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/lib/JGo.jar;D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/lib/WrimsSchematic.jar"
+
+@{javac}
+D:/Java/jdk_x86/jdk1.6.0_21/bin/javac -J"-mx44m" -g -d
+
+@{calsim_dir}
+D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/../calsim
+
+@{make}
+D:/cvwrsm/wrims/wrims1_workspace/3rd_party/cygnus/bin/make.exe --unix
+
+@{echo version}
+echo "version=1.3.4 Beta (XA16) Build Date: " `date` > D:/cvwrsm/wrims/wrims1_workspace/wrims1/calsim/version
+
+@{clean files}
+rm -rf  *.class ;  rm -rf  *~
+
+D:\cvwrsm\wrims\wrims1_workspace\wrims1\calsim>make --unix release
+cd gui ;  @{make} clean
+cd @{calsim_dir}/gui ;  @{clean files}
+cd app ;  @{make} clean
+cd @{calsim_dir}/app ;  @{clean files}
+cd msw ;  @{make} clean
+cd @{calsim_dir}/msw ;  @{clean files}
+cd wreslcoder ;  @{make} clean
+cd @{calsim_dir}/wreslcoder ;  @{clean files}
+cd wreslcoder/wresl ;  #rm -rf  WreslParser.java
+cd wreslcoder/wresl ;  @{make} clean
+cd @{calsim_dir}/wreslcoder/wresl ;  @{clean files}
+cd gym ;  @{make} clean
+cd @{calsim_dir}/gym ;  @{clean files}
+cd wreslcoder/wresl ;  @{make} all
+@{echo version}
+@{javac} @{classpath} WreslParser.java
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+All done
+cd wreslcoder ;  @{make} all
+@{echo version}
+@{javac} @{classpath} WreslIncScanner.java
+Note: WreslIncScanner.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+All done
+cd app ;  @{make} all
+@{echo version}
+@{javac} @{classpath} AppUtils.java
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+All done
+cd gui ;  @{make} all
+@{echo version}
+@{javac} @{classpath} DTSMenuListener.java
+@{javac} @{classpath} MTSMenuListener.java
+@{javac} @{classpath} ListDTSListener.java
+@{javac} @{classpath} RetrieveDTSListener.java
+@{javac} @{classpath} DeleteDTSListener.java
+@{javac} @{classpath} ListMTSListener.java
+@{javac} @{classpath} RetrieveMTSListener.java
+@{javac} @{classpath} DeleteMTSListener.java
+@{javac} @{classpath} CalsimGui.java
+@{javac} @{classpath} DefaultActionListener.java
+@{javac} @{classpath} MultiStudyRunner.java
+Note: MultiStudyRunner.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+@{javac} @{classpath} MSRGui.java
+All done
+cd debug ;  @{make} all
+@{echo version}
+All done
+cd gym ;  @{make} all
+@{echo version}
+@{javac} @{classpath} GenWresl.java
+All done
+cd schematic ;  @{make} all
+@{echo version}
+All done
+cd msw ;  @{make} all
+@{echo version}
+@{javac} @{classpath} MSWThread.java
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+All done
+@{make} jar
+(rm -rf classes; mkdir classes; mkdir classes/calsim) # original
+(cp -P app/data/*.table classes/calsim)
+(cp -P gui/*.class classes/calsim)
+(cp -P app/*.class classes/calsim)
+(cp -P debug/*.class classes/calsim)
+(cp -P msw/*.class classes/calsim)
+(cp -P wreslcoder/*.class classes/calsim)
+(cp -P wreslcoder/wresl/*.class classes/calsim)
+(cp -P schematic/*.class classes/calsim)
+(cp -P schematic/*.gif classes/calsim)
+(cp -P gym/*.class classes/calsim)
+(cp -P app/*.props classes/calsim)
+(cp -P gui/*.gif classes/calsim)
+(cp -P version classes/calsim)
+(cd classes; D:/Java/jdk_x86/jdk1.6.0_21/bin/jar.exe -cf calsim.jar calsim wrims; cp calsim.jar ../lib)
+wrims : no such file or directory
+(cd help; rm -rf calsim-help.jar; D:/Java/jdk_x86/jdk1.6.0_21/bin/jar.exe -cf calsim-help.jar *; cp calsim-help.jar ../l
+ib;)
+@{make} pack
+make.exe[1]: Nothing to be done for `pack'.
+
+D:\cvwrsm\wrims\wrims1_workspace\wrims1\calsim>

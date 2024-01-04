@@ -1,0 +1,65 @@
+define OctMarRunoffEst {select OctMar from SacValleyIndex where wateryear=wateryear}
+
+define S_FOLSMlevel3 {
+    case OctthruDec {
+            condition month >= Oct .and. month <= Mar .and. OctMarRunoffEst > 14.33 !25% Exceedence level for Oct-Mar 40-30-30 Runoff
+        value 300.0 }
+    case Other {
+        condition always
+        value 400.0 }
+}
+  
+define FolInf {value(I_FOLSM + SR_26N_NTOMA + SR_26S_NTOMA + I_NFA016)*taf_cfs}
+define FolInfEst {sum(i=0,SEP-month,1) (I_FOLSM(i)+SR_26N_NTOMA(i)+SR_26S_NTOMA(i)+I_NFA016(i))*cfs_taf(i) }
+
+define FolDiv {value (WRWF_ANN_PCWA_A + CLWF_ANN_PCWA_A) * perdem_PCWA +
+                      WRWF_ANN_NRWD_A                   * perdem_NRWD +
+                     (WRWF_ANN_FOLSM  + CLWF_ANN_FOLSM ) * perdem_FOLSM +
+                      WRWF_ANN_FOLPR                    * perdem_FOLPR +
+                      WRWF_ANN_SJWD_P                   * perdem_SJWD_P +
+                     (WRWF_ANN_SJWD_S + CLWF_ANN_SJWD_S) * perdem_SJWD_S +
+                     (WRWF_ANN_ELDOR  + CLWF_ANN_ELDOR ) * perdem_ELDOR  +
+                     (WRWF_ANN_ROSEV  + CLWF_ANN_ROSEV ) * perdem_ROSEV +
+                      WRWF_ANN_SCWC                     * perdem_SCWC +
+                      CLWF_ANN_CAREC                   * perdem_CAREC +
+                      CLWF_ANN_SMUD                    * perdem_SMUD +
+                      FSC_Losses * cfs_taf}
+
+define FolDivEst {sum(i=0,SEP-month,1)
+            	    ((WRWF_ANN_PCWA_A(i) + CLWF_ANN_PCWA_A(i)) * perdem_PCWA(i) +
+                      WRWF_ANN_NRWD_A(i)                      * perdem_NRWD(i) +
+                     (WRWF_ANN_FOLSM(i)  + CLWF_ANN_FOLSM(i) ) * perdem_FOLSM(i) +
+                      WRWF_ANN_FOLPR(i)                       * perdem_FOLPR(i) +
+                      WRWF_ANN_SJWD_P(i)                      * perdem_SJWD_P(i) +
+                     (WRWF_ANN_SJWD_S(i) + CLWF_ANN_SJWD_S(i)) * perdem_SJWD_S(i) +
+                     (WRWF_ANN_ELDOR(i)  + CLWF_ANN_ELDOR(i) ) * perdem_ELDOR(i)  +
+                     (WRWF_ANN_ROSEV(i)  + CLWF_ANN_ROSEV(i) ) * perdem_ROSEV(i) +
+                      WRWF_ANN_SCWC(i)                        * perdem_SCWC(i) +
+                      CLWF_ANN_CAREC(i)                      * perdem_CAREC(i) +
+                      CLWF_ANN_SMUD(i)                       * perdem_SMUD(i) +
+                      FSC_Losses(i) * cfs_taf(i))}
+
+
+define FolSupEst {value max(0.0,FolInfEst - FolDivEst + S_FOLSM(-1)+S_FOLSMmod - S_FOLSMlevel3)}
+
+define FolSupEstdv {alias FolSupEst kind 'FORECAST' units 'TAF'}
+
+!define FolFlowTarg {value min((FolSupEst/cfs_taf)/(Sep-month+1.),5000.)}
+define FolFlowTarg {value (FolSupEst/cfs_taf)/(Sep-month+1.) }
+
+define FolRuleCalc {
+     case JunthruSep {
+          condition month >= may .and. month <= sep
+          value     FolInf - FolDiv + S_FOLSM(-1)+S_FOLSMmod - FolFlowTarg*cfs_taf }
+     case Other {
+          condition always
+          value     S_FOLSMlevel3}}
+define FolRuleCalcdv {alias FolRuleCalc kind 'RULE' units 'TAF'}
+
+define S_FOLSMlevel3adj {value min(max(FolRuleCalc,S_FOLSMlevel2),S_FOLSMlevel4)}
+define S_FOLSMlevel3dv {alias S_FOLSMlevel3adj kind 'STORAGE-LEVEL' units 'TAF'}
+
+goal S_FOLSMZone3 {S_FOLSM_3 < max(S_FOLSMlevel3adj - S_FOLSMlevel2,0.)}
+goal S_FOLSMZone4 {S_FOLSM_4 < max(S_FOLSMlevel4 - S_FOLSMlevel3adj,0.)}
+goal S_FOLSMZone5 {S_FOLSM_5 < max(S_FOLSMlevel5 - S_FOLSMlevel4,0.)}
+goal S_FOLSMZone6 {S_FOLSM_6 < max(S_FOLSMlevel6 - S_FOLSMlevel5,0.)}

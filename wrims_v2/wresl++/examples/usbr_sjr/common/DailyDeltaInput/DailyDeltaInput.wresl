@@ -1,0 +1,145 @@
+!South of Delta Mass Balance output for the daily delta model
+define dem_cvp_pag_s {value dem_D700_pag + dem_D701_pag + dem_D706_pag + 
+                            dem_D833_pag + dem_D835_pag + dem_D836_pag + dem_D837_pag + dem_D839_pag +
+                            dem_D841_pag + dem_D843_pag + dem_D710_pag } !TAF
+define dem_cvp_pmi_s {value dem_D711_pmi + dem_D844_pmi } !TAF
+define dem_cvp_pex_s {value dem_D707_pex } !TAF
+define dem_cvp_prf_s {value dem_D708_prf + dem_D856_prf } !TAF
+define dem_cvp_pls_s {value dem_d702_pls + dem_d834_pls + dem_d838_pls +
+                            dem_d840_pls + dem_d842_pls + dem_d845_pls} !TAF
+define dem_C724A {
+	case April {     
+          condition	month == apr
+          value	14.*C724A[SJR_WQ1]/30. + 16.*C724A[VAMP_AND_DO]/30. 
+        }
+     	case MayOnly {
+          condition	month == may
+          value      15.*C724A[VAMP_AND_DO]/31. + 16.*C724A[SJR_WQ1]/31.  
+        }
+     	case otherwise {
+          condition	always
+          value	C724A[SJR_WQ1]        
+      	}
+}
+
+define DEM_CVP_SOD {ALIAS DEM_CVP_PAG_S + DEM_CVP_PEX_S +
+					      DEM_CVP_PMI_S + DEM_CVP_PRF_S +
+					      DEM_CVP_PLS_S + DEM_C724A*cfs_taf + 
+					      C724BVAMP*cfs_taf + C724B_RFMAKEUP*cfs_taf +
+					      E11*cfs_taf
+					      KIND 'DEMAND' UNITS 'TAF'}
+
+define DEL_CVP_SOD_CFS {ALIAS DEL_CVP_PAG_S + DEL_CVP_PEX_S +
+					      DEL_CVP_PMI_S + DEL_CVP_PRF_S +
+					      DEL_CVP_PLS_S - D607A - D607B - D607C -
+					      D607D + C724A + C724B + E11
+					      KIND 'DELIVERY' UNITS 'CFS'}
+
+define del_cvp_sod {alias del_cvp_sod_cfs*cfs_taf kind 'delivery' units 'taf'}					  
+					   
+define dem_pin_cfs {value DEM_D27_PIN + DEM_D846_PIN + DEM_D848_PIN +
+						  DEM_D849_PIN + DEM_D868_PIN + DEM_D859_PIN +
+						  DEM_D877_PIN + DEM_D883_PIN + DEM_D884_PIN +
+						  DEM_D885_PIN + DEM_D899_PIN + DEM_D895_PIN +
+						  DEM_D810_PIN + DEM_D814_PIN + DEM_D815_PIN}
+
+define dem_swp_sod_pin {alias dem_pin_cfs*cfs_taf kind 'demand' units 'taf'}
+						  
+define del_swp_pin_cfs {ALIAS D27_PIN + D846_PIN + D848_PIN +
+						  D849_PIN + D868_PIN + D859_PIN +
+						  D877_PIN + D883_PIN + D884_PIN +
+						  D885_PIN + D899_PIN + D895_PIN +
+						  D810_PIN + D814_PIN + D815_PIN
+						  KIND 'DELIVERY' UNITS 'CFS'}
+						  
+define del_swp_sod_pin {alias del_swp_pin_cfs*cfs_taf kind 'delivery' units 'taf'}
+						  
+define dem_swp_sod_pag {value dem_D802_PAG + dem_D846_PAG + dem_D847_PAG + 
+		dem_D848_PAG + dem_D849_PAG + dem_D867_PAG + dem_D868_PAG + 
+		dem_D851_PAG  + dem_D859_PAG + dem_D863_PAG}
+
+define del_swp_sod_pag {alias D802_PAG + D846_PAG + D847_PAG + D848_PAG +
+                          D849_PAG + D867_PAG + D868_PAG + D851_PAG +
+                           D859_PAG + D863_PAG
+                    kind  'delivery'
+                    units 'cfs'}
+
+define dem_swp_sod_pmi {value dem_D25_PMI  + dem_D27_PMI + 
+                          dem_D28_PMI  + dem_D29_PMI  + dem_D869_PMI +
+                          dem_D851_PMI + dem_D877_PMI + dem_D878_PMI + dem_D879_PMI +
+                         dem_D881_PMI + dem_D883_PMI + dem_D884_PMI + dem_D885_PMI +
+                          dem_D886_PMI + dem_D887_PMI + dem_D888_PMI + dem_D899_PMI +
+                          dem_D895_PMI + dem_D896_PMI + dem_D810_PMI + dem_D813_PMI +
+                          dem_D814_PMI + dem_D815_PMI}
+
+define del_swp_sod_pmi {alias D25_PMI  + D27_PMI + 
+                          D28_PMI  + D29_PMI  + D869_PMI +
+                          D851_PMI + D877_PMI + D878_PMI + D879_PMI +
+                          D881_PMI + D883_PMI + D884_PMI + D885_PMI +
+                          D886_PMI + D887_PMI + D888_PMI + D899_PMI +
+                          D895_PMI + D896_PMI + D810_PMI + D813_PMI +
+                          D814_PMI + D815_PMI
+                    kind  'delivery'
+                    units 'cfs'}
+                    
+define dem_swp_sod_pls {value DEM_D803_PLS + DEM_D824_PLS + DEM_D826_PLS +
+                          DEM_D827_PLS + DEM_D828_PLS + DEM_D829_PLS + DEM_D854_PLS +
+                          DEM_D862_PLS + DEM_D864_PLS + DEM_D880_PLS + DEM_D882_PLS +
+                          DEM_D889_PLS + DEM_D891_PLS + DEM_D893_PLS + DEM_D894_PLS +
+                          DEM_D816_PLS}
+
+define del_swp_sod_pls {alias D803_PLS + D824_PLS + D826_PLS +
+                          D827_PLS + D828_PLS + D829_PLS + D854_PLS +
+                          D862_PLS + D864_PLS + D880_PLS + D882_PLS +
+                          D889_PLS + D891_PLS + D893_PLS + D894_PLS +
+                          D816_PLS
+                    kind  'delivery'
+                    units 'cfs'}
+                    
+define evap_swp_sod {alias E12 + E15 + E25 + E27 + E28 + E29 kind 'evaporation' units 'cfs'}
+
+define dem_swp_sod {alias dem_swp_sod_pag*cfs_taf + dem_swp_sod_pmi*cfs_taf + 
+					dem_swp_sod_pls*cfs_taf + evap_swp_sod*cfs_taf - I860*cfs_taf
+			kind 'demand'
+			units 'taf'}
+
+define del_swp_sod {alias del_swp_sod_pag*cfs_taf + del_swp_sod_pmi*cfs_taf + 
+					del_swp_sod_pls*cfs_taf + evap_swp_sod*cfs_taf - I860*cfs_taf
+			kind 'delivery'
+			units 'taf'}
+						
+define Minflow_C100_ {alias Minflow_C100 kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define minflow_c203_ {alias max(minflow_C203, minflow_c223) kind 'flow-min-required' units 'cfs'}
+define minflow_Goodwin {alias max(Stan_C16FW, Stan_C525FW +
+				D524[MONTHLYWEIGHTED] + D525[MONTHLYWEIGHTED] -
+				C530A[MONTHLYWEIGHTED] - I522[MONTHLYWEIGHTED]  - 
+				R523[MONTHLYWEIGHTED] - I524)
+				kind 'flow-required' units 'cfs'}
+define minflow_Nimbus {alias max(nimbus_hist_std, HMin + GS66[MONTHLYWEIGHTED] +
+						D302[MONTHLYWEIGHTED] - I302)
+						kind 'flow-required' units 'cfs'}
+
+define I_TRNTY_  {alias I_TRNTY  kind 'FLOW-INFLOW' units 'CFS'}
+define I_LWSTN_  {alias I_LWSTN  kind 'FLOW-INFLOW' units 'CFS'}
+define I_KSWCK_  {alias I_KSWCK  kind 'FLOW-INFLOW' units 'CFS'}
+define I_SHSTA_  {alias I_SHSTA  kind 'FLOW-INFLOW' units 'CFS'}
+define I_FTR074_  {alias I_FTR074  kind 'FLOW-INFLOW' units 'CFS'}
+define I_FTR068_ {alias I_FTR068 kind 'FLOW-INFLOW' units 'CFS'}
+define I_FOLSM_  {alias I_FOLSM  kind 'FLOW-INFLOW' units 'CFS'}
+define SR_26S_NTOMA_  {alias SR_26S_NTOMA  kind 'FLOW-INFLOW' units 'CFS'}
+define I10_      {alias I10      kind 'FLOW-INFLOW' units 'CFS'}
+define I16_      {alias I16      kind 'FLOW-INFLOW' units 'CFS'}
+define I_SAC404_ {alias I_SAC404 kind 'flow-inflow' units 'cfs'}
+define I_MSH015_     {alias I_MSH015     kind 'flow-inflow' units 'cfs'}
+define I410_     {alias I410     kind 'flow-inflow' units 'cfs'}
+define I412_     {alias I412     kind 'flow-inflow' units 'cfs'}
+define I413_     {alias I413     kind 'flow-inflow' units 'cfs'}
+
+define S_TRNTY_flood {alias S_TRNTYlevel4 kind 'storage-level' units 'taf'}
+define S_WKYTN_flood {alias S_WKYTNlevel4 kind 'storage-level' units 'taf'}
+define S_SHSTA_flood {alias S_SHSTAlevel5 + S_KSWCKlevel4 kind 'storage-level' units 'taf'}
+define S_OROVL_flood {alias S_OROVLlevel5 + S_THERMlevel4 kind 'storage-level' units 'taf'}
+define S_FOLSM_flood {alias S_FOLSMlevel5 + S_NTOMAlevel4 kind 'storage-level' units 'taf'}
+define S10_flood     {alias S10level4 + S16level4 kind 'storage-level' units 'taf'}
+
+define CVP_Pumping {alias D418 + D419_CVP kind 'flow-delivery' units 'cfs'}

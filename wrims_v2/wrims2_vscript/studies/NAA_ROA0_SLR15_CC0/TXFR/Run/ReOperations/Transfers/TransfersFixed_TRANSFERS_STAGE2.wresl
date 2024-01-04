@@ -1,0 +1,298 @@
+! TransfersFixed.wresl
+
+!******************************************************************************
+! First set the transfer points as done in TransferOps.wresl code
+! Set Yuba inflow increment
+goal setI204_WTS {I204_WTS = WTS_YubaGW + WTS_YubaSW}    !Both GW and SW components
+
+! Set SOD inflow increments
+goal fixI607_WTS {
+  lhs     I607_WTS
+  rhs     I607_WTS[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixI839_WTS {
+  lhs     I839_WTS
+  rhs     I839_WTS[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixI852_WTS {
+  lhs     I852_WTS
+  rhs     I852_WTS[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+! Zero out the DSA diversion placerholderss of the intended transfers
+goal zeroD143A_WTS {D143A_WTS = frac_GC_N_DSA12*WTS_INC12_Stg2 - frac_GC_N_DSA12*WTS_DEC12_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD145A_WTS {D145A_WTS = frac_GC_S_DSA12*WTS_INC12_Stg2 - frac_GC_S_DSA12*WTS_DEC12_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD122A_WTS {D122A_WTS = frac_SC_N_DSA12*WTS_INC12_Stg2 - frac_SC_N_DSA12*WTS_DEC12_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD122B_WTS {D122B_WTS = frac_SC_S_DSA12*WTS_INC12_Stg2 - frac_SC_S_DSA12*WTS_DEC12_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD128_WTS {D128_WTS = WTS_INC15_Stg2 - WTS_DEC15_Stg2}
+goal zeroD7b_WTS  {D7b_WTS = WTS_INC69_Stg2 - WTS_DEC69_Stg2}  !zero else for Stage2 in-line storage buffering
+goal zeroD168A_WTS {D168A_WTS = WTS_INC70_Stg2 - WTS_DEC70_Stg2}
+
+!******************************************************************************
+! Fix Export of Transfers
+goal fixD418_WTS_Stg1 {
+  lhs     D418_WTS_Stg1
+  rhs     D418_WTS_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD418_WTS_Stg2 {
+  lhs     D418_WTS_Stg2
+  rhs     D418_WTS_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD419_WTS_Stg1 {
+  lhs     D419_WTS_Stg1
+  rhs     D419_WTS_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD419_WTS_Stg2 {
+  lhs     D419_WTS_Stg2
+  rhs     D419_WTS_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+! Fix Carriage Water Increment for Transfers
+goal fixC407_WTS_Stg1 {
+  lhs     C407_WTS_Stg1
+  rhs     C407_WTS_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixC407_WTS_Stg2 {
+  lhs     C407_WTS_Stg2
+  rhs     C407_WTS_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+!Fix each SOD delivery point of transfers
+goal setD815_WTS {
+    lhs D815_WTS
+    rhs D815_WTS[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal setD885_WTS {
+    lhs D885_WTS
+    rhs D885_WTS[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal setD895_WTS {
+    lhs D895_WTS
+    rhs D895_WTS[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+! Fix NOD System Storage Accounting associated with Transfers
+goal set_int_C5_WTS_Stg1 {int_C5_WTS_Stg1 = int_C5_WTS_Stg1[TRANSFERS_STAGE2]}
+goal set_int_C5_WTS_Stg2 {int_C5_WTS_Stg2 = int_C5_WTS_Stg2[TRANSFERS_STAGE2]}
+goal set_int_C6WTS_Stg1 {int_C6WTS_Stg1 = int_C6WTS_Stg1[TRANSFERS_STAGE2]}
+goal set_int_C6WTS_Stg2 {int_C6WTS_Stg2 = int_C6WTS_Stg2[TRANSFERS_STAGE2]}
+
+! Shasta increase
+goal fixI4_WTS_Stg1 {
+  lhs     I4_WTS_Stg1
+  rhs     I4_WTS_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+! Shasta release
+goal fixC5_WTS_Stg1 {
+  lhs     C5_WTS_Stg1
+  rhs     C5_WTS_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+! Oroville increase
+goal fixI6_WTS_Stg1 {
+  lhs     I6_WTS_Stg1
+  rhs     I6_WTS_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+! Oroville release
+goal fixC6_WTS_Stg1 {
+  lhs     C6_WTS_Stg1
+  rhs     C6_WTS_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+! COA Adjustment
+goal fixC203_WTS_Stg1 {
+  lhs     C203_WTS_Stg1
+  rhs     C203_WTS_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+! Recheck NOD System Storage Spill Accounting - Ops may have changes since what was
+! assumed when transfer operations were solved
+
+! Shasta Backed Up Transfer Water
+define SP4_WTS_Stg1 {
+    case Oct1922 {
+        condition   month==OCT .and. wateryear==1922
+        value       0.0 }
+    case spill {
+        condition   S4_WTSBase + .5 > S4level5
+!        value       min(S4_WTS_Stg1(-1),max(0.,S4_WTSBase-S4(-1))) }
+        value       min(S4_WTS(-1),max(0.,S4_WTSBase-S4(-1))) }
+    case other {
+        condition   always
+        value       0. }
+}
+define SP4_WTS_Stg1dv {alias SP4_WTS_Stg1 kind 'VOLUME-SPILL' units 'TAF'}
+!goal set_S4_WTS_Stg1 {S4_WTS_Stg1 = S4_WTS_Stg1(-1) + I4_WTS_Stg1*cfs_taf - C5_WTS_Stg1*cfs_taf - SP4_WTS_Stg1 }
+goal set_S4_WTS_Stg1 {S4_WTS_Stg1 = S4_WTS(-1) + I4_WTS_Stg1*cfs_taf - C5_WTS_Stg1*cfs_taf - SP4_WTS_Stg1 }
+
+! Oroville Backed Up Transfer Water
+define SP6_WTS_Stg1 {
+    case Oct1922 {
+        condition   month==OCT .and. int(wateryear)==1922
+        value       0.0 }
+    case spill {
+        condition   S6_WTSBase + .5 > S6level5
+ !       value       min(S6_WTS_Stg1(-1),max(0.,S6_WTSBase-S6(-1))) }
+        value       min(S6_WTS(-1),max(0.,S6_WTSBase-S6(-1))) }
+    case other {
+        condition   always
+        value       0. }
+}
+define SP6_WTS_Stg1dv {alias SP6_WTS_Stg1 kind 'VOLUME-SPILL' units 'TAF'}
+!goal set_S6_WTS_Stg1 {S6_WTS_Stg1 = S6_WTS_Stg1(-1) + I6_WTS_Stg1*cfs_taf - C6_WTS_Stg1*cfs_taf - SP6_WTS_Stg1 }
+goal set_S6_WTS_Stg1 {S6_WTS_Stg1 = S6_WTS(-1) + I6_WTS_Stg1*cfs_taf - C6_WTS_Stg1*cfs_taf - SP6_WTS_Stg1 }
+
+
+! Stg2
+define SP4_WTS_Stg2 {value 0.}
+goal setS4_WTS_Stg2  {S4_WTS_Stg2 = 0.} !S4_WTS_Stg2(-1)}
+goal zeroI4_WTS {I4_WTS_Stg2 = 0.}
+goal zeroC5_WTS   {C5_WTS_Stg2 = 0.}
+
+define SP6_WTS_Stg2 {value 0.}
+goal setS6_WTS_Stg2  {S6_WTS_Stg2 = 0.} !S6_WTS_Stg2(-1)}
+goal zeroI6_WTS {I6_WTS_Stg2 = 0.}
+goal zeroC6_WTS   {C6_WTS_Stg2 = 0.}
+! COA Adjustment
+goal zeroC203_WTS   {C203_WTS_Stg2 = 0.}
+
+! total storage
+goal split_S4_WTS { S4_WTS = S4_WTS_Stg1 + S4_WTS_Stg2 }
+goal split_S6_WTS { S6_WTS = S6_WTS_Stg1 + S6_WTS_Stg2 }
+! total spills
+goal split_SP4_WTS { SP4_WTS = SP4_WTS_Stg1 + SP4_WTS_Stg2 }
+goal split_SP6_WTS { SP6_WTS = SP6_WTS_Stg1 + SP6_WTS_Stg2 }
+
+!******************************************************************************
+goal fix_BUFF12_Stg2 {
+  lhs     WTS_BUFF12_Stg2
+  rhs     WTS_BUFF12_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_INC12_Stg2 {
+  lhs     WTS_INC12_Stg2
+  rhs     WTS_INC12_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_DEC12_Stg2 {
+  lhs     WTS_DEC12_Stg2
+  rhs     WTS_DEC12_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fix_BUFF15_Stg2 {
+  lhs     WTS_BUFF15_Stg2
+  rhs     WTS_BUFF15_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_INC15_Stg2 {
+  lhs     WTS_INC15_Stg2
+  rhs     WTS_INC15_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_DEC15_Stg2 {
+  lhs     WTS_DEC15_Stg2
+  rhs     WTS_DEC15_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fix_BUFF69_Stg2 {
+  lhs     WTS_BUFF69_Stg2
+  rhs     WTS_BUFF69_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_INC69_Stg2 {
+  lhs     WTS_INC69_Stg2
+  rhs     WTS_INC69_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_DEC69_Stg2 {
+  lhs     WTS_DEC69_Stg2
+  rhs     WTS_DEC69_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fix_BUFF70_Stg2 {
+  lhs     WTS_BUFF70_Stg2
+  rhs     WTS_BUFF70_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_INC70_Stg2 {
+  lhs     WTS_INC70_Stg2
+  rhs     WTS_INC70_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_DEC70_Stg2 {
+  lhs     WTS_DEC70_Stg2
+  rhs     WTS_DEC70_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+!******************************************************************************
+goal fix_WTS_BAL_ERR_Stg1 {
+  lhs     WTS_BAL_ERR_Stg1
+  rhs     WTS_BAL_ERR_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_WTS_BAL_ERR_Stg2 {
+  lhs     WTS_BAL_ERR_Stg2
+  rhs     WTS_BAL_ERR_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+!******************************************************************************
+goal fix_WTS_SPILL_Stg1 {
+  lhs     WTS_SPILL_Stg1
+  rhs     WTS_SPILL_Stg1[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fix_WTS_SPILL_Stg2 {
+  lhs     WTS_SPILL_Stg2
+  rhs     WTS_SPILL_Stg2[TRANSFERS_STAGE2]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+!******************************************************************************

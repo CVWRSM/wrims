@@ -1,0 +1,97 @@
+/*
+CALSIM 3.0 SYSTEM FILE
+ARCS-INFLOWS.WRESL
+
+NAMING TAKES THE FOLLOWING FORMS:
+
+I_{DESTINATION NODE}  - boundary inflow
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! BOUNDARY INFLOWS  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!********************** EAST SIDE ***********************************************
+! Reservoir Inflows (alphabetically)
+define I_ESTMN  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !EASTMAN RESERVOIR
+define I_HNSLY  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !HENSLEY RESERVOIR
+define I_MCLRE  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LAKE MCCLURE, EXCHEQUER DAM
+define I_LJC022 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !INFLOW TO FARMINGTON FLOOD CONTROL BASIN
+define I_MELON  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !NEW MELONES RESERVOIR
+define I_MLRTN  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !MILLERTON RESERVOIR
+define I_NHGAN  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !NEW HOGAN RESERVOIR
+define I_PEDRO  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !NEW DON PEDRO RESERVOIR
+define I_TULOC  {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !TULLOCH RESERVOIR
+
+! Other Tributary Inflows (alphabetically)
+define I_BCK040 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !BEAR CREEK
+define I_BUR005 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !BURNS CREEK
+define I_CLV026 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LOCAL INFLOW TO CALAVERAS RIVER
+define I_COT033 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !COTTONWOOD CREEK
+define I_DBC024 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !BERENDA AND DRY CREEKS
+define I_DCM027 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !DRY CREEK (Tributary to Merced River)
+define I_DCT050 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !INFLOW FROM DRY CREEK TO TUO017
+define I_DED044 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !DEADMAN'S CREEK
+define I_FSL012 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !INFLOW TO FRESNO SLOUGH
+define I_JBP006 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !INFLOW TO JAMES BYPASS
+define I_MCD055 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LOCAL INFLOW TO MERCED RIVER (Exchequer Reservoir to Crocker-Huffman Dam)
+define I_MPS038 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !MARIPOSA CREEK
+define I_OWN040 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !OWENS CREEK
+define I_FRS046 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LOCAL INFLOW BELOW HENSLEY
+define I_SJR265 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !COTTONWOOD CREEK
+define I_SJR258 {value 0.0} ! timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LITTLE DRY CREEK
+define I_STS059 {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} !LOCAL INFLOW TO STANISLAUS RIVER
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! SURFACE RUNOFF FROM WBAs  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define SR_60S_SJR043    {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_60S_SJR038    {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_60S_SJR028    {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_60S_FCS007    {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+                
+define SR_61_SJR075 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_61_SJR070 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_61_SJR053 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_61_SJR043 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_61_TUO017 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_61_STS017 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_61_FCS007 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+                
+define SR_62_MCD050 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_62_MCD021 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}    
+define SR_62_SJR081 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_62_TUO017 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+                
+define SR_63_EBP050 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_63_EBP032 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_63_EBP030 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_63_MCD050 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_63_MCD021 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_63_SJR134 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_63_SJR117 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+                
+define SR_64_SJR227 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_64_SJR214 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_64_SJR180 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_64_EBP050 {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_64_EBP032 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_64_EBP030 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_64_EBP019 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_64_EBP005 {value 0.0} !timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+define SR_64_FRS022 {value 0.0} ! timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}            
+         
+     
+     
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! CLOSURE TERMS  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define CT_Vernalis  {timeseries kind 'closure-term' units 'taf' convert 'cfs'}
+define CT_SJR070    {lower -999999 upper 999999 kind 'closure-term' units 'cfs'}
+! goal   setCT_SJR070   {CT_SJR070 = CT_Vernalis}
+goal   setCT_SJR070 {CT_SJR070 = 0.}

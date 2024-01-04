@@ -1,0 +1,108 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U system.win32.ext%s	s-winext.ads		328e1a17 NE OL PU PK
+W system.win32%s	s-win32.ads		s-win32.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-parame.ads		20091130110856 6cdeed25
+D s-stalib.ads		20090422095704 9cbc334a
+D s-win32.ads		20100128134454 4b10300f
+D s-winext.ads		20090409150020 799e2a18
+X 4 i-c.ads
+35I9*int<integer>
+44M9*unsigned_short
+45M9*unsigned_long
+47M9*unsigned_char
+56I9*ptrdiff_t<integer>
+72E9*char<character>
+X 5 system.ads
+37K9*System 197e11 10|35r9 125r5
+X 9 s-win32.ads
+39K16*Win32 5|37k9 9|316e17 10|35r16 43r50 125r12
+51O9*LARGE_INTEGER 10|43r28
+55I9*HANDLE<4|56I9> 10|52r26 111r15 116r15 121r24
+60M9*DWORD<4|45M9> 10|53r46 69r27 70r27 102r37 103r37 104r37 105r37 106r37
+61M9*WORD<4|44M9> 10|85r27 86r27 87r27 96r27
+62M9*BYTE<4|47M9> 10|88r27 89r27 90r27
+64E9*CHAR<4|72E9> 10|91r27 92r27 93r27 94r27 95r27
+66I9*BOOL<4|35I9> 10|43r56 112r34 117r34 122r52
+69I9*Bits1<short_short_integer> 10|71r27 72r27 73r27 74r27 76r27 77r27 78r27
+. 79r27 80r27 81r27 83r27
+70I9*Bits2<short_short_integer> 10|75r27 82r27
+71I9*Bits17<integer> 10|84r27
+250M12*ProcessorId{60M9} 10|53r26
+X 10 s-winext.ads
+35K22*Ext 9|39k16 10|125l18 125e21
+42V13*QueryPerformanceFrequency{9|66I9} 43^7 45b16
+43p7 lpFrequency(9|51O9)
+51V13*SetThreadIdealProcessor{9|60M9} 52>7 53>7 54b28
+52i7 hThread{9|55I9}
+53m7 dwIdealProcessor{9|250M12}
+60N4*DTR_CONTROL_DISABLE
+61N4*RTS_CONTROL_DISABLE
+62N4*NOPARITY
+63N4*ODDPARITY
+64N4*EVENPARITY
+65N4*ONESTOPBIT
+66N4*TWOSTOPBITS
+68R9*DCB 97e14 98r26 99r17 112r22 117r22
+69m7*DCBLENGTH{9|60M9}
+70m7*BaudRate{9|60M9}
+71i7*fBinary{9|69I9}
+72i7*fParity{9|69I9}
+73i7*fOutxCtsFlow{9|69I9}
+74i7*fOutxDsrFlow{9|69I9}
+75i7*fDtrControl{9|70I9}
+76i7*fDsrSensitivity{9|69I9}
+77i7*fTXContinueOnXoff{9|69I9}
+78i7*fOutX{9|69I9}
+79i7*fInX{9|69I9}
+80i7*fErrorChar{9|69I9}
+81i7*fNull{9|69I9}
+82i7*fRtsControl{9|70I9}
+83i7*fAbortOnError{9|69I9}
+84i7*fDummy2{9|71I9}
+85m7*wReserved{9|61M9}
+86m7*XonLim{9|61M9}
+87m7*XoffLim{9|61M9}
+88m7*ByteSize{9|62M9}
+89m7*Parity{9|62M9}
+90m7*StopBits{9|62M9}
+91e7*XonChar{9|64E9}
+92e7*XoffChar{9|64E9}
+93e7*ErrorChar{9|64E9}
+94e7*EofChar{9|64E9}
+95e7*EvtChar{9|64E9}
+96m7*wReserved1{9|61M9}
+101R9*COMMTIMEOUTS 107e14 108r26 122r31
+102m7*ReadIntervalTimeout{9|60M9}
+103m7*ReadTotalTimeoutMultiplier{9|60M9}
+104m7*ReadTotalTimeoutConstant{9|60M9}
+105m7*WriteTotalTimeoutMultiplier{9|60M9}
+106m7*WriteTotalTimeoutConstant{9|60M9}
+110V13*GetCommState{9|66I9} 111>7 112^7 113b28
+111i7 hFile{9|55I9}
+112p7 lpDCB(68R9)
+115V13*SetCommState{9|66I9} 116>7 117^7 118b28
+116i7 hFile{9|55I9}
+117p7 lpDCB(68R9)
+120V13*SetCommTimeouts{9|66I9} 121>7 122^7 123b28
+121i7 hFile{9|55I9}
+122p7 lpCommTimeouts(101R9)
+

@@ -1,0 +1,19 @@
+! WRESL INFLOW EQUATIONS FOR THE DELTA  
+! Distribution of inflow to different locations in the Delta
+!   code by A. Munevar  7/8/98
+!
+! These equations must be written for these I_arcs or an UNBOUNDED SOLUTION will result.
+! Total delta precip from hydrology
+define delta_precip {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} ! this is total Delta precipitation
+
+! Define fraction of total PPT inflow to specific locations
+define fract_PPT_404 {value 0.31}               ! fraction to node 404
+define fract_PPT_413 {value 0.21}               ! fraction to node 413
+define fract_PPT_412 {value 0.15}               ! fraction to node 412
+define fract_PPT_410 {value 0.33}               ! fraction to node 410
+
+! Set the inflow amounts to the specific locations
+goal inflowI_SAC008 {I_SAC008 = fract_PPT_404*delta_precip}
+goal inflowI413     {I413     = fract_PPT_413*delta_precip}
+goal inflowI412     {I412     = fract_PPT_412*delta_precip}
+goal inflowI410     {I410     = fract_PPT_410*delta_precip}

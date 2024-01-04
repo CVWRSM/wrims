@@ -1,0 +1,98 @@
+package calsim3.delta.north
+
+
+
+
+#LAKE OROVILLE
+# [ ] is used for array
+
+reservoir S_Orovl ( ) {
+	
+	link[1] = 
+	link[2] =
+	link[3] = 
+		
+	rating[1]  = [ elevation = 340, area = 0,     storage = 0,       discharge = 50000  ];
+	rating[2]  = [ elevation = 340, area = 594,   storage = 29638,   discharge = 50000  ];
+	rating[3]  = [ elevation = 440, area = 1553,  storage = 120000,  discharge = 50000  ];
+	rating[4]  = [ elevation = 570, area = 3950,  storage = 480000,  discharge = 50000  ];
+	rating[5]  = [ elevation = 639, area = 5810,  storage = 846367,  discharge = 50000  ];
+	rating[6]  = [ elevation = 640, area = 5838,  storage = 852192,  discharge = 50000  ];
+	rating[7]  = [ elevation = 668, area = 6550,  storage = 1008000, discharge = 207000 ];
+	rating[8]  = [ elevation = 750, area = 9340,  storage = 1680000, discharge = 210000 ];
+	rating[9]  = [ elevation = 819, area = 11851, storage = 2352000, discharge = 214000 ];
+	rating[10] = [ elevation = 901, area = 15855, storage = 3553405, discharge = 280000 ];
+	rating[11] = [ elevation = 920, area = 16899, storage = 3864497, discharge = 750000 ];
+
+	zone[1] = [ weight = 2000,   limit = 29.6                                              ];
+	zone[2] = [ weight = 2000,   limit = 852                                               ];
+	zone[3] = [ weight = 2000,   limit = min( 2470., S_OrovlLevel4())                      ];
+	zone[4] = [ weight = 2000,   limit = S_OrovlLevel4()                                   ];
+	zone[5] = [ weight = 2000,   limit = timeseries ( kind="storage-level", unit="taf" );  ];
+	zone[6] = [ weight = 2000,   limit = 3538            ];
+	
+	zone {		
+		
+		z1 { weight = 2000;        lower = 0 ;     upper = 29.6;                }
+		z2 { weight = weight_2;    lower = 29.6 ;  upper = 852;                 }
+		z3 { weight = 88*taf_cfs;  limit = min ( max (OroRuleCalc,S_OrovlLevel2),S_OrovlLevel4); }
+		z4 { weight = -20000;      limit = S_OrovlLevel4() ; }
+		z5 { weight = -20000;      limit = timeseries ( name, "storage-level", "taf" ); }
+		z6 { weight = -20000;      limit = 3538; }
+	}
+	
+	
+	connection { 
+		
+		inflow    inflow_1;
+		inflow	  inflow_2;
+		outflow   release_1;   
+		inoutflow inf_1;  
+	}
+	
+
+
+	function float OroSepTarg () {
+ 
+		if ( wateryear==1922 & month<=dec ) {
+    
+			return min (1000. + 0.5* max (S_Orovl.storage(prevSep) - 1000. ,0.), zone[5].limit ) 
+		}
+		else {	
+	
+			return min (1000. + 0.5 * (swp_allocation-tableA_loss)/SWP_TableA
+                          * max (S_Orovl.storage(prevSep) - 1000. ,0.), zone[5].limit )				  
+		}				 
+	
+	}
+
+
+	function float OroNextMonTarg() {
+          
+		  float out;
+		  
+		  out = min( OroSepTarg() + (max(S_Orovl.storage(-1, "month")-OroSepTarg(),0.)/(Sep-month+1.))*(Sep-month), zone[5].limit);
+		  
+		  return out;	  
+	}	
+
+	function float S_OrovlLevel4() {
+		
+		if ( month >= jun ) { return OroNextMonTarg; }
+		else                { return zone[5].limit; }
+	}
+	
+	function float S_OrovlLevel3() {
+		
+		return min( 2470., S_OrovlLevel4()); 
+	}
+	
+
+	
+
+	
+
+	
+			
+}
+

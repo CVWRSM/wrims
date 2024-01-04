@@ -1,0 +1,26 @@
+! R.Wilbur 3/24/04
+/*
+
+
+*/
+
+!*************************************************************************************************************
+! MODIFIED 40-30-30 index so that values are updated in Jan.
+! Done so that days meeting RSL standard begin in Jan for the upcoming water year type.
+! Remove and change variable mod_wyt_SAC ==> wyt_SAC in all table lookups if no longer
+! meeting standard on p. 16 WQCP.
+define mod_wyt_SAC {
+    case JAN {
+         condition  month == JAN
+         select     SACindex 
+         from       wytypes 
+         where      wateryear=wateryear}
+    case rest {
+         condition  always
+         value      wyt_SAC}
+}
+
+! the D1485 water year type index for Fish and Wildlife standards, for use in ANN
+define wyt_ann {value mod_wyt_SAC}
+
+!*************************************************************************************************************

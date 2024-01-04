@@ -1,0 +1,73 @@
+! R.Wilbur & S. Wu 5/10/05
+
+!****************************************************************************************
+
+! maximum export given the sacramento river flow
+
+define CO_MaxExport {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setCOMax {
+  lhs CO_MaxExport
+  case NoSalinityControlPossible{
+    condition abs(CO_m_sv) <= 0.001 .and. int(CO_b_sv) == 0
+    rhs ExportCap}
+  case NegSlope {
+    condition CO_m_sv <= 0.0
+    rhs 999999.}
+  case HighCost{
+    condition CO_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap}
+  case NegCarriage{
+    condition CO_m_sv >= 1.0
+    rhs 999999.}
+  case Normal {
+    condition always
+    rhs CO_m_sv*c400_ANN + CO_b_sv}
+}
+
+!****************************************************************************************
+
+! required delta outflow given exports
+
+define CO_MRDO {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setCOmrdo {
+  lhs CO_MRDO
+  case NoSalinityControlPossible{
+    condition abs(CO_m_sv) <= 0.001 .and. int(CO_b_sv) == 0
+    rhs 0.}
+  case NegSlope {
+    condition CO_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition CO_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  case NegCarriage{
+    condition CO_m_sv >= 1.0
+    rhs 0.}
+  case Normal {
+    condition always
+    rhs ((1-CO_m_sv)/CO_m_sv)*D409 - CO_b_sv/CO_m_sv + C644 + C508 + C504 + C157 + I406 - D408 - D416 + D446A - C402B - net_delta_cuDV}
+}
+
+!****************************************************************************************
+
+! required sac flow given exports
+
+define CO_ReqSac {lower unbounded upper unbounded kind 'FLOW' units 'cfs'}
+goal set_CO_ReqSac {
+  lhs CO_ReqSac
+  case NoSalinityControlPossible{
+    condition abs(CO_m_sv) <= 0.001 .and. int(CO_b_sv) == 0
+    rhs 0.}
+  case NegSlope {
+    condition CO_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition CO_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  case NegCarriage{
+    condition abs(CO_m_sv) >= 1.0
+    rhs 0.}
+  case Normal {
+    condition always
+    rhs D409/CO_m_sv - CO_b_sv/CO_m_sv}
+}

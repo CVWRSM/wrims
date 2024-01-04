@@ -1,0 +1,72 @@
+!Todd Vandegrift TSC USBR 2/24/2011
+
+! Necessary because Tulloch Reservoir is not in CalLite, so must account for inflow there + evaporation
+! Needs to be added to CS2CL -TF
+define AD_STANGDWN {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'} ! Accretions/Depletions at Stanislaus Goodwin Node, = I76 - E76.   
+
+!AD terms are for schematic display purposes only
+
+define AD_MERCED2 {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADMERCED2 { AD_MERCED2 = R_MERCED2A + R_MERCED2B + R_MERCED2C }
+
+define AD_TUOL {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADTUOL { AD_TUOL = R_TUOLA + R_TUOLB + R_TUOLC }
+
+define AD_MDOTA {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADMDOTA { AD_MDOTA = R_MDOTA - L_MDOTA }
+
+define AD_SJRMS {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRMS { AD_SJRMS = R_SJRMS }
+
+define AD_SJRTUOL {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRTUOL { AD_SJRTUOL = R_SJRTUOLWEST + R_SJRTUOLJ + R_SJRTUOLK + R_SJRTUOLL + R_SJRTUOLM }
+
+define AD_SJRMAZE {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRMAZE { AD_SJRMAZE = R_SJRMAZEA + R_SJRMAZEB + R_SJRMAZEC }
+
+define AD_SJRSTAN {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRSTAN { AD_SJRSTAN = R_SJRSTANA + R_SJRSTANB + R_SJRSTANC + R_SJRSTAND }
+
+define AD_SJRVER {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRVER { AD_SJRVER = R_SJRVERA + R_SJRVERWEST }
+
+define AD_CALAV {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADCALAV { AD_CALAV = R_CALAV - L_CALAVA - L_CALAVB }
+
+define AD_SJRMER {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRMER { AD_SJRMer = C619 + R_SJRMer}
+                                
+define AD_SJRCAL {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRCAL { AD_SJRCAL = R_SJRCAL }
+
+!define AD_SJRCalALL {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRCalALL { AD_SJRCalALL = C_CALAV + AD_SJRCAL - D_CALAV }
+
+define AD_STANRIPN {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSTANRIPN { AD_STANRIPN = R_STANRIPNA + R_STANRIPNB + R_STANRIPNC }
+                                 
+define AD_CHOW2 {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADCHOW2 { AD_CHOW2 = R_CHOWR2A + R_CHOWR2B - L_CHOWR2 }
+
+define AD_CHOWBYP {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADCHOWBYP { AD_CHOWBYP = R_CHOWBYP - L_CHOWBYP }
+
+define AD_CHOWR1 {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADCHOWR1 { AD_CHOWR1 = - L_CHOWR1 }
+
+define AD_GRAVF {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADGRAVF { AD_GRAVF = - L_GRAVF }
+
+define AD_SJRCB {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRCB { AD_SJRCB = - L_SJRCB }
+
+define AD_SJRSACK {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRSACK { AD_SJRSACK = - L_SJRREST }
+
+define AD_SJRSAND {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADSJRSAND { AD_SJRSAND = - L_SJRSAND }
+
+define AD_FRSNO {upper unbounded lower unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setADFRSNO { AD_FRSNO = D590F - L_FRSNO }
+
+

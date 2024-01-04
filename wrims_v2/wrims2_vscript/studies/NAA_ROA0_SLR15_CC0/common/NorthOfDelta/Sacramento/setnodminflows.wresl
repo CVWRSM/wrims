@@ -1,0 +1,12 @@
+! This file sets the minimum required flows at Below Keswick, Nimbus and Whiskeytown Dams
+! Sean Sou 10/3/01
+
+goal meet_clearmin {C3_mif < clear_min}       ! Minimum required flows in Clear Creek below Whiskeytown Dam
+goal meet_min_C9 { C9_mif < /*max(nimbus_hist_std,*/ minflowFMPAmer } !) } ! Minimum required flows in American River below Nimbus Dam
+goal meetC5min {C5_MIF < max(effective_C5min, ERP_C5MIF)}     ! Minimum required flows in Sacramento River below Keswick Dam
+
+!
+! minimum flow below GCID and at Freeport
+! used for NODOS
+goal set_C114_NCP {C114_MIF < max(HC_min,ERP_C114MIF)}
+goal set_C169_MIF {C169_MIF < ERP_C169MIF}

@@ -1,0 +1,15 @@
+/*************************************
+NimbusPower.wresl
+ 
+Tom FitzHugh BOR 4/7/2010
+
+Computes water used for power at Nimbus.  EXC1 is flow above minimum instream flow 
+used for power generation.  EXC2 is excess flow above powerplant capacity.
+*************************************/
+
+define C_Nimbus_EXC1 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+define C_Nimbus_EXC2 {std kind 'FLOW-SPILL-POWER' units 'CFS'}
+goal C_Nimbus_EXC_total {C_Nimbus_EXC=C_Nimbus_EXC1+C_Nimbus_EXC2}
+
+define C_Nimbus_POW {lower 0 upper 5000 kind 'FLOW-POWER' units 'CFS'}
+goal C_Nimbus_POW_total {C_Nimbus_POW=C_Nimbus_MIF+C_Nimbus_EXC1}

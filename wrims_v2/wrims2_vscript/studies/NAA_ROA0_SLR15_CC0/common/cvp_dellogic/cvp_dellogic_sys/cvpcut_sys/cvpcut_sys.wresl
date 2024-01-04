@@ -1,0 +1,147 @@
+! Rich Juricich & Ajay Dev 10/19/1999
+! Revised by USBR-SRS 12/08/99
+
+!  This file calculates the total cut back in CVP NOD Deliveries based on CVP Delivery Logic
+
+!***************** DEFINES ****************************************************
+
+! deltar_cvp    Forecast CVP delivery - Input from CVP delivery logic
+define cut_delivery_sys {value  max(min(acvpdem_dr_sys, acvpdem_tot_sys) - deltar_cvp_sys, 0.0) }  !Total required cut in deliveries
+
+! Delivery Reduction Percent by Tier
+define tier0cut_sys {
+
+       case Critical {
+            condition wyt_SHASTA_CVP == 4
+            value     0.25}
+       case rest {
+            condition always
+            value     0.00}
+       }
+define tier0excut_sys {
+
+       case Critical {
+            condition wyt_SHASTA_CVP == 4
+            value     0.23}                   !Exchange goes to 77% not 75%
+       case rest {
+            condition always
+            value     0.00}
+       }
+define tier1cut_sys {value 0.25} !1st Tier Reduced 1st
+define tier2cut_sys {value 0.25} !2nd Tier Reduced Next
+define tier3cut_sys {value 0.25} !3rd Tier Reduced Next
+define tier4cut_sys {value 0.25} !4th Tier Reduced Next
+define tier5cut_sys {value 0.50} !5th Tier Reduced Next
+define tier6cut_sys {
+
+       case Critical {
+            condition wyt_SHASTA_CVP == 4
+            value     0.75}
+       case rest {
+            condition always
+            value     1.00}
+       }
+
+!************ Tier 0 **************
+!*  takes SC, EX, RF down to 75%  *         No intermediate steps here.  If the ShastaIndex is critical, then
+!*  when ShastaIndex Critical     *         Settlement Contracts and Exchange Contracts and Refuge Contracts are cut from 100% to 75%.
+!**********************************
+define cut0_sys     { value tier0cut_sys*acvpdem_psc_sys + tier0excut_sys*acvpdem_pex_sys + tier0cut_sys*acvpdem_prf_sys }
+define percut0_sys  { value tier0cut_sys }
+define cut_psc0_sys { value tier0cut_sys*acvpdem_psc_sys }
+define cut_pex0_sys { value tier0excut_sys*acvpdem_pex_sys }
+define cut_prf0_sys { value tier0cut_sys*acvpdem_prf_sys }
+
+!*********** Tier 1 ************
+!*    takes AG down to 75%     *
+!*******************************
+define cut1_sys     { value max(0.0, cut_delivery_sys - cut0_sys) }
+define percut1_sys  { value min(tier1cut_sys, cut1_sys/acvpdem_pag_sys) }
+define cut_pag1_sys { value percut1_sys*acvpdem_pag_sys }
+
+!*********** Tier 2 ************
+!*  takes AG to 50%; MI to 75% *
+!*******************************
+define cut2_sys     { value max(0.0, cut1_sys - cut_pag1_sys) }
+define percut2_sys  { value min(tier2cut_sys, (cut2_sys/(acvpdem_pag_sys + acvpdem_pmi_sys))) }
+define cut_pag2_sys { value percut2_sys*acvpdem_pag_sys }
+define cut_pmi2_sys { value percut2_sys*acvpdem_pmi_sys }
+
+!*********** Tier 3 ***********
+!  takes AG to 25%            *
+!******************************
+define cut3_sys     { value max(0.0, cut2_sys - cut_pag2_sys - cut_pmi2_sys) }
+define percut3_sys  { value min(tier3cut_sys, (cut3_sys/acvpdem_pag_sys)) }
+define cut_pag3_sys { value percut3_sys*acvpdem_pag_sys }
+
+!*********** Tier 4 *********
+!  takes AG to 0; MI to 50% *
+!****************************
+define cut4_sys     { value max(0.0, cut3_sys - cut_pag3_sys) }
+define percut4_sys  { value min(tier4cut_sys, (cut4_sys/(acvpdem_pag_sys + acvpdem_pmi_sys))) }
+define cut_pag4_sys { value percut4_sys*acvpdem_pag_sys }
+define cut_pmi4_sys { value percut4_sys*acvpdem_pmi_sys }
+
+!*********** Tier 5 *********
+!  takes MI to 0%          *
+!****************************
+!define cut5_sys     { value max(0.0, cut4_sys - cut_pag4_sys - cut_pmi4_sys) }
+!define percut5_sys  { value min(tier5cut_sys, (cut5_sys/acvpdem_pmi_sys)) }
+!define cut_pmi5_sys { value percut5_sys*acvpdem_pmi_sys }
+
+!*********** Tier 6 *********
+! takes SC, EX, RF to 0%    *
+!****************************
+!define cut6_sys     { value max(0.0, cut5_sys - cut_pmi5_sys) }
+!define percut6_sys  { value min(tier6cut_sys, (cut6_sys/(acvpdem_psc_sys + acvpdem_pex_sys + acvpdem_prf_sys))) }
+!define cut_psc6_sys { value percut6_sys*acvpdem_psc_sys }
+!define cut_pex6_sys { value percut6_sys*acvpdem_pex_sys }
+!define cut_prf6_sys { value percut6_sys*acvpdem_prf_sys }
+
+
+!**********  Totals  ********
+define cut_pag_sys { value cut_pag1_sys + cut_pag2_sys + cut_pag3_sys + cut_pag4_sys}
+define cut_pmi_sys { value cut_pmi2_sys + cut_pmi4_sys /*+ cut_pmi5_sys*/}
+define cut_pex_sys { value cut_pex0_sys /*+ cut_pex6_sys*/}
+define cut_psc_sys { value cut_psc0_sys /*+ cut_psc6_sys*/}
+define cut_prf_sys { value cut_prf0_sys /*+ cut_prf6_sys*/}
+
+
+
+!********** Allocation Percentages *********
+define alc_ag_sys { alias 1 - percut1_sys - percut2_sys - percut3_sys - percut4_sys kind 'percent-allocation' units 'none'}
+define alc_mi_sys { alias 1 - percut2_sys - percut4_sys /*- percut5_sys*/ kind 'percent-allocation' units 'none'}
+define alc_ex_sys { alias 1 - percut0_sys /*- percut6_sys*/ kind 'percent-allocation' units 'none'}
+define alc_sc_sys { alias 1 - percut0_sys /*- percut6_sys*/ kind 'percent-allocation' units 'none'}
+define alc_rf_sys { alias 1 - percut0_sys /*- percut6_sys*/ kind 'percent-allocation' units 'none'}
+
+
+
+!********** Percent Delivery (Should equal the allocation) ****************
+! Calculate percent of full demand to deliver
+define perdel_cvpag_sys { value 1 - cut_pag_sys/acvpdem_pag_sys }   !Percent of full delivery for AG
+define perdel_cvpmi_sys { value 1 - cut_pmi_sys/acvpdem_pmi_sys }   !Percent of full delivery for MI
+define perdel_cvpex_sys { value 1 - cut_pex_sys/acvpdem_pex_sys }   !Percent of full delivery for EX
+define perdel_cvpsc_sys { value 1 - cut_psc_sys/acvpdem_psc_sys }   !Percent of full delivery for SC
+define perdel_cvprf_sys { value 1 - cut_prf_sys/acvpdem_prf_sys }   !Percent of full delivery for RF
+
+! Calculate current ANNUAL delivery based on perdel
+define acvpdel_pag_sys { value perdel_cvpag_sys * acvpdem_pag_sys}
+define acvpdel_pmi_sys { value perdel_cvpmi_sys * acvpdem_pmi_sys}
+define acvpdel_pex_sys { value perdel_cvpex_sys * acvpdem_pex_sys}
+define acvpdel_psc_sys { value perdel_cvpsc_sys * acvpdem_psc_sys}
+define acvpdel_prf_sys { value perdel_cvprf_sys * acvpdem_prf_sys}
+
+! Final Percent Delivery for output
+define perdv_cvpag_sys { alias  perdel_cvpag_sys kind 'percent-delivery' units 'none'}
+define perdv_cvpmi_sys { alias  perdel_cvpmi_sys kind 'percent-delivery' units 'none'}
+define perdv_cvpex_sys { alias  perdel_cvpex_sys kind 'percent-delivery' units 'none'}
+define perdv_cvpsc_sys { alias  perdel_cvpsc_sys kind 'percent-delivery' units 'none'}
+define perdv_cvprf_sys { alias  perdel_cvprf_sys kind 'percent-delivery' units 'none'}
+
+
+define e_percut0_sys {alias percut0_sys units 'none'}
+!define e_percut6_sys {alias percut6_sys units 'none'}
+define e_cut_prf_sys {alias cut_prf_sys units 'none'}
+define e_acvpdem_prf {alias acvpdem_prf_sys units 'none'}
+

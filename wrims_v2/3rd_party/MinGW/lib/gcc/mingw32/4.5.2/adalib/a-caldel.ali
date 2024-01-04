@@ -1,0 +1,86 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnvnnvnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnn
+
+U ada.calendar.delays%b	a-caldel.adb		f2483fae OL PK
+W ada.calendar%s	a-calend.adb		a-calend.ali
+W system%s		system.ads		system.ali
+W system.os_primitives%s  s-osprim.adb		s-osprim.ali
+W system.parameters%s	s-parame.adb		s-parame.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.traces%s	s-traces.adb		s-traces.ali
+
+U ada.calendar.delays%s	a-caldel.ads		dc2d9adb EE NE OL PK
+W ada.calendar%s	a-calend.adb		a-calend.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-calend.ads		20090409150020 19486c30
+D a-caldel.ads		20090409150020 c565f6eb
+D a-caldel.adb		20080408064618 f2d223d6
+D a-except.ads		20090727140100 34786013
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-osprim.ads		20090409150020 48da3bcd
+D s-parame.ads		20091130110856 6cdeed25
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-traent.ads		20090417130712 a66ef260
+D s-traces.ads		20090409150020 801ef593
+X 1 ada.ads
+16K9*Ada 19e8 3|37r9 53r5 4|40r14 132r5
+X 2 a-calend.ads
+36K13*Calendar 1|16k9 2|358e17 3|37r13 53r9 4|40r18 132r9
+38I9*Time 3|45r31 50r30 4|85r31 113r30
+290K12 Delay_Operations 296e24 4|119r14
+292V16*To_Duration{duration} 4|119r31
+X 3 a-caldel.ads
+37K22*Delays 2|36k13 3|53l18 53e24 4|40b27 132l18 132t24
+39U14*Delay_For 39>25 4|67b14 79l8 79t17
+39o25 D{duration} 4|67b25 70r36 73r42 77r36
+45U14*Delay_Until 45>27 4|85b14 98l8 98t19
+45i27 T{2|38I9} 4|85b27 86r45
+50V13*To_Duration{duration} 50>26 4|86r32 113b13 120l8 120t19
+50i26 T{2|38I9} 4|113b26 119r44
+X 4 a-caldel.adb
+42K12 OSP=42:31 73r45 74r28 93r31 106r7
+43K12 SSL=43:31 45r13 73r7 93r7 128r7 129r7
+60U14 Timed_Delay_NT 60>30 60>47 104b14 107l8 107t22 129r26
+60o30 Time{duration} 104b30 106r24
+60i47 Mode{integer} 104b47 106r30
+86o7 D{duration} 90r37 93r28 96r36
+X 7 system.ads
+37K9*System 4|35r6 36r6 37r6 38r6 42r24 43r24 47r8 69r10 76r10 89r10 95r10
+. 7|197e11
+X 9 s-osprim.ads
+40K16*OS_Primitives 4|35w13 42r31 9|91e25
+43o4*Max_Sensible_Delay{duration} 4|73r49
+72N4*Relative 4|74r32
+73N4*Absolute_Calendar 4|93r35
+79U14*Timed_Delay 4|106r11
+X 10 s-parame.ads
+51K16*Parameters 4|38w13 69r17 76r17 89r17 95r17 10|204e22
+184b4*Runtime_Traces{boolean} 4|69r28 76r28 89r28 95r28
+X 11 s-soflin.ads
+45K16*Soft_Links 4|36w13 43r31 11|397e22
+91P9*Timed_Delay_Call 4|45r17
+276p4*Timed_Delay{91P9} 4|73r11 93r11 128r11 129m11
+X 17 s-traces.ads
+55K16*Traces 4|37w13 47r15 17|114e18
+68n7*M_Delay{58E9} 4|77r27 96r27
+82n7*W_Delay{58E9} 4|70r27
+83n7*WU_Delay{58E9} 4|90r27
+112U14*Send_Trace_Info 4|70r10 77r10 90r10 96r10
+

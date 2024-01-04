@@ -1,0 +1,240 @@
+! LCPSIM_Adjustments.wresl
+
+!******************************************************************************
+! Get SWP Annual totals
+
+! North Bay Annual Demand
+!define dem_D403B_PMI {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=27,month=month}
+!define dem_D403C_PMI {select demand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=36,month=month}
+!define ann_NB_PMI {value ann_D403B_PMI + ann_D403C_PMI}
+
+! South Bay Annual Demand
+! SWP
+define ann_D810_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=1, month=4}
+define ann_D813_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=2, month=4}
+define ann_D814_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=3, month=4}
+define ann_D815_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=35,month=4}
+define ann_SB_PMI_SWP {value ann_D810_PMI + ann_D813_PMI
+                           + ann_D814_PMI + ann_D815_PMI}
+! CVP
+define ann_D711_PMI {sum(i=1-month,12-month,1) dem_D711_PMI(i)}
+define ann_SB_PMI_CVP {value ann_D711_PMI}    !At present does not include D408/D420 (CCWD)
+
+
+! South Coast Annual Demand
+define ann_D896_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=6, month=4}
+define ann_D27_PMI   {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=21,month=4}
+define ann_D885_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=23,month=4}
+define ann_D895_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=24,month=4}
+define ann_D899_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=25,month=4}
+define ann_D886_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=30,month=4}
+define ann_D887_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=31,month=4}
+define ann_D888_PMI  {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=32,month=4}
+define ann_D28_PMI   {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=38,month=4}
+define ann_D29_PMI   {select remainDemand from swp_3pattern_demands given percent=swp_demprofile use linear where contractor=39,month=4}
+define ann_SC_PMI {value ann_D896_PMI + ann_D27_PMI
+                       + ann_D885_PMI + ann_D895_PMI + ann_D899_PMI
+                       + ann_D886_PMI + ann_D887_PMI + ann_D888_PMI
+                       + ann_D28_PMI + ann_D29_PMI}
+
+! Get SWP Monthly totals/patterns
+
+! Total North Bay Demand
+!define dem_NB_PMI {value dem_D403B_PMI + dem_D403C_PMI}
+!define NB_ADJ_MonFact  {value dem_NB_PMI/ann_NB_PMI}
+
+! Total South Bay Demand
+! SWP
+define dem_SB_PMI_SWP   {value dem_D810_PMI + dem_D813_PMI
+                           + dem_D814_PMI + dem_D815_PMI}
+define SB_ADJSWP_MonFac {value dem_SB_PMI_SWP/ann_SB_PMI_SWP}
+! CVP
+define dem_SB_PMI_CVP   {value dem_D711_PMI}    !At present does not include D408/D420 (CCWD)
+define SB_ADJCVP_MonFac {value dem_SB_PMI_CVP/ann_SB_PMI_CVP}
+
+! Total South Coast Demand
+define dem_SC_PMI {value dem_D896_PMI + dem_D27_PMI
+                       + dem_D885_PMI + dem_D895_PMI + dem_D899_PMI
+                       + dem_D886_PMI + dem_D887_PMI + dem_D888_PMI
+                       + dem_D28_PMI + dem_D29_PMI}
+define SC_ADJ_MonFact  {value dem_SC_PMI/ann_SC_PMI}
+
+!******************************************************************************
+!Undelivered Allocations in CALSIM
+!define NB_DEL_ADJ     {value NB_DEL_ADJ_ANN * DEL_ADJ_NBA_Fact * NB_ADJ_MonFact   * taf_cfs}
+define SB_DEL_ADJ_SWP {value SB_DEL_ADJ_ANN * DEL_ADJ_SBA_Fact * SB_ADJSWP_MonFac * taf_cfs}
+define SB_DEL_ADJ_CVP {value SB_DEL_ADJ_ANN * DEL_ADJ_SFU_Fact * SB_ADJCVP_MonFac * taf_cfs}
+define SC_DEL_ADJ     {value SC_DEL_ADJ_ANN * DEL_ADJ_CA_Fact  * SC_ADJ_MonFact   * taf_cfs}
+
+!Groundwater Storage Adjustments in CALSIM
+!define NB_GW_ADJ     {value NB_GW_ADJ_ANN * GW_ADJ_NBA_Fact * NB_ADJ_MonFact   * taf_cfs}
+define SB_GW_ADJ_SWP {value SB_GW_ADJ_ANN * GW_ADJ_SBA_Fact * SB_ADJSWP_MonFac * taf_cfs}
+define SB_GW_ADJ_CVP {value SB_GW_ADJ_ANN * GW_ADJ_SFU_Fact * SB_ADJSWP_MonFac * taf_cfs}
+define SC_GW_ADJ     {value SC_GW_ADJ_ANN * GW_ADJ_CA_Fact  * SC_ADJ_MonFact   * taf_cfs}
+
+!Flow adjustments
+! SB_ADJ and SC_ADJ do not reflect modifications in INT and WTS
+! INT and WTS are handled separately
+/*define NB_ADJ {value NB_DEL_ADJ
+                     - NB_GW_ADJ} !North Bay Aqueduct adjustment
+define NB_ADJ1  {alias NB_ADJ kind 'Regional-Adjust-LCPSIM' units 'cfs'}
+*/
+define SB_ADJ_SWP {value SB_DEL_ADJ_SWP    !South Bay adjustment for SWP
+                       - SB_GW_ADJ_SWP}
+define SB_ADJ_SWP1 {alias SB_ADJ_SWP kind 'Regional-Adjust-LCPSIM' units 'cfs'}
+
+define SB_ADJ_CVP {value SB_DEL_ADJ_CVP}   !South Bay adjustment for CVP
+             !  - SB_GW_ADJ_CVP}   --- ***** this is not implemented yet
+define SB_ADJ_CVP1 {alias SB_ADJ_CVP kind 'Regional-Adjust-LCPSIM' units 'cfs'}
+
+define SC_ADJ {value SC_DEL_ADJ     !South Coast Adjustment
+                   - SB_DEL_ADJ_SWP !***** assumes SB turnback (SBA % of SB DEL_ADJ) goes to SC *****
+                   - SC_GW_ADJ}
+define SC_ADJ1  {alias SC_ADJ kind 'Regional-Adjust-LCPSIM' units 'cfs'}
+
+!******************************************************************************
+!LCPSIM Ccnnectivity
+
+!North Bay Balance - **** not implemented at this time ****
+
+!******************************************************************************
+!South Bay Balance
+! Distribute adjustment to South Bay diverters according to portion of total demand
+goal setD810_LCP {D810_LCP = SB_ADJ_SWP*dem_D810_PMI/dem_SB_PMI_SWP + D810_LCP_Err} !LCPSIM Adjustment to ACFC
+goal setD810_LCP_Err {lhs D810_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD813_LCP {D813_LCP = SB_ADJ_SWP*dem_D813_PMI/dem_SB_PMI_SWP + D813_LCP_Err} !LCPSIM Adjustment to ACFC
+goal setD813_LCP_Err {lhs D813_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD814_LCP {D814_LCP = SB_ADJ_SWP*dem_D814_PMI/dem_SB_PMI_SWP + D814_LCP_Err} !LCPSIM Adjustment to ACWD
+goal setD814_LCP_Err {lhs D814_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD815_LCP {D815_LCP = SB_ADJ_SWP*dem_D815_PMI/dem_SB_PMI_SWP + D815_LCP_Err} !LCPSIM Adjustment to SWP SCV
+goal setD815_LCP_Err {lhs D815_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD711_LCP {D711_LCP = SB_ADJ_CVP*dem_D711_PMI/dem_SB_PMI_CVP + D711_LCP_Err} !LCPSIM Adjustment to SWP SCV
+goal setD711_LCP_Err {lhs D711_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+!******************************************************************************
+!South Coast Balance
+
+! Distribute adjustment to South Coast diverters according to portion of total demand
+goal setD896_LCP {D896_LCP = SC_ADJ*dem_D896_PMI/dem_SC_PMI + D896_LCP_Err} !LCPSIM Adjustment to CLWA2
+goal setD896_LCP_Err {lhs D896_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD27_LCP  {D27_LCP = SC_ADJ*dem_D27_PMI/dem_SC_PMI + D27_LCP_Err} !LCPSIM Adjustment to MWD
+goal setD27_LCP_Err {lhs D27_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD885_LCP {D885_LCP = SC_ADJ*dem_D885_PMI/dem_SC_PMI + D885_LCP_Err} !LCPSIM Adjustment to MWD
+goal setD885_LCP_Err {lhs D885_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD895_LCP {D895_LCP = SC_ADJ*dem_D895_PMI/dem_SC_PMI + D895_LCP_Err} !LCPSIM Adjustment to MWD
+goal setD895_LCP_Err {lhs D895_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD899_LCP {D899_LCP = SC_ADJ*dem_D899_PMI/dem_SC_PMI + D899_LCP_Err} !LCPSIM Adjustment to MWD
+goal setD899_LCP_Err {lhs D899_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD886_LCP {D886_LCP = SC_ADJ*dem_D886_PMI/dem_SC_PMI + D886_LCP_Err} !LCPSIM Adjustment to SBV
+goal setD886_LCP_Err {lhs D886_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD887_LCP {D887_LCP = SC_ADJ*dem_D887_PMI/dem_SC_PMI + D887_LCP_Err} !LCPSIM Adjustment to SGV
+goal setD887_LCP_Err {lhs D887_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD888_LCP {D888_LCP = SC_ADJ*dem_D888_PMI/dem_SC_PMI + D888_LCP_Err} !LCPSIM Adjustment to SGP
+goal setD888_LCP_Err {lhs D888_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD28_LCP  {D28_LCP = SC_ADJ*dem_D28_PMI/dem_SC_PMI + D28_LCP_Err} !LCPSIM Adjustment to VC
+goal setD28_LCP_Err {lhs D28_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+goal setD29_LCP  {D29_LCP = SC_ADJ*dem_D29_PMI/dem_SC_PMI + D29_LCP_Err}  !LCPSIM Adjustment to VC
+goal setD29_LCP_Err {lhs D29_LCP_Err rhs 0. lhs<rhs penalty 999 lhs>rhs penalty 999}
+
+!******************************************************************************
+!LCPSIM Adjustment to SJ Groundwater Storage
+!goal setD852_NB_LCP {D852_NB_LCP = NB_GW_ADJ + D852_NB_LCP_Err}
+!goal setD852_NB_LCP_Err {lhs D852_NB_LCP_Err rhs 0. lhs<rhs penalty 9999 lhs>rhs penalty 9999}
+
+goal setD852_SB_LCP {D852_SB_LCP = SB_GW_ADJ_SWP + D852_SB_LCP_Err}
+goal setD852_SB_LCP_Err {lhs D852_SB_LCP_Err rhs 0. lhs<rhs penalty 9999 lhs>rhs penalty 9999}
+
+goal setD852_SC_LCP {D852_SC_LCP = SC_GW_ADJ + D852_SC_LCP_Err}
+goal setD852_SC_LCP_Err {lhs D852_SC_LCP_Err rhs 0. lhs<rhs penalty 9999 lhs>rhs penalty 9999}
+
+goal setD852_LCP {D852_LCP = /*D852_NB_LCP +*/ D852_SB_LCP + D852_SC_LCP}
+
+!******************************************************************************
+! NB Error Continuity - **** not implemented at this time ****
+
+! SB Error Continuity - this makes sure that no residual water balance problem hits the system
+
+goal setSB_LCP_Err {
+  lhs D810_LCP_Err + D813_LCP_Err + D814_LCP_Err + D815_LCP_Err
+  rhs 0.
+  lhs<rhs penalty 9999
+  lhs>rhs penalty 9999
+}
+goal setSB_LCP_CVP_Err {
+  lhs D711_LCP_Err
+  rhs 0.
+  lhs<rhs penalty 9999
+  lhs>rhs penalty 9999
+}
+goal setContinuitySB_LCP {D810_LCP_Err    + D813_LCP_Err    + D814_LCP_Err   + D815_LCP_Err
+                        + D852_SB_LCP_Err + D711_LCP_Err   = 0.}
+
+! SC Error Continuity - this makes sure that no residual water balance problem hits the system
+
+goal setSC_LCP_Err {
+  lhs D896_LCP_Err + D27_LCP_Err  + D885_LCP_Err + D895_LCP_Err
+    + D899_LCP_Err + D886_LCP_Err + D887_LCP_Err + D888_LCP_Err
+    + D28_LCP_Err  + D29_LCP_Err
+  rhs 0.
+  lhs<rhs penalty 9999
+  lhs>rhs penalty 9999
+}
+goal setContinuitySC_LCP {D896_LCP_Err    + D27_LCP_Err     + D885_LCP_Err   + D895_LCP_Err
+                        + D899_LCP_Err    + D886_LCP_Err    + D887_LCP_Err   + D888_LCP_Err
+                        + D28_LCP_Err     + D29_LCP_Err
+                        + D852_SC_LCP_Err = 0.}
+
+!******************************************************************************
+! Remove Art 21 deliveries from years that have a negative INT_ADJ
+!goal setNB_INT_ADJ {NB_INT_ADJ = taf_cfs*NB_INT_ADJ_ANN*NB_ADJ_MonFact}
+
+/*
+goal limit_NB_PIN {
+    lhs  D821_PIN
+    case zero {
+        condition NB_INT_ADJ_ANN < -1.
+        rhs           0. }
+}
+*/
+goal limit_SB_PIN {
+    lhs  D810_PIN + D814_PIN + D815_PIN
+    case zero {
+        condition SB_INT_ADJ_ANN < -1.
+        rhs           0. }
+}
+goal limit_SC_PIN {
+    lhs  D27_PIN + D885_PIN + D895_PIN + D899_PIN
+    case zero {
+        condition SC_INT_ADJ_ANN < -1.
+        rhs           0. }
+}
+
+!******************************************************************************
+! Do some outputs to support the next iteration and show what actually happened
+
+!Groundwater Storage Adjustments in CALSIM
+!define NB_GW_ADJ_DV {alias D852_nB_LCP kind 'Groundwater-Adjust-LCPSIM' units 'cfs'}   !not implemented yet
+define SB_GW_ADJ_DV {alias D852_SB_LCP kind 'Groundwater-Adjust-LCPSIM' units 'cfs'}
+define SC_GW_ADJ_DV {alias D852_SC_LCP kind 'Groundwater-Adjust-LCPSIM' units 'cfs'}
+
+! Region Adjustments
+!define NB_ADJ_DV     {alias D403B_LCP + D403C_LCP kind 'Regional-Adjust-LCPSIM' units 'cfs'}   !not implemented yet
+define SB_ADJ_SWP_DV {alias D810_LCP + D813_LCP
+                          + D814_LCP + D815_LCP kind 'Regional-Adjust-LCPSIM' units 'cfs'}
+define SB_ADJ_CVP_DV {alias D711_LCP            kind 'Regional-Adjust-LCPSIM' units 'cfs'}
+define SC_ADJ_DV     {alias D896_LCP + D27_LCP  + D885_LCP + D895_LCP
+                          + D899_LCP + D886_LCP + D887_LCP + D888_LCP
+                          + D28_LCP  + D29_LCP  kind 'Regional-Adjust-LCPSIM' units 'cfs'}

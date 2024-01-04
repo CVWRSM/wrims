@@ -1,0 +1,24 @@
+! LVE_OpsFixPreJPOD.wresl
+! A. Draper
+! 05/13/2005
+! MWH
+
+
+! CCWD projected diversion of contract supply prior to modeling LVE
+! use pre-defined timeseries
+define CCWD_CS_Init { timeseries kind 'demand' units 'taf' convert 'cfs' }
+
+goal D408_total      { D408 = D408_CS + D408_DS + D408_whlNOD}
+goal zeroD408_DS     { D408_DS = 0.}
+goal zeroD408_whlNOD { D408_whlNOD = 0.}
+
+goal set_D408   { D408 < CCWD_CS_Init }
+
+
+! Zero the delivery from LV complex to SBA/Bethany.  This is determined 
+! in LV-specific cycles and are routed to the main system in the EWA step.  
+! (No need to zero D427_LV as this is not known by the full system.)
+
+goal zeroD426     { D426 = 0.}
+
+goal zeroD805LVE   {D805_LVE = 0.}

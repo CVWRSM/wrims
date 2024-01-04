@@ -1,0 +1,171 @@
+! cycle4out.wresl
+! Edward Chang
+! 12/14/99
+! The following WRESL code is used in cycle 6 to write out intermediate solver computations that are made in the SJR module
+! Revised by C. Hsu, 3/10/03, USBR, for review and documentation project
+!######################################################################################
+
+/* Cycle 4
+The following WRESL code is used in cycle 6 to write out intermediate solver computations
+that are made in the SJR module.  This may be needed to verify output computations that
+are based on cycle2 because the final output is the monthly weighted flows and storage,
+not what may be in each 10, 14, 15, or 16 day period.
+*/
+! Define New Melones flows for cycle 4 output
+define C10cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones mainstem flows for cycle 4 output
+define C10mcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones water quality flows for cycle 4 output
+define C10WQcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones dissolved oxygen flows for cycle 4 output
+define C10DOcycle4 {std kind 'flow-cycle4' units 'cfs' }
+!define C10VAMPcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones VAMP flows for cycle 4 output
+define C520VAMPcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Mendota Pool/Exchange Contractors flows for cycle 4 output
+define D607Bcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Sack Dam/Exchange Contractors flows for cycle 4 output
+define D608Bcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Lower DMC flow for cycle 4 output
+define C708cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Mendota Pool VAMP flow for cycle 4 output
+define C607BVAMPcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Delivery to SSJID area cycle 4 output
+define C522cycle4 {std kind 'flow-cycle4' units 'cfs' }
+!define I522cycle4 {std kind 'flow-cycle4' units 'cfs' }
+!define I563cycle4 {std kind 'flow-cycle4' units 'cfs' }
+!define I543cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! This node doesn't exist any more (CH)
+define C563cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! This node doesn't exist any more (CH)
+define C543cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Merced River below McClure flow for cycle 4 output
+define C20cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define Don Pedro main channel flow for cycle 4 output
+define C81cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define McClure mainstem flow for cycle 4 output
+define C20mcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Don Pedro mainstem flow for cycle 4 output
+define C81mcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define McClure VAMP flow for cycle 4 output
+define C20vampcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Don Pedro VAMP flow for cycle 4 output
+define C81vampcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define flow in Reach C520 for cycle 4 output
+define C520cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define flow in Reach C528 for cycle 4 output
+define C528cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define flow below Vernalis for cycle 4 output
+define C639cycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Set New Melones flow for cycle 4 output (water quality)
+goal outC10cycle4 {C10cycle4 = C10[SJR_WQ2]}
+! New Melones main channel flow for cycle 4 output (water quality) 
+goal outC10mcycle4 {C10Mcycle4 = C10M[SJR_WQ2]} 
+! Set New Melones water quality flow for cycle 4 output 
+goal outC10WQcycle4 {C10WQcycle4 = C10WQ[SJR_WQ2]}
+! Set New Melones DO flow for cycle 4 output (water quality)  
+goal outC10DOcycle4 {C10DOcycle4 = C10DO[SJR_WQ2]}
+!goal outC10VAMPcycle4 {C10VAMPcycle4 = C10VAMP[SJR_WQ2]}
+! New Melones Reach C520 VAMP cycle 4 output (water quality) 
+goal outC520VAMPcycle4 {C520VAMPcycle4 = C520VAMP[SJR_WQ2]}
+! Mendota Pool/Exchange Contractors cycle 4 output (water quality) 
+goal outD607Bcycle4 {D607Bcycle4 = D607B[SJR_WQ2]}
+! Sack Dam/Exchange Contractors cycle 4 output (water quality) 
+goal outD608Bcycle4 {D608Bcycle4 = D608B[SJR_WQ2]}
+! Lower DMC to Mendota Pool cycle 4 output (water quality)
+goal outC708cycle4 {C708cycle4 = C708[SJR_WQ2]}
+! Pool Exchange donation to VAMP cycle 4 output
+goal outC607BVAMPcycle4 {C607BVAMPcycle4 = C607BVAMP[SJR_WQ2]}
+!goal outC522cycle4 {C522cycle4 = C522[SJR_WQ2]}
+!goal outI522cycle4 {I522cycle4 = I522[SJR_WQ2]}
+!goal outI563cycle4 {I563cycle4 = I563[SJR_WQ2]}
+!goal outI543cycle4 {I543cycle4 = I543[SJR_WQ2]}
+!goal outC563cycle4 {C563cycle4 = C563[SJR_WQ2]}
+!goal outC543cycle4 {C543cycle4 = C543[SJR_WQ2]}
+! Merced River cycle 4 output (water quality)
+goal outC20cycle4 {C20cycle4 = C20[SJR_WQ2]}
+! Don Pedro cycle 4 output (water quality)
+goal outC81cycle4 {C81cycle4 = C81[SJR_WQ2]}
+! McClure mainstem cycle 4 output (water quality)
+goal outC20mcycle4 {C20Mcycle4 = C20M[SJR_WQ2]}
+! Don Pedro mainstem cycle 4 output (water quality)
+goal outC81mcycle4 {C81Mcycle4 = C81M[SJR_WQ2]}
+! McClure VAMP cycle 4 output (water quality)
+goal outC20vampcycle4 {C20VAMPcycle4 = C20VAMP[SJR_WQ2]}
+! Don Pedro VAMP cycle 4 output (water quality)
+goal outC81vampcycle4 {C81VAMPcycle4 = C81VAMP[SJR_WQ2]}
+! New Melones Reach C520 cycle 4 output (water quality)
+goal outC520cycle4 {C520cycle4 = C520[SJR_WQ2]}
+! New Melones Reach C528 cycle 4 output (water quality)
+goal outC528cycle4 {C528cycle4 = C528[SJR_WQ2]}
+! SJR below Vernalis cycle 4 output (water quality)
+goal outC639cycle4 {C639cycle4 = C639[SJR_WQ2]}
+! Define New Melones mainstem VAMP cycle 4 flow
+define C10VAMP_Mcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Define New Melones VAMP transfer cycle 4 flow
+define C10VAMP_Tcycle4 {std kind 'flow-cycle4' units 'cfs' }
+! Don Pedro Stanislaus VAMP cycle 4 output
+define C81_stan_vampc4 {std kind 'flow-cycle4' units 'cfs' }
+! New Melones mainstem VAMP cycle 4 output 
+goal outC10VAMP_Mcycle4 {C10VAMP_Mcycle4 = C10VAMP_M[SJR_WQ2]}
+! New Melones transfer VAMP cycle 5 output
+goal outC10VAMP_Tcycle4 {C10VAMP_Tcycle4 = C10VAMP_T[SJR_WQ2]}
+! Don Pedro Stanislaus VAMP cycle 4 output
+goal outC81_stan_vampcycle4 {C81_STAN_VAMPc4 = C81_STAN_VAMP[SJR_WQ2]}
+! Define Westside cycle 4 flow for output
+define Westside_c4 {std kind 'flow-cycle1' units 'cfs' }
+! Set Westside cycle 4 output (water quality)
+goal outWestside_c4 {Westside_c4 = Westside[SJR_WQ2]}
+! Define mainstem cycle 4 flow for output 
+define Mainstem_c4 {lower -99999 upper 99999 kind 'flow-cycle1' units 'cfs' }
+! Mainstem cycle 4 output (water quality) 
+goal outMainstem_c4 {Mainstem_c4 = Mainstem[SJR_WQ2]}
+! Define Stanislaus accretion in cycle 4 for output
+define Accr_c4 {std kind 'flow-cycle1' units 'cfs' }
+! Set Stanislaus accretion in cycle 4 for output
+goal outAccr_c4 {Accr_c4 = Accr[SJR_WQ2]}
+! Define Don Pedro minflow for cycle 4
+define C540_MIFcycle4 {std kind 'flowmin-cycle4' units 'cfs'}
+! Set Don Pedro minflow cycle 4 for output
+goal outC540_MIFc4 {C540_MIFcycle4 = C540_MIF[SJR_WQ2]}
+! Define Tuolumne to Modesto turnout in cycle 4
+define d540b_cycle4 {std kind 'flow-cycle4' units 'cfs'}
+! Tuolumne to Modesto turnout for cycle 4 output
+goal outd540b_c4 {d540b_cycle4 = d540b[SJR_WQ2]}
+
+
+define C18M_c4          {std kind 'flow-cycle4' units 'cfs'}
+define C18A_c4          {std kind 'flow-cycle4' units 'cfs'}
+define C18F_c4          {std kind 'flow-cycle4' units 'cfs'}
+define C603_c4          {std kind 'flow-cycle4' units 'cfs'}
+define C603_loss_c4     {std kind 'flow-cycle4' units 'cfs'}
+define C603_main_c4     {std kind 'flow-cycle4' units 'cfs'}
+define C603_mainsjrrc4  {std kind 'flow-cycle4' units 'cfs'}
+define C603_mainsmflc4  {std kind 'flow-cycle4' units 'cfs'}
+define C605a_c4         {std kind 'flow-cycle4' units 'cfs'}
+define C605a_main_c4    {std kind 'flow-cycle4' units 'cfs'}
+define C605a_flood_c4   {std kind 'flow-cycle4' units 'cfs'}
+define C605b_c4         {std kind 'flow-cycle4' units 'cfs'}
+define C605c_c4         {std kind 'flow-cycle4' units 'cfs'}
+
+goal set_c48M_c4            {C18M_c4 = C18M[SJR_WQ2]}
+goal set_c48A_c4            {C18A_c4 = C18A[SJR_WQ2]}
+goal set_c48F_c4            {C18F_c4 = C18F[SJR_WQ2]}
+goal set_C603_c4            {C603_c4 = C603[SJR_WQ2]}
+goal set_C603_loss_c4       {C603_loss_c4 = C603_loss[SJR_WQ2]}
+goal set_C603_main_c4       {C603_main_c4 = C603_main[SJR_WQ2]}
+goal set_C603_mainsjrrc4    {C603_mainsjrrc4 = C603_mainsjrr[SJR_WQ2]}
+goal set_C603_mainsmflc4    {C603_mainsmflc4 = C603_mainsmfl[SJR_WQ2]}
+goal set_C605a_c4           {C605a_c4 = C605a[SJR_WQ2]}
+goal set_C605a_main_c4      {C605a_main_c4 = C605a_main[SJR_WQ2]}
+goal set_C605a_flood_c4     {C605a_flood_c4 = C605a_flood[SJR_WQ2]}
+goal set_C605b_c4           {C605b_c4 = C605b[SJR_WQ2]}
+goal set_C605c_c4           {C605c_c4 = C605c[SJR_WQ2]}
+
+define C18_c4 {alias C18[SJR_WQ2] kind 'flow-cycle4' units 'cfs'}
+define C607_c4 {alias C607[SJR_WQ2] kind 'flow-cycle4' units 'cfs'}
+define C608_c4 {alias C608[SJR_WQ2] kind 'flow-cycle4' units 'cfs'}
+define C611_c4 {alias C611[SJR_WQ2] kind 'flow-cycle4' units 'cfs'}
+define C540_c4 {alias C540[SJR_WQ2] kind 'flow-cycle4' units 'cfs'}
+
+define I18_rest_bal_c4 {alias I18_rest_bal[SJR_WQ2] kind 'flow-cycle4' units 'cfs'}

@@ -1,0 +1,61 @@
+! stan_FW_min.wresl
+! Edward Chang
+! 12/02/1999
+! Joint Model
+! This code calculates the minimum fish and wildlife flows on the Stanislaus river
+! Revised by R. Field, 01/15/2004, Reclamation, removed stanmin_add from cycle 1
+! it exists in cycle 6 InstreamFromOID.wresl
+! Revised by C. Hsu, 3/10/03, USBR, for review and documentation project
+!#####################################################################################
+/*
+The minimum fish and wildlife flows are determined using the New Melones forecast, NMforeast1.
+This forecast determines an annual delivery requirement from a look-up table.  From the annual
+delivery requirement another look-up table is used to determine the monthly requirements.
+In April and May, a pulse flow requirement is also calculated, but the pulse flow only applies
+during the last 16 days in April and the first 15 days in May.  The goal of the resulting monthly
+requirement is to maintain a minimum fish and wildlife flow downstream of Goodwin Dam.  To ensure
+a minimum flow, it is only necessary to impose this requirement on reaches C520 and C528
+*/
+/*
+Fish & Wildlife flows
+*/
+
+define OIDSSJIDdem{
+         case firstyear {
+           condition month >= oct .and. month <=feb .and. wateryear > 1922
+           value OSSJIDDV(prevMAR)*.959}
+         case others {
+           condition always
+           value OSSJID_yr*.959} ! Mar - Sep OSSJID allocation
+                  }
+
+define SEWDCSJIDdem{value  90.0}
+define ProjWQ{value  70.0}
+define S10EVAP{value  52.0} ! Mar - Sep average evaporation
+
+
+! Stanislaus annual fish flow requirement
+!define stanfish_yr {select stanf from stan_yr given NMF = NMforecast1 use linear }
+define stanfish_yr1 {value (NMforecast1 - OIDSSJIDdem - SEWDCSJIDdem - ProjWQ - S10EVAP - 1700.0)}
+define stanfish_yr  {value min(302.1, max(98.3, stanfish_yr1))}
+
+
+define OSSJID_yrdv {alias OSSJID_yr kind 'allocation' units 'taf'}
+!define sumI10partdv {alias sumI10part units 'taf'}
+define stanfishyrDV {alias stanfish_yr units 'TAF'}
+define NMforecast2DV {alias NMforecast2 units 'TAF'}
+define NMforecast1DV {alias NMforecast1 kind 'forecast' units 'TAF'}
+
+! Alias stanfih_yr for output
+define stanfish_yr2DV {alias stanfish_yr units 'taf'}
+
+! Define minimum flows for Cycle 1 to be imposed on releases from New Melones
+define stanmin {
+    select          stanfish from stan_monfish given  stanyr = stanfish_yr use linear
+    where           month = month }
+define stanmin_dv {alias stanmin kind 'fish-flow-req' units 'cfs'}
+
+! Set limits on minimum fish flows for Reach 520 (Goodwin), CALSIM uses internal units of cfs
+goal setC520cycle1 { C520_mif < stanmin }
+! Set limits on minimum fish flows for Reach 528 (Ripon), CALSIM uses internal units of cfs
+goal setC528cycle1 { C528_mif < stanmin }

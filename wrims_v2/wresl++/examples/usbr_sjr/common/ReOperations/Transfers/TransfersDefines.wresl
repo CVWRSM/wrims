@@ -1,0 +1,368 @@
+! TransfersDefines.wresl
+!
+!******************************************************************************
+! Supply Aquisition in each Region.
+! Yuba River
+define WTS_Yuba_Stg1  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_Yuba_Stg2  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_Yuba  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+! Sac Valley
+define WTS_GW12_Stg1 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA12_Stg1 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_GW12_Stg2 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA12_Stg2 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA12 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+! Sac Valley Other
+define WTS_GW15_Stg1 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA15_Stg1 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_GW15_Stg2 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA15_Stg2 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA15 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+! American R
+define WTS_GW70_Stg1 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA70_Stg1 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_GW70_Stg2 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA70_Stg2 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_GW70 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA70 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+! Feather River
+define WTS_GW69_Stg1 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA69_Stg1 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_GW69_Stg2 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA69_Stg2 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DSA69 {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+! DMC
+define WTS_DMCGW_Stg1  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DMCCI_Stg1  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DMC_Stg1  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DMCGW_Stg2  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DMCCI_Stg2  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DMC_Stg2  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_DMC  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+! CA
+define WTS_CAGW_Stg1  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_CACI_Stg1  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_CA_Stg1  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_CAGW_Stg2  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_CACI_Stg2  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_CA_Stg2  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_CAGW  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_CACI  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+define WTS_CA  {std kind 'TRANSFER-SUPPLY' units 'CFS'}
+
+! Unmet Attempt to Aquire Supply in each Region - nonzero values here are due to inconsistent assumptions abount pattern or quantity
+define WTS_YubaShort {std kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+define WTS_DSA12Short {std kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+define WTS_DSA15Short {std kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+define WTS_DSA70Short {std kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+define WTS_DSA69Short {std kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+define WTS_DMCShort {std kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+define WTS_CAShort {std kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+
+!******************************************************************************
+! Stage 2 Transfers by source regions
+!define NBSJR_TRANS2_DEL {std kind 'Transfer-LCPSIM' units 'cfs'}
+!define NBSAC_TRANS2_DEL {std kind 'Transfer-LCPSIM' units 'cfs'}
+define SBSJR_TRANS2_DEL {std kind 'Transfer-LCPSIM' units 'cfs'}
+define SBSAC_TRANS2_DEL {std kind 'Transfer-LCPSIM' units 'cfs'}
+define SCSJR_TRANS2_DEL {std kind 'Transfer-LCPSIM' units 'cfs'}
+define SCSAC_TRANS2_DEL {std kind 'Transfer-LCPSIM' units 'cfs'}
+! Stage 2 Aquisitions by source regions
+define SJR_TRANS2_ACQ {std kind 'Acquisition-LCPSIM' units 'cfs'}
+define SAC_TRANS2_ACQ {std kind 'Acquisition-LCPSIM' units 'cfs'}
+
+!******************************************************************************
+! Transfer water backed up system storage accounting components
+! Shasta
+! Storage Accounting
+!CB define S4_WTS {std kind 'STORAGE' units 'TAF'}
+define S4_WTS_Stg1 {std kind 'STORAGE' units 'TAF'}
+define S4_WTS_Stg2 {std kind 'STORAGE' units 'TAF'}
+!goal split_S4_WTS { S4_WTS = S4_WTS_Stg1 + S4_WTS_Stg2 }
+! Backedup Supply Accounting
+define I4_WTS {std kind 'FLOW-INFLOW' units 'CFS'}
+define I4_WTS_Stg1 {std kind 'FLOW-INFLOW' units 'CFS'}
+define I4_WTS_Stg2 {std kind 'FLOW-INFLOW' units 'CFS'}
+goal split_I4_WTS { I4_WTS = I4_WTS_Stg1 + I4_WTS_Stg2 }
+! Release Accounting
+define int_C5_WTS_Stg1 {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define int_C5_WTS_Stg2 {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define C5_WTS_Stg1 {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+define C5_WTS_Stg2 {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+goal split_C5_WTS { C5_WTS = C5_WTS_Stg1 + C5_WTS_Stg2 }
+! Spill Accounting
+define SP4_WTS {std kind 'VOLUME-SPILL' UNITS 'TAF'}
+!
+! Oroville
+! Storage Accounting
+!CB define S6_WTS {std kind 'STORAGE' units 'TAF'}
+define S6_WTS_Stg1 {std kind 'STORAGE' units 'TAF'}
+define S6_WTS_Stg2 {std kind 'STORAGE' units 'TAF'}
+!goal split_S6_WTS { S6_WTS = S6_WTS_Stg1 + S6_WTS_Stg2 }
+! Backedup Supply Accounting
+define I6_WTS {std kind 'FLOW-INFLOW' units 'CFS'}
+define I6_WTS_Stg1 {std kind 'FLOW-INFLOW' units 'CFS'}
+define I6_WTS_Stg2 {std kind 'FLOW-INFLOW' units 'CFS'}
+goal split_I6_WTS { I6_WTS = I6_WTS_Stg1 + I6_WTS_Stg2 }
+! Release Accounting
+define int_C6WTS_Stg1 {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define int_C6WTS_Stg2 {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define C6_WTS_Stg1 {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+define C6_WTS_Stg2 {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+goal split_C6_WTS { C6_WTS = C6_WTS_Stg1 + C6_WTS_Stg2 }
+! Spill Accounting
+define SP6_WTS {std kind 'VOLUME-SPILL' UNITS 'TAF'}
+! COA adjustment
+define C203_WTS_Stg1 {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+define C203_WTS_Stg2 {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+goal split_C203_WTS { C203_WTS = C203_WTS_Stg1 + C203_WTS_Stg2 }
+
+!******************************************************************************
+! Buffers for DSA12, DSA15 and DSA69
+! This accounts for inline storage - the idea is that local area operations can be adjusted
+! so that supply developed through Crop Idling/Shifting and GW substitution can be pumped
+! efficiently in periods when pumping capacity is available.  These buffers collect undelivered
+! acquired water and reschedule it when pumping capacity is available.
+! Set to zero at start of transfer season, upper bounded based on % of acquisition for area
+! DSA 12 In-line buffer storage
+define int_BUFF12_Stg2 {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define WTS_INC12_Stg2 {std kind 'FLOW-INFLOW' units 'CFS'}   ! fill
+define WTS_DEC12_Stg2 {std kind 'FLOW-RELEASE' units 'CFS'}  ! release
+define WTS_BUFF12_Stg2 {std kind 'STORAGE' units 'TAF'}      ! storage
+! DSA 15 In-line buffer storage
+define int_BUFF15_Stg2 {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define WTS_INC15_Stg2 {std kind 'FLOW-INFLOW' units 'CFS'}   ! fill
+define WTS_DEC15_Stg2 {std kind 'FLOW-RELEASE' units 'CFS'}  ! release
+define WTS_BUFF15_Stg2 {std kind 'STORAGE' units 'TAF'}      ! storage
+! DSA 70 In-line buffer storage
+define int_BUFF70_Stg2 {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define WTS_INC70_Stg2 {std kind 'FLOW-INFLOW' units 'CFS'}   ! fill
+define WTS_DEC70_Stg2 {std kind 'FLOW-RELEASE' units 'CFS'}  ! release
+define WTS_BUFF70_Stg2 {std kind 'STORAGE' units 'TAF'}      ! storage
+! DSA 69 In-line buffer storage
+define int_BUFF69_Stg2 {INTEGER std kind 'INTEGER' UNITS 'NONE'}
+define WTS_INC69_Stg2 {std kind 'FLOW-INFLOW' units 'CFS'}   ! fill
+define WTS_DEC69_Stg2 {std kind 'FLOW-RELEASE' units 'CFS'}  ! release
+define WTS_BUFF69_Stg2 {std kind 'STORAGE' units 'TAF'}      ! storage
+
+!******************************************************************************
+!  Delta Flow Accounting Components D418_WTS, D419_WTS and C407_WTS
+! Tracy PP
+define D418_WTS_Stg1 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define D418_WTS_Stg2 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+goal split_D418_WTS { D418_WTS = D418_WTS_Stg1 + D418_WTS_Stg2 }
+! Banks PP
+define D419_WTS_Stg1 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define D419_WTS_Stg2 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+goal split_D419_WTS { D419_WTS = D419_WTS_Stg1 + D419_WTS_Stg2 }
+! Incremental Outflow Adjustment
+define C407_WTS_Stg1 {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+define C407_WTS_Stg2 {std kind 'FLOW-CHANNEL' UNITS 'CFS'}
+goal split_C407_WTS { C407_WTS = C407_WTS_Stg1 + C407_WTS_Stg2 }
+
+!******************************************************************************
+! WTS Storage Errors - Positive is storage overrun
+define WTS_Str_Err_stg1 {upper unbounded kind 'STORAGE-ERROR' UNITS 'CFS'}
+!define WTS_Str_Err_stg2 {upper unbounded kind 'STORAGE-ERROR' UNITS 'CFS'}
+define WTS_Str_Err {lower unbounded upper unbounded kind 'STORAGE-ERROR' UNITS 'CFS'}
+goal Split_WTS_StorageErr {WTS_Str_Err = WTS_Str_Err_Stg1}! + WTS_Str_Err_Stg2}
+!******************************************************************************
+! WTS Balance Errors - Positive is supply overrun/Negative is supply shortfall in the WTS Routing
+define WTS_Bal_Err_stg1 {lower unbounded upper unbounded kind 'BALANCE-ERROR' UNITS 'CFS'}
+define WTS_Bal_Err_stg2 {lower unbounded upper unbounded kind 'BALANCE-ERROR' UNITS 'CFS'}
+define WTS_Bal_Err {lower unbounded upper unbounded kind 'BALANCE-ERROR' UNITS 'CFS'}
+goal Split_WTS_BalanceErr {WTS_Bal_Err = WTS_Bal_Err_Stg1 + WTS_Bal_Err_Stg2}
+!******************************************************************************
+! WTS Spills
+define WTS_Spill_stg1 {lower unbounded upper unbounded kind 'SPILL' UNITS 'CFS'}
+define WTS_Spill_stg2 {lower unbounded upper unbounded kind 'SPILL' UNITS 'CFS'}
+define WTS_Spill {lower unbounded upper unbounded kind 'SPILL' UNITS 'CFS'}
+goal Split_WTS_Spill {WTS_Spill = WTS_Spill_Stg1 + WTS_Spill_Stg2}
+
+!********************************************************************************
+! Colusa Basin distribution and pattern factor calcs
+define AprSep14301GCID {
+    case AprSep {
+        condition month>MAR
+        sum(i=7-month,12-month,1) cuaw_14301GCID(i)*cfs_taf(i) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+define Monthly14301GCID {
+    case AprSep {
+        condition month>MAR
+        value cuaw_14301GCID*cfs_taf}
+    case otherwise {
+        condition always
+        value 0. }
+}
+define AprSep14501GCID {
+    case AprSep {
+        condition month>MAR
+        sum(i=7-month,12-month,1) cuaw_14501GCID(i)*cfs_taf(i) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+define Monthly14501GCID {
+    case AprSep {
+        condition month>MAR
+        value cuaw_14501GCID*cfs_taf}
+    case otherwise {
+        condition always
+        value 0. }
+}
+define AprSep14301SC {
+    case AprSep {
+        condition month>MAR
+        sum(i=7-month,12-month,1) cuaw_14301SC(i)*cfs_taf(i) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+define Monthly14301SC {
+    case AprSep {
+        condition month>MAR
+        value cuaw_14301SC*cfs_taf}
+    case otherwise {
+        condition always
+        value 0. }
+}
+define AprSep14501SC {
+    case AprSep {
+        condition month>MAR
+        sum(i=7-month,12-month,1) cuaw_14501SC(i)*cfs_taf(i) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+define Monthly14501SC {
+    case AprSep {
+        condition month>MAR
+        value cuaw_14501SC*cfs_taf}
+    case otherwise {
+        condition always
+        value 0. }
+}
+define AprSepDSA12 {
+    case OctApr {
+        condition month<MAR
+        value 1. }
+    case otherwise {
+        condition always
+        value AprSep14301GCID + AprSep14501GCID + AprSep14301SC + AprSep14501SC +.01}
+}
+define MonthlyDSA12 {
+    case AprSep {
+        condition month>MAR
+        value cuaw_14301GCID*cfs_taf + cuaw_14501GCID*cfs_taf
+            + cuaw_14301SC*cfs_taf + cuaw_14501SC*cfs_taf}
+    case otherwise {
+        condition always
+        value 0. }
+}
+!define frac_GC_N_DSA12 {value AprSep14301GCID/AprSepDSA12}
+!define frac_GC_S_DSA12 {value AprSep14501GCID/AprSepDSA12}
+!define frac_SC_N_DSA12 {value AprSep14301SC/AprSepDSA12}
+!define frac_SC_S_DSA12 {value AprSep14501SC/AprSepDSA12}
+define frac_GC_N_DSA12 {
+    case pos_dem{
+        condition MonthlyDSA12>0.1
+        value Monthly14301GCID/MonthlyDSA12}
+    case otherwise {
+        condition always
+        value 0.}
+}
+define frac_GC_S_DSA12 {
+    case pos_dem{
+        condition MonthlyDSA12>0.1
+        value Monthly14501GCID/MonthlyDSA12}
+    case otherwise {
+        condition always
+        value 0.}
+}
+define frac_SC_N_DSA12 {
+    case pos_dem{
+        condition MonthlyDSA12>0.1
+        value Monthly14301SC/MonthlyDSA12}
+    case otherwise {
+        condition always
+        value 0.}
+}
+define frac_SC_S_DSA12 {
+    case pos_dem{
+        condition MonthlyDSA12>0.1
+        value Monthly14501SC/MonthlyDSA12}
+    case otherwise {
+        condition always
+        value 0.}
+}
+
+!******************************************************************************
+! Sac Valley Other
+define AprSepDSA15 {
+    case AprSep {
+        condition month>MAR
+        sum(i=7-month,12-month,1) cuaw_131SC(i)*cfs_taf(i) +.002}
+    case otherwise {
+        condition always
+        value 1. }
+}
+define MonthlyDSA15 {
+    case AprSep {
+        condition month>MAR
+        value cuaw_131SC*cfs_taf}
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+!******************************************************************************
+! Feather River pattern factor calcs
+define AprSepDR69 {
+    case AprSep {
+        condition month>MAR
+        sum(i=7-month,12-month,1) dr69(i) +.002}
+    case otherwise {
+        condition always
+        value 1. }
+}
+define MonthlyDR69 {
+    case AprSep {
+        condition month>MAR
+        value dr69}
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+!******************************************************************************
+! Assumed Monthly Distribution for Supplies
+! Sac Valley
+define SacPattrnPercGW {select SacValley_GW from WTS_Patterns where month=month}
+define SacPattrnFactGW {value SacPattrnPercGW/100.}
+define SacPattrnFactCI {value MonthlyDSA12/AprSepDSA12}                       !dynamic calc for SacValley ColusaBasin
+define OthPattrnPercGW {select SacValley_GW from WTS_Patterns where month=month}
+define OthPattrnFactGW {value OthPattrnPercGW/100.}
+define OthPattrnFactCI {value MonthlyDSA15/AprSepDSA15}                       !dynamic calc for SacOther
+! American R
+define AmRPattrnPercGW {select AmerR_GW from WTS_Patterns where month=month}
+define AmRPattrnFactGW {value AmRPattrnPercGW/100.}
+! Feather
+define FeaPattrnFactCI {value MonthlyDR69/AprSepDR69}                         !dynamic calc for Feather
+define FeaPattrnPercGW {select Feather_GW from WTS_Patterns where month=month}
+define FeaPattrnFactGW {value FeaPattrnPercGW/100.}
+! Yuba
+define YubaPattrnPerc  {select Yuba from WTS_Patterns where month=month}
+define YubaPattrnFact  {value YubaPattrnPerc/100.}
+! DMC
+define DMCPattrnPercGW {select DMC_GW from WTS_Patterns where month=month}
+define DMCPattrnFactGW {value DMCPattrnPercGW/100.}
+define DMCPattrnPercCI {select DMC_CI from WTS_Patterns where month=month}
+define DMCPattrnFactCI {value DMCPattrnPercCI/100.}
+! CA
+define CAPattrnPercGW {select CA_GW from WTS_Patterns where month=month}
+define CAPattrnFactGW {value CAPattrnPercGW/100.}
+define CAPattrnPercCI {select CA_CI from WTS_Patterns where month=month}
+define CAPattrnFactCI {value CAPattrnPercCI/100.}

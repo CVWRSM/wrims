@@ -1,0 +1,39 @@
+! Robert Leaf 10/09/2001
+
+! export_index_swp
+/*
+ The Delta Index for the SWP SOD is the sum of Jan - May Eight River Index values.  The
+ Export Index is determined using the lookup table, dltidx_expidx_swp_s, based upon the value
+ of the Delta Index.  The Export Index is the Mar-Aug estimated export capability of the SWP.
+*/
+
+! Determination of Delta Index
+define Dlt_Idx_SWP_s {
+    case MartoMay {
+           condition  month >= MAR .and. month <= MAY
+           select     Dlt_Idx
+           from       Delta_Index
+           where      wateryear=wateryear}
+
+    case JuntoFeb {
+           condition  always
+           value      0 }
+              }
+
+define Dlt_Idx_SWP_sdv {alias Dlt_Idx_SWP_s kind 'delta-index' units 'taf'}
+
+! Determination of Export Index
+define Exp_Idx_SWP_s {
+    case MartoMay {
+           condition  month >= MAR .and. month <= MAY
+           select     Exp_Idx
+           from       dltidx_expidx_swp_s
+           given      Dlt_Idx=Dlt_Idx_SWP_s
+           use        linear }
+
+    case JuntoFeb {
+           condition  always
+           value      0 }
+              }
+
+define Exp_Idx_SWP_sdv {alias Exp_Idx_SWP_s kind 'export-index' units 'taf'}

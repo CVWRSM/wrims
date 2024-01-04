@@ -1,0 +1,17 @@
+/*************************************
+sum_cvp_reduced_demands.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+These SOD demand numbers are used solely for computation of the WSI-DI curve.
+*************************************/
+
+!This file determines the reduced "System" demand after the "System" percent delivery has been determined.
+
+define red_dem_pag {alias dem_totcvps_pag * perdel_cvpag_sys kind 'demand-reduced' units 'taf'}
+
+define red_dem_pmi {alias dem_totcvps_pmi * perdel_cvpmi_sys kind 'demand-reduced' units 'taf'}
+
+define red_dem_pex {alias dem_totcvps_pex * perdel_cvpex_sys kind 'demand-reduced' units 'taf'}
+
+define red_dem_prf {alias dem_totcvps_prf * perdel_cvprf_sys kind 'demand-reduced' units 'taf'}

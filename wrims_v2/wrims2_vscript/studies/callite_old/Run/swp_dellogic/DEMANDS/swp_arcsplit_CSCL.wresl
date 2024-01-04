@@ -1,0 +1,353 @@
+/****
+swp_arcsplit_CSCL.wresl
+Z.Q. Richard Chen 6/02/2010 
+
+This file splits any SWP Demand arc (ie. MI, PAG, MWD, OTH, PLS or PIN) in CalLite
+this file will work with 'swp_demands_s_CSCL.wresl', 'sumswpdel_CSCL.wresl', 
+'swp_bound_del_SOD_CSCL.wresl' and other files included in 'SwpDeliveryLogic.wresl' 
+to separate subarcs to ensure the proper delivery pattern.
+
+****/
+
+!splits SWP Demand arc (ie. PMI, PAG, MWD, OTH, PLS, PIN, and PCO) in CalLite
+
+define D25_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D25_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D25_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD25_prj { D25_prj = D25_PMI + D25_PCO }
+
+define D27_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D27_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D27_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D27_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD27_prj { D27_PRJ = D27_PMI + D27_PIN + D27_PCO}
+
+define D28_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D28_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D28_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD28_prj { D28_PRJ = D28_PMI + D28_PCO}
+
+define D29_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D29_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D29_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD29_prj { D29_PRJ = D29_PMI + D29_PCO}
+
+define D403B_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D403B_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D403B_PLS     {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D403B_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D403B_PCO     {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD403B_PRJ { D403B_PRJ = D403B_PMI + D403B_PLS + D403B_PIN + D403B_PCO}
+
+define D403C_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D403C_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D403C_PCO     {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD403C_PRJ { D403C_PRJ = D403C_PMI + D403C_PCO}
+
+define D802A_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D802A_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D802A_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD802A_prj { D802A_PRJ = D802A_PAG + D802A_PCO }
+
+define D803_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D803_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD803_prj { D803_PRJ = D803_PLS }
+
+define D824_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D824_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD824_prj { D824_PRJ = D824_PLS }
+
+define D826_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D826_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD826_prj { D826_PRJ = D826_PLS }
+
+define D827_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D827_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD827_prj { D827_PRJ = D827_PLS }
+
+define D828_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D828_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD828_prj { D828_PRJ = D828_PLS }
+
+define D829_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D829_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD829_prj { D829_PRJ = D829_PLS }
+
+define D846_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS'  }
+define D846_PAG    {std kind 'FLOW-DELIVERY' units 'CFS'  }
+define D846_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D846_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD846_prj { D846_PRJ = D846_PAG + D846_PIN + D846_PCO}
+
+define D847_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D847_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D847_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD847_prj { D847_PRJ = D847_PAG + D847_PCO }
+
+define D848_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS'  }
+define D848_PAG    {std kind 'FLOW-DELIVERY' units 'CFS'  }
+define D848_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D848_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD848_prj { D848_PRJ = D848_PAG + D848_PIN + D848_PCO}
+
+define D849_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS'  }
+define D849_PAG    {std kind 'FLOW-DELIVERY' units 'CFS'  }
+define D849_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D849_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD849_prj { D849_PRJ = D849_PAG + D849_PIN + D849_PCO}
+
+define D867_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D867_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D867_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD867_prj { D867_PRJ = D867_PAG + D867_PCO}
+
+define D868_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D868_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D868_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D868_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD868_prj { D868_PRJ = D868_PAG + D868_PIN + D868_PCO}
+
+define D869_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D869_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D869_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD869_prj { D869_PRJ = D869_PMI + D869_PCO}
+
+define D870_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D870_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D870_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD870_prj { D870_PRJ = D870_PMI + D870_PCO}
+
+define D851_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS'  }
+define D851_PAG    {std kind 'FLOW-DELIVERY' units 'CFS'  }
+define D851A_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D851B_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D851_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD851_prj { D851_PRJ = D851_PAG + D851A_PMI + D851B_PMI + D851_PCO}
+
+define D854_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D854_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD854_prj { D854_PRJ = D854_PLS }
+
+define D859_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D859_PAG    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D859_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D859_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D859F       {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD859_prj { D859_PRJ = D859_PAG + D859_PIN + D859_PCO + D859F}
+
+define D862_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D862_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD862_prj { D862_PRJ = D862_PLS }
+
+define D863_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D863_pag    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D863_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD863_prj { D863_PRJ = D863_pag + D863_PCO}
+
+define D864_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D864_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD864_prj { D864_PRJ = D864_PLS }
+
+define D877_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D877_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D877_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D877_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD877_prj { D877_PRJ = D877_PMI + D877_PIN + D877_PCO}
+
+define D878_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D878_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D878_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD878_prj { D878_PRJ = D878_PMI + D878_PCO}
+
+define D879_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D879_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D879_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD879_prj { D879_PRJ = D879_PMI + D879_PCO}
+
+define D880_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D880_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD880_prj { D880_PRJ = D880_PLS }
+
+define D881_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D881_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D881_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD881_prj { D881_PRJ = D881_PMI + D881_PCO}
+
+define D882_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D882_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD882_prj { D882_PRJ = D882_PLS }
+
+define D883_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D883_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D883_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D883_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD883_prj { D883_PRJ = D883_PMI + D883_PIN + D883_PCO}
+
+define D884_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D884_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D884_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D884_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD884_prj { D884_PRJ = D884_PMI + D884_PIN + D884_PCO}
+
+define D885_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D885_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D885_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D885_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD885_prj { D885_PRJ = D885_PMI + D885_PIN + D885_PCO}
+
+define D886_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D886_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D886_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD886_prj { D886_PRJ = D886_PMI + D886_PCO}
+
+define D887_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D887_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D887_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD887_prj { D887_PRJ = D887_PMI + D887_PCO}
+
+define D888_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D888_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D888_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD888_prj { D888_PRJ = D888_PMI + D888_PCO}
+
+define D889_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D889_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD889_prj { D889_PRJ = D889_PLS }
+
+define D899_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D899_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D899_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D899_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD899_prj { D899_PRJ = D899_PMI + D899_PIN + D899_PCO}
+
+define D891_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D891_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD891_prj { D891_PRJ = D891_PLS }
+
+define D893_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D893_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD893_prj { D893_PRJ = D893_PLS }
+
+define D894_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D894_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD894_prj { D894_PRJ = D894_PLS }
+
+define D895_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D895_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D895_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D895_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD895_prj { D895_PRJ = D895_PMI + D895_PIN + D895_PCO}
+
+define D896_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D896_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D896_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD896_prj { D896_PRJ = D896_PMI + D896_PCO}
+
+define D810_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D810_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D810_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D810_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD810_prj { D810_PRJ = D810_PMI + D810_PIN + D810_PCO}
+
+define D813_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D813_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D813_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD813_prj { D813_PRJ = D813_PMI + D813_PCO}
+
+define D814_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D814_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D814_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D814_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD814_prj { D814_PRJ = D814_PMI + D814_PIN + D814_PCO}
+
+define D815_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D815_PMI    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D815_PIN    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D815_PCO    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD815_prj { D815_PRJ = D815_PMI + D815_PIN + D815_PCO}
+
+define D816_PRJ    {std kind 'FLOW-DELIVERY' units 'CFS' }
+define D816_PLS    {std kind 'FLOW-DELIVERY' units 'CFS' }
+goal totalD816_prj { D816_PRJ = D816_PLS }
+
+
+/**** CalLite Replacements:*****/
+goal totalD_Napa         { D_Napa         = D403B_PRJ}                                              !1
+goal totalD_Solano       { D_Solano       = D403C_PRJ}                                              !1
+goal totalD_Sbay         { D_Sbay         = D810_PRJ+D813_PRJ+D814_PRJ+D815_PRJ
+                                           +D816_PRJ}                                               !7+ E811}  
+goal totalD_ONeillFBSWP  { D_ONeillFBSWP  = D803_PRJ+D802A_PRJ}   
+goal totalD_DosAmigosSWP { D_DosAmigosSWP = D824_PRJ+D826_PRJ+D827_PRJ+D828_PRJ+D829_PRJ }          !5+ D821=0
+goal totalD_Emp2Dud      { D_Emp2Dud      = D846_PRJ+D847_PRJ+D848_PRJ+D849_PRJ}                    !4
+goal totalD_CoastAqdct   { D_CoastAqdct   = D867_PRJ+D868_PRJ+D869_PRJ+D870_PRJ}                    !4
+!goal totalD_CVPRfg_854   { D_CVPRfg_854   = D854_PRJ}                                               !1 + D856 } swp + cvp
+goal totalD_KCWA         { D_KCWA         = D851_PRJ}                                               !1
+goal totalD_CVC2Chris    { D_CVC2Chris    = D859_PRJ+D862_PRJ+D863_PRJ+D864_PRJ}                    !4
+goal totalD_OSO          { D_OSO          = D891_PRJ}                                               !1
+goal totalD_WarnePP      { D_WarnePP      =  D28_PRJ+D893_PRJ+D894_PRJ+ D29_PRJ+D895_PRJ+D896_PRJ } !6
+goal totalD_Alamo        { D_Alamo        = D877_PRJ+D878_PRJ+D879_PRJ+D880_PRJ}                    !4
+goal totalD_PearBlPP     { D_PearBlPP     = D881_PRJ+D882_PRJ+ D25_PRJ+D883_PRJ+D884_PRJ+D885_PRJ   
+                                           +D886_PRJ+D887_PRJ+D888_PRJ+D889_PRJ+D899_PRJ+ D27_PRJ}  !12
+!===end===
+
+/****The following CalSim deliveries are replaced with CalLite deliveries ****/
+!goal totalD25     { D25 = D25_PRJ }
+!goal totalD27     { D27 = D27_PRJ}
+!goal totalD28     { D28 = D28_PRJ }
+!goal totalD29     { D29 = D29_PRJ }
+!goal totalD403B     { D403B = D403B_PRJ }
+!goal totalD403C     { D403C = D403C_PRJ }
+!goal totalD802A     { D802A = D802A_PRJ }
+!goal totalD803     { D803 = D803_PRJ }
+!goal totalD824     { D824 = D824_PRJ }
+!goal totalD826     { D826 = D826_PRJ }
+!goal totalD827     { D827 = D827_PRJ }
+!goal totalD828     { D828 = D828_PRJ }
+!goal totalD829     { D829 = D829_PRJ }
+!goal totalD846     { D846 = D846_PRJ }
+!goal totalD847     { D847 = D847_PRJ }
+!goal totalD848     { D848 = D848_PRJ }
+!goal totalD849     { D849 = D849_PRJ }
+!goal totalD867     { D867 = D867_PRJ }
+!goal totalD868     { D868 = D868_PRJ }
+!goal totalD869     { D869 = D869_PRJ }
+!goal totalD870     { D870 = D870_PRJ }
+!goal totalD851     { D851 = D851_PRJ }
+!goal totalD854     { D854 = D854_PRJ }
+!goal totalD859     { D859 = D859_PRJ + D859_GWRECHARGE}   !KERN COUNTY GW RECHARGE for NODOS Operation
+!goal totalD862     { D862 = D862_PRJ }
+!goal totalD863     { D863 = D863_PRJ }
+!goal totalD864     { D864 = D864_PRJ }
+!goal totalD877     { D877 = D877_PRJ }
+!goal totalD878     { D878 = D878_PRJ }
+!goal totalD879     { D879 = D879_PRJ }
+!goal totalD880     { D880 = D880_PRJ }
+!goal totalD881     { D881 = D881_PRJ }
+!goal totalD882     { D882 = D882_PRJ }
+!goal totalD883     { D883 = D883_PRJ }
+!goal totalD884     { D884 = D884_PRJ }
+!goal totalD885     { D885 = D885_PRJ }
+!goal totalD886     { D886 = D886_PRJ }
+!goal totalD887     { D887 = D887_PRJ }
+!goal totalD888     { D888 = D888_PRJ }
+!goal totalD889     { D889 = D889_PRJ }
+!goal totalD899     { D899 = D899_PRJ }
+!goal totalD891     { D891 = D891_PRJ }
+!goal totalD893     { D893 = D893_PRJ }
+!goal totalD894     { D894 = D894_PRJ }
+!goal totalD895     { D895 = D895_PRJ }
+!goal totalD896     { D896 = D896_PRJ }
+!goal totalD810     { D810 = D810_PRJ }
+!goal totalD813     { D813 = D813_PRJ }
+!goal totalD814     { D814 = D814_PRJ }
+!goal totalD815     { D815 = D815_PRJ }
+!goal totalD816     { D816 = D816_PRJ }
+
+! The file 'swp_deliveries' actually applies the proper bounds.
+! The weights for the subarcs are specified in the Weights-table.wresl (xPLS?) file.
+! In general, 'PLS' subarcs should have a weight greater than the 'MI' or 'PAG'
+! subarc, and 'PIN' subarcs have small weights to ensure that water is only
+! delivered from excess supply in the Delta and not from SL Resevior (storPAGe?).  
+! This helps to ensure that losses are always met and that MI and PAG demands 
+! are met before any PINerruptible water.
+

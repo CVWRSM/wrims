@@ -1,0 +1,297 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-ERROR.WRESL
+
+NAMING TAKES THE FOLLOWING FORM:
+ErrPos_{CalSim-III node}
+ErrNeg_{CalSim-III node}
+
+Ensures connectivity constraints can be met
+Large penalty assigned to arcs
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+! File contains error terms for SJR Basin -- West Side Only
+
+/*
+! ErrPos ---
+define ErrPos_CAA000   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA002   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA003   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA005   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA006   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA009   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA012   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA024   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA046   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA051   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA066   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA067   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA069   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA071   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA087   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA095   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA109   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA143   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA155   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA156   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA165   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_CAA172   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_DMC003   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC007   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC011   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC016   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC021   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC024   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC030   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC034   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC039   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC044   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC049   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC054   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC058   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC064   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC070   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC074   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC076   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC080   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC085   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC091   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC097   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC105   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC111   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DMC116   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MDOTA    {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_XCC010   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_XCC025   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_XCC033   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_XCC043   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_XCC053   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_XCC054   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_LBN025   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_LBN012   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_LBN008   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_WTPJJO   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_TCWWTP   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_WWW001   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_NMW004   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_VLW008   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_FBW001   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_DPC008   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_JBP006   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_FSL012   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_FSL005   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_GRZ012   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_ING008   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_UFC000   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_LPC007   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_BANOS    {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MSN009   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MSN004   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_MSS014   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_ORT014   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_ORT009   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_QNT005   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_SAL017   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_SAL006   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_SLD027   {std kind 'Error-TERM' units 'CFS'}
+*/
+! define ErrPos_SLUIS    {std kind 'Error-TERM' units 'CFS'}
+! define ErrPos_SLUIS_F  {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_SLUIS_S  {std kind 'Error-TERM' units 'CFS'}
+/*
+define ErrPos_WTPDGT   {std kind 'Error-TERM' units 'CFS'}
+
+
+! ErrNeg ---
+define ErrNeg_CAA000   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA002   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA003   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA005   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA006   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA009   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA012   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA024   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA046   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA051   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA066   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA067   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA069   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA071   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA087   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA095   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA109   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA143   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA155   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA156   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA165   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_CAA172   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrNeg_DMC003   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC007   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC011   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC016   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC021   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC024   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC030   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC034   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC039   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC044   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC049   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC054   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC058   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC064   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC070   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC074   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC076   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC080   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC085   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC091   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC097   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC105   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC111   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_DMC116   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MDOTA    {std kind 'Error-TERM' units 'CFS'}
+
+define ErrNeg_XCC010   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_XCC025   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_XCC033   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_XCC043   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_XCC053   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_XCC054   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrNeg_LBN025   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_LBN012   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_LBN008   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrNeg_WTPJJO   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_TCWWTP   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_WWW001   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_NMW004   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_VLW008   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_FBW001   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_DPC008   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrNeg_DPC008   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_JBP006   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_FSL012   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_FSL005   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_GRZ012   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_ING008   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_UFC000   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_LPC007   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_BANOS    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MSN009   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MSN004   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_MSS014   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_ORT014   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_ORT009   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_QNT005   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_SAL017   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_SAL006   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_SLD027   {std kind 'Error-TERM' units 'CFS'}
+*/
+! define ErrNeg_SLUIS    {std kind 'Error-TERM' units 'CFS'}
+! define ErrNeg_SLUIS_F  {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_SLUIS_S  {std kind 'Error-TERM' units 'CFS'}
+/*
+define ErrNeg_WTPDGT   {std kind 'Error-TERM' units 'CFS'}
+*/
+
+
+
+/*
+define ErrPos_50_PA    {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_50_PU    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_50_PA    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_50_PU    {std kind 'Error-TERM' units 'CFS'}
+
+! define ErrPos_64_XA    {std kind 'Error-TERM' units 'CFS'}
+! define ErrNeg_64_XA    {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_71_NA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_NA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_NU    {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PA3   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PA4   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PA5   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PA6   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PA7   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PA8   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PU1   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_71_PU2   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_NA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_NA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_NU    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PA3   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PA4   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PA5   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PA6   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PA7   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PA8   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PU1   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_71_PU2   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_72_NA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_NA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_NU    {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_PA    {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_PR1   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_PR2   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_PR3   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_PR4   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_PR5   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_PR6   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_PU    {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_XA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_XA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_72_XA3   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_NA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_NA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_NU    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_PA    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_PR1   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_PR2   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_PR3   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_PR4   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_PR5   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_PR6   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_PU    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_XA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_XA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_72_XA3   {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_73_PA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_73_PA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_73_PA3   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_73_XA    {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_73_NU    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_73_PA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_73_PA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_73_PA3   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_73_XA    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_73_NU    {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_90_PA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_90_PA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_90_PU    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_90_PA1   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_90_PA2   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_90_PU    {std kind 'Error-TERM' units 'CFS'}
+
+define ErrPos_91_PA    {std kind 'Error-TERM' units 'CFS'}
+define ErrPos_91_PR    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_91_PA    {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_91_PR    {std kind 'Error-TERM' units 'CFS'}
+*/

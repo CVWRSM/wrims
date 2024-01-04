@@ -1,0 +1,49 @@
+/*
+LIMIT DIVERSIONS TO CONTRACT-LIMIT AMOUNTS AND CHANNEL CAPACITY CONSTRAINTS
+
+NAMING TAKES THE FOLLOWING FORMS:
+CL_{ORIGIN PREFIX}_{DESTINATION}    - limitation on specific contractors extraction from general source
+
+
+
+Original formulation: C. Olson (MWH) June 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Diversions from Operational Spills      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Diversions cannot exceed the available water resulting from specific operational spills
+! IMF -- 
+! changed these from equalities to less-than...
+goal set2D_RFS61D_61_NA5   {D_RFS61D_61_NA5 < OS_61_NA2_e + OS_61_PA2_c}
+goal set2D_RFS61B_61_NA2   {D_RFS61B_61_NA2 < OS_61_PA2_b}
+
+! IMF -- added in an attempt to avoid infeasibility in goal limitD_MDSTO_61_NA2 (LHS falls below zero)...didn't work.
+! goal set3D_RFS71B_61_NA2   {D_RFS61B_61_NA2 < AWO_61_NA2 + AWR_61_NA2 + DL_OAK020_61_NA2}
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Riparian Diversions      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal set2D_SJR081_61_NA5   {D_SJR081_61_NA5 < 50.0}
+goal set2D_SJR114_62_NA5   {D_SJR114_62_NA5 < 50.0}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 64      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Limit diversions from SJR227 to 64_PA3 to less than CS2 diversions...
+! IMF -- modified demands @ 
+
+! Limit diversion from MDOTA to 64_XA based on contract limit
+goal limitD_MDOTA_64_XA    {D_MDOTA_64_XA     < CLM_64_XA * taf_cfs * perdv_cvpex_s } ! + 0.1 }
+
+! For comparison with CalSim-II do not allow diversion of return flow from 64_XA at Sack Dam
+! goal setD_SJR180_ARY010    {D_SJR180_ARY010   < C_SJR192 }
+
+
+
+
+
+

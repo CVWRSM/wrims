@@ -1,0 +1,13 @@
+! WheelCore.wresl - stuff that should always be there to support Wheeling logic
+! Tracy
+! This variable is the maximum flow that Tracy can pump due to channel capacity restrictions.
+define maxTracycalc1 {value min(TracyMaxAllow,
+                     4400+perdel_cvpag_s*dem_D700_pag*taf_cfs,
+                     4200+perdel_cvpag_s*dem_D700_pag*taf_cfs+perdel_cvpag_s*dem_D701_pag*taf_cfs+dem_D702_pls*taf_cfs) }
+define maxTracycalc {value min(maxTracycalc1 + Intertie_Cap, TracyMaxAllow)}
+define maxTracycalcDV {alias maxTracycalc Units 'cfs'}  ! For Output Only
+
+! SOD Flow Directions
+goal Wheeling3 {D855 = D419_cvc}
+goal wheel_old {D804 = D419_CVPDED + D419_cvpwhl - D859_GWRECH_CVPB}
+goal wheel_gw {D859_GWRECH_CVPB < D419_cvpwhl}

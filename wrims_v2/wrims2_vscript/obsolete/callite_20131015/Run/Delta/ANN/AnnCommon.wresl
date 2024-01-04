@@ -1,0 +1,182 @@
+/*************************************
+AnnCommon.wresl
+ 
+Nazrul Islam DWR (06/27/2010)
+
+    ARTIFICIAL NEURAL NETWORK
+    DELTA SALINITY MODELING
+
+    ANN determines salinity (micro-mhos/cm) at various locations in the Delta given flows
+    (Sac, SWP pumping, CVP pumping, SJR, Channel depletions) and the Delta cross-channel
+    position for the past 118 days
+
+    In this CALSIM modeling implementation the 78 days are split into three parts: previous two months
+    and current month.  The previous months flows and gate positions are known values, while the
+    current month flows (at least SAC and Exports) are unknown variables. These
+    are the 2 knobs used to meet salinity standards in the Delta.
+
+    FUNCTION CALLS:
+    ===============
+    LOCATION KEY:
+      1 = Jersey Point
+      2 = Contra Costa - Rock Slough
+      3 = Emmaton
+      4 = Antioch
+      5 = Collinsville
+      6 = Chipps Island
+      7 = Los Vaqueros Intake
+      8 = Middle River
+      9 = Victoria Intake
+      10 = CVP Intake
+      11 = CCFB
+      12 = CCFB Intake
+
+    VARIABLE KEY:
+      1 = Slope
+      2 = Intercept (Qsac=0)
+      3 = Qsac required for an export of 1500cfs
+
+    DXC KEY:
+      DAYS OPEN (assumed first part of month if not full month)
+
+
+**********************************************/
+
+!*************************************************************************************************************
+!Numbering each station
+define JP {value 1}
+define RS {value 2}
+define EM {value 3}
+define AN {value 4}
+define CO {value 5}
+define CH {value 6}
+define LV {value 7}
+define MR {value 8}
+define VI {value 9}
+define CV {value 10}
+define CC {value 11}
+define CI {value 12}
+
+/** Average type: 
+1 = monthly average;2 = first day of month value;3 = last day of month value;4 = maximum daily value;
+5 = minimum daily vlaue;6 = maximum 14-day value;7 = average for first 15 days;8 = average for last 15 days
+**/
+
+define monthly_avg {value 1}
+define first_day {value 2}
+define last_day {value 3}
+define max_day {value 4}
+define min_day {value 5}
+define max_14day_running_avg {value 6}
+!define avg_first_15days {value 7}
+!define avg_last_15days {value 8}
+
+define daysindv {alias daysin kind 'DAYS' units 'DAYS'}
+
+!Linegen parameters
+define slope {value 1}
+define intercept {value 2}
+
+define ann_type {value monthly_avg}
+
+define line_JP_lo   {value  5000}
+define line_JP_hi   {value 12000}
+
+define line_EM_lo   {value  5000}
+define line_EM_hi   {value 12000}
+
+define line_CO_lo   {value  8000}
+define line_CO_hi   {value 12000}
+
+define line_RS_1_lo {value  2000}
+define line_RS_1_hi {value  4000}
+define line_RS_2_lo {value  6000}
+define line_RS_2_hi {value  8000}
+define line_RS_3_lo {value 10000}
+define line_RS_3_hi {value 12000}
+
+!*************************************************************************************************************
+! Define largest export if ANN is an infeasible solution
+define ExportCap {  ! value 1500.} 
+     value 1500. !temporary limit for debugging code
+}
+
+
+!*************************************************************************************************************
+! Define maximum Qsac for restricting ANN
+define ANNcap {
+  select Qsaclimit
+  from ANNlimit
+  where month=month,wyt_sac=wyt_ann
+}
+define ANNcap_out {alias ANNcap kind 'FLOW' units 'CFS'}
+
+!*************************************************************************************************************
+! define the other flows that go into making the sac component
+! Yolo Bypass is simulated dynamically
+! Mokelumne/Consumnes R. is simulated with SJR in previous cycles
+define sac_oth { lower unbounded kind 'FLOW-INFLOW' units 'CFS' }
+goal def_sac_oth { sac_oth = C_YoloBP + AD_Mokelumne  + AD_SJRCalALL - C_NBA } 
+
+!*************************************************************************************************************
+! Currently known inflows: Mokelumne R., Consumnes R. and Calaveras R. | Yolo Bypass not known.
+define C_cosumnes_Vamp {timeseries kind 'FLOW-CHANNEL'  units 'CFS'}
+define I_Mokelumne {timeseries kind 'FLOW-INFLOW' units 'CFS'} !Mokelumne inflow from EBMUDSIM
+define C_Calaveras_vamp {timeseries kind 'FLOW-CHANNEL'  units 'CFS'}
+
+define sac_oth_est { value C_cosumnes_VAMP + I_Mokelumne + C_Calaveras_vamp             
+        - demand_d_Vallejo*taf_cfs - dem_D403B_PMI*taf_cfs*perdel_27 - dem_D403C_PMI*taf_cfs*perdel_36}
+define sac_oth_est_ { alias sac_oth_est kind 'FLOW-INFLOW' units 'CFS'}
+
+!*************************************************************************************************************
+! define the other flows that go into making the export component
+define D514A {timeseries kind 'FLOW-DELIVERY' units 'CFS'} !Riparian Diversion from Delta for COSMA Ag DWSP
+define D514B {timeseries kind 'FLOW-DELIVERY' units 'CFS'} !DWSP Diversion M&I
+define demand_D420 {timeseries kind 'DEMAND' units 'cfs' }
+define D514A_1_VAMP {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define D514B_VAMP {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define lim_CVP_ann {timeseries kind 'allocation-limit' units 'cfs'}
+
+define exp_oth { lower unbounded kind 'FLOW-EXPORTS' units 'CFS' }
+goal def_exp_oth { exp_oth = D_CCWD + D514A + D514B }
+
+define D514A_2_est {value 0.0}  !DWSP, diversion for area of origin, in cfs
+define D408D416_est {value min(demand_D420,lim_CVP_ann)}
+
+define exp_oth_est { value D408D416_est + D514A_1_VAMP + D514A_2_est + D514B_VAMP}
+
+define exp_oth_est_ { alias exp_oth_est kind 'FLOW-EXPORTS' units 'CFS' }
+
+!*************************************************************************************************************
+! define the other flows that go into making the export component
+define net_delta_cu { value                       ! Net Delta Consumptive Use
+!        DEMAND_D400B - I400 +    ! Don't include this because it occurs upstream of C400
+        DEMAND_D_BrananIs_NP - I_BrananIs +
+        DEMAND_D_SacSJR_NP - I_SacSJR +
+        DEMAND_D_Terminous_NP - I_Terminous +
+        DEMAND_D_Stockton_NP - I_Stockton +
+        DEMAND_D_MedfordIs_NP - I_MedfordIs +
+        DEMAND_D_ConeyIs_NP - I_ConeyIs
+}
+
+define net_DICU{ lower unbounded kind 'DICU_FLOW' units 'CFS' }
+goal def_net_DICU{ net_DICU=
+        D_BrananIs_NP - I_BrananIS +
+        D_SacSJR - I_SacSJR +
+        D_Terminous - I_Terminous +
+        D_Stockton - I_Stockton +
+        D_MedfordIS - I_MedfordIS +
+        D_ConeyIs - I_ConeyIS
+}
+
+! Net Delta Consumptive Use decision variable for calculating ANN MRDO
+define net_delta_cuDV { ALIAS net_DICU KIND 'NET-DICU' UNITS 'CFS' }
+
+!*************************************************************************************************************
+! other defines (Seventh input to ANN DLL)
+if int(Dynamic_SJR)==0 {define VernWQfinalSV { value VernWQfinal_set }}
+          
+define VernWQfinal     {std kind 'Salinity-EC' units 'umhos/cm'}
+goal setVernWQfinal {VernWQfinal = VernWQfinalsv}
+
+!*************************************************************************************************************

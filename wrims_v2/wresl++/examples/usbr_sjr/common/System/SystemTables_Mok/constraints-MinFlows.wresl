@@ -1,0 +1,33 @@
+/*
+ ASSURE MINIMUM FLOW REQUIREMENTS ARE MET
+ 
+  NAMING TAKES THE FOLLOWING FORMS:
+  C_{location}_MIF - minflow requirement for 'location'
+  C_{location}_EXC - flow exceeding requirement at 'location'
+  
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+!==============================
+! Mokelumne River below Camanche Reservoir
+!==============================
+
+define C_CMCHE_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_CMCHE_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_CMCHEtotal  {C_CMCHE=C_CMCHE_MIF+C_CMCHE_EXC}
+
+!==============================
+! Mokelumne River below RiverMile 50
+!==============================
+
+define C_MOK050_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_MOK050_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_MOK050total  {C_MOK050=C_MOK050_MIF+C_MOK050_EXC}
+
+!==============================
+! Mokelumne River below RiverMile 35
+!==============================
+
+define C_MOK035_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_MOK035_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_MOK035total  {C_MOK035=C_MOK035_MIF+C_MOK035_EXC}

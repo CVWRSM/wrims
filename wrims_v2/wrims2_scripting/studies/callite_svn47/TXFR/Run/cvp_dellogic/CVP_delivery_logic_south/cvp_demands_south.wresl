@@ -1,0 +1,49 @@
+/*************************************
+cvp_demands_south.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+CVP SOD DEMANDS -- CONSIST OF AG, M&I, Exchange, AND Losses
+
+Upper bounds (or maximum demands) on the delivery to all SOD CVP delivery arcs named by type are
+set here.
+**************************************/
+
+! AG - agricultural
+define dem_D700_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D701_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D710_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D706_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D833_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D835_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D836_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D839_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D841_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D855_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D837_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D843_pag  {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_D607A_pag {timeseries kind 'demand-cvp-ag' units 'taf'}
+
+! MI - municipal and industrial
+define dem_D711_pmi  {timeseries kind 'demand-cvp-mi' units 'taf'}
+define dem_D844_pmi  {timeseries kind 'demand-cvp-mi' units 'taf'}
+
+! EX - exchange
+define dem_D707_pex  {timeseries kind 'demand-cvp-ex' units 'taf'}
+define dem_D607B_pex {timeseries kind 'demand-cvp-ex' units 'taf'}
+define dem_D608B_pex {timeseries kind 'demand-cvp-ex' units 'taf'}
+
+! RF - refuge
+define dem_D708_prf  {timeseries kind 'demand-cvp-rf' units 'taf'}
+define dem_D856_prf  {timeseries kind 'demand-cvp-rf' units 'taf'}
+define dem_D607C_prf {timeseries kind 'demand-cvp-rf' units 'taf'}
+define dem_D608C_prf {timeseries kind 'demand-cvp-rf' units 'taf'}
+
+!losses
+define dem_D702_pls  {timeseries kind 'demand-cvp-ls' units 'taf'}
+define dem_D834_pls  {timeseries kind 'demand-cvp-ls' units 'taf'}
+define dem_D838_pls  {timeseries kind 'demand-cvp-ls' units 'taf'}
+define dem_D840_pls  {timeseries kind 'demand-cvp-ls' units 'taf'}
+define dem_D842_pls  {timeseries kind 'demand-cvp-ls' units 'taf'}
+define dem_D845_pls  {timeseries kind 'demand-cvp-ls' units 'taf'}
+define dem_D607D_pls {timeseries kind 'demand-cvp-ls' units 'taf'}

@@ -1,0 +1,24 @@
+!define I_DER001        {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} ! Deere Creek
+!define I_ENGLB             {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} ! Inflow to Englebright Reservoir
+define S_NBLDB       {std kind 'STORAGE' units 'TAF'}
+define  C_ENGLB     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define Evap_NBLDB    {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+!define I_SLT009        {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} ! Slate Creek
+!define I_CMT001        {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} ! Comptonville Tunnel
+!define I_NFY017        {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'} ! North Fork Yuba River
+define  D_SLT009_SCT001_SV  {timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+define C_NBLDB_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_NBLDB_POW {std kind 'FLOW-POWER-INSTREAM' units 'CFS'}
+define C_NBLDB_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C237 {lower 0 upper 999999 kind 'FLOW-CHANNEL' units 'CFS'} !SMARTVILLE FLOW REQUIREMENT COMPLIANCE NODE
+define demand_D230 {timeseries kind 'DEMAND' units 'TAF' convert 'CFS'}
+define D230 {upper demand_D230 kind 'FLOW-DELIVERY' units 'CFS'}
+define YCWA_Alloc_dv {std kind 'FRACTION' units 'NONE'}
+define C_ENGLB_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_ENGLB_POW {std kind 'FLOW-POWER-INSTREAM' units 'CFS'}
+define C_ENGLB_ADD {std kind 'FLOW-ADDITIONAL-INSTREAM' units 'CFS'}
+define C_NBLDB_POW_MIN {std kind 'FLOW-DELIVERY' units 'CFS'}
+define  C_YUB024    {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! Smartsville gage (USGS ####), flow requirement
+define ErrPos_YUB024   {std kind 'Error-TERM' units 'CFS'}
+define ErrNeg_YUB024   {std kind 'Error-TERM' units 'CFS'}
+goal continuityYUB024   {C_ENGLB  - C_YUB024= ErrPos_YUB024 - ErrNeg_YUB024}! Smartsville gage (USGS ####), flow requirement

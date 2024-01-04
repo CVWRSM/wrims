@@ -1,0 +1,195 @@
+! LVE_EWAOutput.wresl
+! A. Draper
+! 05/13/2005
+! MWH
+! Revised Becky Fedak February 2007 MWH
+
+
+define  D408_RS_CS  { std kind 'FLOW-DELIVERY' units 'cfs' } 
+define  D408_RS_DS  { std kind 'FLOW-DELIVERY' units 'cfs' } 
+define  D408_RS     { std kind 'FLOW-DELIVERY' units 'cfs' } 
+define  D408_OR_CS  { std kind 'FLOW-DELIVERY' units 'cfs' }   
+define  D408_OR_DS  { std kind 'FLOW-DELIVERY' units 'cfs' }    
+define  D408_OR_whlNOD  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  D408_OR     { std kind 'FLOW-DELIVERY' units 'cfs' } 
+define  D408_OR1_CS  { std kind 'FLOW-DELIVERY' units 'cfs' }   
+define  D408_OR1_DS  { std kind 'FLOW-DELIVERY' units 'cfs' }    
+define  D408_OR1_whlNOD  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  D408_OR1     { std kind 'FLOW-DELIVERY' units 'cfs' } 
+define  D408_OR2_CS  { std kind 'FLOW-DELIVERY' units 'cfs' }   
+define  D408_OR2_DS  { std kind 'FLOW-DELIVERY' units 'cfs' }    
+define  D408_OR2_whlNOD  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  D408_OR2     { std kind 'FLOW-DELIVERY' units 'cfs' } 
+define  D408_AIP_CS { std kind 'FLOW-DELIVERY' units 'cfs' }   
+define  D408_AIP_DS { std kind 'FLOW-DELIVERY' units 'cfs' }   
+define  D408_AIP_whlNOD { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  D408_AIP    { std kind 'FLOW-DELIVERY' units 'cfs' } 
+define  C421        { std kind 'FLOW-CHANNEL' units 'cfs' }  
+define  C421_CS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C421_DS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C421_LV     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C421_MOK    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C422        { std kind 'FLOW-CHANNEL' units 'cfs' }  
+define  C428A       { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C428B       { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C430A_CS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C430A_DS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C430A       { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C430B_DS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C430B_whlNOD    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C430B       { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C431_CS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C431_DS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C431_whlNOD { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C431        { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C432_CS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C432_DS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C432        { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C433A_CS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C433A_DS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C433A       { std kind 'FLOW-CHANNEL' units 'cfs' }   
+define  C433B_CS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C433B_DS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C433B_whlNOD    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C433B       { std kind 'FLOW-CHANNEL' units 'cfs' }   
+define  C434A_CS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C434A_DS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C434A       { std kind 'FLOW-CHANNEL' units 'cfs' }   
+define  C434B_CS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C434B_DS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C434B_whlNOD    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define  C434B       { std kind 'FLOW-CHANNEL' units 'cfs' }   
+define  D420        { std kind 'FLOW-DELIVERY' units 'cfs' }   
+define  D420_CS     { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  D420_DS     { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  D420_LV     { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  D420_MOK    { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  D425_TS     { std kind 'FLOW-DELIVERY' units 'cfs' }  
+define  D425_Other      { std kind 'FLOW-DELIVERY' units 'cfs' }  
+define  D426_LV     { std kind 'FLOW-DELIVERY' units 'cfs' }
+define  ALT_DEMAND_RELdv {std kind 'FLOW-INFLOW' units 'cfs'}
+define  I422B       { std kind 'FLOW-INFLOW' units 'CFS' }
+define  I428        { std kind 'FLOW-INFLOW' units 'CFS'}
+define  S422        { std kind 'STORAGE' units 'TAF' }
+define  BOM_CVP_acctdv  { std kind 'ACCOUNT' units 'TAF' } 
+define  BOM_DS_acctdv   { std kind 'ACCOUNT' units 'TAF' }
+define  BOM_LV_acctdv   { std kind 'ACCOUNT' units 'TAF' }
+define  BOM_EWA_acctdv  { std kind 'ACCOUNT' units 'TAF' }
+define  BOM_SOD_acctdv  { std kind 'ACCOUNT' units 'TAF' }
+define  sal_prv_LV_c1dv { std kind 'SALINITY' units 'MG/L' } 
+define  LV_wq_trgtdv    { std kind 'SALINITY' units 'MG/L' }   
+define  CCWD_wq_trgtdv  { std kind 'SALINITY' units 'MG/L' } 
+define  AnnEWAused_1dv  { std kind 'LVE-TAF' units 'TAF' }
+define  CCWD_CVPAllocdv { std kind 'ALLOCATION' units 'TAF' }
+
+! Define state variables that contain results from JPOD for LVE operations
+define  D408_RS_CS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_RS_DS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_RS__z5     {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR_CS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR_DS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR_whlNOD__z5  {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR__z5     {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR1_CS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR1_DS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR1_whlNOD__z5  {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR1__z5     {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR2_CS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR2_DS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR2_whlNOD__z5  {timeseries kind 'FLOW' units 'CFS'}
+define  D408_OR2__z5     {timeseries kind 'FLOW' units 'CFS'}
+define  D408_AIP_CS__z5     {timeseries kind 'FLOW' units 'CFS'}
+define  D408_AIP_DS__z5     {timeseries kind 'FLOW' units 'CFS'}
+define  D408_AIP_whlNOD__z5 {timeseries kind 'FLOW' units 'CFS'}
+define  D408_AIP__z5        {timeseries kind 'FLOW' units 'CFS'}
+define  C421__z5        {timeseries kind 'FLOW' units 'CFS'} 
+define  C422__z5        {timeseries kind 'FLOW' units 'CFS'} 
+define  C428A__z5       {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C428B__z5       {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C430A__z5       {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C430A_CS__z5    {timeseries kind 'FLOW-CHANNEL' units 'cfs'}
+define  C430A_DS__z5    {timeseries kind 'FLOW-CHANNEL' units 'cfs'}
+define  C430B__z5       {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C430B_DS__z5    {timeseries kind 'FLOW-CHANNEL' units 'cfs'}
+define  C430B_whlNOD__z5 {timeseries kind 'FLOW-CHANNEL' units 'cfs'}
+define  C431__z5        {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C432__z5        {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C433A__z5       {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C433B__z5       {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C434A__z5       {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  C434B__z5       {timeseries kind 'FLOW-CHANNEL' units 'cfs'}   
+define  D420__z5        {timeseries kind 'FLOW' units 'CFS'}
+define  D425_TS__z5     {timeseries kind 'FLOW' units 'CFS'}
+define  D425_Other__z5  {timeseries kind 'FLOW' units 'CFS'}
+define  D426_LV__z5     { timeseries kind 'FLOW-DELIVERY' units 'cfs' }
+define  ALT_DEMAND_RELdv__z5 {timeseries kind 'FLOW-INFLOW' units 'cfs'}
+define  I422b__z5       {timeseries kind 'FLOW' units 'CFS'} 
+define  I428__z5        {timeseries kind 'FLOW' units 'CFS'}
+define  S422__z5        {timeseries kind 'STORAGE' units 'TAF'}
+define  BOM_CVP_acctdv__z5  {timeseries kind 'ACCOUNT' units 'TAF'}
+define  BOM_DS_acctdv__z5   {timeseries kind 'ACCOUNT' units 'TAF'}
+define  BOM_LV_acctdv__z5   {timeseries kind 'ACCOUNT' units 'TAF'}
+define  BOM_EWA_acctdv__z5  {timeseries kind 'ACCOUNT' units 'TAF'}
+define  BOM_SOD_acctdv__z5  {timeseries kind 'ACCOUNT' units 'TAF'}
+define  sal_prv_LV_c1dv__z5 {timeseries kind 'SALINITY' units 'MG/L'}
+define  LV_wq_trgtdv__z5    {timeseries kind 'SALINITY' units 'MG/L'}
+define  CCWD_wq_trgtdv__z5  {timeseries kind 'SALINITY' units 'MG/L'}
+define  AnnEWAused_1dv__z5  {timeseries kind 'ALLOCATION' units 'TAF'}
+define  CCWD_CVPAllocdv__z5 {timeseries kind 'ALLOCATION' units 'TAF'}
+
+
+! Set value of decision varaibles that will be required in the next time step        
+goal set_D408_RS_CS     { D408_RS_CS = D408_RS_CS__z5 }
+goal set_D408_RS_DS     { D408_RS_DS = D408_RS_DS__z5 }
+goal set_D408_RS        { D408_RS = D408_RS__z5 }
+goal set_D408_OR_CS     { D408_OR_CS = D408_OR_CS__z5 }
+goal set_D408_OR_DS     { D408_OR_DS = D408_OR_DS__z5 }
+goal set_D408_OR_whlNOD     { D408_OR_whlNOD = D408_OR_whlNOD__z5 }
+goal set_D408_OR        { D408_OR = D408_OR__z5 }
+goal set_D408_OR1_CS     { D408_OR1_CS = D408_OR1_CS__z5 }
+goal set_D408_OR1_DS     { D408_OR1_DS = D408_OR1_DS__z5 }
+goal set_D408_OR1_whlNOD     { D408_OR1_whlNOD = D408_OR1_whlNOD__z5 }
+goal set_D408_OR1        { D408_OR1 = D408_OR1__z5 }
+goal set_D408_OR2_CS     { D408_OR2_CS = D408_OR2_CS__z5 }
+goal set_D408_OR2_DS     { D408_OR2_DS = D408_OR2_DS__z5 }
+goal set_D408_OR2_whlNOD     { D408_OR2_whlNOD = D408_OR2_whlNOD__z5 }
+goal set_D408_OR2        { D408_OR2 = D408_OR2__z5 }
+goal set_D408_AIP_CS        { D408_AIP_CS = D408_AIP_CS__z5 }
+goal set_D408_AIP_DS        { D408_AIP_DS = D408_AIP_DS__z5 }
+goal set_D408_AIP_whlNOD    { D408_AIP_whlNOD = D408_AIP_whlNOD__z5 }
+goal set_D408_AIP       { D408_AIP = D408_AIP__z5 }
+goal set_C421           { C421 = C421__z5 } 
+goal set_C422           { C422 = C422__z5 } 
+goal set_C428A          { C428A = C428A__z5 }   
+goal set_C428B          { C428B = C428B__z5 }   
+goal set_C430A          { C430A = C430A__z5 }   
+goal set_C430A_CS       { C430A_CS = C430A_CS__z5 }   
+goal set_C430A_DS       { C430A_DS = C430A_DS__z5 }   
+goal set_C430B          { C430B = C430B__z5 }   
+goal set_C430B_DS       { C430B_DS = C430B_DS__z5 }   
+goal set_C430B_whlNOD   { C430B_whlNOD = C430B_whlNOD__z5 }   
+goal set_C431           { C431 = C431__z5 }   
+goal set_C432           { C432 = C432__z5 }   
+goal set_C433A          { C433A = C433A__z5 }   
+goal set_C433B          { C433B = C433B__z5 }   
+goal set_C434           { C434A = C434A__z5 }   
+goal set_C434B          { C434B = C434B__z5 }   
+goal set_D420           { D420 = D420__z5 } 
+goal set_D425_TS        { D425_TS = D425_TS__z5 }
+goal set_D425_Other     { D425_Other = D425_Other__z5 }
+goal set_D426_LV        { D426_LV = D426_LV__z5 }
+goal set_ALT_DEMAND_RELdv {ALT_DEMAND_RELdv = ALT_DEMAND_RELdv__z5}
+goal set_I422B          { I422B = I422B__z5 }  
+goal set_I428           { I428 = I428__z5}
+goal set_S422           { S422 = S422__z5 }
+goal set_BOM_CVP_acctdv     { BOM_CVP_acctdv = BOM_CVP_acctdv__z5 }
+goal set_BOM_DS_acctdv      { BOM_DS_acctdv = BOM_DS_acctdv__z5 }
+goal set_BOM_LV_acctdv      { BOM_LV_acctdv = BOM_LV_acctdv__z5 }
+goal set_BOM_EWA_acctdv     { BOM_EWA_acctdv = BOM_EWA_acctdv__z5 }
+goal set_BOM_SOD_acctdv     { BOM_SOD_acctdv = BOM_SOD_acctdv__z5 }
+goal set_sal_prv_LV_c1dv    { sal_prv_LV_c1dv = sal_prv_LV_c1dv__z5 }
+goal set_LV_wq_trgtdv       { LV_wq_trgtdv = LV_wq_trgtdv__z5 }
+goal set_CCWD_wq_trgtdv     { CCWD_wq_trgtdv = CCWD_wq_trgtdv__z5 }
+goal set_AnnEWAused_1dv     { AnnEWAused_1dv = AnnEWAused_1dv__z5 }
+goal set_CCWD_CVPAllocdv    { CCWD_CVPAllocdv = CCWD_CVPAllocdv__z5 }
+

@@ -1,0 +1,6 @@
+define C9_EXC1 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+define C9_EXC2 {std kind 'FLOW-SPILL-POWER' units 'CFS'}
+goal C9_EXC_total {C9_EXC=C9_EXC1+C9_EXC2}
+
+define C9_POW {lower 0 upper 5000 kind 'FLOW-POWER' units 'CFS'}
+goal C9_POW_total {C9_POW=C9_MIF+C9_EXC1}

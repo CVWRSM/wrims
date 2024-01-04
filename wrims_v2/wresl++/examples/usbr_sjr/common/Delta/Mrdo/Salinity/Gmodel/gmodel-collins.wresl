@@ -1,0 +1,130 @@
+! Armin Munevar 7/8/98
+
+! G-MODEL BELOW IS FOR COLLINSVILLE (COL)
+! ****************************************************************************
+! ****************************************************************************
+! Coefficients for Collinsville  
+define g_So_col     {value 32.0     }        ! millimhos/cm
+define g_Sb_col     {value 0.150    }        ! millimhos/cm
+define g_alpha_col  {value 0.00036  }        ! 1/cfs
+define g_beta_col   {value 475.0    }        ! ft^3
+define g_n_col      {value 1.0      }        ! no units
+
+! define Dvars needed for this station's G model
+
+define Go_col {std kind 'GMODEL-PARAM' units 'CFS'}
+
+! **************************************************************************************
+! Calculate Go for the current period. This is the beginning of period G value based upon
+! last month's flow and beginning of last month's G value, Go(-1). Units are cfs
+
+define Go_hist_col {value	NDO(-1)/(1 + (NDO(-1)/Go_col(-1) - 1)
+                          *EXP(-NDO(-1)*g_delT/g_beta_col))           }
+
+goal setGo_col {Go_col = Go_hist_col}
+
+
+! *************************************************************************************
+! Get salinity standard for this particular station.
+! Standard may specify two salinity requirements for different days of the month. In 
+! this case, 2 standards are read from the table along with their corresponding dates.
+
+! first standard
+define EC_std_col1 {
+       case Oct_thru_May {
+         condition         month >=OCT .and. month <=MAY
+         select            ECstandard1
+         from              salinity_std_col 
+         where             month=month }
+       case no_standard {                       ! dummy value when standard not in effect
+         condition         always
+         value             g_So_col }  }        ! this makes the req'mt = 0
+
+! get the dates for this standard
+define begday_col1 {
+      case Oct_thru_May {
+        condition       month >=OCT .and. month <=MAY
+        select          beginday1
+        from            salinity_std_col
+        where           month=month }
+       case no_standard {
+         condition        always
+         value            0 }
+}
+define endday_col1 {
+      case Oct_thru_May {
+        condition       month >=OCT .and. month <=MAY
+        select          endday1
+        from            salinity_std_col
+        where           month=month }
+       case no_standard {
+         condition        always
+         value            0 }
+}
+
+! second standard
+define EC_std_col2 {
+       case Oct_thru_May {
+         condition         month >=OCT .and. month <=MAY
+         select            ECstandard2
+         from              salinity_std_col 
+         where             month=month }
+       case no_standard {                       ! dummy value when standard not in effect
+         condition         always
+         value             g_So_col }  }        ! this makes the req'mt = 0
+
+! get the dates for this standard
+define begday_col2 {
+      case Oct_thru_May {
+        condition       month >=OCT .and. month <=MAY
+        select          beginday2
+        from            salinity_std_col
+        where           month=month }
+       case no_standard {
+         condition        always
+         value            0 }
+}
+define endday_col2 {
+      case Oct_thru_May {
+        condition       month >=OCT .and. month <=MAY
+        select          endday2
+        from            salinity_std_col
+        where           month=month }
+       case no_standard {
+         condition        always
+         value            0 }
+}
+
+! *************************************************************************************
+! Get required Delta Outflow to meet this salinity standard
+
+define DO_req_col1 {
+     case standardON {
+          condition      month >=OCT .and. month <=MAY 
+          value          min(flowcap_salt, GET_REQ_DO(Go_hist_col,EC_std_col1,g_So_col,
+          											  g_Sb_col,g_alpha_col,g_beta_col,g_n_col) ) }
+     case standardOFF {
+          condition      always
+          value          0.0      }    }
+
+define DO_req_col2 {
+     case standardON {
+          condition      month >=OCT .and. month <=MAY 
+          value          min(flowcap_salt, GET_REQ_DO(Go_hist_col,EC_std_col2,g_So_col,
+          											  g_Sb_col,g_alpha_col,g_beta_col,g_n_col) ) }
+     case standardOFF {
+          condition      always
+          value          0.0      }    }
+  
+
+! *****************************************************************************************
+! Get Salinity at this location at the end of last period (beginning of this period).  
+! This is for output purposes only.
+
+define salinity_prv_col {std kind 'SALINITY-PREV-COL' units 'MMHOS/CM'}
+
+define Gavg_prv_col {value	NDO(-1) + (g_beta_col/g_delT)*log((1+(NDO(-1)/Go_col(-1) - 1)*
+                         		EXP(-NDO(-1)*g_delT/g_beta_col))/(NDO(-1)/Go_col(-1)))   }
+                          
+goal salinity_prv_col {salinity_prv_col = (g_So_col - g_Sb_col)*EXP(-g_alpha_col*POW(Gavg_prv_col,g_n_col)) 
+                                    + g_Sb_col}

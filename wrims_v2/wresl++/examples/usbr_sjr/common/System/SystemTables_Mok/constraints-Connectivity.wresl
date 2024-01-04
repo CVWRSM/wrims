@@ -1,0 +1,57 @@
+/*
+ASSURE CONTINUITY IN SURFACE WATER NETWORK
+
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Cosumnes River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityCSM035       {I_CSM035 - C_CSM035 = 0.}! DWR#B1-1150 Cosumnes R at Michigan Bar
+goal continuityCSM033       {C_CSM035 + SG_CSM033_443 - D_CSM033_60N_NU2 - C_CSM033 = 0.}!
+goal continuityCSM026       {C_CSM033 + SG_CSM026_426 - C_CSM026 = 0.}!
+goal continuityCSM021       {C_CSM026 + SG_CSM021_425 - C_CSM021 = 0.}!
+goal continuityCSM016       {C_CSM021 + SG_CSM016_439 - C_CSM016 = 0.}!
+goal continuityCSM011       {C_CSM016 + SG_CSM011_454 + C_DEE020 - C_CSM011 = 0.}!USGS 11336000 Cosumnes R. Nr McConnell
+goal continuityCSM005       {C_CSM011 + SG_CSM005_466 + R_60N_NA2_CSM005 - C_CSM005 = 0.}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deer Creek (Eastside Streams - trib to Cosumnes River       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityDEE023       {I_DEE023 - C_DEE023 = 0.}
+goal continuityDEE020       {C_DEE023 + /* R_EDWWTP_DEE020 */ - C_DEE020 = 0.}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Dry and Sutter Creeks - Eastside trib to Mokelumne       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityDSC035       {I_DSC035 + SG_DSC035_506 - C_DSC035               = 0.}!
+goal continuityDSC028       {C_DSC035 + SG_DSC028_505 - C_DSC028               = 0.}!
+goal continuityDSC026       {C_DSC028 + C_AMADR + R_60N_NA1_DSC026 - C_DSC026  = 0.}!
+goal continuityDSC023       {C_DSC026 + SG_DSC023_499 - C_DSC023              = 0.}!USGS 11328000 DSC Creek nr Lone
+goal continuityDSC016       {C_DSC023 + SG_DSC016_498 - C_DSC016                               = 0.}!
+goal continuityDSC012       {C_DSC016 - C_DSC012               = 0.}!USGS 1139500 DSC Creek nr Galt
+goal continuityDSC008       {C_DSC012 + SG_DSC008_480 - C_DSC008               = 0.}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Jackson Creek       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityAMADR        {I_AMADR + D_PARDE_AMADR - D_AMADR_60N_NA1 - C_AMADR  = 0.}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mokelumne River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityPARDE        {I_PARDE - D_PARDE_AMADR - D_PARDE_EBA000 - C_PARDE - E_PARDE = S_PARDE*taf_cfs - S_PARDE(-1)*taf_cfs }!
+goal continuityCMCHE        {I_CMCHE + SG_CMCHE_516  + C_PARDE - C_CMCHE - E_CMCHE = S_CMCHE*taf_cfs - S_CMCHE(-1)*taf_cfs }!
+goal continuityMOK057       {C_CMCHE - C_MOK057 = 0.}!USGS 11323500 Mokelumne R. blw Camanche Dam
+goal continuityMOK055       {C_MOK057 + SG_MOK055_515 - C_MOK055 = 0.}!
+goal continuityMOK050       {C_MOK055 + SG_MOK050_514 - D_MOK050_60N_NA3 - D_MOK050_60N_NA5 - C_MOK050 = 0.}!
+goal continuityMOK044       {C_MOK050 + SG_MOK044_513 - C_MOK044 = 0.}!
+goal continuityMOK035       {C_MOK044 + SG_MOK035_512 + SR_60N_MOK035 - D_MOK035_60N_NA4 - D_MOK035_WTPDWS - C_MOK035 = 0.}!
+goal continuityMOK034       {C_MOK035 - D_MOK034_60N_NA5 - C_MOK034 = 0.}!
+goal continuityMOK028       {C_MOK034 + SG_MOK028_497 - C_MOK028 = 0.}!
+goal continuityMOK022       {C_MOK028 + SG_MOK022_479 + C_DSC008 - C_MOK022 = 0.}!
+goal continuityMOK019       {C_MOK022 + SG_MOK019_478 + SR_60N_MOK019 + C_CSM005 - C_MOK019 = 0.}!
+!goal continuityMOK014       {C_MOK019 + SG_MOK014_494 + D_SAC030_MOK014 + SR_26S_MOK014 - C_MOK014 = 0.}
+!goal continuityMOK004       {C_MOK014 + SG_MOK004_495 + C_SAC029b - D_MOK004_DND2 - C_MOK004 = 0.}
+

@@ -1,0 +1,194 @@
+!Anna Fock  Oct 2003
+/* Calculation of Westside Return Disggregation
+*/
+!write-out Cycle 2 result (VAMP) for DSM2 in the last cycle
+define NPR601_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R639A at RM75
+define NPR602_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM76
+define NPR603_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM77
+define NPR604_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM78.5
+define NPR605_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM80
+define NPR612_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM87
+define NPR616_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM91.5
+define NPR617_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM93
+define NPR623_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM98
+define NPR628_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM105
+define NPR631_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM109
+define NPR635_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM113
+define NPR638_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM117
+define NPR645_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM125
+define NPR649_NP { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM130
+
+define R639A_NP  {
+    case NonPulseNonDO {
+        condition month <= may
+        value R639A[SJR_WQ1] }
+    case NonPulsePlusDO {
+        condition always
+        value R639A[VAMP_AND_DO] }
+            }
+
+define R637D_NP  {
+    case NonPulseNonDO {
+        condition month <= may
+        value R637D[SJR_WQ1] }
+    case NonPulsePlusDO {
+        condition always
+        value R637D[VAMP_AND_DO] }
+            }
+
+define R630M_NP  {
+    case NonPulseNonDO {
+        condition month <= may
+        value R630M[SJR_WQ1] }
+    case NonPulsePlusDO {
+        condition always
+        value R630M[VAMP_AND_DO] }
+            }
+
+
+Goal Set_NPR601_NP { NPR601_NP = R639A_NP * Frac_NPR601 }    !R639A at RM75
+Goal Set_NPR602_NP { NPR602_NP = R637D_NP * Frac_NPR602 }    !R637D at RM76
+Goal Set_NPR603_NP { NPR603_NP = R637D_NP * Frac_NPR603 }    !R637D at RM77
+Goal Set_NPR604_NP { NPR604_NP = R637D_NP * Frac_NPR604 }    !R637D at RM78.5
+Goal Set_NPR605_NP { NPR605_NP = R637D_NP * Frac_NPR605 }    !R637D at RM80
+Goal Set_NPR612_NP { NPR612_NP = R630M_NP * Frac_NPR612 }    !R630M at RM87
+Goal Set_NPR616_NP { NPR616_NP = R630M_NP * Frac_NPR616 }    !R630M at RM91.5
+Goal Set_NPR617_NP { NPR617_NP = R630M_NP * Frac_NPR617 }    !R630M at RM93
+Goal Set_NPR623_NP { NPR623_NP = R630M_NP * Frac_NPR623 }    !R630M at RM98
+Goal Set_NPR628_NP { NPR628_NP = R630M_NP * Frac_NPR628 }    !R630M at RM105
+Goal Set_NPR631_NP { NPR631_NP = R630M_NP * Frac_NPR631 }    !R630M at RM109
+Goal Set_NPR635_NP { NPR635_NP = R630M_NP * Frac_NPR635 }    !R630M at RM113
+Goal Set_NPR638_NP { NPR638_NP = R630M_NP * Frac_NPR638 }    !R630M at RM117
+Goal Set_NPR645_NP { NPR645_NP = R630M_NP * Frac_NPR645 }    !R630M at RM125
+Goal Set_NPR649_NP { NPR649_NP = R630M_NP * Frac_NPR649 }    !R630M at RM130
+
+
+!write-out Cycle 5 result (non-VAMP) for DSM2 in the last cycle
+define NPR601_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R639A at RM75
+define NPR602_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM76
+define NPR603_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM77
+define NPR604_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM78.5
+define NPR605_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM80
+define NPR612_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM87
+define NPR616_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM91.5
+define NPR617_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM93
+define NPR623_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM98
+define NPR628_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM105
+define NPR631_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM109
+define NPR635_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM113
+define NPR638_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM117
+define NPR645_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM125
+define NPR649_P { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM130
+
+define R639A_P  {
+    case APRILMAY {
+        condition month >= apr .and. month <= may
+        value R639A[VAMP_AND_DO] }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define R637D_P  {
+    case APRILMAY {
+        condition month >= apr .and. month <= may
+        value R637D[VAMP_AND_DO] }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define R630M_P  {
+    case APRILMAY {
+        condition month >= apr .and. month <= may
+        value R630M[VAMP_AND_DO] }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+Goal Set_NPR601_P { NPR601_P = R639A_P * Frac_NPR601 }    !R639A at RM75
+Goal Set_NPR602_P { NPR602_P = R637D_P * Frac_NPR602 }    !R637D at RM76
+Goal Set_NPR603_P { NPR603_P = R637D_P * Frac_NPR603 }    !R637D at RM77
+Goal Set_NPR604_P { NPR604_P = R637D_P * Frac_NPR604 }    !R637D at RM78.5
+Goal Set_NPR605_P { NPR605_P = R637D_P * Frac_NPR605 }    !R637D at RM80
+Goal Set_NPR612_P { NPR612_P = R630M_P * Frac_NPR612 }    !R630M at RM87
+Goal Set_NPR616_P { NPR616_P = R630M_P * Frac_NPR616 }    !R630M at RM91.5
+Goal Set_NPR617_P { NPR617_P = R630M_P * Frac_NPR617 }    !R630M at RM93
+Goal Set_NPR623_P { NPR623_P = R630M_P * Frac_NPR623 }    !R630M at RM98
+Goal Set_NPR628_P { NPR628_P = R630M_P * Frac_NPR628 }    !R630M at RM105
+Goal Set_NPR631_P { NPR631_P = R630M_P * Frac_NPR631 }    !R630M at RM109
+Goal Set_NPR635_P { NPR635_P = R630M_P * Frac_NPR635 }    !R630M at RM113
+Goal Set_NPR638_P { NPR638_P = R630M_P * Frac_NPR638 }    !R630M at RM117
+Goal Set_NPR645_P { NPR645_P = R630M_P * Frac_NPR645 }    !R630M at RM125
+Goal Set_NPR649_P { NPR649_P = R630M_P * Frac_NPR649 }    !R630M at RM130
+
+!write-out Final result for DSM2 in the last cycle
+define NPR601_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R639A at RM75
+define NPR602_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM76
+define NPR603_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM77
+define NPR604_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM78.5
+define NPR605_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R637D at RM80
+define NPR612_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM87
+define NPR616_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM91.5
+define NPR617_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM93
+define NPR623_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM98
+define NPR628_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM105
+define NPR631_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM109
+define NPR635_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM113
+define NPR638_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM117
+define NPR645_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM125
+define NPR649_Final { lower -100000 kind 'NPR-Flow' Units 'CFS' }    !R630M at RM130
+
+define R639A_FINAL  {
+    case April {
+        condition month == apr
+        value ( 14.* R639A_NP/30. + 16.* R639A_P /30.) }
+    case MayOnly {
+        condition month == may
+        value ( 15.* R639A_P/31. + 16.* R639A_NP /31.) }
+    case otherwise {
+        condition always
+        value R639A_NP  }
+            }
+
+define R637D_FINAL  {
+    case April {
+        condition month == apr
+        value ( 14.* R637D_NP/30. + 16.* R637D_P /30.) }
+    case MayOnly {
+        condition month == may
+        value ( 15.* R637D_P/31. + 16.* R637D_NP /31.) }
+    case otherwise {
+        condition always
+        value R637D_NP  }
+            }
+
+define R630M_FINAL  {
+    case April {
+        condition month == apr
+        value ( 14.* R630M_NP/30. + 16.* R630M_P /30.) }
+    case MayOnly {
+        condition month == may
+        value ( 15.* R630M_P/31. + 16.* R630M_NP /31.) }
+    case otherwise {
+        condition always
+        value R630M_NP  }
+            }
+
+Goal Set_NPR601_Final { NPR601_Final = R639A_Final * Frac_NPR601 }    !R639A at RM75
+Goal Set_NPR602_Final { NPR602_Final = R637D_Final * Frac_NPR602 }    !R637D at RM76
+Goal Set_NPR603_Final { NPR603_Final = R637D_Final * Frac_NPR603 }    !R637D at RM77
+Goal Set_NPR604_Final { NPR604_Final = R637D_Final * Frac_NPR604 }    !R637D at RM78.5
+Goal Set_NPR605_Final { NPR605_Final = R637D_Final * Frac_NPR605 }    !R637D at RM80
+Goal Set_NPR612_Final { NPR612_Final = R630M_Final * Frac_NPR612 }    !R630M at RM87
+Goal Set_NPR616_Final { NPR616_Final = R630M_Final * Frac_NPR616 }    !R630M at RM91.5
+Goal Set_NPR617_Final { NPR617_Final = R630M_Final * Frac_NPR617 }    !R630M at RM93
+Goal Set_NPR623_Final { NPR623_Final = R630M_Final * Frac_NPR623 }    !R630M at RM98
+Goal Set_NPR628_Final { NPR628_Final = R630M_Final * Frac_NPR628 }    !R630M at RM105
+Goal Set_NPR631_Final { NPR631_Final = R630M_Final * Frac_NPR631 }    !R630M at RM109
+Goal Set_NPR635_Final { NPR635_Final = R630M_Final * Frac_NPR635 }    !R630M at RM113
+Goal Set_NPR638_Final { NPR638_Final = R630M_Final * Frac_NPR638 }    !R630M at RM117
+Goal Set_NPR645_Final { NPR645_Final = R630M_Final * Frac_NPR645 }    !R630M at RM125
+Goal Set_NPR649_Final { NPR649_Final = R630M_Final * Frac_NPR649 }    !R630M at RM130
+

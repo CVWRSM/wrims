@@ -1,0 +1,52 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.containers.generic_array_sort%b  a-cgarso.adb  6a0f428a NE OL SU GE
+W ada%s			ada.ads			ada.ali
+W ada.containers%s	a-contai.ads		a-contai.ali
+W ada.containers.generic_constrained_array_sort%s
+
+U ada.containers.generic_array_sort%s  a-cgarso.ads  ef0ecff7 BN NE OL PU GE
+W ada.containers%s	a-contai.ads		a-contai.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-contai.ads		20070406091342 7b35f559
+D a-cgarso.ads		20070406091342 943b3aae
+D a-cgarso.adb		20090409150020 62cd94b0
+D a-cgcaso.ads		20080324105732 9cf9ec94
+D a-cgcaso.adb		20090409150020 9019ee04
+D system.ads		20090410155748 b8eb58c3
+X 1 ada.ads
+16K9*Ada 19e8 3|24r11 26r14 4|30r6 32r11 50r5
+X 2 a-contai.ads
+16K13*Containers 22e19 3|24r15 26r18 4|30r10 32r15 50r9
+X 3 a-cgarso.ads
+17E9 Index_Type 19r30 4|36r6
+18+9 Element_Type 19r54 21r37 4|44r25
+19A9 Array_Type(18+9)<17E9> 24r65 4|33r23 39r6
+21V18 "<"{boolean} 21>23 21>29 4|46r25
+21*23 Left{18+9}
+21*29 Right{18+9}
+24u26*Generic_Array_Sort 2|16k13 3|24=46 26r29 4|32b26 50l20 50t38
+24*46 Container{19A9} 4|33b4 36r23 36r42 49m10
+X 4 a-cgarso.adb
+35E12 Index_Subtype{3|17E9} 39r18 43r25
+38A12 Array_Subtype{3|19A9}<3|17E9> 45r25
+41U14 Sort[5|24] 49r4
+X 5 a-cgcaso.ads
+17E9 Index_Type 4|43r9
+18+9 Element_Type 4|44r9
+19A9 Array_Type(18+9)<17E9> 4|45r9
+21V18 "<"{boolean} 4|46r9
+24u26*Generic_Constrained_Array_Sort 2|16k13 4|30w21 42r11
+

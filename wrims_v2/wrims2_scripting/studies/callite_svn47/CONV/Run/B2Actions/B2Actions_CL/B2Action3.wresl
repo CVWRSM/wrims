@@ -1,0 +1,59 @@
+/*
+B2Action3.wresl
+
+Nazrul islam; DWR; 10/14/2010 
+
+B2 Action 3: CVP VAMP Export Reductions --  (Apr15-May15)
+
+*/
+
+!**** VAMP Export Reductions (Apr15-May15) ****************
+
+! Monthly VAMP export restriction for CVP
+goal b2action3_1 {
+  lhs D_Jones_cvp + D_Banks_cvp
+  case Apr {
+    condition  month==APR .and. int(B2Action3On)==1
+    rhs        NonPulseExpCtrl*0.5*14.0/daysin + PulseExpRes*0.5*16.0/daysin
+    lhs<rhs    penalty 0 }
+  case May {
+    condition  month==MAY .and. int(B2Action3On)==1
+!    rhs        NonPulseExpCtrl*0.5*16.0/daysin + PulseExpRes*0.5*15.0/daysin
+    rhs        3000.*16.0/daysin + PulseExpRes*0.5*15.0/daysin
+    lhs<rhs    penalty 0 }
+}
+
+
+goal b2action3_MaxCap {    ! Prevents Non-Pulse portion of month to be greater than Physical Capacity
+  lhs    D_Jones_cvp + D_Banks_cvp
+  case April {
+    condition     month == APR
+    rhs           JonesCapPermit*14.0/daysin + PulseExpRes*0.5*16.0/daysin
+    lhs<rhs       penalty 0 }
+  case May {
+    condition     month == MAY
+    rhs           JonesCapPermit*16.0/daysin + PulseExpRes*0.5*15.0/daysin
+    lhs<rhs       penalty 0 }
+}
+
+!for output only:
+define b2_3_1cap {std kind 'OUTPUT' units 'CFS'}
+goal setb2_3_1 {
+  lhs b2_3_1cap
+  case Apr {
+    condition  month==APR .and. int(B2Action3On)==1
+    rhs        NonPulseExpCtrl*0.5*14.0/daysin + PulseExpRes*0.5*16.0/daysin
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+    case May {
+  condition  month==MAY .and. int(B2Action3On)==1
+!    rhs        NonPulseExpCtrl*0.5*16.0/daysin + PulseExpRes*0.5*15.0/daysin
+    rhs        min(3000.,3000.*16.0/daysin + PulseExpRes*0.5*15.0/daysin)
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+  case other {
+    condition  always
+    rhs        20000.
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+}

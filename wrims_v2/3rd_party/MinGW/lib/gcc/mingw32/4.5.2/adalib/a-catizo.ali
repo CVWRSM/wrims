@@ -1,0 +1,53 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnn
+
+U ada.calendar.time_zones%b  a-catizo.adb	94f0a15f NE OL PK
+W ada.calendar%s	a-calend.adb		a-calend.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+
+U ada.calendar.time_zones%s  a-catizo.ads	47117e84 EE OL PK
+W ada.calendar%s	a-calend.adb		a-calend.ali
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-calend.ads		20090409150020 19486c30
+D a-catizo.ads		20090220152038 5e5912b4
+D a-catizo.adb		20090409150020 caa9b3eb
+D a-except.ads		20090727140100 34786013
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-parame.ads		20091130110856 6cdeed25
+D s-stalib.ads		20090422095704 9cbc334a
+D s-traent.ads		20090417130712 a66ef260
+X 1 ada.ads
+16K9*Ada 19e8 3|21r9 34r5 4|32r14 69r5
+X 2 a-calend.ads
+36K13*Calendar 1|16k9 2|358e17 3|21r13 34r9 4|32r18 69r9
+38I9*Time 3|29r37 4|45r37
+52V13*Clock{38I9} 3|29r45 4|45r45
+206i4 Invalid_Time_Zone_Offset{long_integer} 4|51r21
+351K12 Time_Zones_Operations 356e29 4|47r20
+353V16*UTC_Time_Offset{long_integer} 4|47r42
+X 3 a-catizo.ads
+21K22*Time_Zones 2|36k13 3|34l18 34e28 4|32b27 69l18 69t28
+25I9*Time_Offset<short_integer> 29r59 4|45r59 48r18 58r17
+27X4*Unknown_Zone_Error 4|52r16 63r16
+29V13*UTC_Time_Offset{25I9} 29>30 4|45b13 67l8 67t23
+29i30 Date{2|38I9} 4|45b30 47r59
+X 4 a-catizo.adb
+46i7 Offset_L{long_integer} 51r10 58r30
+48i7 Offset{3|25I9} 58m7 62r14 66r14
+

@@ -1,0 +1,56 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.exceptions.traceback%b  a-exctra.adb	fac15881 NE OL PK
+W ada.exceptions%s	a-except.adb		a-except.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+
+U ada.exceptions.traceback%s  a-exctra.ads	86c97368 NE OL PK
+W ada.exceptions%s	a-except.adb		a-except.ali
+W system%s		system.ads		system.ali
+W system.traceback_entries%s  s-traent.adb	s-traent.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-exctra.ads		20090409150020 14dfe11b
+D a-exctra.adb		20090409150020 ee1eb99a
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-traent.ads		20090417130712 a66ef260
+X 1 ada.ads
+16K9*Ada 19e8 3|40r9 55r5 4|32r14 43r5
+X 2 a-except.ads
+55K13*Exceptions 1|16k9 2|370e19 3|40r13 55r9 4|32r18 43r9
+68R9*Exception_Occurrence 332e14 3|50r29 4|38r29
+286A9 Tracebacks_Array(12|46M12)<integer>
+322i7*Num_Tracebacks{integer} 4|40r53
+325a7*Tracebacks{286A9} 4|40r34
+X 3 a-exctra.ads
+40K24*Traceback 2|55k13 3|55l20 55e29 4|32b29 43l20 43t29
+42K12*TBE=42:31 47r58
+44M12*Code_Loc{6|64M9}
+47A9*Tracebacks_Array(12|46M12)<integer> 50r58 4|38r58 40r14
+50V13*Tracebacks{47A9} 50>25 4|38b13 41l8 41t18
+50r25 E{2|68R9} 4|38b25 40r32 40r51
+X 6 system.ads
+37K9*System 3|38r6 42r24 44r24 6|197e11
+64M9*Address 3|44r31
+X 12 s-traent.ads
+43K16*Traceback_Entries 3|38w13 42r31 12|61e29
+46M12*Traceback_Entry{6|64M9} 3|47r62
+

@@ -1,0 +1,95 @@
+! ZeroEWAOps.wresl
+! set to zero the system components and other variables that should not have
+! values until the EWA step.
+
+! dvars from the system tables
+/*
+goal zero_D143A_EWA    {D143A_EWA     = 0.}
+goal zero_D145A_EWA    {D145A_EWA     = 0.}
+goal zero_D122_EWA     {D122_EWA     = 0.}
+goal zero_D128_EWA     {D128_EWA     = 0.}
+goal zero_D7B_EWA      {D7B_EWA      = 0.}
+goal zero_I204_EWA     {I204_EWA     = 0.}
+*/
+goal zero_I852_EWA     {I852_EWA     = 0.}
+goal zeroI852_ILWB_EWA {I852_ILWB_EWA     = 0.}
+goal zero_I859_EWA     {I859_DWEX_EWA     = 0.}
+goal zero_I885_EWA     {I885_DWEX_EWA     = 0.}
+goal zero_I706_EWA     {I706_EWA     = 0.}
+goal zero_I_MDOTA_EWA  {I_MDOTA_EWA     = 0.}
+!goal zero_D805_EWA     {D805_EWA     = 0.}
+goal zero_D852_ILWB    {D852_ILWB_EWA= 0.}
+goal zero_D859_DW_EWA  {D859_DW_EWA  = 0.}
+goal zero_D885_DW_EWA  {D885_DW_EWA  = 0.}
+!goal zero_D11_PURCHASE {D11_PURCHASE = 0.}
+!goal zero_D12          {D12          = 0.}
+!goal zero_D13          {D13          = 0.}
+!goal zero_D13_SrcShft  {D13_SrcShft  = 0.}
+!goal zero_D13_ILWB     {D13_ILWB     = 0.}
+!goal zero_D13_SWP1     {D13_SWP1     = 0.}
+!goal zero_D13_CVP1     {D13_CVP1     = 0.}
+!goal zero_D13_SWP2     {D13_SWP2     = 0.}
+!goal zero_D13_CVP2     {D13_CVP2     = 0.}
+!goal zero_D13_cvptrans {D13_cvptrans = 0.}
+!goal zero_D13_swptrans {D13_swptrans = 0.}
+goal zeroI885_SS_EWA   {I885_SS_EWA =  0.}
+goal zeroD885_SS_EWA   {D885_SS_EWA =  0.}
+goal zeroI895_SS_EWA   {I895_SS_EWA =  0.}
+goal zeroD895_SS_EWA   {D895_SS_EWA =  0.}
+goal zeroI899_SS_EWA   {I899_SS_EWA =  0.}
+goal zeroD899_SS_EWA   {D899_SS_EWA =  0.}
+
+! Impacts of EWA purchase to deliveries and shortages
+! These are a mix of dvars and svars in the EWA step, but can be set
+! as svar values in pre-EWA steps.
+
+!define I839_SCI_EWA {value 0.}
+/*
+define C5_ewa_ex {value 0.}
+define SSred_885 { value 0.}
+define SSpayback_885 { value 0.}
+define SSred_899 { value 0.}
+define SSpayback_899 { value 0.}
+define SSred_895 { value 0.}
+define SSpayback_895 { value 0.}
+
+define AnnSacCI_EWA {value 0.}
+define AnnSacOthCI_EWA {value 0.}
+define EWA_DWCI12   {value 0.}
+define EWA_DWCI15   {value 0.}
+define EWA_CI12     {value 0.}
+define EWA_CI15     {value 0.}
+define EWA_CI12_GCCn   {value 0.}
+define EWA_CI12_GCCs   {value 0.}
+define EWA_CI12_122a   {value 0.}
+define EWA_CI12_122b   {value 0.}
+define EWA_DWCI12_GCCn {value 0.}
+define EWA_DWCI12_GCCs {value 0.}
+define EWA_DWCI12_122a {value 0.}
+define EWA_DWCI12_122b {value 0.}
+define EWA_GW12_GCCn   {value 0.}
+define EWA_GW12_GCCs   {value 0.}
+define EWA_GW12_122a   {value 0.}
+define EWA_GW12_122b   {value 0.}
+
+define EWA_GW69dv { value 0.}
+define EWA_GW12dv { value 0.}
+define EWA_GW15dv { value 0.}
+define EWA_CI12DV  {value 0.}
+define EWA_CI15DV  {value 0.}
+define EWA_CI69DV  {value 0.}
+define EWA_DWCI12DV  {value 0.}
+define EWA_DWCI15DV  {value 0.}
+define EWA_DW12_GCCnDV {value 0.}
+define EWA_DW12_GCCsDV {value 0.}
+define EWA_DW12_122aDV {value 0.}
+define EWA_DW12_122bDV {value 0.}
+define EWA_CI12_GCCnDV {value 0.}
+define EWA_CI12_GCCsDV {value 0.}
+define EWA_CI12_122aDV {value 0.}
+define EWA_CI12_122bDV {value 0.}
+define EWA_GW12_GCCnDV {value 0.}
+define EWA_GW12_GCCsDV {value 0.}
+define EWA_GW12_122aDV {value 0.}
+define EWA_GW12_122bDV {value 0.}
+*/

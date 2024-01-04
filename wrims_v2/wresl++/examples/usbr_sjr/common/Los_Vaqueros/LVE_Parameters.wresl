@@ -1,0 +1,297 @@
+! LVE_Parameters.wresl
+! A. Draper
+! 02/14/2005
+! MWH
+! File contains parameter values used elsewhere in the code.
+! Revised Becky Fedak February 2007 MWH
+
+/*
+Other files that contain parameter values are:
+
+Channel-table.wresl:
+    define C421     {lower 0 upper 400 kind 'FLOW-CHANNEL' units 'CFS'} !Blending Pt#2 to Blending Pt#1, LV Pipeline
+    define C422     {lower 0 upper 670 kind 'FLOW-CHANNEL' units 'CFS'} !Release from LV
+    define C428A    {lower 0 upper 52 kind 'FLOW-CHANNEL' units 'CFS'} !EBMUD Mokelumne Intertie delivery to CCWD
+    define C428B    {lower 0 upper 52 kind 'FLOW-CHANNEL' units 'CFS'} !EBMUD Mokelumne Intertie delivery to LV
+    define C430A    {lower 0 upper 1000 kind 'FLOW-CHANNEL' units 'CFS'} !Transfer-LV Pipeline
+    define C430B    {lower 0 upper 1000 kind 'FLOW-CHANNEL' units 'CFS'} !Direct delivery to SBA/Bethany
+    define C431 {lower 0 upper 1000 kind 'FLOW-CHANNEL' units 'CFS'} !Delta-Transfer Pipeline
+    ! NOTE: C431 capacity = Old River Pipeline + Delta-Transfer Pipeline, see below for more discussion.
+    define C432 {lower 0 upper 320 kind 'FLOW-CHANNEL' units 'CFS'} !Old River Pipeline, downstream of Transfer Pt#1
+    define C433A    {lower 0 upper 250 kind 'FLOW-CHANNEL' units 'CFS'} !AIP diversion, delivery to CCWD
+    define C433B    {lower 0 upper 250 kind 'FLOW-CHANNEL' units 'CFS'} !AIP diversion, delivery to LV
+    define C434A    {lower 0 upper 320 kind 'FLOW-CHANNEL' units 'CFS'} !Old River diversion, delivery to CCWD
+    define C434B    {lower 0 upper 420 kind 'FLOW-CHANNEL' units 'CFS'} !Old River diversion, delivery to LV
+
+Reservoir-table.wresl:
+    define S422level4 {value 275} !Set at max raise being evaluated, reservoir level restricted in Parameters.wresl (S422_Cap)
+
+EWA_purch_ann.table:
+    Combined South of Delta and North of Delta EWA Annual Purchases (TAF/yr)
+
+LVE_ann_demand.table:
+        Contra Costa Water District annual base and reliability demand, based on water year type (TAF/year)
+
+LVE_CCWD_WQ_target.table:
+        CCWD delivered water quality target based on Los Vaqueros Reservoir storage (mg/L)
+
+LVE_demand_pattern.table:
+    Contra Costa Water District base demand delivery pattern (percentage)
+
+LVE_Estorage.table:
+        Emergency storage volume for Los Vaqueros Reservoir (TAF)
+
+LVE_WQ_target.table:
+        Los Vaqueros Reservoir water quality target based on reservoir storage (mg/L)
+
+Res_info.table:
+        Los Vaqueros Reservoir storage-area-discharge relationship (TAF-AC-CFS)
+
+Res_level.table:
+        Los Vaqueros Reservoir storage volume targets for each level by month (TAF)
+
+SLR_mar_storage.table:
+    San Luis Reservoir March storage level (TAF)
+    ! NOTE: this table must be updated with updates to other input timeseries
+    ! (dependant on adjustments to CalSim II output during iterations)
+*/
+
+!#################################################################
+!INPUT PARAMETER VALUES
+
+! NOTE: make respective adjustments in LVE_OpsMaxDiversion.wresl depending on scenario being simulated...
+!   - Exisiting and FNA: Existing BO
+!   - With Project: New 30-day BO
+
+define diversion_cap    { value 670. } ! AIP + OR diversion capacity, 670cfs or 1000cfs (cfs)
+                       ! NOTE: set at 670 cfs for Plan A
+
+define CCCPP1_Cap   { value 350. } ! Contra Costa Canal Pumping Plant No 1 capacity (cfs)
+
+define ORPP1_Cap    { ! Existing Old River Pumping Plant capacity, up to 420cfs (cfs)
+    case Exist {
+    condition LVESwitch < 0.5
+    value 250.
+    }
+    case FNP_1000 {
+    condition LVESwitch < 1.5 .or. int(diversion_cap)==1000
+    value 320.
+    }
+    case otherwise {
+    condition always
+    value 420.
+    }
+}
+
+define ORPP2_Cap    { ! New Old River Pumping Plant capacity (cfs)
+    case Exist_FNA_PlanA_670 {
+    condition LVESwitch < 1.5 .or. int(LVEPlan)==1 .or. int(diversion_cap)==670
+    value 0.
+    }
+    case otherwise {
+    condition always
+    value 430.
+    }
+}
+
+define ORPP_Cap     { value ORPP1_Cap + ORPP2_Cap } ! Total Old River Pumping Plant capacity
+
+define AIP_Cap      { ! AIP Pumping Plant capacity (cfs)
+    case Exist {
+    condition LVESwitch < 0.5
+    value 0.
+    }
+    case otherwise {
+    condition always
+    value 250.
+    }
+}
+
+define OR_PL_Cap    { value 320. } ! Old River Pipeline capcity (cfs)
+
+define OR_PL_Cap2   { ! New Old River Pipeline capcity (cfs) - parallel pipeline to existing
+    case Exist_FNA {
+    condition LVESwitch < 1.5
+    value 0.
+    }
+    case otherwise {
+    condition always
+    value (ORPP_Cap + AIP_Cap) - OR_PL_Cap
+    }
+}
+
+define CCC_Cap          { value 350. } ! Contra Costa Canal capacity (cfs)
+
+define D425_TS_Cap  { ! LV release capacity to CCWD (cfs)
+    case Exist_FNA_PlanD {
+    condition LVESwitch < 1.5 .or. int(LVEPlan)==4
+    value 400.
+    }
+    case otherwise {
+    condition always
+    value 430.
+    }
+}
+
+define D425_Other_Cap   { ! LV release capacity to SBA/Bethany (cfs)
+    case Exist_FNA_PlanD {
+    condition LVESwitch < 1.5 .or. int(LVEPlan)==4
+    value 400.
+    }
+    case otherwise {
+    condition always
+    value 430.
+    }
+}
+
+define C422_Cap { ! Total LV release capacity (cfs)
+    case Exist_FNA_PlanD {
+    condition LVESwitch < 1.5 .or. int(LVEPlan)==4
+    value 400.
+    }
+    case PlanA {
+    condition int(LVEPlan)==1
+    value 430.
+    }
+    case otherwise {
+    condition always
+    value 430.
+    }
+}
+
+! NOTE: The 2001D10AINIT.dss file must also be edited to be equal to the reservoir capcity for the model
+define S422_Cap     { ! LVE capacity (taf)
+    case Exist_FNA_PlanD {
+    condition LVESwitch < 1.5 .or. int(LVEPlan)==4
+    value 100.
+    }
+    case otherwise {
+    condition always
+    value 275.
+    }
+}
+
+define Mok_WQ       { value 7.5 } ! Mokelumne Intertie water quality (mg/L)
+
+define Mok_Del      { ! Mokelumne Intertie delivery (cfs)
+    case Exist {
+    condition LVESwitch < 0.5
+    value 0.
+    }
+    case otherwise {
+    condition always
+    value 52.
+    }
+}
+
+define I422B_WQ     { value 7.0 } ! Assumed water quality of direct precip on reservoir (mg/L)
+
+define CCWD_CVP     { value 195. } ! CCWD CVP Contract Amount (TAF)
+
+define DS_Cap       { ! Maximum annual Delta surplus amount (TAF)
+    case Exist_FNA {
+    condition LVESwitch < 1.5
+    value 95.85
+    }
+    case otherwise {
+    condition always
+    value 9999.
+    }
+}
+
+define Init_LV_WQ_Trgt  { value 40. } ! Los Vaqueros Reservoir initial water quality target (mg/L)
+
+define Init_LV_WQ   { value 35. } ! Initial Los Vaqueros Reservoir water quality (mg/L)
+
+define C430A_Cap        { ! LVE filling capacity (cfs)
+    case Exist_FNA {
+    condition LVESwitch < 1.5  .or. int(LVEPlan)==4
+    value 200.
+    }
+    case PlanA {
+    condition int(LVEPlan)==1
+    value 670.
+    }
+    case otherwise {
+    condition always
+    value 670.
+    }
+}
+
+define C430B_Cap        { ! SBA/Bethany direct delivery capacity (cfs)
+    case PlanA {
+    condition int(LVEPlan)==1
+    value 210.
+    }
+    case PlanB {
+    condition int(LVEPlan)==2
+    value 670.
+    }
+    case otherwise {
+    condition always
+    value 1000.
+    }
+}
+
+define LVE_CS_Limit     { ! Limit on filling LV with CS (TAF)
+    case Exist_FNA {
+    condition LVESwitch < 1.5
+    value 20.
+    }
+    case otherwise {
+    condition always
+    value 15.
+    }
+}
+
+define LV_SBA_Cap   { ! LV-SBA/Bethany pipeline connection capacity (cfs)
+    case Exist_FNA {
+    condition LVESwitch < 1.5
+    value 0.
+    }
+    case PlanA {
+    condition int(LVEPlan)==1
+    value 210.
+    }
+    case PlanB {
+    condition int(LVEPlan)==2
+    value 670.
+    }
+    case otherwise {
+    condition always
+    value 1000.
+    }
+}
+
+! Initial CCWD delivered water quality (mg/L)
+define Init_CCWD_WQ_Trgt{ value 65. }
+
+! Delta Surplus Buffer, do not use Delta Surplus if below this value (cfs)
+define DSBuffer         { value 0. }
+
+! Maximum amount released from LV in April if storage available, according to BO (TAF)
+define BO_Apr_Rel   { value 12.5 }
+
+!The following two pinchpoints will vary depending on reservoir size and pumping configuration.
+! Reduction in delivery to SBA/Bethany when LVR storage approaches pinchpoint (TAF)
+! Pinchpoint should be reduced as much as possible while still maintaining CCWD deliveries and WQ.
+! NOTE: if this pinchpoint is changed, edit storage levels 2 & 3 in res_level.table
+define D425_Other_PPt   { select trgt from res_level_422 where res_num=422,level=2,month=month }
+
+! Preserve 'bottom' portion of reservoir for SBA reliability deliveries (TAF)
+! Location of pinchpoint will depend on determined value of EWA water versus supply reliability water.
+define D426LV_EWA_PPt   { select trgt from res_level_422 where res_num=422,level=3,month=month }
+
+define EI_CWC       { value 0.2 } ! Carriage water cost to maintain E/I standard
+
+/*
+NOTE: Input DSS timeseries to be updated with iterations
+1. Banks_Cap -
+    Requires reference to EWA pumping at Banks
+2. S_SLR -
+    Requires reference to EWA storage in San Luis Reservoir
+3. SLR_mar (lookup table) -
+    Assumes perfect foresight (looking ahead to March), so must be referenced as an input
+4. WQ_AIP, WQ_OR, WQ_RS -
+    Reference WQ output from DSM2, unless ANN used
+*/

@@ -1,0 +1,36 @@
+/*************************************
+cvp_to_swp_south.wresl
+ 
+Tom FitzHugh BOR 5/20/2010
+
+This code Bounds the Non-Wheeling interconnections between SWP and CVP.
+*************************************/
+
+!Joint Use Branch
+!************************************************************************************************************
+
+! Make sure CVP uses only the water it supplies to CVP Joint Use Branch.
+! Do not let CVP use State Water.
+
+/*** Nancy: please check that I got these goals right, left Calsim code here for reference ***/
+!goal return_it { D807 + I839_WTS + I839_SCI_EWA = C845 }       !Whatever the state supplies to the JUB it must get back - adjusted for WTS operations
+goal return_it { D_SWPJUCVP = C_DsAmgC }  !Whatever the state supplies to the JUB it must get back - adjusted for WTS operations
+
+!The CVP must supply to the JUB exactly what it is going to deliver to its Obligations.
+!goal CVP_joint { D704 = D833 + D834 + D835 + D836 + D837 + D838 + D839 + D840 + D841 + D842 + D843 + D844 + D845 }
+goal CVP_joint { C_CVPJU = D_DosAmigosCVP }
+
+goal CVP_joint_cap_limit {C_CVPJU < 4635 + D833}
+
+!************************************************************************************************************
+
+
+!Cross Valley Demands
+!************************************************************************************************************
+
+! The CVP must transfer water to the SWP aqueduct to meet the CVP demands along the aqueduct (D855 & D856).
+!goal Cross_Val { D705 = /*D855 +*/ D856 + D859_GWRECH_CVPA + I607_WTS}    !I607_WTS is DMC pool supply going to South Coast
+! Refuge water for CVPRfg_854_prf must come from CVP water transferred to SWP aqueduct
+goal Cross_Val { D_CVPJUSWP = D_CVPRfg_854_prf } 
+
+!*****************************************************************************************************

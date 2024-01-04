@@ -1,0 +1,52 @@
+!Anna Fock  Oct 2003
+/* Seepage Loss Definition
+One CALSIM depletion arc to one DSM2-based seepage loss arc (Part B prefix, # of arcs)
+CALSIM                DSM2
+Depletion (D,1)    = Seepage loss (SL,1)
+*/
+!Non-Pulse period result for DSM2 in the last cycle
+define SLoss639_NP  {
+    case NonPulseNonDO {
+        condition month <= may
+        value D620Accr[SJR_WQ1] }
+    case NonPulsePlusDO {
+        condition always
+        value D620Accr[VAMP_AND_DO] }
+            }
+
+define SL639_NP  {lower -100000 kind 'NPD-Flow' Units 'CFS'}    !D620Accr at RM118
+goal set_SL639_NP { SL639_NP = SLoss639_NP }
+
+!Pulse period result for DSM2 in the last cycle
+define SLoss639_P  {
+    case APRILMAY {
+        condition month >= apr .and. month <= may
+        value D620Accr[VAMP_AND_DO] }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SL639_P  {lower -100000 kind 'NPD-Flow' Units 'CFS'}    !D620Accr at RM118
+goal set_SL639_P { SL639_P = SLoss639_P }
+
+!Final result for DSM2 in the last cycle
+define SLoss639_FINAL  {
+    case April {
+        condition month == apr
+        value ( 14.* SLoss639_NP/30. + 16.* SLoss639_P /30.) }
+    case MayOnly {
+        condition month == may
+        value ( 15.* SLoss639_P/31. + 16.* SLoss639_NP /31.) }
+    case otherwise {
+        condition always
+        value SLoss639_NP  }
+            }
+
+define SL639_Final  {lower -100000.0 kind 'NPD-Flow' Units 'CFS'}    !D620Accr at RM118
+goal set_SL639_Final { SL639_Final = SLoss639_Final }
+
+!EC values of SJR Depletion
+define EC_SL639_NP    {alias EC_620_NP kind 'EC-NPD' units 'none' }    !Non-pulse D620Accr at RM118
+define EC_SL639_P    {alias EC_620_P kind 'EC-NPD' units 'none' }    !Pulse D620Accr at RM118
+define EC_SL639    {alias EC_620finalSV kind 'EC-NPD' units 'none' }    !Final D620Accr at RM118

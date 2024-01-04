@@ -1,0 +1,48 @@
+# Description:
+# Assumed 12 locations to put barriers
+GATE
+NAME                FROM_OBJ      FROM_IDENTIFIER       TO_NODE                                                                    
+#Sutter_Slough       channel                   379           300
+#Steamboat_Slough    channel                   383           340
+#WestFalse_River     channel                   279           44
+#Threemile_Slough    channel                   309           352
+oldr_gate           channel                   111           97
+conn_sl_gate        channel                   248           207
+Empire_Cut_gate      channel                   175           142
+
+#Sac_Georgiana       channel                   423           343
+#Old_Highway4        channel                    90            80
+#Woodward_Canal      channel                   233           117
+#Railroad_Cut        channel                   258           121
+#Connection_Slough   channel                   248           129
+#Empire_Cut          channel                   175           142
+#Grant_Line_Canal temp barrier
+#Old River temp barrier
+#Head Old River temp barrier
+#SJR_Old             channel                     8             8        
+END
+
+GATE_WEIR_DEVICE
+GATE_NAME                DEVICE         NDUPLICATE   WIDTH    ELEV   HEIGHT   CF_FROM_NODE   CF_TO_NODE   DEFAULT_OP      
+#Sutter_Slough              weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_open            
+#Steamboat_Slough           weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_open        
+#WestFalse_River            weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_open        
+#Threemile_Slough           weir                 1   999.0   99.0   9999.0            0.1          0.1   gate_open        
+
+oldr_gate               radial_gates             1   350.0  -22.453 9999.0             1.0          1.0   unidir_to_node            
+conn_sl_gate            radial_gates             1   140.0  -34.419 9999.0             1.0          1.0   unidir_to_node            
+Empire_Cut_gate          radial_gates             1   140.0  -34.419 9999.0             1.0          1.0   unidir_from_node            
+
+#Sac_Georgiana              weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_close 
+#Old_Highway4               weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_close 
+#Woodward_Canal             weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_close 
+#Railroad_Cut               weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_close 
+#Connection_Slough          weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_close 
+#Empire_Cut                 weir                  1   999.0   99.0   9999.0            0.1          0.1   gate_close 
+#Grant_Line_Canal temp barrier 
+#Old River temp barrier        
+#Head Old River temp barrier        
+#SJR_Old                   weir                   1   999.0   99.0   9999.0            0.1          0.1   gate_close 
+END
+
+

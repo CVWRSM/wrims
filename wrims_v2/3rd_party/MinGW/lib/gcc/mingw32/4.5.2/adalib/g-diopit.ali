@@ -1,0 +1,167 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnvvnvnnnnnnnnnnnnvnnvnnnnnnnnnnnnnnnnnnnnvnnvnnnnnnnnnnnnnnnnnn
+
+U gnat.directory_operations.iteration%b  g-diopit.adb  e516bcbb NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.characters%s	a-charac.ads		a-charac.ali
+W ada.characters.handling%s  a-chahan.adb	a-chahan.ali
+W ada.strings%s		a-string.ads		a-string.ali
+W ada.strings.fixed%s	a-strfix.adb		a-strfix.ali
+W ada.strings.maps%s	a-strmap.adb		a-strmap.ali
+W gnat%s		gnat.ads		gnat.ali
+W gnat.directory_operations%s  g-dirope.adb	g-dirope.ali
+W gnat.os_lib%s		g-os_lib.ads		g-os_lib.ali
+W gnat.regexp%s		g-regexp.ads		g-regexp.ali
+
+U gnat.directory_operations.iteration%s  g-diopit.ads  14f4227d BN EE NE OL PK
+W gnat.directory_operations%s  g-dirope.adb	g-dirope.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-charac.ads		20070912115822 506ce725
+D a-chahan.ads		20090409150020 dcb15e96
+D a-chlat1.ads		20070912115822 e9ee6d0a
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-stream.ads		20090409150020 34aca5be
+D a-string.ads		20070406091342 87b4230b
+D a-strfix.ads		20070406091342 253a46ca
+D a-strmap.ads		20090409150020 5253a637
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D gnat.ads		20050905075126 96410e68
+D g-dirope.ads		20080408065740 92471343
+D g-diopit.ads		20051115140646 86b3313e
+D g-diopit.adb		20090220152038 acd1954b
+D g-os_lib.ads		20090409150020 c015094d
+D g-regexp.ads		20080820135520 a4b9afe8
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-os_lib.ads		20091027135146 6320e1c3
+D s-parame.ads		20091130110856 6cdeed25
+D s-regexp.ads		20080731102612 1ac245ef
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-string.ads		20090417130712 14d97e8c
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 17|34r6 35r6 36r6 42r8
+X 2 a-charac.ads
+16K13*Characters 18e19 17|34r10 216r21
+X 3 a-chahan.ads
+36K24*Handling 144e28 17|34w21 216r32
+47V13*Is_Letter{boolean} 17|216r41
+X 8 a-string.ads
+16K13*Strings 35e16 17|35r10 36r10 169r21 173r19 193r21 197r19 222r24 226r23
+. 253r23 269r16 273r19 292r19
+X 9 a-strfix.ads
+18K21*Fixed 242e22 17|35w18 173r27 197r27 226r31 253r31 273r27 292r27
+48V13*Index{natural} 17|173r33 197r33 226r37 253r37 273r33 292r33
+X 10 a-strmap.ads
+38K21*Maps 412e21 17|36w18 169r29 193r29 222r32 269r24
+47A9*Character_Set(boolean)
+83V13*Is_In{boolean} 17|169r34 193r34 222r37 269r29
+X 14 gnat.ads
+36K9*GNAT 39e9 16|36r9 94r5 17|37r6 38r6 40r14 398r5
+X 15 g-dirope.ads
+49K14*Directory_Operations 14|36k9 15|277e30 16|36r14 94r10 17|40r19 398r10
+51A12*Dir_Name_Str{string}<integer> 16|44r24 17|49r24 56r45 80r45
+62P9*Dir_Type(258M9) 17|84r16 325r16
+74e4*Dir_Separator{character} 17|72r26 332r46 333r36 342r45 371r43
+111A12*Path_Name{string}<integer> 16|62r40 17|137r40
+219U14*Open 17|88r10 333r13
+225U14*Close 17|107r25 125r10 363r34 384r13
+233U14*Read 17|91r13 336r16
+258M9*Dir_Type_Value<20|64M9>
+273a4 Dir_Seps{10|47A9} 17|169r60 175r16 193r60 198r52 222r63 227r56 254r56
+. 269r51 274r52 292r44
+X 16 g-diopit.ads
+36K35*Iteration 15|49k14 16|94l31 94e40 17|40b40 398l31 398t40
+39U22 Action 40>10 41>10 42=10 17|104r22
+40s10 Item{string}
+41i10 Index{positive}
+42b10 Quit{boolean}
+43u14*Find 44>7 45>7 17|48b14 131l8 131t12
+44a7 Root_Directory{15|51A12} 17|49b7 130r23
+45s7 File_Pattern{string} 17|50b7 52r63
+58U22 Action 59>10 60>10 61=10 17|360r31
+59s10 Item{string}
+60i10 Index{positive}
+61b10 Quit{boolean}
+62u14*Wildcard_Iterator 62>33 17|137b14 396l8 396t25
+62a33 Path{15|111A12} 17|137b33 391r10 395r23
+X 17 g-diopit.adb
+52r7 File_Regexp{26|101R9} 100r44
+53i7 Index{natural} 101m19 101r28 104r40
+54b7 Quit{boolean} 104m47 111r29 120r29 129m7
+56U17 Read_Directory 56>33 80b17 119r19 126l11 126t25 130r7
+56a33 Directory{15|51A12} 80b33 88r21 97r45
+60V16 Make_Pathname{string} 60>31 60>36 67b16 74l11 74t24 97r30
+60s31 Dir{string} 67b31 69r13 69r18 69r42 69r47 70r20 72r20
+60s36 File{string} 67b36 70r26 72r42
+81a10 Buffer{string} 91m24 95r47
+82i10 Last{natural} 91m32 92r23 95r60
+84p10 Dir{15|62P9} 85r32 88m16 91r19 107m32 125m17
+95a16 Dir_Entry{string} 97r56 100r33 116r24 116r48
+96a16 Pathname{string} 104r30 117r48 119r35
+139i7 Index{natural} 357m28 357r37 360r49
+141U17 Read 142>10 143>10 144>10 181r16 186r16 204r16 209r16 233r19 240r19
+. 260r19 265r19 280r16 284r16 298r16 302r16 317b17 386l11 386t15
+142s10 Directory{string} 318b10 332r34 333r24 342r33 371r31
+143s10 File_Pattern{string} 319b10 323r42 348r48 350r49
+144s10 Suffix_Pattern{string} 320b10 353r28 372r31
+149U17 Next_Level 150>10 151>10 159b17 308l11 308t21 370r28 395r7
+150s10 Current_Path{string} 160b10 181r22 186r22 204r22 209r22 214r16 280r22
+. 284r22 298r22 302r22
+151s10 Suffix_Path{string} 161b10 164r30
+163i10 DS{natural} 173m13 177r16 187r42 188r26 197m13 200r16 210r42 211r26
+. 226m16 229r19 241r45 242r29 253m16 256r19 265r41 265r58 273m13 276r16 285r42
+. 286r26 292m13 294r16 303r38 304r26
+164s10 SP=164:30{string} 167r13 168r21 168r25 169r41 169r45 174r16 174r20
+. 174r36 187r22 187r26 188r22 188r32 191r16 192r21 192r25 192r37 193r41 193r45
+. 198r22 198r26 198r42 210r22 210r26 211r22 211r32 215r21 216r52 216r56 217r21
+. 217r25 221r16 222r44 222r48 227r26 227r30 227r46 233r25 233r29 233r41 234r25
+. 234r29 234r45 240r25 240r29 240r41 241r25 241r29 242r25 242r35 254r26 254r30
+. 254r46 260r25 265r25 265r29 265r54 265r64 269r36 269r40 274r22 274r26 274r42
+. 280r36 280r40 280r56 285r22 285r26 286r22 286r32 292r40 298r42 303r22 303r26
+. 304r22 304r32
+314b7 Quit{boolean} 360m56 381r39
+322r10 File_Regexp{26|101R9} 352r50
+325p10 Dir{15|62P9} 326r32 333m19 336r22 363m41 384m20
+328a10 Buffer{string} 336m27 340r50
+329i10 Last{natural} 336m35 337r39 340r63
+335l13 Dir_Iterator 337r21 381r21 382l22 382e34
+340a19 Dir_Entry{string} 342r61 348r23 350r23 352r39 371r59
+341a19 Pathname{string} 360r39
+X 18 g-os_lib.ads
+51K14*OS_Lib=51:36 17|37w11 117r27 332r13
+X 19 g-regexp.ads
+72K14*Regexp=72:36 17|38w11 52r30 52r47 100r19 322r33 323r26 352r25
+X 20 system.ads
+64M9*Address
+X 24 s-os_lib.ads
+474V13*Is_Directory{boolean} 17|117r34 332r20
+X 26 s-regexp.ads
+101R9*Regexp 17|52r37 322r40 26|129e14
+107V13*Compile{101R9} 17|52r54 323r33
+109b7 Glob{boolean} 17|323r56
+118V13*Match{boolean} 17|100r26 352r32
+

@@ -1,0 +1,6 @@
+! Filename: IntegratedOperationsCyc1.wresl
+
+    INCLUDE 'USJRS_IO_OFF.wresl'
+    INCLUDE 'CVC_OFF.wresl'
+    goal off_16B {D18A_16B + D18B_16B < 0} !Turn off 16B capture
+    goal bypass_off {C16_TFB < 0}

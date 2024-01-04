@@ -1,0 +1,84 @@
+!WRESL statements for SWP San Luis Rule Curve
+!
+!This code calculates the target storage level for San Luis reservoir
+!******************************************************************************************
+define SWPRULECV { std kind 'rulecurve' units 'TAF' }   !Decision variable of SWP San Luis rule curve
+
+
+! IMF @ debug...needed for SJW stand-alone
+! (need swp_allocation_final, others required to compute it)
+define max_tableA  { select Total from TableA where Factor=1 }
+define tableA_loss { select LOSS  from TableA where Factor=1 }
+define SWP_TableA  { value max_tableA - tableA_loss } 
+define swp_allocation_final { value swp_perdel*SWP_TableA + tableA_loss }
+
+define SWP_Rule_DelTar {
+  select  RuleCurve
+  from    SWPrule_deltar
+  given   deltar = swp_allocation_final
+  use     linear}
+define swp_rule_1 {alias SWP_Rule_DelTar units 'NONE'}
+
+define SWP_Rule_Cap_Oroville {
+  select  RuleCurve_Cap
+  from    SWPrule_cap_Oroville
+  given   oroville = S_OROVL(-1)+S_OROVLmod
+  use     linear}
+define SWP_rule_Cap {alias SWP_Rule_Cap_Oroville units 'NONE'}
+
+define OroDrainAmt4SL {value min(max(S_OROVL(-1) /*+ S6mod*/ - OroSepTarg, 0.),
+                                 max(S_SLUIS_SWPlevel4 - S_SLUIS_SWP(-1) /*- S_SLUIS_SWPmod*/,0.) )}
+define OroDrainAmtMon {value OroNextMonTarg}
+define ExpPmpAmtMon {value 60.} ! roughly 1000 cfs for the month
+
+
+!calculate the actual rule curve.
+define SWPRULEcalc {
+     case OctToDec {
+          condition month >= oct .and. month <= dec
+          value S_SLUIS_SWP(prevSep)+S_SLUIS_SWPmoddv(prevSep) + carryover_final * month/3.}
+     case JanToFeb {
+          condition month == jan .or. month == feb
+          value     month/6. * SWP_Rule_DelTar}
+     case MarthruApr {
+          condition month == mar .or. month == apr
+          value     SWP_Rule_DelTar}
+     case May {
+          condition month == may
+          value max(min(S_SLUIS_SWP(-1) + S_SLUIS_SWPmod - (swpdemfinal_may - ExpPmpAmtMon) + OroDrainAmtMon,
+		        SWPRuleDrainTar + (swpdemfinal_jun + swpdemfinal_jul + swpdemfinal_aug + swpdemfinal_sep - 4. * ExpPmpAmtMon)),
+                    init_SWPRuleDrainTar + OroDrainAmt4SL)}
+     case June {
+          condition month == jun
+          value max(min(S_SLUIS_SWP(-1) + S_SLUIS_SWPmod - (swpdemfinal_jun - ExpPmpAmtMon) + OroDrainAmtMon,
+		        SWPRuleDrainTar + (swpdemfinal_jul + swpdemfinal_aug + swpdemfinal_sep - 3. * ExpPmpAmtMon)),
+                    init_SWPRuleDrainTar + OroDrainAmt4SL)}
+     case July {
+          condition month == jul
+          value max(min(S_SLUIS_SWP(-1) + S_SLUIS_SWPmod - (swpdemfinal_jul - ExpPmpAmtMon) + OroDrainAmtMon,
+		        SWPRuleDrainTar + (swpdemfinal_aug + swpdemfinal_sep - 2. * ExpPmpAmtMon)),
+                    init_SWPRuleDrainTar + OroDrainAmt4SL)}
+     case August {
+          condition month == aug
+          value max(min(S_SLUIS_SWP(-1) + S_SLUIS_SWPmod - (swpdemfinal_aug - ExpPmpAmtMon) + OroDrainAmtMon,
+		        SWPRuleDrainTar + (swpdemfinal_sep - ExpPmpAmtMon)),
+                    init_SWPRuleDrainTar + OroDrainAmt4SL)}
+     case Sep {
+          condition always
+          value max(min(S_SLUIS_SWP(-1) + S_SLUIS_SWPmod - (swpdemfinal_sep - ExpPmpAmtMon) + OroDrainAmtMon,
+		        SWPRuleDrainTar),
+                    init_SWPRuleDrainTar + OroDrainAmt4SL)}
+}
+
+
+define SWPRuleCalc1 {
+  case octdec {
+    condition month>=oct .and. month<=dec
+    value max(S_SLUIS_SWPlevel2,min(SWPRuleCalc,S_SLUIS_SWPlevel4))}
+  case other {
+    condition always
+    value max(S_SLUIS_SWPlevel2,min(SWPRuleCalc,S_SLUIS_SWPlevel4))}
+!    value max(S_SLUIS_SWPlevel2,min(SWPRuleCalc,SWP_Rule_Cap_Oroville,S_SLUIS_SWPlevel4))}
+}
+
+goal setSWPRULECV { SWPRULECV = SWPRULEcalc1 }

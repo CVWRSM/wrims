@@ -1,0 +1,9 @@
+! Intertie capacity limits
+define maxTCC062_GCC036 {select maxflow from TCGCIntertie where arc=1,month=month}
+define maxTCC085_GCC056 {select maxflow from TCGCIntertie where arc=1,month=month}
+
+goal limitD_TCC062_GCC036 {D_TCC062_GCC036 < maxTCC062_GCC036*taf_cfs}
+goal limitD_TCC085_GCC056 {D_TCC085_GCC056 < maxTCC085_GCC056*taf_cfs}
+
+
+

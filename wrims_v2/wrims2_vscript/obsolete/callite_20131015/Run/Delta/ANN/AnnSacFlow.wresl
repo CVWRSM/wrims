@@ -1,0 +1,25 @@
+/*************************************
+AnnSacFlow.wresl
+ 
+Nazrul Islam, DWR, (06/27/2010)
+Required sac flow for estimated exports considering all ann stations:
+define AnnSacReq {value min(max(0.0,RSReqSac,JPReqSac,EMReqSac,COReqSac),EstTotExp/0.65+6000.)}
+
+*************************************************/
+if int (AN_DLTSW)==3 {define AnnSacReq_max {value max(0.0,RSReqSac,JPReqSac,EMReqSac,COReqSac,ANReqSac,CHReqSac)}}
+else {define AnnSacReq_max {value max(0.0,RSReqSac,JPReqSac,EMReqSac,COReqSac)}}
+
+define AnnSacReqmaxdv {alias AnnSacReq_max kind 'FLOW' units 'CFS'}
+
+define AnnSacReq {value min(AnnSacReq_max,EstTotExpTD/0.65+7000.)}
+define AnnSacReqdv {alias AnnSacReq kind 'FLOW' units 'CFS'}
+
+!split C_Hood & C_YoloBP:
+define C_Hood_mif {std kind 'FLOW-MIN-INSTREAM' units 'cfs'}
+define C_Hood_exc {std kind 'FLOW-EXCESS-INSTREAM' units 'cfs'}
+goal C_HoodtotalANN {C_Hood_ANN = C_Hood_mif + C_Hood_exc}
+define C_YoloBP_mif {std kind 'FLOW-MIN-INSTREAM' units 'cfs'}
+define C_YoloBP_exc {std kind 'FLOW-EXCESS-INSTREAM' units 'cfs'}
+goal C_YoloBPtotal {C_YoloBP = C_YoloBP_mif + C_YoloBP_exc}
+
+goal setAnnSacFlow { C_Hood_mif + C_YoloBP_mif < AnnSacReq}

@@ -1,0 +1,19 @@
+/*   main file for calling groundwater system.
+     groundwater model based on multiple cell formulation.
+     Formulation was calibrated versus a historic CVGSM study
+     A separate groundwater mass balance is performed for each DSA.
+     Original Logic Coded by RAJ 9/99
+*/
+    INCLUDE 'GWdefine.wresl'
+    INCLUDE 'parameters.wresl'
+    INCLUDE 'dsa58.wresl'
+    INCLUDE 'dsa10.wresl'
+    INCLUDE 'dsa12.wresl'
+    INCLUDE 'dsa15.wresl'
+    INCLUDE 'dsa69.wresl'
+    INCLUDE 'dsa70.wresl'
+    INCLUDE 'dsa65.wresl'
+
+
+!    Connectivity between disaggregated Surface areas and Groundwater areas
+    INCLUDE 'connectivity.wresl'

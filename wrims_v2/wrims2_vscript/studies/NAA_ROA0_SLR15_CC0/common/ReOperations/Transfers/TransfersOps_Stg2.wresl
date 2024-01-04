@@ -1,0 +1,350 @@
+! TransferOps_Stg2.wresl
+! This file operates Stage 2 Transfers
+
+!******************************************************************************
+! This section establishes the accounting of transfers backed up in system storage.
+! Accounts for transfer water to back up into Shasta and Oroville are defined in TransfersCore.wresl
+! Shasta
+define SP4_WTS_Stg2 {value 0.}
+goal setS4_WTS_Stg2  {S4_WTS_Stg2 = 0.} !S4_WTS_Stg2(-1)}               ! Zero out for now
+goal zeroI4_WTS_Stg2 {I4_WTS_Stg2 = 0.}                                 ! Zero out for now
+goal zeroC5_WTS_Stg2 {C5_WTS_Stg2 = 0.}                                 ! Zero out for now
+! Oroville
+define SP6_WTS_Stg2 {value 0.}
+goal setS6_WTS_Stg2  {S6_WTS_Stg2 = 0.} !S6_WTS_Stg2(-1)}               ! Zero out for now
+goal zeroI6_WTS_Stg2 {I6_WTS_Stg2 = 0.}                                 ! Zero out for now
+goal zeroC6_WTS_Stg2 {C6_WTS_Stg2 = 0.}                                 ! Zero out for now
+! total storage
+goal split_S4_WTS { S4_WTS = S4_WTS_Stg1 + S4_WTS_Stg2 }
+goal split_S6_WTS { S6_WTS = S6_WTS_Stg1 + S6_WTS_Stg2 }
+! total spills
+goal split_SP4_WTS { SP4_WTS = SP4_WTS_Stg1 + SP4_WTS_Stg2 }
+goal split_SP6_WTS { SP6_WTS = SP6_WTS_Stg1 + SP6_WTS_Stg2 }
+
+!******************************************************************************
+! Operate DSA12's inline storage buffer
+goal adj_BUFF12_Stg2 {
+    lhs WTS_BUFF12_Stg2
+    case Reset{
+    condition month==DEC
+        rhs 0.}
+    case Otherwise{
+    condition always
+        rhs WTS_BUFF12_Stg2(-1) + WTS_INC12_Stg2*cfs_taf
+                                - WTS_DEC12_Stg2*cfs_taf}}
+goal WTS_INC12_force {WTS_INC12_Stg2 < int_BUFF12_Stg2 * 99999.}         ! if int=0, WTS_INC=0, WTS_DEC=pos
+goal WTS_DEC12_force {WTS_DEC12_Stg2 < 99999. - int_BUFF12_Stg2 * 99999.}! if int=1, WTS_INC=pos, WTS_DEC=0
+
+! only allow early months to be buffered
+goal limit_INC12_Stg2 {
+    lhs WTS_INC12_Stg2
+    case AprAug{
+    condition month>=Apr.and.month<=Aug
+    rhs WTS_DSA12_Stg2                                               ! limit to Stage 2 acquisition for region
+        lhs<rhs penalty 0 }
+    case otherwise{
+    condition always
+    rhs 0.}
+}
+
+! come september through november force it out one third each month
+/*goal forceoutbuff12_1 {
+    lhs WTS_DEC12_Stg2
+    case AugMar{
+    condition month>=AUG.and.month<=MAR
+        rhs WTS_BUFF12_Stg2(-1)*taf_cfs
+        lhs<rhs penalty 1500 }
+}*/
+goal forceoutbuff12_2 {
+    lhs WTS_DEC12_Stg2
+    case Sep{
+    condition month==SEP
+        rhs WTS_BUFF12_Stg2(-1)*taf_cfs/3.
+        lhs<rhs penalty 7500 }
+    case Oct{
+    condition month==OCT
+        rhs WTS_BUFF12_Stg2(-1)*taf_cfs/2.
+        lhs<rhs penalty 7500 }
+    case NovMar{
+    condition month>=NOV.and.month<=MAR
+        rhs WTS_BUFF12_Stg2(-1)*taf_cfs
+        lhs<rhs penalty 7500 }
+}
+! but no more than available diversion remaining
+!goal limit_DEC12_Stg2 {WTS_DEC12_Stg2 < }    - this does not look like it is needed
+
+! Operate DSA15's inline storage buffer
+goal adj_BUFF15_Stg2 {
+    lhs WTS_BUFF15_Stg2
+    case Reset{
+    condition month==DEC
+        rhs 0.}
+    case Otherwise{
+    condition always
+        rhs WTS_BUFF15_Stg2(-1) + WTS_INC15_Stg2*cfs_taf
+                                - WTS_DEC15_Stg2*cfs_taf}}
+goal WTS_INC15_force {WTS_INC15_Stg2 < int_BUFF15_Stg2 * 99999.}         ! if int=0, WTS_INC=0, WTS_DEC=pos
+goal WTS_DEC15_force {WTS_DEC15_Stg2 < 99999. - int_BUFF15_Stg2 * 99999.}! if int=1, WTS_INC=pos, WTS_DEC=0
+
+! only allow early months to be buffered
+goal limit_INC15_Stg2 {
+    lhs WTS_INC15_Stg2
+    case AprAug{
+    condition month>=Apr.and.month<=Aug
+    rhs WTS_DSA15_Stg2                                               ! limit to Stage 2 acquisition for region
+        lhs<rhs penalty 0 }
+    case otherwise{
+    condition always
+    rhs 0.}
+}
+
+! come september through november force it out one third each month
+/*goal forceoutbuff15_1 {
+    lhs WTS_DEC15_Stg2
+    case AugMar{
+    condition month>=AUG.and.month<=MAR
+        rhs WTS_BUFF15_Stg2(-1)*taf_cfs
+        lhs<rhs penalty 1500 }
+}*/
+goal forceoutbuff15_2 {
+    lhs WTS_DEC15_Stg2
+    case Sep{
+    condition month==SEP
+        rhs WTS_BUFF15_Stg2(-1)*taf_cfs/3.
+        lhs<rhs penalty 7500 }
+    case Oct{
+    condition month==OCT
+        rhs WTS_BUFF15_Stg2(-1)*taf_cfs/2.
+        lhs<rhs penalty 7500 }
+    case NovMar{
+    condition month>=NOV.and.month<=MAR
+        rhs WTS_BUFF15_Stg2(-1)*taf_cfs
+        lhs<rhs penalty 7500 }
+}
+! but no more than available diversion remaining
+!goal limit_DEC15_Stg2 {WTS_DEC15_Stg2 < }    - this does not look like it is needed
+
+! Operate DSA69's inline storage buffer
+goal adj_BUFF69_Stg2 {
+    lhs WTS_BUFF69_Stg2
+    case Reset{
+    condition month==DEC
+        rhs 0.}
+    case Otherwise{
+    condition always
+        rhs WTS_BUFF69_Stg2(-1) + WTS_INC69_Stg2*cfs_taf
+                                - WTS_DEC69_Stg2*cfs_taf}}
+goal WTS_INC69_force {WTS_INC69_Stg2 < int_BUFF69_Stg2 * 99999.}         ! if int=0, WTS_INC=0, WTS_DEC=pos
+goal WTS_DEC69_force {WTS_DEC69_Stg2 < 99999. - int_BUFF69_Stg2 * 99999.}! if int=1, WTS_INC=pos, WTS_DEC=0
+
+!only allow early months to be buffered
+goal limit_INC69_Stg2 {
+    lhs WTS_INC69_Stg2
+    case AprAug{
+    condition month>=Apr.and.month<=Aug
+    rhs WTS_DSA69_Stg2                                               ! limit to Stage 2 acquisition for region
+        lhs<rhs penalty 0 }
+    case otherwise{
+    condition always
+    rhs 0.}
+}
+!come september through november force it out one third each month
+/*goal forceoutbuff69_1 {
+    lhs WTS_DEC69_Stg2
+    case AugMar{
+    condition month>=AUG.and.month<=MAR
+        rhs WTS_BUFF69_Stg2(-1)*taf_cfs
+        lhs<rhs penalty 1500 }
+}*/
+goal forceoutbuff69_2 {
+    lhs WTS_DEC69_Stg2
+    case Sep{
+    condition month==SEP
+        rhs WTS_BUFF69_Stg2(-1)*taf_cfs/3.
+        lhs<rhs penalty 7500 }
+    case Oct{
+    condition month==OCT
+        rhs WTS_BUFF69_Stg2(-1)*taf_cfs/2.
+        lhs<rhs penalty 7500 }
+    case NovMar{
+    condition month>=NOV.and.month<=MAR
+        rhs WTS_BUFF69_Stg2(-1)*taf_cfs
+        lhs<rhs penalty 7500 }
+}
+! but no more than available diversion remaining
+goal limit_DEC69_Stg2 {WTS_DEC69_Stg2 < target_d7b_pag - WTS_DSA69 - EWA_GW69dv - EWA_CI69dv} ! a better way?
+
+! Operate DSA70's inline storage buffer
+goal adj_BUFF70_Stg2 {
+    lhs WTS_BUFF70_Stg2
+    case Reset{
+    condition month==DEC
+        rhs 0.}
+    case Otherwise{
+    condition always
+        rhs WTS_BUFF70_Stg2(-1) + WTS_INC70_Stg2*cfs_taf
+                                - WTS_DEC70_Stg2*cfs_taf}}
+goal WTS_INC70_force {WTS_INC70_Stg2 < int_BUFF70_Stg2 * 99999.}         ! if int=0, WTS_INC=0, WTS_DEC=pos
+goal WTS_DEC70_force {WTS_DEC70_Stg2 < 99999. - int_BUFF70_Stg2 * 99999.}! if int=1, WTS_INC=pos, WTS_DEC=0
+
+!only allow early months to be buffered
+goal limit_INC70_Stg2 {
+    lhs WTS_INC70_Stg2
+    case AprAug{
+    condition month>=Apr.and.month<=Aug
+    rhs WTS_DSA70_Stg2                                               ! limit to Stage 2 acquisition for region
+        lhs<rhs penalty 0 }
+    case otherwise{
+    condition always
+    rhs 0.}
+}
+!come september through november force it out one third each month
+/*goal forceoutbuff70_1 {
+    lhs WTS_DEC70_Stg2
+    case AugMar{
+    condition month>=AUG.and.month<=MAR
+        rhs WTS_BUFF70_Stg2(-1)*taf_cfs
+        lhs<rhs penalty 1500 }
+}*/
+goal forceoutbuff70_2 {
+    lhs WTS_DEC70_Stg2
+    case Sep{
+    condition month==SEP
+        rhs WTS_BUFF70_Stg2(-1)*taf_cfs/3.
+        lhs<rhs penalty 7500 }
+    case Oct{
+    condition month==OCT
+        rhs WTS_BUFF70_Stg2(-1)*taf_cfs/2.
+        lhs<rhs penalty 7500 }
+    case NovMar{
+    condition month>=NOV.and.month<=MAR
+        rhs WTS_BUFF70_Stg2(-1)*taf_cfs
+        lhs<rhs penalty 7500 }
+}
+! but no more than available diversion remaining
+!goal limit_DEC70_Stg2 {WTS_DEC70_Stg2 < }    - this does not look like it is needed
+
+!******************************************************************************
+! Bound storage reop(fill) for Stage2 - this is done in an aggregate sense which allows the
+! underlying storage and other programs to have more operational flexibility
+!goal lmtStg2StorFill {I4_WTS_Stg2 + I6_WTS_Stg2
+!           < WTS_Yuba_Stg2 + WTS_DSA12_Stg2 + WTS_DSA15_Stg2 + WTS_DSA69_Stg2 + WTS_DSA70_Stg2}
+
+!******************************************************************************
+! COA Adjustment
+!goal lmt_C203_WTS_Stg2 {C203_WTS_Stg2 = WTS_DSA69_Stg2 + WTS_DEC69_Stg2 - WTS_INC69_Stg2}  !This does not make sense
+goal lmt_C203_WTS_Stg2 {C203_WTS_Stg2 = 0.} !this means there is no adjustment to COA equation for stage 2 - full effect of diversion change shows up in C203_m
+
+
+!******************************************************************************
+! Do exports of transfers:
+
+! This is the grand continuity equation that keeps the entire Transfer structure together
+! WTS_DSA12 is the Sacramento Basin Transfer water acquired this month
+! WTS_DSA69 is the Feather Basin Transfer water acquired this month
+! D418_WTS and D419_WTS are the exports of Transfers
+! C407_WTS is the Carriage Water cost of Exporting Transfered water
+! Refer to above for the other terms not mentioned
+goal Transfer_Cont_Stg2 {WTS_Yuba_Stg2 + WTS_DSA12_Stg2 + WTS_DSA15_Stg2 + WTS_DSA69_Stg2 + WTS_DSA70_Stg2
+                                       + WTS_DEC12_Stg2 + WTS_DEC15_Stg2 + WTS_DEC69_Stg2 + WTS_DEC70_Stg2
+                       + C5_WTS_Stg2 + C6_WTS_Stg2 + SP4_WTS_Stg2*taf_cfs + SP6_WTS_Stg2*taf_cfs
+                       = WTS_INC12_Stg2 + WTS_INC15_Stg2 + WTS_INC69_Stg2 + WTS_INC70_Stg2
+                       + I4_WTS_Stg2 + I6_WTS_Stg2 + D418_WTS_Stg2 + D419_WTS_Stg2 + C407_WTS_Stg2
+               + WTS_Spill_Stg2
+                       + WTS_Bal_Err_stg2}
+! Spill
+goal zero_Spill_Stg2 {      !Spill to the system
+    lhs WTS_Spill_stg2
+    rhs 0.
+!    lhs>rhs penalty 1500}
+    lhs>rhs penalty 1900}
+
+! ERROR
+goal zero_BalanceError2 {
+    lhs WTS_Bal_Err_stg2
+    rhs 0.
+    lhs>rhs penalty 90000}
+
+! This is the second grand continuity equation that checks to allow the cost of the first
+! Don't pay if over 35% CW cost - if no pay, then no export
+!goal CWcost_Check_Stg2 {
+!    lhs C407_WTS_Stg2
+!    rhs .35*WTS_Yuba_Stg2
+!      + .35*WTS_DSA12_Stg2 + .35*WTS_DEC12_Stg2 - .35*WTS_INC12_Stg2
+!      + .35*WTS_DSA15_Stg2 + .35*WTS_DEC15_Stg2 - .35*WTS_INC15_Stg2
+!      + .35*WTS_DSA69_Stg2 + .35*WTS_DEC69_Stg2 - .35*WTS_INC69_Stg2
+!      + .35*WTS_DSA70_Stg2 + .35*WTS_DEC70_Stg2 - .35*WTS_INC70_Stg2
+!      + .35*C5_WTS_Stg2 + .35*C6_WTS_Stg2
+!    lhs<rhs penalty 0
+!    lhs>rhs penalty 500}
+
+!******************************************************************************
+! Control each delivery
+!   against acquisition
+define AcqTarqFactor {value TOTAL_SACStg2/Total_Stg2_Targ + TOTAL_SJRStg2/Total_Stg2_Targ}
+goal TransAcq_SoBay   {D815_WTS <
+                   max(D815_Targ*AcqTarqFactor
+                     - D815_Stg2_Met,0.)*taf_cfs}
+goal TransAcq_SoCoast {D885_WTS                + D895_WTS <
+                   max(D885_Targ*AcqTarqFactor + D895_Targ*AcqTarqFactor
+                     - D885_Stg2_Met           - D895_Stg2_Met,0.)*taf_cfs}
+
+!   against delivery target
+goal Trans_SoBay    {
+    lhs     D815_WTS
+    rhs max(D815_Targ-D815_Stg2_Met,0.)*taf_cfs
+    lhs>rhs penalty 1000
+    lhs<rhs penalty 0
+}
+goal Trans_SoCoast  {
+    lhs     D885_WTS      + D895_WTS
+    rhs max(D885_Targ     + D895_Targ
+          - D885_Stg2_Met - D895_Stg2_Met,0.)*taf_cfs
+    lhs>rhs penalty 1000
+    lhs<rhs penalty 0
+}
+goal Trans_SoCoast1 {
+    lhs     D885_WTS
+    rhs max(D885_Targ-D885_Stg2_Met,0.)*taf_cfs
+!    lhs>rhs penalty 1000
+    lhs>rhs penalty 100
+    lhs<rhs penalty 0
+}
+goal Trans_SoCoast2 {
+    lhs     D895_WTS
+    rhs max(D895_Targ-D895_Stg2_Met,0.)*taf_cfs
+!    lhs>rhs penalty 1000
+    lhs>rhs penalty 100
+    lhs<rhs penalty 0
+}
+
+! Try to balance deliveries
+goal balanceSoBaySoCoast {
+    lhs D815_WTS
+    rhs D885_WTS + D895_WTS
+    lhs>rhs penalty 10
+    lhs<rhs penalty 10
+}
+goal balanceSoCoast {
+    lhs D885_WTS
+    rhs D895_WTS
+    lhs>rhs penalty 10
+    lhs<rhs penalty 10
+}
+goal zero_D418_Stg2 {D418_WTS_Stg2 = 0.}
+goal set_continuity_Stg2 {
+    lhs D419_WTS_Stg2 /*+ WTS_DMC_Stg2*/ + WTS_CA_Stg2                  !WTS_DMC not yet implemented
+    rhs D815_WTS + D885_WTS + D895_WTS
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+}
+
+! Bound Stage 2 ops to avoid displacing other deliveries due to aqueduct constraints
+! Should be done through weight restructuring - big job
+goal limitBANKS_SB_Stg2 {D815_WTS < BANKS_SB_ConvPrv}
+goal limitBANKS_SC_Stg2 {D419_WTS_Stg2 - D815_WTS < BANKS_SC_ConvPrv}
+goal limitBANKS_Stg2 {D419_WTS_Stg2 < BANKS_ConvPrv}
+goal limitCJU_SC_Stg2 {I607_WTS + I839_WTS < CJU_SC_ConvPrv}
+goal limitSC_Stg2 {D885_WTS + D895_WTS < SC_ConvPrv}
+goal limitSC_EB_Stg2 {D885_WTS < SC_EB_ConvPrv}
+goal limitSC_WB_Stg2 {D895_WTS < SC_WB_ConvPrv}

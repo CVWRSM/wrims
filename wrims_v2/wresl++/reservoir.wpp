@@ -1,0 +1,35 @@
+package calsim3.delta.north
+
+
+reservoir s10 ( ) {
+	
+	
+	connection { 
+		
+		inflow    inflow_1;
+		inflow	  inflow_2;
+		outflow   release_1;   
+		inoutflow inf_1;  
+	}
+	
+	property () {  
+				        
+		rating r1 { elevation = 543.0; area = 0;      storage = 0; discharge = 0 };
+		rating r2 { elevation = 600.0; area = 61.0;   storage = 975.0;    discharge = 1115.0 };
+		rating r3 { elevation = 760.0; area = 2374.0; storage = 160600.0; discharge = 2050.0 };
+		rating r4 { elevation = 920.0; area = 3446.0; storage = 846500.0; discharge = 9770.0 }; 		
+	}
+	
+	section ( integer res_no, float weight_2 ) {
+	 
+		float    lookup_weight = timeseries ( name, kind, units );
+		float    res_elevation_3 = table (select target from res_elevation where reservoir_no=res_no);
+		
+		zone z1 { weight = 2000;            elevation_upperbound = 590.0;  }
+		zone z2 { weight = weight_2;        elevation_upperbound = timeseries ( name, kind, units ); }
+		zone z3 { weight = 50;              elevation_upperbound = res_elevation_3; }
+		zone z4 { weight = -20000;          elevation_upperbound = 900.0; }
+	}
+			
+}
+

@@ -1,0 +1,62 @@
+initial {
+
+	const TotalFlow { 100 }
+	const XB  { 10 }
+	svar  YC  { 
+		case caseOne {
+			condition XB_unknown>=50
+			value 30 }
+		case caseTwo {
+			condition XB<50
+			value 70 }	
+	}
+	svar  D  { value TotalFlow+XB }
+	const E	 { 33 }
+
+}
+
+SEQUENCE CYCLE1 {
+    model   first
+    order   1
+    }
+
+SEQUENCE CYCLE2 {
+    model   second
+    order   2
+    }
+	
+MODEL first { 
+
+  define x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define z { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  goal g1 { x + y + z < TotalFlow  }
+  goal g2 { x = XB  }
+  goal g3 { y = yC  }
+  
+  define S1 { value D }
+  
+  Objective obj2 {
+	weight 6
+	variable x y z 
+  }
+  
+}
+
+MODEL second { 
+
+  define x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define z { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  goal g1 { x + y + z < TotalFlow*2  }
+  goal g2 { x = xB*2  }
+  goal g3 { y = yC*2  }
+  
+  Objective obj2 {
+	weight 6
+	variable x y z 
+  }
+  
+}

@@ -1,0 +1,299 @@
+/* This file sets up the diversion requirements for the Greater Sacramento Are
+from the American River and the Sacramento River
+*/
+
+!Monthly delivery pattern for each of the water purveyors
+define perdem_SMUD   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--SMUD Folsom South Canal
+define perdem_SCMTO  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--City of Sacramento
+define perdem_FOLSM  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Folsom City
+define perdem_SJWD_S {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--San Juan WD (Sac County)
+define perdem_SJWD_P {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--San Juan WD (Placer County)
+define perdem_RoseV  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Roseville City
+define perdem_ArcWD  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Arcade WD
+define perdem_NRWD   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Northridge WD
+define perdem_CRMCL  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Carmichael WD
+define perdem_PCWA   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Placer County WA
+define perdem_FolPr  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Folsom Prison
+define perdem_ElDor  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--El Dorado ID
+define perdem_CARec  {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--CA Parks & Rec
+define perdem_SCWC   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--SCWC/ACWC
+define perdem_SCWA   {timeseries kind 'DELIVERY-PATTERN' units 'NONE'} !MI monthly distribution--Sac County WA
+
+!The following are annual water right amounts and include Water Forum reductions
+define WRWF_ANN_SCMTO_S {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--Sac City (Sac)
+define WRWF_ANN_SCMTO_A {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--Sac City (American)
+define WRWF_ANN_NRWD_S  {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--NRWD (Sac)
+define WRWF_ANN_NRWD_A  {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--NRWD (American)
+define WRWF_ANN_PCWA_S  {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--PCWA (Sac)
+define WRWF_ANN_PCWA_A  {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--PCWA (American)
+define WRWF_ANN_ARCWD   {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--Arcade WD
+define WRWF_ANN_CRMCL   {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--Carmichael WD
+define WRWF_ANN_FOLSM   {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--Folsom City
+define WRWF_ANN_FOLPR   {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--Folsom Prison
+define WRWF_ANN_SJWD_P  {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--SJWD Placer County
+define WRWF_ANN_SJWD_S  {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--SJWD Sac County
+define WRWF_ANN_ELDOR   {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--El Dorado ID
+define WRWF_ANN_ROSEV   {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--Roseville City
+define WRWF_ANN_SMUD    {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--SMUD Folsom South Canal
+define WRWF_ANN_SCWC    {timeseries kind 'WRWF-CONTRACT-LIMIT'  units 'TAF'}  !Annual water right demand--SCWC/ACWC
+
+
+!Define demands for CVP contract water - reduced by WF agreement
+define CLWF_ANN_PCWA_A     {timeseries kind 'CVPWF-CONTRACT-LIMIT'  units 'TAF'}  !
+define CLWF_ANN_FOLSM      {timeseries kind 'CVPWF-CONTRACT-LIMIT'  units 'TAF'}  !
+define CLWF_ANN_SJWD_S     {timeseries kind 'CVPWF-CONTRACT-LIMIT'  units 'TAF'}  !
+define CLWF_ANN_ELDOR      {timeseries kind 'CVPWF-CONTRACT-LIMIT'  units 'TAF'}  !
+define CLWF_ANN_SMUD       {timeseries kind 'CVPWF-CONTRACT-LIMIT'  units 'TAF'}  !
+define CLWF_ANN_SCWA       {timeseries kind 'CVPWF-CONTRACT-LIMIT'  units 'TAF'}  !
+define CLWF_ANN_ROSEV      {timeseries kind 'CVPWF-CONTRACT-LIMIT'  units 'TAF'}  !
+define CLWF_ANN_CAREC      {timeseries kind 'CVPWF-CONTRACT-LIMIT'  units 'TAF'}  !
+
+
+!Special allocations for Hodge Decision flow criteria
+!If flow in the lower American River is less than the Hodge Decision flow levels,
+!then more of the City of Sac demand is shifted to the Sac River
+
+define WRWF_SCMTO_S  {value WRWF_ANN_SCMTO_S * perdem_SCMTO * taf_cfs}
+define WRWF_SCMTO_A  {value WRWF_ANN_SCMTO_A * perdem_SCMTO * taf_cfs}
+
+! Set up the integer and accompanying goals that determine if flow is above or below the Hodge flow levels triggers.
+define nimbus_trigger1 {
+       case oct_Feb {
+               condition  month >= OCT .and. month <= FEB
+               value        S_FOLSM(-1)+S_FOLSMmod }
+        case mar_sep {
+               condition    always
+               value        S_FOLSM(-1)+S_FOLSMmod + frcst_amr }
+       }
+           
+
+define nimbus_hist_std1 {select minflow
+                          from   nimbus_hist
+                          given  trigger=nimbus_trigger1            
+                          use    maximum
+                          where  month=month}
+
+define MF_C_NTOMA {value nimbus_hist_std1 }
+
+
+
+define Hodge_trigger {
+       case OCT {
+            condition month == OCT
+            value     1879.0 }
+
+       case NOV_FEB {
+            condition month >= NOV .and. month <= FEB
+            value     2000.0 }
+
+       case MAR_JUN {
+            condition month >= MAR .and. month <= JUN
+            value     3000.0 }
+
+       case JUL_SEP {
+            condition always
+            value     1750.0 }
+       }
+
+define Hodge_flow_limit {
+       case OCT_DEC {
+            condition month >= OCT .and. month <= DEC
+            value     100.0 }
+
+       case JUN_AUG {
+            condition month >= JUN .and. month <= AUG
+            value     155.0 }
+
+       case FEB_MAY_SEP {
+            condition always
+            value     120.0 }
+       }
+
+define WRWF_SCMTO_A_Hodge {
+       case above_Hodge {
+            condition MF_C_NTOMA >= Hodge_trigger
+            value     WRWF_SCMTO_A}
+       case below_Hodge {
+            condition always
+            value     min(Hodge_flow_limit, WRWF_SCMTO_A)}
+       }
+
+define WRWF_SCMTO_S_Hodge {
+       case above_Hodge {
+            condition MF_C_NTOMA >= Hodge_trigger
+            value     WRWF_SCMTO_S}
+       case below_Hodge {
+            condition always
+            value     WRWF_SCMTO_S + WRWF_SCMTO_A - min(WRWF_SCMTO_A, Hodge_flow_limit)}
+       }
+
+
+define WRWF_SCMTO_A_Hdv {alias WRWF_SCMTO_A_Hodge kind 'DEMAND-WATER-FORUM' units 'cfs'}
+define WRWF_SCMTO_S_Hdv {alias WRWF_SCMTO_S_Hodge kind 'DEMAND-WATER-FORUM' units 'cfs'}
+
+
+!*************
+! Folsom city including Folsom Prison
+!**************
+
+define Limit_FOLSM   {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_FOLSM {select Folsom from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_FOLSM {value min(CLWF_ANN_FOLSM, CL1_ANN_FOLSM * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define CL2_FOLSM     {value CL2_ANN_FOLSM * perdem_FOLSM * taf_cfs}
+define CL2_FOLSMdv {alias CL2_FOLSM kind 'DEMAND-WATER-FORUM' units 'CFS'}
+define WRWF_FOLSM      {value WRWF_ANN_FOLSM  * perdem_FOLSM * taf_cfs}
+define WRWF_FOLPR    {value WRWF_ANN_FOLPR  * perdem_FOLPR  * taf_cfs}
+
+goal set_Limit_FOLSM {Limit_FOLSM = CL2_FOLSM + WRWF_FOLSM + WRWF_FOLPR}
+
+!*************
+! San Juan Water District SAC County and Placer County
+!**************
+
+define LimitSJWD_S    {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_SJWD_S {select SJWDSac from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_SJWD_S {value min(CLWF_ANN_SJWD_S, CL1_ANN_SJWD_S * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define CL2_SJWD_S     {value CL2_ANN_SJWD_S * perdem_SJWD_S * taf_cfs}
+define CL2_SJWD_Sdv {alias CL2_SJWD_S kind 'DEMAND-WATER-FORUM' units 'CFS'}
+define WRWF_SJWD_S      {value WRWF_ANN_SJWD_S  * perdem_SJWD_S * taf_cfs}
+define WRWF_SJWD_P   {value WRWF_ANN_SJWD_P * perdem_SJWD_P * taf_cfs}
+
+goal set_LimitSJWD_S  {LimitSJWD_S = CL2_SJWD_S + WRWF_SJWD_S + WRWF_SJWD_P}
+
+!*************
+! El Dorado ID and P.L. 101-514
+!**************
+
+define LimitELDOR    {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_ELDOR {select ElDorIDPL from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_ELDOR {value min(CLWF_ANN_ELDOR, CL1_ANN_ELDOR * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define CL2_ELDOR     {value CL2_ANN_ELDOR * perdem_ELDOR * taf_cfs}
+define CL2_ELDORdv {alias CL2_ELDOR kind 'DEMAND-WATER-FORUM' units 'CFS'}
+define WRWF_ELDOR      {value WRWF_ANN_ELDOR  * perdem_ELDOR * taf_cfs}
+
+goal set_LimitELDOR  {LimitELDOR = CL2_ELDOR + WRWF_ELDOR}
+
+!*************
+! City of Roseville
+!**************
+
+define LimitROSEV    {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_ROSEV {select Roseville from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_ROSEV {value min(CLWF_ANN_ROSEV, CL1_ANN_ROSEV * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define CL2_ROSEV     {value CL2_ANN_ROSEV * perdem_ROSEV * taf_cfs}
+define CL2_ROSEVdv {alias CL2_ROSEV kind 'DEMAND-WATER-FORUM' units 'CFS'}
+define WRWF_ROSEV      {value WRWF_ANN_ROSEV  * perdem_ROSEV * taf_cfs}
+
+goal set_LimitROSEV  {LimitROSEV = CL2_ROSEV + WRWF_ROSEV}
+
+!*************
+! California Parks and Rec
+!**************
+
+define LimitCAREC {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_CAREC {select CalPrkRc from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_CAREC {value min(CLWF_ANN_CAREC, CL1_ANN_CAREC * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define CL2_CAREC     {value CL2_ANN_CAREC * perdem_CARec * taf_cfs}
+define CL2_CARECdv {alias CL2_CAREC kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+goal set_LimitCAREC {LimitCAREC = CL2_CAREC}
+
+!*************
+! SMUD export Folsom South Canal
+!**************
+
+define LimitSMUD    {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_SMUD {select SMUD from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_SMUD {value min(CLWF_ANN_SMUD, CL1_ANN_SMUD * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define CL2_SMUD     {value CL2_ANN_SMUD * perdem_SMUD * taf_cfs}
+define CL2_SMUDdv {alias CL2_SMUD kind 'DEMAND-WATER-FORUM' units 'CFS'}
+define WRWF_SMUD      {value WRWF_ANN_SMUD  * perdem_SMUD * taf_cfs}
+
+goal set_LimitSMUD  {LimitSMUD = CL2_SMUD + WRWF_SMUD}
+
+
+!*************
+! Placer County Water Agency (Sac)
+!**************
+
+define  Limit_PCWA_S  {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_PCWA_S  {select PCWASac from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_PCWA_S  {value CL1_ANN_PCWA_S * perdel_cvpmi_sys} !Adjust contract amount for CVP cuts
+define CL2_PCWA_S      {value CL2_ANN_PCWA_S * perdem_PCWA * taf_cfs}
+define CL2_PCWA_Sdv {alias CL2_PCWA_S kind 'DEMAND-WATER-FORUM' units 'CFS'}
+define WRWF_PCWA_S       {value WRWF_ANN_PCWA_S  * perdem_PCWA * taf_cfs}
+
+goal set_Limit_PCWA_S {Limit_PCWA_S = CL2_PCWA_S + WRWF_PCWA_S}
+
+!*************
+! Sac County WA (SMUD transfer and PL 101-514)
+!**************
+
+define Limit_SCWA    {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_SCWA  {select SCWA from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_SCWA  {value min(CLWF_ANN_SCWA, CL1_ANN_SCWA * perdel_cvpmi_sys) } !Adjust contract amount for CVP cuts
+define CL2_SCWA      {value CL2_ANN_SCWA * perdem_SCWA * taf_cfs}
+define CL2_SCWAdv {alias CL2_SCWA kind 'DEMAND-WATER-FORUM' units 'CFS'}
+
+goal set_Limit_SCWA  {Limit_SCWA = CL2_SCWA}
+
+!*************
+! PCWA Pump Station
+!**************
+
+define Limit_PCWA_A   {std kind 'DEMAND-WATER-FORUM' units 'TAF'}
+
+define CL1_ANN_PCWA_A {select PCWAPump from American_PRJ_WR where index=1} !Annual project demand
+define CL2_ANN_PCWA_A {value min(CLWF_ANN_PCWA_A, CL1_ANN_PCWA_A * perdel_cvpmi_sys)} !Adjust contract amount for CVP cuts
+define CL2_PCWA_A     {value CL2_ANN_PCWA_A * perdem_PCWA * taf_cfs}
+define CL2_PCWA_Adv {alias CL2_PCWA_A kind 'DEMAND-WATER-FORUM' units 'CFS'}
+define WRWF_PCWA_A      {value WRWF_ANN_PCWA_A  * perdem_PCWA * taf_cfs}
+
+goal set_Limit_PCWA_A {Limit_PCWA_A = CL2_PCWA_A + WRWF_PCWA_A}
+
+!*************
+! Rest of water users (includes Water Forum reductions)
+!**************
+
+define WRWF_NRWD_S   {value WRWF_ANN_NRWD_S * perdem_NRWD   * taf_cfs}
+define WRWF_NRWD_A   {value WRWF_ANN_NRWD_A * perdem_NRWD   * taf_cfs}
+define WRWF_ArcWD    {value WRWF_ANN_ArcWD  * perdem_ArcWD  * taf_cfs}
+define WRWF_CRMCL    {value WRWF_ANN_CRMCL  * perdem_CRMCL  * taf_cfs}
+define WRWF_SCWC     {value WRWF_ANN_SCWC   * perdem_SCWC   * taf_cfs}
+
+!*********************************************************************************************************************
+! Limit deliveries
+
+goal limit_D_SAC077_WTPSRW {D_SAC077_WTPSRW = 0.0} ! < WRWF_NRWD_S + CL2_PCWA_S + WRWF_PCWA_S}
+goal limit_D_WTPSRW_26N_NU1{D_WTPSRW_26N_NU1 < WRWF_NRWD_S}
+goal limit_D_WTPSRW_24_NU2 {D_WTPSRW_24_NU2  < CL2_PCWA_S + WRWF_PCWA_S}
+
+goal limit_D_SAC062_WTPSAC {D_SAC062_WTPSAC  < CL2_SCWA + WRWF_SCMTO_S_Hodge}
+goal limit_D_WTPSAC_26S_PU4{D_WTPSAC_26S_PU4 < CL2_SCWA}
+
+goal limit_D_FOLSM_WTPRSV  {D_FOLSM_WTPRSV   < CL2_ROSEV + WRWF_ROSEV}
+goal limit_D_FOLSM_WTPSJP  {D_FOLSM_WTPSJP   < WRWF_NRWD_A + CL2_SJWD_S + WRWF_SJWD_S + WRWF_SJWD_P*21/25}
+goal limit_D_WTPSJP_26N_NU1{D_WTPSJP_26N_NU1 < WRWF_NRWD_A}
+goal limit_D_WTPSJP_26N_PU3{D_WTPSJP_26N_PU3 < WRWF_SJWD_P*4/25}
+goal limit_D_FOLSM_WTPFOL  {D_FOLSM_WTPFOL   < CL2_FOLSM + WRWF_FOLSM + WRWF_FOLPR}
+goal limit_D_FOLSM_WTPEDH  {D_FOLSM_WTPEDH   < CL2_ELDOR + WRWF_ELDOR}
+
+goal limit_D_FSC025_60N_PU {D_FSC025_60N_PU  < CL2_SMUD + WRWF_SMUD}
+goal limit_D_FSC003_WTPCOL {D_FSC003_WTPCOL  < WRWF_SCWC}
+goal limit_D_FSC003_26S_PU3{D_FSC003_26S_PU3 < CL2_CAREC}
+
+goal limit_D_AMR017_WTPBJM {D_AMR017_WTPBJM  < WRWF_CRMCL}
+goal limit_D_AMR007_WTPFBN {D_AMR007_WTPFBN  < WRWF_ArcWD + WRWF_SCMTO_A_Hodge}
+goal limit_D_WTPFBN_26N_NU4{D_WTPFBN_26N_NU4 < WRWF_ArcWD}
+
+goal limit_D_NFA016_ABT002  {D_NFA016_ABT002   < CL2_PCWA_A + WRWF_PCWA_A}
+
+goal limit_D_FPT013_WTPVNY {D_FPT013_WTPVNY = 0.0} 

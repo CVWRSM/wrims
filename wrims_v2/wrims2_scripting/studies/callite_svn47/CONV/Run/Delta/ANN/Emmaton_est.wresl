@@ -1,0 +1,32 @@
+/*************************************
+Emmaton_est.wresl
+
+Nazrul Islam; DWR; (06/27/2010)
+Get the required Sac flow for ESTIMATED exports
+
+Add a switch to turn off D1641 constrain at Emmaton
+Z.Q. Richard Chen; DWR; (02/07/2011)
+**************************/
+
+define EMReqSac {
+  case D1641Off{
+    condition EM_DLTSW == 0
+    value 0.}
+  case NoSalinityControlPossible{
+    condition abs(EM_m_sv) <= 0.001 .and. int(EM_b_sv) == 0
+    value 0.}
+  case NegSlope{
+    condition EM_m_sv <= 0.0
+    value 0.}
+  case highcost{
+    condition EM_Sac_ZeroExp_sv2 >= ANNcap
+    value 0.}
+  case control{
+    condition month >= Apr .and. month <= Aug
+    value max(0., (EstTotExpTD-EM_b_sv)/EM_m_sv)}
+  case other {
+    condition  always
+    value 0.}
+}
+define EMReqSacDV {alias EMReqSac kind 'FLOW' units 'CFS'}
+

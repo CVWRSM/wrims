@@ -1,0 +1,76 @@
+define VernWQfinal_v {timeseries kind 'Salinity-EC' units 'umhos/cm'}
+define VernWQfinal_vo {timeseries kind 'Salinity-EC' units 'umhos/cm'}
+
+define VernWQfinal_set {  
+    case VAMPon {
+        condition VAMP_DLTSW == 1
+        value VernWQfinal_v}
+    case otherwise {
+        condition always
+        value VernWQfinal_vo}
+}
+
+define SJR_ann_est_v {timeseries kind 'ANN-PARAMETER' units 'CFS'}
+define SJR_ann_est_vo {timeseries kind 'ANN-PARAMETER' units 'CFS'}
+
+define SJR_ann_est_set {  
+    case VAMPon {
+        condition VAMP_DLTSW == 1
+        value SJR_ann_est_v}
+    case otherwise {
+        condition always
+        value SJR_ann_est_vo}
+}
+
+define AD_SJR_vo {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_SJR_VAMP_vo {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define AD_SJR_Pulse_vo {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define AD_SJR_v {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_SJR_VAMP_v {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define AD_SJR_Pulse_v {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+
+define C_SJRVER {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR below Vernalis
+
+define AD_SJR {  !Flow at Vernalis  
+	case VAMPon {
+		condition VAMP_DLTSW == 1
+		value AD_SJR_v}
+	case otherwise {
+		condition always
+		value AD_SJR_vo}
+}
+
+define AD_SJR_VAMP {  !Flow at Vernalis during VAMP period
+	case VAMPon {
+		condition VAMP_DLTSW == 1
+		value AD_SJR_VAMP_v}
+	case otherwise {
+		condition always
+		value AD_SJR_VAMP_vo}
+}
+
+define AD_SJR_Pulse {  !VAMP baseflow (April flow from SJR_WQ2 cycle)
+	case VAMPon {
+		condition VAMP_DLTSW == 1
+		value AD_SJR_Pulse_v}
+	case otherwise {
+		condition always
+		value AD_SJR_Pulse_vo}
+}
+
+!For timeseries option set C_SJRVer = AD_SJR (timeseries from CS2CL) 
+goal setC_SJRVER {C_SJRVER = AD_SJR}
+
+define AD_Calaveras {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_SJRCalALL {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+
+!For timeseries option set AD_SJRCalALL = AD_Calaveras (timeseries from CS2CL)  
+goal setAD_SJRCalALL {AD_SJRCalALL = AD_Calaveras}
+
+define VernQ {value AD_SJR}
+
+define VAMP_reqdv_VAMP {timeseries kind 'flow-requirement' units 'cfs'}
+
+define VAMP_reqdv {std kind 'flow-requirement' units 'cfs'}
+
+goal setVAMP_reqdv {VAMP_reqdv = VAMP_reqdv_VAMP}

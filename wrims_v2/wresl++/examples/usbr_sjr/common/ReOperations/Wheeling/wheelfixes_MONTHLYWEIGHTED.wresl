@@ -1,0 +1,153 @@
+! fix swp and coa operations to that without wheeling
+
+goal fixSwpPumping1 {
+  lhs     CAA000_swp
+  rhs     CAA000_swp[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping2 {
+  lhs     CAA000_EXP1
+  rhs     CAA000_EXP1[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping3 {
+  lhs     CAA000_EXP2
+  rhs     CAA000_EXP2[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping1 {
+  lhs     DMC003_cvp
+  rhs     DMC003_cvp[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping2 {
+  lhs     DMC003_EXP1
+  rhs     DMC003_EXP1[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping3 {
+  lhs     DMC003_EXP2
+  rhs     DMC003_EXP2[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal FixD859GWSWP {
+  lhs     D859_GWRECH_SWP
+  rhs     D859_GWRECH_SWP[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal FixD859GWCVPA {
+  lhs     D859_GWRECH_CVPA
+  rhs     D859_GWRECH_CVPA[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNBPumping {
+  lhs     D_BRK004_NBA009
+  rhs     D_BRK004_NBA009[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fixCCCPumping {
+  lhs     D_RSL004_CCC004
+  rhs     D_RSL004_CCC004[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fixcvprefuge {
+  lhs     D_VLW008_72_PR1 + D_XCC033_72_PR2
+        + D_ARY010_72_PR3 + D_XCC033_72_PR4
+        + D_XCC054_72_PR5 + D_LBN012_72_PR5
+        + D_XCC025_72_PR6 + D_MDOTA_91_PR
+  rhs     D_VLW008_72_PR1[MONTHLYWEIGHTED] + D_XCC033_72_PR2[MONTHLYWEIGHTED]
+        + D_ARY010_72_PR3[MONTHLYWEIGHTED] + D_XCC033_72_PR4[MONTHLYWEIGHTED]
+        + D_XCC054_72_PR5[MONTHLYWEIGHTED] + D_LBN012_72_PR5[MONTHLYWEIGHTED]
+        + D_XCC025_72_PR6[MONTHLYWEIGHTED] + D_MDOTA_91_PR[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixsouthbay {
+  lhs     D_CAA005_SBA000
+  rhs     D_CAA005_SBA000[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSL {
+  lhs     S_SLUIS_SWP
+  rhs     S_SLUIS_SWP[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fixSLin {
+  lhs     D_CAA069_SLUIS
+  rhs     D_CAA069_SLUIS[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fixterminals {
+  lhs     c855
+  rhs     c855[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixUNUSEDFS {
+  lhs     UNUSED_FS
+  rhs     UNUSED_FS[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixUNUSEDSS {
+  lhs     UNUSED_SS
+  rhs     UNUSED_SS[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSWPDS {
+  lhs     SWPDS
+  rhs     SWPDS[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fixSHADS {
+  lhs     SHADS
+  rhs     SHADS[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixFOLDS {
+  lhs     FOLDS
+  rhs     FOLDS[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixWHSSW {
+  lhs     WHSSW
+  rhs     WHSSW[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+goal fixUWFE {
+  lhs     UWFE
+  rhs     UWFE[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixIBU {
+  lhs     IBU
+  rhs     IBU[MONTHLYWEIGHTED]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}

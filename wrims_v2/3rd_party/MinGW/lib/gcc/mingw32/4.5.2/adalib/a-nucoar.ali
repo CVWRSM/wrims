@@ -1,0 +1,191 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnvnnnnnnnnnnvnnvnnnnvnnnnnnnnnnnvnnvnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnn
+
+U ada.numerics.complex_arrays%b  a-nucoar.ads	28b05867 EE OL PU PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.numerics%s	a-numeri.ads		a-numeri.ali
+W ada.numerics.complex_types%s  a-nucoty.ads	a-nucoty.ali
+W ada.numerics.generic_complex_arrays%s
+W ada.numerics.generic_complex_types%s
+W ada.numerics.generic_real_arrays%s
+W ada.numerics.real_arrays%s  a-nurear.ads	a-nurear.ali
+W ada.unchecked_conversion%s
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.fortran%s	i-fortra.adb		i-fortra.ali
+W interfaces.fortran.blas%s  i-forbla.adb	i-forbla.ali
+W interfaces.fortran.lapack%s  i-forlap.ads	i-forlap.ali
+W system%s		system.ads		system.ali
+W system.generic_array_operations%s  s-gearop.adb  s-gearop.ali
+W system.generic_complex_blas%s
+W system.generic_complex_lapack%s
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+
+U ada.numerics.complex_arrays%s  a-nucoar.ads	e20efffa EB EE NE OL PU PK
+W ada%s			ada.ads			ada.ali
+W ada.numerics%s	a-numeri.ads		a-numeri.ali
+W ada.numerics.complex_types%s  a-nucoty.ads	a-nucoty.ali
+W ada.numerics.generic_complex_arrays%s
+W ada.numerics.generic_complex_types%s
+W ada.numerics.generic_real_arrays%s
+W ada.numerics.real_arrays%s  a-nurear.ads	a-nurear.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-numeri.ads		20080324174808 1cf3e608
+D a-nucoar.ads		20080324105732 28b05867
+D a-nucoar.ads		20080324105732 28b05867
+D a-nucoty.ads		20070406091342 3118bf04
+D a-ngcoar.ads		20070814085052 20c587ab
+D a-ngcoar.adb		20090409150020 733dcba7
+D a-ngcoty.ads		20090409150020 1dba9865
+D a-ngrear.ads		20090409150020 6c227f19
+D a-ngrear.adb		20091030132740 3133b9c2
+D a-nurear.ads		20080324105732 c790793a
+D a-nurear.ads		20080324105732 c790793a
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-fortra.ads		20070406092324 e2d82a0c
+D i-forbla.ads		20090409150020 b5928791
+D i-forlap.ads		20090409150020 44d9b56f
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-gearop.ads		20090409150020 015ffed2
+D s-gearop.adb		20090409150020 d128138d
+D s-gecobl.ads		20090409150020 fd4928a9
+D s-gecobl.adb		20090409150020 d58bfd08
+D s-gecola.ads		20090409150020 72fc2830
+D s-gecola.adb		20090409150020 7842494a
+D s-gerebl.ads		20090409150020 d78e4eb8
+D s-gerela.ads		20090409150020 c92f0181
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-traent.ads		20090417130712 a66ef260
+X 1 ada.ads
+16K9*Ada 19e8 5|16r6 17r6 18r6 20r9 21r8
+X 3 a-numeri.ads
+16K13*Numerics 1|16k9 3|32e17 5|16r10 17r10 18r10 20r13 21r12
+X 5 a-nucoar.ads
+20K22*Complex_Arrays[7|23] 3|16k13 5|23r14
+X 6 a-nucoty.ads
+18K22*Complex_Types[9|39] 5|18w19 21r58
+X 7 a-ngcoar.ads
+23k22*Generic_Complex_Arrays 5|16w19 21r21 7|281e40
+28A9*Complex_Vector(9|42R9[6|18])<integer>
+29A9*Complex_Matrix(9|42R9[6|18])<integer><integer>
+X 8 a-ngcoar.adb
+51A9 BLAS_Real_Vector(float)<integer>
+92U14 Transpose[21|342] 22|409b14[5|20]
+99V13 Length[21|42]{natural} 22|46b13[5|20]
+110V16*"*"[21|165]{7|28A9[5|20]} 22|268b13[5|20]
+118V16*"*"[21|165]{7|28A9[5|20]} 22|268b13[5|20]
+126V16*"*"[21|201]{7|28A9[5|20]} 22|306b13[5|20]
+134V16*"*"[21|201]{7|28A9[5|20]} 22|306b13[5|20]
+142V16*"*"[21|241]{9|42R9[6|18]} 22|80b13[5|20]
+150V16*"*"[21|241]{9|42R9[6|18]} 22|80b13[5|20]
+158V16*"*"[21|260]{7|29A9[5|20]} 22|389b13[5|20]
+166V16*"*"[21|260]{7|29A9[5|20]} 22|389b13[5|20]
+174V16*"*"[21|260]{7|29A9[5|20]} 22|389b13[5|20]
+182V16*"*"[21|184]{7|29A9[5|20]} 22|248b13[5|20]
+190V16*"*"[21|184]{7|29A9[5|20]} 22|248b13[5|20]
+198V16*"*"[21|220]{7|29A9[5|20]} 22|286b13[5|20]
+206V16*"*"[21|220]{7|29A9[5|20]} 22|286b13[5|20]
+214V16*"*"[21|283]{7|28A9[5|20]} 22|358b13[5|20]
+223V16*"*"[21|283]{7|28A9[5|20]} 22|358b13[5|20]
+232V16*"*"[21|306]{7|28A9[5|20]} 22|498b13[5|20]
+241V16*"*"[21|306]{7|28A9[5|20]} 22|498b13[5|20]
+250V16*"*"[21|331]{7|29A9[5|20]} 22|324b13[5|20]
+259V16*"*"[21|331]{7|29A9[5|20]} 22|324b13[5|20]
+272V16*"+"[21|55]{7|28A9[5|20]} 22|121b13[5|20]
+279V16*"+"[21|84]{7|28A9[5|20]} 22|201b13[5|20]
+288V16*"+"[21|84]{7|28A9[5|20]} 22|201b13[5|20]
+297V16*"+"[21|84]{7|28A9[5|20]} 22|201b13[5|20]
+306V16*"+"[21|68]{7|29A9[5|20]} 22|104b13[5|20]
+313V16*"+"[21|126]{7|29A9[5|20]} 22|136b13[5|20]
+322V16*"+"[21|126]{7|29A9[5|20]} 22|136b13[5|20]
+331V16*"+"[21|126]{7|29A9[5|20]} 22|136b13[5|20]
+344V16*"-"[21|55]{7|28A9[5|20]} 22|121b13[5|20]
+351V16*"-"[21|84]{7|28A9[5|20]} 22|201b13[5|20]
+360V16*"-"[21|84]{7|28A9[5|20]} 22|201b13[5|20]
+369V16*"-"[21|84]{7|28A9[5|20]} 22|201b13[5|20]
+378V16*"-"[21|68]{7|29A9[5|20]} 22|104b13[5|20]
+385V16*"-"[21|126]{7|29A9[5|20]} 22|136b13[5|20]
+394V16*"-"[21|126]{7|29A9[5|20]} 22|136b13[5|20]
+403V16*"-"[21|126]{7|29A9[5|20]} 22|136b13[5|20]
+416V16*"/"[21|165]{7|28A9[5|20]} 22|268b13[5|20]
+424V16*"/"[21|165]{7|28A9[5|20]} 22|268b13[5|20]
+432V16*"/"[21|184]{7|29A9[5|20]} 22|248b13[5|20]
+440V16*"/"[21|184]{7|29A9[5|20]} 22|248b13[5|20]
+452V16*Argument[21|55]{10|43A9[13|18]} 22|121b13[5|20]
+459V16*Argument[21|165]{10|43A9[13|18]} 22|268b13[5|20]
+467V16*Argument[21|68]{10|44A9[13|18]} 22|104b13[5|20]
+474V16*Argument[21|184]{10|44A9[13|18]} 22|248b13[5|20]
+486V16*Compose_From_Cartesian[21|55]{7|28A9[5|20]} 22|121b13[5|20]
+493V16*Compose_From_Cartesian[21|84]{7|28A9[5|20]} 22|201b13[5|20]
+503V16*Compose_From_Cartesian[21|68]{7|29A9[5|20]} 22|104b13[5|20]
+510V16*Compose_From_Cartesian[21|126]{7|29A9[5|20]} 22|136b13[5|20]
+524V16*Compose_From_Polar[21|84]{7|28A9[5|20]} 22|201b13[5|20]
+534V16*Compose_From_Polar[21|104]{7|28A9[5|20]} 22|224b13[5|20]
+545V16*Compose_From_Polar[21|126]{7|29A9[5|20]} 22|136b13[5|20]
+555V16*Compose_From_Polar[21|147]{7|29A9[5|20]} 22|168b13[5|20]
+570V16*Conjugate[21|55]{7|28A9[5|20]} 22|121b13[5|20]
+577V16*Conjugate[21|68]{7|29A9[5|20]} 22|104b13[5|20]
+588V16*Im[21|55]{10|43A9[13|18]} 22|121b13[5|20]
+595V16*Im[21|68]{10|44A9[13|18]} 22|104b13[5|20]
+606V16*Modulus[21|55]{10|43A9[13|18]} 22|121b13[5|20]
+613V16*Modulus[21|68]{10|44A9[13|18]} 22|104b13[5|20]
+624V16*Re[21|55]{10|43A9[13|18]} 22|121b13[5|20]
+631V16*Re[21|68]{10|44A9[13|18]} 22|104b13[5|20]
+642U17*Set_Im[21|354] 22|444b14[5|20]
+649U17*Set_Im[21|366] 22|423b14[5|20]
+660U17*Set_Re[21|354] 22|444b14[5|20]
+667U17*Set_Re[21|366] 22|423b14[5|20]
+678V16*Unit_Matrix[21|377]{7|29A9[5|20]} 22|460b13[5|20]
+684V16*Unit_Vector[21|391]{7|28A9[5|20]} 22|482b13[5|20]
+X 9 a-ngcoty.ads
+42R9*Complex
+84V13 "+"{42R9[7|21]} 21|238i21[7|21] 280i21[7|21] 303i21[7|21] 328i21[6|18]
+86V13 "*"{42R9[7|21]} 21|257i21[7|21]
+112V13 "*"{42R9[7|21]} 21|235i21[7|21] 257i21[7|21] 277i21[7|21] 300i21[7|21]
+. 325i21[7|21]
+113V13 "*"{42R9[7|21]} 21|235i21[7|21] 257i21[7|21] 277i21[7|21] 300i21[7|21]
+. 325i21[7|21]
+X 10 a-ngrear.ads
+43A9*Real_Vector(float)<integer>
+44A9*Real_Matrix(float)<integer><integer>
+X 13 a-nurear.ads
+18K22*Real_Arrays[10|38] 5|17w19 21r45
+X 16 i-fortra.ads
+24F9*Double_Precision<long_float>
+43R9*Double_Complex<9|42R9[38]>
+X 17 i-forbla.ads
+59A9*Double_Precision_Vector(16|24F9)<integer>
+62A9*Double_Complex_Vector(16|43R9)<integer>
+75A9*Double_Complex_Matrix(16|43R9)<integer><integer>
+X 24 s-gecobl.adb
+71V13 To_Double_Complex[21|55]{17|62A9} 22|121b13[8|53[5|20]]
+79V13 To_Complex[21|55]{7|28A9[5|20]} 22|121b13[8|53[5|20]]
+87V13 To_Double_Complex[21|68]{17|75A9} 22|104b13[8|53[5|20]]
+95V13 To_Complex[21|68]{7|29A9[5|20]} 22|104b13[8|53[5|20]]
+X 26 s-gecola.adb
+71V13 To_Double_Precision[21|55]{17|59A9} 22|121b13[8|59[5|20]]
+79V13 To_Real[21|55]{8|51A9[5|20]} 22|121b13[8|59[5|20]]
+87V13 To_Double_Complex[21|68]{17|75A9} 22|104b13[8|59[5|20]]
+95V13 To_Complex[21|68]{7|29A9[5|20]} 22|104b13[8|59[5|20]]
+

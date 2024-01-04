@@ -1,0 +1,19 @@
+/*************************************
+demands_sum_SacAme_Folsm_Nimbus.wresl
+ 
+Tom FitzHugh BOR 5/20/2010
+
+Does final summation of Calsim project deliveries to get D_SacAme_P, D_Nimbus_P, and D_Folsm_P.
+Also sums up deliveries by type.
+**************************************/
+
+goal setD_SacAme_P {D_SacAme_P = d163_prj + d165_prj + d162_prj + d167_prj}
+goal setD_SacAme_pmi {D_SacAme_pmi = d167_pmi}
+goal setD_SacAme_psc {D_SacAme_psc = d163_psc + d165_psc + d162_psc}
+
+goal setD_Folsm_P {D_Folsm_P = d8_prj}
+goal setD_Folsm_pmi {D_Folsm_pmi = d8_pmi}
+  
+goal setD_Nimbus_P {D_Nimbus_P = d9_prj}
+goal setD_Nimbus_pmi {D_Nimbus_pmi = d9_pmi}
+ 

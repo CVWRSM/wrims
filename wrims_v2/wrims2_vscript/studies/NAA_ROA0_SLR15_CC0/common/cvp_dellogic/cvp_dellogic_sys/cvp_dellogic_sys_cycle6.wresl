@@ -1,0 +1,13 @@
+! THIS IS THE MAIN CVP_SYS DELIVERY LOGIC FILE FOR CYCLE 6
+! Only the CVP Delivery Logic Operations are included with the system
+
+! Edited by Erik Reyes 09/28/99 to conform to CALSIM cycles.
+! The delivery logic is split into two sets, one for cycles 1 -5 and a second for cycle 6
+! These are the cycle 6 constraints that impose the delivery constraints and sum up decision
+! variables for use in next month's cycle 1 calculations.
+
+INCLUDE 'deliveries_sys\cvp_bound_del_sys.wresl'
+
+INCLUDE 'demands_sys\sum_cvp_reduced_dem.wresl'   ! for use in the WSI-DI generation code.
+
+

@@ -1,0 +1,113 @@
+/*
+Determines cost of each action. This file is for debuggin purposes only.
+Actual costs are computed through the metrics in the B2 accounting file.
+
+A. Munevar 10/12/2001 Separated from B2 accounting file.
+*/
+!**** Determine Cost of B2 Action1 *****
+define CostAction1 {
+  case Oct {
+    condition month==OCT
+    value     0.0 }
+    case NovFeb {
+      condition    month>=NOV .and. month<=FEB /*.and. int(B2Action1Ondv(-1))==1*/
+    value         max(0.,CvpStorMtr__b2 - CvpStorMtr__b2dv(-1)) }
+    case other {
+      condition    always
+    value         0.0 }
+}
+
+define CostAction1dv {alias CostAction1 kind 'COST' units 'TAF'}
+
+!**** Determine Cost of B2 Action2 *****
+define CostAction2 {
+  case Oct {
+    condition month==OCT
+    value     0.0 }
+    case JanFeb {
+      condition    month>=JAN .and. month<=FEB .and. int(B2Action2Ondv(-1))==1
+    value         max(0.,CvpExpMtr__b2) }
+    case other {
+      condition    always
+    value         0.0 }
+}
+
+define CostAction2dv {alias CostAction2 kind 'COST' units 'TAF'}
+
+!**** Determine Cost of B2 Action 3 *****
+define CostAction3 {
+  case Oct {
+    condition month==OCT
+    value     0.0 }
+    case May {
+      condition    month==MAY .and. int(B2Action3Ondv(-1))==1
+    value         max(0.,CvpExpMtr__b2*16./30. ) }
+    case Jun {
+      condition    month==JUN .and. int(B2Action3Ondv(-1))==1
+    value         max(0.,CvpExpMtr__b2*15./31. ) }
+    case other {
+      condition    always
+    value         0.0 }
+}
+
+define CostAction3dv {alias CostAction3 kind 'COST' units 'TAF'}
+
+!**** Determine Cost of B2 Action 4 *****
+define CostAction4 {
+  case Oct {
+    condition month==OCT
+    value     0.0 }
+    case Jun {
+      condition    month==JUN .and. int(B2Action4Ondv(-1))==1
+    value         max(0.,CvpExpMtr__b2*16./31.) }
+    case other {
+      condition    always
+    value         0.0 }
+}
+
+define CostAction4dv {alias CostAction4 kind 'COST' units 'TAF'}
+
+!**** Determine Cost of B2 Action 5 *****
+define CostAction5 {
+  case Oct {
+    condition month==OCT
+    value     0.0 }
+    case Jul {
+      condition    month==JUL .and. int(B2Action5Ondv(-1))==1
+    value         max(0.,CvpExpMtr__b2) }
+    case other {
+      condition    always
+    value         0.0 }
+}
+
+define CostAction5dv {alias CostAction5 kind 'COST' units 'TAF'}
+
+!**** Determine Cost of B2 Action 6 *****
+define CostAction6 {
+  case Oct {
+    condition month==OCT
+    value     0.0 }
+    case May {
+      condition    month==MAY .and. int(B2Action6Ondv(-1))==1
+    value         max(0.,CvpExpMtr__b2*14./30.) }
+    case other {
+      condition    always
+    value         0.0 }
+}
+
+define CostAction6dv {alias CostAction6 kind 'COST' units 'TAF'}
+
+!**** Determine Cost of B2 Action 7 *****
+define CostAction7 {
+  case Oct {
+    condition month==OCT
+    value     0.0 }
+    case MarApr {
+        condition    month>=MAR .and. month<=APR .and. int(B2Action7Ondv(-1))==1
+    value         max(0.,CvpExpMtr__b2) }
+    case other {
+      condition    always
+    value         0.0 }
+}
+
+define CostAction7dv {alias CostAction7 kind 'COST' units 'TAF'}

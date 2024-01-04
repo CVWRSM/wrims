@@ -1,0 +1,341 @@
+/*
+ASSURE CONTINUITY IN SURFACE WATER NETWORK
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Ash Slough        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityASL013       {D_CHW028_ASL013 - D_ASL013_64_PA2 - C_ASL013 = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear Creek      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityBCK040       {I_BCK040 + SG_BCK040_741   - C_BCK040    = 0.} 
+goal continuityBCK035       {C_BCK040 + SG_BCK035_740   - C_BCK035    = 0.} 
+goal continuityBCK033       {C_BCK035 + C_BUR005        - C_BCK033    = 0.} 
+goal continuityBCK031       {C_BCK033 + SG_BCK031_739   - C_BCK031    = 0.} 
+goal continuityBCK024       {C_BCK031 + SG_BCK024_738   - C_BCK024    = 0.} 
+goal continuityBCK017       {C_BCK024 + SG_BCK017_737   - C_BCK017    = 0.} 
+goal continuityBCK010       {C_BCK017 + SG_BCK010_736   - C_BCK010    = 0.} 
+goal continuityBCK006       {C_BCK010 - D_BCK006_ESC000 - C_BCK006    = 0.} !UPSTREAM OF CONFLUENCE WITH EASTSIDE BYPASS
+
+goal continuityAWWWTP       {R_RFS63_AWWWTP - R_AWWWTP_ESC000         = 0.}
+goal continuityESC000       {R_AWWWTP_ESC000 + D_BCK006_ESC000 + R_63_PR1_ESC000 - D_ESC000_63_PR1 - C_ESC000 = 0.}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Berenda Slough        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityBRS018       {D_CHW028_BRS018 - D_BRS018_64_PA2 - C_BRS018 = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Berenda Creek/Dry Creek (Between Fresno and Chowchilla) !!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityDBC024       {I_DBC024 - C_DBC024                    = 0.} 
+goal continuityDBC014       {C_DBC024 - C_DBC014 - D_DBC014_64_PA1  = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Burns Creek - Tributary to Bear Creek !!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityBUR005       {I_BUR005 - C_BUR005                      = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Calaveras River     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityNHGAN        {I_NHGAN - C_NHGAN - E_NHGAN = S_NHGAN*taf_cfs - S_NHGAN(-1)*taf_cfs} !NEW HOGAN RESERVOIR
+goal contiunityCLV044       {C_NHGAN - C_CLV044                    = 0.} !USGS 11308900 Calaveras River blw New Hogan Dam
+goal continuityCLV043       {C_CLV044 - D_CLV043_WTPJYL - C_CLV043 = 0.} 
+goal continuityCLV037       {C_CLV043 - D_CLV037_CACWD  - C_CLV037 = 0.} !USGS 11309500 Calaveras R at Jenny Lind
+goal continuityCLV035       {C_CLV037 + SG_CLV035_564   - C_CLV035 = 0.} 
+goal continuityCLV028       {C_CLV035 + SG_CLV028_563   - C_CLV028 = 0.} 
+goal continuityCLV026       {C_CLV028 + I_CLV026        - D_CLV026_WTPWDH  - C_CLV026 = 0.} 
+goal continuityCLV023       {C_CLV026 + SG_CLV023_562   - D_CLV023_60S_PA1 - C_CLV023 = 0.} 
+goal continuityCLV016       {C_CLV023 + SG_CLV016_561   - C_CLV016 = 0.} 
+goal continuityCLV010       {C_CLV016 + SG_CLV010_560   - C_CLV010 = 0.} 
+goal continuityCLV009       {C_CLV010 - C_CLV009                   = 0.} !USGS 11310900 Calaveras River nr Stockton
+goal continuityCLV006       {C_CLV009 + C_SDC001        - C_CLV006 = 0.} 
+goal continuityCLV004       {C_CLV006 + SG_CLV004_559   - C_CLV004 = 0.} 
+goal continuitySTWWTP       {R_60S_NU1_STWWTP - R_STWWTP_SJR042    = 0.} 
+goal continuityWTPWDH       {D_CLV026_WTPWDH + D_LJC022_WTPWDH - D_WTPWDH_60S_NU1 = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla/Eastside Bypass  !!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityEBP001       {D_SJR214_EBP001 - C_EBP001                                             = 0.} 
+goal continuityEBP005       {C_EBP001 + C_COT033 + SR_64_EBP005 - C_EBP005                          = 0.} 
+goal continuityEBP016       {C_EBP005 + SG_EBP016_819 + C_FRS016 + R_64_PA1_EBP016 + R_64_PA3_EBP016 - D_EBP016_64_NA2 - C_EBP016    = 0.} 
+goal continuityEBP019       {C_EBP016 + SR_64_EBP019 + C_BRS018 - C_EBP019                          = 0.} 
+goal continuityEBP022       {C_EBP019 + R_RFS64_EBP022 + C_ASL013 - C_EBP022                        = 0.} 
+goal continuityEBP030       {C_EBP022 + SG_EBP030_785 + SR_63_EBP030 + SR_64_EBP030 + C_CHW006 + R_64_NA2_EBP030 - C_EBP030   = 0.} 
+goal continuityEBP032       {C_EBP030 + D_SJR166_EBP032 + SR_63_EBP032 + SR_64_EBP032 - C_EBP032    = 0.} 
+goal continuityEBP033       {C_EBP032 - C_EBP033                                                    = 0.} 
+goal continuityEBP041       {C_EBP033 + R_63_PR2_EBP041 - SP_EBP041_SJR145 - C_EBP041               = 0.} 
+goal continuityEBP042       {C_EBP041 + C_DED003 + C_ESC000 - C_EBP042                              = 0.} 
+goal continuityEBP043       {C_EBP042 + C_OWN011 - C_EBP043                                         = 0.} 
+goal continuityEBP048       {C_EBP043 + SG_EBP048_729 + C_BCK006 - D_EBP048_63_PR3 - C_EBP048       = 0.} 
+goal continuityEBP050       {C_EBP048 + SR_64_EBP050 + SR_63_EBP050 - C_EBP050                      = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityESTMN        {I_ESTMN - C_ESTMN  - E_ESTMN = S_ESTMN*taf_cfs - S_ESTMN(-1)*taf_cfs}
+goal continuityCHW037       {C_ESTMN  - C_CHW037                                        = 0.} 
+goal continuityCHW031       {C_CHW037 + SG_CHW031_792 - C_CHW031 + I_CHW031             = 0.} 
+goal continuityCHW028       {C_CHW031 + SG_CHW028_791 + C_MDC032 + C_MDC032F 
+                                      - C_CHW028 - D_CHW028_ASL013 - D_CHW028_BRS018    = 0.} !CONFLUENCE OF MADERA CANAL,BERENDA, AND ASH SLOUGHS
+goal continuityCHW024       {C_CHW028 + SG_CHW024_790 - C_CHW024                        = 0.} 
+goal continuityCHW021       {C_CHW024 + SG_CHW021_789 - C_CHW021                        = 0.} 
+goal continuityCHW017       {C_CHW021 + SG_CHW017_788 - D_CHW017_64_PA2 - C_CHW017      = 0.} 
+goal continuityCHW011       {C_CHW017 + SG_CHW011_787 - C_CHW011                        = 0.} 
+goal continuityCHW006       {C_CHW011 + SG_CHW006_786 - C_CHW006                        = 0.} !UPSTREAM OF CONFLUENCE WITH EASTSIDE BYPASS
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Cottonwood Creek (between Millerton and Fresno River)!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityCOT033     {I_COT033 - C_COT033                                         = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deadman Creek   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityDED044       {I_DED044 + SG_DED044_757 - C_DED044 = 0.} 
+goal continuityDED038       {C_DED044 + SG_DED038_756 - C_DED038 = 0.} 
+goal continuityDED035       {C_DED038 + SG_DED035_755 - C_DED035 = 0.} 
+goal continuityDED032       {C_DED035 + SG_DED032_754 - C_DED032 = 0.} 
+goal continuityDED025       {C_DED032 + SG_DED025_753 - C_DED025 = 0.} 
+goal continuityDED019       {C_DED025 + SG_DED019_752 - C_DED019 = 0.} 
+goal continuityDED012       {C_DED019 + D_MID021_DED012 - C_DED012 = 0.} 
+goal continuityDED010       {C_DED012 + SG_DED010_751 - D_DED010_63_PR2 - C_DED010 = 0.} 
+goal continuityDED003       {C_DED010 + C_MPS038 - C_DED003   = 0.} !UPSTREAM OF CONFLUENCE WITH EASTSIDE BYPASS
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! French Camp Slough !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityFCS007       {C_LJC010 + SR_61_FCS007 + SR_60S_FCS007 + R_60S_PA2_FCS007 - C_FCS007 = 0.}
+goal continuityFCS006       {C_FCS007 - C_FCS006 = 0.}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Fresno River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityHNSLY        {I_HNSLY - C_HNSLY - E_HNSLY    = S_HNSLY*taf_cfs - S_HNSLY(-1)*taf_cfs}  
+goal continuityFRS048       {C_HNSLY - C_FRS048                                         = 0.} 
+goal continuityFRS046       {C_FRS048 + I_FRS046 - C_FRS046                                         = 0.} 
+goal continuityFRS045       {C_FRS046 + SG_FRS045_826 + SP_MDC019_FRS045 - C_FRS045                = 0.} !CROSSING WITH MADERA CANAL?
+goal continuityFRS039       {C_FRS045 + SG_FRS039_825 - C_FRS039                                   = 0.} !CROSSING WITH MADERA CANAL
+goal continuityFRS036       {C_FRS039 + SG_FRS036_824 - D_FRS036_64_PA1 - C_FRS036      = 0.} !FRESNO RIPARIAN DIVERSION
+goal continuityFRS032       {C_FRS036 + SG_FRS032_823 - C_FRS032                                   = 0.} 
+goal continuityFRS025       {C_FRS032 + SG_FRS025_822 - C_FRS025  = 0.} 
+goal continuityFRS022       {C_FRS025 + C_DBC014 + SR_64_FRS022 - C_FRS022  = 0.} 
+goal continuityFRS020       {C_FRS022 + SG_FRS020_821 - C_FRS020                        = 0.} 
+goal continuityFRS016       {C_FRS020 + SG_FRS016_820 - C_FRS016                        = 0.} !CROSSING WITH CHOWCHILLA BYPASS
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Little John Creek   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityUFC000       {D_STS059_UFC000 + SG_UFC000_599 - C_UFC000 = 0.} 
+goal continuityLJC022       {I_LJC022 + C_UFC000 - D_LJC022_WTPWDH - C_LJC022 = 0.} !Farmington Reservoir
+goal continuityLJC010       {C_LJC022 - D_LJC010_60S_PA2 - C_LJC010 = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Madera Canal    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityMDC006       {D_MLRTN_MDC006 - D_MDC006_64_PA1 - D_MDC006_64_PA3 - D_MDC006_MDCLOS - C_MDC006 = 0.} 
+goal continuityMDC019       {C_MDC006 - SP_MDC019_FRS045 - C_MDC019    = 0.} 
+goal continuityMDC032       {C_MDC019 - D_MDC032_64_PA1 - C_MDC032 - C_MDC032F           = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mariposa Creek - Tributary to Deadman Creek !!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityMPS038       {I_MPS038 - C_MPS038          = 0.0} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Merced River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityMCLRE        {I_MCLRE - C_MCLRE - E_MCLRE = S_MCLRE*taf_cfs - S_MCLRE(-1)*taf_cfs } !LAKE MCCLURE, EXCHEQUER DAM
+goal continuityMCD056       {C_MCLRE  - C_MCD056         = 0.} !McSwain Dam
+goal continuityMCD055       {C_MCD056 + I_MCD055 - D_MCD055_62_NA6 - C_MCD055         = 0.} !Merced Falls Diversion Dam
+goal continuityMCD054       {C_MCD055 - C_MCD054         = 0.} !Crocker Huffman Diversion Dam
+goal continuityMCD052       {C_MCD054 + SG_MCD052_701 - D_MCD052_MID021 - C_MCD052         = 0.} !Crocker Huffman Diversion Dam
+goal continuityMCD050       {C_MCD052 + SR_63_MCD050 + SR_62_MCD050 - D_MCD050_62_NA2 - C_MCD050                = 0.} 
+goal continuityMCD048       {C_MCD050 + SG_MCD048_700 - C_MCD048                       = 0.} 
+goal continuityMCD046       {C_MCD048 - C_MCD046     = 0.} 
+goal continuityMCD042       {C_MCD046 + SG_MCD042_699 - D_MCD042_63_NA2 - C_MCD042     = 0.} 
+goal continuityMCD036       {C_MCD042 + SG_MCD036_698 - C_MCD036                       = 0.} 
+goal continuityMCD033       {C_MCD036 - C_MCD033                                       = 0.} 
+goal continuityMCD032       {C_MCD033 + C_DCM019 - C_MCD032                            = 0.} 
+goal continuityMCD028       {C_MCD032 + SG_MCD028_697
+                             + R_63_NA3_MCD028 + R_63_NA2_MCD028 + R_62_NA2_MCD028 + R_62_NA6_MCD028 - C_MCD028     = 0.} !Merced River at Cressey
+goal continuityMCD021       {C_MCD028 + SG_MCD021_696 + SR_62_MCD021 + SR_63_MCD021 + R_RFS62_MCD021 - D_MCD021_63_NA4 - C_MCD021      = 0.} 
+goal continuityMCD018       {C_MCD021 - C_MCD018                                         = 0.} 
+goal continuityMCD014       {C_MCD018 + SG_MCD014_695 - C_MCD014                                         = 0.} 
+goal continuityMCD009       {C_MCD014 + SG_MCD009_694 - C_MCD009                                         = 0.} 
+goal continuityMCD005       {C_MCD009 - C_MCD005                                                         = 0.} !USGS 11272500 Merced R Nr Stevinson
+goal continuityMCD002       {C_MCD005 - SP_MCD002_MRS000 - D_MCD002_63_NA4 - C_MCD002                    = 0.} !UPSTREAM OF CONFLUENCE WITH SAN JOAQUIN RIVER
+
+! Merced Main Canal
+goal continuityMID021       {D_MCD052_MID021 - D_MID021_63_NA3 - D_MID021_DED012 - D_MID021_63_NA4 = 0.} 
+
+! Merced River Slough
+goal continuityMSR000       {SP_MCD002_MRS000 - C_MRS000  = 0.} !USGS 11273000 Merced River Slough Nr Newman
+
+! Merced Inflow above Cressey 
+goal continuityDCM027       {I_DCM027 - C_DCM027  = 0.} 
+goal continuityDCM019       {C_DCM027 - C_DCM019  = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Owens Creek - Contributes to EastSide Bypass !!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityOWN040     {I_OWN040 - C_OWN040          = 0.0} 
+goal continuityOWN011     {C_OWN040 + R_MDWWTP_OWN011 - C_OWN011 = 0.0} 
+goal continuityMDWWTP     {R_RFS63_MDWWTP - R_MDWWTP_OWN011 = 0.}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Return Flow Splits  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityRFS61A       {R_RFS61D_RFS61A + R_61_NA5_RFS61A - R_RFS61A_SJR075 - R_RFS61A_SJR072 = 0.}
+goal continuityRFS61B       {R_61_PA2_RFS61B - D_RFS61B_61_NA2 - R_RFS61B_TUO017 - R_RFS61B_STS036 = 0.}
+goal continuityRFS61C       {R_61_PA1_RFS61C - R_RFS61C_STS030 - R_RFS61C_SJR056 = 0.}
+goal continuityRFS61D       {R_61_NA2_RFS61D - D_RFS61D_61_NA5 - R_RFS61D_TUO017 - R_RFS61D_STS030 - R_RFS61D_RFS61A = 0.} 
+goal continuityRFS62        {R_62_NA3_RFS62 - R_RFS62_MCD021 - R_RFS62_TUO022 - R_RFS62_SJR082 = 0.}
+goal continuityRFS63        {R_63_NU_RFS63 - R_RFS63_AWWWTP - R_RFS63_MDWWTP = 0.}
+goal continuityRFS64        {R_64_PA2_RFS64 - D_RFS64_64_NA2 - R_RFS64_EBP022 = 0.}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Joaquin River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityMLRTN        {I_MLRTN  - D_MLRTN_FRK000 - D_MLRTN_MDC006 - C_MLRTN - E_MLRTN = S_MLRTN*taf_cfs - S_MLRTN(-1)*taf_cfs } !Millerton Reservoir
+goal continuitySJR265       {C_MLRTN + I_SJR265 - C_SJR265               = 0.0 }
+goal continuitySJR263       {C_SJR265 + SG_SJR263_880 - C_SJR263         = 0.0 }
+goal continuitySJR258       {C_SJR263 + I_SJR258 - C_SJR258              = 0.0 }
+goal continuitySJR256       {C_SJR258 + SG_SJR256_879 - C_SJR256                        = 0.0 }
+goal continuitySJR249       {C_SJR256 + SG_SJR249_878 - C_SJR249                        = 0.0 }
+goal continuitySJR242       {C_SJR249 + SG_SJR242_877 - C_SJR242                        = 0.0 }
+goal continuitySJR235       {C_SJR242 + SG_SJR235_876 - C_SJR235                        = 0.0 }
+goal continuitySJR227       {C_SJR235 + SR_64_SJR227 + SG_SJR227_875 - D_SJR227_64_PA3 - C_SJR227      = 0.0 }
+goal continuitySJR225       {C_SJR227 - C_SJR225              = 0.0 } !Gravelly Ford
+goal continuitySJR221       {C_SJR225 + SG_SJR221_874 - C_SJR221       = 0.0 }
+goal continuitySJR214       {C_SJR221 + SG_SJR214_873 + SR_64_SJR214 - D_SJR214_EBP001 - C_SJR214       = 0.0 } !Chowchilla Bypass
+goal continuitySJR213       {C_SJR214 - C_SJR213     = 0.} 
+goal continuitySJR205       {C_SJR213 - D_SJR205_SJR201 - C_SJR205                      = 0.} !Outflow to Mendota Pool Bypass
+
+goal continuitySJR201       {C_MDOTA + D_SJR205_SJR201 - C_SJR201  = 0.} !Inflow from  Mendota Pool Bypass
+goal continuitySJR200       {C_SJR201 - C_SJR200                                            = 0.} !USGS 11254000 SJR Nr Mendota
+goal continuitySJR198       {C_SJR200 + SG_SJR198_858 - C_SJR198                            = 0.} 
+goal continuitySJR195       {C_SJR198 + C_FBW001 - C_SJR195                                 = 0.} 
+goal continuitySJR192       {C_SJR195 + SG_SJR192_843 - C_SJR192                            = 0.} 
+goal continuitySJR185       {C_SJR192 + SG_SJR185_829 + R_64_XA_SJR185 - C_SJR185           = 0.} 
+goal continuitySJR180       {C_SJR185 + SG_SJR180_818 + SR_64_SJR180 - D_SJR180_ARY010 - C_SJR180     = 0.} !Sack Dam
+goal continuitySJR179       {C_SJR180 - C_SJR179                                                = 0.} !SJR Near Dos Palos
+goal continuitySJR173       {C_SJR179 + SG_SJR173_798 - C_SJR173                                = 0.} 
+goal continuitySJR166       {C_SJR173 + SG_SJR166_784 - D_SJR166_EBP032 - C_SJR166   = 0.} 
+goal continuitySJR157       {C_SJR166 + SG_SJR157_769 - C_SJR157                        = 0.} 
+goal continuitySJR152       {C_SJR157 + SG_SJR152_768 - C_SJR152   = 0.} 
+goal continuitySJR145       {C_SJR152 + SG_SJR145_749 + SP_EBP041_SJR145 - C_SJR145         = 0.} 
+goal continuitySJR141       {C_SJR145 + SG_SJR141_728 - C_SJR141                            = 0.} 
+goal continuitySJR134       {C_SJR141 + SG_SJR134_715 + SR_63_SJR134 + R_63_PR3_SJR134 + C_EBP050 - C_SJR134  = 0.} !Confluence with Chowchilla/Eastside Bypass
+goal continuitySJR131       {C_SJR134 - C_SJR131                                            = 0.} !SJR Nr Stevinson
+goal continuitySJR127       {C_SJR131 + C_SAL006 - C_SJR127                  = 0.} !Confluence with Mud/Salt Slough
+goal continuitySJR123       {C_SJR127 + SG_SJR123_702 - C_SJR123                        = 0.} !
+goal continuitySJR119       {C_SJR123 + C_MSN004 - C_SJR119                 = 0.} 
+goal continuitySJR117       {C_SJR119 + C_NMW004 + SR_71_SJR117 + SR_72_SJR117 + SR_63_SJR117 + R_63_NA4_SJR117 - C_SJR117           = 0.} 
+goal continuitySJR116       {C_SJR117 + SG_SJR116_693 + C_MCD002 - D_SJR116_72_NA1 - C_SJR116 = 0.} !Confluence with Merced
+goal continuitySJR115       {C_SJR116 - C_SJR115                                        = 0.} !USGS 11274000
+goal continuitySJR114       {C_SJR115 + C_MRS000 - D_SJR114_62_NA5 - C_SJR114           = 0.} 
+goal continuitySJR111       {C_SJR114 + SG_SJR111_683 - C_SJR111                        = 0.} 
+goal continuitySJR106       {C_SJR111 + SR_71_SJR106 + SR_72_SJR106 + SG_SJR106_671 + R_RFS71B_SJR106 + R_RFS72B_SJR106 + R_72_NA1_SJR106 + C_ORT001 - C_SJR106 = 0.} 
+goal continuitySJR105       {C_SJR106 - C_SJR105 - D_SJR105_71_NA1                      = 0.} !USGS 11274550 SJR nr Crows Landing
+goal continuitySJR101       {C_SJR105 + R_TKWWTP_SJR101 - C_SJR101                      = 0.} !USGS 11274550 SJR nr Crows Landing
+goal continuitySJR096       {C_SJR101 + SG_SJR096_660  - D_SJR096_71_PA4 - C_SJR096     = 0.} !SJR Nr Patterson
+goal continuitySJR091       {C_SJR096 + SR_71_SJR091 + SR_72_SJR091 + R_71_NA1_SJR091 + R_71_PA4_SJR091 + R_RFS71B_SJR091 + R_71_PA7_SJR091 + C_DPC008 - C_SJR091  = 0.} 
+goal continuitySJR090       {C_SJR091 + SG_SJR090_649 - D_SJR090_71_NA2 - C_SJR090      = 0.} 
+goal continuitySJR087       {C_SJR090 + C_WWW001 - C_SJR087                             = 0.} 
+goal continuitySJR082       {C_SJR087 + R_62_NA5_SJR082 + R_RFS62_SJR082 - D_SJR082_71_PA2 - C_SJR082    = 0.} 
+goal continuitySJR081       {C_SJR082 + SR_62_SJR081 + SG_SJR081_633 + C_TUO003 - D_SJR081_61_NA5 - C_SJR081 = 0.} !confluence with Tuolumne
+goal continuitySJR075       {C_SJR081 + C_ING008 + SR_61_SJR075 + R_RFS61A_SJR075
+                             + SR_71_SJR075 + R_71_PA1_SJR075 + R_71_PA2_SJR075 - C_SJR075 = 0.} !USGS 11290500 SJR @ Maze Road Bridge nr Modesto
+goal continuitySJR072       {C_SJR075 + SG_SJR072_615 + R_RFS61A_SJR072 + R_61_NA4_SJR072 + C_STS011 - C_SJR072 = 0.} !confluence with Stanislaus 
+goal continuitySJR070       {C_SJR072 + SR_61_SJR070 + SR_71_SJR070 + R_71_NA2_SJR070 + CT_SJR070
+                             - D_SJR070_61_NA6 - C_SJR070                         = 0.} !USGS 11303500 SJR at Vernalis
+goal continuityTKWWTP       {R_62_NU_TKWWTP - R_TKWWTP_SJR101                      = 0.} ! CITIES OF TURLOCK, CERES, DEHLI, HILMAR, HUGHSON,JEYES AND DENAIR SMALL COMMUNITIES
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! South Main Canal (Oakdale ID)   !!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityOAK001       {D_STS059_OAK001 - C_OAK001 = 0.}
+goal continuityOAK020       {C_OAK001 - D_OAK020_61_PA2 - D_OAK020_61_NA2 = 0.}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stanislaus River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityMELON        {I_MELON - C_MELON - E_MELON = S_MELON*taf_cfs - S_MELON(-1)*taf_cfs } !NEW MELONES RESERVOIR
+goal continuityTULOC        {C_MELON  + I_TULOC - C_TULOC - E_TULOC                         =  S_TULOC*taf_cfs - S_TULOC(-1)*taf_cfs } !TULLOCH RESERVOIR
+goal continuitySTS060       {C_TULOC  - C_STS060 = 0.}
+goal continuitySTS059       {C_STS060 + I_STS059 - D_STS059_SSJ001 - D_STS059_OAK001 - D_STS059_UFC000 - C_STS059 = 0.}
+goal continuitySTS058       {C_STS059 + SG_STS058_623 - C_STS058 = 0.} !USGS 11302000 Goodwin
+goal continuitySTS053       {C_STS058 + SG_STS053_622 - C_STS053                            = 0.} 
+goal continuitySTS050       {C_STS053 + SG_STS050_621 - C_STS050                            = 0.} 
+goal continuitySTS048       {C_STS050 + SG_STS043_620 - C_STS048                            = 0.} 
+goal continuitySTS043       {C_STS048 + SG_STS043_620 - C_STS043                            = 0.} 
+goal continuitySTS036       {C_STS043 + SG_STS036_619 + R_RFS61B_STS036 - C_STS036          = 0.} 
+goal continuitySTS030       {C_STS036 + SG_STS030_618 + R_RFS61C_STS030 + R_RFS61D_STS030 - D_STS030_61_NA4 - C_STS030 = 0.} 
+goal continuitySTS020       {C_STS030 + SG_STS020_617 - C_STS020                 = 0.} 
+goal continuitySTS017       {C_STS020 + SR_61_STS017 - C_STS017 = 0.} !USGS 11303000 CITY OF RIPON
+goal continuitySTS011       {C_STS017 + SG_STS011_616 - C_STS011                            = 0.} !UPSTREAM OF CONFLUENCE WITH SAN JOAQUIN RIVER
+
+goal continuitySSJ001       {D_STS059_SSJ001 - C_SSJ001 = 0.}
+goal continuityWDWRD        {C_SSJ001 + SG_WDWRD - D_WDWRD_61_PA1 - D_WDWRD_WTPDGT - E_WDWRD = S_WDWRD*taf_cfs - S_WDWRD(-1)*taf_cfs + ErrPos_WDWRD - ErrNeg_WDWRD}! WOODWARD RESERVOIR
+goal continuityWTPDGT       {D_WDWRD_WTPDGT - D_WTPDGT_61_NU2 - D_WTPDGT_50_PU     = 0.} 
+goal continuityMAWWTP       {R_61_NU2_MAWWTP - R_MAWWTP_SJR056 = 0.}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stockton Diverting Canal    !!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuitySDC001       {R_60S_PA1_SDC001 - C_SDC001 = 0.} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Tuolumne River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal continuityPEDRO        {I_PEDRO - C_PEDRO - E_PEDRO = S_PEDRO*taf_cfs - S_PEDRO(-1)*taf_cfs} ! NEW DON PEDRO RESERVOIR
+goal continuityTUO054       {C_PEDRO + I_TUO054 - D_TUO054_MDS003 - D_TUO054_TUR001 - C_TUO054  = 0.} !LA GRANGE DAM
+goal continuityMDS003       {D_TUO054_MDS003 - C_MDS003 = 0.} 
+goal continuityMDSTO        {C_MDS003 + SG_MDSTO_644 - D_MDSTO_WTPMOD - D_MDSTO_61_NA2 - E_MDSTO        = S_MDSTO*taf_cfs - S_MDSTO(-1)*taf_cfs} ! MODESTO LAKE
+goal continuityWTPMOD       {D_MDSTO_WTPMOD - D_WTPMOD_61_NU1                                           = 0.} 
+goal continuityTUR001       {D_TUO054_TUR001 - C_TUR001 = 0.} 
+goal continuityTRLCH        {C_TUR001 + SG_TRLCH_666 - D_TRLCH_62_NA3  - E_TRLCH                        = S_TRLCH*taf_cfs - S_TRLCH(-1)*taf_cfs} ! TURLOCK LAKE
+goal continuityTUO053       {C_TUO054 + SG_TUO053_657 - C_TUO053 = 0.} !USGS 11289560 Tuolumne River Below LaGrange Dam
+goal continuityTUO047       {C_TUO053 + SG_TUO047_656 - C_TUO047                                        = 0.}
+goal continuityTUO043       {C_TUO047 + SG_TUO043_655 - C_TUO043                                        = 0.} 
+goal continuityTUO036       {C_TUO043 + SG_TUO036_654 - C_TUO036                                        = 0.} 
+goal continuityTUO030       {C_TUO036 + SG_TUO030_653 - C_TUO030                                        = 0.} 
+goal continuityTUO022       {C_TUO030 + SG_TUO022_652 + R_RFS62_TUO022 - C_TUO022            = 0.} 
+goal continuityTUO017       {C_TUO022 + SR_61_TUO017 + SR_62_TUO017 + R_RFS61B_TUO017 + R_RFS61D_TUO017 + C_DCT050
+                             - D_TUO017_61_NA3 - D_TUO017_62_NA4 - C_TUO017 = 0.} !USGS 1129000 Tuolumne River at Modesto
+goal continuityTUO015       {C_TUO017 + SG_TUO015_651 - C_TUO015                                            = 0.} !CITY OF MERCED, CONFLUENCE WITH DRY CREEK
+goal continuityTUO010       {C_TUO015 + SG_TUO010_650 + R_MOWWTP_TUO010 - C_TUO010     = 0.} 
+goal continuityTUO004       {C_TUO010 + SG_TUO010_650 + R_MOWWTP_TUO010 - C_TUO004     = 0.} 
+goal continuityTUO003       {C_TUO004 + R_61_NA3_TUO003 + R_62_NA4_TUO003 - C_TUO003   = 0.} !UPSTREAM OF CONFLUENCE WITH SAN JOAQUIN RIVER
+goal continuityMOWWTP       {R_61_NU1_MOWWTP - R_MOWWTP_TUO010                             = 0.} 
+goal continuityDCT050	    {I_DCT050 - C_DCT050                             = 0.} ! DRY CREEK INFLOW TO TUOLOMNE RIVER
+

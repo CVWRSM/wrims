@@ -1,0 +1,49 @@
+! TransfersZeroOps.wresl
+
+! Use the file when to zero out Transfers stuff in older setups - this is for backward compatability
+
+goal zeroI204_WTS {I204_WTS = 0.}
+goal setI607_WTS {I607_WTS = 0.}
+goal setI839_WTS {I839_WTS = 0.}
+goal setI852_WTS {I852_WTS = 0.}
+goal zeroD143A_WTS {D143A_WTS = 0.}
+goal zeroD145A_WTS {D145A_WTS = 0.}
+goal zeroD122A_WTS {D122A_WTS = 0.}
+goal zeroD122B_WTS {D122B_WTS = 0.}
+goal zeroD128_WTS {D128_WTS = 0.}
+goal zeroD7b_WTS  {D7b_WTS = 0.}
+goal zeroD168A_WTS {D168A_WTS = 0.}
+
+!goal zeroC407_WTS {C407_WTS  = 0.}
+goal zeroD418_WTS {D418_WTS  = 0.}
+!goal zeroD419_WTS {D419_WTS  = 0.}
+
+goal setS4_WTS {S4_WTS = S4_WTS(-1)}
+goal setS6_WTS {S6_WTS = S6_WTS(-1)}
+
+define WTS_CI12 {value 0.}
+define WTS_DSA12 {value 0.}
+define WTS_CI15 {value 0.}
+define WTS_DSA15 {value 0.}
+define WTS_CI69 {value 0.}
+define WTS_DSA69 {value 0.}
+define WTS_CI70 {value 0.}
+define WTS_GW70 {value 0.}
+define WTS_DSA70 {value 0.}
+
+define frac_GC_N_DSA12 {value 0.}
+define frac_GC_S_DSA12 {value 0.}
+define frac_SC_N_DSA12 {value 0.}
+define frac_SC_S_DSA12 {value 0.}
+
+goal zeroD815_WTS {D815_WTS = 0.}
+goal zeroD885_WTS {D885_WTS = 0.}
+goal zeroD895_WTS {D895_WTS = 0.}
+
+define SacCI_Stg1 {value 0.}
+define SacCI_Stg2 {value 0.}
+define SacOthCI_Stg1 {value 0.}
+define SacOthCI_Stg2 {value 0.}
+
+define SacCI_Max1 {value 0.}
+define SacOthCI_Max1 {value 0.}

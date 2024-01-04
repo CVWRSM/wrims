@@ -1,0 +1,392 @@
+! WestSideReturns.wresl
+
+! Nancy Parker
+! USBR
+! 2/2003
+! File for calculating Westside return flows
+
+/*
+The following code calculates return flows on the West-side
+
+Some CVP contractor diversions have return flows to the San Joaquin. Each
+delivery node is essentially a total comprised of multiple individual
+contractors, each of which have different return flow locations and
+properties.  This code proportions the return flow influence by diversion
+node, return node, and contractor. The return flow factor will be:
+
+[(Individual contract amt * % of that amount returning to a particular node)
+ / Total annual contract at the delivery node] * monthly return flow % for
+ the individual contractor
+
+Each return flow factor is applied to the total delivery to get a set of
+return flows by individual contractor to several return flow locations.
+
+
+Refuge returns are handled differently since they happen on an annual pattern
+which is not the same as the delivery pattern.  Since we cannot assume full
+deliveries, the return will be based on the actual delivery of the previous
+12 months.  It is assumed that X% of the annual delivery is returned to the
+system on a pattern in the lookup Table.
+*/
+
+/*
+Revised by: T. Crawford, USBR, 03/07/03
+Purpose: Review and document code
+*/
+
+!############################################################################
+
+
+/*
+****************************Return Flow Factors******************************
+*/
+
+! Percentage of Westlands ID deliveries that is returned to SJR at Mendota Pool
+define RFactor_607a { value ((Annual6071_1 * conpct_6071_1_607 /  TotAnnual6071) * SJRF_6071_1_607) }
+
+! Percentage of Fresno Slough WD deliveries that is returned to SJR at Mendota Pool
+define RFactor_607b { value ((Annual6071_2 * conpct_6071_2_607 /  TotAnnual6071) * SJRF_6071_2_607) }
+
+! Percentage of James ID deliveries that is returned to SJR at Mendota Pool
+define RFactor_607c { value ((Annual6071_3 * conpct_6071_3_607 /  TotAnnual6071) * SJRF_6071_3_607) }
+
+! Percentage of Traction Ranch/F&G deliveries that is returned to SJR at Mendota Pool
+define RFactor_607d { value ((Annual6071_4 * conpct_6071_4_607 /  TotAnnual6071) * SJRF_6071_4_607) }
+
+! Percentage of Tranquillity ID deliveries that is returned to SJR at Mendota Pool
+define RFactor_607e { value ((Annual6071_5 * conpct_6071_5_607 /  TotAnnual6071) * SJRF_6071_5_607) }
+
+! Percentage of Melvin Hughes' deliveries that is returned to SJR at Mendota Pool
+define RFactor_607f { value ((Annual6071_6 * conpct_6071_6_607 /  TotAnnual6071) * SJRF_6071_6_607) }
+
+! Percentage of R.D. 1606 deliveries that is returned to SJR at Mendota Pool
+define RFactor_607g { value ((Annual6071_7 * conpct_6071_7_607 /  TotAnnual6071) * SJRF_6071_7_607) }
+
+! Percentage of Sch. II WR deliveries that is returned to SJR at Mendota Pool
+define RFactor_607h { value ((Annual6072_2 * conpct_6072_2_607 /  TotAnnual6072) * SJRF_6072_2_607) }
+
+! Percentage of Panoche WD deliveries that is returned to SJR at Salt Slough
+define RFactor_614a { value ((Annual706_1 * conpct_706_1_614 /  TotAnnual706) * SJRF_706_1_614) }
+
+! Percentage of San Luis WD deliveries that is returned to SJR at Salt Slough
+define RFactor_614b { value ((Annual706_2 * conpct_706_2_614 /  TotAnnual706) * SJRF_706_2_614) }
+
+! Percentage of Broadview WD deliveries that is returned to SJR at Salt Slough
+define RFactor_614c { value ((Annual706_3 * conpct_706_3_614 /  TotAnnual706) * SJRF_706_3_614) }
+
+! Percentage of Laguna WD deliveries that is returned to SJR at Salt Slough
+define RFactor_614d { value ((Annual706_4 * conpct_706_4_614 /  TotAnnual706) * SJRF_706_4_614) }
+
+! Percentage of Eagle Field WD deliveries that is returned to SJR at Salt Slough
+define RFactor_614e { value ((Annual706_5 * conpct_706_5_614 /  TotAnnual706) * SJRF_706_5_614) }
+
+! Percentage of Mercy Springs WD deliveries that is returned to SJR at Salt Slough
+define RFactor_614f { value ((Annual706_6 * conpct_706_6_614 /  TotAnnual706) * SJRF_706_6_614) }
+
+! Percentage of Oro Loma WD deliveries that is returned to SJR at Salt Slough
+define RFactor_614g { value ((Annual706_7 * conpct_706_7_614 /  TotAnnual706) * SJRF_706_7_614) }
+
+! Percentage of Widren WD deliveries that is returned to SJR at Salt Slough
+define RFactor_614h { value ((Annual706_8 * conpct_706_8_614 /  TotAnnual706) * SJRF_706_8_614) }
+
+! Percentage of Lower DMC Exch Contractors deliveries that is returned to SJR at Salt Slough
+define RFactor_614i { value ((Annual707_1 * conpct_707_1_614 /  TotAnnual707) * SJRF_707_1_614) }
+
+! Percentage of Pool Exch Contractors deliveries that is returned to SJR at Salt Slough
+define RFactor_614j { value ((Annual6072_1 * conpct_6072_1_614 /  TotAnnual6072) * SJRF_6072_1_614) }
+
+! Percentage of Davis WD deliveries that is returned to SJR at Merced
+define RFactor_619a { value ((Annual701_1 * conpct_701_1_619 /  TotAnnual701) * SJRF_701_1_619) }
+
+! Percentage of Mustang WD deliveries that is returned to SJR at Merced
+define RFactor_619b { value ((Annual701_8 * conpct_701_8_619 /  TotAnnual701) * SJRF_701_8_619) }
+
+! Percentage of Foothill WD deliveries that is returned to SJR at Merced
+define RFactor_619c { value ((Annual701_12 * conpct_701_12_619 /  TotAnnual701) * SJRF_701_12_619) }
+
+! Percentage of Quinto WD deliveries that is returned to SJR at Merced
+define RFactor_619d { value ((Annual701_13 * conpct_701_13_619 /  TotAnnual701) * SJRF_701_13_619) }
+
+! Percentage of Romero WD deliveries that is returned to SJR at Merced
+define RFactor_619e { value ((Annual701_14 * conpct_701_14_619 /  TotAnnual701) * SJRF_701_14_619) }
+
+! Percentage of Centinella WD deliveries that is returned to SJR at Merced
+define RFactor_619f { value ((Annual701_15 * conpct_701_15_619 /  TotAnnual701) * SJRF_701_15_619) }
+
+! Percentage of Lower DMC Exch Contractors deliveries that is returned to SJR at Merced
+define RFactor_619g { value ((Annual707_1 * conpct_707_1_619 /  TotAnnual707) * SJRF_707_1_619) }
+
+! Percentage of Pool Exch Contractors deliveries that is returned to SJR at Merced
+define RFactor_619h { value ((Annual6072_1 * conpct_6072_1_619 /  TotAnnual6072) * SJRF_6072_1_619) }
+
+! Percentage of Del Puerto WD deliveries that is returned to SJR above Maze
+define RFactor_630a { value ((Annual701_2 * conpct_701_2_630 /  TotAnnual701) * SJRF_701_2_630) }
+
+! Percentage of Hospital WD deliveries that is returned to SJR above Maze
+!define RFactor_630b { value ((Annual701_3 * conpct_701_3_630 /  TotAnnual701) * SJRF_701_3_630) } ! 701_3 goes to Node 639
+define RFactor_639b { value ((Annual701_3 * conpct_701_3_639 /  TotAnnual701) * SJRF_701_3_639) }
+
+! Percentage of Kern Canon WD deliveries that is returned to SJR above Maze
+define RFactor_630c { value ((Annual701_4 * conpct_701_4_630 /  TotAnnual701) * SJRF_701_4_630) }
+
+! Percentage of Salado WD deliveries that is returned to SJR above Maze
+define RFactor_630d { value ((Annual701_5 * conpct_701_5_630 /  TotAnnual701) * SJRF_701_5_630) }
+
+! Percentage of Sunflower WD deliveries that is returned to SJR above Maze
+define RFactor_630e { value ((Annual701_6 * conpct_701_6_630 /  TotAnnual701) * SJRF_701_6_630) }
+
+! Percentage of West Stanislaus WD deliveries that is returned to SJR above Maze
+define RFactor_630f { value ((Annual701_7 * conpct_701_7_630 /  TotAnnual701) * SJRF_701_7_630) }
+
+! Percentage of Orestimba WD deliveries that is returned to SJR above Maze
+!define RFactor_630g { value ((Annual701_9 * conpct_701_9_630 /  TotAnnual701) * SJRF_701_9_630) } ! 701_9 goes to node 619
+define RFactor_619i { value ((Annual701_9 * conpct_701_9_619 /  TotAnnual701) * SJRF_701_9_619) }
+
+! Percentage of Patterson WD WR deliveries that is returned to SJR above Maze
+define RFactor_630h { value ((Annual701_10 * conpct_701_10_630 /  TotAnnual701) * SJRF_701_10_630) }
+
+! Percentage of Patterson WD deliveries that is returned to SJR above Maze
+define RFactor_630i { value ((Annual701_11 * conpct_701_11_630 /  TotAnnual701) * SJRF_701_11_630) }
+
+! Percentage of West Stanislaus deliveries that is returned to SJR at Maze
+!define RFactor_636d { value ((Annual701_7 * conpct_701_7_636 /  TotAnnual701) * SJRF_701_7_636) } ! All return flow of 701_7 goes to Node 630
+
+! Percentage of Plainview WD deliveries that is returned to SJR below Vernalis
+define RFactor_644a { value ((Annual700_1 * conpct_700_1_644 /  TotAnnual700) * SJRF_700_1_644) }
+
+! Percentage of City of Tracy deliveries that is returned to SJR below Vernalis
+define RFactor_644b { value ((Annual700_2 * conpct_700_2_644 /  TotAnnual700) * SJRF_700_2_644) }
+
+! Percentage of Banta Carbona ID deliveries that is returned to SJR below Vernalis
+define RFactor_644c { value ((Annual700_3 * conpct_700_3_644 /  TotAnnual700) * SJRF_700_3_644) }
+
+! Percentage of West Side ID deliveries that is returned to SJR below Vernalis
+define RFactor_644d { value ((Annual700_4 * conpct_700_4_644 /  TotAnnual700) * SJRF_700_4_644) }
+
+
+/*
+*******************************Return Flows**********************************
+*/
+
+! Westlands WD (incl Barcellos) return flows to SJR at Mendota Pool
+goal returnflowR607a  { R607a = RFactor_607a * D607A }
+
+! Fresno Slough WD return flows to SJR at Mendota Pool
+goal returnflowR607b  { R607b = RFactor_607b * D607A }
+
+! James ID return flows to SJR at Mendota Pool
+goal returnflowR607c  { R607c = RFactor_607c * D607A }
+
+! Traction Ranch/F&G return flows to SJR at Mendota Pool
+goal returnflowR607d  { R607d = RFactor_607d * D607A }
+
+! Tranquillity ID return flows to SJR at Mendota Pool
+goal returnflowR607e  { R607e = RFactor_607e * D607A }
+
+! Melvin Hughes' return flows to SJR at Mendota Pool
+goal returnflowR607f  { R607f = RFactor_607f * D607A }
+
+! R.D. 1606 return flows to SJR at Mendota Pool
+goal returnflowR607g  { R607g = RFactor_607g * D607A }
+
+! Sch. II WR return flows to SJR at Mendota Pool
+goal returnflowR607h  { R607h = RFactor_607h * D607B + RFactor_607h * D608B }
+
+! Panoche WD return flows to SJR at Salt Slough
+goal returnflowR614a  { R614a = RFactor_614a * D706 }
+
+! San Luis WD return flows to SJR at Salt Slough
+goal returnflowR614b  { R614b = RFactor_614b * D706 }
+
+! Broadview WD return flows to SJR at Salt Slough
+goal returnflowR614c  { R614c = RFactor_614c * D706 }
+
+! Laguna WD return flows to SJR at Salt Slough
+goal returnflowR614d  { R614d = RFactor_614d * D706 }
+
+! Eagle Field WD return flows to SJR at Salt Slough
+goal returnflowR614e  { R614e = RFactor_614e * D706 }
+
+! Mercy Springs WD return flows to SJR at Salt Slough
+goal returnflowR614f  { R614f = RFactor_614f * D706 }
+
+! Oro Loma WD return flows to SJR at Salt Slough
+goal returnflowR614g  { R614g = RFactor_614g * D706 }
+
+! Widren WD return flows to SJR at Salt Slough
+goal returnflowR614h  { R614h = RFactor_614h * D706 }
+
+! Lower DMC Exch Contractors return flows to SJR at Salt Slough
+goal returnflowR614i  { R614i = RFactor_614i * D707 }
+
+/*
+Pool Exch Contractors return flows to SJR at Salt Slough; effective delivery
+equals delivery minus VAMP releases. Thus, the return flow is the return flow
+factor times the difference in deliveries and VAMP releases:
+Return flow = RFactor * (Delivery - VAMP release)
+*/
+goal returnflowR614j  { R614j = RFactor_614j * D607B + RFactor_614j * D608B - RFactor_614j*C607BVAMP }
+
+! Davis WD return flows to SJR at Merced
+goal returnflowR619a  { R619a = RFactor_619a * D701 }
+
+! Mustang WD return flows to SJR at Merced
+goal returnflowR619b  { R619b = RFactor_619b * D701 }
+
+! Foothill WD return flows to SJR at Merced
+goal returnflowR619c  { R619c = RFactor_619c * D701 }
+
+! Quinto WD return flows to SJR at Merced
+goal returnflowR619d  { R619d = RFactor_619d * D701 }
+
+! Romero WD return flows to SJR at Merced
+goal returnflowR619e  { R619e = RFactor_619e * D701 }
+
+! Centinella WD return flows to SJR at Merced
+goal returnflowR619f  { R619f = RFactor_619f * D701 }
+
+! Lower DMC Exch Contractors return flows to SJR at Merced
+goal returnflowR619g  { R619g = RFactor_619g * D707 }
+
+/*
+Pool Exch Contractors return flows to SJR at Merced; effective delivery
+equals delivery minus VAMP releases. Thus, the return flow is the return flow
+factor times the difference in deliveries and VAMP releases:
+Return flow = RFactor * (Delivery - VAMP release)
+*/
+goal returnflowR619h  { R619h = RFactor_619h * D607B + RFactor_619h * D608B - RFactor_619h*C607BVAMP }
+
+! Del Puerto WD return flows to SJR above Maze
+goal returnflowR630a  { R630a = RFactor_630a * D701 }
+
+! Hospital WD return flows to SJR above Maze
+!goal returnflowR630b  { R630b = RFactor_630b * D701 }
+goal returnflowR639b  { R639b = RFactor_639b * D701 }
+
+! Kern Canon WD return flows to SJR above Maze
+goal returnflowR630c  { R630c = RFactor_630c * D701 }
+
+! Salado WD return flows to SJR above Maze
+goal returnflowR630d  { R630d = RFactor_630d * D701 }
+
+! Sunflower WD return flows to SJR above Maze
+goal returnflowR630e  { R630e = RFactor_630e * D701 }
+
+! West Stanislaus WD return flows to SJR above Maze
+goal returnflowR630f  { R630f = RFactor_630f * D701 }
+
+! Orestimba WD return flows to SJR above Maze
+!goal returnflowR630g  { R630g = RFactor_630g * D701 }
+goal returnflowR619i  { R619i = RFactor_619i * D701 }
+
+! Patterson WD WR return flows to SJR above Maze
+goal returnflowR630h  { R630h = RFactor_630h * D701 }
+
+! Patterson WD return flows to SJR above Maze
+goal returnflowR630i  { R630i = RFactor_630i * D701 }
+
+! West Stanislaus WD return flows to SJR at Maze
+!goal returnflowR636d  { R636d = RFactor_636d * D701 }
+
+! Plainview WD return flows to SJR below Vernalis
+goal returnflowR644a  { R644a = RFactor_644a * D700 }
+
+! City of Tracy WD return flows to SJR below Vernalis
+goal returnflowR644b  { R644b = RFactor_644b * D700 }
+
+! Banta Carbona ID return flows to SJR below Vernalis
+goal returnflowR644c  { R644c = RFactor_644c * D700 }
+
+! West Side ID return flows to SJR below Vernalis
+goal returnflowR644d  { R644d = RFactor_644d * D700 }
+
+
+/*
+**************************Refuge Return Flows********************************
+*/
+
+/*
+Annual Lower DMC refuge returns to SJR at Salt Slough are assumed to be 61% (changed from 30%)
+of the contract year allocation.  The fraction of 61% is applied to both D708 and D607C to
+produce an aggregate annual refuge return of ~= 120 TAF of operations' returns and ~50TAF of
+"pass-through" returns (WETMANSIM-031604_ver01.00).
+
+In CALSIM, Level 2 refuge deliveries are embedded in D708 and D607C, which represent more than
+just Firm Level 2 delivery (~277 TAF); Level 2 is actually 219TAF.  So 0.61 doesn’t represent a true refuge
+return factor.  Instead it is a fitting factor applied to CALSIM’s "refuge + other" delivery amounts in D708 + D607C.
+
+In the future, D708 and D607C should be disaggregated to isolate Firm Level 2 delivery.
+The return fraction should then be modified while preserving the target annual return volume
+of 120TAF for refuge operations and 50TAF for passthrough operations.
+
+This representation of refuge return quantities does not reflect:
+-- Level 4 refuge supplies and operational effects
+-- operational adjustments when Level 2 supplies are based on "<100%" CVP allocation
+*/
+define AnnDem_D708 {value 182.6} !Sum first 12 months of dem_d708_prf, TAF, LDB 8/30/04
+define ANN_D708_RF { value 0.61 * AnnDem_D708 * perdel_cvprf_s } !LDB, 8/30/04
+! Lower DMC refuge monthly percentage of return flows to SJR at Salt Slough
+define SJRF_708_614  {select mon_pct from CVPcontractRF where node=708, contr=1, month=month}
+! Lower DMC refuge return flows to SJR at Salt Slough
+goal returnflowR614k { R614k = ANN_D708_RF * SJRF_708_614 * taf_cfs }
+
+/*A. Fock 2005/09/21 Modification of Mendota Pool refuge returns
+Two refuge diversion from Mendota Pool: Mendota WMA and Grasslands
+Returns location of these two refuge location is:
+Mendota WMA back to Mendota Pool: R607i of R607West
+Grasslands WD to Mud Slough: R614L of R614 West*/
+define SJRF_607C_614  {    select mon_pct from CVPcontractRF    !monthly release schedule
+                    where node=6073, contr=1, month=month}
+define AnnDem_D607C_RF {value 94.41} !Annual refuge diversion in TAF
+!Mendota WMA
+define AnnDem_MWMA {value 27.01} !Annual diversion amount in TAF
+define ANN_MWMA { value 0.61 * AnnDem_MWMA * perdel_cvprf_s } !Annual return
+goal returnflowR607i { R607i = ANN_MWMA * SJRF_607C_614 * taf_cfs } !Monthly return
+
+!Grasslands WD
+define AnnDem_Grasslands {value AnnDem_D607C_RF - AnnDem_MWMA } !Annual diversion amount in TAF
+define ANN_Grasslands { value 0.61 * AnnDem_Grasslands * perdel_cvprf_s } !Annual return
+goal returnflowR614L { R614L = ANN_Grasslands * SJRF_607C_614 * taf_cfs } !Monthly return
+
+/*
+******************Total Return Flows at Various Nodes************************
+*/
+
+/*
+Apparently there can't be more than 10 lines per node in the connectivity
+table, so the following lines aggregate the westside returns by return node
+so as to streamline the system.
+*/
+
+! Aggregation of all return flows to SJR at Mendota Pool
+goal aggr_R607_West { R607West = R607a + R607b + R607c + R607d + R607e +
+                                R607f + R607g + R607h
+                                + R607i } !A. Fock 2005/09/21 Mendota WMA refuge return
+
+! Aggregation of all return flows to SJR at Salt Slough
+goal aggr_R614_West { R614West = R614a + R614b + R614c + R614d + R614e +
+                                R614f + R614g + R614h + R614i + R614j + R614k + R614L }
+
+! Aggregation of all return flows to SJR at Merced
+!goal aggr_R619_West { R619West = R619a + R619b + R619c + R619d + R619e +
+!                                R619f + R619g + R619h}
+goal aggr_R619_West { R619West = R619a + R619b + R619c + R619d + R619e +
+                                R619f + R619g + R619h + R619i}
+
+! Aggregation of all return flows to SJR above Maze
+!goal aggr_R630_West { R630West = R630a + R630b + R630c + R630d + R630e +
+!                                R630f + R630g + R630h + R630i }
+goal aggr_R630_West { R630West = R630a + R630c + R630d + R630e +
+                                R630f + R630h + R630i }
+
+! Aggregation of all return flows to SJR at Vernalis
+goal aggr_R639_West { R639West = R639b }
+/*
+**********************San Luis Drain Return Flows****************************
+*/
+
+! Look up San Luis Drain return flows to SJR at Salt Slough from table
+define SLDR_614   {select drain_flow from SLDR where yrtype=WYT_SJR, month=month}
+
+! Accretions at Salt Slough represented by inflow and San Luis drain returns
+goal set_I614 {I614 = I614A + (SLDR_614 * taf_cfs)}

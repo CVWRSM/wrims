@@ -1,0 +1,50 @@
+!WRESL code for SJRSS and ERPP on the San Joaquin River
+!SJRERPPDEFIC
+!Edward Chang
+!5/01/2000
+!
+!Joint Model
+!This code calculates the ERPP deficiency and meets it using SJRSS or ERPP inflows
+!******************************************************************************
+
+define TuolERPP_def {    !CFS value for May 1-10 
+     case NOERPP {
+          condition ERPP543 == 0. 
+          value     0. }
+     case MayOnly {
+          condition month == may
+          value     max (ERPP543 - C543[VAMP_AND_DO] ,0.) }
+     case otherwise {
+	 	  condition	always
+		  value		0. }
+		  }
+define MercERPP_def {    !CFS value for May 1-10 
+     case NOERPP {
+          condition ERPP563 == 0.
+          value     0. }
+     case MayOnly {
+          condition month == may
+          value     max (ERPP563 - C563[VAMP_AND_DO] ,0.) }
+	 case otherwise {
+	 	  condition	always
+		  value		0. }
+          }
+define StanERPP_def {    !CFS value for May 1-10 
+     case NOERPP {
+          condition ERPP522 == 0.
+          value     0. }
+     case MayOnly {
+          condition month == may
+          value     max (ERPP522 - C522[VAMP_AND_DO] ,0.) }
+	 case otherwise {
+	 	  condition	always
+		  value		0. }
+          }
+
+define TuolERPP_wtdef { value TuolERPP_def * 10./31. }
+define MercERPP_wtdef { value MercERPP_def * 10./31. }
+define StanERPP_wtdef { value StanERPP_def * 10./31. }
+
+goal meetTuolERPP { I543 = TuolERPP_wtdef }     
+goal meetMercERPP { I563 = MercERPP_wtdef }
+goal meetStanERPP { I522 = StanERPP_wtdef }

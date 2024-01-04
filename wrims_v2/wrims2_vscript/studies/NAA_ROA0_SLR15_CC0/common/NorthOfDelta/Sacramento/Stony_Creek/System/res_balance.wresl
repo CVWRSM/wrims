@@ -1,0 +1,104 @@
+!res_balance.wresl
+
+! The intent of this code is to keep each reservoir in the same layer
+! and to have the layers decrease or increase proportionally to their size.
+
+! set up variables for the size of each layer
+
+define EPL2 { value max (S40level2-S40level1,1.0)}
+define EPL3 { value max (S40level3-S40level2,1.0)}
+define EPL4 { value max (S40level4-S40level3,1.0)}
+define EPL5 { value max (S40level5-S40level4,1.0)}
+
+define SGL2 { value max (S41level2-S41level1,1.0)}
+define SGL3 { value max (S41level3-S41level2,1.0)}
+define SGL4 { value max (S41level4-S41level3,1.0)}
+define SGL5 { value max (S41level5-S41level4,1.0)}
+
+define BBL2 { value max (S42level2-S42level1,1.0)}
+define BBL3 { value max (S42level3adj-S42level2,1.0)}
+define BBL4 { value max (S42level4adj-S42level3adj,1.0)}
+define BBL5 { value max (S42level5-S42level4adj,1.0)}
+
+! layer 2 balancing
+
+goal EastParkStonyGorge_layer2 {
+    lhs  S40_2/EPL2
+    rhs  S41_2/SGL2
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+goal StonyGorgeBlackButte_layer2 {
+    lhs  S41_2/SGL2
+    rhs  S42_2/BBL2
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+goal EastParkBlackButte_layer2 {
+    lhs  S40_2/EPL2
+    rhs  S42_2/BBL2
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+
+! layer 3 balancing
+
+goal EastParkStonyGorge_layer3 {
+    lhs  S40_3/EPL3
+    rhs  S41_3/SGL3
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+goal StonyGorgeBlackButte_layer3 {
+    lhs  S41_3/SGL3
+    rhs  S42_3/BBL3
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+goal EastParkBlackButte_layer3 {
+    lhs  S40_3/EPL3
+    rhs  S42_3/BBL3
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+
+! layer 4 balancing
+
+goal EastParkStonyGorge_layer4 {
+    lhs  S40_4/EPL4
+    rhs  S41_4/SGL4
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+goal StonyGorgeBlackButte_layer4 {
+    lhs  S41_4/SGL4
+    rhs  S42_4/BBL4
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+goal EastParkBlackButte_layer4 {
+    lhs  S40_4/EPL4
+    rhs  S42_4/BBL4
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+
+! layer 5 balancing
+
+goal EastParkStonyGorge_layer5 {
+    lhs  S40_5/EPL5
+    rhs  S41_5/SGL5
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+goal StonyGorgeBlackButte_layer5 {
+    lhs  S41_5/SGL5
+    rhs  S42_5/BBL5
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}
+
+goal EastParkBlackButte_layer5 {
+    lhs  S40_5/EPL5
+    rhs  S42_5/BBL5
+    lhs>rhs  penalty 500
+    lhs<rhs  penalty 500}

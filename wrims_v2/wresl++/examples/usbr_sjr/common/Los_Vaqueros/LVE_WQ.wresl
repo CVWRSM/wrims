@@ -1,0 +1,251 @@
+! LV_WQ.wresl
+! R. Field
+! 04/14/2004
+! Reclamation
+! Revised Becky Fedak February 2007 MWH
+! Los Vaqueros Reservoir Expansion water quality constraints.
+
+/*
+Determine the water quality for Rock Slough at CCC #1, Old River at LVR intake,
+and proposed AIP intake.  Units are in mg/L Chloride.
+
+After water quality at the three diversion points is defined, calcualte the previous
+month water quality at various points in the sytem.
+*/
+
+
+! Determine the water quality at Rock Slough pumping plant in the current month
+define WQ408_RS    { timeseries kind 'SALINITY' units 'MG/L' }
+! Determine the water quality at Old River pumping plant in the current month
+define WQ408_OR    { timeseries kind 'SALINITY' units 'MG/L' }
+! Determine the water quality at AIP pumping plant in the current month
+define WQ408_AIP   { timeseries kind 'SALINITY' units 'MG/L' }
+
+! Determine the water quality at Rock Slough pumping plant in the previous month
+define WQ408_RS_PRV   {
+        case firstyear {
+            condition month == OCT .and. wateryear == 1922
+            value 50.0
+        }
+        case otherwise {
+            condition always
+            value WQ408_RS(-1)
+        }
+}
+
+! Determine the water quality at Old River pumping plant in the previous month
+define WQ408_OR_PRV   {
+        case firstyear {
+            condition month == OCT .and. wateryear == 1922
+            value 50.0
+        }
+        case otherwise {
+            condition always
+            value WQ408_OR(-1)
+        }
+}
+
+! Determine the water quality at AIP pumping plant in the previous month
+define WQ408_AIP_PRV   {
+        case firstyear {
+            condition month == OCT .and. wateryear == 1922
+            value 50.0
+        }
+        case otherwise {
+            condition always
+            value WQ408_AIP(-1)
+        }
+}
+
+
+! Determine LVR quality target based on previous June reservoir storage
+define LV_WQ_trgt {
+         case firstyear {
+            condition month >= oct .and. month <= jun .and. wateryear == 1922
+            value Init_LV_WQ_Trgt
+         }
+         case Exist_FNA {
+            condition LVESwitch < 1.5
+            select exist_wq_target
+            from LVE_WQ_target
+            given EOM_stor = S422(prevJun)
+            use linear
+         }
+         case otherwise {
+            condition always
+            select wq_target
+            from LVE_WQ_target
+            given EOM_stor = S422(prevJun)
+            use linear
+         }
+}
+define LV_WQ_trgtdv {alias LV_WQ_trgt kind 'SALINITY' units 'MG/L'}
+
+
+! Define CCWD water quality delivery target based on previous June reservoir storage
+define CCWD_wq_trgt {
+    case firstyear {
+        condition month >= oct .and. month <= jun .and. wateryear == 1922
+        value Init_CCWD_WQ_Trgt
+    }
+         case otherwise {
+            condition always
+        select ccwd_target
+        from LVE_CCWD_wq_target
+        given EOM_stor = S422(prevJun)
+        use linear
+    }
+}
+define CCWD_wq_trgtdv { alias CCWD_wq_trgt kind 'SALINITY' units 'MG/L' }
+
+
+! Assess last month's mixed water quality for Transfer Point #1 deliveries to CCWD (node 432)
+! "t1" = transfer point 1, "c1" = first cycle of dynamic LVE simulation (3 cycle sequence)
+define sal_prv_432_c1 {
+    case firstmonth {
+            condition month == OCT .and. wateryear == 1922
+            value 0.
+        }
+        case flow {
+        condition (C433A(-1)+C434A(-1)) > 0.001
+        value (C433A(-1)*WQ408_AIP_PRV+C434A(-1)*WQ408_OR_PRV)/(C433A(-1)+C434A(-1))
+    }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+define sal_prv_432_c1dv { alias sal_prv_432_c1 kind 'SALINITY' units 'MG/L' }
+
+! Assess last month's mixed water quality for Transfer Point #1 deliveries to LV (node 431)
+define sal_prv_431_c1 {
+    case firstmonth {
+            condition month == OCT .and. wateryear == 1922
+            value 0.
+        }
+        case flow {
+        condition (C433B(-1) + C434B(-1) + D408_OR2(-1)) > 0.001
+        value (C433B(-1)*WQ408_AIP_PRV + (C434B(-1) + D408_OR2(-1))*WQ408_OR_PRV)
+            /(C433B(-1) + C434B(-1) + D408_OR2(-1))
+    }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+define sal_prv_431_c1dv { alias sal_prv_431_c1 kind 'SALINITY' units 'MG/L' }
+
+! Assess last month's water quality at Transfer Point #2 (node 430)
+define sal_prv_430_c1 {
+    case firstmonth {
+            condition month == OCT .and. wateryear == 1922
+            value 0.
+        }
+        case flow {
+        condition C431(-1) > 0.001
+        value sal_prv_431_c1
+    }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+define sal_prv_430_c1dv { alias sal_prv_430_c1 kind 'SALINITY' units 'MG/L' }
+
+
+! Read in Los Vaqueros Reservoir (LVR) local preciptation.
+define I422_ppt { timeseries kind 'FLOW-INFLOW' units 'INCHES' }
+
+! Calculate precipitation inflow based on previous month storage
+! Variable A422last defined in system files
+goal set_I422B  { I422B = (I422_ppt/12000.) * A422last * taf_cfs }
+
+! Define the water quality of the local inflow to Los Vaqueros reservoir
+define WQ422    { timeseries kind 'SALINITY' units 'MG/L' }
+
+!Determine the concentration of salinity of Los Vaqueros Reservoir.
+!Calculation identifies end-of-last-month concentration.
+define sal_prv_LV_c1dv { std kind 'SALINITY' units 'MG/L' }
+define sal_prv_LV_c1 {
+        case firstmonth {
+            condition month == OCT .and. wateryear == 1922
+            value Init_LV_WQ
+        }
+        case inflow {
+            condition S422(-1)+C422(-1)*cfs_TAF(-1) > 0.001
+            value (S422(-2)*sal_prv_LV_c1dv(-1) + I422A(-1)*cfs_TAF(-1)*WQ422(-1)
+                   + C430A(-1)*cfs_TAF(-1)*sal_prv_430_c1 + C428B(-1)*cfs_TAF(-1)*Mok_WQ
+                   + I422B(-1)*I422B_WQ*cfs_taf(-1))/(S422(-1)+C422(-1)*cfs_TAF(-1))
+        }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+goal set_sal_prv_LV_c1dv { sal_prv_LV_c1dv = sal_prv_LV_c1 }
+
+
+! Assess last month's blended water quality at Blending Pt. #2
+define sal_prv_421_c1 {
+    case firstmonth {
+        condition month == OCT .and. wateryear == 1922
+        value 0.0
+    }
+    case blending {
+        condition D425_TS(-1)+C432(-1)+C428A(-1) > 0.001
+        value (D425_TS(-1)*sal_prv_LV_c1dv(-1)+C432(-1)*sal_prv_432_c1+C428A(-1)*Mok_WQ)
+            /(D425_TS(-1)+C432(-1)+C428A(-1))
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_prv_421_c1dv { alias sal_prv_421_c1 kind 'SALINITY' units 'MG/L' }
+
+
+! Assess last month's blended water quality at Blending Point #1 (Neroly Blending Facility)
+! This is the same as the delivered water quality to CCWD
+define sal_prv_420_c1 {
+    case firstmonth {
+        condition month == OCT .and. wateryear == 1922
+        value 0.0
+    }
+    case blending {
+        condition D420(-1) > 0.001
+        value (D408_RS(-1)*WQ408_RS_PRV+C421(-1)*sal_prv_421_c1)/(D408_RS(-1)+C421(-1))
+    }
+    case otherwise {
+        condition always
+        value 0.0
+    }
+}
+define sal_prv_420_c1dv {alias sal_prv_420_c1 kind 'SALINITY' units 'MG/L'}
+
+
+! Assess last month's deviation between Blending Pt #1 WQ and CCWD delivered WQ target
+define PRV_420_WQ_Viol {
+    case firstmonth {
+        condition month == OCT .and. wateryear == 1922
+        value 0.0
+    }
+    case otherwise {
+        condition always
+        value sal_prv_420_c1 - CCWD_wq_trgtdv(-1)
+    }
+}
+define PRV_420_WQVioldv {alias PRV_420_WQ_Viol kind 'SALINITY' units 'MG/L'}
+
+
+! Assess last month's deviation between LVR WQ and LVR WQ target
+define PRV_LV_WQ_Viol {
+    case firstmonth {
+        condition month == OCT .and. wateryear == 1922
+        value 0.0
+    }
+    case otherwise {
+        condition always
+        value sal_prv_LV_c1 - LV_wq_trgtdv(-1)
+    }
+}
+define PRV_LV_WQ_Violdv {alias PRV_LV_WQ_Viol kind 'SALINITY' units 'MG/L'}

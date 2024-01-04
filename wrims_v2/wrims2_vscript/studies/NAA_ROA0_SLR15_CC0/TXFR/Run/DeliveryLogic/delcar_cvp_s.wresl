@@ -1,0 +1,27 @@
+/*
+File fixes CVP delivery target to that of JPOD.
+
+*/
+
+
+define del_first_cvp_s { value deltar_cvp_s1__z4 }
+
+define del_second_cvp_s {value min(del_first_cvp_s, acvpdem_total_s)}
+
+define deltar_cvp_sdv {std kind 'DEL-TARGET' units 'taf'}
+
+define del_third_cvp_s {
+  case initialdel {
+    condition month <= FEB .and. wateryear == 1922   ! Use the total annual contract as initial target
+    value acvpdem_total_s }
+  case march_april {
+    condition month >= MAR .and. month <= MAY
+    value del_second_cvp_s }
+  case other {
+    condition always
+    value max(deltar_cvp_sdv(-1), del_second_cvp_s) }
+}
+
+define deltar_cvp_s {value min(del_third_cvp_s, acvpdem_total_s) }
+
+goal save_deltar_cvp_s {deltar_cvp_sdv = deltar_cvp_s}

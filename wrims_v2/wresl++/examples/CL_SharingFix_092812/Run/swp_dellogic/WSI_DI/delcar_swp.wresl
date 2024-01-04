@@ -1,0 +1,348 @@
+/************************************
+delcar_swp_BO.wresl
+
+Nazrul Islam DWR 05/20/2010
+Z.Q. Richard Chen DWR 11/30/2010 adding BO option
+Tom FitzHugh BOR 1/25/2011 Added code for user-defined demands 
+Z.Q. Richard Chen DWR 03/11/2011 adding PreBO option
+
+No longer using Delivery - Carryover Curve.
+
+The new procedure determines an appropriate allocation level based on the
+forecasted DI and the desired Oroville carryover target. The procedure also 
+calculates and increased SWP San Luis carryover target (drain target, increased 
+from the default drain target of 110 TAF) if sufficient forecasted
+DI exists over the amount needed for delivery and Oroville carryover.
+
+************************************/
+
+define swp_alloc_ {std kind 'swp-delivery' UNITS 'TAF'}
+
+
+
+! define values based on Table A entitlements
+define tableA_ag   {select Ag_entitlement  from TableA where Factor=1}
+define tableA_mwd  {select MWD_entitlement from TableA where Factor=1}
+define tableA_oth  {select OTH_entitlement from TableA where Factor=1}
+define tableA_tot {select Total from TableA where Factor=1}
+
+define tableA_loss {select LOSS  from TableA where Factor=1}
+
+! For user-defined case, need to make adjustments below using these NOD Table A amounts
+define tableA_5_NOD {select TableA from swp_table_A where contractor=5 }  !CITY OF YUBA CITY  OTH MI demand
+define tableA_7_NOD {select TableA from swp_table_A where contractor=7 }  !COUNTY OF BUTTE    OTH MI demand
+
+! define max Table A deliveries
+! need to add NOD TA amounts onto user-defined calculation
+define max_tableA  {
+    case userdefined {
+        condition SWPdemandswitch == 2
+        value SWP_mwd_udef + SWP_oth_udef + SWP_ag_udef + tableA_5_NOD + tableA_7_NOD + tableA_loss}
+    case normal {
+        condition always
+        select Total from TableA where Factor=1}}
+        
+define SWP_TableA {value max_tableA - tableA_loss}
+
+! ratios to adjust for user-defined demands. = 1 if demands not user-defined.
+! Since NOD Table demands are not subject to user definition, these three ratios need to be use SOD values only
+! So NOD TableA amounts need to be subtracted from denominator for OTH MI
+define SWP_mwd_ratio {case user_defined  {condition SWPdemandswitch == 2 value SWP_mwd_udef / tableA_mwd} 
+                      case full_contract {condition always value 1.}}
+define SWP_oth_ratio {case user_defined  {condition SWPdemandswitch == 2 value SWP_oth_udef / (tableA_oth - tableA_5_NOD - tableA_7_NOD)} 
+                      case full_contract {condition always value 1.}}
+define SWP_ag_ratio  {case user_defined  {condition SWPdemandswitch == 2 value SWP_ag_udef / tableA_ag} 
+                      case full_contract {condition always value 1.}}
+                     
+! This ratio must use all Table A values (SOD and NOD), since it used for SWP SL rule curve                    
+define SWP_tot_ratio {case user_defined  {condition SWPdemandswitch == 2 value max_TableA / tableA_tot} 
+                      case full_contract {condition always value 1.}}
+
+
+!whether implement export estimates for BO actions: no: value=0; yes: value=1
+!currently on only when OMR RPA is on
+define BOON_SWP {value OMRBOON}
+
+!define init_SWPRuleDrainTar {value 110.}
+define DI_buffer {
+    case BOSWITCHON {
+        condition int(BOON_SWP)==1
+        value 0.}       
+    case D1641_PREBO {
+        condition always
+        value 250.  }
+}
+
+define DrainTar_buffer {
+    case BOSWITCHON {
+        condition int(BOON_SWP)==1
+        value 250.} ! Buffer is used so that model does not exceeds the limits        
+    case D1641_PREBO {
+        condition always
+        value 0.  }
+}
+
+
+! Any Table A amounts from here on are all Table A (NOD and SOD), but adjusted downward for user-defined demands in SOD
+! *************************************************************
+! Initial Percent Allocation estimate
+define swp_perdel_raw1 {value max(di_swp - init_SWPRuleDrainTar - 1000. - DI_buffer, 0.) / (SWP_TableA + 0.5 * max(S_Orovl(prevSep) - 1000., 0.))}
+! S_SLSWP target for use in Rule Curve operations
+define SWPRuleDrainTar {value min(init_SWPRuleDrainTar + max(max(swp_perdel_raw1 - 1., 0.) * SWP_TableA - DrainTar_buffer, 0.), S_SLSWPlevel5)}
+
+! Adjusted Percent Allocation estimate
+define swp_perdel_raw2 {value max(di_swp - SWPRuleDrainTar - 1000. - DI_buffer, 0.) / (SWP_TableA + 0.5 * max(S_Orovl(prevSep) - 1000., 0.))}
+! S_Orovl target
+define S_Orovl_targ {value 1000. + 0.5 * min(swp_perdel_raw2, 1.) * max(S_Orovl(prevSep) - 1000., 0.) + DrainTar_buffer}
+define S_Orovl_targ_dv {alias S_Orovl_targ kind 'swp-delivery' units 'TAF'}
+
+! *************************************************************
+
+! Delivery Decision unadjusted
+define wsidi_swpdel {value min(swp_perdel_raw2, 1.) * SWP_TableA + tableA_loss}
+define wsidi_swpdel_dv {alias wsidi_swpdel kind 'swp-delivery' units 'TAF'}
+
+!need to apply a check on deltar to insure that SL supply is used in driest conditions
+!this is assumed to be the previous month SL storage plus a minimum assumed project average export
+!this adjustment is only applied in Apr and May
+
+! ***********************************************************
+! New code for working with FWS and NMFS BO Delta Actions
+
+! read inputs
+define estSWPExp_Jan {select estimate from ExportEstimate_SWP where month = Jan}
+define estSWPExp_Feb {select estimate from ExportEstimate_SWP where month = Feb}
+define estSWPExp_Mar {select estimate from ExportEstimate_SWP where month = Mar}
+define estSWPExp_Apr {select estimate from ExportEstimate_SWP where month = Apr}
+define estSWPExp_May {select estimate from ExportEstimate_SWP where month = May}
+define estSWPExp_Jun {select estimate from ExportEstimate_SWP where month = Jun}
+define estSWPExp_JulAug {select estimate from ExportEstimate_SWP where month = Jul}
+
+define estSWPExp_WetApr {select WetSJR from ExportEstimate_SWP where month = Apr}
+define estSWPExp_WetMay {select WetSJR from ExportEstimate_SWP where month = May}
+define estSWPExp_WetJun {select WetSJR from ExportEstimate_SWP where month = Jun}
+
+define estSWPExp_FldApr {select FloodSJR from ExportEstimate_SWP where month = Apr}
+define estSWPExp_FldMay {select FloodSJR from ExportEstimate_SWP where month = May}
+define estSWPExp_FldJun {select FloodSJR from ExportEstimate_SWP where month = Jun}
+
+define factSWP_JanAug {select factor from ExportEstimate_SWP where month = Jan}
+define factSWP_FebAug {select factor from ExportEstimate_SWP where month = Feb}
+define factSWP_MarAug {select factor from ExportEstimate_SWP where month = Mar}
+define factSWP_AprAug {select factor from ExportEstimate_SWP where month = Apr}   !D1641  comments add by Richard 10/28/2010
+define factSWP_MayAug {select factor from ExportEstimate_SWP where month = May}   !D1641  comments add by Richard 10/28/2010
+
+define buffSWP_JanAug {select buffer from ExportEstimate_SWP where month = Jan}
+define buffSWP_FebAug {select buffer from ExportEstimate_SWP where month = Feb}
+define buffSWP_MarAug {select buffer from ExportEstimate_SWP where month = Mar}
+define buffSWP_AprAug {select buffer from ExportEstimate_SWP where month = Apr}
+define buffSWP_MayAug {select buffer from ExportEstimate_SWP where month = May}
+
+! SJR in flood - if C639 over 16,000 cfs
+define floodSJRdv {std kind 'trigger' UNITS 'NONE'}
+define floodSJR {
+    case Wet {
+        condition month>=MAR .and. month <= MAY .and. AD_SJR_VAMP > 16000.     !C639[VAMP_AND_DO] > 16000.
+        value 1.}
+    case MarthruMay {
+        condition month>=APR .and. month <= MAY
+        value floodSJRdv(-1)}
+    case other {
+        condition always
+        value 0.}
+}
+goal savefloodSJR {floodSJRdv=floodSJR}
+
+define wetSJR {
+    case Wet {
+        condition wyt_SJR == 1     !the 60-20-20 index for San Joaquin basin
+        value 1.}
+    case other {
+        condition always
+        value 0.}
+}
+
+! Estimate Export Capability for use in determining delivery target limitations
+define SWPDelCapEst {
+    case January {
+        condition month == JAN
+        value estSWPExp_Jan*cfs_taf
+            + estSWPExp_Feb*cfs_taf(1)
+            + estSWPExp_Mar*cfs_taf(2)
+            + max(estSWPExp_Apr, wetSJR*estSWPExp_WetApr)*cfs_taf(3)
+            + max(estSWPExp_May, wetSJR*estSWPExp_WetMay)*cfs_taf(4)
+            + max(estSWPExp_Jun, wetSJR*estSWPExp_WetJun)*cfs_taf(5)
+            + estSWPExp_JulAug*cfs_taf(6)
+            + estSWPExp_JulAug*cfs_taf(7)
+            + S_SLSWP(-1) - buffSWP_JanAug }
+    case February {
+        condition month == FEB
+        value estSWPExp_Feb*cfs_taf
+            + estSWPExp_Mar*cfs_taf(1)
+            + max(estSWPExp_Apr, wetSJR*estSWPExp_WetApr)*cfs_taf(2)
+            + max(estSWPExp_May, wetSJR*estSWPExp_WetMay)*cfs_taf(3)
+            + max(estSWPExp_Jun, wetSJR*estSWPExp_WetJun)*cfs_taf(4)
+            + estSWPExp_JulAug*cfs_taf(5)
+            + estSWPExp_JulAug*cfs_taf(6)
+            + S_SLSWP(-1) - buffSWP_FebAug }
+    case March {
+        condition month == MAR
+        value estSWPExp_Mar*cfs_taf
+            + max(estSWPExp_Apr, wetSJR*estSWPExp_WetApr)*cfs_taf(1)
+            + max(estSWPExp_May, wetSJR*estSWPExp_WetMay)*cfs_taf(2)
+            + max(estSWPExp_Jun, wetSJR*estSWPExp_WetJun)*cfs_taf(3)
+            + estSWPExp_JulAug*cfs_taf(4)
+            + estSWPExp_JulAug*cfs_taf(5)
+            + S_SLSWP(-1) - buffSWP_MarAug }
+    case April {
+        condition month == APR
+        value max(estSWPExp_Apr, wetSJR*estSWPExp_WetApr, floodSJR*estSWPExp_FldApr)*cfs_taf
+            + max(estSWPExp_May, wetSJR*estSWPExp_WetMay, floodSJR*estSWPExp_FldMay)*cfs_taf(1)
+            + max(estSWPExp_Jun, wetSJR*estSWPExp_WetJun)*cfs_taf(2)
+            + estSWPExp_JulAug*cfs_taf(3)
+            + estSWPExp_JulAug*cfs_taf(4)
+            + S_SLSWP(-1) - buffSWP_AprAug }
+    case May {
+        condition month == MAY
+        value max(estSWPExp_May, wetSJR*estSWPExp_WetMay, floodSJR*estSWPExp_FldMay)*cfs_taf
+            + max(estSWPExp_Jun, wetSJR*estSWPExp_WetJun)*cfs_taf(1)
+            + estSWPExp_JulAug*cfs_taf(2)
+            + estSWPExp_JulAug*cfs_taf(3)
+            + S_SLSWP(-1) - buffSWP_MayAug }
+    case otherwise {
+        condition always
+        value 0.0 }
+    }
+
+define deltar_expmax {
+  case Jan {
+    condition month == JAN
+    value     SWPDelCapEst/factSWP_JanAug}
+  case Feb {
+    condition month == FEB
+    value     SWPDelCapEst/factSWP_FebAug}
+  case Mar {
+    condition month == MAR
+    value     SWPDelCapEst/factSWP_MarAug}
+  case Apr {
+    condition month == APR
+    value     SWPDelCapEst/factSWP_AprAug}
+  case May {
+    condition month == MAY
+    value     SWPDelCapEst/factSWP_MayAug}
+  case otherwise {
+    condition  always
+    value      0}
+}
+
+!************************************************************
+
+define deltar_drymin {
+  case MarApr {
+    condition month >= MAR .and. month <= APR
+    value     S_SLSWP(-1)/factSWP_AprAug - 55.}
+  case May {
+    condition month == MAY
+    value     S_SLSWP(-1)/factSWP_MayAug - 55.}
+  case otherwise {
+    condition  always
+    value      0}
+}
+
+! This implements the two SL adjustments defined in the previous lines
+define swp_allocation_1 {
+      case BOSWITCHON {                 !BO option,  Richard Chen 11/08/2010
+        condition int(BOON_SWP) == 1  
+            value max(min(wsidi_swpdel,deltar_expmax),deltar_drymin) }
+      case otherwise {
+            condition always    !D1641      
+            value max(wsidi_swpdel,deltar_drymin) }
+}
+
+! This implements the export capacity constraint previously determined
+define swp_allocation_2 {
+  case JantoFeb {
+    condition month >= JAN .and. month <= FEB
+    value     swp_allocation_1}
+  case MartoMay {
+    condition month >= MAR .and. month <= MAY
+    value     min(swp_allocation_1, max_exp_based_del_swp)}
+  case otherwise {
+    condition  always
+    value      0}
+}
+
+
+! Cannot exceed Table A:
+define swp_allocation_3 {value min(max_tableA,swp_allocation_2)}
+
+! This implements the no reduction rule for april to december
+define swp_alloc {
+    case start {
+        condition  wateryear==1922 .and. month==oct
+        value      max_tableA*0.5}
+    case JanToApr {                                         ! reductions allowed
+        condition  month >= JAN .and. month <= APR
+        value      swp_allocation_3 }
+    case MayToDec {                                         ! no reductions allowed
+        condition  always
+        value      max(swp_alloc_(-1), swp_allocation_3 ) }
+}
+
+define swp_allocation_final { value swp_alloc}
+!goal setswp_allocation {swp_allocation = swp_allocation_final}
+
+define swp_allocation {value swp_alloc}
+goal setswp_alloc {swp_alloc_ = swp_alloc}
+
+!Percent delivery
+define swp_perdel {value max(0.0,(swp_allocation_final-tableA_loss)/SWP_TableA)}
+define swp_perdeldv {alias swp_perdel kind 'swp-delivery' units 'none'}
+
+! Read in user-defined percent of maximum interruptible demands to use
+define perdel_swp_int 
+    {case user_defined {condition SWPdemandswitch == 2 value max_user_interrupt} 
+     case full_contract {condition always value 1.}}
+     
+!Select demand profile based on percent allocation:
+define tableA_total {value max_tableA}
+define percent_act  {value swp_allocation_final/tableA_total*100.}
+define swp_percent_act {alias percent_act kind 'alias' units 'none'}
+define swp_demprofile {
+    case low  {
+        condition percent_act < 35.
+        value   30.}
+    case lowmed  {
+        condition percent_act < 45.
+        value   30. + (50. - 30.)*(percent_act - 35.)/(45. - 35.)}
+        case med  {
+        condition percent_act < 60.
+        value   50.}
+        case medhigh  {
+        condition percent_act < 70.
+        value   50. + (100. - 50.)*(percent_act - 60.)/(70. - 60.)}
+        case high {
+        condition always
+        value  100}
+}
+define swp_percent {alias swp_demprofile kind 'swp-delivery' units 'none'}
+
+!temp variables:
+define perdel_swp_ag1  {value swp_perdel}
+define perdel_swp_mwd1 {value swp_perdel}
+define perdel_swp_oth1 {value swp_perdel}
+define perdv_swp_ag1 {std kind 'PERCENT-DELIVERY' units 'none'}
+goal setperdv_swp_ag1 {perdv_swp_ag1 = perdel_swp_ag1}
+define perdv_swp_mwd1 {alias perdel_swp_mwd1 kind 'PERCENT-DELIVERY' units 'none'}
+
+define maxexpbsd_swpdv  {alias max_exp_based_del_swp	 kind 'swp_debug' units 'taf'}
+define swp_perdv_raw1	{alias swp_perdel_raw1	  kind 'swp_debug' units 'taf'}
+define swp_perdv_raw2	{alias swp_perdel_raw2  kind 'swp_debug' units 'taf'}
+define SWPDelCapEst_dv	{alias SWPDelCapEst  kind 'swp_debug' units 'taf'}
+define deltar_expmx_dv	{alias deltar_expmax	 kind 'swp_debug' units 'taf'}
+define deltar_drymn_dv	{alias deltar_drymin	 kind 'swp_debug' units 'taf'}
+define swp_alloc_1dv    {alias swp_allocation_1 kind 'swp_debug' units 'taf'}
+define swp_alloc_2dv    {alias swp_allocation_2 kind 'swp_debug' units 'taf'}
+define swp_alloc_3dv    {alias swp_allocation_3 kind 'swp_debug' units 'taf'}
+
+

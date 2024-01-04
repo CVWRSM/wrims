@@ -1,0 +1,122 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnvnnnnvnnnnnnnnnnnnnnnnnvnnnnnnnnnvnnnnnnvnvnnnnnnnnnnnnnnnn
+
+U system.pool_local%b	s-pooloc.adb		01dd275a NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_conversion%s
+W system%s		system.ads		system.ali
+W system.memory%s	s-memory.adb		s-memory.ali
+
+U system.pool_local%s	s-pooloc.ads		09fed50f EB EE OL PK
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.pool_global%s	s-pooglo.adb		s-pooglo.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-memory.ads		20090417131548 c68306b3
+D s-parame.ads		20091130110856 6cdeed25
+D s-pooglo.ads		20090409150020 73a7a50f
+D s-pooloc.ads		20090409150020 666754e5
+D s-pooloc.adb		20090409150020 f0d9e8fe
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stopoo.ads		20090409150020 89a3d5fc
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 15|34r6 46r10
+X 3 a-finali.ads
+56U14*Initialize<10|58p14>
+X 6 a-unccon.ads
+20v14*Unchecked_Conversion 15|34w10 46r14
+X 7 system.ads
+37K9*System 197e11 14|34r6 35r6 37r9 53r6 55r19 62r26 63r22 64r22 68r22 69r22
+. 70r22 74r5 15|32r6 36r14 38r24 66r26 72r28 102r22 109r28 131r19 132r19
+. 160r5
+64M9*Address 14|55r26 62r33 68r29 15|41r51 44r35 46r36 52r23 56r23 66r33
+. 72r35 102r29 109r35 131r26 132r26 146r23 155r23
+66m4*Null_Address{64M9} 14|55r37 15|81r22 86r34 88r27 112r33 114r35 119r34
+. 135r18
+68N4*Storage_Unit 15|41r66
+78V13*"="{boolean} 15|81r20 88r24 112r31 119r31 135r15
+X 10 s-finroo.ads
+60U14*Adjust
+X 11 s-memory.ads
+45K16*Memory 107e18 15|32w13 73r21 74r24 123r7 138r10
+48M9*size_t 15|74r31
+53V13*Alloc{7|64M9} 15|73r28
+68U14*Free 15|123r14 138r17
+X 13 s-pooglo.ads
+39K16*Pool_Global 79e23 14|35w13 53r13
+53R9*Unbounded_No_Reclaim_Pool<22|42R9> 54e61 14|53r25
+56V13*Storage_Size{20|62I12}<22|59p13>
+X 14 s-pooloc.ads
+37K16*Pool_Local 7|37k9 14|74l12 74e22 15|36b21 160l12 160t22
+52R9*Unbounded_Reclaim_Pool<13|53R9> 3|56P14 10|60p14 13|56P13 14|56e18 60P14
+. 61r29 66P14 67r29 72P14 72r38 15|65r29 101r29 130r38
+55m11*First{7|64M9} 15|85r39 88r18 89r24 92m15 113m15 114r21 131r42
+60U14*Allocate<13|60p14> 61=7 62<7 63>7 64>7 15|64b14 94l8 94t16
+61r7 Pool{52R9} 15|65b7 85r34 88r13 89r19 92m10
+62m7 Address{7|64M9} 15|66b7 84m10
+63i7 Storage_Size{20|62I12} 15|67b7 74r39
+64i7 Alignment{20|62I12} 15|68b7 70r29
+66U14*Deallocate<13|66p14> 67=7 68>7 69>7 70>7 15|100b14 124l8 124t18
+67r7 Pool{52R9} 15|101b7 113m10 114r16
+68m7 Address{7|64M9} 15|102b7 109r46
+69i7 Storage_Size{20|62I12} 15|103b7 106r29
+70i7 Alignment{20|62I12} 15|104b7 107r29
+72U14*Finalize<3|57p14> 72=24 15|130b14 140l8 140t16
+72r24 Pool{52R9} 15|130b24 131r37
+X 15 s-pooloc.adb
+38K12 SSE=38:31 39r13 41r29 42r29 67r22 68r22 103r22 104r22
+41i4 Pointer_Size{20|54I9} 42r55 157r34
+42i4 Pointers_Size{20|54I9} 74r54 84r33 109r56
+44P9 Acc_Address(7|64M9) 46r45 52r39 56r39 146r39 155r39
+45V13 To_Acc_Address[6|20]{44P9} 148r14 157r14
+52V13 Next{44P9} 52>19 53r19 85r10 113r24 116r10 116r45 119r10 120r16 137r15
+. 146b13 149l8 149t12
+52m19 A{7|64M9} 146b19 148r30
+56V13 Prev{44P9} 56>19 57r19 86r10 89r13 112r10 114r10 116r16 120r10 120r45
+. 155b13 158l8 158t12
+56m19 A{7|64M9} 155b19 157r30
+72m7 Allocated{7|64M9} 81r10 84r21 85r16 86r16 89r38 92r24
+109m7 Allocated{7|64M9} 112r16 113r30 116r22 116r51 119r16 120r22 120r51
+. 123r20
+131m7 N{7|64M9} 135r13 136r23 137m10 137r21
+132m7 Allocated{7|64M9} 136m10 138r23
+X 20 s-stoele.ads
+42K16*Storage_Elements 14|34w13 63r29 64r29 69r29 70r29 15|38r31 20|117e28
+54I9*Storage_Offset<integer> 15|39r17 41r33 42r33
+62I12*Storage_Count{54I9} 14|63r46 64r46 69r46 70r46 15|67r26 68r26 103r26
+. 104r26
+76V13*"+"{7|64M9} 15|84r31 157r32
+86V13*"-"{7|64M9} 15|109r54
+

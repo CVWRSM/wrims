@@ -1,0 +1,124 @@
+! CB_Refuges.wresl
+! definitions and logic for deliveries to Colusa Basin Wildlife Refuges
+
+!
+! *******************************************************************
+!     NODOS    NODOS    NODOS    NODOS    NODOS    NODOS    NODOS
+!
+define L4inc_D14302_prf {value Op_RefugeL4_inc*0.285*dem_RefugeL4_inc} ! Sacramento NWR  28.5% of total  D143
+define L4avg_D14302_prf {value Op_RefugeL4_inc*0.285*ann_RefugeL4_inc/12.}
+define L4inc_D18201_prf {value Op_RefugeL4_inc*0.715*dem_RefugeL4_inc} ! Delevan NWR     71.5% of total
+define L4avg_D18201_prf {value Op_RefugeL4_inc*0.715*ann_RefugeL4_inc/12.}
+! *******************************************************************
+
+define D143B_prf {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D143B_nds {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D145B_prf {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D145B_nds {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D182B_prf {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal splitD143B  {D143B = D143B_prf + D143B_nds}
+goal splitD145B  {D145B = D145B_prf + D145B_nds}
+goal splitD182B  {D182B = D182B_prf}
+
+! These targets include water to meet losses - so that the refuges receive firm L2 and L4 supply quantities (after losses are removed at L143B)
+define target_14302_prf {value min(perdel_cvprf_sys * con_D14302_prf, dem_D14302_prf * taf_cfs)}!Sac Ref
+define target_14302_L4 {value L4inc_D14302_prf * taf_cfs}!Sac Ref
+
+! These diversions from the canal or river include diversions for losses in conveying supplies to the refuges
+goal limit_con14302 {D143B_prf < target_14302_prf}
+goal limitD143B_NDS {D143B_nds < target_14302_L4}
+
+! Actual water delivered to Refuges does NOT include losses - losses will be placed at L143B
+goal limit_D14302 {D14302 = target_14302_prf/(1.0 + sacramento_lp)
+                          + target_14302_L4/(1.0 + sacramento_lp)  }
+
+! These targets include water to meet losses - so that the refuges receive firm L2 and L4 supply quantities (after losses are removed at L145B)
+define target_18201_prf {value min(perdel_cvprf_sys*(con_D18201A_prf + con_D18201B_prf),
+                                   (dem_D18201A_prf + dem_D18201B_prf)* taf_cfs) }  !Delev and Colusa Ref
+define target_18201_L4 {value L4inc_D18201_prf * taf_cfs}  !Delev and Colusa Ref
+
+! These diversions from the canal or river include diversions for losses in conveying supplies to the refuges
+goal limit_con145B_prf {D145B_prf + D182B_prf < target_18201_prf}
+goal limitD145B_NDS    {D145B_nds < target_18201_L4}
+
+! Actual water delivered to Refuges does NOT include losses - losses will be placed at L145B
+goal limit_D18201 {D18201 = target_18201_prf/(1.0 + delevan_lp)
+                          + target_18201_L4/(1.0 + delevan_lp)  }
+
+! Losses are a function of quantity actually delivered to Refuges
+goal setL143B { L143B = D14302 * sacramento_lp }  !set conveyance loss Sac Ref
+goal setL145B { L145B = D18201 * delevan_lp }  !set conveyance loss Delv and Colusa
+
+define ann_14302_prfdv {std kind 'annual-demand' units 'taf'}
+define ann_18201_prfdv {std kind 'annual-demand' units 'taf'}
+define ancon14302prfdv {std kind 'annual-demand' units 'taf'}
+define ancon18201prfdv {std kind 'annual-demand' units 'taf'}
+
+define ann_14302_prf {         !annual Sac Ref
+    case Firstyear {
+        condition wateryear==1922 .and. month<=JAN
+        value 54.5}
+    case jan {
+        condition wateryear<2003 .and. month == jan
+        sum(i=0,11,1) dem_D14302_prf(i) + L4avg_D14302_prf   !no index on last value - it is a monthly average
+}
+    case otherwise {
+        condition   always
+        value ann_14302_prfDV(-1) }
+}
+goal set_ann_14302_prfDV {ann_14302_prfDV = ann_14302_prf}
+
+define ann_18201_prf {    !annual Delv and Colusa Ref
+    case Firstyear {
+        condition wateryear==1922 .and. month<=JAN
+        value 54.0}
+    case jan {
+        condition wateryear<2003 .and. month == jan
+        sum(i=0,11,1) dem_D18201A_prf(i) + dem_D18201B_prf(i)
+            + L4avg_D18201_prf   !no index on last value - it is a monthly average
+                    }
+    case otherwise {
+        condition   always
+        value ann_18201_prfDV(-1) }
+        }
+goal set_ann_18201_prfDV {ann_18201_prfDV = ann_18201_prf}
+
+define anncon_14302_prf {         !annual Sac Ref
+    case Firstyear {
+        condition wateryear==1922 .and. month<=JAN
+        value 54.5}
+    case jan {
+        condition wateryear<2003 .and. month == jan
+        sum(i=0,11,1) con_D14302_prf(i)*cfs_taf(i) + L4avg_D14302_prf   !no index on last value - it is a monthly average
+                    }
+    case otherwise {
+        condition   always
+        value ancon14302prfDV(-1) }
+        }
+goal set_ancon14302prfDV {ancon14302prfDV = anncon_14302_prf}
+
+define anncon_18201_prf {    !annual Delv and Colusa Ref
+    case Firstyear {
+        condition wateryear==1922 .and. month<=JAN
+        value 54.0}
+    case jan {
+        condition wateryear<2003 .and. month == jan
+        sum(i=0,11,1) con_D18201A_prf(i)*cfs_taf(i)
+                    + con_D18201B_prf(i)*cfs_taf(i)
+                    + L4avg_D18201_prf   !no index on last value - it is a monthly average
+                    }
+    case otherwise {
+        condition   always
+        value ancon18201prfDV(-1) }
+        }
+goal set_ancon18201prfDV {ancon18201prfDV = anncon_18201_prf}
+
+!Sac_Ref_Rtn
+goal setR181B {R181B = 0.25 * Sac_Ref_RtnFact * min(ann_14302_prf, perdel_cvprf_sys * anncon_14302_prf ) * taf_cfs}
+goal setR184B {R184B = 0.25 * Sac_Ref_RtnFact * min(ann_18201_prf, perdel_cvprf_sys * anncon_18201_prf ) * taf_cfs}
+
+! Route NODOS releases for L4 refuges
+goal set_C32C {C32C = D143B_nds + D145B_nds }      ! Total level 4 demand on NODOS
+
+define NODOS_RefugeL4_N    {alias D143B_NDS + D145B_NDS kind 'FLOW-DELIVERY' units 'CFS' }

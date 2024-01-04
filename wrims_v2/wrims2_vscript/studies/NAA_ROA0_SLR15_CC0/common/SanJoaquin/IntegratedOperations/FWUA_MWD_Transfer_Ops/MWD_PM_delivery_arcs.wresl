@@ -1,0 +1,85 @@
+
+goal maxD27PMIdeliv   {D27_PMI_swp   < dem_d27_pmi *taf_cfs*perdel_21}
+goal maxD885PMIdeliv  {D885_PMI_swp  < dem_D885_PMI*taf_cfs*perdel_23}
+goal maxD895PMIdeliv  {D895_PMI_swp  < dem_D895_PMI*taf_cfs*perdel_24}
+goal maxD899PMIdeliv  {D899_PMI_swp  < dem_D899_PMI*taf_cfs*perdel_25}
+
+define dem_D27_PMI_100   {select demand from swp_3pattern_demands given percent=100 use linear where contractor=21,month=month}
+define dem_D885_PMI_100  {select demand from swp_3pattern_demands given percent=100 use linear where contractor=23,month=month}
+define dem_D895_PMI_100  {select demand from swp_3pattern_demands given percent=100 use linear where contractor=24,month=month}
+define dem_D899_PMI_100  {select demand from swp_3pattern_demands given percent=100 use linear where contractor=25,month=month}
+
+define dem_d27_pmi_gp {
+	case LowDeliveries {
+		condition range(month,apr,dec) .and. swp_perdel < 0.7
+		value  max(0.,dem_D27_pmi_100 - dem_d27_pmi*perdel_21)
+	}
+	case PrevLowDeliveries {
+		condition range(month,jan,mar) .and. swp_perdel(-month+3) < 0.7 .and. swp_perdel < 0.7
+		value  max(0.,dem_D27_pmi_100 - dem_d27_pmi*perdel_21)
+	}
+	case otherwise {
+		condition always
+		value 0.
+	}
+}
+define dem_d885_pmi_gp {
+	case LowDeliveries {
+		condition range(month,apr,dec) .and. swp_perdel < 0.7
+		value  max(0.,dem_D885_pmi_100 - dem_d885_pmi*perdel_23)
+	}
+	case PrevLowDeliveries {
+		condition range(month,jan,mar) .and. swp_perdel(-month+3) < 0.7 .and. swp_perdel < 0.7
+		value  max(0.,dem_D885_pmi_100 - dem_d885_pmi*perdel_23)
+	}
+	case otherwise {
+		condition always
+		value 0.
+	}
+}
+define dem_d895_pmi_gp {
+	case LowDeliveries {
+		condition range(month,apr,dec) .and. swp_perdel < 0.7
+		value  max(0.,dem_D895_pmi_100 - dem_d895_pmi*perdel_24)
+	}
+	case PrevLowDeliveries {
+		condition range(month,jan,mar) .and. swp_perdel(-month+3) < 0.7 .and. swp_perdel < 0.7
+		value  max(0.,dem_D895_pmi_100 - dem_d895_pmi*perdel_24)
+	}
+	case otherwise {
+		condition always
+		value 0.
+	}
+}
+define dem_d899_pmi_gp {
+	case LowDeliveries {
+		condition range(month,apr,dec) .and. swp_perdel < 0.7
+		value  max(0.,dem_D899_pmi_100 - dem_d899_pmi*perdel_25)
+	}
+	case PrevLowDeliveries {
+		condition range(month,jan,mar) .and. swp_perdel(-month+3) < 0.7 .and. swp_perdel < 0.7
+		value  max(0.,dem_D899_pmi_100 - dem_d899_pmi*perdel_25)
+	}
+	case otherwise {
+		condition always
+		value 0.
+	}
+}
+
+goal maxD27PMIfmp   {D27_PMI_fmp   < dem_d27_pmi_gp*taf_cfs}
+goal maxD885PMIfmp  {D885_PMI_fmp  < dem_d885_pmi_gp*taf_cfs}
+goal maxD895PMIfmp  {D895_PMI_fmp  < dem_d895_pmi_gp*taf_cfs}
+goal maxD899PMIfmp  {D899_PMI_fmp  < dem_d899_pmi_gp*taf_cfs}
+
+!Output for analysis
+define dem_D27PMI100   {alias dem_D27_PMI_100 kind 'demand' units 'taf'}
+define dem_D885PMI100  {alias dem_D885_PMI_100 kind 'demand' units 'taf'}
+define dem_D895PMI100  {alias dem_D895_PMI_100 kind 'demand' units 'taf'}
+define dem_D899PMI100  {alias dem_D899_PMI_100 kind 'demand' units 'taf'}
+
+define dem_D27PMIGP   {alias dem_D27_PMI_GP kind 'demand' units 'taf'}
+define dem_D885PMIGP  {alias dem_D885_PMI_GP kind 'demand' units 'taf'}
+define dem_D895PMIGP  {alias dem_D895_PMI_GP kind 'demand' units 'taf'}
+define dem_D899PMIGP  {alias dem_D899_PMI_GP kind 'demand' units 'taf'}
+
+

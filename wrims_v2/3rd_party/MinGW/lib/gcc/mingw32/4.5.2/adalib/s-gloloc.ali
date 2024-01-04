@@ -1,0 +1,98 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnn
+
+U system.global_locks%b	s-gloloc.adb		5e79a535 NE OL PK
+W ada.exceptions%s	a-except.adb		a-except.ali
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.c%s	i-c.adb			i-c.ali
+W interfaces.c.strings%s  i-cstrin.adb		i-cstrin.ali
+W system%s		system.ads		system.ali
+W system.os_interface%s	s-osinte.ads		s-osinte.ali
+W system.task_lock%s	s-tasloc.adb		s-tasloc.ali
+W system.win32%s	s-win32.ads		s-win32.ali
+
+U system.global_locks%s	s-gloloc.ads		858b5361 EE OL PK
+W system%s		system.ads		system.ali
+W system.exception_table%s  s-exctab.adb	s-exctab.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-gloloc.ads		20090409150020 3d600ba2
+D s-gloloc.adb		20080408064412 09c2f57e
+D s-osinte.ads		20090422121236 e19b549f
+D s-parame.ads		20091130110856 6cdeed25
+D s-stalib.ads		20090422095704 9cbc334a
+D s-tasloc.ads		20070606101414 10673e7a
+D s-traent.ads		20090417130712 a66ef260
+D s-win32.ads		20100128134454 4b10300f
+X 4 interfac.ads
+36K9*Interfaces 171e15 10|40r6 46r24
+X 5 i-c.ads
+18K20*C 230e17 10|40r17 46r35
+35I9*int<integer>
+45M9*unsigned_long
+56I9*ptrdiff_t<integer>
+X 6 i-cstrin.ads
+36K22*Strings 102e25 10|40w19 46r37
+46P9*chars_ptr(character)
+58V13*New_String{46P9} 10|71r49
+X 7 system.ads
+37K9*System 197e11 9|35r9 63r5 10|36r6 37r6 38r6 42r14 44r24 45r24 109r5
+X 9 s-gloloc.ads
+35K16*Global_Locks 7|37k9 9|63l12 63e24 10|42b21 109l12 109t24
+37X4*Lock_Error 10|67r16 88r16 105r16
+40I9*Lock_Type 44r25 47r38 51r42 55r42 59c9 61r25 10|50r17 51r24 57r38 58r11
+. 79r42 96r42
+44i4*Null_Lock{40I9} 61c4 10|50r30
+47U14*Create_Lock 47<27 47>49 10|57b14 73l8 73t19
+47i27 Lock{40I9} 10|57b27 72m7
+47s49 Name{string} 10|57b49 71r61
+51U14*Acquire_Lock 51=28 10|79b14 90l8 90t20
+51i28 Lock{40I9} 10|79b28 85r51
+55U14*Release_Lock 55=28 10|96b14 107l8 107t20
+55i28 Lock{40I9} 10|96b28 102r44
+X 10 s-gloloc.adb
+44K12 TSL=44:31 61r7 64r7
+45K12 OSI=45:31 71r9 85r14 85r58 87r16 102r14
+46K12 ICS=46:37 71r45
+48I12 Lock_File_Entry{16|55I9} 51r52
+50i4 Last_Lock{9|40I9} 62m7 62r20 63r12
+51a4 Lock_Table(48I12) 66r14 70m7 85r39 102r32
+58i7 L{9|40I9} 63m7 66r10 70r19 72r15
+82m7 Res{16|60M9} 85m7 87r10
+99i7 Res{16|66I9} 102m7 104r10
+X 11 s-osinte.ads
+50K16*OS_Interface 10|36w13 45r31 11|363e24
+231V13*WaitForSingleObject{16|60M9} 10|85r18
+242N4*Wait_Infinite 10|85r62
+244N4*WAIT_FAILED 10|87r20
+291V13*CreateMutex{16|55I9} 10|71r13
+303V13*ReleaseMutex{16|66I9} 10|102r18
+X 14 s-tasloc.ads
+48K16*Task_Lock 10|37w13 44r31 14|100e21
+51U14*Lock 10|61r11
+56U14*Unlock 10|64r11
+X 16 s-win32.ads
+39K16*Win32 10|38w13 48r31 71r32 80r16 82r13 97r16 99r13 104r16 16|316e17
+55I9*HANDLE<5|56I9> 10|48r37
+60M9*DWORD<5|45M9> 10|80r22 82r19
+66I9*BOOL<5|35I9> 10|97r22 99r19
+76N4*FALSE 10|71r38 104r22
+

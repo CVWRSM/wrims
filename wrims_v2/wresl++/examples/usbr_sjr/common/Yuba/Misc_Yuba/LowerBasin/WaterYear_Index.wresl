@@ -1,0 +1,265 @@
+!Coded by Andy Draper June 2004.
+
+!**********************************************************        
+!Calculation of Settlement Yuba River Index
+!Define Water Year Index based on perfect knowledge of Oct-Sep inflow to New Bullards Bar
+!plus previous years carryover storage.
+
+define BaseCarryover {value 234.0}
+define Triggervalue  {value 0.0} /*{value 166.0}*/
+define Index_Accorddv   {std kind 'INDEX' units 'TAF'}
+define YrType_Accorddv  {std kind 'INDEX' units 'NONE'}
+
+define AnnualInflow {
+	case    APR {
+		condition month == APR
+       		sum(i=-6,5,1) I_NFY017(i)*cfs_taf(i)+I_CMT001(i)*cfs_taf(i)+I_SLT009(i)*cfs_taf(i)-D_SLT009_SCT001_SV(i)*cfs_taf(i)}
+        
+        case    otherwise {
+		condition always
+        	value 0.0}
+        }
+        
+define Index_Accord {
+	case    APR {
+		condition month == APR
+       		value AnnualInflow + S_NBLDB(PREVSEP) - BaseCarryover }
+        
+        case    otherwise {
+		condition always
+        	value Index_Accorddv(-1)}
+        }
+        
+define Trigger {
+	case lowcarryover {
+		condition S_NBLDB(PrevSep) < TriggerValue + BaseCarryover
+		value 6.0}
+	case otherwise {
+		condition always
+        	value 0.0}
+        }
+        
+goal set_Index_Accord {Index_Accorddv=Index_Accord}        
+        
+        
+define YrType_Accord_Init {
+	case index6a {
+		condition Index_Accord < 500.0
+		value 6.0}
+	case index6b {
+		condition Index_Accord < 693.0
+		value 6.0}
+	case index5 {
+		condition Index_Accord < 820.0
+		value 5.0}
+	case index4 {
+		condition Index_Accord < 920.0
+		value 4.0}
+	case index3 {
+		condition Index_Accord < 1040.0
+		value 3.0}
+	case index2 {
+		condition Index_Accord < 1400.0
+		value 2.0 }
+	case index1 {
+		condition always
+		value 1.0}
+	}
+
+       
+define YrType_Accord {     
+        case Oct_Jan {
+		condition month >= OCT .and. month <= MAR
+			value max(YrType_Accord_Init,Trigger) }
+	case otherwise {
+		condition always
+		        value YrType_Accord_init}
+        }
+        
+goal set_YrType_Accord {YrType_Accorddv=YrType_Accord}
+
+
+!**********************************************************        
+!Calculation of D1644 Yuba River Index
+
+define YubaUnimpaired    {timeseries kind 'FLOW' units 'TAF'}
+define Index_D1644dv   {std kind 'INDEX' units 'TAF'}
+define YrType_D1644dv  {std kind 'INDEX' units 'NONE'}
+
+define OctMarFlow {
+       case APR {
+       		condition month == APR
+       		sum(i=-6,-1,1) YubaUnimpaired(i) }
+       case Rest { 
+       		condition always
+       		value 0 }
+        }
+
+define AprJulFlow {
+       case APR {
+       		condition month == APR
+       		sum(i=0,3,1) YubaUnimpaired(i) }
+       case Rest { 
+       		condition always
+       		value 0 }
+        }
+
+define Index_D1644 {
+	case APR {
+	        condition month == APR
+	       	value 0.2*min(1400.,Index_D1644dv(-1))+0.3*OctMarFlow+0.5*AprJulFlow }
+	case Rest { 
+	       	condition always
+	       	value Index_D1644dv(-1) }
+        }
+ 
+ goal set_Index_D1644LT {Index_D1644dv=Index_D1644}
+ 
+ define YrType_D1644 {
+ 	 case Wet {
+         	condition Index_D1644 >=1230
+         	value 1}
+         case AN {
+ 	        condition Index_D1644 >=990
+         	value 2}
+         case BN {
+ 	        condition Index_D1644 >=790
+         	value 3}
+         case Dry {
+ 	        condition Index_D1644 >=630
+         	value 4}
+         case Crit {
+ 	        condition Index_D1644 >=540
+         	value 5}
+         case otherwise {
+ 		condition always
+         	value 6}
+        }
+  
+ goal set_YrType_D1644 {YrType_D1644dv=YrType_D1644}
+ 
+ !**********************************************************        
+ !Calculation of 1965 Index
+ 
+ define Index_1965dv    {std kind 'INDEX' units 'TAF'}
+ define YrType_1965dv   {std kind 'INDEX' units 'NONE'}
+ 
+ define OctSepFlow {
+        case APR {
+        	condition month == APR
+        	sum(i=-6,5,1) YubaUnimpaired(i) }
+        case Rest { 
+        	condition always
+        	value 0 }
+        }
+        
+  define Av50yrUnimpaired {value 2337.}
+  
+  define Index_1965 {
+  	case APR {
+  	        condition month == APR
+  	       	value OctSepFlow/Av50yrUnimpaired }
+  	case Rest { 
+  	       	condition always
+  	       	value Index_1965dv(-1) }
+        }
+        
+  goal set_Index_1965 {Index_1965dv=Index_1965}
+  
+  define YrType_1965 {
+   	   case Wet {
+           	condition Index_1965 >0.5
+           	value 1}
+           case AN {
+   	        condition Index_1965 >=0.45
+           	value 2}
+           case BN {
+   	        condition Index_1965 >=0.4
+           	value 3}
+           case otherwise {
+   		condition always
+           	value 4}
+          }
+    
+ goal set_YrType_1965 {YrType_1965dv=YrType_1965}
+ 
+ 
+ !**********************************************************        
+   
+   define MinFlowCrit   {value 4.0} !Change this value for other standards
+   
+   define wytype_YUBA {
+   	case Agreement1965 {
+           	condition MinFlowCrit == 1
+           	value YrType_1965}
+           case D1644Interim {
+   	        condition MinFlowCrit == 2
+           	value YrType_D1644}
+           case D1644Longterm {
+   	        condition MinFlowCrit == 3
+           	value YrType_D1644}
+           case otherwise {
+   		condition always
+           	value YrType_Accord}
+           }
+           
+   
+ 
+    define wytype_YUBADV  {std KIND 'YTYPE' UNITS 'NONE'}    
+    goal set_wytype_YUBADV {wytype_YUBADV=wytype_YUBA}
+
+ !Marysville- MINFLOWDEFINITION
+ define MIF_C_YUB006 {
+ 	case Wet {
+         	condition wytype_YUBA == 1
+         	select Wet   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=month}
+         case AN {
+ 	        condition wytype_YUBA == 2
+         	select AN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=month}
+         case BN {
+ 	        condition wytype_YUBA == 3
+         	select BN    from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=month}
+         case Dry {
+ 	        condition wytype_YUBA == 4
+         	select Dry   from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=month}
+         case Crit1 {
+ 	        condition wytype_YUBA == 5 .AND. S_NBLDB(PREVSEP) < 400.
+         	select ModCrit  from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=month}
+         case Crit2 {
+ 	        condition wytype_YUBA == 5
+         	select Crit  from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=month}
+         case otherwise {
+ 		condition always
+         	select Ecrit from Yuba_LowerYubaMinflow where C_arc=230,standard = MinFlowCrit,month=month}
+         }
+        	
+ define MIF_C_YUB006dv {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+ goal set_MIF_YUB006dv {MIF_C_YUB006dv=MIF_C_YUB006}
+ 
+ 
+ !Smartsville- MINFLOWDEFINITION
+ define MIF_C_YUB024 {
+ 	case Wet {
+         	condition wytype_YUBA == 1
+         	select Wet   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=month}
+         case AN {
+ 	        condition wytype_YUBA == 2
+         	select AN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=month}
+         case BN {
+ 	        condition wytype_YUBA == 3
+         	select BN    from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=month}
+         case Dry {
+ 	        condition wytype_YUBA == 4
+         	select Dry   from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=month}
+         case Crit {
+ 	        condition wytype_YUBA == 5
+         	select Crit  from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=month}
+         case otherwise {
+ 		condition always
+         	select Ecrit from Yuba_LowerYubaMinflow where C_arc=237,standard = MinFlowCrit,month=month}
+         }
+ 
+ define MIF_C_YUB024dv {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+ goal set_MIF_YUB024dv {MIF_C_YUB024dv=MIF_C_YUB024}
+ 
+        	

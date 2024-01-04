@@ -1,0 +1,33 @@
+! legacyWresl
+
+sequence CYCLE1 {
+    model   First
+    order   1
+    }
+
+	
+model First { 
+
+  define X_perc { upper 100. kind 'DEMAND-PERCENTAGE' units 'PERCENTAGE' }
+  define Y_perc { upper 100. kind 'DEMAND-PERCENTAGE' units 'PERCENTAGE' }
+
+
+  define X { alias X_perc/100 *  40  kind 'DELIVERY' units 'CFS' }
+  define Y { alias Y_perc/100 *  20  kind 'DELIVERY' units 'CFS' }
+ 
+  
+  goal G_All {  X+Y  < 30 }  
+  
+  objective Obj ={
+	[x,5]
+	[y,5]
+  }
+
+  ! objective Obj {
+   ! weight 5
+   ! variable x y
+  ! }
+}
+
+
+

@@ -1,0 +1,101 @@
+/*
+
+This file estimates the VAMP cost before May shoulder and then sets a Max Export Restriction for the May Shoulder
+and June Ramping actions predicated on the Remaining b2 account - Estimated WQCP Costs - Vamp Costs
+
+*/
+
+define VampCostEst {
+  case May {
+    condition month==MAY
+    value max(0.0,min(DMC003_cvp__z2 + CAA000_cvp__z2,DMC003_cvp__z1 + CAA000_cvp__z1) - (3000.*16.0/daysin + PulseExpRes*0.5*15.0/daysin))}
+  case other {
+    condition always
+    value 0.0}
+}
+
+define ClearCreekRes {
+  case May {
+    condition month==MAY
+    value 25.0 }
+  case June {
+    condition month==JUN
+    value 20.0 }
+  case other {
+    condition always
+    value 0.0}
+}
+
+define VampCostEstdv {alias VampCostEst*cfs_taf kind 'VAMP-COST' units 'taf'}
+
+define MaxExportRes {value max(0.0,B2Acct - CostWqcpEst - VampCostEst*cfs_taf - ClearCreekRes) }
+
+define MaxExportResdv {alias MaxExportRes kind 'Max-Export-Restrict' units 'TAF'}
+
+!Tries to keep the Oct-Jan b2 Costs < 200 TAF
+
+define FallAcct {
+  case Oct {
+    condition month==OCT
+    value 200.0 }
+  case NovthruJan {
+    condition month>=Nov .and. month<=Jan
+    value max(200.0 - CumB2Costs,0.0) }
+  case otherwise {
+    condition always
+    value 0.0 }
+}
+
+!define FallAcctdv {alias FallAcct kind 'test' units 'taf'}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

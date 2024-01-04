@@ -1,0 +1,53 @@
+package reservoirs
+
+#LAKE OROVILLE
+reservoir Orovl { 
+	
+	#unknown float evaporation_rate 
+
+	parameter node {
+	
+		out_1 = [  direction = out   coordinate = [x  y]   ] 
+		in_1  = [  direction = in    coordinate = [x  y]   ]	
+	
+	}
+	
+	# parameter loss {
+	
+		# E_Orovl = evaporation ( area  evaporation_rate )  #timeseries ( kind='EVAPORATION-RATE' units='IN' 
+		
+	# }
+	
+	parameter geometry {
+	
+		
+		coordinate = [ [ -122.365662  37.826988  ]  [x2  y2 ]  [x3  y3 ]  [x4  y4 ]  [x5  y5 ]  ] 
+	
+	}
+				
+	parameter rating {
+	
+		r01  = [ elevation = 340  area = 0      storage = 0        discharge = 50000   ] 
+		r02  = [ elevation = 340  area = 594    storage = 29638    discharge = 50000   ] 
+		r03  = [ elevation = 440  area = 1553   storage = 120000   discharge = 50000   ] 
+		r04  = [ elevation = 570  area = 3950   storage = 480000   discharge = 50000   ] 
+		r05  = [ elevation = 639  area = 5810   storage = 846367   discharge = 50000   ] 
+		r06  = [ elevation = 640  area = 5838   storage = 852192   discharge = 50000   ] 
+		r07  = [ elevation = 668  area = 6550   storage = 1008000  discharge = 207000  ] 
+		r08  = [ elevation = 750  area = 9340   storage = 1680000  discharge = 210000  ] 
+		r09  = [ elevation = 819  area = 11851  storage = 2352000  discharge = 214000  ] 
+		r10  = [ elevation = 901  area = 15855  storage = 3553405  discharge = 280000  ] 
+		r11  = [ elevation = 920  area = 16899  storage = 3864497  discharge = 750000  ] 	
+		
+	}
+	
+	# function float evaporation ( float a  float evap_rate  ) {
+		
+		# return a * evap_rate 
+	
+	# }
+		
+
+		
+}
+

@@ -1,0 +1,88 @@
+/*************************************
+EXP_constraint.wresl
+ 
+Hao Xie   DWR (09/03/2010)
+
+Export constraint
+
+Z.Q. Richard Chen DWR (10/06/2010) 
+   Adding BO switch to the goal statements.
+   05/25/2010: enable constrain in individual BO actions
+**************************************/
+
+! Determine health and safety level at OMR that must be allowed
+define HandS_minpump {
+     case JanMay {
+          condition month>=JAN .and. month<=MAY
+          value 1500.}
+     case Jun {
+          condition month==JUN
+!          value 2000.}
+          value 1500.}
+     case other {
+          condition always
+          value 0.}
+}
+! Take the most restrictive of the NMFS export restrictions but consider the Health
+!   and safety level export that must be allowed
+define MAXEXP_RPA {value min(NMFS_MaxExp, NMFS_MaxExp_DCC, FWS_MaxExp_X2)}
+!
+! **********************************************************************************************
+!
+
+define Export_dec_RPA {value max(0.,D_EXPTD[base] - MAXEXP_RPA)}
+define SWP_exp_dec_RPA {value max(0.,min(Export_dec_RPA,D_Banks_swp[base] - D_Jones[base]))}
+define CVP_exp_dec_RPA {value max(0.,min(Export_dec_RPA,D_Jones[base] - D_Banks_swp[base]))}
+define Comb_exp_dec_RPA {value max(0., Export_dec_RPA - SWP_exp_dec_RPA - CVP_exp_dec_RPA)}
+
+define Export_dec_RPA_ {alias Export_dec_RPA kind 'temp' units 'cfs'}
+define SWP_exp_dec_RPA_ {alias SWP_exp_dec_RPA kind 'temp' units 'cfs'}
+define CVP_exp_dec_RPA_ {alias CVP_exp_dec_RPA kind 'temp' units 'cfs'}
+define Comb_exp_dec_RPA_ {alias Comb_exp_dec_RPA kind 'temp' units 'cfs'}
+
+define MAXEXP_RPA_CVP {value max(jonesminpump,d_jones[BASE] - CVP_exp_dec_RPA - 0.5*Comb_exp_dec_RPA) }
+define MAXEXP_RPA_SWP {value max(banksminpump,d_banks[base] - SWP_exp_dec_RPA - 0.5*Comb_exp_dec_RPA) }
+
+goal set_MAXEXP_RPA_SWP {
+    lhs     D_Banks_swp
+    case BOSWITCHON {
+    condition FallX2 == 1 .or. Action_4_1_2 == 1 .or. Action_4_2_1 == 1    
+    rhs     MAXEXP_RPA_SWP
+    lhs<rhs penalty    0}
+    }    
+    
+define MAXEXP_RPA_SWPdv {alias MAXEXP_RPA_SWP kind 'EXPORT-LIMIT' units 'CFS'}
+
+goal set_MAXEXP_RPA_CVP {
+    lhs     D_Jones
+    case BOSWITCHON {
+    condition FallX2 == 1 .or. Action_4_1_2 == 1 .or. Action_4_2_1 == 1
+    rhs     MAXEXP_RPA_CVP
+    lhs<rhs penalty    0}
+    }
+    
+define MAXEXP_RPA_CVPdv {alias MAXEXP_RPA_CVP kind 'EXPORT-LIMIT' units 'CFS'}
+
+goal set_MAXEXP_RPA {
+    lhs     D_banks + D_jones
+    case BOSWITCHON {
+    condition FallX2 == 1 .or. Action_4_1_2 == 1 .or. Action_4_2_1 == 1
+    rhs     MAXEXP_RPA
+    lhs<rhs penalty    0}
+    }
+
+define MAXEXP_RPAdv {alias MAXEXP_RPA kind 'EXPORT-LIMIT' units 'CFS'}
+
+/***
+goal set_MAXEXP_RPA_SWP {
+    lhs     D_Banks
+    rhs     MAXEXP_RPA_SWP
+    lhs<rhs penalty    0}
+define MAXEXP_RPA_SWPdv {alias MAXEXP_RPA_SWP kind 'EXPORT-LIMIT' units 'CFS'}
+
+goal set_MAXEXP_RPA_CVP {
+    lhs     D_Jones
+    rhs     MAXEXP_RPA_CVP
+    lhs<rhs penalty    0}
+***/
+

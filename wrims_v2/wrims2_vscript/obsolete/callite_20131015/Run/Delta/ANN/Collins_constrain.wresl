@@ -1,0 +1,37 @@
+/*************************************
+Collins_constrain.wresl
+
+Nazrul Islam; DWR; (06/27/2010)
+
+Add a switch to turn off D1641/D1485 constrain at Collins
+Z.Q. Richard Chen; DWR; (02/07/2011)
+**************************/
+
+goal meetCO {
+  lhs D_ExpTD - exp_ann_relax
+  case DRegsOff{
+           condition CO_DLTSW == 0
+           rhs ExportCapacity
+           lhs<rhs penalty 0}  
+  case NoSalinityControlPossible{
+    condition abs(CO_m_sv) <= 0.001 .and. int(CO_b_sv) == 0
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case NegSlope{
+    condition CO_m_sv <= 0.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case HighCost{
+    condition CO_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case NegCarriage{
+    condition CO_m_sv >= 1.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case Normal {
+    condition always
+    rhs CO_m_sv*C_Hood_ANN + CO_m_sv*C_YoloBP + CO_b_sv
+    lhs<rhs penalty 0}
+}
+

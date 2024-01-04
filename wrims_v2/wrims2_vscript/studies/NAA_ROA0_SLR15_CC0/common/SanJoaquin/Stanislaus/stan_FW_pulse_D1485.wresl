@@ -1,0 +1,98 @@
+! stan_FW_pulse.wresl
+! Edward Chang
+! 5/01/2000
+! Joint Model
+! This code calculates the Stanislaus operations for fish and wildlife pulse flows
+!########################################################################################
+/*
+The minimum fish and wildlife flows are determined using the New Melones forecast, NMforeast1.
+This forecast determines an annual delivery requirement from a look-up table.  From the annual
+delivery requirement another look-up table is used to determine the monthly requirements.
+In April and May, a pulse flow requirement is also calculated, but the pulse flow only applies
+during the last 16 days in April and the first 15 days in May.  The goal of the resulting monthly
+requirement is to maintain a minimum fish and wildlife flow downstream of Goodwin Dam.  To ensure
+a minimum flow, it is only necessary to impose this requirement on reaches C520 and C528
+*/
+/*
+Fish & Wildlife flows
+*/
+! Define Cycle 3 minimum Stanislaus F & W pulse flows Apr 15 - May 15
+
+define OIDSSJIDdem{
+         case firstyear {
+           condition month >= oct .and. month <=feb .and. wateryear > 1922
+           value OSSJIDDV(prevMAR)*.959}
+         case others {
+           condition always
+           value OSSJID_yr*.959} ! Mar - Sep OSSJID allocation
+                  }
+
+define SEWDCSJIDdem{value  90.0}
+define ProjWQ{value  70.0}
+define S10EVAP{value  52.0} ! Mar - Sep average evaporation
+define stanfish_yr1 {value (NMforecast1 - OIDSSJIDdem - SEWDCSJIDdem - ProjWQ - S10EVAP - 1700.0)}
+define stanfish_yr  {value min(302.1, max(98.3, stanfish_yr1))}
+define stanpulse {
+    case OnlyInAprMay {
+        condition       month == apr .or. month == may
+        select          pulse from stan_pulse given stanyr = stanfish_yr use linear }
+    case otherwise {
+        condition       always
+        value           0. }
+        }
+define stanpulse_dv {alias stanpulse kind 'fish-pulse-req' units 'cfs'}
+
+! Define revised total annual fish releases
+! Base MIF + Enhanced flow based on estimated delivery, estimated inflow, and desired target storage
+! Based on Modifications by Hilts 20090205 to eliminate "Transitional Plan" related logic.  Setting STANFISH_YR2=STANFISH_YR1
+
+define stanfish_yr2 { select stanf from stan_yr given NMF = NMforecast1 use linear }
+
+/* define stanfish_yr2 {
+        case firstyr {
+                condition wateryear == 1922 .and. month <= mar
+                value 98.9 + stan_dem_est + min(204.,max(NMforecast3-((310.-stan_dem_est)-stan_dem_est)-1700.,0.0))
+        }
+        case march {
+                condition month == mar
+                value 98.9 + stan_dem_est + min(204.,max(NMforecast3-((310.-stan_dem_est)-stan_dem_est)-1700.,0.0))
+        }
+        case otherwise {
+                condition always
+                value 98.9 + stan_dem_estdv(prevMar) + min(204.,max(NMforecast3dv(prevMar)-((310.-stan_dem_estdv(prevMar))-stan_dem_estdv(prevMar))-1700.,0.0))
+        }
+} */
+
+define stanpulse2 {
+    case OnlyInAprMay {
+        condition month == apr .or. month == may
+        select pulse from stan_pulse given stanyr = stanfish_yr2 use linear}
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! Stanislaus F & W pulse flows for Cycle 3 April-May release, CALSIM uses internal units of cfs
+goal setC520cycle3 {
+    lhs C520_mif
+    case AprMay {
+        condition   month >= apr .and. month <= may
+        rhs         stanpulse2
+        lhs<rhs     penalty 0 }
+    case otherwise {
+        condition   always
+        rhs         C520_mif[SJR_WQ1]
+          lhs<rhs        penalty 0 }
+        }
+! Stanislaus River minimum F & W pulse flows for Cycle 3 during April- May release, CALSIM uses internal units of cfs
+goal setC528cycle3 {
+    lhs C528_mif
+    case AprMay {
+        condition   month >= apr .and. month <= may
+        rhs         stanpulse2
+        lhs<rhs     penalty 0 }
+    case otherwise {
+        condition   always
+        rhs         C528_mif[SJR_WQ1]
+        lhs<rhs     penalty 0 }
+        }

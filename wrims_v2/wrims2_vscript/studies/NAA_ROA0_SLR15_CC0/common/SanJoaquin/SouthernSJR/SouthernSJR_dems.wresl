@@ -1,0 +1,580 @@
+! SouthernSJR_Dems.wresl
+
+! Author: Nancy Parker
+! Agency: USBR
+! Date: 09/03/2002
+! Deliveries and Operations on Upper SJR, Fresno, and Chowchilla Rivers
+
+/*
+This file defines delivery operations for the Upper SJR, Fresno River, and
+Chowchilla River. Madera ID and Chowchilla ID are the two main water users
+affected by these operations.
+
+Madera Canal Loss Operation:
+A lookup table provides 12 monthly values of maximum monthly loss.
+All D18B canal flow up to this value is lost, and anything above this value
+makes it to node 590 to be distributed between Madera and Chowchilla IDs.
+Madera Canal distribution: 40% to Chowchilla ID, 60% to Madera ID
+
+Madera ID demand satisfied from: 1. Min district pumping, 2. Madera Canal,
+3. Surface diversion, and 4. Max pumping. District loss is a percentage of
+surface supplies; based on water year type.
+
+Chowchilla ID demand satisfied from: 1. Min district pumping, 2. Surface
+supplies (incl Madera Canal) and 3. Max pumping.
+
+Note: Deep percolation is assumed to be 25% of CUAW for this region.
+*/
+
+/*
+Revised by: R. Field, USBR, 09/26/03
+Purpose: Incorporate additional M&I groundwater and M&I return flow arcs.
+Revised by: T. Crawford, USBR, 03/13/03
+Purpose: Review and document file
+*/
+
+!############################################################################
+
+
+/*
+*****************San Joaquin River/Madera Canal Operations*******************
+*/
+
+/*
+San Joaquin River delivery to Gravelly Ford ID is up to 40% of the minimum
+channel flow below Millerton Lake, if it is needed by the demand at 586.
+Minimum channel flow is defined as: L603 (accretion/depletion) + D603
+(Gravelly Ford ID delivery). On an annual basis, L603 + D603 equals 117
+taf--this value is distributed each month according to a predefined pattern.
+*/
+!goal set_D603 { D603 < 0.4 * min(SJRR_rel, C18_min * taf_cfs) }
+
+
+/*
+*************************Reach Losses*****************************
+*/
+
+! Friant to Gravelly Ford losses: C18 min flow minus delivery to ND node 585
+!goal set_L603 { L603 = min(SJRR_rel, C18_min * taf_cfs) - D603 }
+
+! Gravelly Ford to Bifurcation - L605 - the first 100 cfs plus 5% of the rest
+! of the flow in C603 is lost at 605
+goal limit1_L605 {L605 < C603 * 0.05 + 100. - 100.* 0.05 }  !WB
+
+! Ensures that there is no loss if there is no flow
+goal limit2_L605 { L605 = C603_loss }
+
+! Bifurcation to pool losses
+!define limit_L607 {select L607 from SJR_reach_loss where flow=c605a use linear}
+!define limit_L607  {value min(C605A,10.) }
+
+ goal limit_L607 {L607 = 0.0}
+ goal limit_L608 {L608 = 0.} !Need to determine losses in restored channel
+
+ goal limit_L609 {L609 < 13.}
+ goal limit2_L609 {L609 < C608}
+
+ goal limit_L610 {L610 = 0.}
+ goal limit_L611 {L611 = 0.}
+ goal limit1_L595 {L595 < 105.}
+ goal limit2_L595 {L595 < C605B}
+
+ goal limit_L587 {L587 < 112.}
+ goal limit2_L587 {L587 < C595}
+
+! define maximum flow below Sack Dam
+!Define limit_C608 {value max((I607 - D607A-C607BC-D607D-L607),4500.)}
+!Define limit_C608a {alias limit_c608 kind 'temp' units 'cfs'}
+
+
+/*
+*************************Fresno River Operations*****************************
+*/
+
+! Each April, forecast April through Sept inflow to Hensley Lake (as the sum of April through Sept inflows)
+define sumI52_part {
+    case apr {
+        condition   month == apr
+        sum(i=0,5,1) I52(i) * cfs_TAF(i) }
+    case otherwise {
+        condition   always
+        value 0. }
+        }
+
+! Hensley carryover storage based on SJRindex year type (from lookup table)
+define S52carryover {select S52 from S52carryover where yrtype=wyt_SJR}
+
+! Hensley Lake evaporation estimate (from table, based on SJRindex year type)
+define S52evap_est {select S52 from evap_est where yrtype=wyt_SJR}
+
+! Decision variable for Hensley Lake available water supply
+define S52Availdv {std kind 'water-supply' units 'taf'}
+
+/*
+Apr-Sep available water (not accounting for seepage) is forecasted in April;
+that value is stored in prev52avail_p1 decision variable each month until it
+is reforecasted the following April.
+*/
+define prev52avail_p1 {std kind 'water-supply' units 'taf'}
+
+/*
+Forecast Hensley Lake available water supply for Madera ID;
+
+Water Supply Forecast =   End-of-March storage
+                        + Apr-Sep inflow
+                        - Carryover target (from lookup table)
+                        - Downstream requirements
+                        - Fresno River seepage
+                        - Evap Estimate (ranges from 1 to 6 taf)
+
+Note: S52Avail_part1 does not account for Fresno River seepage
+*/
+define S52Avail_part1 {
+    case first5months {
+        condition month <= mar .and. wateryear == 1922
+        value         S52(-1) }
+    case April {
+        condition month == apr
+        value        max(0., S52(-1) + sumI52_part - S52carryover - S52evap_est)}
+    case otherwise {
+        condition   always
+        value         prev52avail_p1(-1) }
+        }
+
+! Store April water supply forecast value in prev52avail_p1 decision variable
+goal set_prev52avail_p1{prev52avail_p1 = S52avail_part1}
+
+! Fresno River seepage estimate based on supply forecast (from lookup table)
+define fresno_seep { select fresno_seep from fresno_seep given forecast = S52avail_part1 use minimum }
+
+! Apr-Sep available water supply forecast; accounts for Fresno River seepage
+define S52Avail { value  max(0.,S52avail_part1 - fresno_seep) }
+
+! Set WS forecast equal to the decision variable; ensure non-negative value
+goal set_S52Availdv {S52Availdv = max(0., S52Avail)}
+
+! Determine from lookup table, monthly distribution of available ag water
+define fresno_ag_dist {
+    select fresno_pattern
+    from fresno_agdist
+    given forecast = S52Avail
+    use minimum
+    where month = month }
+
+/*
+Fresno River deliveries to Madera ID are limited to the current month's
+available water.
+
+Current month avail water = Apr-Sep WS forecast * distribution percentage
+*/
+define D588_limitb { value max(0., S52Avail * fresno_ag_dist*taf_cfs/100) }
+
+! Limit Fresno River deliveries to Madera ID to conveyance capacity (200 cfs)
+goal limitD588 {D588 < 200.}
+
+! Limit Fresno River deliveries to Madera ID to the available water supply
+goal limitD588b {D588 < D588_limitb}
+
+! Actual limit on deliveries; the min of conveyance capacity and water supply
+define D588_limit {alias min(200., D588_limitb) units 'cfs'}
+
+/*
+For Mar-May during below normal, above normal, and wet years (SJRindex),
+define minimum Fresno River channel flow as the smaller of 1 taf and
+inflow - delivery (ie minimum C588 flow ranges from 0 taf and 1 taf,
+inclusive)
+*/
+define C588_min {
+    case AprJul {
+        condition month >=MAR .and. month <=MAY .and. wyt_SJR <=3
+        value min(1.0*taf_cfs, max(0., I52 - min(200., D588_limitb))) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! Set Fresno River minimum instream flow equal to above calculated minimum
+goal meetC588_MIF {C588_MIF = C588_min}
+
+! Limit on Fresno River loss is 3 taf; no loss if no flow
+define L588_limit {
+    case loss {
+        condition C588_min > 0. .or. min(200., D588_limitb) > 0.
+        value 3.*taf_cfs }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! Limit Fresno River main losses to 0 taf if no flow, 3 taf if there is flow
+goal limitL588_1 {L588_main < L588_limit}
+
+! Limit Fresno River spills to C52 flood flows
+goal limitL588_2 {L588_spill < C52F }
+
+! Limit Fresno River total loss to 3 taf
+goal limitL588_3 {L588 < 3.*taf_cfs }
+
+
+/*
+*********************************Madera ID***********************************
+*/
+
+! Retrieve predefined CUAW timeseries values for Madera ID demands
+define cuaw_592_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+/*
+Percent of Madera ID deliveries that accounts for district loss; from lookup
+table, based on SJRindex year type.
+*/
+define perDL592_pag {select D592_ag from sjr_yt_loss where yrtype=WYT_SJR}
+
+! Decision variable for Madera ID district losses
+define dloss_592_pag {std kind 'district-loss' units 'cfs'}
+
+! Madera ID losses equal surface diversions times the above defined % loss
+goal set_dloss_592_pag {dloss_592_pag = D590*perDL592_pag + D588*perDL592_pag}
+
+! Deep percolation is assumed to be 25% of CUAW
+define dperc_592_pag {value cuaw_592_pag*.25}
+
+! Minimum district ground water pumping limit; defined in lookup table
+define GP591_min_pag_limit {select min591pag from SoSJRGWPUMP where month=month}
+
+! Limit min district ground water pumping deliveries to aboved defined value
+goal setGP591_min_pag {GP591_min_pag < GP591_min_pag_limit}
+
+/*
+Limit Madera ID deliveries to delivery requirement (demand);
+Total delivery requirement = NRL + Deep perc + District loss + CUAW
+*/
+goal set_D592_pag {D592_pag < 1.1*CUAW_592_pag + dloss_592_pag + dperc_592_pag}
+define dem_D592_pag {alias 1.1*CUAW_592_pag + dloss_592_pag + dperc_592_pag kind 'demand' units 'cfs'}
+
+! Limit D590 to 60% of the Madera Canal allocation
+goal set_D590 {D590 < demand_d18B * taf_cfs*0.6 + tot_und_D18B_C1_*taf_cfs*Mad_C1_frc*0.6 + tot_und_D18B_C2_*taf_cfs*Mad_tot_frc*0.6 - L590*0.6 }
+
+! Limit D590 to the surface water requirement
+goal set_D590a {D590 < 1.1*CUAW_592_pag + dloss_592_pag + dperc_592_pag - GP591_min_pag}
+
+! Madera ID spills are estimated from lookup table, based on SJRindex
+define spill_592_pag {select sp592_ag from SoSJRSpills where yrtype=WYT_SJR, month=month}
+
+/*
+Return flows from Madera ID: If there is no demand, there are no deliveries
+and thus no return flow; otherwise, return flow equals the estimated spills.
+*/
+goal set_R595 {
+    lhs R595
+        case no_demand {
+            condition cuaw_592_pag == 0.
+            rhs 0. }
+        case otherwise {
+            condition always
+            rhs spill_592_pag*taf_cfs}
+}
+
+/*
+Madera ID M&I pumping- all met by GW (A)
+*/
+! Define Madera ID M&I demand
+define demand_D592_MI_A {select dem592_MI_A from urban_demand3 where month = month}
+
+! Set Madera ID M&I delivery to meet demand
+goal meet_D592_MI_A {D592_MI_A = demand_D592_MI_A*taf_cfs}
+
+! Set groundwater M&I pumping to meet Madera ID M&I demand
+goal set_GP591_MI_A {GP591_MI_A = D592_MI_A}
+
+! 0% of non-district deliveries are reused or returned
+!goal set_R_ {R_ = D592_MI_A * 0.}
+
+/*
+*******************Non-District Pumping East of Madera ID********************
+*/
+
+! Retrieve predefined CUAW timeseries values for non-district, East of Madera
+define cuaw_592_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Deep percolation is assumed to be 25% of CUAW
+define dperc_592_ND {value cuaw_592_nd*.25}
+
+! Limit non-district deliveries to the delivery requirement
+goal set_D592_ND {D592_ND < 1.1*CUAW_592_ND + DPERC_592_ND}
+
+! Non-district demands completely satisfied by ground water pumping
+goal set_GP591_ND {GP591_ND = D592_ND}
+
+/*
+East of Madera ID and Non-District DAU 213 M&I pumping- all met by GW (B)
+*/
+! Define East of Madera ID and Non-District DAU 213 M&I demand
+define demand_D592_MI_B {select dem592_MI_B from urban_demand3 where month = month}
+
+! Set East of Madera ID and Non-District DAU 213 M&I delivery to meet demand
+goal meet_D592_MI_B {D592_MI_B = demand_D592_MI_B*taf_cfs}
+
+! Set groundwater M&I pumping to meet East of Madera ID and Non-District DAU 213 M&I demand
+goal set_GP591_MI_B {GP591_MI_B = D592_MI_B}
+
+! 0% of non-district deliveries are reused or returned
+!goal set_R_ {R_ = D592_MI_B * 0.}
+
+
+/*
+************************Chowchilla River Operations**************************
+*/
+
+/*
+Forecast Eastman Lake available water supply for Chowchilla ID;
+
+Water supply forecast =   End of March storage
+                        + Apr-Sep inflow (sum of April through September inflows)
+                        - Carryover target
+                        - Chowchilla River seepage (4.3 taf Apr-Sep = 25.2)
+                        - Evap estimate
+*/
+!define sumI53_part {
+!    case aprthrusep {
+!        condition   month >= apr .and. month <= oct
+!        sum(i=apr-month,12-month,1) I53(i) * cfs_TAF(i) }
+!    case otherwise {
+!        condition   always
+!        value 0. }
+!        }
+
+define sumI53_part {
+    case apr {
+        condition   month == apr
+        sum(i=0,5,1) I53(i) * cfs_TAF(i) }
+    case otherwise {
+        condition   always
+        value 0. }
+        }
+
+! Eastman carryover storage based on SJRindex year type (from lookup table)
+define S53carryover {select S53 from S53carryover where yrtype=wyt_SJR}
+
+
+! Eastman Lake evaporation estimate (from table, based on SJRindex year type)
+define S53evap_est {select S53 from evap_est where yrtype=wyt_SJR}   ! changed S52 to S53
+
+! Decision variable for Eastman Lake available water supply
+define S53Availdv {std kind 'water-supply' units 'taf'}
+
+/*
+!Apr-Sep available water (not accounting for seepage) is forecasted in April;
+!the available water is reduced each subsequent month by the volume diverted
+!to Chowchilla ID (D582) during the previous month.
+*/
+
+/*
+Apr-Sep available water (not accounting for seepage) is forecasted in April;
+that value is stored in prev53avail_p1 decision variable each month until it
+is reforecasted the following April.
+*/
+define prev53avail_p1 {std kind 'water-supply' units 'taf'}
+
+
+define S53Avail_part1 {
+    case first5months {
+        condition month <= mar .and. wateryear == 1922
+        value         S53(-1) }
+    case April {
+        condition month == apr
+        value         max(0.,S53(-1) + sumI53_part - S53carryover - S53evap_est)}
+    case otherwise {
+        condition   always
+        value          prev53avail_p1(-1) }
+        }
+
+define chk_s53 {alias s53(-1) units 'taf'}
+define chk_sumI53_part {alias sumI53_part units 'taf'}
+define chk_S53carryover {alias S53carryover units 'taf'}
+define chk_S53evap_est {alias S53evap_est units 'taf'}
+define chk_S53Avail {alias S53Avail_part1 units 'taf'}
+
+! Store April water supply forecast value in prev53avail_p1 decision variable
+goal set_prev53avail_p1{prev53Avail_p1 = S53Avail_part1}
+
+! Chowchilla River seepage estimate based on WS forecast (from lookup table)
+! define chowchilla_seep { select  chowchilla_seep  from chowchilla_seep given forecast = S53Avail_part1 use minimum}
+define chowchilla_seep { select  chowchilla_seep  from chowchilla_seep given forecast = S53Avail_part1 use minimum}
+
+! define limit for Chowchilla WD maximum surface water diversion
+define chow_max_surf { select  chow_max_surf  from chow_max_surf where month = month}
+
+! Apr-Sep available water supply forecast; accounts for river seepage
+define s53Avail { value S53Avail_part1 - chowchilla_seep }
+
+! Set WS forecast equal to the decision variable; ensure non-negative value
+goal set_S53Availdv {S53Availdv = max(0., S53Avail)}
+
+! Determine from lookup table, monthly distribution of available ag water
+define chow_ag_dist {
+    select chow_pattern
+    from Chowchilla_agdist
+    given forecast = S53Avail
+    use minimum
+    where month = month }
+
+define chk_chow_ag_dist {alias chow_ag_dist units 'taf'}
+
+! Surface water delivery to Chowchilla ID
+define D582_limita { value max(0.,chow_max_surf * taf_cfs) }
+
+/*
+Chowchilla River deliveries to Chowchilla ID are limited to the current
+month's available water plus the Madera Canal allocation to Chowchilla ID
+
+Current month avail water = Apr-Sep WS forecast * distribution percentage
+Madera Canal allocation to Chowchilla ID is 40%
+*/
+define D582_limitb { value min(max(0.,S53Avail) * chow_ag_dist/100 * taf_cfs
+                         + (max(0.,D18B_ini + Madera_add - Madera_loss)* taf_cfs+ tot_und_D18B_C1_*taf_cfs*Mad_C1_frc + tot_und_D18B_C2_*taf_cfs*Mad_tot_frc) * .4,
+                         chow_max_surf * taf_cfs) }
+define D582_limitbb {alias d582_limitb units 'cfs'}
+define D582_limitaa {alias d582_limita units 'cfs'}
+
+/*
+Limit D582 deliveries to available water supply:
+
+water supply = [(canal flow - losses) * 40%] + Eastman available water
+*/
+goal limitD582b {D582 < S53Availdv * chow_ag_dist/100 * taf_cfs
+                         + demand_D18B * taf_cfs*0.4 + tot_und_D18B_C1_*taf_cfs*Mad_C1_frc*0.4 + tot_und_D18B_C2_*taf_cfs*Mad_tot_frc*0.4 - L590 * .4 }
+goal limitD582a {D582 < D582_limita}
+
+
+! If water supply allows for deliveries, the first 4.2 taf accounts for loss
+define L582_limit {
+    case loss {
+        condition  D582_limitb > 0.
+!        value 4.2*taf_cfs }
+        value min(4.2*taf_cfs,D582_limitb/2) }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! Limit Chowchilla River main losses to 4.2 taf if there is flow, 0 if not
+goal limitL582_1 {L582_main < L582_limit}
+
+! Limit Chowchilla River spills to C53 flood flows
+goal limitL582_2 {L582_spill < C53F }
+
+! Limit Chowchilla River total loss to 4.2 taf
+goal limit1_L582 {L582 < min(4.2*taf_cfs,D582_limitb/2)}
+
+
+/*
+******************************Chowchilla ID**********************************
+*/
+
+! Retrieve predefined CUAW timeseries values for Chowchilla ID demands
+define cuaw_584_pag {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+/*
+Percent of Chowchilla ID deliveries that accounts for district loss; from
+lookup table, based on SJRindex year type.
+*/
+define perDL584_pag {select D584_ag from sjr_yt_loss where yrtype=WYT_SJR}
+
+! Decision variable for Chowchilla ID district losses
+define dloss_584_pag {std kind 'district-loss' units 'cfs'}
+
+! Chowchilla ID losses = surface diversions * lookup table defined % loss
+goal set_dloss_584_pag {dloss_584_pag = D582*perDL584_pag}
+
+! Deep percolation is assumed to be 25% of CUAW
+define dperc_584_pag {value cuaw_584_pag*.25}
+
+! Minimum district ground water pumping limit; defined in lookup table
+define GP583_min_pag_limit {select min583pag from SoSJRGWPUMP where month=month}
+
+! Limit min district ground water pumping deliveries to aboved defined value
+goal set_GP583_min_pag {GP583_min_pag < GP583_min_pag_limit}
+
+/*
+Limit Chowchilla ID deliveries to delivery requirement (demand);
+Total delivery requirement = NRL + Deep perc + District loss + CUAW
+*/
+goal set_D584_pag {D584_pag < 1.1*CUAW_584_pag + dloss_584_pag + dperc_584_pag}
+define dem_D584_pag {alias 1.1*CUAW_584_pag + dloss_584_pag + dperc_584_pag kind 'demand' units 'cfs'}
+
+/*
+Return flow from district is 0 if no demand (CUAW = 0); otherwise it equals
+Madera ID spills (for lack of better information).
+*/
+goal set_D584_returns {
+    lhs R585 + R587A
+        case no_demand {
+            condition cuaw_584_pag == 0.
+            rhs 0. }
+        case otherwise {
+            condition always
+            rhs spill_592_pag*taf_cfs}
+}
+
+/*
+Chowchilla Water District M&I pumping- all met by GW (A)
+*/
+! Define Chowchilla Water District M&I demand
+define demand_D584_MI_A {select dem584_MI_A from urban_demand3 where month = month}
+
+! Set Chowchilla Water District M&I delivery to meet demand
+goal meet_D584_MI_A {D584_MI_A = demand_D584_MI_A*taf_cfs}
+
+! Set groundwater M&I pumping to meet Chowchilla Water District M&I demand
+goal set_GP583_MI_A {GP583_MI_A = D584_MI_A}
+
+! 0% of non-district deliveries are reused or returned
+!goal set_R_ {R_ = D584_MI_A * 0.}
+
+/*
+*****************West of Madera and Chowchilla IDs - DAU 215*****************
+*/
+
+! Retrieve predefined CUAW timeseries values for non-district, DAU 215
+define CUAW_586_ND {timeseries kind 'sjr-demand' units 'taf' convert 'cfs'}
+
+! Decision variable for non-district returnable surface delivery losses
+define dloss_586_ND {std kind 'local-loss' units 'cfs'}
+
+/*
+Non-district loss is the sum of surface delivery losses to Chowchilla Bypass,
+Gravelly Ford ID and return flows from Chowchilla ID.
+*/
+goal set_dloss_586_ND {dloss_586_ND = D595 * (1.-(1.1*.75))
+                                    + D603 * (1.-(1.1*.75))
+                                    + R585 * (1.-(1.1*.75))}
+
+! Deep percolation is assumed to be 25% of CUAW
+define dperc_586_ND {value cuaw_586_nd * .25}
+
+! Limit non-district deliveries to demand plus deep perc.
+goal set_D586 { D586_ND < 1.1*CUAW_586_ND + dperc_586_ND }
+
+! Set the return flow variable equal to non-district losses
+! WBgoal set_R587b {R587b = dloss_586_ND}    this makes no sense and should be zero
+ goal set_R587b {R587b = 0.0}  !WB
+
+! Non-district deliveries from Fresno River limited to 10% of CUAW
+goal limit_D595 {D595 < .1 * cuaw_586_nd}
+
+/*
+West of Madera ID and Chowchilla WD M&I pumping- all met by GW (A)
+*/
+! Define West of Madera ID and Chowchilla WD M&I demand
+define demand_D586_MI_A {select dem586_MI_A from urban_demand3 where month = month}
+
+! Set West of Madera ID and Chowchilla WD M&I delivery to meet demand
+goal meet_D586_MI_A {D586_MI_A = demand_D586_MI_A*taf_cfs}
+
+! 0% of non-district deliveries are reused or returned
+!goal set_R_ {R_ = D586_MI_A * 0.}
+
+! Set groundwater M&I pumping to meet West of Madera ID and Chowchilla WD M&I demand
+goal set_GP585_MI_A {GP585_MI_A = D586_MI_A}
+
+

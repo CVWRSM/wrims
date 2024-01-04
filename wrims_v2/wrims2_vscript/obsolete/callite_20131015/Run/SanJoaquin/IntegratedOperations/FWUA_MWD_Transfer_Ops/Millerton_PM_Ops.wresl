@@ -1,0 +1,194 @@
+!Millerton Prebanking, drawdown, and spills
+
+!Define FMP Millerton storage decision variables
+define S_MLRTN_FMP {STD KIND 'STORAGE' UNITS 'TAF'}
+define S_MLRTN_WQ {STD KIND 'STORAGE' UNITS 'TAF'}
+define S_MLRTN_WS {STD KIND 'STORAGE' UNITS 'TAF'}
+define S_MLRTN_DD {LOWER -300 UPPER 0 KIND 'STORAGE' UNITS 'TAF'}  !Millerton drawdown account.
+define S_MLRTN_FMP_1 {STD KIND 'STORAGE-ZONE' UNITS 'TAF'}
+define S_MLRTN_FMP_2 {STD KIND 'STORAGE-ZONE' UNITS 'TAF'}
+
+!Define FMP storage transfer arcs.
+define D_FKCNL_FMP {std kind 'flow-delivery' units 'cfs'} !Combined Friant and MWD diversion into FK Canal
+define D18_DD {std kind 'flow-delivery' units 'cfs'} !Drawdown of Millerton
+define D18_DB {std kind 'flow-delivery' units 'cfs'} !Drawback of Friant water
+!define D18_SC {std kind 'flow-delivery' units 'cfs'} !Capture of forecasted snowmelt or flood release
+define D18_SN {std kind 'flow-delivery' units 'cfs'} !Capture of forecasted snowmelt
+define D18_FL {std kind 'flow-delivery' units 'cfs'} !Capture of flood release
+define D18_DTS {std kind 'flow-delivery' units 'cfs'} !Diversion to storage at Millerton
+define D18_DTS_WQ {std kind 'flow-delivery' units 'cfs'} !MWD prebanking
+define D18_DTS_WS {std kind 'flow-delivery' units 'cfs'} !SWP storage in Temperance Flat (turn off for Millerton scenarios)
+define D18_DFS {std kind 'flow-delivery' units 'cfs'} !MWD diversion from Millerton
+
+!Keep Diversion from storage accounts
+define D18_DFS_WQ {std kind 'flow-delivery' units 'cfs'} !Water quality diversion from storage
+define D18_DFS_WS {std kind 'flow-delivery' units 'cfs'} !Water supply diversion from storage
+define D18_DFS_SH {std kind 'flow-delivery' units 'cfs'} !Diversion from storage to prevent SWP shortages
+define D18_DFS_SP {std kind 'flow-delivery' units 'cfs'} !Prevent spills of water diverted to Millerton
+define D18_DFS_SP_WQ {std kind 'flow-delivery' units 'cfs'} !WQ spill prevention 
+define D18_DFS_SP_WS {std kind 'flow-delivery' units 'cfs'} !WS spill prevention 
+goal split_D18_DFS {D18_DFS = D18_DFS_WQ + D18_DFS_WS + D18_DFS_SH + D18_DFS_SP}
+goal split_D18_DFS_SP_s {D18_DFS_SP = D18_DFS_SP_WQ + D18_DFS_SP_WS}
+
+
+!Split diversion to storage into water quality prebanking (WQ) and long-term water supply (WS).
+goal split_D18_DTS {D18_DTS = D18_DTS_WQ + D18_DTS_WS}
+
+!These terms are to soften the bounds of FMP Millerton storage in the continuity equation
+define F18_WQ {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+define I18_WQ {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+define F18_WS {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+define I18_WS {std kind 'flex-bound' units 'cfs'} !apply high negative weight
+
+!Split FMP storage into Friant and MWD.  Also split FMP storage into two levels to force spills.
+goal split_S_MLRTN_FMP1 {S_MLRTN_FMP = S_MLRTN + S_MLRTN_WQ + S_MLRTN_WS}
+goal split_S_MLRTN_FMP2 {S_MLRTN_FMP = S_MLRTN_FMP_1 + S_MLRTN_FMP_2}
+
+!Size the storage zones
+goal S_MLRTN_FMPzone1 {S_MLRTN_FMP_1 < S_MLRTNlevel4}
+goal S_MLRTN_FMPzone2 {S_MLRTN_FMP_2 < max(0., S_MLRTNlevel5 - S_MLRTNlevel4)}
+
+!WQ diversion accounting.
+goal continuity18_WQ {D18_DTS_WQ - D18_DFS_WQ - F18_WQ + I18_WQ - D18_DFS_SP_WQ = S_MLRTN_WQ*taf_cfs - S_MLRTN_WQ(-1)*taf_cfs}
+
+!WS diversion accounting
+goal continuity18_WS {D18_DTS_WS - D18_DFS_WS - F18_WS + I18_WS - D18_DFS_SP_WS - D18_DFS_SH = S_MLRTN_WS*taf_cfs - S_MLRTN_WS(-1)*taf_cfs}
+
+!Diversion to storage
+goal route_dts {D18_DTS = C848_TVC_DS + C855_CVC_DS + C851_SW_DS + C861_AEI_DS}
+
+!Friant drawdown accounting
+goal continuity18_DD {D18_DB - D18_DD = S_MLRTN_DD*taf_cfs - S_MLRTN_DD(-1)*taf_cfs}
+
+
+!Allow DTS or DFS but not both.
+define int_D18_DTS {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal lim_DTS {D18_DTS < int_D18_DTS * 10000.}
+goal lim_DFS {D18_DFS < 10000. - int_D18_DTS * 10000.}
+
+!Allow DD or DB but not both.
+define int_D18_DD {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal lim_DD {D18_DD < int_D18_DD * 10000.}
+goal lim_DB {D18_DB < 10000. - int_D18_DD * 10000.}
+
+
+!Apply 5000 cfs bound on all Friant-Kern Canal diversions from Millerton.
+goal split_D_FKCNL_FMP {D_FKCNL_FMP = D_FKCNL + D18_DFS + D18_DD + D18_SC}
+goal lim_D_FKCNL_FMP {D_FKCNL_FMP < 5000}
+
+!Divert water to storage for later water quality releases during the summer.
+define lim_DTS_WQ {
+	case summer {
+		condition	range(month,jul,sep)
+		value		10000.
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal set_lim_DTS_WQ {D18_DTS_WQ < lim_DTS_WQ}
+
+
+!Release storage for water quality every oct to jan
+define lim_DFS_WQ {
+	case fall {
+		condition	range(month,oct,dec)
+		value		10000.
+	}
+	case otherwise{
+		condition	always
+		value		0.
+	}
+}
+goal set_lim_DFS_WQ {D18_DFS_WQ < lim_DFS_WQ}
+
+!Reduce Friant spill of MWD water by routing to MWD storage or groundwater bank.
+define D18_DFS_SP_WQ_M {std kind 'flow-delivery' units 'cfs'} !MWD Spill prevention at Millerton
+define D18_DFS_SP_WQ_G {std kind 'flow-delivery' units 'cfs'} !MWD Spill prevention at Millerton
+define D18_DFS_SP_WS_M {std kind 'flow-delivery' units 'cfs'} !SWP Spill prevention at Temperance Flat
+define D18_DFS_SP_WS_G {std kind 'flow-delivery' units 'cfs'} !SWP Spill prevention at Temperance Flat
+goal split_D18_DFS_SP_WQ {D18_DFS_SP_WQ = D18_DFS_SP_WQ_M + D18_DFS_SP_WQ_G}
+goal split_D18_DFS_SP_WS {D18_DFS_SP_WS = D18_DFS_SP_WS_M + D18_DFS_SP_WS_G}
+
+define lim_spill_ctrl {
+	case no_forcasted_spill {
+		condition	fr_for_spill < 1
+		value		0.
+	}
+	case otherwise {
+		condition	always
+		value		10000.
+	}
+}
+
+goal lim_D18_dfs_sp {D18_dfs_sp < lim_spill_ctrl}
+goal lim_D18_dts_sp {D18_dts < max(0., 10000. - lim_spill_ctrl)}
+
+!Cap Diversion to storage in TF from the SWP to 100 TAF total
+
+define sum_ds_swp_TF {std kind 'total-ds-deficit' units 'taf'}
+define sum_ds_swp_TF_ {value max(0., min(s12level5 - S12(-1),sum_ds_swp_TF(-1) + D18_DTS_WS(-1)*cfs_taf(-1)))}
+goal save_sum_ds_swp_TF {sum_ds_swp_TF = sum_ds_swp_TF_}
+
+goal cap_ds_swp_TF1 {D18_DTS_WS*cfs_taf < max(0.,100. - sum_ds_swp_TF_)}
+
+!Don't divert to storage in TF from SWP when S_MLRTN(-1) > 1000 TAF
+define lim_ds_swp_TF2 {
+	case low_S_MLRTN {
+		condition	S_MLRTN(-1) < 1000.
+		value		99999.
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+goal lim_TF_spills {D18_DTS_WS < lim_ds_swp_TF2}
+
+!Turn off SWP divesion to Millerton storage
+goal div_SWP_off {D18_DTS_WS = 0}
+
+!Limit drawdown (TAF).
+
+define lim_DD {
+	case OctToNov {condition range(month,oct,nov) value max(0., S_MLRTN(-1) - 200.)}
+	case December {condition month == dec value max(0., S_MLRTN(-1) - 250.)}
+	case January {condition month == jan value max(0., S_MLRTN(-1) - 350.)}
+	case FebToApr {condition range(month,feb,apr) value max(0., S_MLRTN(-1) - 9999.)}
+	case MaytoSep {condition always value max(0., S_MLRTN(-1) - 999.)}
+}
+
+goal set_lim_DD {D18_DD < lim_DD*taf_cfs}
+
+!Split spill capture arc
+
+goal split_D18_SC {D18_SC = D18_SN + D18_FL}
+
+!Spill capture
+!Limit C_MLRTNA and D18_SC to snowmelt release
+goal Lim_snow_release { C_MLRTNA + D18_SN < max(0.,Fr_snow_rel * taf_cfs - S_MLRTN_DD(-1)*taf_cfs(-1))}
+
+!Define subarcs for routing spill capture to MWD storage or groundwater bank for FWUA use.
+define D18_SC_S {std kind 'flow-delivery' units 'cfs'}
+define D18_SC_G {std kind 'flow-delivery' units 'cfs'}
+goal split2_D18_SC {D18_SC = D18_SC_S + D18_SC_G}
+
+!Define subarcs for routing fall drawdown to MWD storage or groundwater bank for FWUA use.
+define D18_DD_S {std kind 'flow-delivery' units 'cfs'}
+define D18_DD_G {std kind 'flow-delivery' units 'cfs'}
+goal split_D18_DD {D18_DD = D18_DD_S + D18_DD_G}
+
+!Turn off drawdown to ground.  If turned back on, will have to separate DD and SC.
+goal off_DD_G {D18_DD_G < 0.}
+
+!Routing of Millerton diversions to Aqueduct.
+goal route_D18_DFS {C861_AEI_R_DFS + C851_SW_R_DFS + C848_TVC_R_DFS + C855_CVC_R_DFS = D18_DFS_WQ + D18_DFS_WS + D18_DFS_SH + D18_DFS_SP_WQ_M + D18_DFS_SP_WS_M}
+goal route_D18_DD {C861_AEI_R_DD_S + C851_SW_R_DD_S + C848_TVC_R_DD_S + C855_CVC_R_DD_S = D18_DD_S}
+goal route_D18_SC_S {C861_AEI_R_SC_S + C851_SW_R_SC_S + C848_TVC_R_SC_S + C855_CVC_R_SC_S = D18_SC_S}
+
+
+
+

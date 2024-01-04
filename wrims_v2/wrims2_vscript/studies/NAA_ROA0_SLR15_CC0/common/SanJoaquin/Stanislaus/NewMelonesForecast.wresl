@@ -1,0 +1,62 @@
+! NewMelonesForecast.wresl
+! Edward Chang
+! 4/04/00
+! This code calculates two separate New Melones Forecasts
+! Revised by C. Hsu, 2/26/03, USBR, for review and documentation project
+!######################################################################################
+
+/*
+The New Melones forecasts are used to determine demands and minimum flows on the Stanislaus River.
+The first forecast (NMforecast1) is the February end of month storage + March thru September
+inflows.  This forecast is updated each March.  NMforecast1 is used to determine the minimum fish
+and wildlife flows, the Stockton East demands, and the Central San Joaquin demands.  The second
+forecast (NMforecast2) is the sum of October thru September inflows.  This forecast is updated
+each October.  NMforecast2 is used to determine the Oakdale Irrigation District and the Southern
+San Joaquin Irrigation District.
+*/
+! Define New Melones inflows ( sum of March through September inflows)
+define sumI10_part {
+    case start{
+        condition   month<=FEB .and. wateryear==1922
+    value 1000.}
+    case marthrusep {
+        condition   month >= mar .and. month <= sep
+        sum(i=mar-month,mar-month+6,1) I10(i) * cfs_TAF(i) }
+    case otherwise {
+        condition   always
+        sum(i=-month-mar,-month,1) I10(i) * cfs_TAF(i) }
+        }
+! New Melones forecast 1, is the February end of month storage plus March through September inflows
+define NMforecast1 {
+     case February1922 {
+          condition wateryear == 1922 .and. month <= feb
+          value        1700. + /*  S10(-12) + */ sumI10_part }
+     case February {
+          condition month == feb
+          value          S10(-12) + sumI10_part }
+    case marchtofeb {
+        condition   always
+        value       S10(prevfeb) + sumI10_part }
+        }
+! New Melones forecast 2, is the sum of October thru September inflows
+define NMforecast2 {
+     case October {
+          condition month == oct
+          sum(i=0,11,1) I10(i) * cfs_TAF(i) }
+     case otherwise {
+          condition always
+          sum(i=prevoct,sep-month,1) I10(i) * cfs_TAF(i) }
+          }
+
+/*
+Define annual delivery quantity using look up table.  Starts at march and forecasts through feb
+to be used with stanislaus minflows in cycle 1 and 3
+*/
+!define stanfish_yr { select stanf from stan_yr given NMF = NMforecast1 use linear }
+! Alias stanfih_yr for output
+!define stanfish_yrDV {alias stanfish_yr units 'taf'}
+
+define sumI10p_a     {alias sumI10_part units 'taf'}
+define NMforecast1dv {alias NMforecast1 kind 'forecast' units 'taf'}
+define NMforecast1_a {alias NMforecast1 kind 'forecast' units 'taf'}
+define NMforecast2_a {alias NMforecast2 kind 'forecast' units 'taf'}

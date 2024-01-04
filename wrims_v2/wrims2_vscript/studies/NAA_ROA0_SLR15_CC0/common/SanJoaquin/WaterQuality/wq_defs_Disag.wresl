@@ -1,0 +1,90 @@
+!WRESL code for Water Quality constants definitions
+!WQ_DEFS
+!Edward Chang
+!4/04/2000
+! Modified by Ken Yokoyama,USBR, April 15,2003 for Link-Node method
+!
+!Joint Model
+!The following code contains the definitions and goals which are common to the pulse and non-pulse
+!Water Quality cycles
+!*****************************************************************************************
+
+!Water Quality definitions
+!The following is the table
+!Uses modified Kratzer Eqn supplied by USBR; 1=IR; 2=NI
+!Units: Cap=TAF; Salinity=microseimens/cm; mult&exp=dimensionless
+!VERNWQCONSTANTS
+!option CAP1STYR    WQSTD   ACCR    GOOD    WestSide    WQMULT      WQEXP
+!1  70.     700.    190.    85. 2300.       54645.      -0.44346
+!2  70.     1000.   380.    85. 2300.       866201.49   -0.69289
+
+define WQRelCapdv {std kind 'WQ-REL-CAP' units 'TAF'}
+define WQRelCap {           !each march select new Cap based on New Melones forecast
+    case March {
+        condition   month == mar
+        select      NMWQcap from stan_yr given NMF = NMforecast1 use linear }
+    case other {
+        condition   always
+        value       WQRelCapdv(-1) }
+        }
+goal set_WQRelCap {WQRelCapdv = WQRelCap }
+
+define remWQrelCap { std kind 'storage' units 'TAF' }   !remaining WQ cap calculated in Cycle 6
+
+define VernWQstd {select WQstd from Vern_WQ_std where month = month }
+
+/*define VernWQstd {      !micromhos/cm; note: Irrigation Season is different than the rest
+    case Irrigation {
+        condition   month >= apr .and. month <= aug
+        select      WQstd from VernWQconstants where option = 1 }
+    case NonIrrigation {
+        condition   always
+        select      WQstd from VernWQconstants where option = 2 }
+        }
+ */
+
+
+! Define lookup variables for the San Joaquin EC Link-Node method
+!San Joaquin River upstream of Lander Ave.
+define EC_C603 {select EC_C603 from EC_US_Lander where month = month} !SJR from Gravelly Ford
+define EC_C588 {select EC_C588 from EC_US_Lander where month = month} !Fresno River
+define EC_C582 {select EC_C582 from EC_US_Lander where month = month} !Chowchilla River
+define EC_I589 {select EC_I589 from EC_US_Lander where month = month} !Merced County Stream Group
+define EC_I607 {select EC_I607 from EC_US_Lander where month = month} !James Bypass
+define EC_R595 {select EC_C582 from EC_US_Lander where month = month} !Chowchilla River
+define EC_R587a {select EC_R587a from EC_US_Lander where month = month} !Returns from DAU 215
+define EC_R587b {select EC_R587b from EC_US_Lander where month = month} !Returns from DAU 215
+
+!Stanislaus River
+define EC_Stan_Accr {select EC_Stan_Accr from EC_Table_Stan where month = month}
+define EC_Goodwin {select EC_Goodwin from EC_Table_Stan where month = month}
+define EC_Stan_Return {select EC_Stan_Return from EC_Table_Stan where month = month}
+define EC_Stan_Rip_Rtn {select EC_Stan_Rip_Rtn from EC_Table_Stan where month = month}
+
+/*Mendota Pool: directly for C607BVAMP and C708. Indirectly for R607West
+Follow Sac Valley Index (40-30-30) in CVP contract year
+Although Exchange Contractor allocation is calendar-yr base in reality,
+it is CVP contract-yr base in CALSIM*/
+define EC_Mendota_Pool {    select EC_Mendota_Pool
+                    from EC_Table_MPool
+                    where wyt_SAC_cvp = wyt_SAC_cvp, month = month}
+
+define EC_MP_Ag_Return { value EC_Mendota_Pool + 500.0 }
+
+!Westside
+define EC_Grassland_B {select EC_Grassland_B from EC_Table_WestRtn where month = month}
+
+!Eastside
+define EC_E_Return620 {select EC_E_Return620 from EC_Table_EastRtn where month = month}
+define EC_TID_Return {select EC_TID_Return from EC_Table_EastRtn where month = month}
+define EC_MID_Return {select EC_MID_Return from EC_Table_EastRtn where month = month}
+
+! These parameters define the distribution of Residual Loads (i.e. error distribution) to
+! mainstem SJR nodes.
+!
+! For AbvNwmnResLoad
+define PctAt614 {value 0.5}
+define PctAt620 {value 0.5}
+! For BtwMazeNwmnResLoad
+define PctAt630 {value 0.5}
+define PctAt636 {value 0.5}

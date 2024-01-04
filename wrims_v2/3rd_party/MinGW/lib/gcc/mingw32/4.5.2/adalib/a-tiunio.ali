@@ -1,0 +1,100 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.text_io.unbounded_io%s  a-tiunio.ads	8f4777ce NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.strings%s		a-string.ads		a-string.ali
+W ada.strings.unbounded%s  a-strunb.adb		a-strunb.ali
+W ada.strings.unbounded.text_io%s  a-suteio.adb	a-suteio.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-charac.ads		20070912115822 506ce725
+D a-chlat1.ads		20070912115822 e9ee6d0a
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-string.ads		20070406091342 87b4230b
+D a-strmap.ads		20090409150020 5253a637
+D a-strunb.ads		20090409150020 f0549c04
+D a-suteio.ads		20090409150020 d857a771
+D a-tags.ads		20090409150020 bfa07446
+D a-textio.ads		20091028140912 7065b2f2
+D a-tiunio.ads		20070406091342 d721fe49
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-wchcon.ads		20090417130712 30c48dc1
+X 1 ada.ads
+16K9*Ada 19e8 15|22r6 23r6 25r9 30r12 34r12 39r12 43r12 47r12 50r12 55r12
+. 59r12 61r5
+X 9 a-string.ads
+16K13*Strings 35e16 15|22r10 23r10 29r14 30r16 33r14 34r16 38r14 39r16 42r14
+. 43r16 46r32 47r16 49r29 50r16 54r19 55r16 58r18 59r16
+X 11 a-strunb.ads
+39K21*Unbounded 428e26 15|22w18 23r18 29r22 30r24 33r22 34r24 38r22 39r24
+. 42r22 43r24 46r40 47r24 49r37 50r24 54r27 55r24 58r26 59r24
+42R9*Unbounded_String 395e14 15|29r32 33r32 38r32 42r32 46r50 49r47 54r37
+. 58r36
+X 12 a-suteio.ads
+39K31*Text_IO 61e34 15|23w28 30r34 34r34 39r34 43r34 47r34 50r34 55r34 59r34
+41V13*Get_Line{11|42R9} 15|50r42
+42V13*Get_Line{11|42R9} 15|47r42
+47U14*Get_Line 15|55r42
+50U14*Get_Line 15|59r42
+53U14*Put 15|34r42
+54U14*Put 15|30r42
+55U14*Put_Line 15|43r42
+56U14*Put_Line 15|39r42
+X 14 a-textio.ads
+49K13*Text_IO 1|16k9 14|472e16 15|25r13 37r14 61r9
+52P9*File_Type(370R9) 15|28r14 37r22 46r14 53r15
+X 15 a-tiunio.ads
+25K21*Unbounded_IO 14|49k13 15|61l17 61e29
+27U14*Put=30:42
+28p7 File{14|52P9}
+29r7 Item{11|42R9}
+32U14*Put=34:42
+33r7 Item{11|42R9}
+36U14*Put_Line=39:42
+37p7 File{14|52P9}
+38r7 Item{11|42R9}
+41U14*Put_Line=43:42
+42r7 Item{11|42R9}
+45V13*Get_Line=47:42{11|42R9}
+46p7 File{14|52P9}
+49V13*Get_Line=50:42{11|42R9}
+52U14*Get_Line=55:42
+53p8 File{14|52P9}
+54r8 Item{11|42R9}
+57U14*Get_Line=59:42
+58r7 Item{11|42R9}
+

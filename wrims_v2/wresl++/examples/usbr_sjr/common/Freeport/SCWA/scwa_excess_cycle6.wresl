@@ -1,0 +1,17 @@
+!SCWA_excess_cycle6.wresl
+!03/06/02
+!Edward Chang (EBMUD)
+!Sets up Requested Diversions from Freeport for Sacramento County
+!This information is based on correspondance with Tad Berkebile at SacCo as of Jan 2002
+
+!priorities:
+!1)  cvp Freeport at meets Freeport demands
+!2)  Excess at Freeport meets total demands unmet by sum of 
+!    cvp freeport and SCWA Fazio .  This logic nees to be in cycle 7
+
+!Excess taken as last priority (i.e. below wheeling, and interruptibles)
+!Unmet shortage calculated for post-processing at node 305)
+
+!In cycle 6 no excess is taken since wheeling is modeled in cycle 7
+
+goal set_FPT_SCWA_exc {FPT_SCWA_exc < 0.00001}

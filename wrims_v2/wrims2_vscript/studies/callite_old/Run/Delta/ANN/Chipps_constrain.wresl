@@ -1,0 +1,31 @@
+/*************************************
+Chipps_constrain.wresl
+
+D-1485 Regulation
+Switch to turn off D1641/D1485 constrain at Chipps.
+Holly Canada, DWR (05/02/2012)
+**************************/
+
+goal meetCH {
+  lhs D_ExpTD - exp_ann_relax
+  case DRegsOff{
+                   condition CH_DLTSW == 0
+                   rhs ExportCapacity
+                   lhs<rhs penalty 0}     
+  case NoSalinityControlPossible{
+    condition abs(CH_m_sv) <= 0.001 .and. int(CH_b_sv) == 0  
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case NegSlope{
+    condition CH_m_sv <= 0.0  
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case HighCost{
+    condition CH_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case Normal {
+    condition always
+    rhs CH_m_sv*C_Hood_ANN + CH_m_sv*C_YoloBP + CH_b_sv
+    lhs<rhs penalty 0}
+}

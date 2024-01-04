@@ -1,0 +1,105 @@
+! This file contains the groundwater flow equations for DSA 15
+
+! define stream-aquifer interaction term (units = thousand acres/month)
+!define lamda_15 {VALUE (kmstream_15*lstream_15*wstream_15)/(43560.0*1000.0) }
+
+! define storage term (units =  thousand-acres)
+define beta_15 {VALUE area_15*sy_15/1000.0 }
+define beta_15s {VALUE area_15s*sy_15s/1000.0 }
+
+! define maximum groundwater storage (units = TAF)
+define maxg_15 {VALUE beta_15*gse_15 - beta_15*b_15 }
+
+! define current month groundwater storage (units = TAF)
+goal storage_15 { g_15 = beta_15*h_15 - beta_15*b_15}
+goal storage_15s { g_15s = beta_15s*h_15s - beta_15s*b_15s}
+
+!define previous month groundwater storage (units = TAF)
+define g_15_previous {VALUE beta_15*h_15(-1) - beta_15*b_15 }
+define g_15s_previous {VALUE beta_15s*h_15s(-1) - beta_15s*b_15s }
+
+! restrict groundwater storage to maximum
+!goal maxstore_15 {g_15 < maxg_15 }
+
+! restrict head of stream recharge to stream bed elevation
+define hmax_15s_last {
+
+       case      less_than {
+       condition h_15s(-1) < rbot_15
+       value     rbot_15 }
+
+       case      otherwise {
+       condition always
+       value     h_15s(-1) }
+       }
+
+! Define stream - groundwater interaction
+
+! first determine stream depth of the previous timestep
+define depth_15_last {SELECT   depth
+                      FROM     stream_elev
+                      GIVEN    flow=c129(-1)
+                      USE      linear
+                      WHERE    DSA=15 }
+
+
+! now determine the total stream elevation of the previous timestep
+define hstream_15_last {value rbot_15 + depth_15_last }
+define hstream_15_old {alias hstream_15_last kind 'elevation-stream' units 'feet'}
+
+! last define stream - groundwater interaction
+define gs63_taf {value       lamda_15*hstream_15_last - lamda_15*hmax_15s_last}
+goal set_gs63 { gs63 < gs63_taf*taf_cfs }                                 ! streamflow is CFS
+
+
+! groundwater pumping
+goal set_gp63 {gp63 = gp63_taf*taf_cfs}   ! streamflow is CFS
+
+! Last define the basin recharge
+goal set_gr63AW_taf {gr63AW_taf = DP_DSA15*cfs_taf}   ! groundwater model is TAF, streamflow is CFS
+
+! Define interaction between groundwater basins (units = TAF)
+! see file parameters.wresl for other parameter values
+
+goal set_basin_strip15 { basin_strip15 = alpha15_15s*phi15_15s*h_15 -
+                                         alpha15_15s*phi15_15s*h_15s }
+
+
+goal set_interbasin10_15 { interbasin10_15 = alpha10_15*phi10_15*h_10 -
+                                             alpha10_15*phi10_15*h_15 }
+
+goal set_interbasin12_15 { interbasin12_15 = alpha12_15*phi12_15*h_12 -
+                                             alpha12_15*phi12_15*h_15 }
+
+goal set_interbasin69_15 { interbasin69_15 = alpha15_69*phi15_69*h_69 -
+                                             alpha15_69*phi15_69*h_15 }
+
+goal set_interbasin65_15 { interbasin65_15 = alpha15_65*phi15_65*h_65 -
+                                             alpha15_65*phi15_65*h_15 }
+
+
+goal set_interstrip10_15 { interstrip10_15 = alpha10s_15s*phi10s_15s*h_10s -
+                                             alpha10s_15s*phi10s_15s*h_15s }
+
+goal set_interstrip70_15 { interstrip70_15 = alpha15s_70s*phi15s_70s*h_70s -
+                                             alpha15s_70s*phi15s_70s*h_15s }
+
+
+
+goal set_gi63_taf { gi63_taf = basin_strip15 }
+
+goal set_gw63_taf { gw63_taf = interbasin10_15
+                             + interbasin12_15
+                             + interbasin69_15
+                             + interbasin65_15 }
+
+
+goal set_gw63s_taf { gw63s_taf = interstrip10_15
+                               + interstrip70_15 }
+
+
+! define groundwater continuity for DSA15  (units = TAF)
+goal continuity_15  {gw63_taf  - 0.8*gp63_taf + 1.*gr63_taf + 1.*gr63AW_taf + bnd_15   - gi63_taf - gf_63  = g_15 - g_15_previous }
+goal continuity_15s {gw63s_taf - 0.2*gp63_taf + 0.*gr63_taf + 0.*gr63AW_taf + gs63_taf + gi63_taf - gf_63s = g_15s - g_15s_previous }
+
+

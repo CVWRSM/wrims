@@ -1,0 +1,16 @@
+/*************************************
+Trinitymin.wresl
+
+Tom FitzHugh BOR 4/7/2010
+
+Sets minimum flow on Trinity River below Lewiston.
+*************************************/
+
+define minflow_C_Lewiston { 
+       select       river_q
+       from         Trinitymin
+       where        month=month, wyt_TRIN=wyt_TRIN}
+
+goal TrinityMin {C_Lwstn_MIF < minflow_C_Lewiston }
+
+define MIF_C_Lewistondv {alias minflow_C_Lewiston kind 'flow-min-required' units 'cfs'}

@@ -1,0 +1,49 @@
+! LVE_SBA_REL.wresl
+! Andy Draper 01/31/2005 MWH
+! Nancy Parker 09/2005 USBR
+! Los Vaqueros Reservoir connection to SBA.
+
+/*
+ This file provides tracking of LV to SBA reliability deliveries.
+ Included in the last two cycles of the EWA step to route reliability 
+ delivs to the SBA.  Limit delivery of reliability water to demand
+*/
+
+!#################################################################
+
+! Define operating rules
+define LV_REL_DEM_ACFC1 { timeseries kind 'DEMAND' units 'CFS' }
+define LV_REL_DEM_ACFC2 { timeseries kind 'DEMAND' units 'CFS' }
+define LV_REL_DEM_ACWA  { timeseries kind 'DEMAND' units 'CFS' }
+define LV_REL_DEM_SC    { timeseries kind 'DEMAND' units 'CFS' }
+
+goal set_D810_LV_REL { D810_LV_REL < LV_REL_DEM_ACFC1 }
+goal set_D813_LV_REL { D813_LV_REL < LV_REL_DEM_ACFC2 }
+goal set_D814_LV_REL { D814_LV_REL < LV_REL_DEM_ACWA  }
+goal set_D815_LV_REL { D815_LV_REL < LV_REL_DEM_SC    }
+
+! Establish priorities for delivery of reliability water
+goal set_D810_LV_REL2 {
+    lhs D810_LV_REL
+        rhs 0.0
+        lhs>rhs penalty 4.
+        lhs<rhs penalty 0.}
+    
+goal set_D813_LV_REL2 {
+    lhs D813_LV_REL
+        rhs 0.0
+        lhs>rhs penalty 3.
+        lhs<rhs penalty 0.}
+        
+goal set_D814_LV_REL2 {
+    lhs D814_LV_REL
+        rhs 0.0
+        lhs>rhs penalty 2.
+        lhs<rhs penalty 0.}
+    
+goal set_D815_LV_REL2 {
+    lhs D815_LV_REL
+        rhs 0.0
+        lhs>rhs penalty 1.
+        lhs<rhs penalty 0.}
+

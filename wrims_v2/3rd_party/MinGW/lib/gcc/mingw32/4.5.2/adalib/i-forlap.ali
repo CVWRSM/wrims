@@ -1,0 +1,377 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U interfaces.fortran.lapack%s  i-forlap.ads	139318f2 NE OL PU PK
+W interfaces%s		interfac.ads		interfac.ali
+W interfaces.fortran%s	i-fortra.adb		i-fortra.ali
+W interfaces.fortran.blas%s  i-forbla.adb	i-forbla.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-numeri.ads		20080324174808 1cf3e608
+D a-ngcoty.ads		20090409150020 1dba9865
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-fortra.ads		20070406092324 e2d82a0c
+D i-forbla.ads		20090409150020 b5928791
+D i-forlap.ads		20090409150020 44d9b56f
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-stalib.ads		20090422095704 9cbc334a
+X 3 a-ngcoty.ads
+42R9*Complex
+X 5 interfac.ads
+36K9*Interfaces 171e15 8|34r6 35r9 414r5
+X 6 i-fortra.ads
+19K20*Fortran 5|36k9 6|69e23 8|34r17 35r20 414r16
+23F9*Real<float> 8|190r18 192r18 313r18 315r18
+24F9*Double_Precision<long_float> 8|213r18 215r18 331r18 333r18
+41R9*Complex<3|42R9[35]>
+43R9*Double_Complex<3|42R9[38]>
+X 7 i-forbla.ads
+45K28*BLAS 261e28 8|34w25 43r27 44r27 45r39 46r39 47r30 48r30 49r37 50r37
+55A9*Real_Vector(6|23F9)<integer> 8|43r32
+57A9*Complex_Vector(6|41R9)<integer> 8|47r35
+59A9*Double_Precision_Vector(6|24F9)<integer> 8|45r44
+62A9*Double_Complex_Vector(6|43R9)<integer> 8|49r42
+66A9*Real_Matrix(6|23F9)<integer><integer> 8|44r32
+69A9*Double_Precision_Matrix(6|24F9)<integer><integer> 8|46r44
+72A9*Complex_Matrix(6|41R9)<integer><integer> 8|48r35
+75A9*Double_Complex_Matrix(6|43R9)<integer><integer> 8|50r42
+X 8 i-forlap.ads
+35K28*LAPACK 6|19k20 8|414l24 414e30
+38A9*Integer_Vector(integer)<integer> 76r19 84r19 92r19 100r19 107r16 116r16
+. 125r16 134r16 145r16 156r16 167r16 178r16 197r22 202r22 220r22 225r22 321r22
+. 322r22 324r22 339r22 340r22 342r22
+40e4*Upper{character}
+41e4*Lower{character}
+43A12*Real_Vector{7|55A9}<integer> 108r23 194r22 200r22 234r20 235r20 258r20
+. 259r20 260r20 261r20 279r23 280r23 294r16 295r20 316r18 317r18 320r22 323r22
+. 348r23 349r23 352r20 368r23 369r23 372r20
+44A12*Real_Matrix{7|66A9}<integer><integer> 74r22 105r23 143r16 146r23 256r23
+. 292r23 350r23
+45A12*Double_Precision_Vector{7|59A9}<integer> 117r23 217r22 223r22 246r20
+. 247r20 270r20 271r20 272r20 273r20 285r23 286r23 304r16 305r20 334r18 335r18
+. 338r22 341r22 358r23 359r23 362r20 378r23 379r23 382r20
+46A12*Double_Precision_Matrix{7|69A9}<integer><integer> 82r22 114r23 154r16
+. 157r23 268r23 302r23 360r23
+47A12*Complex_Vector{7|57A9}<integer> 126r23 198r22 236r20 237r20
+48A12*Complex_Matrix{7|72A9}<integer><integer> 90r22 123r23 165r16 168r23
+. 188r25 195r22 232r23 370r23
+49A12*Double_Complex_Vector{7|62A9}<integer> 135r23 221r22 248r20 249r20
+50A12*Double_Complex_Matrix{7|75A9}<integer><integer> 98r22 132r23 176r16
+. 179r23 211r25 218r22 244r23 380r23
+71U14*sgetrf 72>7 73>7 74=7 75>7 76<7 77^7 400b28
+72i7 M{natural}
+73i7 N{natural}
+74a7 A{44A12}
+75i7 Ld_A{positive}
+76a7 I_Piv{38A9}
+77p7 Info(integer)
+79U14*dgetrf 80>7 81>7 82=7 83>7 84<7 85^7 392b28
+80i7 M{natural}
+81i7 N{natural}
+82a7 A{46A12}
+83i7 Ld_A{positive}
+84a7 I_Piv{38A9}
+85p7 Info(integer)
+87U14*cgetrf 88>7 89>7 90=7 91>7 92<7 93^7 387b28
+88i7 M{natural}
+89i7 N{natural}
+90a7 A{48A12}
+91i7 Ld_A{positive}
+92a7 I_Piv{38A9}
+93p7 Info(integer)
+95U14*zgetrf 96>7 97>7 98=7 99>7 100<7 101^7 408b28
+96i7 M{natural}
+97i7 N{natural}
+98a7 A{50A12}
+99i7 Ld_A{positive}
+100a7 I_Piv{38A9}
+101p7 Info(integer)
+103U14*sgetri 104>7 105=7 106>7 107>7 108=7 109>7 110^7 401b28
+104i7 N{natural}
+105a7 A{44A12}
+106i7 Ld_A{positive}
+107a7 I_Piv{38A9}
+108a7 Work{43A12}
+109i7 L_Work{integer}
+110p7 Info(integer)
+112U14*dgetri 113>7 114=7 115>7 116>7 117=7 118>7 119^7 393b28
+113i7 N{natural}
+114a7 A{46A12}
+115i7 Ld_A{positive}
+116a7 I_Piv{38A9}
+117a7 Work{45A12}
+118i7 L_Work{integer}
+119p7 Info(integer)
+121U14*cgetri 122>7 123=7 124>7 125>7 126=7 127>7 128^7 388b28
+122i7 N{natural}
+123a7 A{48A12}
+124i7 Ld_A{positive}
+125a7 I_Piv{38A9}
+126a7 Work{47A12}
+127i7 L_Work{integer}
+128p7 Info(integer)
+130U14*zgetri 131>7 132=7 133>7 134>7 135=7 136>7 137^7 409b28
+131i7 N{natural}
+132a7 A{50A12}
+133i7 Ld_A{positive}
+134a7 I_Piv{38A9}
+135a7 Work{49A12}
+136i7 L_Work{integer}
+137p7 Info(integer)
+139U14*sgetrs 140^7 141>7 142>7 143>7 144>7 145>7 146=7 147>7 148^7 402b28
+140p7 Trans(character)
+141i7 N{natural}
+142i7 N_Rhs{natural}
+143a7 A{44A12}
+144i7 Ld_A{positive}
+145a7 I_Piv{38A9}
+146a7 B{44A12}
+147i7 Ld_B{positive}
+148p7 Info(integer)
+150U14*dgetrs 151^7 152>7 153>7 154>7 155>7 156>7 157=7 158>7 159^7 394b28
+151p7 Trans(character)
+152i7 N{natural}
+153i7 N_Rhs{natural}
+154a7 A{46A12}
+155i7 Ld_A{positive}
+156a7 I_Piv{38A9}
+157a7 B{46A12}
+158i7 Ld_B{positive}
+159p7 Info(integer)
+161U14*cgetrs 162^7 163>7 164>7 165>7 166>7 167>7 168=7 169>7 170^7 389b28
+162p7 Trans(character)
+163i7 N{natural}
+164i7 N_Rhs{natural}
+165a7 A{48A12}
+166i7 Ld_A{positive}
+167a7 I_Piv{38A9}
+168a7 B{48A12}
+169i7 Ld_B{positive}
+170p7 Info(integer)
+172U14*zgetrs 173^7 174>7 175>7 176>7 177>7 178>7 179=7 180>7 181^7 410b28
+173p7 Trans(character)
+174i7 N{natural}
+175i7 N_Rhs{natural}
+176a7 A{50A12}
+177i7 Ld_A{positive}
+178a7 I_Piv{38A9}
+179a7 B{50A12}
+180i7 Ld_B{positive}
+181p7 Info(integer)
+183U14*cheevr 184^7 185^7 186^7 187>7 188=7 189>7 190>7 190>11 191>7 191>11
+. 192>7 193<7 194<7 195<7 196>7 197<7 198<7 199>7 200<7 201>7 202<7 203>7
+. 204^7 390b28
+184p7 Job_Z(character)
+185p7 Rng(character)
+186p7 Uplo(character)
+187i7 N{natural}
+188a7 A{48A12}
+189i7 Ld_A{positive}
+190f7 Vl{6|23F9}
+190f11 Vu{6|23F9}
+191i7 Il{integer}
+191i11 Iu{integer}
+192f7 Abs_Tol{6|23F9}
+193i7 M{integer}
+194a7 W{43A12}
+195a7 Z{48A12}
+196i7 Ld_Z{positive}
+197a7 I_Supp_Z{38A9}
+198a7 Work{47A12}
+199i7 L_Work{integer}
+200a7 R_Work{43A12}
+201i7 LR_Work{integer}
+202a7 I_Work{38A9}
+203i7 LI_Work{integer}
+204p7 Info(integer)
+206U14*zheevr 207^7 208^7 209^7 210>7 211=7 212>7 213>7 213>11 214>7 214>11
+. 215>7 216<7 217<7 218<7 219>7 220<7 221<7 222>7 223<7 224>7 225<7 226>7
+. 227^7 411b28
+207p7 Job_Z(character)
+208p7 Rng(character)
+209p7 Uplo(character)
+210i7 N{natural}
+211a7 A{50A12}
+212i7 Ld_A{positive}
+213f7 Vl{6|24F9}
+213f11 Vu{6|24F9}
+214i7 Il{integer}
+214i11 Iu{integer}
+215f7 Abs_Tol{6|24F9}
+216i7 M{integer}
+217a7 W{45A12}
+218a7 Z{50A12}
+219i7 Ld_Z{positive}
+220a7 I_Supp_Z{38A9}
+221a7 Work{49A12}
+222i7 L_Work{integer}
+223a7 R_Work{45A12}
+224i7 LR_Work{integer}
+225a7 I_Work{38A9}
+226i7 LI_Work{integer}
+227p7 Info(integer)
+229U14*chetrd 230^7 231>7 232=7 233>7 234<7 235<7 236<7 237<7 238>7 239^7
+. 391b28
+230p7 Uplo(character)
+231i7 N{natural}
+232a7 A{48A12}
+233i7 Ld_A{positive}
+234a7 D{43A12}
+235a7 E{43A12}
+236a7 Tau{47A12}
+237a7 Work{47A12}
+238i7 L_Work{integer}
+239p7 Info(integer)
+241U14*zhetrd 242^7 243>7 244=7 245>7 246<7 247<7 248<7 249<7 250>7 251^7
+. 412b28
+242p7 Uplo(character)
+243i7 N{natural}
+244a7 A{50A12}
+245i7 Ld_A{positive}
+246a7 D{45A12}
+247a7 E{45A12}
+248a7 Tau{49A12}
+249a7 Work{49A12}
+250i7 L_Work{integer}
+251p7 Info(integer)
+253U14*ssytrd 254^7 255>7 256=7 257>7 258<7 259<7 260<7 261<7 262>7 263^7
+. 407b28
+254p7 Uplo(character)
+255i7 N{natural}
+256a7 A{44A12}
+257i7 Ld_A{positive}
+258a7 D{43A12}
+259a7 E{43A12}
+260a7 Tau{43A12}
+261a7 Work{43A12}
+262i7 L_Work{integer}
+263p7 Info(integer)
+265U14*dsytrd 266^7 267>7 268=7 269>7 270<7 271<7 272<7 273<7 274>7 275^7
+. 395b28
+266p7 Uplo(character)
+267i7 N{natural}
+268a7 A{46A12}
+269i7 Ld_A{positive}
+270a7 D{45A12}
+271a7 E{45A12}
+272a7 Tau{45A12}
+273a7 Work{45A12}
+274i7 L_Work{integer}
+275p7 Info(integer)
+277U14*ssterf 278>7 279=7 280=7 281^7 405b28
+278i7 N{natural}
+279a7 D{43A12}
+280a7 E{43A12}
+281p7 Info(integer)
+283U14*dsterf 284>7 285=7 286=7 287^7 397b28
+284i7 N{natural}
+285a7 D{45A12}
+286a7 E{45A12}
+287p7 Info(integer)
+289U14*sorgtr 290^7 291>7 292=7 293>7 294>7 295<7 296>7 297^7 403b28
+290p7 Uplo(character)
+291i7 N{natural}
+292a7 A{44A12}
+293i7 Ld_A{positive}
+294a7 Tau{43A12}
+295a7 Work{43A12}
+296i7 L_Work{integer}
+297p7 Info(integer)
+299U14*dorgtr 300^7 301>7 302=7 303>7 304>7 305<7 306>7 307^7 398b28
+300p7 Uplo(character)
+301i7 N{natural}
+302a7 A{46A12}
+303i7 Ld_A{positive}
+304a7 Tau{45A12}
+305a7 Work{45A12}
+306i7 L_Work{integer}
+307p7 Info(integer)
+309U14*sstebz 310^7 311^7 312>7 313>7 313>11 314>7 314>11 315>7 316>7 317>7
+. 318<7 319<7 320<7 321<7 322<7 323<7 324<7 325^7 404b28
+310p7 Rng(character)
+311p7 Order(character)
+312i7 N{natural}
+313f7 Vl{6|23F9}
+313f11 Vu{6|23F9}
+314i7 Il{integer}
+314i11 Iu{integer}
+315f7 Abs_Tol{6|23F9}
+316a7 D{43A12}
+317a7 E{43A12}
+318i7 M{natural}
+319i7 N_Split{natural}
+320a7 W{43A12}
+321a7 I_Block{38A9}
+322a7 I_Split{38A9}
+323a7 Work{43A12}
+324a7 I_Work{38A9}
+325p7 Info(integer)
+327U14*dstebz 328^7 329^7 330>7 331>7 331>11 332>7 332>11 333>7 334>7 335>7
+. 336<7 337<7 338<7 339<7 340<7 341<7 342<7 343^7 396b28
+328p7 Rng(character)
+329p7 Order(character)
+330i7 N{natural}
+331f7 Vl{6|24F9}
+331f11 Vu{6|24F9}
+332i7 Il{integer}
+332i11 Iu{integer}
+333f7 Abs_Tol{6|24F9}
+334a7 D{45A12}
+335a7 E{45A12}
+336i7 M{natural}
+337i7 N_Split{natural}
+338a7 W{45A12}
+339a7 I_Block{38A9}
+340a7 I_Split{38A9}
+341a7 Work{45A12}
+342a7 I_Work{38A9}
+343p7 Info(integer)
+345U14*ssteqr 346^7 347>7 348=7 349=7 350=7 351>7 352<7 353^7 406b28
+346p7 Comp_Z(character)
+347i7 N{natural}
+348a7 D{43A12}
+349a7 E{43A12}
+350a7 Z{44A12}
+351i7 Ld_Z{positive}
+352a7 Work{43A12}
+353p7 Info(integer)
+355U14*dsteqr 356^7 357>7 358=7 359=7 360=7 361>7 362<7 363^7 399b28
+356p7 Comp_Z(character)
+357i7 N{natural}
+358a7 D{45A12}
+359a7 E{45A12}
+360a7 Z{46A12}
+361i7 Ld_Z{positive}
+362a7 Work{45A12}
+363p7 Info(integer)
+365U14*csteqr 366^7 367>7 368=7 369=7 370=7 371>7 372<7 373^7 386b28
+366p7 Comp_Z(character)
+367i7 N{natural}
+368a7 D{43A12}
+369a7 E{43A12}
+370a7 Z{48A12}
+371i7 Ld_Z{positive}
+372a7 Work{43A12}
+373p7 Info(integer)
+375U14*zsteqr 376^7 377>7 378=7 379=7 380=7 381>7 382<7 383^7 413b28
+376p7 Comp_Z(character)
+377i7 N{natural}
+378a7 D{45A12}
+379a7 E{45A12}
+380a7 Z{50A12}
+381i7 Ld_Z{positive}
+382a7 Work{45A12}
+383p7 Info(integer)
+

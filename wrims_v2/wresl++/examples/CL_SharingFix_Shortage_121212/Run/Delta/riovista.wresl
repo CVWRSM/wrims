@@ -1,0 +1,31 @@
+/*************************************
+riovista.wresl
+ 
+Tom FitzHugh BOR 4/23/2010
+
+Sets minimum flow for Rio Vista.  Minimum flow required in riovista.table is from WQCP 5/95 
+
+Z.Q. Richard Chen, DWR 02/07/2010 
+Set RV_DLTSW switch to control the Rio_Vista_req which changes with month and wyt_SAC.
+*************************************/
+
+define Rio_Vista_req {
+    case USERDEF {  
+      condition RV_DLTSW == 2
+        select river_q  
+        from  gui_riovista 
+        where month=month, wyt_SAC=wyt_SAC }
+    case D1641 {  
+      condition RV_DLTSW == 1
+        select      river_q
+        from        riovista
+        where       month=month, wyt_SAC=wyt_SAC}
+    case NOREGULATION {  
+    condition always
+    value 0}
+}
+
+        
+define mif_RioVista {alias Rio_Vista_req KIND 'FLOW-REQ-RVISTA' UNITS 'CFS'}
+
+goal minflow_RioVista {C_SacRV_MIF < Rio_Vista_req }

@@ -1,0 +1,204 @@
+! VAMP_Bound.wresl
+! Edward Chang
+! 5/01/2000
+! Joint Model
+! This code bounds decision variables using monthly weighted constraints for cycle 6 only
+! Revised by C. Hsu, 3/6/03, USBR, for review and documentation project
+!########################################################################################
+/*
+VAMP releases from SJRAG members
+*/
+! VAMP requirement for April- May window
+goal setVAMP_reqdv {
+    lhs     VAMP_reqdv
+    case    AprilMay {
+        condition   month >= apr .and. month <= may
+        rhs         VAMP_reqdv[VAMP_AND_DO] }
+        case    otherwise {
+            condition always
+        rhs 0. }
+        }
+
+! VAMP deficiency window
+goal setVAMP_defdv {
+    lhs     VAMP_defdv
+    case    AprilMay {
+        condition   month >= apr .and. month <= may
+        rhs         VAMP_defdv[VAMP_AND_DO] }
+        }
+
+! Restrict Exchange contractors deliveries (due to reduction for VAMP)
+goal restrD607B {
+     lhs  D607B
+     case April {
+          condition month == apr
+          rhs       14.*D607B[SJR_WQ1]/30. + 16.*D607B[VAMP_AND_DO]/30.
+          lhs<rhs   penalty 0. }
+     case MayOnly {
+          condition  month == may
+          rhs       15.*D607B[VAMP_AND_DO]/31. + 16.*D607B[SJR_WQ1]/31.
+          lhs<rhs   penalty 0. }
+          }
+
+! Restrict DMC inflows to the Mendota Pool during pulse period
+goal restr1C708cycle6 {
+     lhs  C708
+     case April {
+          condition month == apr
+          rhs       14.*C708[SJR_WQ1]/30. + 16.*C708[VAMP_AND_DO]/30. + 14.*C605A[SJR_WQ1]/30. + 16.*C605a[VAMP_AND_DO]/30. - C605A
+          lhs<rhs   penalty 0. }
+     case MayOnly {
+          condition  month == may
+          rhs       15.*C708[VAMP_AND_DO]/31. + 16.*C708[SJR_WQ1]/31. + 15.*C605A[VAMP_AND_DO]/31. + 16.*C605A[SJR_WQ1]/31. - C605A
+          lhs<rhs   penalty 0. }
+     case otherwise {
+          condition always
+          rhs        C708[SJR_WQ1] + C605A[SJR_WQ1] - C605A
+          lhs<rhs   penalty 0. }
+          }
+! Restrict DMC inflows to Mendota Pool during non pulse period
+goal restr2C708cycle6 {
+     lhs  C708
+     case April {
+          condition month == apr
+          rhs       14.*C708[SJR_WQ1]/30. + 16.*C708[VAMP_AND_DO]/30.
+          lhs>rhs   penalty 0. }
+     case MayOnly {
+          condition  month == may
+          rhs       15.*C708[VAMP_AND_DO]/31. + 16.*C708[SJR_WQ1]/31.
+          lhs>rhs   penalty 0. }
+          }
+
+! Monthly average DMC water diverted away for VAMP (part of C607B)
+goal restr1C607BVAMPcycle6 {
+     lhs  C607BVAMP
+     case April {
+          condition month == apr
+          rhs       16.*C607BVAMP[VAMP_AND_DO]/30.
+          lhs<rhs   penalty 0. }
+     case MayOnly {
+          condition  month == may
+          rhs       15.*C607BVAMP[VAMP_AND_DO]/31.
+          lhs<rhs   penalty 0. }
+     case otherwise {
+          condition always
+          rhs       0. }
+          }
+
+! This code is the same as the code above, it needed to be checked.  (What is the difference between restr1 and restr2 CH ?)
+goal restr2C607BVAMPcycle6 {
+     lhs  C607BVAMP
+     case April {
+          condition month == apr
+          rhs       16.*C607BVAMP[VAMP_AND_DO]/30.
+          lhs>rhs   penalty 0. }
+     case MayOnly {
+          condition  month == may
+          rhs       15.*C607BVAMP[VAMP_AND_DO]/31.
+          lhs>rhs   penalty 0. }
+          }
+
+/*
+April release
+*/
+! April added release from Merced ID in cycle 6
+goal setMercedIDaddAprc6 { MercedIDaddApr =  MercedIDaddApr[VAMP_AND_DO] }
+! April added release from OID in cycle 6
+goal setOIDaddAprc6 { OIDaddApr = OIDaddApr[VAMP_AND_DO] }
+! April added release from Exchange Contractors in cycle 6
+goal setExchangeaddAprc6 { ExchangeaddApr = ExchangeaddApr[VAMP_AND_DO] }
+! April added release from MID/TID in cycle 6
+goal setMIDTIDaddAprc6 { MIDTIDaddApr = MIDTIDaddApr[VAMP_AND_DO] }
+
+! VAMP requirement from New Don Pedro for MID/TID in cycle 6
+goal setC81vampcycle6 {
+    lhs  C81vamp
+    case April {
+        condition month == apr
+        rhs       16. * C81VAMP[VAMP_AND_DO]/30.
+          }
+    case MayOnly {
+        condition month == may
+        rhs       15. * C81VAMP[VAMP_AND_DO]/31.
+          }
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+! VAMP requirement from McClure for Merced ID in cycle 6
+goal setC20vampcycle6 {
+    lhs  C20vamp
+    case April {
+        condition month == apr
+        rhs       16. * C20VAMP[VAMP_AND_DO]/30.
+          }
+    case MayOnly {
+        condition month == may
+        rhs       15. * C20VAMP[VAMP_AND_DO]/31.
+          }
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+! VAMP requirement from New Melones for OID in cycle 6
+goal setC10VAMP_Mcycle6 {
+    lhs  C10VAMP_M
+    case April {
+        condition month == apr
+        rhs       16. * C10VAMP_M[VAMP_AND_DO]/30.
+          }
+    case MayOnly {
+        condition month == may
+        rhs       15. * C10VAMP_M[VAMP_AND_DO]/31.
+          }
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+! New Melones owned to New Don Pedro in cycle 6
+goal setC81STANVAMPc6 {
+    lhs  C81_STAN_VAMP
+    case April {
+        condition month == apr
+        rhs       16. * C81_STAN_VAMP[VAMP_AND_DO]/30.
+          }
+    case MayOnly {
+        condition month == may
+        rhs       15. * C81_STAN_VAMP[VAMP_AND_DO]/31.
+          }
+    case otherwise {
+        condition always
+        rhs       0. }
+          }
+
+
+/*
+Instantaneous VAMP flow (15 or 16 day flow; not monthly averaged)
+VAMP release from different sources
+*/
+! Instantaneous VAMP release from New Melones
+goal setNMVamprelease {
+    lhs  NMVamprelease
+    rhs  C10Vamp_m[VAMP_AND_DO]
+    }
+! Instantaneous VAMP release from DMC
+goal setDMCVamprelease {
+    lhs  DMCVamprelease
+    rhs  C607BVAMP[VAMP_AND_DO]
+    }
+! Instantaneous VAMP release from New Don Pedro
+goal setDPVamprelease {
+    lhs  DPVamprelease
+    rhs  C81Vamp[VAMP_AND_DO]
+    }
+! Instantaneous VAMP release from New Melones debt to New Don Pedro
+goal setDPStanVamprel {
+    lhs DPStanVamprel
+    rhs C81_STAN_VAMP[VAMP_AND_DO]
+    }
+! Instantaneous VAMP release from McClure
+goal setMCVamprelease {
+    lhs  MCVamprelease
+    rhs  C20VAMP[VAMP_AND_DO]
+    }
+

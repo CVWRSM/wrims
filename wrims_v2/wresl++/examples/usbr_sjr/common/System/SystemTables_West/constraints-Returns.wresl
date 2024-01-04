@@ -1,0 +1,416 @@
+/*
+RETURN FLOWS FROM DEMAND UNITS
+
+NAMING TAKES THE FOLLOWING FORMS:
+R_{DEMAND UNIT}     - return flow from specific demand unit
+R_{WBA}_{DESTINATION}   - aggregated return from WBA to specific location
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DIVERSIONS TO WBAS, AND SUB-ARCS
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 50      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 50_PA - Banta Carbona ID/Westside ID - Ag
+!==============================
+goal setR_50_PA         {R_50_PA         = TW_50_PA + LF_50_PA + OS_50_PA - RU_50_PA }
+goal setR_50_PA_SJR056  {R_50_PA_SJR056  = R_50_PA }
+ 
+
+!==============================
+! 50_PU - City of Tracy - M&I
+!==============================
+!Set MI returns to WW (SV)
+!Not in SV file yet...use old setup for now
+!define R_50_PU          {std kind 'RETURN-FLOW' units 'CFS'}
+!goal setR_50_PU         {R_50_PU          = WW_50_PU }
+!goal setR_50_TCWWTP     {R_80_PU_TCWWTP   = R_50_PU }
+
+! OLD...
+define  Rfactor_50_PU  {select factor from CVP_SOD_RF where contractor = 5030, month=month}
+goal setR_50_PU        {R_50_PU          = Rfactor_50_PU * D_WTPJJO_50_PU 
+                                         + Rfactor_50_PU * D_WTPDGT_50_PU
+                                         + Rfactor_50_PU * GP_50_PU}
+goal setR_50_PU_TCWWTP {R_50_PU_TCWWTP   = R_50_PU}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 71      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 71_PA1 - Hospital WD - Ag
+!==============================
+goal setR_71_PA1        {R_71_PA1        = TW_71_PA1 + LF_71_PA1 + OS_71_PA1 - RU_71_PA1 }
+goal setR_71_PA1_SJR075 {R_71_PA1_SJR075 = R_71_PA1 }
+
+
+!==============================
+! 71_PA2 - West Stanislaus ID - Ag
+!==============================
+goal setR_71_PA2        {R_71_PA2        = TW_71_PA2 + LF_71_PA2 + OS_71_PA2 - RU_71_PA2 }
+goal setR_71_PA2_SJR075 {R_71_PA2_SJR075 = R_71_PA2 }
+
+
+!==============================
+! 71_PA3 - Kern Canon WD - Ag
+!==============================
+goal setR_71_PA3        {R_71_PA3        = TW_71_PA3 + LF_71_PA3 + OS_71_PA3 - RU_71_PA3 }
+goal setR_71_PA3_WWW001 {R_71_PA3_WWW001 = R_71_PA3 }
+
+
+!==============================
+! 71_PA4 - Patterson ID - Ag
+!==============================
+goal setR_71_PA4        {R_71_PA4        = TW_71_PA4 + LF_71_PA4 + OS_71_PA4 - RU_71_PA4 }
+goal setR_71_PA4_SJR091 {R_71_PA4_SJR091 = R_71_PA4 }
+
+
+!==============================
+! 71_PA5 - Del Puerto, Salado WD, Orestimba, Sunflower - Ag
+!==============================
+! In CalSimII, Orestimba WD is the only contractor which produces return flows to the SJR
+! The factor .428 represents the portion of the total contract amount that is Orestimba
+! Default split is half to MilePost91 and half to MilePost106
+goal setR_71_PA5        {R_71_PA5        = TW_71_PA5 + LF_71_PA5 + OS_71_PA5 - RU_71_PA5 }
+goal setR_71_PA5_RFS71B {R_71_PA5_RFS71B = R_71_PA5 }
+
+goal setR_RFS71B_SJR091 {R_RFS71B_SJR091 = 0.5 * R_71_PA5_RFS71B}
+goal setR_RFS71B_SJR106 {R_RFS71B_SJR106 = 0.5 * R_71_PA5_RFS71B}
+
+! OLD...
+!define  Rfactor_71_PA5 {select factor from CVP_SOD_RF where contractor = 7115, month=month}
+!goal setR_71_PA5_RFS71B {R_71_PA5_RFS71B = Rfactor_71_PA5 *.428 * D_DMC044_71_PA5 
+!                                         + Rfactor_71_PA5 *.428 * GP_71_PA5 }
+!goal setR_RFS71B_SJR091 {R_RFS71B_SJR091 = 0.5 * R_71_PA5_RFS71B}
+!goal setR_RFS71B_SJR106 {R_RFS71B_SJR106 = 0.5 * R_71_PA5_RFS71B}
+
+
+!==============================
+! 71_PA6 - Davis, Foothill, Mestang, Qu9into, Romero, Centinella - Ag
+!==============================
+! In CalSimII, Foothill WD is the only contractor which produces return flows to the SJR
+! The factor .23 represents the portion of the total contract amount that is Foothill
+goal setR_71_PA6        {R_71_PA6        = TW_71_PA6 + LF_71_PA6 + OS_71_PA6 - RU_71_PA6 }
+goal setR_71_PA6_RFS71C {R_71_PA6_RFS71C = R_71_PA6 }
+
+goal setR_RFS71C_NMW004 {R_RFS71C_NMW004 = 0.5 * R_71_PA6_RFS71C}
+goal setR_RFS71C_XCC054 {R_RFS71C_XCC054 = 0.5 * R_71_PA6_RFS71C}
+
+! OLD...
+!define  Rfactor_71_PA6 {select factor from CVP_SOD_RF where contractor = 7116, month=month}
+!goal setR_71_PA6_RFS71C {R_71_PA6_RFS71C = Rfactor_71_PA6 *.23 * D_DMC064_71_PA6 
+!                                         + Rfactor_71_PA6 *.23 * GP_71_PA6 }
+!goal setR_RFS71C_NMW004 {R_RFS71C_NMW004 = 0.5 * R_71_PA6_RFS71C}
+!goal setR_RFS71C_XCC054 {R_RFS71C_XCC054 = 0.5 * R_71_PA6_RFS71C}
+
+
+!==============================
+! 71_PA7 - Oak Flat - Ag
+!==============================
+goal setR_71_PA7        {R_71_PA7        = TW_71_PA7 + LF_71_PA7 + OS_71_PA7 - RU_71_PA7 }
+goal setR_71_PA7_SJR091 {R_71_PA7_SJR091 = R_71_PA7 }
+
+! OLD...
+!define  Rfactor_71_PA7 {select factor from CVP_SOD_RF where contractor = 7117, month=month}
+!goal setR_71_PA7_SJR091 {R_71_PA7_SJR091 = 0.}
+
+
+!==============================
+! 71_PA8 - Byron-Bethany ID (portion formerly called Plainview) - Ag
+!==============================
+goal setR_71_PA8        {R_71_PA8        = TW_71_PA8 + LF_71_PA8 + OS_71_PA8 - RU_71_PA8 }
+goal setR_71_PA8_RFS71A {R_71_PA8_RFS71A = R_71_PA8 }
+
+! OLD... 
+!define  Rfactor_71_PA8  {select factor from CVP_SOD_RF where contractor = 7118, month=month}
+!goal setR_71_PA8_RFS71A {R_71_PA8_RFS71A = Rfactor_71_PA8 * D_DMC011_71_PA8 
+!                                         + Rfactor_71_PA8 * GP_71_PA8 }
+
+
+!==============================
+! 71_NA1 - Non-District - Riparian Ag
+!==============================
+goal setR_71_NA1        {R_71_NA1        = TW_71_NA1 + LF_71_NA1 + OS_71_NA1 - RU_71_NA1 }
+goal setR_71_NA1_SJR081 {R_71_NA1_SJR081 = R_71_NA1 }
+
+! OLD...
+!goal setR_71_NA1_SJR083 {R_71_NA1_SJR081 = 0.3 * D_SJR105_71_NA1 + 0.3 * GP_71_NA1 }
+
+
+!==============================
+! 71_NA2 - El Solyo WD, Non-District Ag
+!==============================
+goal setR_71_NA2        {R_71_NA2        = TW_71_NA2 + LF_71_NA2 + OS_71_NA2 - RU_71_NA2 }
+goal setR_71_NA2_SJR070 {R_71_NA2_SJR070 = R_71_NA2 }
+
+! OLD...
+!goal setR_71_NA2_SJR070 {R_71_NA2_SJR070 = 0.3 * D_SJR090_71_NA2 + 0.3 * GP_71_NA2 }
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 72      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 72_PA - Laguna WD - Ag
+!==============================
+goal setR_72_PA         {R_72_PA         = TW_72_PA  + LF_72_PA  + OS_72_PA  - RU_72_PA  }
+goal setR_72_PA_MSS014  {R_72_PA_MSS014  = R_72_PA  }
+
+! OLD...
+!define Rfactor_72_PA  {select factor from CVP_SOD_RF where contractor=7210, month=month}
+!goal setR_72_PA_MSS014  {R_72_PA_MSS014 = Rfactor_72_PA * D_XCC025_72_PA
+!                                        + Rfactor_72_PA * GP_72_PA}
+
+
+!==============================
+! 72_XA1 - San Luis Canal Co Exchange Contractors - Ag
+!==============================
+goal setR_72_XA1        {R_72_XA1        = TW_72_XA1 + LF_72_XA1 + OS_72_XA1 - RU_72_XA1 }
+goal setR_72_XA1_SAL017 {R_72_XA1_SAL017 = R_72_XA1 }
+
+! OLD...
+!define Rfactor_72_XA  {select factor from CVP_SOD_RF where contractor=7240, month=month}
+!goal setR_72_XA1_SAL017 {R_72_XA1_SAL017 = Rfactor_72_XA * D_ARY010_72_XA1
+!                                         + Rfactor_72_XA * GP_72_XA1}
+
+
+!==============================
+! 72_XA2 - Central California ID South Exchange Contractors - Ag
+!==============================
+goal setR_72_XA2        {R_72_XA2        = TW_72_XA2 + LF_72_XA2 + OS_72_XA2 - RU_72_XA2 }
+goal setR_72_XA2_SAL017 {R_72_XA2_SAL017 = R_72_XA2 }
+
+! OLD...
+!goal setR_72_XA2_SAL017 {R_72_XA2_SAL017 = Rfactor_72_XA * D_XCC010_72_XA2
+!                                         + Rfactor_72_XA * GP_72_XA2 }
+
+
+!==============================
+! 72_XA3 - Central California ID North Exchange Contractors - Ag
+!==============================
+goal setR_72_XA3        {R_72_XA3        = TW_72_XA3 + LF_72_XA3 + OS_72_XA3 - RU_72_XA3 }
+goal setR_72_XA3_RFS72B {R_72_XA3_RFS72B = R_72_XA3 }
+
+goal setR_RFS72B_SJR106 {
+     lhs R_RFS72B_SJR106
+     rhs 0.07 * R_72_XA3_RFS72B
+     lhs<rhs penalty 99999}
+
+goal setR_RFS72B_MSN004 {R_RFS72B_MSN004 = 0.93 * R_72_XA3_RFS72B} 
+
+! OLD...
+!goal setR_72_XA3_RFS72B {R_72_XA3_RFS72B = Rfactor_72_XA * D_XCC054_72_XA3
+!                                         + Rfactor_72_XA * GP_72_XA3 }
+!goal setR_RFS72B_SJR106 {
+!     lhs R_RFS72B_SJR106
+!     rhs 0.07 * R_72_XA3_RFS72B
+!     lhs<rhs penalty 99999}
+!goal setR_RFS72B_MSN004 {R_RFS72B_MSN004 = 0.93 * R_72_XA3_RFS72B} 
+
+
+!==============================
+! 72_PR1 - Volta WA - Refuge
+!==============================
+goal setR_72_PR1        {R_72_PR1        = TW_72_PR1 + LF_72_PR1 + OS_72_PR1 - RU_72_PR1 }
+goal setR_72_PR1_LBN012 {R_72_PR1_LBN012 = R_72_PR1 }
+
+! OLD...
+!define Rfactor_72_PR1  {select factor from CVP_SOD_RF where contractor=7221, month=month}
+!goal setR_72_PR1_LBN012 {R_72_PR1_LBN012 = Rfactor_72_PR1 * D_VLW008_72_PR1
+!                                         + Rfactor_72_PR1 * GP_72_PR1}
+
+
+!==============================
+! 72_PR2 - Kesterson, Freitas, & Blue Goose units of San Luis NWR, China Island unit of North Grassland - Refuge
+!==============================
+goal setR_72_PR2        {R_72_PR2        = TW_72_PR2 + LF_72_PR2 + OS_72_PR2 - RU_72_PR2 }
+goal setR_72_PR2_MSN004 {R_72_PR2_MSN004 = R_72_PR2 }
+
+! OLD...
+!define Rfactor_72_PR2  {select factor from CVP_SOD_RF where contractor=7222, month=month}
+!goal setR_72_PR2_MSN00  {R_72_PR2_MSN004 = Rfactor_72_PR2 * D_XCC033_72_PR2
+!                                         + Rfactor_72_PR2 * GP_72_PR2}
+
+
+!==============================
+! 72_PR3 - West Bear Ck and San Luis units of San Luis NWR - Refuge
+!==============================
+goal setR_72_PR3        {R_72_PR3        = TW_72_PR3 + LF_72_PR3 + OS_72_PR3 - RU_72_PR3 }
+goal setR_72_PR3_SAL006 {R_72_PR3_SAL006 = R_72_PR3 }
+
+! OLD...
+!define Rfactor_72_PR3  {select factor from CVP_SOD_RF where contractor=7223, month=month}
+!goal setR_72_PR3_SAL006 {R_72_PR3_SAL006 = Rfactor_72_PR3 * D_ARY010_72_PR3
+!                                         + Rfactor_72_PR3 * GP_72_PR3}
+
+
+!==============================
+! 72_PR4 - Los Banos WA, Salt Slouth and Gadwall units of North Grassland - Refuge
+!==============================
+goal setR_72_PR4        {R_72_PR4        = TW_72_PR4 + LF_72_PR4 + OS_72_PR4 - RU_72_PR4 }
+goal setR_72_PR4_SAL006 {R_72_PR4_SAL006 = R_72_PR4 }
+
+! OLD...
+!define Rfactor_72_PR4  {select factor from CVP_SOD_RF where contractor=7224, month=month}
+!goal setR_72_PR4_SAL006 {R_72_PR4_SAL006 = Rfactor_72_PR4 * D_XCC033_72_PR4
+!                                         + Rfactor_72_PR4 * D_ARY010_72_PR4
+!                                         + Rfactor_72_PR4 * GP_72_PR4}
+
+
+!==============================
+! 72_PR5 - Grassland WD North - Refuge
+!==============================
+goal setR_72_PR5        {R_72_PR5        = TW_72_PR5 + LF_72_PR5 + OS_72_PR5 - RU_72_PR5 }
+goal setR_72_PR5_MSN009 {R_72_PR5_MSN009 = R_72_PR5 }
+
+! OLD...
+!define Rfactor_72_PR5  {select factor from CVP_SOD_RF where contractor=7225, month=month}
+!goal setR_72_PR5_MSN009 {R_72_PR5_MSN009 = Rfactor_72_PR5 * D_RFS72A_72_PR5
+!                                         + Rfactor_72_PR5 * D_LBN012_72_PR5
+!                                         + Rfactor_72_PR5 * D_XCC054_72_PR5
+!                                         + Rfactor_72_PR5 * GP_72_PR5}
+
+
+!==============================
+! 72_PR6 - Grassland WD South - Refuge
+!==============================
+goal setR_72_PR6        {R_72_PR6        = TW_72_PR6 + LF_72_PR6 + OS_72_PR6 - RU_72_PR6 }
+goal setR_72_PR6_RFS72A {R_72_PR6_RFS72A = R_72_PR6 }
+
+! OLD...
+!define Rfactor_72_PR6  {select factor from CVP_SOD_RF where contractor=7226, month=month}
+!goal setR_72_PR6_RFS72A {R_72_PR6_RFS72A = Rfactor_72_PR6 * D_ARY010_72_PR6
+!                                         + Rfactor_72_PR6 * D_XCC025_72_PR6
+!                                         + Rfactor_72_PR6 * GP_72_PR6}
+
+
+!==============================
+! 72_NA1 - West Bank of SJR below Merced - Riparian Ag
+!==============================
+goal setR_72_NA1        {R_72_NA1        = TW_72_NA1 + LF_72_NA1 + OS_72_NA1 - RU_72_NA1 }
+goal setR_72_NA1_SJR106 {R_72_NA1_SJR106 = R_72_NA1 }
+
+! OLD
+!goal setR_72_NA1_SJR106 {R_72_NA1_SJR106 = 0.3 * D_SJR116_72_NA1 + 0.3 * GP_72_NA1 }
+
+
+!==============================
+! 72_NA2
+!==============================
+! 72_NA2 -- no surface deliveries
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 73      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 73_PA1 - San Luis WD - Ag
+!==============================
+goal setR_73_PA1        {R_73_PA1        = TW_73_PA1 + LF_73_PA1 + OS_73_PA1 - RU_73_PA1 }
+goal setR_73_PA1_LBN025 {R_73_PA1_LBN025 = R_73_PA1 }
+
+! OLD...
+!define Rfactor_73_PA1  {select factor from CVP_SOD_RF where contractor=7311, month=month}
+!goal setR_73_PA1_LBN025  {R_73_PA1_LBN025 = Rfactor_73_PA1 * D_DMC070_73_PA1
+!                                          + Rfactor_73_PA1 * D_CAA087_73_PA1
+!                                          + Rfactor_73_PA1 * GP_73_PA1}
+
+
+!==============================
+! 73_PA2 - Eagle Field WD, Mercy Springs WD, Oro Loma WD - Ag
+!==============================
+goal setR_73_PA2        {R_73_PA2        = TW_73_PA2 + LF_73_PA2 + OS_73_PA2 - RU_73_PA2 }
+goal setR_73_PA2_SLD027 {R_73_PA2_SLD027 = R_73_PA2 }
+
+! OLD...
+!define Rfactor_73_PA2  {select factor from CVP_SOD_RF where contractor=7312, month=month}
+!goal setR_73_PA2_SLD027  {R_73_PA2_SLD027 = Rfactor_73_PA2 * D_DMC105_73_PA2
+!                                          + Rfactor_73_PA2 * GP_73_PA2}
+
+
+!==============================
+! 73_PA3 - San Luis WD (S), Pacheco WD, Panoche WD - Ag
+!==============================
+goal setR_73_PA3        {R_73_PA3        = TW_73_PA3 + LF_73_PA3 + OS_73_PA3 - RU_73_PA3 }
+goal setR_73_PA3_SLD027 {R_73_PA3_SLD027 = R_73_PA3 }
+
+! OLD...
+!define Rfactor_73_PA3  {select factor from CVP_SOD_RF where contractor=7313, month=month}
+!goal setR_73_PA3_SLD027  {R_73_PA3_SLD027 = Rfactor_73_PA3 * D_DMC091_73_PA3
+!                                          + Rfactor_73_PA3 * D_CAA109_73_PA3
+!                                          + Rfactor_73_PA3 * GP_73_PA3}
+
+
+!==============================
+! 73_XA - Firebaugh Canal Company - Ag
+!==============================
+goal setR_73_XA         {R_73_XA         = TW_73_XA  + LF_73_XA  + OS_73_XA  - RU_73_XA  }
+goal setR_73_XA_SLD027  {R_73_XA_SLD027  = R_73_XA  }
+
+! OLD...
+!define Rfactor_73_XA  {select factor from CVP_SOD_RF where contractor=7340, month=month}
+!goal setR_73_XA_SLD027 {R_73_XA_SLD027 = Rfactor_73_XA * D_MDOTA_73_XA
+!                                       + Rfactor_73_XA * D_DMC111_73_XA
+!                                       + Rfactor_73_XA * GP_73_XA}
+
+
+!==============================
+! 73_NA
+!==============================
+! 73_NA -- no surface deliveries
+
+
+!==============================
+! 73_NU
+!==============================
+! 73_NU -- no surface deliveries
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 90      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! no return flows coded for WBA90
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 91      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 91_PA - Mendota Pool Contractors - Ag
+!==============================
+goal setR_91_PA         {R_91_PA         = TW_91_PA  + LF_91_PA  + OS_91_PA  - RU_91_PA  }
+goal setR_91_PA_FSL012  {R_91_PA_FSL012  = R_91_PA  }
+
+! OLD...
+!define Rfactor_91_PA    {select factor from CVP_SOD_RF where contractor=9110, month=month}
+!goal setR_91_PA_FSL012 {R_91_PA_FSL012 = Rfactor_91_PA * D_MDOTA_91_PA
+!                                       + Rfactor_91_PA * GP_91_PA} 
+
+
+!==============================
+! 91_PR - Mendota WA - Refuge
+!==============================
+goal setR_91_PR         {R_91_PR         = TW_91_PR  + LF_91_PR  + OS_91_PR  - RU_91_PR  }
+goal setR_91_PR_FSL005  {R_91_PR_FSL005  = R_91_PR  }
+
+! OLD...
+!define Rfactor_91_PR    {select factor from CVP_SOD_RF where contractor=9120, month=month}
+!goal setR_91_PR_FSL005  {R_91_PR_FSL005 = Rfactor_91_PR * D_MDOTA_91_PR
+!                                        + Rfactor_91_PR * GP_91_PR } 
+
+

@@ -1,0 +1,26 @@
+/*************************************
+Delta.wresl
+ 
+Nazrul Islam 5/17/2010
+
+This is the top level include file for general logic for Delta
+
+Richard Chen 4/20/2011 add User Defined Qwest constrain (C_SJRVI-Venice Island)
+*************************************/
+
+Include 'SpecProjects.wresl'
+Include 'vallejo.wresl'
+
+if int(AN_DLTSW)==0 .and. int(CH_DLTSW)==0 {
+	define nmfs_days_open {value daysin}
+	Include 'xc-gates.wresl' 
+}
+
+Include 'delta-outflow.wresl' 
+! MRDO
+include 'Delta_ANN.wresl'
+!Include 'final-mrdo.wresl'        
+Include 'riovista.wresl'                 
+Include 'SoDeltaChannels.wresl' 
+Include 'Qwest_constraint.wresl'
+

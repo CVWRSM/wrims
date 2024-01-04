@@ -1,0 +1,62 @@
+!Draft WRESL statements for CVP delivery logic
+!CVPDEL_GOALS   (setting decision variables for cvp delivery logic)
+!Edward Chang
+!4/27/99    10:00am
+!Later Edited by Ajay Dev 10/19/1999
+
+!Sanjay Pahuja/HILL 1/8/02
+!wsi modified to include trinity
+
+!This code sets decision variables in cycle 6, which will be accessed in next month's cycle 1
+!*************************************************************************************************************
+
+!Sum of CVP storages - and accounting for effects of EWA
+! 1.  Start-of-October storage conditions may be low due to last year's EWA operations.
+! To prevent this from impacting allocations this year, add the EWA carried-over debt terms 
+! assess in prevSep and situated at San Luis or NOD reservoirs (see EwaDebtI.wresl for definitions)
+! to the sum of CVP's stored-water supplies when establishing the WSI for the CVP allocation procedure.
+! This approach treats carried-over debt as an assumed supply in the present year. 
+!
+! 2.  Start-of-October storage conditions may be inflated because EWA operations have
+! left carried-over "backed-up water" in the NOD reservoirs.  This would invite projects to plan
+! on allocating more water than they should.  To prevent projects from over-allocating,
+! subtract the EWA carried-over "backed-up water" (see EwaBackedUpWater.wresl for definitions)
+! from the sum of CVP's stored-water supplies...
+!
+! Note for 1. and 2.:  Both EWA carried-over debt and backed-up water are beginning-of-month assessments,
+! which prevents us from using carried-over debt and backed-up water assessments from October,
+! which would be more appropriate.  The reason we have to use beginning of September assessments
+! is because the logic gets implemented in D1485 & D1641 steps, which occur before the beginning-of-October
+! assessment would occur in the EWA step.
+
+define EwaDebtCvp2dv {std kind 'DEBT' units 'TAF'}
+goal set_EwaDebtCvp2dv {EwaDebtCvp2dv = 0}
+
+
+/*  (1/9/04 L. Brekke) The header is tailored to explain the following goal.
+The subsequent goal accomplishes the same objective, but with new
+variables defined in PreEwaStorageMod.wresl.  Moreover, the new variables
+(i.e. S*mod) allow for the supply adjustments to be erased if the 
+NOD reservoirs spill (see comments in PreEwaStorageMod.wresl).  
+
+Note:
+The CVP San Luis adjustment (EwaDebtCvp2dv(prevSep) is never erased because it represents
+SOD carried-over debt that should be assumed as supply in the present
+year, and therefore the delivery target should be based on this 
+additional supply regardless of CVP San Luis storage state.
+
+goal setWSI_CVP_Storage { WSI_CVP_Storage = S_TRNTY + S_SHSTA + S_FOLSM + S_SLUIS_CVP 
+                                            + EwaDebtCvp2dv(prevSep) 
+                                            + EwaDebtCvp3dv(prevSep) 
+                                            - S_SHSTA_EWAdv(prevSep)
+                                            - S_FOLSM_EWAdv(prevSep)}  */
+                                            
+goal setWSI_CVP_Storage { WSI_CVP_Storage = S_TRNTY + S_TRNTYmod +
+                        S_SHSTA + S_SHSTAmod +
+                        S_FOLSM + S_FOLSMmod +
+                        S_SLUIS_CVP }  
+                        !S_SLUIS_CVP + EwaDebtCvp2dv(prevSep) }  
+
+!CVP San Luis storage
+goal setCVP_SL { CVP_SL = S_SLUIS_CVP }
+

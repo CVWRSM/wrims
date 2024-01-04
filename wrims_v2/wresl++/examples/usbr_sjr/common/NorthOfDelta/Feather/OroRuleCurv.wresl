@@ -1,0 +1,53 @@
+define OroSepTarg     {
+  case a_X{
+    condition wateryear==1922 .and. month<=dec
+    value min(1000. + 0.5*max(S_OROVL(prevSep)+S_OROVL_mod_dv(prevSep) - 1000. ,0.), S_OROVLlevel5) }
+  case b_X{
+    condition always
+    value min(1000. + 0.5* (swp_allocation_final-tableA_loss)/SWP_TableA*max(S_OROVL(prevSep)+S_OROVL_mod_dv(prevSep) - 1000. ,0.), S_OROVLlevel5) }
+}
+    
+define OroNextMonTarg {value min(OroSepTarg + (max(S_OROVL(-1)+S_OROVLmod - OroSepTarg,0.)/(Sep-month+1.))*(Sep-month), S_OROVLlevel5) }
+
+define S_OROVLlevel4  {
+     case JuntoSep  {
+      condition month >= jun
+      value OroNextMonTarg }
+     case Other {
+      condition always
+      value  S_OROVLlevel5 }}
+
+define S_OROVLlevel4dv {alias S_OROVLlevel4 kind 'STORAGE-LEVEL' units 'TAF'}
+define OroSepTarget {alias OroSepTarg kind 'STORAGE-LEVEL' units 'TAF'}
+define OroPreSepStor {alias S_OROVL(prevSep) kind 'STORAGE' units 'TAF'}
+define OroNextMonTarget {alias OroNextMonTarg kind 'STORAGE-LEVEL' units 'TAF'}
+
+define S_OROVLlevel3   {value min(2470.,S_OROVLlevel4) }
+
+define OroInf    {value (I_FTR074 + I_WBF030 + I_SFF011 + I_LGRSV + I_LST007 + D_SLT009_SCT001_SV) * cfs_taf}
+define OroInfEst {sum   (i=0,SEP-month,1) (I_FTR074(i) + I_WBF030(i) + I_SFF011(i) + I_LGRSV(i) + I_LST007(i) + D_SLT009_SCT001_SV(i))*cfs_taf(i) }
+define OroDiv    {value (D_WBF030_TTC011_SV + D_WBF015_MIO023_SV + D_SFF011_MNRRH_SV + D_LST004_OWC000_SV)*cfs_taf }
+define OroDivEst {sum   (i=0,SEP-month,1) (D_WBF030_TTC011_SV(i) + D_WBF015_MIO023_SV(i) + D_SFF011_MNRRH_SV(i) + D_LST004_OWC000_SV(i))*cfs_taf(i) }
+
+define OroSupEst   {value max(0.0,OroInfEst - OroDivEst + S_OROVL(-1)+S_OROVLmod - S_OROVLlevel3)}
+define OroSupEstdv {alias OroSupEst kind 'FORECAST' units 'TAF'}
+define OroFlowTarg {value (OroSupEst/cfs_taf)/(Sep-month+1.) }
+
+define OroRuleCalc {
+     case JunthruSep {
+          condition month >= may .and. month <= sep
+          value     OroInf - OroDiv + S_OROVL(-1)+S_OROVLmod - OroFlowTarg*cfs_taf }
+     case Other {
+          condition always
+          value     S_OROVLlevel3}}
+          
+define OroRuleCalcdv {alias OroRuleCalc kind 'RULE' units 'TAF'}
+
+define S_OROVLlevel3adj{value min(max(OroRuleCalc,S_OROVLlevel2),S_OROVLlevel4)}
+define S_OROVLlevel3dv {alias S_OROVLlevel3adj kind 'STORAGE-LEVEL' units 'TAF'}
+
+goal S_OROVLZone3 {S_OROVL_3 < max(S_OROVLlevel3adj - S_OROVLlevel2,0.)}
+goal S_OROVLZone4 {S_OROVL_4 < max(S_OROVLlevel4 - S_OROVLlevel3adj,0.)}
+goal S_OROVLZone5 {S_OROVL_5 < max(S_OROVLlevel5 - S_OROVLlevel4,0.)}
+goal S_OROVLZone6 {S_OROVL_6 < max(S_OROVLlevel6 - S_OROVLlevel5,0.)}
+

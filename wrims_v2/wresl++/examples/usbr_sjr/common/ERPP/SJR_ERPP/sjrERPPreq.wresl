@@ -1,0 +1,31 @@
+!WRESL for SJRSS and ERPP on the San Joaquin River
+!SJRERPPREQ
+!Edward Chang
+!7/01/99    2:00pm
+!
+!This code defines the SAN JOAQUIN ERPP requirement from a look-up table
+!******************************************************************************************
+define ERPP522 {    !Stanislaus - Goodwin
+     case may {
+          condition month == may   !May 1-10; 10 day cfs
+          select    target from ERPP where CP = 522, wytype = wyt_SJR }
+     case otherwise {
+          condition always
+          value     0 }
+          }
+define ERPP543 {    !Tuolumne - La Grange
+     case may {
+          condition month == may   !May 1-10; 10 day cfs
+          select    target from ERPP where CP = 543, wytype = wyt_SJR }
+     case otherwise {
+          condition always
+          value     0 }
+          }
+define ERPP563 {    !Merced - Shaffer Bridge
+     case may {
+          condition month == may   !May 1-10; 10 day cfs
+          select    target from ERPP where CP = 563, wytype = wyt_SJR }
+     case otherwise {
+          condition always
+          value     0 }
+          }

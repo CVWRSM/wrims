@@ -1,0 +1,52 @@
+! This file contains the groundwater flow equations for DSA 12
+
+! define storage term (units =  thousand-acres)
+
+define beta_12 {VALUE area_12*sy_12/1000.0 }
+
+! define maximum groundwater storage (units = TAF)
+
+define maxg_12 {VALUE beta_12*gse_12 - beta_12*b_12 }
+
+! define current month groundwater storage (units = TAF)
+goal storage_12 { g_12 = beta_12*h_12 - beta_12*b_12}
+
+!define previous month groundwater storage (units = TAF)
+
+define g_12_previous {VALUE beta_12*h_12(-1) - beta_12*b_12 }
+
+! restrict groundwater storage to maximum
+
+!goal maxstore_12 {g_12 < maxg_12 }
+
+! groundwater pumping
+goal set_gp62 {gp62 = gp62_taf*taf_cfs}   ! streamflow is CFS
+
+goal set_gr62AW_taf {gr62AW_taf = DP_DSA12*cfs_taf}   ! groundwater model is TAF, streamflow is CFS
+
+! define DSA12 stream gain -Defined in Demand_12.wresl
+define gs62_taf {TIMESERIES  KIND 'flow' units 'TAF'} ! from 2020 Level CVGSM run
+GOAL set_gs62 { gs62 < gs62_taf*taf_cfs }
+
+! Define interaction between groundwater basins (units = TAF)
+! see file parameters.wresl for other parameter values
+
+
+goal set_interbasin10_12 { interbasin10_12 = alpha10_12*phi10_12*h_10 -
+                                             alpha10_12*phi10_12*h_12 }
+
+goal set_interbasin15_12 { interbasin15_12 = alpha12_15*phi12_15*h_15 -
+                                             alpha12_15*phi12_15*h_12 }
+
+goal set_interbasin65_12 { interbasin65_12 = alpha12_65*phi12_65*h_65 -
+                                             alpha12_65*phi12_65*h_12 }
+
+
+goal set_gw62_taf {gw62_taf = interbasin10_12
+                            + interbasin15_12
+                            + interbasin65_12 }
+
+
+! define groundwater continuity for DSA12    (units = TAF)
+goal continuity_12 {gw62_taf - gp62_taf + gr62_taf +gr62AW_taf + bnd_12 - gf_62 + gs62_taf = g_12 - g_12_previous }
+

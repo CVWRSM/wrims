@@ -1,0 +1,21 @@
+! THIS IS THE MAIN CVP DELIVERY LOGIC STUDY 771 FILE
+! Only the CVP Delivery Logic Operations are included with the system
+!
+! Rich Juricich & Ajay Dev 10/19/1999
+
+! Edited by Edward Chang 4/27/99 to confirm to CALSIM cycles.
+! The delivery logic is split into two sets, one for cycles 1 and a second for cycle 6
+! These are the cycle 1 constraints that calculates the adjusted demands
+
+! Edited by Robert Leaf 10/09/01 to use Export Based Delivery Rule for SOD
+
+! INCLUDE 'demands_s\cvp_demands_s.wresl'
+
+! INCLUDE 'wsi_s\wsi_cvp_s.wresl' !RLEAF-
+! INCLUDE 'di_s\di_cvp_s.wresl'   !RLEAF-
+
+INCLUDE 'exp_based\export_index_cvp.wresl'   !RLEAF-
+INCLUDE 'exp_based\exp_based_del_cvp_s.wresl'   !RLEAF-
+INCLUDE 'delcar_s\delcar_cvp_s.wresl'
+
+INCLUDE 'cvpcut_s\cvpcut_s.wresl'

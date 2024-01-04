@@ -1,0 +1,111 @@
+! This file sets the cap on Wheeling.
+
+define C_WKYTN_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define D_WKYTN_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_KSWCK_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_NTOMA_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+!define C32_whlcv {std kind 'FLOW-WHEEL' UNITS 'CFS'}
+define C_WKYTN_m {std kind 'FLOW' UNITS 'CFS'}
+define D_WKYTN_m {std kind 'FLOW' UNITS 'CFS'}
+define C_KSWCK_m {std kind 'FLOW' UNITS 'CFS'}
+define C_NTOMA_m {std kind 'FLOW' UNITS 'CFS'}
+!define C32_m {std kind 'FLOW' UNITS 'CFS'}
+
+!define C5_S32SWP {std kind 'FLOW-CHANNEL' units 'CFS'}   ! NODOS related
+!define C5_S32OTH {std kind 'FLOW-CHANNEL' units 'CFS'}   ! NODOS related
+!goal zeroC5_S32SWP {C5_S32SWP = 0.}
+!goal zeroC5_S32OTH {C5_S32OTH = 0.}
+
+define C_NDO_whlcv {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+define C_SAC041_reop {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+define C_SAC041_whlcv {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+goal splitC400_reop {C_SAC041_reop = C_SAC041_whlcv}
+
+goal ClrcrkWhl { C_WKYTN = C_WKYTN_m + C_WKYTN_whlcv }
+goal SprcrkWhl { D_WKYTN_SPT003 = D_WKYTN_m + D_WKYTN_whlcv }
+goal ShastaWhl { C_KSWCK = C_KSWCK_m + C_KSWCK_whlcv }
+goal FolsomWhl { C_NTOMA = C_NTOMA_m + C_NTOMA_whlcv }
+!goal NODOSCVPWhl { C32 = C32_m + C32_whlcv }
+
+goal wheeling1 {D_WKYTN_whlcv < C_KSWCK_whlcv}
+
+! Calculate the maximum flow that Tracy can pump due to channel capacity restrictions.
+define UpperDMCdems1 {value (CLM_50_PA + CLM_50_PU + CLM_71_PA8)*taf_cfs}
+define UpperDMCdems2 {value (CLM_71_PA1 + CLM_71_PA2 + CLM_71_PA3 + CLM_71_PA4
+                     + CLM_71_PA5 + CLM_71_PA6 + CLM_71_PA7)*taf_cfs}
+                    
+define maxTracycalc1 {value min(TracyMaxAllow,
+                     4400+perdel_cvpag_s*UpperDMCdems1,
+                     4200+perdel_cvpag_s*UpperDMCdems1+perdel_cvpag_s*UpperDMCdems2) }
+define maxTracycalc {value min(maxTracycalc1 + Intertie_Cap, TracyMaxAllow)}
+
+! Banks will wheel for Cross Valley Canal up to their allocation.  Wheeling for CVC will be done in July, Aug, Sep, Oct, Nov and Dec.
+define CVC_Alloc {value perdel_cvpag_s*128.0}  ! This is CVC's allocation
+
+! Compute amount of water that is already wheeled this year (taf)
+ define WheeledCVCamtdv {lower -10000.0 upper 10000.0 kind 'Alias' units 'TAF'}
+ define WheeledCVCamt{
+       case Oct1922 {
+            condition month == Oct .and. wateryear == 1922 ! First year of simulation, compute the amount of wheeling that has occurred since Oct.
+            value 0.0}
+       case Oct_Dec {
+            condition month >= Oct .and. month <= Dec  ! Compute the amount of wheeling that has occurred from July of previous WY to current month
+            value WheeledCVCamtdv(-1) + CAA000_cvc(-1)*cfs_taf(-1)}
+       case Aug_Sep {
+            condition month >= Aug .and. month <=Sep   ! Compute the amount of wheeling that has occurred from July of current WY
+            value WheeledCVCamtdv(-1) + CAA000_cvc(-1)*cfs_taf(-1)}
+       case all_others {
+            condition always
+            value 0.0 }
+            }
+
+goal setWheeledCVCamt {WheeledCVCamtdv = WheeledCVCamt}
+
+! Remaining Wheeling
+define RemainWheelCVC {
+       case OctDec {
+            condition month >= Oct .and. month <= Dec  ! Wheel for CVC in Oct, Nov and Dec up to the remaining amount of previous year's allocation (Mar - Feb)
+              value max(0.0,CVC_Alloc - WheeledCVCamt)}
+       case JulSep {
+            condition month >= Jul .and. month <= Sep  ! Wheel for CVC in Jul, Aug, and Sep up to the remaining amount of current years allocation (Mar - Feb)
+              value max(0.0,CVC_Alloc - WheeledCVCamt)}
+         case All_others {
+            condition always                           ! Do not wheel water for Cross Valley Canal in the rest of the months
+              value 0.0}
+             }
+
+goal Wheeling2 {
+     lhs CAA000_cvc
+       case OctDec {
+           condition month >= Oct .and. month <= Dec  ! Wheel for CVC in Oct, Nov and Dec up to the remaining amount of previous year's allocation (Mar - Feb)
+             rhs  RemainWheelCVC*taf_cfs
+             lhs<rhs penalty 0.0}
+       case JulSep {
+           condition month >= Jul .and. month <= Sep  ! Wheel for CVC in Jul, Aug, and Sep up to the remaining amount of current years allocation (Mar - Feb)
+             rhs RemainWheelCVC*taf_cfs
+             lhs<rhs penalty 0.0}
+       case All_others {
+           condition always                           ! Do not wheel water in the rest of the months
+             rhs 0.0}
+             }
+
+goal Wheeling3 {D855=CAA000_cvc}
+
+goal wheeling6 {I_CAA000 = 0.0}
+
+!ANN flow adjustment (at Hood)
+goal setC400_whlcv { C_WKYTN_whlcv + C_KSWCK_whlcv + C_NTOMA_whlcv /*+ C32_whlcv*/ = C_SAC041_whlcv }   
+
+! JPOD cap for CVP
+goal setReleaseCont {C_SAC041_whlcv = CAA000_cvcrels + C_NDO_whlcv}
+
+goal setSurplusCont {lhs     CAA000_cvcsurp + C_NDO_cvp + C_NDO_swp
+                     rhs     C_NDO_cvp[MONTHLYWEIGHTED] + C_NDO_swp[MONTHLYWEIGHTED]
+                     lhs>rhs penalty 99999
+                     lhs<rhs penalty 99999}
+
+! For output only
+define CVC_AllocDv {alias CVC_Alloc Units 'taf'}
+define maxTracycalcDV {alias maxTracycalc Units 'cfs'}
+

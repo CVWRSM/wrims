@@ -1,0 +1,164 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-DIVERSIONS.WRESL
+
+NAMING TAKES THE FOLLOWING FORMS:
+
+D_{ORIGIN}_{DESTINATION PREFIX} - diversions from specific location to general area
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! DIVERSIONS TO WBAS, AND SUB-ARCS
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_BCK006_ESC000  {std kind 'DIVERSION' units 'cfs'}
+define D_ESC000_63_PR1  {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Calaveras River     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_CLV043_WTPJYL  {std kind 'DIVERSION' units 'cfs'}
+define D_CLV037_CACWD   {std kind 'DIVERSION' units 'cfs'}
+define D_CLV026_WTPWDH  {std kind 'DIVERSION' units 'cfs'}
+define D_CLV023_60S_PA1 {std kind 'DIVERSION' units 'cfs'}
+define D_WTPWDH_60S_NU1 {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla Bypass/Eastside BypasS !!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_EBP016_64_NA2  {std kind 'DIVERSION' units 'cfs'}
+define D_EBP048_63_PR3  {std kind 'diversion' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_CHW028_ASL013  {std kind 'DIVERSION' units 'cfs'}
+define D_CHW028_BRS018  {std kind 'DIVERSION' units 'cfs'}
+define D_CHW017_64_PA2  {std kind 'DIVERSION' units 'cfs'}
+
+define D_ASL013_64_PA2  {std kind 'DIVERSION' units 'cfs'}
+define D_BRS018_64_PA2  {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deadman Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_DED010_63_PR2  {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Fresno River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_FRS036_64_PA1  {std kind 'DIVERSION' units 'cfs'}
+define D_DBC014_64_PA1  {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Little John Creek   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_LJC010_60S_PA2 {std kind 'DIVERSION' units 'cfs'}
+define D_LJC022_WTPWDH  {std kind 'DIVERSION' units 'cfs'}
+define D_LJC022_WTPWDHa {std kind 'DIVERSION' units 'cfs'}!M&I Deliveries to SEWD from Stanislaus River contracts
+define D_LJC022_WTPWDHb {std kind 'DIVERSION' units 'cfs'}!M&I Deliveries to SEWD from sale from OID/SSJID
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Madera Canal    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_MDC006_64_PA1  {std kind 'DIVERSION' units 'cfs'}
+define D_MDC006_64_PA3  {std kind 'DIVERSION' units 'cfs'}
+define D_MDC032_64_PA1  {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mendota Pool    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! define D_MDOTA_64_XA    {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Merced River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_MCD055_62_NA6  {std kind 'DIVERSION' units 'cfs'}
+define D_MCD052_MID021  {std kind 'DIVERSION' units 'cfs'}
+define D_MCD050_62_NA2  {std kind 'DIVERSION' units 'cfs'}
+define D_MCD042_63_NA2  {std kind 'DIVERSION' units 'cfs'}
+define D_MCD021_63_NA4  {std kind 'DIVERSION' units 'cfs'}
+define D_MCD002_63_NA4  {std kind 'DIVERSION' units 'cfs'}
+
+!Merced Main Canal
+define D_MID021_63_NA4  {std kind 'DIVERSION' units 'cfs'}
+define D_MID021_63_NA3  {std kind 'DIVERSION' units 'cfs'}
+define D_MID021_DED012  {upper 45. kind 'DIVERSION' units 'cfs'} ! Conveyance capacity to refuge
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Return Flow Splits  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_RFS61D_61_NA5  {std kind 'DIVERSION' units 'cfs'}
+define D_RFS61B_61_NA2  {std kind 'DIVERSION' units 'cfs'}
+define D_RFS64_64_NA2   {std kind 'DIVERSION' units 'cfs'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Joaquin River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_MLRTN_FRK000   {std kind 'DIVERSION' units 'cfs'}  ! Friant Kern Canal
+define D_MLRTN_MDC006   {std kind 'DIVERSION' units 'cfs'}  ! Mendota Canal
+define D_SJR227_64_PA3  {std kind 'DIVERSION' units 'cfs'}  ! Gravelly Ford and Rocky Creek WDs
+define D_SJR214_EBP001  {std kind 'DIVERSION' units 'cfs'}  ! Chowchilla Bypass
+define D_SJR205_SJR201  {std kind 'DIVERSION' units 'cfs'}  ! Mendota Pool Bypass
+! define D_SJR180_ARY010  {std kind 'DIVERSION' units 'cfs'}  ! Sack Dam Diversion (formerly taken at MP)
+define D_SJR166_EBP032  {std kind 'DIVERSION' units 'cfs'}
+! define D_SJR116_72_NA1  {std kind 'DIVERSION' units 'cfs'}
+define D_SJR114_62_NA5  {std kind 'DIVERSION' units 'cfs'}
+! define D_SJR105_71_NA1  {std kind 'DIVERSION' units 'cfs'}
+! define D_SJR096_71_PA4  {std kind 'DIVERSION' units 'cfs'}
+! define D_SJR090_71_NA2  {std kind 'DIVERSION' units 'cfs'}
+! define D_SJR082_71_PA2  {std kind 'DIVERSION' units 'cfs'}
+define D_SJR081_61_NA5  {std kind 'DIVERSION' units 'cfs'}
+define D_SJR070_61_NA6  {std kind 'DIVERSION' units 'cfs'}
+! define D_SJR062_50_PA   {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! South Main Canal (Oakdale ID)      !!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_OAK020_61_PA2  {std kind 'DIVERSION' units 'cfs'}
+define D_OAK020_61_NA2  {std kind 'DIVERSION' units 'cfs'}!Diversion to Modesto ID for VAMP
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stanislaus River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_STS059_OAK001  {std kind 'DIVERSION' units 'cfs'}
+define D_STS059_SSJ001  {std kind 'DIVERSION' units 'cfs'}
+define D_STS059_UFC000  {std kind 'DIVERSION' units 'cfs'}
+define D_STS030_61_NA4  {std kind 'DIVERSION' units 'cfs'}
+
+define D_WDWRD_61_PA1   {std kind 'DIVERSION' units 'cfs'}
+define D_WDWRD_WTPDGT   {std kind 'DIVERSION' units 'cfs'}
+define D_WTPDGT_61_NU2  {std kind 'DIVERSION' units 'cfs'}
+! define D_WTPDGT_50_PU  {std kind 'DIVERSION' units 'cfs'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Tuolumne River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define D_TUO054_TUR001  {std kind 'DIVERSION' units 'cfs'}
+define D_TUO054_MDS003  {std kind 'DIVERSION' units 'cfs'}
+define D_TUO017_61_NA3  {std kind 'DIVERSION' units 'cfs'}
+define D_TUO017_62_NA4  {std kind 'DIVERSION' units 'cfs'}
+
+define D_TRLCH_62_NA3   {std kind 'DIVERSION' units 'cfs'}
+define D_MDSTO_61_NA2   {std kind 'DIVERSION' units 'cfs'}
+define D_MDSTO_WTPMOD   {std kind 'DIVERSION' units 'cfs'}
+define D_WTPMOD_61_NU1  {std kind 'DIVERSION' units 'cfs'}
+
+

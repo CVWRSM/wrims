@@ -1,0 +1,39 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.containers.hash_tables%s  a-cohata.ads	d05bc467 NE OL PU PK
+W ada.containers%s	a-contai.ads		a-contai.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-contai.ads		20070406091342 7b35f559
+D a-cohata.ads		20090409150020 ab6e313e
+D system.ads		20090410155748 b8eb58c3
+X 1 ada.ads
+16K9*Ada 19e8 3|33r9 55r5
+X 2 a-contai.ads
+16K13*Containers 1|16k9 2|22e19 3|33r13 55r9
+19M9*Hash_Type 3|42r35
+20I9*Count_Type<integer> 3|49r20
+X 3 a-cohata.ads
+33K24*Hash_Tables 2|16k13 3|55l20 55e31
+37+12 Node_Type 39r34
+39P12 Node_Access(37+12) 42r58
+41k12*Generic_Hash_Table_Types 37z12 39z12 53l8 53e32
+42A12*Buckets_Type(39P12)<2|19M9> 44r41
+44P12*Buckets_Access(42A12) 45r11 48r20
+47R12*Hash_Table_Type 52e17
+48p10 Buckets{44P12}
+49i10 Length{2|20I9}
+50i10 Busy{natural}
+51i10 Lock{natural}
+

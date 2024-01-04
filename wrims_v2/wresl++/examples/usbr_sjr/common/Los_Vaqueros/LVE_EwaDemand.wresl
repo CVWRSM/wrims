@@ -1,0 +1,163 @@
+! LVE_EwaDemands.wresl
+! L. Brekke  12/22/2005
+! Adapted 4/07 Nancy Parker
+
+/*
+The general idea with simulating EWA support from LVE is to first simulate
+a generic release from LVE that supports EWA through either SBA deliveries-exchange or
+CA Aqueduct deliveries-exchange; SWP/CVP Banks pumping is assumed to be unchanged
+in response to this LVE-EWA exchange operation.
+
+Step 4 involves simulation of LVE operations and accounting of LVE storage.  For the most
+part, this simulation is not repeated in Step 5 (when EWA is simulated); only the
+CCWD delta diversions (contract supply and delta surplus) are repeated, as are the Los
+Vaqueros releases.
+
+The Step 4 LVE releases are split between CCWD and EWA (and possibly "SBA reliability"
+when these demands are not zero'd out, contrary to below).
+
+Step 4 definition of LVE release to EWA is based on (a) a release capacity affecting
+monthly release amount, and (b) a demand capacity affecting both monthly and annual
+amount.
+
+Monthly release capacity is set in LVE_Parameters.wresl (i.e. LV_SBA_Cap)
+
+Monthly demand capacity is based on the assumption that you would not want to do the
+LVE-EWA exchange in January-March for fear of creating assets in San Luis that may get
+assumed by the projects when they wish to fill San Luis (generally March).  That said
+there would be some mitigation of this risk offered by simulating EWA put of San Luis to
+an In Lieu GW Bank (see Step 5), but those put rates are limited.  For now, it is assumed
+that EWA San Luis can only receive water from LVE-EWA exchange during April-December.
+
+Annual demand capacity is determined by EWA purchase target, or some other arbitrary amount.
+File "Ewa_Purch_Est.wresl" simulates annual purchase targets (that are also simulated in Step
+5).  Choice of annual demand capacity is arbitrary; depends on the scenario of interest.
+
+The result of the Step 5 simulation is an annual supply that can be made available to EWA
+via routing simulation in the EWA step
+
+Finally, the modeled routing is from LVE to Bethany.  However, by
+adding "SBA delivered amount" as an additional Step 4 monthly demand constraint, the
+modeling can be interpreted to represent only SBA deliveries exchange (LVE connection to
+Dyer Canal rather than Bethany).
+*/
+
+
+define D426_EWA { std kind 'FLOW' units 'CFS' } !Monthly LVE release for LVE-EWA Exchange (cfs)
+define AnnEWAused_1dv   {std kind 'LVE-TAF' units 'taf'}
+define AnnEWAusedPrvYdv {std kind 'LVE-TAF' units 'taf'}
+define RemAnnLVEdemDv   {std kind 'LVE-TAF' units 'taf'}
+define MonLVEEWAlim1Dv   {std kind 'LVE-CFS' units 'cfs'}
+define MonLVEEWAlim2Dv   {std kind 'LVE-CFS' units 'cfs'}
+define MonLVEEWAlim3Dv   {std kind 'LVE-CFS' units 'cfs'}
+
+define EwaDebtdv {std kind 'DEBT' units 'TAF'}
+define AnnLVEEWADEM {
+    case SOD {
+        condition int(LVE_Exch_Flag3)==0
+        value EwaSODPurchEst
+    }
+    case NOD {
+        condition int(LVE_Exch_Flag3)==1
+        value EwaNODPurchEst
+    }
+    case NODSOD {
+        condition int(LVE_Exch_Flag3)==2
+        value EwaNODPurchEst+EwaSODPurchEst
+    }
+    case Debt {
+        condition int(LVE_Exch_Flag3)==3
+        value max(0.,EwaDebtdv(prevSep)) }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+
+define AnnLVEEWADEMdv   {alias AnnLVEEWADEM kind 'LVE-TAF' units 'taf'}
+
+define AnnEWAused_1 { !portion of April target used up to beginning of month
+    case MaySep {
+        condition month>APR
+        sum(i=7-month,-1,1) D426_EWA(i)*cfs_taf(i)
+    }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+goal setAnnEWAused_1dv {AnnEWAused_1dv = AnnEWAused_1 + D426_EWA*cfs_taf} !portion of April target used through end of month
+
+define AnnEWAused_2 { !portion of April target not used Apr-Sep, and used up to beginning of month through Dec
+    case Oct {
+        condition month == OCT
+        value 0.
+    }
+    case NovDec {
+        condition month>OCT .and. month<JAN .and. wateryear > 1922
+        sum(i=1-month,-1,1) D426_EWA(i)*cfs_taf(i)
+    }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+
+define AnnEWAusedPrvYr {
+    case FirstYear {
+        condition wateryear == 1922
+        value 0.
+    }
+    case otherwise {
+        condition always
+        value AnnEWAused_1dv(prevSep)
+    }
+}
+goal setAnnEWAusedPrY {AnnEWAusedPrvYdv = AnnEWAusedPrvYr}
+
+define RemAnnLVEdem {
+    case FirstYear {
+        condition wateryear == 1922 .and. month < APR
+        value 0.
+    }
+    case APR {
+        condition month == APR
+        value max(0., AnnLVEEWADEM)
+    }
+    case MaySep {
+        condition month>=MAY .and. month <= SEP
+        value max(0., AnnLVEEWADEM - AnnEWAused_1)
+    }
+    case Oct {
+        condition month==OCT .and. wateryear > 1922
+        value max(0., AnnLVEEWADEM - AnnEWAusedPrvYr)
+    }
+    case NovDec {
+        condition month>=NOV .and. month<=DEC .and. wateryear > 1922
+        value max(0., AnnLVEEWADEM - AnnEWAusedPrvYr - AnnEWAused_2)
+    }
+    case otherwise {
+        condition always
+        value 0.
+    }
+}
+goal setRemAnnLVEdem  {RemAnnLVEdemDv   = RemAnnLVEdem}
+
+! impose limits on the ewa demands
+! EWA demand limitation on exchange; flag is on/off switch for LVE-EWA Exchange
+! release capacity limitation on exchange (cfs)
+! deliveries limitation on exchange; flag is switch for implying connection
+! to SBA via Dyer Canal, or Bethany
+
+define MonLVEEWADEMlim1 { value (RemAnnLVEdem*taf_cfs)*LVE_Exch_Flag2}
+define MonLVEEWADEMlim2 { value LV_SBA_Cap }
+define MonLVEEWADEMlim3 { value D801[WHEELJPOD] + (LVE_Exch_Flag1*(maxExchange-D801[WHEELJPOD]))}
+
+goal setD426_EWA1    { D426_EWA < MonLVEEWADEMlim1 } !EWA demand limit
+goal setD426_EWA2    { D426_EWA < MonLVEEWADEMlim2 } !conveyance limit
+goal setD426_EWA3    { D426_EWA < MonLVEEWADEMlim3 } !exchange partners' deliveries limit
+
+goal setMonLVEEWAlim1 {MonLVEEWAlim1Dv  = MonLVEEWADEMlim1}
+goal setMonLVEEWAlim2 {MonLVEEWAlim2Dv  = MonLVEEWADEMlim2}
+goal setMonLVEEWAlim3 {MonLVEEWAlim3Dv  = MonLVEEWADEMlim3}
+

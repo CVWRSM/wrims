@@ -1,0 +1,178 @@
+/*
+delcar_cvp_south_b2.wresl
+
+Nazrul Islam, DWR, 10/14/2010
+
+This file will replace the Delivery_carryover_split_CVP_south.wresl which was only for D1641. This file includes B2 actions.
+File determines CVP SOD delivery target based Water Supply, D1641 and Export Limits and Supply Limits;
+*/
+
+! In May, get the VAMP export restriction computed last month
+! (code is adapted from B2VampCommon.wresl)
+define PulseHidv {std kind 'counter' UNITS 'NONE'}
+define VAMP_reqdv_VAMP {timeseries kind 'flow-requirement' units 'cfs'}
+define SJR_ANN     {timeseries kind 'FLOW-CHANNEL'  units 'CFS'}
+
+define PulseExpRes1 {
+    case OCT_APR {
+         condition month >= OCT .and. month <= APR
+         value 0.0 }
+    case lo1 {
+        condition month == MAY .and. abs(VAMP_reqdv_VAMP(-1) - 5700.0)<.1
+        value 2250. }
+    case lo2 {
+        condition month == MAY .and. VAMP_reqdv_VAMP(-1)<5699.9
+        value 1500. }
+    case hi {
+        condition month == MAY .and. VAMP_reqdv_VAMP(-1) > 5700.1 .and. SJR_ANN(-1) < 8600.   !Alternates PulseExpRes1 from 1500 to 3000 every high year.
+        value PulseHidv(-1)}
+    case VernHi {
+        condition month == MAY .and. SJR_ANN(-1) >= 8600.0
+        value max(SJR_ANN(-1)*0.5,3000.0) }
+    case others  {
+        condition   always
+        value       0.0}
+}
+
+! Approximate values (cfs) used under B2 based selection of Delta actions (pre FWS and NMFS BOs)
+define estCVPExp_Mar {value 4600. - 50. * taf_cfs}
+define estCVPExp_Apr {value 1125.}
+define B2Action4On {timeseries kind 'TRIGGER' units 'NONE'}
+define estCVPExp_May {
+    case May_B2Action4On {
+        condition month == MAY .and. int(B2Action4On) == 1
+        value PulseExpRes1*0.5 }
+    case May_B2Action4Off {
+        condition month == MAY .and. int(B2Action4On) == 0
+        value PulseExpRes1*0.5*15./31. + 3000.*16./31. }
+    case otherwise {
+        condition always
+        value 1125. }
+}
+define estCVPExp_Jun {value 3000.}
+define estCVPExp_JulAug {value 4600.}
+
+! ***********************************************************
+! New code for working with FWS and NMFS BO Delta Actions
+/*
+! read inputs
+define estCVPExp_Mar {select estimate from ExportEstimate_CVP where month = Mar}
+define estCVPExp_Apr {select estimate from ExportEstimate_CVP where month = Apr}
+define estCVPExp_May {select estimate from ExportEstimate_CVP where month = May}
+define estCVPExp_Jun {select estimate from ExportEstimate_CVP where month = Jun}
+define estCVPExp_JulAug {select estimate from ExportEstimate_CVP where month = Jul}
+
+define estCVPExp_WetApr {select WetSJR from ExportEstimate_CVP where month = Apr}
+define estCVPExp_WetMay {select WetSJR from ExportEstimate_CVP where month = May}
+define estCVPExp_WetJun {select WetSJR from ExportEstimate_CVP where month = Jun}
+*/
+define factCVP_MarAug {select factor from ExportEstimate_CVP where month = Mar}
+define factCVP_AprAug {select factor from ExportEstimate_CVP where month = Apr}
+define factCVP_MayAug {select factor from ExportEstimate_CVP where month = May}
+
+define buffCVP_MarAug {select buffer from ExportEstimate_CVP where month = Mar}
+define buffCVP_AprAug {select buffer from ExportEstimate_CVP where month = Apr}
+define buffCVP_MayAug {select buffer from ExportEstimate_CVP where month = May}
+/*
+! is this a 60-20-20 wet year?
+define wetSJR {
+    case Wet {
+        condition wyt_SJR == 1
+        value 1.}
+    case other {
+        condition always
+        value 0.}
+}
+*/
+! Estimate Export Capability for use in determining delivery target limitations
+define CVPDelCapEst {
+    case March {
+        condition month==MAR
+        value estCVPExp_Mar*cfs_taf
+!            + max(estCVPExp_Apr, wetSJR*estCVPExp_WetApr)*cfs_taf(1)
+!            + max(estCVPExp_May, wetSJR*estCVPExp_WetMay)*cfs_taf(2)
+!            + max(estCVPExp_Jun, wetSJR*estCVPExp_WetJun)*cfs_taf(3)
+            + estCVPExp_Apr*cfs_taf(1)
+            + estCVPExp_May*cfs_taf(2)
+            + estCVPExp_Jun*cfs_taf(3)
+            + estCVPExp_JulAug*cfs_taf(4)
+            + estCVPExp_JulAug*cfs_taf(5)
+            + S_SLCVP(-1) - buffCVP_MarAug + jbypass_del + AnnualBanksCVP }
+    case April {
+        condition month == APR
+!        value max(estCVPExp_Apr, wetSJR*estCVPExp_WetApr)*cfs_taf
+!            + max(estCVPExp_May, wetSJR*estCVPExp_WetMay)*cfs_taf(1)
+!            + max(estCVPExp_Jun, wetSJR*estCVPExp_WetJun)*cfs_taf(2)
+        value estCVPExp_Apr*cfs_taf
+            + estCVPExp_May*cfs_taf(1)
+            + estCVPExp_Jun*cfs_taf(2)
+            + estCVPExp_JulAug*cfs_taf(3)
+            + estCVPExp_JulAug*cfs_taf(4)
+            + S_SLCVP(-1) - buffCVP_AprAug + jbypass_del + AnnualBanksCVP }
+    case May {
+        condition month == MAY
+!        value max(estCVPExp_May, wetSJR*estCVPExp_WetMay)*cfs_taf
+!            + max(estCVPExp_Jun, wetSJR*estCVPExp_WetJun)*cfs_taf(1)
+        value estCVPExp_May*cfs_taf
+            + estCVPExp_Jun*cfs_taf(1)
+            + estCVPExp_JulAug*cfs_taf(2)
+            + estCVPExp_JulAug*cfs_taf(3)
+            + S_SLCVP(-1) - buffCVP_MayAug + jbypass_del + AnnualBanksCVP }
+    case otherwise {
+        condition always
+        value 0.0 }
+    }
+define CVPDelCapEstdv {alias CVPDelCapEst kind 'DELIV-CAPACITY' units 'TAF'}
+
+define AnnDelCapEst {
+    case March {
+        condition month==MAR
+        value CVPDelCapEst/factCVP_MarAug }
+    case April {
+        condition month == APR
+        value CVPDelCapEst/factCVP_AprAug }
+    case May {
+        condition month == MAY
+        value CVPDelCapEst/factCVP_MayAug }
+    case otherwise {
+        condition always
+        value 0.0 }
+    }
+
+define AnnDelCapEstdv {alias AnnDelCapEst kind 'DELIV-CAPACITY' units 'TAF'}
+
+define del_first_cvp_s {
+  case MarMay {
+    condition month >= MAR .and. month <= MAY
+    value min(AnnDelCapEst, Export_Index_CVP_adj/factCVP_AprAug) }
+  case other {
+    condition always
+    value 0.}
+}
+
+
+define deltar_cvps1dv {alias del_first_cvp_s kind 'DEL-TARGET' units 'TAF'}
+
+! Moved this logic from delcar_cvp_sys.wresl because Stage 1 transfers should not increase NOD allocations LGB
+
+define del_second_cvp_s {value min(del_first_cvp_s , acvpdem_total_s)} ! Added logic to include Stage 1 Transfers in the delivery target LGB
+
+define deltar_cvps2dv {alias del_second_cvp_s kind 'DEL-TARGET' units 'TAF'}
+
+define deltar_cvp_sdv {std kind 'DEL-TARGET' units 'taf'}
+
+define del_third_cvp_s {
+  case initialdel {
+    condition month <= FEB .and. wateryear==beginWY
+    value acvpdem_total_s }
+  case march_april {
+    condition month >= MAR .and. month <=MAY
+    value del_second_cvp_s }
+  case other {
+    condition always
+    value max(deltar_cvp_sdv(-1), del_second_cvp_s) }
+}
+
+define deltar_cvp_s {value min(del_third_cvp_s, acvpdem_total_s) }
+
+goal save_deltar_cvp_s {deltar_cvp_sdv = deltar_cvp_s}

@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>system</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+<FONT face="Times New Roman">
+<B><U><FONT SIZE=4><P>System Tables</P>
+</B></U></FONT><P>Click the "Study" tab then the "System" tab. There are seven tables (Connectivity, Reservoir, Channel, Delivery, Return, Inflow and Weight) under this tab that describe the system configuration and basic operational constraints. Each type of table can be viewed, created or edited, and saved using the File and Edit menus directly above each tab's table. Click <B>File</B> | <B>Load</B> to open each of the seven file types; all end with the .<I>csv</I> extension. These files are typically found in the Run/System directory. The figure below displays a connectivity file. Only a file named correctly can be loaded into a table. To name a file correctly, it must contain the file type (tab title) in its name. For example, a connectivity file must be of the following format: *connectivity*.csv, where the asterisks represent any combination of characters (within the file name size limit of course).</P>
+<P>A loaded file can be altered by clicking <B>Edit</B> | <B>Add Row</B>, <B>Insert Row</B>, and/or <B>Delete Row</B> and entering proper data for each row added or inserted. <B>Add Row</B> inserts a row at the end of the table; <B>Insert Row</B> inserts a row before <U>each</U> selected row. Delete Row deletes all selected rows. One row is selected by clicking on it; contiguous multiple rows are normally selected by clicking a row and dragging the cursor over other rows while holding down the left mouse button. Non-contiguous multiple rows are normally selected by clicking a row and clicking other rows while holding down the "Ctrl" button.</P>
+<P>Once these files are in their final forms, clicking <B>File</B> | <B>Save</B> for each table will save the *<I>csv</I> file and generate the proper WRESL file for the current system. <B>File</B> | <B>Save As</B> can be used to create a .<I>csv</I> file (and matching WRESL file) with a different name to the loaded file.</P>
+<P>Once all the system tables have been created they should be saved to the &quot;system&quot; directory. When each table is saved to this directory a WRESL file is currently generated which contains the constraint translation. At this point, a file named &quot;system.wresl&quot; should be created in the &quot;run\system&quot; directory that should <I>include</I> all the previously generated system files. For example the &quot;system.wresl&quot; file will contain statements similar to the following:</P>
+
+<pre><I>     INCLUDE 'inflow-table.wresl'
+     INCLUDE 'channel-table.wresl'
+     INCLUDE 'delivery-table.wresl'
+     INCLUDE 'return-table.wresl'
+     INCLUDE 'reservoir-table.wresl'
+     INCLUDE 'connectivity-table.wresl'
+     INCLUDE 'weight-table.wresl'
+</I></pre>
+</FONT>
+</BODY>
+</HTML>

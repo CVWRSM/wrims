@@ -1,0 +1,46 @@
+! demands_69_defs.wresl
+! establish timeseries defines for DSA 69 demands
+
+define dem_d6_PWR     {timeseries kind 'DEMAND-SWP-WR' units 'TAF'}
+define dem_d7a_PAG    {timeseries kind 'DEMAND-SWP-AG' units 'TAF'}
+define dem_d7a_PWR    {timeseries kind 'DEMAND-SWP-WR' units 'TAF'}
+define dem_d7b_PAG    {timeseries kind 'DEMAND-SWP-AG' units 'TAF'}
+define dem_d7b_PWR    {timeseries kind 'DEMAND-SWP-WR' units 'TAF'}
+define dem_d202_PWR   {timeseries kind 'DEMAND-SWP-WR' units 'TAF'}
+define dem_d206a_PAG  {timeseries kind 'DEMAND-SWP-AG' units 'TAF'}
+define dem_d204_PIMI   {timeseries kind 'DEMAND-SWP-MI' units 'TAF'}
+define dem_d201_PIMI   {timeseries kind 'DEMAND-SWP-MI' units 'TAF'}
+define dem_d204_POMI   {timeseries kind 'DEMAND-SWP-MI' units 'TAF'}
+define dem_d201_POMI   {timeseries kind 'DEMAND-SWP-MI' units 'TAF'}
+
+define dem_d201_PMI   {STD KIND 'DEMAND-SWP-MI' units 'TAF' }
+define dem_d204_PMI   {STD KIND 'DEMAND-SWP-MI' units 'TAF' }
+
+goal set_dem_d201_pmi {dem_d201_PMI = dem_d201_PIMI + dem_d201_POMI}
+goal set_dem_d204_pmi {dem_d204_PMI = dem_d204_PIMI + dem_d204_POMI}
+define dem_d206b_PAG {timeseries kind 'DEMAND-SWP-AG' units 'TAF'}
+define dem_d206b_PWR {timeseries kind 'DEMAND-SWP-WR' units 'TAF'}
+
+define dem_d206c_PAG {timeseries kind 'DEMAND-SWP-AG' units 'TAF'}
+define dem_d206c_PWR {timeseries kind 'DEMAND-SWP-WR' units 'TAF'}
+
+!Define Non-prject Demands by Contract Type
+define dem_D230_mi    {timeseries kind 'DEMAND-NP-MI' units 'CFS'}
+define dem_d285_ag   {timeseries kind 'DEMAND-NP-AG' units 'CFS'}
+
+!Define Exports to DSA70
+define dem_d223_exp   {timeseries kind 'DEMAND-EXPORT' units 'TAF'}
+define dem_d283_exp  {timeseries kind 'DEMAND-EXPORT' units 'CFS'}
+
+!Define minimum groundwater pumping
+define mingw_69 {timeseries kind 'gw-pumping-min' units 'TAF'}  ! Minimum Annual pumping for 1980-1993 (TAF)
+
+! define the total Ag and Outdoor Urban Diversion requirement for DSA69
+define dr69 { timeseries kind 'demand' units 'taf'}
+
+! Define percent project
+! calculated by dividing total project demand by the minimum annual
+! total diversion requirement   ~ 980/1400 = .70
+! Includes FRSA and Feather WD (CVP demand)
+define perc_dr69 {VALUE 0.70 }
+

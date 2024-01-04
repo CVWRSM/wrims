@@ -1,0 +1,125 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnvnnnnnnnnnnnnnnvnnnnvnnnnvnnnnnnnnnnnnvnnnnnnnnnnvnnvnnvnvnnnnnnnnnnnnnnnn
+
+U system.sequential_io%b  s-sequio.adb		591bce7c NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_deallocation%s
+W system%s		system.ads		system.ali
+W system.file_io%s	s-fileio.adb		s-fileio.ali
+
+U system.sequential_io%s  s-sequio.ads		df42d918 EE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.streams%s		a-stream.ads		a-stream.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.file_control_block%s  s-ficobl.ads	s-ficobl.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-fileio.ads		20091027141444 42b99b37
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-sequio.ads		20090409150020 d8b3a580
+D s-sequio.adb		20090409150020 1f778ea6
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 20|37r6 54r18 55r18 60r14 21|33r6 78r9 144r18 145r18 159r14
+X 5 a-stream.ads
+36K13*Streams 69e16 20|37w10 54r22 55r22 60r18 21|144r22 145r22 159r18
+42M9*Stream_Element
+44I9*Stream_Element_Offset<integer> 20|55r30 21|145r30
+51A9*Stream_Element_Array(42M9)<44I9> 20|54r30 60r26 21|144r30 159r26
+X 8 a-uncdea.ads
+20u15*Unchecked_Deallocation 21|33w10 78r13
+X 11 system.ads
+37K9*System 197e11 20|36r6 39r9 41r24 78r5 21|32r6 35r14 39r24 165r5
+X 14 s-ficobl.ads
+42K16*File_Control_Block 160e30 20|36w13 41r31
+62E9*File_Mode 62e66 20|68r18 74r18 21|90r18 116r18
+62n44*Out_File{62E9} 20|68r35 21|90r35
+79R9*AFCB 20|43r36
+80P9*AFCB_Ptr(82R9) 20|47r51 21|37r22 46r51
+X 15 s-fileio.ads
+39K16*File_IO 254e19 21|32w13 39r31
+48U14*Open 21|100r11 126r11
+49p7 File_Ptr{14|80P9} 21|100r17 126r17
+50c7 Dummy_FCB<14|82R9> 21|101r17 127r17
+51e7 Mode{14|62E9} 21|102r17 128r17
+52s7 Name{string} 21|103r17 129r17
+53s7 Form{string} 21|104r17 130r17
+54e7 Amethod{character} 21|105r17 131r17
+55b7 Creat{boolean} 21|106r17 132r17
+56b7 Text{boolean} 21|107r17 133r17
+X 20 s-sequio.ads
+39K16*Sequential_IO 11|37k9 20|78l12 78e25 21|35b21 165l12 165t25
+41K12*FCB=41:31 43r32 47r47 68r14 68r31 74r14 21|37r18 46r47 90r14 90r31
+. 116r14
+43R9*Sequential_AFCB<14|82R9> 43e57 46P13 47r23 49P14 49r49 50P14 50r49 52P14
+. 53r21 58P14 59r21 63r33 21|46r23 51r18 60r49 71r48 73r34 78r37 94r34 120r34
+. 143r21 158r21
+46V13*AFCB_Allocate{14|80P9}<14|142p13> 47>7 21|45b13 52l8 52t21
+47r7 Control_Block{43R9} 21|46b7 48r29
+49U14*AFCB_Close<14|148p14> 49^26 21|60b14 65l8 65t18
+49p26 File(43R9) 21|60b26 61r29
+50U14*AFCB_Free<14|154p14> 50^26 21|71b14 82l8 82t17
+50p26 File(43R9) 21|71b25 75r32
+52U14*Read<5|54p14> 53=7 54<7 55<7 21|142b14 149l8 149t12
+53r7 File{43R9} 21|143b7
+54a7 Item{5|51A9} 21|144b7
+55i7 Last{5|44I9} 21|145b7
+58U14*Write<5|60p14> 59=7 60>7 21|157b14 163l8 163t13
+59r7 File{43R9} 21|158b7
+60a7 Item{5|51A9} 21|159b7
+63P9*File_Type(43R9) 67r21 73r21 21|89r21 115r21
+66U14*Create 67=7 68>7 69>7 70>7 21|88b14 108l8 108t14
+67p7 File{63P9} 21|89b7 100m34
+68e7 Mode{14|62E9} 21|90b7 102r30
+69s7 Name{string} 21|91b7 103r30
+70s7 Form{string} 21|92b7 104r30
+72U14*Open 73=7 74>7 75>7 76>7 21|114b14 134l8 134t12
+73p7 File{63P9} 21|115b7 126m34
+74e7 Mode{14|62E9} 21|116b7 128r30
+75s7 Name{string} 21|117b7 129r30
+76s7 Form{string} 21|118b7 130r30
+X 21 s-sequio.adb
+37P12 AP{14|80P9} 100r30 126r30
+39K12 FIO=39:31 100r7 126r7
+73P12 FCB_Ptr(20|43R9) 75r12 75r23 78r54
+75p7 FT{73P12} 81m13
+77U17 Free[8|20] 81r7
+94r7 Dummy_File_Control_Block{20|43R9} 95r29 101r30
+120r7 Dummy_File_Control_Block{20|43R9} 121r29 127r30
+

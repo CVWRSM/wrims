@@ -1,0 +1,72 @@
+/*
+File Name: constraints-DeepPercolation.wresl
+CalSim 3.0 System File
+
+Purpose:
+Deep percolation for each demand unit is calculated by CalSIm Hydro. This deep
+percolation is split into two timeseries. Percolation that in areas overlying the groundwater
+finite element grid, and areas lying upslope from the finite element grid. These two sets of
+deep percolation are aggregated to the WBA scale.
+
+Naming takes the following form:
+DP_WBA_{WBA id}_INT
+DP_WBA_{WBA id}_EXT
+
+Only the second timeseries is passed to the groundwater dll
+
+*/
+
+!*********************************************************************
+!*********************************************************************
+!***  Deep Perc reduction fractions for each WBA
+!*********************************************************************
+!*********************************************************************
+define fDP_WBA_50      {value 1.000000}  ! TODO -- Add actual fDP values
+define fDP_WBA_71      {value 1.000000}
+define fDP_WBA_72      {value 1.000000}
+define fDP_WBA_73      {value 1.000000}
+define fDP_WBA_90      {value 1.000000}
+define fDP_WBA_91      {value 1.000000}
+
+
+!*********************************************************************
+!*********************************************************************
+!Time series definitions for field level deep percolation
+!from precipitation and irrigation
+!*********************************************************************
+!*********************************************************************
+define DP_50_INT         {value 0.0} ! {timeseries kind 'deep-percolation' units 'TAF' convert 'CFS'}
+define DP_WBATotal_50    {std kind 'deep-percolation' units 'CFS'}
+goal setDP_WBATotal50    {DP_WBATotal_50  = DP_50_INT + DP_50_PA}       
+! IMF -- DP_50_PU  not defined (no SW deliveries)
+
+                                          
+define DP_71_INT         {value 0.0} ! {timeseries kind 'deep-percolation' units 'TAF' convert 'CFS'}
+define DP_WBATotal_71    {std kind 'deep-percolation' units 'CFS'}
+goal setDP_WBATotal71    {DP_WBATotal_71  = DP_71_INT + DP_71_PA1 + DP_71_PA2 + DP_71_PA3 + DP_71_PA4 
+                                          + DP_71_PA5 + DP_71_PA6 + DP_71_PA7 + DP_71_PA8 + DP_71_PU1
+                                          + DP_71_PU2 + DP_71_NA1 + DP_71_NA2}
+! IMF -- DP_71_NU  not defined (no SW deliveries)
+
+define DP_72_INT         {value 0.0} ! {timeseries kind 'deep-percolation' units 'TAF' convert 'CFS'}
+define DP_WBATotal_72    {std kind 'deep-percolation' units 'CFS'}
+goal setDP_WBATotal72    {DP_WBATotal_72  = DP_72_INT + DP_72_XA1 + DP_72_XA2 + DP_72_XA3 + DP_72_PA 
+                                          + DP_72_NA1 + DP_72_PR1 + DP_72_PR2 + DP_72_PR3 + DP_72_PR4
+                                          + DP_72_PR5 + DP_72_PR6 + DP_72_PU}
+! IMF -- DP_72_NA2 not defined (no SW deliveries)
+! IMF -- DP_72_NU  not defined (no SW deliveries)
+
+define DP_73_INT         {value 0.0} ! {timeseries kind 'deep-percolation' units 'TAF' convert 'CFS'}
+define DP_WBATotal_73    {std kind 'deep-percolation' units 'CFS'}
+goal setDP_WBATotal73    {DP_WBATotal_73  = DP_73_INT + DP_73_PA1 + DP_73_PA2 + DP_73_PA3 + DP_73_XA} 
+! IMF -- DP_73_NA  not defined (no SW deliveries)
+! IMF -- DP_73_NU  not defined (no SW deliveries)
+        
+define DP_90_INT         {value 0.0} ! {timeseries kind 'deep-percolation' units 'TAF' convert 'CFS'}
+define DP_WBATotal_90    {std kind 'deep-percolation' units 'CFS'}
+goal setDP_WBATotal90    {DP_WBATotal_90  = DP_90_INT + DP_90_PA1 + DP_90_PA2 + DP_90_PU}  
+
+define DP_91_INT         {value 0.0} ! {timeseries kind 'deep-percolation' units 'TAF' convert 'CFS'}
+define DP_WBATotal_91    {std kind 'deep-percolation' units 'CFS'}
+goal setDP_WBATotal91    {DP_WBATotal_91  = DP_91_INT + DP_91_PA  + DP_91_PR} 
+

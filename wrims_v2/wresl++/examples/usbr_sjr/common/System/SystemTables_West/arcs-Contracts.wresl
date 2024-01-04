@@ -1,0 +1,176 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-CONTRACTS.WRESL
+
+NAMING TAKES THE FOLLOWING FORMS:
+
+NAMING TAKES THE FOLLOWING FORMS:
+CL_{ORIGIN PREFIX}_{DESTINATION}    - limitation on specific contractors diversion from particular source
+
+
+Edited ajdraper, MWH, November 28, 2007
+Edited nlparker, BOR, 2009
+*/
+! define CVP allocations 
+define perdv_cvpag_s {std kind 'percent-delivery' units 'none'}
+define perdv_cvpmi_s {std kind 'percent-delivery' units 'none'}
+define perdv_cvpex_s {std kind 'percent-delivery' units 'none'}
+define perdv_cvprf_s {std kind 'percent-delivery' units 'none'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Monthly SOD Demand Distributions for diversions from 
+! DMC - Delta Mendota Canal
+! MDP - Mendota Pool and Sack Dam
+! JUB - Joint Use Branch of the CAA
+! SFU - San Felipe Unit
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define DMC_AG_dist   {select DMC_AG from CVP_SOD_Dist where month=month}
+define DMC_RF_dist   {select DMC_RF from CVP_SOD_Dist where month=month}
+define DMC_MI_Dist   {select DMC_MI from CVP_SOD_Dist where month=month}
+define DMC_EX_Dist   {select DMC_EX from CVP_SOD_Dist where month=month}
+
+define MDP_AG_Dist   {select MDP_AG from CVP_SOD_Dist where month=month}
+define MDP_RF_Dist   {select MDP_RF from CVP_SOD_Dist where month=month}
+define MDP_EX_Dist   {select MDP_EX from CVP_SOD_Dist where month=month}
+ 
+define JUB_AG_dist   {select JUB_AG from JUBSFU_Dist where month=month}
+define JUB_RF_dist   {select JUB_RF from JUBSFU_Dist where month=month}
+define JUB_MI_Dist   {select JUB_MI from JUBSFU_Dist where month=month}
+
+define SFU_AG_dist   {select SFU_AG from JUBSFU_Dist where month=month}
+define SFU_MI_Dist   {select SFU_MI from JUBSFU_Dist where month=month}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! CVP Annual Contract Amounts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! Each contractor has a "code", which enables all contract info to be in the same table
+! The contractor code can be parsed as AABC.d where:
+! AA = WBA #
+! B = 1 for Ag, 2 for RF, 3 for MI, and 4 for EX
+! C = the count of the particular contract type in the WBA
+! d = used if a contractor has more than one contract
+! Example: 7214 would be 72_PA4
+
+! CL variables are annual contract limits
+! CLM variables are monthly contract limits
+! These values are in TAF
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!Demand Unit 64_XA
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*
+East side stuff...here for west-side-only model...
+define  CL_64_XA    {select contract from CVP_SOD_Contracts where contractor=6441} ! Annual contract amount from lookup table
+define  CLM_64_XA   {value CL_64_XA * MDP_EX_Dist}
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!WBA 50 Contracts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define CL_50_PA     {select contract from CVP_SOD_Contracts where contractor=5011}  ! Banta Carbona, Westside
+define CL_50_PUa    {select contract from CVP_SOD_Contracts where contractor=5031.0}  ! City of Tracy
+define CL_50_PUb    {select contract from CVP_SOD_Contracts where contractor=5031.1}  ! City of Tracy
+define CL_50_PU     {value  CL_50_PUa + CL_50_PUb}
+
+define CLM_50_PA    {value  2.0 * CL_50_PA  * DMC_AG_Dist}
+define CLM_50_PUa   {value  2.0 * CL_50_PUa * DMC_MI_Dist}
+define CLM_50_PUb   {value  2.0 * CL_50_PUb * DMC_MI_Dist}
+define CLM_50_PU    {value  CLM_50_PUa + CLM_50_PUb}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!WBA 71 Contracts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define CL_71_PU1    {select contract from CVP_SOD_Contracts where contractor=7131}  ! Musco Olive Products
+define CL_71_PU2    {select contract from CVP_SOD_Contracts where contractor=7231}  ! VA Cemetary
+define CL_71_PA1    {select contract from CVP_SOD_Contracts where contractor=7111}  ! Hospital WD
+define CL_71_PA2    {select contract from CVP_SOD_Contracts where contractor=7112}  ! West Stanislaus ID
+define CL_71_PA3    {select contract from CVP_SOD_Contracts where contractor=7113}  ! Kern Canon WD
+define CL_71_PA4    {select contract from CVP_SOD_Contracts where contractor=7114}  ! Patterson WD
+define CL_71_PA5    {select contract from CVP_SOD_Contracts where contractor=7115}  ! Del Puerto, Salado, Orestimba, Sunflower
+define CL_71_PA6    {select contract from CVP_SOD_Contracts where contractor=7116}  ! Davis, Foothill, Mustang, Quinto, Centinella, and Romero
+define CL_71_PA7    {select contract from CVP_SOD_Contracts where contractor=7117}  ! Oak Flat
+define CL_71_PA8    {select contract from CVP_SOD_Contracts where contractor=7119}  ! Byron Bethany (Plainview)
+
+define CLM_71_PU1   {value 2.0 * CL_71_PU1  * DMC_MI_Dist}
+define CLM_71_PU2   {value 2.0 * CL_71_PU2  * DMC_MI_Dist}
+define CLM_71_PA1   {value 2.0 * CL_71_PA1  * DMC_AG_Dist}
+define CLM_71_PA2   {value 2.0 * CL_71_PA2  * DMC_AG_Dist}
+define CLM_71_PA3   {value 2.0 * CL_71_PA3  * DMC_AG_Dist}
+define CLM_71_PA4   {value 2.0 * CL_71_PA4  * DMC_AG_Dist}
+define CLM_71_PA5   {value 2.0 * CL_71_PA5  * DMC_AG_Dist}
+define CLM_71_PA6   {value 2.0 * CL_71_PA6  * DMC_AG_Dist}
+define CLM_71_PA7   {value 2.0 * CL_71_PA7  * DMC_AG_Dist}
+define CLM_71_PA8   {value 2.0 * CL_71_PA8  * DMC_AG_Dist}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!WBA 72 Contracts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define CL_72_PA     {select contract from CVP_SOD_Contracts where contractor=7211}  ! Laguna WD
+define CL_72_XA1    {select contract from CVP_SOD_Contracts where contractor=7241}  ! San Luis Canal Co Exchange Contractors
+define CL_72_XA2    {select contract from CVP_SOD_Contracts where contractor=7242}  ! Central California ID South Exchange Contractors
+define CL_72_XA3    {select contract from CVP_SOD_Contracts where contractor=7243}  ! Central California ID North Exchange Contractors
+define CL_72_PR1    {select contract from CVP_SOD_Contracts where contractor=7221}  ! Volta WA
+define CL_72_PR2    {select contract from CVP_SOD_Contracts where contractor=7222}  ! Kesterson, Freitas, & Blue Goose units of San Luis NWR, China Island unit of North Grassland
+define CL_72_PR3    {select contract from CVP_SOD_Contracts where contractor=7223}  ! West Bear Ck and San Luis units of San Luis NWR
+define CL_72_PR4    {select contract from CVP_SOD_Contracts where contractor=7224}  ! Los Banos WA, Salt Slouth and Gadwall units of North Grassland
+define CL_72_PR5    {select contract from CVP_SOD_Contracts where contractor=7225}  ! Grassland WD North
+define CL_72_PR6    {select contract from CVP_SOD_Contracts where contractor=7226}  ! Grassland WD South
+define CL_72_PU     {select contract from CVP_SOD_Contracts where contractor=7232}  ! City of Dos Palos
+
+define CLM_72_PA    {value 2.0 * CL_72_PA   * DMC_AG_Dist}
+define CLM_72_XA1   {value 2.0 * CL_72_XA1  * DMC_EX_Dist}
+define CLM_72_XA2   {value 2.0 * CL_72_XA2  * MDP_EX_Dist}
+define CLM_72_XA3   {value 2.0 * CL_72_XA3  * MDP_EX_Dist}
+define CLM_72_PR1   {value 2.0 * CL_72_PR1  * DMC_RF_Dist}
+define CLM_72_PR2   {value 2.0 * CL_72_PR2  * DMC_RF_Dist}
+define CLM_72_PR3   {value 2.0 * CL_72_PR3  * DMC_RF_Dist}
+define CLM_72_PR4   {value 2.0 * CL_72_PR4  * DMC_RF_Dist}
+define CLM_72_PR5   {value 2.0 * CL_72_PR5  * DMC_RF_Dist}
+define CLM_72_PR6   {value 2.0 * CL_72_PR6  * DMC_RF_Dist}
+define CLM_72_PU    {value 2.0 * CL_72_PU   * DMC_MI_Dist}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!WBA 73 Contracts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define CL_73_PA1    {select contract from CVP_SOD_Contracts where contractor=7311}  ! San Luis WD North
+define CL_73_PA2    {select contract from CVP_SOD_Contracts where contractor=7312}  ! Eagle Field, Mercy Springs, Oro Loma
+define CL_73_PA3    {select contract from CVP_SOD_Contracts where contractor=7313}  ! San Luis WD South, Pacheco, Panoche
+define CL_73_XA     {select contract from CVP_SOD_Contracts where contractor=7341}  ! Firebaugh Exchange Contractors
+
+define CLM_73_PA1   {value 2.0 * CL_73_PA1  * DMC_AG_Dist}
+define CLM_73_PA2   {value 2.0 * CL_73_PA2  * DMC_AG_Dist}
+define CLM_73_PA3   {value 2.0 * CL_73_PA3  * JUB_AG_Dist}
+define CLM_73_XA    {value 2.0 * CL_73_XA   * MDP_EX_Dist}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!WBA 90 Contracts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define CL_90_PA1    {select contract from CVP_SOD_Contracts where contractor=9011}  ! Westlands WD Priority 1
+define CL_90_PA2    {select contract from CVP_SOD_Contracts where contractor=9012}  ! Westlands WD Priority 2
+define CL_90_PU     {select contract from CVP_SOD_Contracts where contractor=9031}  ! Avenal, Coalinga, Huron
+
+define CLM_90_PA1   {value 2.0 * CL_90_PA1  * JUB_AG_Dist}
+define CLM_90_PA2   {value 2.0 * CL_90_PA2  * JUB_AG_Dist}
+define CLM_90_PU    {value 2.0 * CL_90_PU   * JUB_MI_Dist}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!WBA 91 Contracts
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define CL_91_PA     {select contract from CVP_SOD_Contracts where contractor=9111.1}  ! Coelho, Fresno Slough WE, James ID, RD1606, Tranquility
+define CL_91_WR     {select contract from CVP_SOD_Contracts where contractor=9111.2}  ! Coelho, Fresno Slough WE, James ID, RD1606, Tranquility
+define CL_91_PR     {select contract from CVP_SOD_Contracts where contractor=9121}    ! Mendota WA
+
+define CLM_91_PA    {value 2.0 * CL_91_PA   * MDP_AG_Dist}
+define CLM_91_WR    {value 2.0 * CL_91_WR   * MDP_EX_Dist}
+define CLM_91_PR    {value 2.0 * CL_91_PR   * MDP_RF_Dist}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!San Felipe Unit Demands
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define CL_SFLPE_PA  {select contract from CVP_SOD_Contracts where contractor=9911} ! San Felipe Ag
+define CL_SFLPE_PU  {select contract from CVP_SOD_Contracts where contractor=9931} ! San Felipe MI
+
+define CLM_SFLPE_PA {value CL_SFLPE_PA * SFU_Ag_Dist}
+define CLM_SFLPE_PU {value CL_SFLPE_PU * SFU_MI_Dist}
+

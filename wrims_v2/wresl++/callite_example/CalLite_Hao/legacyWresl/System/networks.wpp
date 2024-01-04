@@ -1,0 +1,61 @@
+package networks 
+
+import reservoirs as S
+import channels as C
+#import inflows as I
+
+network Wkytn {
+
+	<- out_1    
+	<- delivery 
+	-> in_1     
+
+	connection {
+	
+		[ in_1 -> S.Wkytn -> C.Wkytn -> out_1 ]  
+		[         S.Wkytn -> D.Spring         ] 	    	   
+	}
+
+}
+
+network Orovl {
+
+	<- out_1 
+	<- delivery 
+	-> in_1  
+
+	connection {
+	
+		[ in_1 -> S.Orovl -> C.Orovl -> out_1    ]  
+		[         S.Orovl -> delivery            ] 	    	   
+	}
+
+}
+
+network Folsm {
+
+	<- out_1    
+	<- delivery 
+	-> in_1     
+
+	connection {
+	
+		[ in_1 -> S.Folsm -> C.Folsm -> out_1 ]  
+		[         S.Folsm -> delivery         ] 	    	   
+	}
+
+}
+
+network Trnty {
+
+	<- out_1    
+	<- delivery 
+	-> in_1     
+
+	connection {
+	
+		[ in_1 -> S.Trnty -> C.Trnty -> out_1 ]  
+		[         S.Trnty -> delivery         ] 	    	   
+	}
+
+}

@@ -1,0 +1,25 @@
+package tunnels
+
+tunnel Spring {
+
+	<- out_1 
+	<- D_
+	-> in_1  
+
+
+	flowrate { upperbound 12913*taf_cfs  lowerbound  0 }
+
+} 
+
+
+# clear creek
+tunnel ClearTu {
+
+	<- out_1 
+	-> in_1  
+
+
+	flowrate { upperbound 12913*taf_cfs  lowerbound  0 }
+
+} 
+

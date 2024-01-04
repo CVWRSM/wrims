@@ -1,0 +1,32 @@
+SEQUENCE CYCLE1 {
+    model   first
+    order   1
+    }
+
+	
+MODEL first { 
+
+  define x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define z { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define a { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define b { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  
+  goal g1 { x+y+z+a+b < 100 }
+  goal g2 { x < 3 }
+  goal g3 { b < 4 }
+  
+  Objective TTT {
+	weight 6
+	variable x y z 
+			 group2 {
+				deviationPenalty 2
+				deviationTolerance 5
+				variable a b
+			 }
+  }
+  
+}
+
+

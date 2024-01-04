@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="Build_zip" name="Build_zip_with_version_name">
+
+	<target name="Build_zip">
+
+		<available file="../../out/CalSimPA/version/version.xml" property="version_file.present" />
+		<fail>
+			<condition>
+				<not>
+					<isset property="version_file.present" />
+				</not>
+			</condition>
+		</fail>
+
+		<echo message="Running Build_zip" />
+
+
+		<zip destfile="../../zip_out/CalSimPA_(svn{Version_SVN}).zip"  basedir="../../out" />
+		
+		
+		<echo message="Finished Build_zip" />
+
+
+	</target>
+</project>

@@ -1,0 +1,99 @@
+!Anna Fock  Oct 2003
+/* Calculation of Westside Return Disggregation
+Disaggregating one CALSIM Westside Return arc to DSM2-based arcs (Part B prefix, # of arcs)
+CALSIM                DSM2
+Westside Return(R,1)    = Westside Groundwater Returns (GWR,multiple)
+                    + Westside Surface Water Return (SWR,1) <--- from calculation
+
+CALSIM                CALSIM
+Westside Return(R,1)     = Westside Groundwater Return (R_gw,1)
+                    + Westside Surface Water Return (SWR,1)
+
+*********************Calculation of Westside Surface Water Returns*************************
+!CALSIM Westside returns in DSM2-SJR schematic
+!Higher resolution due to using WESTSIM assumption of subregion return flow locations
+
+CALSIM                 to                 DSM2-SJR Node
+R639West (Hospital WD)                     17 (Vernalis)
+R630f (West Stanislaus WD)                 607 (Finnegan Cut)
+R630c (Kern Canon WD)                     613 (Westley Wasteway)
+R630a & R630d (Del Puerto and Salado WD)    613 (Patterson Sewage)
+R630h & R630i (Patterson water right and WD)    624 (Lake Ramona)
+R630e (Sunflower WD)                     628 (based on GIS)
+R619West                                 631 (Orestimba Creek)
+R614West (except R614d)                     642 (Mud Slough)
+R614d (Laguna WD)                         648 (Salt Slough)
+
+*/
+define SWR17_C5  { value R639B[VAMP_AND_DO] - R_gw17                 }
+define SWR607_C5 { value R630f[VAMP_AND_DO] - R_gw607                 }
+define SWR613_C5 { value R630c[VAMP_AND_DO]                     }
+define SWR622_C5 { value R630a[VAMP_AND_DO] + R630d[VAMP_AND_DO] - R_gw622     }
+define SWR624_C5 { value R630h[VAMP_AND_DO] + R630i[VAMP_AND_DO] - R_gw624     }
+define SWR628_C5 { value R630e[VAMP_AND_DO] - R_gw628                 }
+define SWR631_C5 { value C619[VAMP_AND_DO] - R_gw631                 }
+define SWR642_C5 { value R614K[VAMP_AND_DO] + R614L[VAMP_AND_DO]         } !Level 2 Refuge component to R614West
+define SWR648_C5 { value R614West[VAMP_AND_DO] - SWR642_C5            } !"Other" component to R614West
+
+define SWR_MP_RF_C5 { value R607i[VAMP_AND_DO] } !Level 2 Refuge component of R607West
+define SWR_MP_Ag_C5 { value R607West[VAMP_AND_DO] - R607i[VAMP_AND_DO] } !Ag component of R607West
+
+!EC Calculation of CALSIM Westside Returns
+define EC5_MP_RF { value EC_SWR642 }
+
+define EC5_R607West {
+    Case nearzero {
+        condition R607West[VAMP_AND_DO] < 0.0001
+        value 0.0 }
+    Case otherwise {
+        condition always
+        value ( max( 0.0 ,
+            SWR_MP_RF_C5 * EC5_MP_RF
+            + SWR_MP_Ag_C5 * EC_MP_Ag_Return )
+            / max( 0.0001, R607West[VAMP_AND_DO]) ) } }
+
+define EC5_R614 {
+    Case nearzero {
+        condition R614West[VAMP_AND_DO] < 0.0001
+        value 0.0 }
+    Case otherwise {
+        condition always
+        value ( max( 0.0 ,
+            SWR648_C5 * EC_SWR648
+            + SWR642_C5 * EC_SWR642 )
+            / max( 0.0001, R614West[VAMP_AND_DO]) ) } }
+
+define EC5_R619 {
+    Case nearzero {
+        condition C619[VAMP_AND_DO] < 0.0001
+        value 0.0 }
+    Case otherwise {
+        condition always
+        value ( max (0.0 ,
+            SWR631_C5 * EC_SWR631
+            + R_gw631 * EC_R_gw631 )
+            / C619[VAMP_AND_DO]) } }
+
+define EC5_R630 {
+    Case nearzero {
+        condition R630West[VAMP_AND_DO] < 0.0001
+        value 0.0 }
+    Case otherwise {
+        condition always
+        value ( max (0.0,
+              SWR628_C5 * EC_SWR628 + R_gw628 * EC_R_gw628
+            + SWR624_C5 * EC_SWR624 + R_gw624 * EC_R_gw624
+            + SWR622_C5 * EC_SWR622 + R_gw622 * EC_R_gw622
+            + SWR613_C5 * EC_SWR613
+            + SWR607_C5 * EC_SWR607 + R_gw607 * EC_R_gw607)
+            / max(0.0001 , R630West[VAMP_AND_DO]) )} }!
+
+define EC5_R639 {
+    Case nearzero {
+        condition R639B[VAMP_AND_DO] < 0.0001
+        value 0.0 }
+    Case otherwise {
+        condition always
+        value ( max (0.0,
+            SWR17_C5 * EC_SWR17 +  R_gw17 * EC_R_gw17 )
+            / R639B[VAMP_AND_DO]) } }

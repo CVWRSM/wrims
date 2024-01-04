@@ -1,0 +1,39 @@
+sequence CYCLE1 {
+    model   First
+    order   1
+    }
+
+	
+model First { 
+
+  define X { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define Y { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define Z { std kind 'FLOW-CHANNEL' units 'CFS' }
+  
+  define A { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define B { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define C { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define D { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define E { std kind 'FLOW-CHANNEL' units 'CFS' }
+  
+  goal G1 {  ( X+Y+Z ) + ( A+B+C+D+E ) < 80 }
+  
+  goal G2 {              ( A+B+C+D+E ) = 20 }
+  
+  ! XYZ and ABCDE cannot be assigned equally because
+  ! they are subject to different constraints, 
+
+  objective xyzObj {
+	weight 5
+	DeviationPenalty 1
+	variable X Y Z
+  }
+
+  objective abcdeObj {
+	weight 5
+	DeviationPenalty 1
+	variable A B C D E
+  }  
+}
+
+

@@ -1,0 +1,1489 @@
+/*
+CONSTRAINTS-WUFACTORS.WRESL
+CALSIM III SYSTEM FILE
+
+Purpose: Apply water use factors
+ 
+ NAMING TAKES THE FOLLOWING FORMS:
+ EL_{source prefix}_{demand unit} - evaporative loss (non-recoverable)
+ PL_{source prefix}_{demand unit} - percolation loss (to groundwater)
+ RL_{source prefix}_{demand unit} - return flow loss (seepage loss to canal toe drain, available for reuse)
+ SL_{source prefix}_{demand unit} - spill loss (canal spill to main drain, not available for reuse)
+  
+ DL_{source prefix}_{demand unit} 	- total conveyance loss  associated with diversion (EL + PL + RL + SL)
+ DL_{demand unit} 					- total conveyance loss  associated with demand unit from multiple diversion arcs
+  
+ Edited ADraper, MWH, 05/11/08
+ Edited ADraper, MWH, 11/15/06/
+  
+  
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 1		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 1_NA -
+!==============================
+/*goal setEV_1_NA 	{EV_1_NA = D_CWD032_1_NA * EVF_CWD032_1_NA} 
+goal setDP_1_NA 	{DP_1_NA = D_CWD032_1_NA * DPF_CWD032_1_NA} 
+goal setLF_1_NA 	{LF_1_NA = D_CWD032_1_NA * LFF_CWD032_1_NA} 
+goal setSP_1_NA 	{SP_1_NA = D_CWD032_1_NA * SPF_CWD032_1_NA} 
+goal setDL_1_NA 	{DL_1_NA = EV_1_NA  + DP_1_NA  + LF_1_NA + SP_1_NA}
+! reuse
+goal set1RU_1_NA	{RU_1_NA < R_1_NA + LF_1_NA}
+goal set2RU_1_NA	{RU_1_NA < RUF_1_NA*DG_1_NA}
+! riparian loss
+goal setRP_1_NA	{RP_1_NA = AW_1_NA * RPF_1_NA}*/ 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 2		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 2_NA -
+!==============================
+goal setEV_2_NA 	{EV_2_NA = D_CWD009_2_NA * EVF_CWD009_2_NA + D_CLR009_2_NA * EVF_CLR009_2_NA} 
+goal setDP_2_NA 	{DP_2_NA = D_CWD009_2_NA * DPF_CWD009_2_NA + D_CLR009_2_NA * DPF_CLR009_2_NA} 
+goal setLF_2_NA 	{LF_2_NA = D_CWD009_2_NA * LFF_CWD009_2_NA + D_CLR009_2_NA * LFF_CLR009_2_NA} 
+goal setSP_2_NA 	{SP_2_NA = D_CWD009_2_NA * SPF_CWD009_2_NA + D_CLR009_2_NA * SPF_CLR009_2_NA} 
+goal setDL_2_NA 	{DL_2_NA = EV_2_NA  + DP_2_NA  + LF_2_NA + SP_2_NA}
+! reuse
+goal set1RU_2_NA	{RU_2_NA < R_2_NA + LF_2_NA}
+goal set2RU_2_NA	{RU_2_NA < RUF_2_NA*DG_2_NA}
+! riparian loss
+goal setRP_2_NA	{RP_2_NA = AW_2_NA * RPF_2_NA} 
+
+!==============================
+! 2_SA -
+!==============================
+goal setEV_2_SA 	{EV_2_SA = D_SAC296_2_SA * EVF_SAC296_2_SA} 
+goal setDP_2_SA 	{DP_2_SA = D_SAC296_2_SA * DPF_SAC296_2_SA} 
+goal setLF_2_SA 	{LF_2_SA = D_SAC296_2_SA * LFF_SAC296_2_SA} 
+goal setSP_2_SA 	{SP_2_SA = D_SAC296_2_SA * SPF_SAC296_2_SA} 
+goal setDL_2_SA 	{DL_2_SA = EV_2_SA  + DP_2_SA  + LF_2_SA + SP_2_SA}
+! reuse
+goal set1RU_2_SA	{RU_2_SA < R_2_SA + LF_2_SA}
+goal set2RU_2_SA	{RU_2_SA < RUF_2_SA*DG_2_SA}
+! riparian loss
+goal setRP_2_SA	{RP_2_SA = AW_2_SA * RPF_2_SA} 
+
+!==============================
+! 2_PA -
+!==============================
+goal setEV_2_PA 	{EV_2_PA = D_WKYTN_2_PA * EVF_WKYTN_2_PA} 
+goal setDP_2_PA 	{DP_2_PA = D_WKYTN_2_PA * DPF_WKYTN_2_PA} 
+goal setLF_2_PA 	{LF_2_PA = D_WKYTN_2_PA * LFF_WKYTN_2_PA} 
+goal setSP_2_PA 	{SP_2_PA = D_WKYTN_2_PA * SPF_WKYTN_2_PA} 
+goal setDL_2_PA 	{DL_2_PA = EV_2_PA  + DP_2_PA  + LF_2_PA + SP_2_PA}
+! reuse
+goal set1RU_2_PA	{RU_2_PA < R_2_PA + LF_2_PA}
+goal set2RU_2_PA	{RU_2_PA < RUF_2_PA*DG_2_PA}
+! riparian loss
+goal setRP_2_PA	{RP_2_PA = AW_2_PA * RPF_2_PA} 
+
+!==============================
+! 2_PU -
+!==============================
+goal setEL_WTPCSD_2_PU	{EL_WTPCSD_2_PU = D_WTPCSD_2_PU  * EF_WTPCSD_2_PU}
+goal setSL_WTPCSD_2_PU	{SL_WTPCSD_2_PU = D_WTPCSD_2_PU  * SF_WTPCSD_2_PU}
+goal setDL_WTPCSD_2_PU	{DL_WTPCSD_2_PU = EL_WTPCSD_2_PU + SL_WTPCSD_2_PU}
+
+goal setDL_2_PU	 {DL_2_PU = DL_WTPCSD_2_PU}
+
+!==============================
+! 2_SU -
+!==============================
+goal setEL_WTPFTH_2_SU	{EL_WTPFTH_2_SU = D_WTPFTH_2_SU  * EF_WTPFTH_2_SU}
+goal setSL_WTPFTH_2_SU	{SL_WTPFTH_2_SU = D_WTPFTH_2_SU  * SF_WTPFTH_2_SU}
+goal setDL_WTPFTH_2_SU	{DL_WTPFTH_2_SU = EL_WTPFTH_2_SU + SL_WTPFTH_2_SU}
+
+goal setDL_2_SU 	{DL_2_SU = DL_WTPFTH_2_SU}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 3		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 3_NA -
+!==============================
+goal setEV_3_NA 	{EV_3_NA = D_BTL006_3_NA * EVF_BTL006_3_NA + D_COW014_3_NA * EVF_COW014_3_NA + D_BCN005_3_NA * EVF_BCN005_3_NA} 
+goal setDP_3_NA 	{DP_3_NA = D_BTL006_3_NA * DPF_BTL006_3_NA + D_COW014_3_NA * DPF_COW014_3_NA + D_BCN005_3_NA * DPF_BCN005_3_NA} 
+goal setLF_3_NA 	{LF_3_NA = D_BTL006_3_NA * LFF_BTL006_3_NA + D_COW014_3_NA * LFF_COW014_3_NA + D_BCN005_3_NA * LFF_BCN005_3_NA} 
+goal setSP_3_NA 	{SP_3_NA = D_BTL006_3_NA * SPF_BTL006_3_NA + D_COW014_3_NA * SPF_COW014_3_NA + D_BCN005_3_NA * SPF_BCN005_3_NA} 
+goal setDL_3_NA 	{DL_3_NA = EV_3_NA  + DP_3_NA  + LF_3_NA + SP_3_NA}
+! reuse
+goal set1RU_3_NA	{RU_3_NA < R_3_NA + LF_3_NA}
+goal set2RU_3_NA	{RU_3_NA < RUF_3_NA*DG_3_NA} 
+! riparian loss
+goal setRP_3_NA	{RP_3_NA = AW_3_NA * RPF_3_NA} 
+
+!==============================
+! 3_PA -
+!==============================
+goal setEV_3_PA 	{EV_3_PA = D_SAC294_3_PA * EVF_SAC294_3_PA} 
+goal setDP_3_PA 	{DP_3_PA = D_SAC294_3_PA * DPF_SAC294_3_PA} 
+goal setLF_3_PA 	{LF_3_PA = D_SAC294_3_PA * LFF_SAC294_3_PA} 
+goal setSP_3_PA 	{SP_3_PA = D_SAC294_3_PA * SPF_SAC294_3_PA} 
+goal setDL_3_PA 	{DL_3_PA = EV_3_PA  + DP_3_PA  + LF_3_PA + SP_3_PA}
+! reuse
+goal set1RU_3_PA	{RU_3_PA < R_3_PA + LF_3_PA}
+goal set2RU_3_PA	{RU_3_PA < RUF_3_PA*DG_3_PA} 
+! riparian loss
+goal setRP_3_PA	{RP_3_PA = AW_3_PA * RPF_3_PA} 
+
+!==============================
+! 3_SA -
+!==============================
+goal setEV_3_SA 	{EV_3_SA = D_SAC289_3_SA * EVF_SAC289_3_SA} 
+goal setDP_3_SA 	{DP_3_SA = D_SAC289_3_SA * DPF_SAC289_3_SA} 
+goal setLF_3_SA 	{LF_3_SA = D_SAC289_3_SA * LFF_SAC289_3_SA} 
+goal setSP_3_SA 	{SP_3_SA = D_SAC289_3_SA * SPF_SAC289_3_SA} 
+goal setDL_3_SA 	{DL_3_SA = EV_3_SA  + DP_3_SA  + LF_3_SA + SP_3_SA}
+! reuse
+goal set1RU_3_SA	{RU_3_SA < R_3_SA + LF_3_SA}
+goal set2RU_3_SA	{RU_3_SA < RUF_3_SA*DG_3_SA}
+! riparian loss
+goal setRP_3_SA	{RP_3_SA = AW_3_SA * RPF_3_SA} 
+
+!==============================
+! 3_SU -
+!==============================
+goal setEL_WTPFTH_3_SU	{EL_WTPFTH_3_SU = D_WTPFTH_3_SU  * EF_WTPFTH_3_SU}
+goal setSL_WTPFTH_3_SU	{SL_WTPFTH_3_SU = D_WTPFTH_3_SU  * SF_WTPFTH_3_SU}
+goal setDL_WTPFTH_3_SU	{DL_WTPFTH_3_SU = EL_WTPFTH_3_SU + SL_WTPFTH_3_SU}
+
+goal setDL_3_SU 	{DL_3_SU = DL_WTPFTH_3_SU}
+
+!==============================
+! 3_PU1 -
+!==============================
+goal setEL_WTPJMS_3_PU1	{EL_WTPJMS_3_PU1 = D_WTPJMS_3_PU1  * EF_WTPJMS_3_PU1}
+goal setSL_WTPJMS_3_PU1	{SL_WTPJMS_3_PU1 = D_WTPJMS_3_PU1  * SF_WTPJMS_3_PU1}
+goal setDL_WTPJMS_3_PU1	{DL_WTPJMS_3_PU1 = EL_WTPJMS_3_PU1 + SL_WTPJMS_3_PU1}
+
+goal setDL_3_PU1	{DL_3_PU1 = DL_WTPJMS_3_PU1}
+
+!==============================
+! 3_PU2 -
+!==============================
+goal setEL_SAC_3_PU2	{EL_SAC_3_PU2 = D_SAC294_3_PU2  * EF_SAC_3_PU2}
+goal setSL_SAC_3_PU2	{SL_SAC_3_PU2 = D_SAC294_3_PU2  * SF_SAC_3_PU2}
+goal setDL_SAC_3_PU2	{DL_SAC_3_PU2 = EL_SAC_3_PU2    + SL_SAC_3_PU2}
+
+goal setDL_3_PU2	 {DL_3_PU2 = DL_SAC_3_PU2}
+
+!==============================
+! 3_PU3 -
+!==============================
+goal setEL_WTPBUK_3_PU3	{EL_WTPBUK_3_PU3 = D_WTPBUK_3_PU3  * EF_WTPBUK_3_PU3}
+goal setSL_WTPBUK_3_PU3	{SL_WTPBUK_3_PU3 = D_WTPBUK_3_PU3  * SF_WTPBUK_3_PU3}
+goal setDL_WTPBUK_3_PU3	{DL_WTPBUK_3_PU3 = EL_WTPBUK_3_PU3 + SL_WTPBUK_3_PU3}
+
+goal setDL_3_PU3	{DL_3_PU3 = DL_WTPBUK_3_PU3}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 4		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 4_NA -
+!==============================
+goal setEV_4_NA 	{EV_4_NA = D_SAC224_4_NA * EVF_SAC224_4_NA + D_ELD012_4_NA * EVF_ELD012_4_NA + D_THM012_4_NA * EVF_THM012_4_NA} 
+goal setDP_4_NA 	{DP_4_NA = D_SAC224_4_NA * DPF_SAC224_4_NA + D_ELD012_4_NA * DPF_ELD012_4_NA + D_THM012_4_NA * DPF_THM012_4_NA} 
+goal setLF_4_NA 	{LF_4_NA = D_SAC224_4_NA * LFF_SAC224_4_NA + D_ELD012_4_NA * LFF_ELD012_4_NA + D_THM012_4_NA * LFF_THM012_4_NA} 
+goal setSP_4_NA 	{SP_4_NA = D_SAC224_4_NA * SPF_SAC224_4_NA + D_ELD012_4_NA * SPF_ELD012_4_NA + D_THM012_4_NA * SPF_THM012_4_NA} 
+goal setDL_4_NA 	{DL_4_NA = EV_4_NA  + DP_4_NA  + LF_4_NA + SP_4_NA}
+! reuse
+goal set1RU_4_NA	{RU_4_NA < R_4_NA + LF_4_NA}
+goal set2RU_4_NA	{RU_4_NA < RUF_4_NA*DG_4_NA} 
+! riparian loss
+goal setRP_4_NA	{RP_4_NA = AW_4_NA * RPF_4_NA} 
+
+!==============================
+! 4_PA1 -
+!==============================
+goal setEV_4_PA1 	{EV_4_PA1 = D_CCL005_4_PA1 * EVF_CCL005_4_PA1} 
+goal setDP_4_PA1 	{DP_4_PA1 = D_CCL005_4_PA1 * DPF_CCL005_4_PA1} 
+goal setLF_4_PA1 	{LF_4_PA1 = D_CCL005_4_PA1 * LFF_CCL005_4_PA1} 
+goal setSP_4_PA1 	{SP_4_PA1 = D_CCL005_4_PA1 * SPF_CCL005_4_PA1} 
+goal setDL_4_PA1 	{DL_4_PA1 = EV_4_PA1  + DP_4_PA1  + LF_4_PA1 + SP_4_PA1}
+! reuse
+goal set1RU_4_PA1	{RU_4_PA1 < R_4_PA1 + LF_4_PA1}
+goal set2RU_4_PA1	{RU_4_PA1 < RUF_4_PA1*DG_4_PA1}
+! riparian loss
+goal setRP_4_PA1	{RP_4_PA1 = AW_4_PA1 * RPF_4_PA1} 
+
+!==============================
+! 4_PA2 -
+!==============================
+goal setEV_4_PA2 	{EV_4_PA2 = D_TCC022_4_PA2 * EVF_TCC022_4_PA2} 
+goal setDP_4_PA2 	{DP_4_PA2 = D_TCC022_4_PA2 * DPF_TCC022_4_PA2} 
+goal setLF_4_PA2 	{LF_4_PA2 = D_TCC022_4_PA2 * LFF_TCC022_4_PA2} 
+goal setSP_4_PA2 	{SP_4_PA2 = D_TCC022_4_PA2 * SPF_TCC022_4_PA2} 
+goal setDL_4_PA2 	{DL_4_PA2 = EV_4_PA2  + DP_4_PA2  + LF_4_PA2 + SP_4_PA2}
+! reuse
+goal set1RU_4_PA2	{RU_4_PA2 < R_4_PA2 + LF_4_PA2}
+goal set2RU_4_PA2	{RU_4_PA2 < RUF_4_PA2*DG_4_PA2}
+! riparian loss
+goal setRP_4_PA2	{RP_4_PA2 = AW_4_PA2 * RPF_4_PA2}
+
+!===========================================================
+! 4_TCCL - Tehama-Colusa Canal loss
+!===========================================================
+!goal setEV_4_TCCL 	{EV_4_TCCL = C_TCC001 * EVF_4_TCCL} 
+!goal setDP_4_TCCL 	{DP_4_TCCL = C_TCC001 * DPF_4_TCCL}
+
+!goal setSG_TCC022	{SG_TCC022 = - EV_4_TCCL - DP_4_TCCL}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 5		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 5_NA -
+!==============================
+goal setEV_5_NA 	{EV_5_NA = D_SAC240_5_NA * EVF_SAC240_5_NA + D_ANT010_5_NA * EVF_ANT010_5_NA + D_MLC006_5_NA * EVF_MLC006_5_NA + D_DRC010_5_NA * EVF_DRC010_5_NA} 
+goal setDP_5_NA 	{DP_5_NA = D_SAC240_5_NA * DPF_SAC240_5_NA + D_ANT010_5_NA * DPF_ANT010_5_NA + D_MLC006_5_NA * DPF_MLC006_5_NA + D_DRC010_5_NA * DPF_DRC010_5_NA} 
+goal setLF_5_NA 	{LF_5_NA = D_SAC240_5_NA * LFF_SAC240_5_NA + D_ANT010_5_NA * LFF_ANT010_5_NA + D_MLC006_5_NA * LFF_MLC006_5_NA + D_DRC010_5_NA * LFF_DRC010_5_NA} 
+goal setSP_5_NA 	{SP_5_NA = D_SAC240_5_NA * SPF_SAC240_5_NA + D_ANT010_5_NA * SPF_ANT010_5_NA + D_MLC006_5_NA * SPF_MLC006_5_NA + D_DRC010_5_NA * SPF_DRC010_5_NA} 
+goal setDL_5_NA 	{DL_5_NA = EV_5_NA  + DP_5_NA  + LF_5_NA + SP_5_NA}
+! reuse
+goal set1RU_5_NA	{RU_5_NA < R_5_NA + LF_5_NA}
+goal set2RU_5_NA	{RU_5_NA < RUF_5_NA*DG_5_NA} 
+! riparian loss
+goal setRP_5_NA	{RP_5_NA = AW_5_NA * RPF_5_NA} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 6		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 6_PA -
+!==============================
+goal setEV_6_PA 	{EV_6_PA = D_STN021_6_PA * EVF_STN021_6_PA + D_STN026_6_PA * EVF_STN026_6_PA} 
+goal setDP_6_PA 	{DP_6_PA = D_STN021_6_PA * DPF_STN021_6_PA + D_STN026_6_PA * DPF_STN026_6_PA} 
+goal setLF_6_PA 	{LF_6_PA = D_STN021_6_PA * LFF_STN021_6_PA + D_STN026_6_PA * LFF_STN026_6_PA} 
+goal setSP_6_PA 	{SP_6_PA = D_STN021_6_PA * SPF_STN021_6_PA + D_STN026_6_PA * SPF_STN026_6_PA} 
+goal setDL_6_PA 	{DL_6_PA = EV_6_PA  + DP_6_PA  + LF_6_PA + SP_6_PA}
+! reuse
+goal set1RU_6_PA	{RU_6_PA < /*R_6_PA +*/ LF_6_PA} !No return flow
+goal set2RU_6_PA	{RU_6_PA < RUF_6_PA*DG_6_PA} 
+! riparian loss
+goal setRP_6_PA	{RP_6_PA = AW_6_PA * RPF_6_PA} 
+
+!==================================================================
+! 6_STNL - Stony Creek to Tehama-Colusa Canal diversion loss
+!==================================================================
+!goal setEV_6_STNL 	{EV_6_STNL = D_STN014_TCC031 * EVF_6_STNL} 
+!goal setDP_6_STNL 	{DP_6_STNL = D_STN014_TCC031 * DPF_6_STNL}
+
+!goal setSG_TCC031	{SG_TCC031 = - EV_6_STNL - DP_6_STNL}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 7 North		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 7N_PA -
+!==============================
+goal setEV_7N_PA 	{EV_7N_PA = D_TCC036_7N_PA * EVF_TCC036_7N_PA} 
+goal setDP_7N_PA 	{DP_7N_PA = D_TCC036_7N_PA * DPF_TCC036_7N_PA} 
+goal setLF_7N_PA 	{LF_7N_PA = D_TCC036_7N_PA * LFF_TCC036_7N_PA} 
+goal setSP_7N_PA 	{SP_7N_PA = D_TCC036_7N_PA * SPF_TCC036_7N_PA} 
+goal setDL_7N_PA 	{DL_7N_PA = EV_7N_PA  + DP_7N_PA  + LF_7N_PA + SP_7N_PA}
+! reuse
+goal set1RU_7N_PA	{RU_7N_PA < R_7N_PA + LF_7N_PA}
+goal set2RU_7N_PA	{RU_7N_PA < RUF_7N_PA*DG_7N_PA}
+! riparian loss
+goal setRP_7N_PA	{RP_7N_PA = AW_7N_PA * RPF_7N_PA} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 7 South		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 7S_PA -
+!==============================
+goal setEV_7S_PA 	{EV_7S_PA = D_TCC081_7S_PA * EVF_TCC081_7S_PA + D_TCC111_7S_PA * EVF_TCC111_7S_PA} 
+goal setDP_7S_PA 	{DP_7S_PA = D_TCC081_7S_PA * DPF_TCC081_7S_PA + D_TCC111_7S_PA * DPF_TCC111_7S_PA} 
+goal setLF_7S_PA 	{LF_7S_PA = D_TCC081_7S_PA * LFF_TCC081_7S_PA + D_TCC111_7S_PA * LFF_TCC111_7S_PA} 
+goal setSP_7S_PA 	{SP_7S_PA = D_TCC081_7S_PA * SPF_TCC081_7S_PA + D_TCC111_7S_PA * SPF_TCC111_7S_PA} 
+goal setDL_7S_PA 	{DL_7S_PA = EV_7S_PA  + DP_7S_PA  + LF_7S_PA + SP_7S_PA}
+! reuse
+goal set1RU_7S_PA	{RU_7S_PA < R_7S_PA + LF_7S_PA}
+goal set2RU_7S_PA	{RU_7S_PA < RUF_7S_PA*DG_7S_PA}
+! riparian loss
+goal setRP_7S_PA	{RP_7S_PA = AW_7S_PA * RPF_7S_PA} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8 North		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 8N_PA -
+!==============================
+goal setEV_8N_PA 	{EV_8N_PA = D_CBD049_8N_PA * EVF_CBD049_8N_PA} 
+goal setDP_8N_PA 	{DP_8N_PA = D_CBD049_8N_PA * DPF_CBD049_8N_PA} 
+goal setLF_8N_PA 	{LF_8N_PA = D_CBD049_8N_PA * LFF_CBD049_8N_PA} 
+goal setSP_8N_PA 	{SP_8N_PA = D_CBD049_8N_PA * SPF_CBD049_8N_PA} 
+goal setDL_8N_PA 	{DL_8N_PA = EV_8N_PA  + DP_8N_PA  + LF_8N_PA + SP_8N_PA}
+! reuse
+goal set1RU_8N_PA	{RU_8N_PA < R_8N_PA + LF_8N_PA}
+goal set2RU_8N_PA	{RU_8N_PA < RUF_8N_PA*DG_8N_PA}
+! riparian loss
+goal setRP_8N_PA	{RP_8N_PA = AW_8N_PA * RPF_8N_PA} 
+
+!==============================
+! 8N_PR1 -
+!==============================
+goal setEV_8N_PR1 	{EV_8N_PR1 = D_GCC027_8N_PR1 * EVF_GCC027_8N_PR1} 
+goal setDP_8N_PR1 	{DP_8N_PR1 = D_GCC027_8N_PR1 * DPF_GCC027_8N_PR1} 
+goal setLF_8N_PR1 	{LF_8N_PR1 = D_GCC027_8N_PR1 * LFF_GCC027_8N_PR1} 
+goal setSP_8N_PR1 	{SP_8N_PR1 = D_GCC027_8N_PR1 * SPF_GCC027_8N_PR1} 
+goal setDL_8N_PR1 	{DL_8N_PR1 = EV_8N_PR1  + DP_8N_PR1  + LF_8N_PR1 + SP_8N_PR1}
+! reuse
+goal set1RU_8N_PR1	{RU_8N_PR1 < R_8N_PR1 + LF_8N_PR1}
+goal set2RU_8N_PR1	{RU_8N_PR1 < RUF_8N_PR1*DG_8N_PR1}
+! riparian loss
+goal setRP_8N_PR1	{RP_8N_PR1 = AW_8N_PR1 * RPF_8N_PR1} 
+
+!==============================
+! 8N_SA2 -
+!==============================
+goal setEV_8N_SA2 	{EV_8N_SA2 = D_GCC027_8N_SA2 * EVF_GCC027_8N_SA2} 
+goal setDP_8N_SA2 	{DP_8N_SA2 = D_GCC027_8N_SA2 * DPF_GCC027_8N_SA2} 
+goal setLF_8N_SA2 	{LF_8N_SA2 = D_GCC027_8N_SA2 * LFF_GCC027_8N_SA2} 
+goal setSP_8N_SA2 	{SP_8N_SA2 = D_GCC027_8N_SA2 * SPF_GCC027_8N_SA2} 
+goal setDL_8N_SA2 	{DL_8N_SA2 = EV_8N_SA2  + DP_8N_SA2  + LF_8N_SA2 + SP_8N_SA2}
+! reuse
+goal set1RU_8N_SA2	{RU_8N_SA2 < R_8N_SA2 + LF_8N_SA2}
+goal set2RU_8N_SA2	{RU_8N_SA2 < RUF_8N_SA2*DG_8N_SA2}
+! riparian loss
+goal setRP_8N_SA2	{RP_8N_SA2 = AW_8N_SA2 * RPF_8N_SA2} 
+
+!==============================
+! 8N_SA1 -
+!==============================
+goal setEV_8N_SA1 	{EV_8N_SA1 = D_SAC159_8N_SA1 * EVF_SAC159_8N_SA1 + D_SAC178_8N_SA1 * EVF_SAC178_8N_SA1 + D_CBD049_8N_SA1 * EVF_CBD049_8N_SA1} 
+goal setDP_8N_SA1 	{DP_8N_SA1 = D_SAC159_8N_SA1 * DPF_SAC159_8N_SA1 + D_SAC178_8N_SA1 * DPF_SAC178_8N_SA1 + D_CBD049_8N_SA1 * DPF_CBD049_8N_SA1} 
+goal setLF_8N_SA1 	{LF_8N_SA1 = D_SAC159_8N_SA1 * LFF_SAC159_8N_SA1 + D_SAC178_8N_SA1 * LFF_SAC178_8N_SA1 + D_CBD049_8N_SA1 * LFF_CBD049_8N_SA1} 
+goal setSP_8N_SA1 	{SP_8N_SA1 = D_SAC159_8N_SA1 * SPF_SAC159_8N_SA1 + D_SAC178_8N_SA1 * SPF_SAC178_8N_SA1 + D_CBD049_8N_SA1 * SPF_CBD049_8N_SA1} 
+goal setDL_8N_SA1 	{DL_8N_SA1 = EV_8N_SA1  + DP_8N_SA1  + LF_8N_SA1 + SP_8N_SA1}
+! reuse
+goal set1RU_8N_SA1	{RU_8N_SA1 < R_8N_SA1 + LF_8N_SA1}
+goal set2RU_8N_SA1	{RU_8N_SA1 < RUF_8N_SA1*DG_8N_SA1} 
+! riparian loss
+goal setRP_8N_SA1	{RP_8N_SA1 = AW_8N_SA1 * RPF_8N_SA1} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8 N/S		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 8S_SA1 -
+!==============================
+goal setEV_8S_SA1 	{EV_8S_SA1 = D_CBD041_8S_SA1 * EVF_CBD041_8S_SA1 + D_SAC159_8S_SA1 * EVF_SAC159_8S_SA1} 
+goal setDP_8S_SA1 	{DP_8S_SA1 = D_CBD041_8S_SA1 * DPF_CBD041_8S_SA1 + D_SAC159_8S_SA1 * DPF_SAC159_8S_SA1} 
+goal setLF_8S_SA1 	{LF_8S_SA1 = D_CBD041_8S_SA1 * LFF_CBD041_8S_SA1 + D_SAC159_8S_SA1 * LFF_SAC159_8S_SA1} 
+goal setSP_8S_SA1 	{SP_8S_SA1 = D_CBD041_8S_SA1 * SPF_CBD041_8S_SA1 + D_SAC159_8S_SA1 * SPF_SAC159_8S_SA1} 
+goal setDL_8S_SA1 	{DL_8S_SA1 = EV_8S_SA1  + DP_8S_SA1  + LF_8S_SA1 + SP_8S_SA1}
+! reuse
+goal set1RU_8S_SA1	{RU_8S_SA1 < R_8S_SA1 + LF_8S_SA1}
+goal set2RU_8S_SA1	{RU_8S_SA1 < RUF_8S_SA1*DG_8S_SA1} 
+! riparian loss
+goal setRP_8S_SA1	{RP_8S_SA1 = AW_8S_SA1 * RPF_8S_SA1} 
+
+!==============================
+! 8S_SA2 -
+!==============================
+goal setEV_8S_SA2 	{EV_8S_SA2 = D_CBD041_8S_SA2 * EVF_CBD041_8S_SA2 + D_GCC046_8S_SA2 * EVF_GCC046_8S_SA2} 
+goal setDP_8S_SA2 	{DP_8S_SA2 = D_CBD041_8S_SA2 * DPF_CBD041_8S_SA2 + D_GCC046_8S_SA2 * DPF_GCC046_8S_SA2} 
+goal setLF_8S_SA2 	{LF_8S_SA2 = D_CBD041_8S_SA2 * LFF_CBD041_8S_SA2 + D_GCC046_8S_SA2 * LFF_GCC046_8S_SA2} 
+goal setSP_8S_SA2 	{SP_8S_SA2 = D_CBD041_8S_SA2 * SPF_CBD041_8S_SA2 + D_GCC046_8S_SA2 * SPF_GCC046_8S_SA2} 
+goal setDL_8S_SA2 	{DL_8S_SA2 = EV_8S_SA2  + DP_8S_SA2  + LF_8S_SA2 + SP_8S_SA2}
+! reuse
+goal set1RU_8S_SA2	{RU_8S_SA2 < R_8S_SA2 + LF_8S_SA2}
+goal set2RU_8S_SA2	{RU_8S_SA2 < RUF_8S_SA2*DG_8S_SA2} 
+! riparian loss
+goal setRP_8S_SA2	{RP_8S_SA2 = AW_8S_SA2 * RPF_8S_SA2} 
+
+!==============================
+! 8N_PR2 -
+!==============================
+goal setEV_8N_PR2 	{EV_8N_PR2 = D_GCC039_8N_PR2 * EVF_GCC039_8N_PR2} 
+goal setDP_8N_PR2 	{DP_8N_PR2 = D_GCC039_8N_PR2 * DPF_GCC039_8N_PR2} 
+goal setLF_8N_PR2 	{LF_8N_PR2 = D_GCC039_8N_PR2 * LFF_GCC039_8N_PR2} 
+goal setSP_8N_PR2 	{SP_8N_PR2 = D_GCC039_8N_PR2 * SPF_GCC039_8N_PR2} 
+goal setDL_8N_PR2 	{DL_8N_PR2 = EV_8N_PR2  + DP_8N_PR2  + LF_8N_PR2 + SP_8N_PR2}
+! reuse
+goal set1RU_8N_PR2	{RU_8N_PR2 < R_8N_PR2 + LF_8N_PR2}
+goal set2RU_8N_PR2	{RU_8N_PR2 < RUF_8N_PR2*DG_8N_PR2}
+! riparian loss
+goal setRP_8N_PR2	{RP_8N_PR2 = AW_8N_PR2 * RPF_8N_PR2} 
+
+!==============================
+! 8S_PR -
+!==============================
+goal setEV_8S_PR 	{EV_8S_PR = D_CBD037_8S_PR * EVF_CBD037_8S_PR + D_GCC046_8S_PR * EVF_GCC046_8S_PR} 
+goal setDP_8S_PR 	{DP_8S_PR = D_CBD037_8S_PR * DPF_CBD037_8S_PR + D_GCC046_8S_PR * DPF_GCC046_8S_PR} 
+goal setLF_8S_PR 	{LF_8S_PR = D_CBD037_8S_PR * LFF_CBD037_8S_PR + D_GCC046_8S_PR * LFF_GCC046_8S_PR} 
+goal setSP_8S_PR 	{SP_8S_PR = D_CBD037_8S_PR * SPF_CBD037_8S_PR + D_GCC046_8S_PR * SPF_GCC046_8S_PR} 
+goal setDL_8S_PR 	{DL_8S_PR = EV_8S_PR  + DP_8S_PR  + LF_8S_PR + SP_8S_PR}
+! reuse
+goal set1RU_8S_PR	{RU_8S_PR < R_8S_PR + LF_8S_PR}
+goal set2RU_8S_PR	{RU_8S_PR < RUF_8S_PR*DG_8S_PR} 
+! riparian loss
+goal setRP_8S_PR	{RP_8S_PR = AW_8S_PR * RPF_8S_PR} 
+
+!==============================
+! 8S_PA -
+!==============================
+goal setEV_8S_PA 	{EV_8S_PA = D_CBD028_8S_PA * EVF_CBD028_8S_PA} 
+goal setDP_8S_PA 	{DP_8S_PA = D_CBD028_8S_PA * DPF_CBD028_8S_PA} 
+goal setLF_8S_PA 	{LF_8S_PA = D_CBD028_8S_PA * LFF_CBD028_8S_PA} 
+goal setSP_8S_PA 	{SP_8S_PA = D_CBD028_8S_PA * SPF_CBD028_8S_PA} 
+goal setDL_8S_PA 	{DL_8S_PA = EV_8S_PA  + DP_8S_PA  + LF_8S_PA + SP_8S_PA}
+! reuse
+goal set1RU_8S_PA	{RU_8S_PA < R_8S_PA + LF_8S_PA}
+goal set2RU_8S_PA	{RU_8S_PA < RUF_8S_PA*DG_8S_PA}
+! riparian loss
+goal setRP_8S_PA	{RP_8S_PA = AW_8S_PA * RPF_8S_PA} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8 South		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 8S_SA3 -
+!==============================
+goal setEV_8S_SA3 	{EV_8S_SA3 = D_SAC121_8S_SA3 * EVF_SAC121_8S_SA3 + D_SAC109_8S_SA3 * EVF_SAC109_8S_SA3} 
+goal setDP_8S_SA3 	{DP_8S_SA3 = D_SAC121_8S_SA3 * DPF_SAC121_8S_SA3 + D_SAC109_8S_SA3 * DPF_SAC109_8S_SA3} 
+goal setLF_8S_SA3 	{LF_8S_SA3 = D_SAC121_8S_SA3 * LFF_SAC121_8S_SA3 + D_SAC109_8S_SA3 * LFF_SAC109_8S_SA3} 
+goal setSP_8S_SA3 	{SP_8S_SA3 = D_SAC121_8S_SA3 * SPF_SAC121_8S_SA3 + D_SAC109_8S_SA3 * SPF_SAC109_8S_SA3} 
+goal setDL_8S_SA3 	{DL_8S_SA3 = EV_8S_SA3  + DP_8S_SA3  + LF_8S_SA3 + SP_8S_SA3}
+! reuse
+goal set1RU_8S_SA3	{RU_8S_SA3 < R_8S_SA3 + LF_8S_SA3}
+goal set2RU_8S_SA3	{RU_8S_SA3 < RUF_8S_SA3*DG_8S_SA3} 
+! riparian loss
+goal setRP_8S_SA3	{RP_8S_SA3 = AW_8S_SA3 * RPF_8S_SA3} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 9		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 9_NA
+!==============================
+goal setEV_9_NA 	{EV_9_NA = D_LCC024_9_NA * EVF_LCC024_9_NA + D_SAC196_9_NA * EVF_SAC196_9_NA} 
+goal setDP_9_NA 	{DP_9_NA = D_LCC024_9_NA * DPF_LCC024_9_NA + D_SAC196_9_NA * DPF_SAC196_9_NA} 
+goal setLF_9_NA 	{LF_9_NA = D_LCC024_9_NA * LFF_LCC024_9_NA + D_SAC196_9_NA * LFF_SAC196_9_NA} 
+goal setSP_9_NA 	{SP_9_NA = D_LCC024_9_NA * SPF_LCC024_9_NA + D_SAC196_9_NA * SPF_SAC196_9_NA} 
+goal setDL_9_NA 	{DL_9_NA = EV_9_NA  + DP_9_NA  + LF_9_NA + SP_9_NA}
+! reuse
+goal set1RU_9_NA	{RU_9_NA < R_9_NA + LF_9_NA}
+goal set2RU_9_NA	{RU_9_NA < RUF_9_NA*DG_9_NA} 
+! riparian loss
+goal setRP_9_NA	{RP_9_NA = AW_9_NA * RPF_9_NA} 
+
+!==============================
+! 9_SA1
+!==============================
+goal setEV_9_SA1 	{EV_9_SA1 = D_ESL008_9_SA1 * EVF_ESL008_9_SA1 + D_SAC196_9_SA1 * EVF_SAC196_9_SA1} 
+goal setDP_9_SA1 	{DP_9_SA1 = D_ESL008_9_SA1 * DPF_ESL008_9_SA1 + D_SAC196_9_SA1 * DPF_SAC196_9_SA1} 
+goal setLF_9_SA1 	{LF_9_SA1 = D_ESL008_9_SA1 * LFF_ESL008_9_SA1 + D_SAC196_9_SA1 * LFF_SAC196_9_SA1} 
+goal setSP_9_SA1 	{SP_9_SA1 = D_ESL008_9_SA1 * SPF_ESL008_9_SA1 + D_SAC196_9_SA1 * SPF_SAC196_9_SA1} 
+goal setDL_9_SA1 	{DL_9_SA1 = EV_9_SA1  + DP_9_SA1  + LF_9_SA1 + SP_9_SA1}
+! reuse
+goal set1RU_9_SA1	{RU_9_SA1 < R_9_SA1 + LF_9_SA1}
+goal set2RU_9_SA1	{RU_9_SA1 < RUF_9_SA1*DG_9_SA1} 
+! riparian loss
+goal setRP_9_SA1	{RP_9_SA1 = AW_9_SA1 * RPF_9_SA1}
+
+!==============================
+! 9_SA2
+!==============================
+goal setEV_9_SA2 	{EV_9_SA2 = D_BTC012_9_SA2 * EVF_BTC012_9_SA2 + D_SAC162_9_SA2 * EVF_SAC162_9_SA2} 
+goal setDP_9_SA2 	{DP_9_SA2 = D_BTC012_9_SA2 * DPF_BTC012_9_SA2 + D_SAC162_9_SA2 * DPF_SAC162_9_SA2} 
+goal setLF_9_SA2 	{LF_9_SA2 = D_BTC012_9_SA2 * LFF_BTC012_9_SA2 + D_SAC162_9_SA2 * LFF_SAC162_9_SA2} 
+goal setSP_9_SA2 	{SP_9_SA2 = D_BTC012_9_SA2 * SPF_BTC012_9_SA2 + D_SAC162_9_SA2 * SPF_SAC162_9_SA2} 
+goal setDL_9_SA2 	{DL_9_SA2 = EV_9_SA2  + DP_9_SA2  + LF_9_SA2 + SP_9_SA2}
+! reuse
+goal set1RU_9_SA2	{RU_9_SA2 < R_9_SA2 + LF_9_SA2}
+goal set2RU_9_SA2	{RU_9_SA2 < RUF_9_SA2*DG_9_SA2} 
+! riparian loss
+goal setRP_9_SA2	{RP_9_SA2 = AW_9_SA2 * RPF_9_SA2}
+
+!==============================
+! 9_PR
+!==============================
+goal setEV_9_PR 	{EV_9_PR = D_SAC196_9_PR * EVF_SAC196_9_PR} 
+goal setDP_9_PR 	{DP_9_PR = D_SAC196_9_PR * DPF_SAC196_9_PR} 
+goal setLF_9_PR 	{LF_9_PR = D_SAC196_9_PR * LFF_SAC196_9_PR} 
+goal setSP_9_PR 	{SP_9_PR = D_SAC196_9_PR * SPF_SAC196_9_PR} 
+goal setDL_9_PR 	{DL_9_PR = EV_9_PR  + DP_9_PR  + LF_9_PR + SP_9_PR}
+! reuse
+goal set1RU_9_PR	{RU_9_PR < R_9_PR + LF_9_PR}
+goal set2RU_9_PR	{RU_9_PR < RUF_9_PR*DG_9_PR}
+! riparian loss
+goal setRP_9_PR	{RP_9_PR = AW_9_PR * RPF_9_PR} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 10		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 10_NA -
+!==============================
+goal setEV_10_NA 	{EV_10_NA = D_BTC036_10_NA * EVF_BTC036_10_NA + D_BTC043_10_NA * EVF_BTC043_10_NA + D_MIO023_10_NA * EVF_MIO023_10_NA} 
+goal setDP_10_NA 	{DP_10_NA = D_BTC036_10_NA * DPF_BTC036_10_NA + D_BTC043_10_NA * DPF_BTC043_10_NA + D_MIO023_10_NA * DPF_MIO023_10_NA} 
+goal setLF_10_NA 	{LF_10_NA = D_BTC036_10_NA * LFF_BTC036_10_NA + D_BTC043_10_NA * LFF_BTC043_10_NA + D_MIO023_10_NA * LFF_MIO023_10_NA} 
+goal setSP_10_NA 	{SP_10_NA = D_BTC036_10_NA * SPF_BTC036_10_NA + D_BTC043_10_NA * SPF_BTC043_10_NA + D_MIO023_10_NA * SPF_MIO023_10_NA} 
+goal setDL_10_NA 	{DL_10_NA = EV_10_NA  + DP_10_NA  + LF_10_NA + SP_10_NA}
+! reuse
+goal set1RU_10_NA	{RU_10_NA < R_10_NA + LF_10_NA}
+goal set2RU_10_NA	{RU_10_NA < RUF_10_NA*DG_10_NA} 
+! riparian loss
+goal setRP_10_NA	{RP_10_NA = AW_10_NA * RPF_10_NA}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 11		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 11_NU2
+!==============================
+/*goal setEL_SNK_11_NU2	{EL_SNK_11_NU2 = D_SNK014_11_NU2  * EF_SNK_11_NU2}
+goal setSL_SNK_11_NU2	{SL_SNK_11_NU2 = D_SNK014_11_NU2  * SF_SNK_11_NU2}
+goal setDL_SNK_11_NU2	{DL_SNK_11_NU2 = EL_SNK_11_NU2 + SL_SNK_11_NU2}
+
+goal setDL_11_NU2	{DL_11_NU2 = DL_SNK_11_NU2}
+*/
+!==============================
+! 11_NA
+!==============================
+goal setEV_11_NA 	{EV_11_NA = D_DWRPS2_11_NA * EVF_DWRPS2_11_NA} 
+goal setDP_11_NA 	{DP_11_NA = D_DWRPS2_11_NA * DPF_DWRPS2_11_NA} 
+goal setLF_11_NA 	{LF_11_NA = D_DWRPS2_11_NA * LFF_DWRPS2_11_NA} 
+goal setSP_11_NA 	{SP_11_NA = D_DWRPS2_11_NA * SPF_DWRPS2_11_NA} 
+goal setDL_11_NA 	{DL_11_NA = EV_11_NA  + DP_11_NA  + LF_11_NA + SP_11_NA}
+! reuse
+goal set1RU_11_NA	{RU_11_NA < R_11_NA + LF_11_NA}
+goal set2RU_11_NA	{RU_11_NA < RUF_11_NA*DG_11_NA}
+! riparian loss
+goal setRP_11_NA	{RP_11_NA = AW_11_NA * RPF_11_NA} 
+
+!==============================
+! 11_SA1
+!==============================
+goal setEV_11_SA1 	{EV_11_SA1 = D_WEC000_11_SA1 * EVF_WEC000_11_SA1} 
+goal setDP_11_SA1 	{DP_11_SA1 = D_WEC000_11_SA1 * DPF_WEC000_11_SA1} 
+goal setLF_11_SA1 	{LF_11_SA1 = D_WEC000_11_SA1 * LFF_WEC000_11_SA1} 
+goal setSP_11_SA1 	{SP_11_SA1 = D_WEC000_11_SA1 * SPF_WEC000_11_SA1} 
+goal setDL_11_SA1 	{DL_11_SA1 = EV_11_SA1  + DP_11_SA1  + LF_11_SA1 + SP_11_SA1}
+! reuse
+goal set1RU_11_SA1	{RU_11_SA1 < R_11_SA1 + LF_11_SA1}
+goal set2RU_11_SA1	{RU_11_SA1 < RUF_11_SA1*DG_11_SA1}
+! riparian loss
+goal setRP_11_SA1	{RP_11_SA1 = AW_11_SA1 * RPF_11_SA1} 
+
+!==============================
+! 11_SA2
+!==============================
+goal setEV_11_SA2 	{EV_11_SA2 = D_RVC005_11_SA2 * EVF_RVC005_11_SA2 + D_LDC007_11_SA2 * EVF_LDC007_11_SA2} 
+goal setDP_11_SA2 	{DP_11_SA2 = D_RVC005_11_SA2 * DPF_RVC005_11_SA2 + D_LDC007_11_SA2 * DPF_LDC007_11_SA2} 
+goal setLF_11_SA2 	{LF_11_SA2 = D_RVC005_11_SA2 * LFF_RVC005_11_SA2 + D_LDC007_11_SA2 * LFF_LDC007_11_SA2} 
+goal setSP_11_SA2 	{SP_11_SA2 = D_RVC005_11_SA2 * SPF_RVC005_11_SA2 + D_LDC007_11_SA2 * SPF_LDC007_11_SA2} 
+goal setDL_11_SA2 	{DL_11_SA2 = EV_11_SA2  + DP_11_SA2  + LF_11_SA2 + SP_11_SA2}
+! reuse
+goal set1RU_11_SA2	{RU_11_SA2 < R_11_SA2 + LF_11_SA2}
+goal set2RU_11_SA2	{RU_11_SA2 < RUF_11_SA2*DG_11_SA2} 
+! riparian loss
+goal setRP_11_SA2	{RP_11_SA2 = AW_11_SA2 * RPF_11_SA2}
+
+!==============================
+! 11_SA3
+!==============================
+goal setEV_11_SA3 	{EV_11_SA3 = D_JBC004_11_SA3 * EVF_JBC004_11_SA3} 
+goal setDP_11_SA3 	{DP_11_SA3 = D_JBC004_11_SA3 * DPF_JBC004_11_SA3} 
+goal setLF_11_SA3 	{LF_11_SA3 = D_JBC004_11_SA3 * LFF_JBC004_11_SA3} 
+goal setSP_11_SA3 	{SP_11_SA3 = D_JBC004_11_SA3 * SPF_JBC004_11_SA3} 
+goal setDL_11_SA3 	{DL_11_SA3 = EV_11_SA3  + DP_11_SA3  + LF_11_SA3 + SP_11_SA3}
+! reuse
+goal set1RU_11_SA3	{RU_11_SA3 < R_11_SA3 + LF_11_SA3}
+goal set2RU_11_SA3	{RU_11_SA3 < RUF_11_SA3*DG_11_SA3} 
+! riparian loss
+goal setRP_11_SA3	{RP_11_SA3 = AW_11_SA3 * RPF_11_SA3}
+
+!==============================
+! 11_SA4
+!==============================
+goal setEV_11_SA4 	{EV_11_SA4 = D_SEC009_11_SA4 * EVF_SEC009_11_SA4} 
+goal setDP_11_SA4 	{DP_11_SA4 = D_SEC009_11_SA4 * DPF_SEC009_11_SA4} 
+goal setLF_11_SA4 	{LF_11_SA4 = D_SEC009_11_SA4 * LFF_SEC009_11_SA4} 
+goal setSP_11_SA4 	{SP_11_SA4 = D_SEC009_11_SA4 * SPF_SEC009_11_SA4} 
+goal setDL_11_SA4 	{DL_11_SA4 = EV_11_SA4  + DP_11_SA4  + LF_11_SA4 + SP_11_SA4}
+! reuse
+goal set1RU_11_SA4	{RU_11_SA4 < R_11_SA4 + LF_11_SA4}
+goal set2RU_11_SA4	{RU_11_SA4 < RUF_11_SA4*DG_11_SA4} 
+! riparian loss
+goal setRP_11_SA4	{RP_11_SA4 = AW_11_SA4 * RPF_11_SA4}
+
+!==============================
+! 11_NU1 -
+!==============================
+goal setEL_PCL000_11_NU1	{EL_PCL000_11_NU1 = D_PCL000_11_NU1  * EF_PCL000_11_NU1}
+goal setSL_PCL000_11_NU1	{SL_PCL000_11_NU1 = D_PCL000_11_NU1  * SF_PCL000_11_NU1}
+goal setDL_PCL000_11_NU1	{DL_PCL000_11_NU1 = EL_PCL000_11_NU1 + SL_PCL000_11_NU1}
+
+!goal setEL_WBF015_12_NU1	{EL_WBF015_12_NU1 = D_WBF015_12_NU1  * EF_WBF015_12_NU1}
+!goal setSL_WBF015_12_NU1	{SL_WBF015_12_NU1 = D_WBF015_12_NU1  * SF_WBF015_12_NU1}
+!goal setDL_WBF015_12_NU1	{DL_WBF015_12_NU1 = EL_WBF015_12_NU1 + SL_WBF015_12_NU1}
+
+goal setDL_11_NU1	{DL_11_NU1 = DL_PCL000_11_NU1 /*+ DL_WBF015_12_NU1*/}
+
+!==============================
+! 11_PR
+!==============================
+goal setEV_11_PR 	{EV_11_PR = D_WEC000_11_PR * EVF_WEC000_11_PR +	D_RVC005_11_PR * EVF_RVC005_11_PR				} 
+goal setDP_11_PR 	{DP_11_PR = D_WEC000_11_PR * DPF_WEC000_11_PR +	D_RVC005_11_PR * DPF_RVC005_11_PR				} 
+goal setLF_11_PR 	{LF_11_PR = D_WEC000_11_PR * LFF_WEC000_11_PR +	D_RVC005_11_PR * LFF_RVC005_11_PR				} 
+goal setSP_11_PR 	{SP_11_PR = D_WEC000_11_PR * SPF_WEC000_11_PR +	D_RVC005_11_PR * SPF_RVC005_11_PR				} 
+goal setDL_11_PR 	{DL_11_PR = EV_11_PR  + DP_11_PR  + LF_11_PR + SP_11_PR}
+! reuse
+goal set1RU_11_PR	{RU_11_PR < R_11_PR + LF_11_PR}
+goal set2RU_11_PR	{RU_11_PR < RUF_11_PR*DG_11_PR}
+! riparian loss
+goal setRP_11_PR	{RP_11_PR = AW_11_PR * RPF_11_PR} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 12		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 12_NU1 -
+!==============================
+!goal setEL_FTR_12_NU1	{EL_FTR_12_NU1 = D_FTR059_12_NU1  * EF_FTR_12_NU1}
+!goal setSL_FTR_12_NU1	{SL_FTR_12_NU1 = D_FTR059_12_NU1  * SF_FTR_12_NU1}
+!goal setDL_FTR_12_NU1	{DL_FTR_12_NU1 = EL_FTR_12_NU1    + SL_FTR_12_NU1}
+
+goal setEL_MIO023_12_NU1	{EL_MIO023_12_NU1 = D_MIO023_12_NU1  * EF_MIO023_12_NU1}
+goal setSL_MIO023_12_NU1	{SL_MIO023_12_NU1 = D_MIO023_12_NU1  * SF_MIO023_12_NU1}
+goal setDL_MIO023_12_NU1	{DL_MIO023_12_NU1 = EL_MIO023_12_NU1 + SL_MIO023_12_NU1}
+
+goal setDL_12_NU1	{DL_12_NU1 = /*DL_FTR_12_NU1 +*/ DL_MIO023_12_NU1}
+
+!==============================
+! 12_NA -
+!==============================
+goal setEV_12_NA 	{EV_12_NA = D_RFS13_12_NA * EVF_RFS13_12_NA} 
+goal setDP_12_NA 	{DP_12_NA = D_RFS13_12_NA * DPF_RFS13_12_NA} 
+goal setLF_12_NA 	{LF_12_NA = D_RFS13_12_NA * LFF_RFS13_12_NA} 
+goal setSP_12_NA 	{SP_12_NA = D_RFS13_12_NA * SPF_RFS13_12_NA} 
+goal setDL_12_NA 	{DL_12_NA = EV_12_NA  + DP_12_NA  + LF_12_NA + SP_12_NA}
+! reuse
+goal set1RU_12_NA	{RU_12_NA < R_12_NA + LF_12_NA}
+goal set2RU_12_NA	{RU_12_NA < RUF_12_NA*DG_12_NA} 
+! riparian loss
+goal setRP_12_NA	{RP_12_NA = AW_12_NA * RPF_12_NA}
+
+!==============================
+! 12_SA -
+!==============================
+goal setEV_12_SA 	{EV_12_SA = D_FTR059_12_SA * EVF_FTR059_12_SA} 
+goal setDP_12_SA 	{DP_12_SA = D_FTR059_12_SA * DPF_FTR059_12_SA} 
+goal setLF_12_SA 	{LF_12_SA = D_FTR059_12_SA * LFF_FTR059_12_SA} 
+goal setSP_12_SA 	{SP_12_SA = D_FTR059_12_SA * SPF_FTR059_12_SA} 
+goal setDL_12_SA 	{DL_12_SA = EV_12_SA  + DP_12_SA  + LF_12_SA + SP_12_SA}
+! reuse
+goal set1RU_12_SA	{RU_12_SA < R_12_SA + LF_12_SA}
+goal set2RU_12_SA	{RU_12_SA < RUF_12_SA*DG_12_SA} 
+! riparian loss
+goal setRP_12_SA	{RP_12_SA = AW_12_SA * RPF_12_SA}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 13		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 13_NA -
+!==============================
+goal setEV_13_NA 	{EV_13_NA = D_OWC000_13_NA * EVF_OWC000_13_NA + D_MNRRH_13_NA * EVF_MNRRH_13_NA} 
+goal setDP_13_NA 	{DP_13_NA = D_OWC000_13_NA * DPF_OWC000_13_NA + D_MNRRH_13_NA * DPF_MNRRH_13_NA} 
+goal setLF_13_NA 	{LF_13_NA = D_OWC000_13_NA * LFF_OWC000_13_NA + D_MNRRH_13_NA * LFF_MNRRH_13_NA} 
+goal setSP_13_NA 	{SP_13_NA = D_OWC000_13_NA * SPF_OWC000_13_NA + D_MNRRH_13_NA * SPF_MNRRH_13_NA} 
+goal setDL_13_NA 	{DL_13_NA = EV_13_NA  + DP_13_NA  + LF_13_NA + SP_13_NA}
+! reuse
+goal set1RU_13_NA	{RU_13_NA < R_13_NA + LF_13_NA}
+goal set2RU_13_NA	{RU_13_NA < RUF_13_NA*DG_13_NA} 
+! riparian loss
+goal setRP_13_NA	{RP_13_NA = AW_13_NA * RPF_13_NA}
+
+!==============================
+! 13_NU1 -
+!==============================
+goal setEL_WTPMNR_13_NU1	{EL_WTPMNR_13_NU1 = D_WTPMNR_13_NU1  * EF_WTPMNR_13_NU1}
+goal setSL_WTPMNR_13_NU1	{SL_WTPMNR_13_NU1 = D_WTPMNR_13_NU1  * SF_WTPMNR_13_NU1}
+goal setDL_WTPMNR_13_NU1	{DL_WTPMNR_13_NU1 = EL_WTPMNR_13_NU1 + SL_WTPMNR_13_NU1}
+
+goal setDL_13_NU1	{DL_13_NU1 = DL_WTPMNR_13_NU1}
+
+!==============================
+! 13_NU2 -
+!==============================
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 14		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 14_NA - BVID irrigators
+!==============================
+goal setEV_14_NA 	{EV_14_NA = D_FDC006_14_NA * EVF_FDC006_14_NA + D_YUB013_14_NA * EVF_YUB013_14_NA} 
+goal setDP_14_NA 	{DP_14_NA = D_FDC006_14_NA * DPF_FDC006_14_NA + D_YUB013_14_NA * DPF_YUB013_14_NA} 
+goal setLF_14_NA 	{LF_14_NA = D_FDC006_14_NA * LFF_FDC006_14_NA + D_YUB013_14_NA * LFF_YUB013_14_NA} 
+goal setSP_14_NA 	{SP_14_NA = D_FDC006_14_NA * SPF_FDC006_14_NA + D_YUB013_14_NA * SPF_YUB013_14_NA} 
+goal setDL_14_NA 	{DL_14_NA = EV_14_NA  + DP_14_NA  + LF_14_NA + SP_14_NA}
+! reuse
+goal set1RU_14_NA	{RU_14_NA < R_14_NA + LF_14_NA}
+goal set2RU_14_NA	{RU_14_NA < RUF_14_NA*DG_14_NA} 
+! riparian loss
+goal setRP_14_NA	{RP_14_NA = AW_14_NA * RPF_14_NA}
+
+!==============================
+! 14_NU1 -
+!==============================
+goal setEL_NIDN2_14_NU1	{EL_NIDN2_14_NU1 = D_NID_N2_14_NU1  * EF_NIDN2_14_NU1}
+goal setSL_NIDN2_14_NU1	{SL_NIDN2_14_NU1 = D_NID_N2_14_NU1  * SF_NIDN2_14_NU1}
+goal setDL_NIDN2_14_NU1	{DL_NIDN2_14_NU1 = EL_NIDN2_14_NU1 + SL_NIDN2_14_NU1}
+
+goal setDL_14_NU1	{DL_14_NU1 = DL_NIDN2_14_NU1}
+
+!==============================
+! 14_NU2 - 
+!==============================
+!no surface diversions for 14_NU2
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 15-North	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 15N_NA1 - 
+!==============================
+!  no conveyance losses, groundwater pumping only
+
+!==============================
+! 15N_NA2 - 
+!============================== 
+goal setEV_15N_NA2 	{EV_15N_NA2 = D_YUB011_15N_NA2 * EVF_YUB011_15N_NA2} 
+goal setDP_15N_NA2 	{DP_15N_NA2 = D_YUB011_15N_NA2 * DPF_YUB011_15N_NA2} 
+goal setLF_15N_NA2 	{LF_15N_NA2 = D_YUB011_15N_NA2 * LFF_YUB011_15N_NA2} 
+goal setSP_15N_NA2 	{SP_15N_NA2 = D_YUB011_15N_NA2 * SPF_YUB011_15N_NA2} 
+goal setDL_15N_NA2 	{DL_15N_NA2 = EV_15N_NA2  + DP_15N_NA2  + LF_15N_NA2 + SP_15N_NA2}
+! reuse
+goal set1RU_15N_NA2	{RU_15N_NA2 < R_15N_NA2 + LF_15N_NA2}
+goal set2RU_15N_NA2	{RU_15N_NA2 < RUF_15N_NA2*DG_15N_NA2}
+! riparian loss
+goal setRP_15N_NA2	{RP_15N_NA2 = AW_15N_NA2 * RPF_15N_NA2} 
+
+!==============================
+! 15N_SA - 
+!============================== 
+goal setEV_15N_SA 	{EV_15N_SA = D_FTR045_15N_SA * EVF_FTR045_15N_SA} 
+goal setDP_15N_SA 	{DP_15N_SA = D_FTR045_15N_SA * DPF_FTR045_15N_SA} 
+goal setLF_15N_SA 	{LF_15N_SA = D_FTR045_15N_SA * LFF_FTR045_15N_SA} 
+goal setSP_15N_SA 	{SP_15N_SA = D_FTR045_15N_SA * SPF_FTR045_15N_SA} 
+goal setDL_15N_SA 	{DL_15N_SA = EV_15N_SA  + DP_15N_SA  + LF_15N_SA + SP_15N_SA}
+! reuse
+goal set1RU_15N_SA	{RU_15N_SA < R_15N_SA + LF_15N_SA}
+goal set2RU_15N_SA	{RU_15N_SA < RUF_15N_SA*DG_15N_SA}
+! riparian loss
+goal setRP_15N_SA	{RP_15N_SA = AW_15N_SA * RPF_15N_SA} 
+
+!==============================
+! 15N_NU - 
+!============================== 
+goal setEL_YUB_15N_NU	{EL_YUB_15N_NU = D_YUB003_15N_NU  * EF_YUB_15N_NU}
+goal setSL_YUB_15N_NU	{SL_YUB_15N_NU = D_YUB003_15N_NU  * SF_YUB_15N_NU}
+goal setDL_YUB_15N_NU	{DL_YUB_15N_NU = EL_YUB_15N_NU    + SL_YUB_15N_NU}
+
+goal setDL_15N_NU	{DL_15N_NU = DL_YUB_15N_NU}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 15-South	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 15S_NA1 - 
+!==============================
+!  no conveyance losses, groundwater pumping only
+
+!==============================
+! 15S_NU - 
+!============================== 
+!  no conveyance loss, groundwater pumping only
+
+!==============================
+! 15S_NA2 - 
+!==============================
+goal setEV_15S_NA2 	{EV_15S_NA2 = D_YUB011_15S_NA2 * EVF_YUB011_15S_NA2} 
+goal setDP_15S_NA2 	{DP_15S_NA2 = D_YUB011_15S_NA2 * DPF_YUB011_15S_NA2} 
+goal setLF_15S_NA2 	{LF_15S_NA2 = D_YUB011_15S_NA2 * LFF_YUB011_15S_NA2} 
+goal setSP_15S_NA2 	{SP_15S_NA2 = D_YUB011_15S_NA2 * SPF_YUB011_15S_NA2} 
+goal setDL_15S_NA2 	{DL_15S_NA2 = EV_15S_NA2  + DP_15S_NA2  + LF_15S_NA2 + SP_15S_NA2}
+! reuse
+goal set1RU_15S_NA2	{RU_15S_NA2 < R_15S_NA2 + LF_15S_NA2}
+goal set2RU_15S_NA2	{RU_15S_NA2 < RUF_15S_NA2*DG_15S_NA2}
+! riparian loss
+goal setRP_15S_NA2	{RP_15S_NA2 = AW_15S_NA2 * RPF_15S_NA2} 
+
+!==============================
+! 15S_SA - 
+!==============================
+goal setEV_15S_SA 	{EV_15S_SA = D_FTR018_15S_SA * EVF_FTR018_15S_SA + D_FTR028_15S_SA * EVF_FTR028_15S_SA} 
+goal setDP_15S_SA 	{DP_15S_SA = D_FTR018_15S_SA * DPF_FTR018_15S_SA + D_FTR028_15S_SA * DPF_FTR028_15S_SA} 
+goal setLF_15S_SA 	{LF_15S_SA = D_FTR018_15S_SA * LFF_FTR018_15S_SA + D_FTR028_15S_SA * LFF_FTR028_15S_SA} 
+goal setSP_15S_SA 	{SP_15S_SA = D_FTR018_15S_SA * SPF_FTR018_15S_SA + D_FTR028_15S_SA * SPF_FTR028_15S_SA} 
+goal setDL_15S_SA 	{DL_15S_SA = EV_15S_SA  + DP_15S_SA  + LF_15S_SA + SP_15S_SA}
+! reuse
+goal set1RU_15S_SA	{RU_15S_SA < R_15S_SA + LF_15S_SA}
+goal set2RU_15S_SA	{RU_15S_SA < RUF_15S_SA*DG_15S_SA}
+! riparian loss
+goal setRP_15S_SA	{RP_15S_SA = AW_15S_SA * RPF_15S_SA} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 16		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 16_NM -
+!==============================
+!  no conveyance loss, groundwater pumping only
+
+!define EF_FTR_16_NM	 {value 0.00001}
+!define SF_FTR_16_NM	 {value 0.00005}
+
+!define DL_FTR_16_NM	 {std kind 'DELIVERY-LOSS' units 'CFS'}
+!define EL_FTR_16_NM	 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define SL_FTR_16_NM	 {std kind 'SEEPAGE-LOSS' units 'CFS'}
+
+!goal setEL_FTR_16_NM	 {EL_FTR_16_NM = D_FTR028_16_NM  * EF_FTR_16_NM}
+!goal setSL_FTR_16_NM	 {SL_FTR_16_NM = D_FTR028_16_NM  * SF_FTR_16_NM}
+!goal setDL_FTR_16_NM	 {DL_FTR_16_NM = EL_FTR_16_NM    + SL_FTR_16_NM}
+
+!define DL_16_NM		 {std kind 'DELIVERY-LOSS' units 'CFS'}
+!goal setDL_16_NM	 {DL_16_NM = DL_FTR_16_NM}
+
+
+!==============================
+! 16_PA - Feather Water District
+!==============================
+goal setEV_16_PA 	{EV_16_PA = D_FTR021_16_PA * EVF_FTR021_16_PA} 
+goal setDP_16_PA 	{DP_16_PA = D_FTR021_16_PA * DPF_FTR021_16_PA} 
+goal setLF_16_PA 	{LF_16_PA = D_FTR021_16_PA * LFF_FTR021_16_PA} 
+goal setSP_16_PA 	{SP_16_PA = D_FTR021_16_PA * SPF_FTR021_16_PA} 
+goal setDL_16_PA 	{DL_16_PA = EV_16_PA  + DP_16_PA  + LF_16_PA + SP_16_PA}
+! reuse
+goal set1RU_16_PA	{RU_16_PA < R_16_PA + LF_16_PA}
+goal set2RU_16_PA	{RU_16_PA < RUF_16_PA*DG_16_PA}
+! riparian loss
+goal setRP_16_PA	{RP_16_PA = AW_16_PA * RPF_16_PA} 
+
+!==============================
+! 16_SA -
+!==============================
+goal setEV_16_SA 	{EV_16_SA = D_FTR021_16_SA * EVF_FTR021_16_SA + D_FTR018_16_SA * EVF_FTR018_16_SA + D_FTR014_16_SA * EVF_FTR014_16_SA + D_FTR008_16_SA * EVF_FTR008_16_SA + D_DWRPS2_16_SA * EVF_DWRPS2_16_SA} 
+goal setDP_16_SA 	{DP_16_SA = D_FTR021_16_SA * DPF_FTR021_16_SA + D_FTR018_16_SA * DPF_FTR018_16_SA + D_FTR014_16_SA * DPF_FTR014_16_SA + D_FTR008_16_SA * DPF_FTR008_16_SA + D_DWRPS2_16_SA * DPF_DWRPS2_16_SA} 
+goal setLF_16_SA 	{LF_16_SA = D_FTR021_16_SA * LFF_FTR021_16_SA + D_FTR018_16_SA * LFF_FTR018_16_SA + D_FTR014_16_SA * LFF_FTR014_16_SA + D_FTR008_16_SA * LFF_FTR008_16_SA + D_DWRPS2_16_SA * LFF_DWRPS2_16_SA} 
+goal setSP_16_SA 	{SP_16_SA = D_FTR021_16_SA * SPF_FTR021_16_SA + D_FTR018_16_SA * SPF_FTR018_16_SA + D_FTR014_16_SA * SPF_FTR014_16_SA + D_FTR008_16_SA * SPF_FTR008_16_SA + D_DWRPS2_16_SA * SPF_DWRPS2_16_SA} 
+goal setDL_16_SA 	{DL_16_SA = EV_16_SA  + DP_16_SA  + LF_16_SA + SP_16_SA}
+! reuse
+goal set1RU_16_SA	{RU_16_SA < R_16_SA + LF_16_SA}
+goal set2RU_16_SA	{RU_16_SA < RUF_16_SA*DG_16_SA} 
+! riparian loss
+goal setRP_16_SA	{RP_16_SA = AW_16_SA * RPF_16_SA} 
+
+!==============================
+! 16_PU -
+!==============================
+goal setEL_FTR_16_PU	 {EL_FTR_16_PU = D_WTPCYC_16_PU  * EF_FTR_16_PU}
+goal setSL_FTR_16_PU	 {SL_FTR_16_PU = D_WTPCYC_16_PU  * SF_FTR_16_PU}
+goal setDL_FTR_16_PU	 {DL_FTR_16_PU = EL_FTR_16_PU    + SL_FTR_16_PU}
+
+goal setDL_16_PU	 {DL_16_PU = DL_FTR_16_PU}
+
+!==============================
+! 16_NA2
+!==============================
+goal setEV_16_NA2 	{EV_16_NA2 = D_DWRPS1_16_NA2 * EVF_DWRPS1_16_NA2} 
+goal setDP_16_NA2 	{DP_16_NA2 = D_DWRPS1_16_NA2 * DPF_DWRPS1_16_NA2} 
+goal setLF_16_NA2 	{LF_16_NA2 = D_DWRPS1_16_NA2 * LFF_DWRPS1_16_NA2} 
+goal setSP_16_NA2 	{SP_16_NA2 = D_DWRPS1_16_NA2 * SPF_DWRPS1_16_NA2} 
+goal setDL_16_NA2 	{DL_16_NA2 = EV_16_NA2  + DP_16_NA2  + LF_16_NA2 + SP_16_NA2}
+! reuse
+goal set1RU_16_NA2	{RU_16_NA2 < R_16_NA2 + LF_16_NA2}
+goal set2RU_16_NA2	{RU_16_NA2 < RUF_16_NA2*DG_16_NA2}
+! riparian loss
+goal setRP_16_NA2	{RP_16_NA2 = AW_16_NA2 * RPF_16_NA2} 
+
+!==============================
+! 16_NA1 - 
+!==============================
+!  no conveyance losses, groundwater pumping only
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 17-North	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 17N_PS -
+!==============================
+!Does not exist in schematic
+!define EF_SAC_17N_PS	 {value 0.00001}
+!define SF_SAC_17N_PS	 {value 0.00005}
+
+!define EL_SAC_17N_PS	 {std kind 'DELIVERY-LOSS'    units 'CFS'}
+!define SL_SAC_17N_PS	 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define DL_SAC_17N_PS	 {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!goal setEL_SAC_17N_PS	 {EL_SAC_17N_PS = D_SAC148_17N_PS  * EF_SAC_17N_PS}
+!goal setSL_SAC_17N_PS	 {SL_SAC_17N_PS = D_SAC148_17N_PS  * SF_SAC_17N_PS}
+!goal setDL_SAC_17N_PS	 {DL_SAC_17N_PS = EL_SAC_17N_PS    + SL_SAC_17N_PS}
+
+!define DL_17N_PS	 {std kind 'DELIVERY-LOSS' units 'CFS'}
+!goal setDL_17N_PS	 {DL_17N_PS = DL_SAC_17N_PS}
+
+!==============================
+! 17N_PR -
+!==============================
+goal setEV_17N_PR 	{EV_17N_PR = D_JBC002_17N_PR * EVF_JBC002_17N_PR + D_BGD000_17N_PR * EVF_BGD000_17N_PR} 
+goal setDP_17N_PR 	{DP_17N_PR = D_JBC002_17N_PR * DPF_JBC002_17N_PR + D_BGD000_17N_PR * DPF_BGD000_17N_PR} 
+goal setLF_17N_PR 	{LF_17N_PR = D_JBC002_17N_PR * LFF_JBC002_17N_PR + D_BGD000_17N_PR * LFF_BGD000_17N_PR} 
+goal setSP_17N_PR 	{SP_17N_PR = D_JBC002_17N_PR * SPF_JBC002_17N_PR + D_BGD000_17N_PR * SPF_BGD000_17N_PR} 
+goal setDL_17N_PR 	{DL_17N_PR = EV_17N_PR  + DP_17N_PR  + LF_17N_PR + SP_17N_PR}
+! reuse
+goal set1RU_17N_PR	{RU_17N_PR < R_17N_PR + LF_17N_PR}
+goal set2RU_17N_PR	{RU_17N_PR < RUF_17N_PR*DG_17N_PR} 
+! riparian loss
+goal setRP_17N_PR	{RP_17N_PR = AW_17N_PR * RPF_17N_PR}
+
+!==============================
+! 17N_NR -
+!==============================
+goal setEV_17N_NR 	{EV_17N_NR = /*D_BTC012_17N_NR * EVF_BTC012_17N_NR +*/ D_CRK005_17N_NR * EVF_CRK005_17N_NR} 
+goal setDP_17N_NR 	{DP_17N_NR = /*D_BTC012_17N_NR * DPF_BTC012_17N_NR +*/ D_CRK005_17N_NR * DPF_CRK005_17N_NR} 
+goal setLF_17N_NR 	{LF_17N_NR = /*D_BTC012_17N_NR * LFF_BTC012_17N_NR +*/ D_CRK005_17N_NR * LFF_CRK005_17N_NR} 
+goal setSP_17N_NR 	{SP_17N_NR = /*D_BTC012_17N_NR * SPF_BTC012_17N_NR +*/ D_CRK005_17N_NR * SPF_CRK005_17N_NR} 
+goal setDL_17N_NR 	{DL_17N_NR = EV_17N_NR  + DP_17N_NR  + LF_17N_NR + SP_17N_NR}
+! reuse
+goal set1RU_17N_NR	{RU_17N_NR < R_17N_NR + LF_17N_NR}
+goal set2RU_17N_NR	{RU_17N_NR < RUF_17N_NR*DG_17N_NR} 
+! riparian loss
+goal setRP_17N_NR	{RP_17N_NR = AW_17N_NR * RPF_17N_NR}
+
+!==============================
+! 17N_NA -
+!==============================
+!Groundwater only
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 17-South	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 17S_NA1 -
+!==============================
+!Groundwater only
+
+!==============================
+! 17S_PR -
+!==============================
+goal setEV_17S_PR 	{EV_17S_PR = D_SBP028_17S_PR * EVF_SBP028_17S_PR} 
+goal setDP_17S_PR 	{DP_17S_PR = D_SBP028_17S_PR * DPF_SBP028_17S_PR} 
+goal setLF_17S_PR 	{LF_17S_PR = D_SBP028_17S_PR * LFF_SBP028_17S_PR} 
+goal setSP_17S_PR 	{SP_17S_PR = D_SBP028_17S_PR * SPF_SBP028_17S_PR} 
+goal setDL_17S_PR 	{DL_17S_PR = EV_17S_PR  + DP_17S_PR  + LF_17S_PR + SP_17S_PR}
+! reuse
+goal set1RU_17S_PR	{RU_17S_PR < R_17S_PR + LF_17S_PR}
+goal set2RU_17S_PR	{RU_17S_PR < RUF_17S_PR*DG_17S_PR}
+! riparian loss
+goal setRP_17S_PR	{RP_17S_PR = AW_17S_PR * RPF_17S_PR} 
+
+!==============================
+! 17S_NA -
+!==============================
+goal setEV_17S_NA 	{EV_17S_NA = D_SBP014_17S_NA * EVF_SBP014_17S_NA} 
+goal setDP_17S_NA 	{DP_17S_NA = D_SBP014_17S_NA * DPF_SBP014_17S_NA} 
+goal setLF_17S_NA 	{LF_17S_NA = D_SBP014_17S_NA * LFF_SBP014_17S_NA} 
+goal setSP_17S_NA 	{SP_17S_NA = D_SBP014_17S_NA * SPF_SBP014_17S_NA} 
+goal setDL_17S_NA 	{DL_17S_NA = EV_17S_NA  + DP_17S_NA  + LF_17S_NA + SP_17S_NA}
+! reuse
+goal set1RU_17S_NA	{RU_17S_NA < R_17S_NA + LF_17S_NA}
+goal set2RU_17S_NA	{RU_17S_NA < RUF_17S_NA*DG_17S_NA}
+! riparian loss
+goal setRP_17S_NA	{RP_17S_NA = AW_17S_NA * RPF_17S_NA}
+
+!==============================
+! 17S_SA -
+!==============================
+goal setEV_17S_SA 	{EV_17S_SA = D_FTR003_17S_SA * EVF_FTR003_17S_SA} 
+goal setDP_17S_SA 	{DP_17S_SA = D_FTR003_17S_SA * DPF_FTR003_17S_SA} 
+goal setLF_17S_SA 	{LF_17S_SA = D_FTR003_17S_SA * LFF_FTR003_17S_SA} 
+goal setSP_17S_SA 	{SP_17S_SA = D_FTR003_17S_SA * SPF_FTR003_17S_SA} 
+goal setDL_17S_SA 	{DL_17S_SA = EV_17S_SA  + DP_17S_SA  + LF_17S_SA + SP_17S_SA}
+! reuse
+goal set1RU_17S_SA	{RU_17S_SA < R_17S_SA + LF_17S_SA}
+goal set2RU_17S_SA	{RU_17S_SA < RUF_17S_SA*DG_17S_SA}
+! riparian loss
+goal setRP_17S_SA	{RP_17S_SA = AW_17S_SA * RPF_17S_SA} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 18		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 18_NA -
+!==============================
+goal setEV_18_NA 	{EV_18_NA = D_BSL001_18_NA * EVF_BSL001_18_NA + D_SBP031_18_NA * EVF_SBP031_18_NA} 
+goal setDP_18_NA 	{DP_18_NA = D_BSL001_18_NA * DPF_BSL001_18_NA + D_SBP031_18_NA * DPF_SBP031_18_NA} 
+goal setLF_18_NA 	{LF_18_NA = D_BSL001_18_NA * LFF_BSL001_18_NA + D_SBP031_18_NA * LFF_SBP031_18_NA} 
+goal setSP_18_NA 	{SP_18_NA = D_BSL001_18_NA * SPF_BSL001_18_NA + D_SBP031_18_NA * SPF_SBP031_18_NA} 
+goal setDL_18_NA 	{DL_18_NA = EV_18_NA  + DP_18_NA  + LF_18_NA + SP_18_NA}
+! reuse
+goal set1RU_18_NA	{RU_18_NA < R_18_NA + LF_18_NA}
+goal set2RU_18_NA	{RU_18_NA < RUF_18_NA*DG_18_NA} 
+! riparian loss
+goal setRP_18_NA	{RP_18_NA = AW_18_NA * RPF_18_NA}
+
+!==============================
+! 18_SA -
+!==============================
+goal setEV_18_SA 	{EV_18_SA = D_SAC141_18_SA * EVF_SAC141_18_SA} 
+goal setDP_18_SA 	{DP_18_SA = D_SAC141_18_SA * DPF_SAC141_18_SA} 
+goal setLF_18_SA 	{LF_18_SA = D_SAC141_18_SA * LFF_SAC141_18_SA} 
+goal setSP_18_SA 	{SP_18_SA = D_SAC141_18_SA * SPF_SAC141_18_SA} 
+goal setDL_18_SA 	{DL_18_SA = EV_18_SA  + DP_18_SA  + LF_18_SA + SP_18_SA}
+! reuse
+goal set1RU_18_SA	{RU_18_SA < R_18_SA + LF_18_SA}
+goal set2RU_18_SA	{RU_18_SA < RUF_18_SA*DG_18_SA}
+! riparian loss
+goal setRP_18_SA	{RP_18_SA = AW_18_SA * RPF_18_SA} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 19		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 19_NA -
+!==============================
+/*goal setEV_19_NA 	{EV_19_NA = D_SAC097_19_NA * EVF_SAC097_19_NA} 
+goal setDP_19_NA 	{DP_19_NA = D_SAC097_19_NA * DPF_SAC097_19_NA} 
+goal setLF_19_NA 	{LF_19_NA = D_SAC097_19_NA * LFF_SAC097_19_NA} 
+goal setSP_19_NA 	{SP_19_NA = D_SAC097_19_NA * SPF_SAC097_19_NA} 
+goal setDL_19_NA 	{DL_19_NA = EV_19_NA  + DP_19_NA  + LF_19_NA + SP_19_NA}
+! reuse
+goal set1RU_19_NA	{RU_19_NA < R_19_NA + LF_19_NA}
+goal set2RU_19_NA	{RU_19_NA < RUF_19_NA*DG_19_NA}
+! riparian loss
+goal setRP_19_NA	{RP_19_NA = AW_19_NA * RPF_19_NA}*/ 
+
+!==============================
+! 19_SA
+!==============================
+goal setEV_19_SA 	{EV_19_SA = D_SAC122_19_SA * EVF_SAC122_19_SA + D_SAC115_19_SA * EVF_SAC115_19_SA + D_SAC099_19_SA * EVF_SAC099_19_SA + D_SAC091_19_SA * EVF_SAC091_19_SA} 
+goal setDP_19_SA 	{DP_19_SA = D_SAC122_19_SA * DPF_SAC122_19_SA + D_SAC115_19_SA * DPF_SAC115_19_SA + D_SAC099_19_SA * DPF_SAC099_19_SA + D_SAC091_19_SA * DPF_SAC091_19_SA} 
+goal setLF_19_SA 	{LF_19_SA = D_SAC122_19_SA * LFF_SAC122_19_SA + D_SAC115_19_SA * LFF_SAC115_19_SA + D_SAC099_19_SA * LFF_SAC099_19_SA + D_SAC091_19_SA * LFF_SAC091_19_SA} 
+goal setSP_19_SA 	{SP_19_SA = D_SAC122_19_SA * SPF_SAC122_19_SA + D_SAC115_19_SA * SPF_SAC115_19_SA + D_SAC099_19_SA * SPF_SAC099_19_SA + D_SAC091_19_SA * SPF_SAC091_19_SA} 
+goal setDL_19_SA 	{DL_19_SA = EV_19_SA  + DP_19_SA  + LF_19_SA + SP_19_SA}
+! reuse
+goal set1RU_19_SA	{RU_19_SA < R_19_SA + LF_19_SA}
+goal set2RU_19_SA	{RU_19_SA < RUF_19_SA*DG_19_SA}
+! riparian loss
+goal setRP_19_SA	{RP_19_SA = AW_19_SA * RPF_19_SA} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 20		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 20_NA1 -
+!==============================
+goal setEV_20_NA1 	{EV_20_NA1 = D_CCH030_20_NA1 * EVF_CCH030_20_NA1 + D_CCH052_20_NA1 * EVF_CCH052_20_NA1} 
+goal setDP_20_NA1 	{DP_20_NA1 = D_CCH030_20_NA1 * DPF_CCH030_20_NA1 + D_CCH052_20_NA1 * DPF_CCH052_20_NA1} 
+goal setLF_20_NA1 	{LF_20_NA1 = D_CCH030_20_NA1 * LFF_CCH030_20_NA1 + D_CCH052_20_NA1 * LFF_CCH052_20_NA1} 
+goal setSP_20_NA1 	{SP_20_NA1 = D_CCH030_20_NA1 * SPF_CCH030_20_NA1 + D_CCH052_20_NA1 * SPF_CCH052_20_NA1} 
+goal setDL_20_NA1 	{DL_20_NA1 = EV_20_NA1  + DP_20_NA1  + LF_20_NA1 + SP_20_NA1}
+! reuse
+goal set1RU_20_NA1	{RU_20_NA1 < R_20_NA1 + LF_20_NA1}
+goal set2RU_20_NA1	{RU_20_NA1 < RUF_20_NA1*DG_20_NA1}
+! riparian loss
+goal setRP_20_NA1	{RP_20_NA1 = AW_20_NA1 * RPF_20_NA1} 
+
+!==============================
+! 20_PA -
+!==============================
+goal setEV_20_PA 	{EV_20_PA = D_PSC003_20_PA * EVF_PSC003_20_PA} 
+goal setDP_20_PA 	{DP_20_PA = D_PSC003_20_PA * DPF_PSC003_20_PA} 
+goal setLF_20_PA 	{LF_20_PA = D_PSC003_20_PA * LFF_PSC003_20_PA} 
+goal setSP_20_PA 	{SP_20_PA = D_PSC003_20_PA * SPF_PSC003_20_PA} 
+goal setDL_20_PA 	{DL_20_PA = EV_20_PA  + DP_20_PA  + LF_20_PA + SP_20_PA}
+! reuse
+goal set1RU_20_PA	{RU_20_PA < R_20_PA + LF_20_PA}
+goal set2RU_20_PA	{RU_20_PA < RUF_20_PA*DG_20_PA}
+! riparian loss
+goal setRP_20_PA	{RP_20_PA = AW_20_PA * RPF_20_PA} 
+
+!==============================
+! 20_NA2 AND 20_NU
+!==============================
+! no conveyance losses, groundwater pumping only
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 21		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 21_NA -
+!==============================
+! not in schematic
+!define EF_CCH_21_NA	 {value 0.00001}
+!define SF_CCH_21_NA	 {value 0.00005}
+
+!define EL_CCH_21_NA	 {std kind 'DELIVERY-LOSS'    units 'CFS'}
+!define SL_CCH_21_NA	 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define DL_CCH_21_NA	 {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!goal setEL_CCH_21_NA	 {EL_CCH_21_NA = D_CCH000_21_NA  * EF_CCH_21_NA}
+!goal setSL_CCH_21_NA	 {SL_CCH_21_NA = D_CCH000_21_NA  * SF_CCH_21_NA}
+!goal setDL_CCH_21_NA	 {DL_CCH_21_NA = EL_CCH_21_NA + SL_CCH_21_NA}
+
+!define EF_SAC_21_NA	 {value 0.00001}
+!define SF_SAC_21_NA	 {value 0.00005}
+
+!define EL_SAC_21_NA	 {std kind 'DELIVERY-LOSS'    units 'CFS'}
+!define SL_SAC_21_NA	 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define DL_SAC_21_NA	 {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!goal setEL_SAC_21_NA	 {EL_SAC_21_NA = D_SAC085_21_NA  * EF_SAC_21_NA}
+!goal setSL_SAC_21_NA	 {SL_SAC_21_NA = D_SAC085_21_NA  * SF_SAC_21_NA}
+!goal setDL_SAC_21_NA	 {DL_SAC_21_NA = EL_SAC_21_NA    + SL_SAC_21_NA}
+
+!define DL_21_NA	 {std kind 'DELIVERY-LOSS' units 'CFS'}
+!goal setDL_21_NA	 {DL_21_NA = DL_CCH_21_NA + DL_SAC_21_NA}
+
+!==============================
+! 21_PU -
+!==============================
+goal setEL_WTPBTB_21_PU	 {EL_WTPBTB_21_PU = D_WTPBTB_21_PU  * EF_WTPBTB_21_PU}
+goal setSL_WTPBTB_21_PU	 {SL_WTPBTB_21_PU = D_WTPBTB_21_PU  * SF_WTPBTB_21_PU}
+goal setDL_WTPBTB_21_PU	 {DL_WTPBTB_21_PU = EL_WTPBTB_21_PU + SL_WTPBTB_21_PU}
+
+goal setDL_21_PU	 {DL_21_PU = DL_WTPBTB_21_PU}
+
+!==============================
+! 21_SA -
+!==============================
+goal setEV_21_SA 	{EV_21_SA = D_SAC074_21_SA * EVF_SAC074_21_SA + D_SAC083_21_SA * EVF_SAC083_21_SA  + D_YBP023_21_SA * EVF_YBP023_21_SA} 
+goal setDP_21_SA 	{DP_21_SA = D_SAC074_21_SA * DPF_SAC074_21_SA + D_SAC083_21_SA * DPF_SAC083_21_SA  + D_YBP023_21_SA * DPF_YBP023_21_SA} 
+goal setLF_21_SA 	{LF_21_SA = D_SAC074_21_SA * LFF_SAC074_21_SA + D_SAC083_21_SA * LFF_SAC083_21_SA  + D_YBP023_21_SA * LFF_YBP023_21_SA} 
+goal setSP_21_SA 	{SP_21_SA = D_SAC074_21_SA * SPF_SAC074_21_SA + D_SAC083_21_SA * SPF_SAC083_21_SA  + D_YBP023_21_SA * SPF_YBP023_21_SA} 
+goal setDL_21_SA 	{DL_21_SA = EV_21_SA  + DP_21_SA  + LF_21_SA + SP_21_SA}
+! reuse
+goal set1RU_21_SA	{RU_21_SA < R_21_SA + LF_21_SA}
+goal set2RU_21_SA	{RU_21_SA < RUF_21_SA*DG_21_SA} 
+! riparian loss
+goal setRP_21_SA	{RP_21_SA = AW_21_SA * RPF_21_SA}
+
+!==============================
+! 21_PA -
+!==============================
+goal setEV_21_PA 	{EV_21_PA = D_KLR005_21_PA * EVF_KLR005_21_PA} 
+goal setDP_21_PA 	{DP_21_PA = D_KLR005_21_PA * DPF_KLR005_21_PA} 
+goal setLF_21_PA 	{LF_21_PA = D_KLR005_21_PA * LFF_KLR005_21_PA} 
+goal setSP_21_PA 	{SP_21_PA = D_KLR005_21_PA * SPF_KLR005_21_PA} 
+goal setDL_21_PA 	{DL_21_PA = EV_21_PA  + DP_21_PA  + LF_21_PA + SP_21_PA}
+! reuse
+goal set1RU_21_PA	{RU_21_PA < R_21_PA + LF_21_PA}
+goal set2RU_21_PA	{RU_21_PA < RUF_21_PA*DG_21_PA}
+! riparian loss
+goal setRP_21_PA	{RP_21_PA = AW_21_PA * RPF_21_PA} 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 22		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 22_SA1
+!==============================
+goal setEV_22_SA1 	{EV_22_SA1 = D_SAC082_22_SA1 * EVF_SAC082_22_SA1 + D_SAC078_22_SA1 * EVF_SAC078_22_SA1 + D_CRC002_22_SA1 * EVF_CRC002_22_SA1} 
+goal setDP_22_SA1 	{DP_22_SA1 = D_SAC082_22_SA1 * DPF_SAC082_22_SA1 + D_SAC078_22_SA1 * DPF_SAC078_22_SA1 + D_CRC002_22_SA1 * DPF_CRC002_22_SA1} 
+goal setLF_22_SA1 	{LF_22_SA1 = D_SAC082_22_SA1 * LFF_SAC082_22_SA1 + D_SAC078_22_SA1 * LFF_SAC078_22_SA1 + D_CRC002_22_SA1 * LFF_CRC002_22_SA1} 
+goal setSP_22_SA1 	{SP_22_SA1 = D_SAC082_22_SA1 * SPF_SAC082_22_SA1 + D_SAC078_22_SA1 * SPF_SAC078_22_SA1 + D_CRC002_22_SA1 * SPF_CRC002_22_SA1} 
+goal setDL_22_SA1 	{DL_22_SA1 = EV_22_SA1  + DP_22_SA1  + LF_22_SA1 + SP_22_SA1}
+! reuse
+goal set1RU_22_SA1	{RU_22_SA1 < R_22_SA1 + LF_22_SA1}
+goal set2RU_22_SA1	{RU_22_SA1 < RUF_22_SA1*DG_22_SA1} 
+! riparian loss
+goal setRP_22_SA1	{RP_22_SA1 = AW_22_SA1 * RPF_22_SA1} 
+
+!==============================
+! 22_SA2
+!==============================
+goal setEV_22_SA2 	{EV_22_SA2 = D_FTR008_22_SA2 * EVF_FTR008_22_SA2} 
+goal setDP_22_SA2 	{DP_22_SA2 = D_FTR008_22_SA2 * DPF_FTR008_22_SA2} 
+goal setLF_22_SA2 	{LF_22_SA2 = D_FTR008_22_SA2 * LFF_FTR008_22_SA2} 
+goal setSP_22_SA2 	{SP_22_SA2 = D_FTR008_22_SA2 * SPF_FTR008_22_SA2} 
+goal setDL_22_SA2 	{DL_22_SA2 = EV_22_SA2  + DP_22_SA2  + LF_22_SA2 + SP_22_SA2}
+! reuse
+goal set1RU_22_SA2	{RU_22_SA2 < R_22_SA2 + LF_22_SA2}
+goal set2RU_22_SA2	{RU_22_SA2 < RUF_22_SA2*DG_22_SA2} 
+! riparian loss
+goal setRP_22_SA2	{RP_22_SA2 = AW_22_SA2 * RPF_22_SA2} 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 23		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 23_NA
+!==============================
+goal setEV_23_NA 	{EV_23_NA = /*D_BRR016_23_NA * EVF_BRR016_23_NA +*/ D_BRR017_23_NA * EVF_BRR017_23_NA} 
+goal setDP_23_NA 	{DP_23_NA = /*D_BRR016_23_NA * DPF_BRR016_23_NA +*/ D_BRR017_23_NA * DPF_BRR017_23_NA} 
+goal setLF_23_NA 	{LF_23_NA = /*D_BRR016_23_NA * LFF_BRR016_23_NA +*/ D_BRR017_23_NA * LFF_BRR017_23_NA} 
+goal setSP_23_NA 	{SP_23_NA = /*D_BRR016_23_NA * SPF_BRR016_23_NA +*/ D_BRR017_23_NA * SPF_BRR017_23_NA} 
+goal setDL_23_NA 	{DL_23_NA = EV_23_NA  + DP_23_NA  + LF_23_NA + SP_23_NA}
+! reuse
+goal set1RU_23_NA	{RU_23_NA < R_23_NA + LF_23_NA}
+goal set2RU_23_NA	{RU_23_NA < RUF_23_NA*DG_23_NA} 
+! riparian loss
+goal setRP_23_NA	{RP_23_NA = AW_23_NA * RPF_23_NA}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 24		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 24_NA1
+!==============================
+goal setEV_24_NA1 	{EV_24_NA1 = D_CBC007_24_NA1 * EVF_CBC007_24_NA1 + D_ABN024_24_NA1 * EVF_ABN024_24_NA1} 
+goal setDP_24_NA1 	{DP_24_NA1 = D_CBC007_24_NA1 * DPF_CBC007_24_NA1 + D_ABN024_24_NA1 * DPF_ABN024_24_NA1} 
+goal setLF_24_NA1 	{LF_24_NA1 = D_CBC007_24_NA1 * LFF_CBC007_24_NA1 + D_ABN024_24_NA1 * LFF_ABN024_24_NA1} 
+goal setSP_24_NA1 	{SP_24_NA1 = D_CBC007_24_NA1 * SPF_CBC007_24_NA1 + D_ABN024_24_NA1 * SPF_ABN024_24_NA1} 
+goal setDL_24_NA1 	{DL_24_NA1 = EV_24_NA1  + DP_24_NA1  + LF_24_NA1 + SP_24_NA1}
+! reuse
+goal set1RU_24_NA1	{RU_24_NA1 < R_24_NA1 + LF_24_NA1}
+goal set2RU_24_NA1	{RU_24_NA1 < RUF_24_NA1*DG_24_NA1} 
+! riparian loss
+goal setRP_24_NA1	{RP_24_NA1 = AW_24_NA1 * RPF_24_NA1} 
+
+!==============================
+! 24_NA2
+!==============================
+goal setEV_24_NA2 	{EV_24_NA2 = D_ABN010_24_NA2 * EVF_ABN010_24_NA2} 
+goal setDP_24_NA2 	{DP_24_NA2 = D_ABN010_24_NA2 * DPF_ABN010_24_NA2} 
+goal setLF_24_NA2 	{LF_24_NA2 = D_ABN010_24_NA2 * LFF_ABN010_24_NA2} 
+goal setSP_24_NA2 	{SP_24_NA2 = D_ABN010_24_NA2 * SPF_ABN010_24_NA2} 
+goal setDL_24_NA2 	{DL_24_NA2 = EV_24_NA2  + DP_24_NA2  + LF_24_NA2 + SP_24_NA2}
+! reuse
+goal set1RU_24_NA2	{RU_24_NA2 < R_24_NA2 + LF_24_NA2}
+goal set2RU_24_NA2	{RU_24_NA2 < RUF_24_NA2*DG_24_NA2}
+! riparian loss
+goal setRP_24_NA2	{RP_24_NA2 = AW_24_NA2 * RPF_24_NA2} 
+
+!==============================
+! 24_NA3
+!==============================
+goal setEV_24_NA3 	{EV_24_NA3 = D_STH004_24_NA3 * EVF_STH004_24_NA3 + D_LBC049_24_NA3 * EVF_LBC049_24_NA3} 
+goal setDP_24_NA3 	{DP_24_NA3 = D_STH004_24_NA3 * DPF_STH004_24_NA3 + D_LBC049_24_NA3 * DPF_LBC049_24_NA3} 
+goal setLF_24_NA3 	{LF_24_NA3 = D_STH004_24_NA3 * LFF_STH004_24_NA3 + D_LBC049_24_NA3 * LFF_LBC049_24_NA3} 
+goal setSP_24_NA3 	{SP_24_NA3 = D_STH004_24_NA3 * SPF_STH004_24_NA3 + D_LBC049_24_NA3 * SPF_LBC049_24_NA3} 
+goal setDL_24_NA3 	{DL_24_NA3 = EV_24_NA3  + DP_24_NA3  + LF_24_NA3 + SP_24_NA3}
+! reuse
+goal set1RU_24_NA3	{RU_24_NA3 < R_24_NA3 + LF_24_NA3}
+goal set2RU_24_NA3	{RU_24_NA3 < RUF_24_NA3*DG_24_NA3} 
+! riparian loss
+goal setRP_24_NA3	{RP_24_NA3 = AW_24_NA3 * RPF_24_NA3} 
+
+!==============================
+! 24_NU2
+!==============================
+goal setEL_WTPFSS_24_NU2 {EL_WTPFSS_24_NU2 = D_WTPFSS_24_NU2  * EF_WTPFSS_24_NU2}
+goal setSL_WTPFSS_24_NU2 {SL_WTPFSS_24_NU2 = D_WTPFSS_24_NU2  * SF_WTPFSS_24_NU2}
+goal setDL_WTPFSS_24_NU2 {DL_WTPFSS_24_NU2 = EL_WTPFSS_24_NU2 + SL_WTPFSS_24_NU2}
+
+goal setEL_WTPSRW_24_NU2 {EL_WTPSRW_24_NU2 = D_WTPSRW_24_NU2  * EF_WTPSRW_24_NU2}
+goal setSL_WTPSRW_24_NU2 {SL_WTPSRW_24_NU2 = D_WTPSRW_24_NU2  * SF_WTPSRW_24_NU2}
+goal setDL_WTPSRW_24_NU2 {DL_WTPSRW_24_NU2 = EL_WTPSRW_24_NU2 + SL_WTPSRW_24_NU2}
+
+goal setEL_WTPOPH_24_NU2 {EL_WTPOPH_24_NU2 = D_WTPOPH_24_NU2  * EF_WTPOPH_24_NU2}
+goal setSL_WTPOPH_24_NU2 {SL_WTPOPH_24_NU2 = D_WTPOPH_24_NU2  * SF_WTPOPH_24_NU2}
+goal setDL_WTPOPH_24_NU2 {DL_WTPOPH_24_NU2 = EL_WTPOPH_24_NU2 + SL_WTPOPH_24_NU2}
+
+goal setDL_24_NU2	 {DL_24_NU2 = DL_WTPFSS_24_NU2 + DL_WTPSRW_24_NU2 + DL_WTPOPH_24_NU2}
+
+!==============================
+! 24_NU1
+!==============================
+goal setEL_WTPBWM_24_NU1 {EL_WTPBWM_24_NU1 = D_WTPBWM_24_NU1  * EF_WTPBWM_24_NU1}
+goal setSL_WTPBWM_24_NU1 {SL_WTPBWM_24_NU1 = D_WTPBWM_24_NU1  * SF_WTPBWM_24_NU1}
+goal setDL_WTPBWM_24_NU1 {DL_WTPBWM_24_NU1 = EL_WTPBWM_24_NU1 + SL_WTPBWM_24_NU1}
+
+goal setEL_WTPAUB_24_NU1 {EL_WTPAUB_24_NU1 = D_WTPAUB_24_NU1  * EF_WTPAUB_24_NU1}
+goal setSL_WTPAUB_24_NU1 {SL_WTPAUB_24_NU1 = D_WTPAUB_24_NU1  * SF_WTPAUB_24_NU1}
+goal setDL_WTPAUB_24_NU1 {DL_WTPAUB_24_NU1 = EL_WTPAUB_24_NU1 + SL_WTPAUB_24_NU1}
+
+goal setDL_24_NU1	 {DL_24_NU1 = DL_WTPBWM_24_NU1 + DL_WTPAUB_24_NU1}
+
+!==============================
+! 24_NU3
+!==============================
+goal setEL_CBC007_24_NU3 {EL_CBC007_24_NU3 = D_CBC007_24_NU3  *	EF_CBC007_24_NU3}
+goal setSL_CBC007_24_NU3 {SL_CBC007_24_NU3 = D_CBC007_24_NU3  *	SF_CBC007_24_NU3}
+goal setDL_CBC007_24_NU3 {DL_CBC007_24_NU3 = EL_CBC007_24_NU3 +	SL_CBC007_24_NU3}
+
+goal setDL_24_NU3	 {DL_24_NU3 = DL_CBC007_24_NU3}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 25		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 25_PA2 -
+!==============================
+goal setEV_25_PA2 	{EV_25_PA2 = D_PSC006_25_PA2 * EVF_PSC006_25_PA2 + D_RFS25_25_PA2 * EVF_RFS25_25_PA2} 
+goal setDP_25_PA2 	{DP_25_PA2 = D_PSC006_25_PA2 * DPF_PSC006_25_PA2 + D_RFS25_25_PA2 * DPF_RFS25_25_PA2} 
+goal setLF_25_PA2 	{LF_25_PA2 = D_PSC006_25_PA2 * LFF_PSC006_25_PA2 + D_RFS25_25_PA2 * LFF_RFS25_25_PA2} 
+goal setSP_25_PA2 	{SP_25_PA2 = D_PSC006_25_PA2 * SPF_PSC006_25_PA2 + D_RFS25_25_PA2 * SPF_RFS25_25_PA2} 
+goal setDL_25_PA2 	{DL_25_PA2 = EV_25_PA2  + DP_25_PA2  + LF_25_PA2 + SP_25_PA2}
+! reuse
+goal set1RU_25_PA2	{RU_25_PA2 < R_25_PA2 + LF_25_PA2}
+goal set2RU_25_PA2	{RU_25_PA2 < RUF_25_PA2*DG_25_PA2} 
+! riparian loss
+goal setRP_25_PA2	{RP_25_PA2 = AW_25_PA2 * RPF_25_PA2}
+
+!==============================
+! 25_NA -
+!==============================
+goal setEV_25_NA 	{EV_25_NA = D_CSL005_25_NA * EVF_CSL005_25_NA} 
+goal setDP_25_NA 	{DP_25_NA = D_CSL005_25_NA * DPF_CSL005_25_NA} 
+goal setLF_25_NA 	{LF_25_NA = D_CSL005_25_NA * LFF_CSL005_25_NA} 
+goal setSP_25_NA 	{SP_25_NA = D_CSL005_25_NA * SPF_CSL005_25_NA} 
+goal setDL_25_NA 	{DL_25_NA = EV_25_NA  + DP_25_NA  + LF_25_NA + SP_25_NA}
+! reuse
+goal set1RU_25_NA	{RU_25_NA < R_25_NA + LF_25_NA}
+goal set2RU_25_NA	{RU_25_NA < RUF_25_NA*DG_25_NA}
+! riparian loss
+goal setRP_25_NA	{RP_25_NA = AW_25_NA * RPF_25_NA} 
+
+!==============================
+! 25_PA1 -
+!==============================
+goal setEV_25_PA1 	{EV_25_PA1 = D_PSC003_25_PA1 * EVF_PSC003_25_PA1} 
+goal setDP_25_PA1 	{DP_25_PA1 = D_PSC003_25_PA1 * DPF_PSC003_25_PA1} 
+goal setLF_25_PA1 	{LF_25_PA1 = D_PSC003_25_PA1 * LFF_PSC003_25_PA1} 
+goal setSP_25_PA1 	{SP_25_PA1 = D_PSC003_25_PA1 * SPF_PSC003_25_PA1} 
+goal setDL_25_PA1 	{DL_25_PA1 = EV_25_PA1  + DP_25_PA1  + LF_25_PA1 + SP_25_PA1}
+! reuse
+goal set1RU_25_PA1	{RU_25_PA1 < R_25_PA1 + LF_25_PA1}
+goal set2RU_25_PA1	{RU_25_PA1 < RUF_25_PA1*DG_25_PA1}
+! riparian loss
+goal setRP_25_PA1	{RP_25_PA1 = AW_25_PA1 * RPF_25_PA1} 
+
+!==============================
+! 25_PU - City of Vacaville
+!==============================
+goal setDL_25_PU 	{DL_25_PU = 0.}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 26N		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal setEL_26N_PU1	 {EL_26N_PU1 = D_WTPRSV_26N_PU1  * EF_WTPRSV_26N_PU1 + D_WTPSRW_26N_PU1  * EF_WTPSRW_26N_PU1}
+goal setSL_26N_PU1	 {SL_26N_PU1 = D_WTPRSV_26N_PU1  * SF_WTPRSV_26N_PU1 + D_WTPSRW_26N_PU1  * SF_WTPSRW_26N_PU1}
+goal setDL_26N_PU1	 {DL_26N_PU1 = EL_26N_PU1    + SL_26N_PU1}
+
+goal setEL_26N_PU2	 {EL_26N_PU2 = D_WTPSJP_26N_PU2  * EF_WTPSJP_26N_PU2}
+goal setSL_26N_PU2	 {SL_26N_PU2 = D_WTPSJP_26N_PU2  * SF_WTPSJP_26N_PU2}
+goal setDL_26N_PU2	 {DL_26N_PU2 = EL_26N_PU2    + SL_26N_PU2}
+
+goal setEL_26N_PU3	 {EL_26N_PU3 = D_WTPSJP_26N_PU3  * EF_WTPSJP_26N_PU3}
+goal setSL_26N_PU3	 {SL_26N_PU3 = D_WTPSJP_26N_PU3  * SF_WTPSJP_26N_PU3}
+goal setDL_26N_PU3	 {DL_26N_PU3 = EL_26N_PU3    + SL_26N_PU3}
+
+goal setEL_26N_NU2	 {EL_26N_NU2 = D_WTPBJM_26N_NU2  * EF_WTPBJM_26N_NU2}
+goal setSL_26N_NU2	 {SL_26N_NU2 = D_WTPBJM_26N_NU2  * SF_WTPBJM_26N_NU2}
+goal setDL_26N_NU2	 {DL_26N_NU2 = EL_26N_NU2    + SL_26N_NU2}
+
+goal setEL_26N_NU1	 {EL_26N_NU1 = D_WTPSRW_26N_NU1  * EF_WTPSRW_26N_NU1 + D_WTPSJP_26N_NU1  * EF_WTPSJP_26N_NU1 + D_WTPFBN_26N_NU1  * EF_WTPFBN_26N_NU1}
+goal setSL_26N_NU1 	 {SL_26N_NU1 = D_WTPSRW_26N_NU1  * SF_WTPSRW_26N_NU1 + D_WTPSJP_26N_NU1  * SF_WTPSJP_26N_NU1 + D_WTPFBN_26N_NU1  * SF_WTPFBN_26N_NU1}
+goal setDL_26N_NU1 	 {DL_26N_NU1 = EL_26N_NU1    + SL_26N_NU1}
+
+goal setEL_26N_NU3	 {EL_26N_NU3 = D_WTPSRW_26N_NU3  * EF_WTPSRW_26N_NU3 + D_WTPSAC_26N_NU3  * EF_WTPSAC_26N_NU3 + D_WTPFBN_26N_NU3  * EF_WTPFBN_26N_NU3}
+goal setSL_26N_NU3 	 {SL_26N_NU3 = D_WTPSRW_26N_NU3  * SF_WTPSRW_26N_NU3 + D_WTPSAC_26N_NU3  * SF_WTPSAC_26N_NU3 + D_WTPFBN_26N_NU3  * SF_WTPFBN_26N_NU3}
+goal setDL_26N_NU3 	 {DL_26N_NU3 = EL_26N_NU3    + SL_26N_NU3}
+
+goal setEL_26N_NU4	 {EL_26N_NU4 = D_WTPFBN_26N_NU4  * EF_WTPFBN_26N_NU4}
+goal setSL_26N_NU4 	 {SL_26N_NU4 = D_WTPFBN_26N_NU4  * SF_WTPFBN_26N_NU4}
+goal setDL_26N_NU4 	 {DL_26N_NU4 = EL_26N_NU4    + SL_26N_NU4}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 26S		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal setEL_26S_PU1	 {EL_26S_PU1 = D_WTPFOL_26S_PU1  * EF_WTPFOL_26S_PU1}
+goal setSL_26S_PU1	 {SL_26S_PU1 = D_WTPFOL_26S_PU1  * SF_WTPFOL_26S_PU1}
+goal setDL_26S_PU1	 {DL_26S_PU1 = EL_26S_PU1    + SL_26S_PU1}
+
+goal setEL_26S_PU2	 {EL_26S_PU2 = D_WTPCOL_26S_PU2  * EF_WTPCOL_26S_PU2}
+goal setSL_26S_PU2	 {SL_26S_PU2 = D_WTPCOL_26S_PU2  * SF_WTPCOL_26S_PU2}
+goal setDL_26S_PU2	 {DL_26S_PU2 = EL_26S_PU2    + SL_26S_PU2}
+
+goal setEL_26S_NU1	 {EL_26S_NU1 = D_WTPFBN_26S_NU1  * EF_WTPFBN_26S_NU1 + D_WTPSAC_26S_NU1  * EF_WTPSAC_26S_NU1}
+goal setSL_26S_NU1	 {SL_26S_NU1 = D_WTPFBN_26S_NU1  * SF_WTPFBN_26S_NU1 + D_WTPSAC_26S_NU1  * SF_WTPSAC_26S_NU1}
+goal setDL_26S_NU1	 {DL_26S_NU1 = EL_26S_NU1    + SL_26S_NU1}
+
+goal setEL_26S_PU4	 {EL_26S_PU4 = D_WTPVNY_26S_PU4  * EF_WTPVNY_26S_PU4 + D_WTPSAC_26S_PU4  * EF_WTPSAC_26S_PU4}
+goal setSL_26S_PU4	 {SL_26S_PU4 = D_WTPVNY_26S_PU4  * SF_WTPVNY_26S_PU4 + D_WTPSAC_26S_PU4  * SF_WTPSAC_26S_PU4}
+goal setDL_26S_PU4	 {DL_26S_PU4 = EL_26S_PU4    + SL_26S_PU4}
+
+goal setEL_26S_NU2	 {EL_26S_NU2 = D_WTPFBN_26S_NU2  * EF_WTPFBN_26S_NU2}
+goal setSL_26S_NU2	 {SL_26S_NU2 = D_WTPFBN_26S_NU2  * SF_WTPFBN_26S_NU2}
+goal setDL_26S_NU2	 {DL_26S_NU2 = EL_26S_NU2    + SL_26S_NU2}
+
+goal setEL_26S_PU5	 {EL_26S_PU5 = D_WTPVNY_26S_PU5  * EF_WTPVNY_26S_PU5}
+goal setSL_26S_PU5	 {SL_26S_PU5 = D_WTPVNY_26S_PU5  * SF_WTPVNY_26S_PU5}
+goal setDL_26S_PU5	 {DL_26S_PU5 = EL_26S_PU5    + SL_26S_PU5}
+
+goal setEL_26S_PU6	 {EL_26S_PU6 = D_WTPVNY_26S_PU6  * EF_WTPVNY_26S_PU6}
+goal setSL_26S_PU6	 {SL_26S_PU6 = D_WTPVNY_26S_PU6  * SF_WTPVNY_26S_PU6}
+goal setDL_26S_PU6	 {DL_26S_PU6 = EL_26S_PU6    + SL_26S_PU6}
+
+goal setEL_26S_PU3	 {EL_26S_PU3 = D_FSC003_26S_PU3  * EF_FSC003_26S_PU3}
+goal setSL_26S_PU3	 {SL_26S_PU3 = D_FSC003_26S_PU3  * SF_FSC003_26S_PU3}
+goal setDL_26S_PU3	 {DL_26S_PU3 = EL_26S_PU3    + SL_26S_PU3}
+
+goal setEL_26S_NU4	 {EL_26S_NU4 = D_WTPFOL_26S_NU4  * EF_WTPFOL_26S_NU4}
+goal setSL_26S_NU4	 {SL_26S_NU4 = D_WTPFOL_26S_NU4  * SF_WTPFOL_26S_NU4}
+goal setDL_26S_NU4	 {DL_26S_NU4 = EL_26S_NU4    + SL_26S_NU4}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60N		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 60N_NA2
+!==============================
+goal setEV_60N_NA2 	{EV_60N_NA2 = D_FSC015_60N_NA2 * EVF_FSC015_60N_NA2} 
+goal setDP_60N_NA2 	{DP_60N_NA2 = D_FSC015_60N_NA2 * DPF_FSC015_60N_NA2} 
+goal setLF_60N_NA2 	{LF_60N_NA2 = D_FSC015_60N_NA2 * LFF_FSC015_60N_NA2} 
+goal setSP_60N_NA2 	{SP_60N_NA2 = D_FSC015_60N_NA2 * SPF_FSC015_60N_NA2} 
+goal setDL_60N_NA2 	{DL_60N_NA2 = EV_60N_NA2  + DP_60N_NA2  + LF_60N_NA2 + SP_60N_NA2}
+! reuse
+goal set1RU_60N_NA2	{RU_60N_NA2 < /*R_60N_NA2* +*/ LF_60N_NA2} ! Unknown return flow
+goal set2RU_60N_NA2	{RU_60N_NA2 < RUF_60N_NA2*DG_60N_NA2}
+! riparian loss
+goal setRP_60N_NA2	{RP_60N_NA2 = AW_60N_NA2 * RPF_60N_NA2} 
+
+!==============================
+! 60N_PU
+!==============================
+goal setEL_FSC025_60N_PU{EL_FSC025_60N_PU = D_FSC025_60N_PU  * EF_FSC025_60N_PU}
+goal setSL_FSC025_60N_PU{SL_FSC025_60N_PU = D_FSC025_60N_PU  * SF_FSC025_60N_PU}
+goal setDL_FSC025_60N_PU{DL_FSC025_60N_PU = EL_FSC025_60N_PU + SL_FSC025_60N_PU}
+
+goal setDL_60N_PU	{DL_60N_PU = DL_FSC025_60N_PU}
+/*
+!==============================
+! EBMUD
+!==============================
+goal setEL_FSC027_EBMUD	 	{EL_FSC027_EBMUD = D_FSC027_EBMUD  * EF_FSC027_EBMUD}
+goal setSL_FSC027_EBMUD	 	{SL_FSC027_EBMUD = D_FSC027_EBMUD  * SF_FSC027_EBMUD}
+goal setDL_FSC027_EBMUD	 	{DL_FSC027_EBMUD = EL_FSC027_EBMUD + SL_FSC027_EBMUD}
+
+goal setDL_EBMUD	 	{DL_EBMUD = DL_FSC027_EBMUD}
+*/
+!==============================
+! EBMUD
+!==============================
+goal setEL_EBA_EBMUD	 {EL_EBA_EBMUD = D_EBA100_EBMUD  * EF_EBA_EBMUD}
+goal setSL_EBA_EBMUD	 {SL_EBA_EBMUD = D_EBA100_EBMUD  * SF_EBA_EBMUD}
+goal setDL_EBA_EBMUD	 {DL_EBA_EBMUD = EL_EBA_EBMUD + SL_EBA_EBMUD}
+
+goal setDL_EBMUD	 {DL_EBMUD = DL_EBA_EBMUD}

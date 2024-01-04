@@ -1,0 +1,560 @@
+! CB_Rules.wresl
+! This wresl file includes the delivery logic for each area of the Colusa Basin
+
+!
+! *******************************************************************
+!     NODOS    NODOS    NODOS    NODOS    NODOS    NODOS    NODOS
+!
+! Added Rice Decomposition based on NODOS supplies
+define Rice_Decomp_Amt {
+     case OctToJan {
+           condition month >= Oct .and. month <=Jan
+           value  RiceDecompANN/4. }
+     case rest {
+           condition always
+           value  0.0 }
+}
+define dem_Rice_Decomp {
+     case Deliver {
+          condition s30(-1) >= DeadPoolLocal + RiceDecompANN
+          value Rice_Decomp_Amt }
+     case NoDeliver {
+          condition always
+          value 0.0 }
+}
+define ret_Rice_Decomp {
+     case Return {
+          condition month == Feb
+          sum(i=-4,-1,1) 0.19*C30C(i)*cfs_taf(i) }
+     case NoReturn {
+          condition always
+          value 0.0 }
+}
+define rdcmp_14301_nds {value 0.55*dem_Rice_Decomp*taf_cfs}   ! NODOS supplied addition Rice Decomp for WBA8NN
+define rdrf_181A_nds {value 0.55*ret_Rice_Decomp*taf_cfs}     !subsequent return flow increase for WBA8NN
+define rdcmp_14501_nds {value 0.45*dem_Rice_Decomp*taf_cfs}   ! NODOS supplied addition Rice Decomp for WBA8NS
+define rdrf_184A_nds {value 0.45*ret_Rice_Decomp*taf_cfs}     ! subsequent return flow increase for WBA8NS
+define shift_nds_rdcmp {std kind 'FLOW-CHANNEL' units 'CFS'}  !shift rice decomp water south if capacity constrains
+!
+! *******************************************************************
+
+! Corning  -----------------------------------------------------------------------------
+! According to historical record, CVP deliveries through Corning canal is limited.
+
+define OnFarmDR_17101 {value cuaw_17101 / OnFarmEff_17101}  !on-farm appled water (on-farm divesion requirement)
+define target_D17101 {value (OnFarmDR_17101 - (OnFarmDR_17101 * ReuseFact_17101))}  !total diversion requirement
+define target_D171_pag {value min(perdel_cvpag_sys*con_D171_pag , target_D17101 *(1.0+ConvLs_17101))} ! Not 100% accurate may want to revise
+define target_D171_NDS {value min(perdel_cvpsc_sys*con_D171_pag , target_D17101 *(1.0+ConvLs_17101))  ! Increased re;liability provided by NODOS Local Share
+                            - target_D171_pag}
+define lim_minGW17101 { value max(0.,min(minpump_17101,target_D17101))}   ! set min GW pumping to lesser of input value or demand
+
+define D171_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D171_NDS {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD171  {D171 = D171_pag + D171_NDS}
+
+goal setL17101 { L17101 = D171 * ConvLs_17101}  !set conveyance loss
+
+goal limitD17101 {D17101 = target_D17101}
+
+goal limitD171   {D171_pag < perdel_cvpag_sys*con_D171_pag }
+goal limitD171_2 {D171_pag + D171_NDS < perdel_cvpsc_sys*con_D171_pag }
+goal limitD171_1 {D171_pag + D171_NDS < target_D17101 + L17101}
+
+!define targ_D171pagout {alias target_D171_pag kind 'temp' units 'cfs'}  !non-recoverable loss
+
+define dperc_17101 {alias cuaw_17101 * DpercFact_17101 kind 'deep-perc' units 'cfs'}  !deep perc of applied water
+define NRL17101 {alias cuaw_17101 * nrlFact_17101 kind 'local-loss' units 'cfs'}  !non-recoverable loss
+
+goal set_GP17101 {GP17101 > lim_minGW17101}
+
+!define minGW17101out {alias lim_minGW17101 kind 'temp' units 'cfs'}  !non-recoverable loss
+
+goal setR113 {R113 = D17101 - cuaw_17101 - NRL17101 - dperc_17101 }  !return flow
+
+! WBA4 along Tehama-Colusa Canal  -----------------------------------------------------------------------------
+
+define OnFarmDR_17201 {value cuaw_17201 / OnFarmEff_17201 }  !on-farm appled water (on-farm divesion requirement)
+define target_D17201 {value (OnFarmDR_17201 - (OnFarmDR_17201 * ReuseFact_17201))}  !total diversion requirement
+define target_D172_pag {value min(perdel_cvpag_sys*con_D172_pag , target_D17201  *(1.0+ConvLs_17201))}  ! Not 100% accurate may want to revise)}  ! contract allocation
+define target_D172_NDS {value min(perdel_cvpsc_sys*con_D172_pag , target_D17201  *(1.0+ConvLs_17201))  ! Increased re;liability provided by NODOS Local Share
+                            - target_D172_pag}
+define lim_minGW17201 { value max(0.,min(minpump_17201,target_D17201))}   ! set min GW pumping to lesser of input value or demand
+
+define D172_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D172_NDS {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD172  {D172 = D172_pag + D172_NDS}
+
+goal setL17201 { L17201 = D172 * ConvLs_17201}  !set conveyance loss
+goal setLoss172 { L172 = C171 * 0.01}  !set TC Canal conveyance loss
+
+goal limitD17201 {D17201 = target_D17201}
+
+goal limitD172   {D172_pag < perdel_cvpag_sys*con_D172_pag}
+goal limitD172_2 {D172_pag + D172_NDS < perdel_cvpsc_sys*con_D172_pag}
+goal limitD172_1 {D172_pag + D172_NDS < target_D17201 + L17201}
+
+define dperc_17201 {alias cuaw_17201 * DpercFact_17201 kind 'deep-perc' units 'cfs'}  !deep perc of applied water
+define NRL17201 {alias cuaw_17201 * nrlFact_17201 kind 'local-loss' units 'cfs'}  !non-recoverable loss
+
+goal set_GP17201 {GP17201 > lim_minGW17201}
+
+goal setR114C {R114C = D17201 - cuaw_17201 - NRL17201 - dperc_17201}  !return flow
+
+! WBA4 Non-project demands ------------------------------------------------------------------------------------
+! Includes demands met from GW, along Thomes and Elder Creeks
+! Model priority 1) Min groundwater pumping, 2) Sac River up to 0.0 taf/mo and Creek flows,  3) More groundwater pumping
+! There is currently no logic to prioritize Sac River or Creek flows.
+
+goal limitD113A {D113A < demand_D113A }     ! Limit Sac R. diversion
+goal setD11301 {D11301 > D113A}
+
+goal setD11301b {D11301 < D113A + demand_D11301 + L11302}  !limit combined Sac + Elder + Thomas Crk diversion
+
+goal setL11302 { L11302 = D11301 * ConvLs_11302}  !set conveyance loss for East side tribs and Sac R. diversion
+
+define OnFarmDR_11302 {value cuaw_11302 / OnFarmEff_11302}  !on-farm appled water (on-farm divesion requirement)
+define target_D11302 {value (OnFarmDR_11302 - (OnFarmDR_11302 * ReuseFact_11302))}  !total diversion requirement
+define lim_minGW11302 { value max(0.,min(minpump_11302, target_D11302))}   ! set min GW pumping to lesser of input value or demand
+
+goal limitD11302 {D11302 = target_D11302}
+
+define dperc_11302 {alias cuaw_11302 * DpercFact_11302 kind 'deep-perc' units 'cfs'} !deep perc of applied water
+define NRL11302 {alias cuaw_11302 * nrlFact_11302 kind 'local-loss' units 'cfs'}     !non-recoverable loss
+
+goal set_GP11302 {GP11302 > lim_minGW11302}
+
+goal setR114B {R114B = D11302 - cuaw_11302 - NRL11302 - dperc_11302 }
+
+! WBA5----------------------------------------------------------------------------------------------------------------------
+! Model priority 1) Min groundwater pumping, 2) Sac River up to 2 taf/mo and Creek flows,  3) More groundwater pumping
+! There is currently no logic to prioritize Sac River or Creek flows.
+
+define OnFarmDR_11306 {value cuaw_11306 / OnFarmEff_11306}  !on-farm appled water (on-farm divesion requirement)
+define target_D11306 {value (OnFarmDR_11306 - (OnFarmDR_11306 * ReuseFact_11306))}  !total diversion requirement
+define lim_minGW11306 { value max(0.,min(minpump_11306, target_D11306))}   ! set min GW pumping to lesser of input value or demand
+
+goal limitD113B {D113B < demand_D113B + D113B*ConvLs_11306 }  ! Limit Sac R. diversion
+
+goal setL11306 { L11306 = D11305*ConvLs_11306 +D113B*ConvLs_11306}  !set conveyance loss for East side tribs and Sac R. diversion
+
+goal limitD11306 {D11306 = target_D11306}
+!define trg_D11306_out {alias target_D11306 kind 'temp' units 'cfs'} !
+
+define dperc_11306 {alias cuaw_11306 * DpercFact_11306 kind 'deep-perc' units 'cfs'} !deep perc of applied water
+define NRL11306 {alias cuaw_11306 * nrlFact_11306 kind 'local-loss' units 'cfs'}     !non-recoverable loss
+
+goal set_GP11306 {GP11306 > lim_minGW11306}
+
+goal setR114A {R114A = D11306 - cuaw_11306 - NRL11306 - dperc_11306}
+
+! WBA6 ---------------------------------------------------------------------------------------------------------------------------------
+! Model priority 1) Min groundwater pumping, 2) Sac River up to 2 taf/mo and Creek flows,  3) More groundwater pumping
+! There is currently no logic to prioritize Sac River or Creek flows.
+
+! Define consumptive use of applied water for WBA6
+
+define OnFarmDR_17302P  {value cuaw_17302P  / OnFarmEff_17302P}  !on-farm appled water (on-farm divesion requirement)
+define OnFarmDR_17302NP {value cuaw_17302NP / OnFarmEff_17302NP} !on-farm appled water (on-farm divesion requirement)
+!define target_D17302P   {value (OnFarmDR_17302P -  (OnFarmDR_17302P *  ReuseFact_17302P ))}  !total PAG diversion requirement
+define target_D17302P   {value (OnFarmDR_17302P -  (OnFarmDR_17302P *  ReuseFact_17302P ))*(1.0 + RFlowFact_17302P)}  !total PAG diversion requirement
+define target_D17302NP  {value (OnFarmDR_17302NP - (OnFarmDR_17302NP * ReuseFact_17302NP))}  !total NP diversion requirement
+define lim_minGW17302P {value max(0.,min(minpump_17302P,target_D17302P))}   ! set min GW pumping to lesser of input value or demand
+
+define cuaw_17302   {std kind 'DEMAND' units 'cfs'}
+goal set_cuaw_17302 {cuaw_17302 = cuaw_17302P + cuaw_17302NP}
+define targetD17302Pdv  {alias target_D17302P kind 'demand' units 'cfs'}
+define targetD17302NPdv {alias target_D17302NP kind 'demand' units 'cfs'}
+
+!Limit farm level supply to demand
+define D17302P   {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define D17302NP  {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_D17302  {D17302 = D17302P + D17302NP}
+
+goal limitD17302P  {D17302P  = target_D17302P}
+goal limitD17302NP {D17302NP = target_D17302NP}
+
+! Define conveyance losses for WBA6
+define L17302P  {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define L17302NP {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_L17302 {L17302 = L17302P + L17302NP}
+
+goal set_L17302P  {L17302P = D42 * ConvLs_17302PS + D17301 * ConvLs_17302PN}
+goal set_L17302NP {L17302NP = D17302NP * ConvLs_17302NP } ! assume all non-project is met from GW
+
+! Define minimum groundwater pumping for WBA6
+define GP17302P  {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define GP17302NP {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_GP17302 {GP17302 = GP17302P + GP17302NP}
+
+goal set_GP17302P {GP17302P > lim_minGW17302P }
+goal set_GP17302NP {GP17302NP > target_D17302NP} ! assume all non-project is met from GW
+
+! Define deep percolation for WBA6
+define dperc_17302   {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define dperc_17302P  {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define dperc_17302NP {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_dperc_17302 {dperc_17302 = dperc_17302P + dperc_17302NP}
+
+goal set_dperc_17302P {dperc_17302P = cuaw_17302P * DpercFact_17302P}
+goal set_dperc_17302NP {dperc_17302NP = cuaw_17302NP * DpercFact_17302NP}
+
+! Define on-farm non-recoverable losses for WBA6
+define NRL_17302   {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define NRL_17302P  {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define NRL_17302NP {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_NRL_17302 {NRL_17302 = NRL_17302P + NRL_17302NP}
+
+goal set_NRL_17302P  {NRL_17302P = cuaw_17302P * NRLFact_17302P}
+goal set_NRL_17302NP {NRL_17302NP = cuaw_17302NP * NRLFact_17302NP}
+
+! Define return flows for WBA6
+! Destination node not yet determined
+define R_17302   {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define R_17302P  {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define R_17302NP {lower 0*taf_cfs upper 10000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_R_17302 {R_17302 = R_17302P + R_17302NP}
+
+goal set_R_17302P  {R_17302P  = cuaw_17302P * RFlowFact_17302P}
+goal set_R_17302NP {R_17302NP = cuaw_17302NP * RFlowFact_17302NP}
+
+
+! WBA7N ------------------------------------------------------------------------------------------------
+
+define OnFarmDR_17401 {value cuaw_17401PAG / OnFarmEff_17401}  !on-farm appled water (on-farm divesion requirement)
+define OnFarmDR_17401NP {value cuaw_17401NP / OnFarmEff_17401}  !on-farm appled water (on-farm divesion requirement)
+define target_D17401 {value (OnFarmDR_17401 - (OnFarmDR_17401 * ReuseFact_17401))}  !total PAG diversion requirement
+define target_D17401NP {value (OnFarmDR_17401NP - (OnFarmDR_17401NP * ReuseFact_17401))}  !total NP diversion requirement
+define target_D174_pag {value min(perdel_cvpag_sys*con_D174_pag , target_D17401 *(1.0+ConvLs_17401))}     ! Not 100% accurate may want to revise
+define target_D174_NDS {value min(perdel_cvpsc_sys*con_D174_pag , target_D17401 *(1.0+ConvLs_17401))  ! Increased re;liability provided by NODOS Local Share
+                            - target_D174_pag}
+define lim_minGW17401 { value max(0.,min(minpump_17401,target_D17401))}   ! set min GW pumping to lesser of input value or demand
+
+define D174_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D174_NDS {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD174  {D174 = D174_pag + D174_NDS}
+
+goal setL17401 { L17401 = D174 * ConvLs_17401}  !set conveyance loss
+
+goal limitD17401 {D17401 = target_D17401 + target_D17401NP}
+
+goal limitD174   {D174_pag < perdel_cvpag_sys*con_D174_pag}
+goal limitD174_2 {D174_pag + D174_NDS < perdel_cvpsc_sys*con_D174_pag}
+goal limitD174_1 {D174_pag + D174_NDS < target_D17401 + L17401}
+
+define dperc_17401 {alias (cuaw_17401PAG + cuaw_17401NP) * DpercFact_17401 kind 'deep-perc' units 'cfs'}  !deep perc of applied water
+define NRL17401 {alias (cuaw_17401PAG + cuaw_17401NP) * nrlFact_17401 kind 'local-loss' units 'cfs'}  !non-recoverable loss
+
+goal set_GP17401 {GP17401 > lim_minGW17401 + target_D17401NP} ! assume all non-project is met from GW
+
+goal setR182A {R182A = D17401 - cuaw_17401PAG - cuaw_17401NP - NRL17401 - dperc_17401 }  !return flow
+
+! WBA7S ------------------------------------------------------------------------------------------------
+
+define OnFarmDR_17801 {value cuaw_17801PAG / OnFarmEff_17801}  !on-farm appled water (on-farm divesion requirement)
+define OnFarmDR_17801NP {value cuaw_17801NP / OnFarmEff_17801}  !on-farm appled water (on-farm divesion requirement)
+define target_D17801 {value (OnFarmDR_17801 - (OnFarmDR_17801 * ReuseFact_17801))}  !total PAG diversion requirement
+define target_D17801NP {value (OnFarmDR_17801NP - (OnFarmDR_17801NP * ReuseFact_17801))}  !total NP diversion requirement
+define target_D178_pag {value min(perdel_cvpag_sys*con_D178_pag , target_D17801 *(1.0+ConvLs_17801))}  ! Not 100% accurate may want to revise
+define target_D178_NDS {value min(perdel_cvpsc_sys*con_D178_pag , target_D17801 *(1.0+ConvLs_17801))   ! Increased re;liability provided by NODOS Local Share
+                            - target_D178_pag}
+define lim_minGW17801 { value max(0.,min(minpump_17801,target_D17801))}   ! set min GW pumping to lesser of input value or demand
+
+define D178_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D178_NDS {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD178  {D178 = D178_pag + D178_NDS}
+
+goal setL17801 { L17801 = D178 * ConvLs_17801}  !set conveyance loss
+
+goal limitD17801 {D17801 = target_D17801 + target_D17801NP}
+
+goal limitD178   {D178_pag < perdel_cvpag_sys*con_D178_pag}
+goal limitD178_2 {D178_pag + D178_NDS < perdel_cvpsc_sys*con_D178_pag}
+goal limitD178_1 {D178_pag + D178_NDS < target_D17801 + L17801}
+
+define dperc_17801 {alias (cuaw_17801PAG + cuaw_17801NP) * DpercFact_17801 kind 'deep-perc' units 'cfs'}  !deep perc of applied water
+define NRL17801 {alias (cuaw_17801PAG + cuaw_17801NP) * nrlFact_17801 kind 'local-loss' units 'cfs'}  !non-recoverable loss
+
+goal set_GP17801 {GP17801 > lim_minGW17801 + target_D17801NP} ! assume all non-project is met from GW
+
+goal setR182B {R182B = D17801 - cuaw_17801PAG - cuaw_17801NP - NRL17801 - dperc_17801}  !return flow
+
+! WBA8NN ------------------------------------------------------------------------------------------------
+
+define cuaw_14301GCIDaj {value max(0., cuaw_14301GCID - frac_GC_N_DSA12*WTS_CI12
+                                                      - EWA_CI12_GCCn
+                                                      - EWA_DWCI12_GCCn)}
+define cuaw_14301SCaj {value max(0., cuaw_14301SC - frac_SC_N_DSA12*WTS_CI12
+                                                  - EWA_CI12_122a
+                                                  - EWA_DWCI12_122a)}
+
+define OnFarmDR_14301GCID {value cuaw_14301GCIDaj/ OnFarmEff_14301}  !on-farm appled water (on-farm divesion requirement) - adjusted for CI for tranfers assumed to come from GCID (may need to add code if transfer amount exceeds CUAW available)
+define OnFarmDR_14301NP {value cuaw_14301NP / OnFarmEff_14301NP}  !on-farm appled water (on-farm divesion requirement)
+define OnFarmDR_14301SC {value cuaw_14301SCaj / OnFarmEff_14301}  !on-farm appled water (on-farm divesion requirement)
+
+define rdcmp12frac {value 0.8 + 0.2*max(0.,(SacCI_Max1 + 1. - SacCI_Stg1 - SacCI_Stg2 - AnnSacCI_EWA)/(SacCI_Max1 + 1.))}
+
+define target_D14301GCID {value (OnFarmDR_14301GCID - (OnFarmDR_14301GCID * ReuseFact_14301) + rdcmp_14301_GCID*rdcmp12frac)}  !total diversion requirement
+define target_D14301NP {value (OnFarmDR_14301NP - (OnFarmDR_14301NP * ReuseFact_14301NP) + rdcmp_14301_NP)}  !total diversion requirement
+define target_D14301SC {value (OnFarmDR_14301SC - (OnFarmDR_14301SC * ReuseFact_14301) + rdcmp_14301_SC*rdcmp12frac)}  !total diversion requirement
+
+define target_D122A {value min(perdel_cvpsc_sys * con_14301SC , target_D14301SC *(1.0+ConvLs_14301))}  ! Not 100% accurate may want to revise
+define target_14301_psc {value target_D122A + target_D14301GCID}
+define lim_minGW14301 { value max(0.,min(minpump_14301GCID,target_D14301GCID)+ min(minpump_14301SC,target_D14301SC))}   ! set min GW pumping to lesser of input value or demand
+define lim_R181A {value max(0., (target_D14301GCID + target_D14301NP + target_D14301SC
+                         - (cuaw_14301GCIDaj + cuaw_14301NP + cuaw_14301SCaj) * (1.0 + nrlFact_14301 + DpercFact_14301)
+                         - rdcmp_14301_NP - rdcmp_14301_GCID*rdcmp12frac - rdcmp_14301_SC*rdcmp12frac               ! rdcmp supported by NODOS is not included
+			 + rdrf_181A_NP + rdrf_181A_GCID*rdcmp12frac + rdrf_181A_SC*rdcmp12frac + rdrf_181A_nds))}  ! return for rdcmp supported by NODOS IS included
+
+define D143A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D143A_nds {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD143A  {D143A_psc + D143A_nds = D143A}
+define D122A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD122A  {D122A_psc = D122A}
+define D180_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD180  {D180_psc = D180}
+
+goal setL122A { L122A = D122A * ConvLs_14301}  !set conveyance loss
+goal setL143A { L143A = 0.0}  !conveyance loss are set in the main canal at node 143
+goal setL180A { L180A = D180 * ConvLs_14301}  !set conveyance loss
+
+goal limitWTS_D143A {frac_GC_N_DSA12*WTS_DSA12
+                   + EWA_DW12_GCCnDV + EWA_GW12_GCCnDV + EWA_CI12_GCCnDV
+                   < target_D14301GCID + L143A}
+goal limitD143A {D143A_psc < target_D14301GCID + L143A
+                       - frac_GC_N_DSA12*WTS_DSA12
+                       - EWA_DW12_GCCnDV - EWA_GW12_GCCnDV - EWA_CI12_GCCnDV}   !GCID through GCID canal, put limit on total GCID diversion at Sac River
+goal limitD143A_NDS {D143A_nds < rdcmp_14301_nds * (1.0+ConvLs_14301) - shift_nds_rdcmp}  ! modelled separately from other demands - intended to ride on top
+goal limitshftnds {
+   lhs     shift_nds_rdcmp
+   rhs     0.
+   lhs>rhs penalty 1000
+   lhs<rhs penalty 1000
+}
+
+goal limitD180 {D180 = 0.0 }    ! no divresion from CBD for now
+
+goal limitD14301 {D14301 = target_D14301GCID + target_D14301NP + target_D14301SC + D143A_nds}
+
+goal limitWTS_D122ASC {frac_SC_N_DSA12*WTS_DSA12
+                     + EWA_DW12_122aDV + EWA_GW12_122aDV + EWA_CI12_122aDV
+                     < perdel_cvpsc_sys * con_14301SC}
+goal limitD122ASC {D122A < perdel_cvpsc_sys * con_14301SC
+                         - frac_SC_N_DSA12*WTS_DSA12
+                         - EWA_DW12_122aDV - EWA_GW12_122aDV - EWA_CI12_122aDV}
+
+goal limitWTS_D122ASC_1 {frac_SC_N_DSA12*WTS_DSA12
+                       + EWA_DW12_122aDV + EWA_GW12_122aDV + EWA_CI12_122aDV
+                       < target_D14301SC + L122A}
+goal limitD122ASC_1 {D122A < target_D14301SC + L122A
+                         - frac_SC_N_DSA12*WTS_DSA12
+                         - EWA_DW12_122aDV - EWA_GW12_122aDV - EWA_CI12_122aDV}
+
+define dperc_14301 {alias (cuaw_14301GCIDaj + cuaw_14301NP + cuaw_14301SCaj) * DpercFact_14301 kind 'deep-perc' units 'cfs'}
+define NRL_14301 {alias (cuaw_14301GCIDaj + cuaw_14301NP + cuaw_14301SCaj) * nrlFact_14301 kind 'local-loss' units 'cfs'}
+
+goal set_GP14301 {GP14301 > lim_minGW14301 + target_D14301NP} ! assume all non-project is met from GW
+
+goal setR181A {R181A  = lim_R181A }
+
+! WBA8NS ------------------------------------------------------------------------------------------------
+
+define cuaw_14501GCIDaj {value max(0., cuaw_14501GCID - frac_GC_S_DSA12*WTS_CI12
+                                                      - EWA_CI12_GCCs
+                                                      - EWA_DWCI12_GCCs)}
+define cuaw_14501SCaj {value max(0., cuaw_14501SC - frac_SC_S_DSA12*WTS_CI12
+                                                  - EWA_CI12_122b
+                                                  - EWA_DWCI12_122b)}
+
+define OnFarmDR_14501GCID {value cuaw_14501GCIDaj / OnFarmEff_14501GCID}  !on-farm appled water (on-farm divesion requirement) - adjusted for CI for tranfers assumed to come from GCID (may need to add code if transfer amount exceeds CUAW available)
+define OnFarmDR_14501NP {value cuaw_14501NP / OnFarmEff_14501NP}  !on-farm appled water (on-farm divesion requirement)
+define OnFarmDR_14501SC {value cuaw_14501SCaj / OnFarmEff_14501}  !on-farm appled water (on-farm divesion requirement)
+
+define target_D14501GCID {value (OnFarmDR_14501GCID - (OnFarmDR_14501GCID * ReuseFact_14501GCID) + rdcmp_14501_GCID*rdcmp12frac)}  !total diversion requirement
+define target_D14501NP {value (OnFarmDR_14501NP - (OnFarmDR_14501NP * ReuseFact_14501NP) + rdcmp_14501_NP)}  !total diversion requirement
+define target_D14501SC {value (OnFarmDR_14501SC - (OnFarmDR_14501SC * ReuseFact_14501) + rdcmp_14501_SC*rdcmp12frac)}  !total diversion requirement
+
+define target_D122B {value min(perdel_cvpsc_sys * con_14501SC , target_D14501SC * (1.0 + ConvLs_14501))}    ! Not 100% accurate may want to revise
+define target_14501_psc {value target_D122b + target_D14501GCID}
+define target_114GCID {value perdel_cvpsc_sys * con_114GCID }
+define lim_minGW14501 { value max(0.,min(minpump_14501GCID,target_D14501GCID)+ min(minpump_14501SC,target_D14501SC))}   ! set min GW pumping to lesser of input value or demand
+define lim_R184A {value max(0.,(target_D14501GCID + target_D14501NP + target_D14501SC
+                        - (cuaw_14501GCIDaj + cuaw_14501NP + cuaw_14501SCaj) * (1.0 + nrlFact_14501 + DpercFact_14501)
+                        - rdcmp_14501_NP - rdcmp_14501_GCID*rdcmp12frac - rdcmp_14501_SC*rdcmp12frac                ! rdcmp supported by NODOS is not included
+			+ rdrf_184A_NP + rdrf_184A_GCID*rdcmp12frac + rdrf_184A_SC*rdcmp12frac + rdrf_184A_nds))}   ! return for rdcmp supported by NODOS IS included
+
+define D145A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D145A_nds {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD145A  {D145A_psc + D145A_nds = D145A}
+define D122B_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD122B  {D122B_psc = D122B}
+
+goal setL122B { L122B = D122B * ConvLs_14501}  !set conveyance loss
+goal setL145A { L145A = 0.0 }  !conveyance loss is set at the GCID main canal
+goal setL182A { L182A = D182A * ConvLs_14501}  !set conveyance loss
+
+goal limitWTS_D145A {frac_GC_S_DSA12*WTS_DSA12
+                   + EWA_DW12_GCCsDV + EWA_GW12_GCCsDV + EWA_CI12_GCCsDV
+                   < target_D14501GCID + L145A}
+goal limitD145A {D145A_psc < target_D14501GCID + L145A
+                       - frac_GC_S_DSA12*WTS_DSA12
+                       - EWA_DW12_GCCsDV - EWA_GW12_GCCsDV - EWA_CI12_GCCsDV}   !GCID through GCID canal, put limit on total GCID diversion at Sac River
+goal limitD145A_NDS {D145A_nds < rdcmp_14501_nds * (1.0 + ConvLs_14501) + shift_nds_rdcmp}  ! modelled separately from other demands - intended to ride on top
+
+goal limitD182A {D182A  < target_D14501GCID + target_D14501SC - D145A_PSC + L145A - D122B + L122B + L182A}    ! Diversion from CBD
+goal limitD18302 {D18302 < R18302} ! Diversion of return flows from WBA 8S LGB
+
+define max_D182A {SELECT MaxCBD_diver FROM MaxCBD_diver WHERE month=month }
+goal limitD182A_1 {D182A  < max_D182A }    ! Diversion from CBD
+
+goal limitD14501 {D14501 = target_D14501GCID + target_D14501NP + target_D14501SC + D145A_nds}
+
+goal limitWTS_D122BSC {frac_SC_S_DSA12*WTS_DSA12
+                     + EWA_DW12_122bDV + EWA_GW12_122bDV + EWA_CI12_122bDV
+                     < perdel_cvpsc_sys * con_14501SC}
+goal limitD122BSC {D122B < perdel_cvpsc_sys * con_14501SC
+                         - frac_SC_S_DSA12*WTS_DSA12
+                         - EWA_DW12_122bDV - EWA_GW12_122bDV - EWA_CI12_122bDV }
+
+goal limitWTS_D122BSC_1 {frac_SC_S_DSA12*WTS_DSA12
+                       + EWA_DW12_122bDV + EWA_GW12_122bDV + EWA_CI12_122bDV
+                       < target_D14501SC + L122B}
+goal limitD122BSC_1 {D122B < target_D14501SC + L122B
+                         - frac_SC_S_DSA12*WTS_DSA12
+                         - EWA_DW12_122bDV - EWA_GW12_122bDV - EWA_CI12_122bDV }
+
+define dperc_14501 {alias (cuaw_14501GCIDaj + cuaw_14501NP + cuaw_14501SCaj) * DpercFact_14501 kind 'deep-perc' units 'cfs'}
+define NRL_14501 {alias (cuaw_14501GCIDaj + cuaw_14501NP + cuaw_14501SCaj) * nrlFact_14501 kind 'local-loss' units 'cfs'}
+
+goal set_GP14501 {GP14501 > lim_minGW14501 + target_D14501NP} ! assume all non-project is met from GW
+
+goal setR184A {R184A = lim_R184A}
+
+! WBA8S ------------------------------------------------------------------------------------------------
+
+define OnFarmDR_18301NP {value cuaw_18301NP / OnFarmEff_18301NP}  !on-farm appled water (on-farm divesion requirement)
+define OnFarmDR_18301SC {value cuaw_18301SC / OnFarmEff_18301}  !on-farm appled water (on-farm divesion requirement)
+define target_D18301NP {value (OnFarmDR_18301NP - (OnFarmDR_18301NP * ReuseFact_18301NP) + rdcmp_18301_NP)}  !total diversion requirement
+define target_D18301SC {value (OnFarmDR_18301SC - (OnFarmDR_18301SC * ReuseFact_18301)+ rdcmp_18301_SC)}  !total diversion requirement
+define target_D129A {value min(perdel_cvpsc_sys * con_18301SC , target_D18301SC *(1.0+ConvLs_18301))}     ! Not 100% accurate may want to revise
+define target_18301_psc {value target_D129A} !NOT correct  NOT correct  NOT correct  NOT correct  NOT correct NOT correct
+define lim_minGW18301 { value max(0.,min(minpump_18301SC,target_D18301SC))}   ! set min GW pumping to lesser of input value or demand
+define totRetWBA8S {value max(0., (target_D18301NP + target_D18301SC
+                        - (cuaw_18301NP + cuaw_18301SC ) * (1.0 + nrlFact_18301 + DpercFact_18301)
+                        - rdcmp_18301_NP - rdcmp_18301_SC
+			+ rdrf_WBA8S_NP + rdrf_WBA8S_SC)) }
+
+define D183_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD183  {D183_psc = D183}
+define D129A_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD129A  {D129A_psc = D129A}
+
+goal setL129A { L129A = D129A * ConvLs_18301}  !set conveyance loss
+goal setL183 { L183 = D183 * ConvLs_18301}  !set conveyance loss
+
+!define farmDR18301NP {alias OnFarmDR_18301NP kind 'temp' units 'cfs'}
+!define farmDR18301SC {alias OnFarmDR_18301SC kind 'temp' units 'cfs'}
+
+!define trg_D18301SC_out {alias target_D18301SC kind 'temp' units 'cfs'}
+
+goal limitD183 {D183  = 0.0 }    ! Divresion from CBD   - set to zero for now
+
+goal limitD18301 {D18301 = target_D18301NP + target_D18301SC}
+
+goal limitD129ASC {D129A < perdel_cvpsc_sys * con_18301SC}
+goal limitD129ASC_1 {D129A < target_D18301SC + L129A}
+
+define dperc_18301 {alias (cuaw_18301NP + cuaw_18301SC) * DpercFact_18301 kind 'deep-perc' units 'cfs'}
+define NRL_18301 {alias (cuaw_18301NP + cuaw_18301SC) * nrlFact_18301 kind 'local-loss' units 'cfs'}
+
+goal set_GP18301 {GP18301 > lim_minGW18301 + target_D18301NP} ! assume all non-project is met from GW
+
+goal setR134 {R134 = 0.85 * totRetWBA8S}
+goal setR18302 {R18302 = 0.15 * totRetWBA8S}
+
+! WBA 9, 18, 19  East side of DSA 15 ------------------------------------------------------------------------------------------------
+
+define cuaw_131SCaj {value max(0., cuaw_131SC - WTS_CI15
+                                              - EWA_CI15
+                                              - EWA_DWCI15)}
+
+define OnFarmDR_131NP {value cuaw_131NP / OnFarmEff_131NP}  !on-farm appled water (on-farm divesion requirement)
+define OnFarmDR_131SC {value cuaw_131SCaj / OnFarmEff_131}  !on-farm appled water (on-farm divesion requirement)
+define rdcmp15frac {value 0.8 + 0.2*max(0.,(SacOthCI_Max1 + 1. - SacOthCI_Stg1 - SacOthCI_Stg2 - AnnSacOthCI_EWA)/(SacOthCI_Max1 + 1.))}
+
+define target_D131NP {value (OnFarmDR_131NP - (OnFarmDR_131NP * ReuseFact_131NP) + rdcmp_131_NP)}  !total diversion requirement
+define target_D131SC {value (OnFarmDR_131SC - (OnFarmDR_131SC * ReuseFact_131) + rdcmp_131_SC*rdcmp15frac)}  !total diversion requirement
+define target_D128 {value min(perdel_cvpsc_sys * con_131SC , target_D131SC *(1.0+ConvLs_131))}     ! Not 100% accurate may want to revise)}  ! contract allocation
+define target_131_psc {value target_D128} !NOT correct  NOT correct  NOT correct  NOT correct  NOT correct NOT correct
+define lim_minGW131 { value max(0.,min(minpump_131SC,target_D131SC))}   ! set min GW pumping to lesser of input value or demand
+define lim_minGW131np { value max(0.,min(minpump_131np,target_D131np))}   ! set min GW pumping to lesser of input value or demand
+define lim_R160 { value max(0., (target_D131NP + target_D131SC
+                                -(cuaw_131NP + cuaw_131SCaj) * (1.0 + nrlFact_131 + DpercFact_131)
+                                - rdcmp_131_NP - rdcmp_131_SC*rdcmp15frac
+				+ rdrf_160_NP + rdrf_160_SC*rdcmp15frac))}
+
+define D128_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD128  {D128 = D128_psc}
+
+goal setL128 { L128 = D128 * ConvLs_131}  !set conveyance loss
+
+!define farmDR131NP {alias OnFarmDR_131NP kind 'temp' units 'cfs'}
+!define farmDR131SC {alias OnFarmDR_131SC kind 'temp' units 'cfs'}
+
+goal limitD131 {D131 = target_D131NP + target_D131SC}
+
+goal limitWTS_D128SC {WTS_DSA15 + EWA_GW15dv + EWA_CI15dv + EWA_DWCI15dv
+                    < perdel_cvpsc_sys * con_131SC}
+goal limitD128SC {D128 < perdel_cvpsc_sys * con_131SC
+                       - WTS_DSA15 - EWA_GW15dv - EWA_CI15DV - EWA_DWCI15dv }
+
+goal limitWTS_D128SC_1 {WTS_DSA15 + EWA_GW15dv + EWA_CI15dv + EWA_DWCI15dv
+                      < target_D131SC + L128}
+goal limitD128SC_1 {D128 < target_D131SC + L128
+                         - WTS_DSA15 - EWA_GW15dv - EWA_CI15dv - EWA_DWCI15dv}
+
+define dperc_131 {alias (cuaw_131NP + cuaw_131SCaj) * DpercFact_131 kind 'deep-perc' units 'cfs'}
+define NRL_131 {alias (cuaw_131NP + cuaw_131SCaj) * nrlFact_131 kind 'local-loss' units 'cfs'}
+
+goal set_GP131 {GP131 > lim_minGW131 + lim_minGW131np } !
+
+goal setR160 {R160 = lim_R160}
+
+
+! ***************************************************************************************
+!limit Diversion at Hamilton City - this massive balance equation makes sure that the
+!GCC follows contract limits even with numerous flow adjustments related to water transfers
+!and the NODOS project
+goal limitD114 {D114 < target_114GCID                                          ! GCID contract
+                     + target_14302_prf + target_18201_prf                     ! L2 Refuge demands
+                     - C17502A - C17502B                                       ! TCCA/GCID interties
+                     - frac_GC_N_DSA12*WTS_DSA12 - frac_GC_S_DSA12*WTS_DSA12   ! WTS related acquisition adjustment
+                     + D143A_WTS + D145A_WTS                                   ! WTS Placeholder/Buffering adjustment
+                     - EWA_DW12_GCCnDV - EWA_GW12_GCCnDV - EWA_CI12_GCCnDV     ! EWA related acquisition adjustment
+                     - EWA_DW12_GCCsDV - EWA_GW12_GCCsDV - EWA_CI12_GCCsDV
+                     + D143A_EWA + D145A_EWA                                   ! EWA Placeholder/Buffering adjustment
+                     + D143A_nds + D145A_nds                                   ! Additional Rice Decomp provided by NODOS
+                     + D143B_nds + D145B_nds                                   ! L4 Refuge provided by NODOS
+                     + D14401 - C17502 + C14402A}                              ! NODOS related flows to and from GCC
+                                                                               ! NODOS flows in (C17502) offset Rive Decomp and L4 increases
+! ***************************************************************************************
+! NODOS Releases for Colusa Basin demands
+goal setC30A {c30A = D171_NDS + D172_NDS + D174_NDS + D178_NDS}   ! Reliability demand
+goal setC30C {C30C = D143A_NDS + D145A_NDS}                       ! Rice decomp demand
+
+! ***************************************************************************************
+define frac_GC_N_dv {alias frac_GC_N_DSA12 kind 'debug-none' units 'none'}
+define frac_GC_S_dv {alias frac_GC_S_DSA12 kind 'debug-none' units 'none'}
+define frac_SC_N_dv {alias frac_SC_N_DSA12 kind 'debug-none' units 'none'}
+define frac_SC_S_dv {alias frac_SC_S_DSA12 kind 'debug-none' units 'none'}
+define tgt_D14301GC {alias target_D14301GCID kind 'debug-cfs' units 'cfs'}
+define tgt_D14501GC {alias target_D14501GCID kind 'debug-cfs' units 'cfs'}
+define tgt_D14301SC {alias perdel_cvpsc_sys * con_14301SC kind 'debug-cfs' units 'cfs'}
+define tgt_D14501SC {alias perdel_cvpsc_sys * con_14501SC kind 'debug-cfs' units 'cfs'}
+define tgt_114GCID  {alias target_114GCID kind 'debug-cfs' units 'cfs'}
+define tgt_D131SC   {alias target_D131SC kind 'debug-cfs' units 'cfs'}
+define rdcmp15fracDV {alias rdcmp15frac kind 'debug-none' units 'none'}
+define rdcmp12fracDV {alias rdcmp12frac kind 'debug-none' units 'none'}
+define SacCI_Stg1dv {alias SacCI_Stg1 kind 'debug-taf' units 'taf'}
+define SacCI_Stg2dv {alias SacCI_Stg2 kind 'debug-taf' units 'taf'}
+define SacOthCI_Stg1dv {alias SacOthCI_Stg1 kind 'debug-taf' units 'taf'}
+define SacOthCI_Stg2dv {alias SacOthCI_Stg2 kind 'debug-taf' units 'taf'}

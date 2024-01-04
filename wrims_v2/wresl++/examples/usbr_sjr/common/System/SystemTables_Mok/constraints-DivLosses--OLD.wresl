@@ -1,0 +1,229 @@
+/*
+ DEFINE AND CALCULATE DELIVERY LOSSES
+
+The Calsim-III Conceptual Model for determining delivery losses is as follows:
+
+  NAMING TAKES THE FOLLOWING FORMS:
+  EF_{source prefix}_{demand unit} - non recoverable evaporative loss
+  SL_{source prefix}_{demand unit} - seepage loss 
+  DL_{source prefix}_{demand unit} - total conveyance loss (EL + SL)
+
+In some cases, the Calsim-III conceptual model did not allow for consistant 
+representation of delivery losses with Calsim-II.  In these cases, the Calsim-III
+conceptual model was modified in order to be consistant with Calsim-II assumptions.
+
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60N     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 60N_NA1 - Jackson Valley ID - Ag
+!============================== 
+define EF_AMADR_60N_NA1 {value 0.00001} !non recoverable loss fraction
+define SF_AMADR_60N_NA1 {value 0.00005} !non recoverable loss fraction
+
+define EL_AMADR_60N_NA1 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_AMADR_60N_NA1 {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_AMADR_60N_NA1 {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_AMADR_60N_NA1    {EL_AMADR_60N_NA1 = D_AMADR_60N_NA1 * EF_AMADR_60N_NA1} 
+goal setSL_AMADR_60N_NA1    {SL_AMADR_60N_NA1 = D_AMADR_60N_NA1 * SF_AMADR_60N_NA1} 
+goal setDL_AMADR_60N_NA1    {DL_AMADR_60N_NA1 = EL_AMADR_60N_NA1   + SL_AMADR_60N_NA1}
+
+define DL_60N_NA1       {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60N_NA1  {DL_60N_NA1 = DL_AMADR_60N_NA1}
+
+define DP_60N_NA1       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+goal setDP_60N_NA1      {DP_60N_NA1 = SL_AMADR_60N_NA1}
+/*
+!==============================
+! 60N_NA2 - Omochumne-Hartnell WD, Galt ID, Clay WD - Ag  (this element is in the Sac system code)
+!============================== 
+define EF_FSC_60N_NA2   {value 0.00001} !non recoverable loss fraction
+define SF_FSC_60N_NA2   {value 0.00005} !non recoverable loss fraction
+
+define EL_FSC_60N_NA2   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_FSC_60N_NA2   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_FSC_60N_NA2   {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_FSC_60N_NA2  {EL_FSC_60N_NA2 = D_FSC015_60N_NA2 * EF_FSC_60N_NA2} 
+goal setSL_FSC_60N_NA2  {SL_FSC_60N_NA2 = D_FSC015_60N_NA2 * SF_FSC_60N_NA2} 
+goal setDL_FSC_60N_NA2  {DL_FSC_60N_NA2 = EL_FSC_60N_NA2   + SL_FSC_60N_NA2}
+
+define DL_60N_NA2           {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60N_NA2      {DL_60N_NA2 = DL_FSC_60N_NA2}
+*/
+
+!==============================
+! 60N_NA3 - North San Joaquin WCD - Ag
+!============================== 
+define EF_MOK_60N_NA3   {value 0.00001} !non recoverable loss fraction
+define SF_MOK_60N_NA3   {value 0.00005} !non recoverable loss fraction
+
+define EL_MOK_60N_NA3   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_MOK_60N_NA3   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_MOK_60N_NA3   {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_MOK_60N_NA3  {EL_MOK_60N_NA3 = D_MOK050_60N_NA3 * EF_MOK_60N_NA3} 
+goal setSL_MOK_60N_NA3  {SL_MOK_60N_NA3 = D_MOK050_60N_NA3 * SF_MOK_60N_NA3} 
+goal setDL_MOK_60N_NA3  {DL_MOK_60N_NA3 = EL_MOK_60N_NA3   + SL_MOK_60N_NA3}
+
+define DL_60N_NA3           {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60N_NA3      {DL_60N_NA3 = DL_MOK_60N_NA3}
+
+define DP_60N_NA3       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+goal setDP_60N_NA3      {DP_60N_NA3 = SL_MOK_60N_NA3}
+
+!==============================
+! 60N_NA4 - Woodbridge ID - Ag
+!============================== 
+define EF_MOK_60N_NA4   {value 0.00001} !non recoverable loss fraction
+define SF_MOK_60N_NA4   {value 0.00005} !non recoverable loss fraction
+
+define EL_MOK_60N_NA4   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_MOK_60N_NA4   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_MOK_60N_NA4   {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_MOK_60N_NA4  {EL_MOK_60N_NA4 = D_MOK035_60N_NA4 * EF_MOK_60N_NA4} 
+goal setSL_MOK_60N_NA4  {SL_MOK_60N_NA4 = D_MOK035_60N_NA4 * SF_MOK_60N_NA4} 
+goal setDL_MOK_60N_NA4  {DL_MOK_60N_NA4 = EL_MOK_60N_NA4   + SL_MOK_60N_NA4}
+
+define DL_60N_NA4           {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60N_NA4      {DL_60N_NA4 = DL_MOK_60N_NA4}
+
+define DP_60N_NA4       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+goal setDP_60N_NA4      {DP_60N_NA4 = SL_MOK_60N_NA4}
+
+!==============================
+! 60N_NA5 - Non-District - Ag
+!============================== 
+define EF_MOK_60N_NA5   {value 0.00001} !non recoverable loss fraction
+define SF_MOK_60N_NA5   {value 0.00005} !non recoverable loss fraction
+
+define EL_MOK_60N_NA5   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_MOK_60N_NA5   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_MOK_60N_NA5   {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_MOK_60N_NA5  {EL_MOK_60N_NA5 = D_MOK050_60N_NA5 * EF_MOK_60N_NA5 + D_MOK034_60N_NA5 * EF_MOK_60N_NA5} 
+goal setSL_MOK_60N_NA5  {SL_MOK_60N_NA5 = D_MOK050_60N_NA5 * SF_MOK_60N_NA5 + D_MOK034_60N_NA5 * SF_MOK_60N_NA5} 
+goal setDL_MOK_60N_NA5  {DL_MOK_60N_NA5 = EL_MOK_60N_NA5   + SL_MOK_60N_NA5}
+
+define DL_60N_NA5           {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60N_NA5      {DL_60N_NA5 = DL_MOK_60N_NA5}
+
+define DP_60N_NA5       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+goal setDP_60N_NA5      {DP_60N_NA5 = SL_MOK_60N_NA5}
+
+!==============================
+! 60N_NU1 - Lodi, Galt, small communities - M&I 
+!============================== 
+! No surface water delivery
+
+!==============================
+! 60N_NU2 - Rancho Murieta - M&I 
+!============================== 
+define EF_CSM_60N_NU2   {value 0.00001} !non recoverable loss fraction
+define SF_CSM_60N_NU2   {value 0.00005} !non recoverable loss fraction
+
+define EL_CSM_60N_NU2   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_CSM_60N_NU2   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_CSM_60N_NU2   {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_CSM_60N_NU2  {EL_CSM_60N_NU2 = D_CSM033_60N_NU2 * EF_CSM_60N_NU2} 
+goal setSL_CSM_60N_NU2  {SL_CSM_60N_NU2 = D_CSM033_60N_NU2 * SF_CSM_60N_NU2} 
+goal setDL_CSM_60N_NU2  {DL_CSM_60N_NU2 = EL_CSM_60N_NU2   + SL_CSM_60N_NU2}
+
+define DL_60N_NU2           {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60N_NU2      {DL_60N_NU2 = DL_CSM_60N_NU2}
+
+define DP_60N_NU2       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+goal setDP_60N_NU2      {DP_60N_NU2 = SL_CSM_60N_NU2}
+
+/*
+!==============================
+! 60N_PU - SMUD Rancho Seco - M&I 
+!============================== 
+define EF_FSC_60N_PU        {value 0.00001} !non recoverable loss fraction
+define SF_FSC_60N_PU        {value 0.00005} !non recoverable loss fraction
+
+define EL_FSC_60N_PU        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_FSC_60N_PU        {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_FSC_60N_PU        {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_FSC_60N_PU   {EL_FSC_60N_PU = D_FSC025_60N_PU * EF_FSC_60N_PU} 
+goal setSL_FSC_60N_PU   {SL_FSC_60N_PU = D_FSC025_60N_PU * SF_FSC_60N_PU} 
+goal setDL_FSC_60N_PU   {DL_FSC_60N_PU = EL_FSC_60N_PU   + SL_FSC_60N_PU}
+
+define DL_60N_PU            {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60N_PU           {DL_60N_PU = DL_FSC_60N_PU}
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60S     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 60S_PA1 - Stockton East WD - Ag
+!==============================
+define EF_CLV_60S_PA1   {value 0.00001} !non recoverable loss fraction
+define SF_CLV_60S_PA1   {value 0.00005} !non recoverable loss fraction
+
+define EL_CLV_60S_PA1   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_CLV_60S_PA1   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_CLV_60S_PA1   {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_CLV_60S_PA1  {EL_CLV_60S_PA1 = D_CLV023_60S_PA1 * EF_CLV_60S_PA1} 
+goal setSL_CLV_60S_PA1  {SL_CLV_60S_PA1 = D_CLV023_60S_PA1 * SF_CLV_60S_PA1} 
+goal setDL_CLV_60S_PA1  {DL_CLV_60S_PA1 = EL_CLV_60S_PA1   + SL_CLV_60S_PA1}
+
+define DL_60S_PA1   {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60S_PA1  {DL_60S_PA1 = DL_CLV_60S_PA1}
+
+define DP_60S_PA1       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+goal setDP_60S_PA1      {DP_60S_PA1 = SL_CLV_60S_PA1}
+
+!==============================
+! 60S_NU1 - City of Stockton via SEWD - M&I 
+!==============================
+!Delivery losses assumed to be 5% of diversion.
+!Assume 10% of losses are due to evaporation and 90% due to seepage
+
+define EF_WTP_60S_NU1   {value 0.005} !non recoverable loss fraction
+define SF_WTP_60S_NU1   {value 0.045} !non recoverable loss fraction
+
+define EL_WTP_60S_NU1   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTP_60S_NU1   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+define DL_WTP_60S_NU1   {std kind 'DELIVERY-LOSS'  units 'CFS'}
+
+goal setEL_WTP_60S_NU1  {EL_WTP_60S_NU1 = D_WTPDWS_60S_NU1 * EF_WTP_60S_NU1 + D_WTPWDH_60S_NU1 * EF_WTP_60S_NU1} 
+goal setSL_WTP_60S_NU1  {SL_WTP_60S_NU1 = D_WTPDWS_60S_NU1 * SF_WTP_60S_NU1 + D_WTPWDH_60S_NU1 * SF_WTP_60S_NU1} 
+goal setDL_WTP_60S_NU1  {DL_WTP_60S_NU1 = EL_WTP_60S_NU1   + SL_WTP_60S_NU1}
+
+define DL_60S_NU1           {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_60S_NU1      {DL_60S_NU1 = DL_WTP_60S_NU1 + DL_WTP_60S_NU1}
+
+define DP_60S_NU1       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+goal setDP_60S_NU1      {DP_60S_NU1 = SL_WTP_60S_NU1}
+
+!==============================
+! EBMUD
+!==============================
+define EF_EBA_EBMUD {value 0.0}
+define SF_EBA_EBMUD {value 0.0}
+
+define DL_EBA_EBMUD {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_EBA_EBMUD {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_EBA_EBMUD {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+goal setEL_EBA_EBMUD     {EL_EBA_EBMUD = D_EBA100_EBMUD  * EF_EBA_EBMUD}
+goal setSL_EBA_EBMUD     {SL_EBA_EBMUD = D_EBA100_EBMUD  * SF_EBA_EBMUD}
+goal setDL_EBA_EBMUD     {DL_EBA_EBMUD = EL_EBA_EBMUD + SL_EBA_EBMUD}
+
+define DL_EBMUD     {std kind 'DELIVERY-LOSS' units 'CFS'}
+goal setDL_EBMUD     {DL_EBMUD = DL_EBA_EBMUD}
+
+define DP_EBMUD       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+goal setDP_EBMUD      {DP_EBMUD = SL_EBA_EBMUD}
+

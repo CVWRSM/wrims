@@ -1,0 +1,281 @@
+!Anna Fock  Oct 2003
+/* Westside Returns Definition
+Disaggregation of one CALSIM Westside Return arc to DSM2-based arcs (Part B prefix, # of arcs)
+CALSIM                DSM2
+Accretion (I,1)    = Tile Drainage (TD,multiple) <--- from SJRIO
+                + Base Flow (BF,multiple)<--- from SJRIO originally, been converted to DSM2 by DWR
+                + Local Creek Inflow (CI,1) <--- from calculation
+
+Lump DSM2-based groundwater arcs to ONE at the corresponding CALSIM accretion location in DSM2
+CALSIM            CALSIM
+Accretion (I,1)     = Groundwater Portion of Accretion (I_gw,1)
+                + Surface Water Portion of Accretion (CI,1) <--- from calculation
+*/
+!***************************Tile Drainage*****************************
+!Tile Drainage (Subsurface agricultural discharges). ID is DSM2 node
+!Source:    2003SJRIO\HSUB.dat (monthly flow in AF, repeat every year)
+define TD17  {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !DSM2 border
+define TD603 {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !RM77
+define TD605 {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !RM80
+define TD616 {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !RM91
+define TD623 {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !RM98
+define TD624 {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !RM100
+define TD628 {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !RM105
+define TD638 {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !RM117
+define TD641 {timeseries kind 'TD-FLOW' units 'TAF' convert 'CFS' }    !RM119.5
+
+define EC_TD17  {timeseries kind 'EC-TD' units 'none' }    !DSM2 border
+define EC_TD603 {timeseries kind 'EC-TD' units 'none' }    !RM77
+define EC_TD605 {timeseries kind 'EC-TD' units 'none' }    !RM80
+define EC_TD616 {timeseries kind 'EC-TD' units 'none' }    !RM91
+define EC_TD623 {timeseries kind 'EC-TD' units 'none' }    !RM98
+define EC_TD624 {timeseries kind 'EC-TD' units 'none' }    !RM100
+define EC_TD628 {timeseries kind 'EC-TD' units 'none' }    !RM105
+define EC_TD638 {timeseries kind 'EC-TD' units 'none' }    !RM117
+define EC_TD641 {timeseries kind 'EC-TD' units 'none' }    !RM119.5
+
+!***************************Base Flow*****************************
+!Base Flow (Groundwater accretion/depletion). ID is DSM2 node
+!SJRIO has Groundwater accretion/depletion output at every river mile
+!for water year 1979, 1981, 1982, 1984, and 1985
+!DWR converted the SJRIO outputs for DSM2-SJR input using:
+!    1. average annual flows
+!    2. average monthly distribution pattern
+!    3. DWR conversion table (SJRIO RMs to DSM2-SJR node)
+!same monthly flow for every year
+define BF601 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM75
+define BF602 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM76
+define BF603 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM77
+define BF604 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM78.5
+define BF606 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM81
+define BF607 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM83
+define BF611 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM86
+define BF613 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM88
+define BF614 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM89
+define BF616 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM91.5
+define BF619 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM94
+define BF621 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM96
+define BF624 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM99
+define BF625 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM101
+define BF626 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM102
+define BF628 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM105
+define BF629 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM106
+define BF631 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM109
+define BF632 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM110
+define BF634 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM112.5
+define BF636 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM114
+define BF637 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM116
+define BF638 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM117
+define BF641 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM119.5
+define BF643 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM123
+define BF644 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM124
+define BF646 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM126
+define BF647 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM127
+define BF650 {timeseries kind 'BF-FLOW' units 'CFS' }    !RM132
+
+define EC_BF601 {timeseries kind 'EC-BF' units 'NONE' }    !RM75
+define EC_BF602 {timeseries kind 'EC-BF' units 'NONE' }    !RM76
+define EC_BF603 {timeseries kind 'EC-BF' units 'NONE' }    !RM77
+define EC_BF604 {timeseries kind 'EC-BF' units 'NONE' }    !RM78.5
+define EC_BF606 {timeseries kind 'EC-BF' units 'NONE' }    !RM81
+define EC_BF607 {timeseries kind 'EC-BF' units 'NONE' }    !RM83
+define EC_BF611 {timeseries kind 'EC-BF' units 'NONE' }    !RM86
+define EC_BF613 {timeseries kind 'EC-BF' units 'NONE' }    !RM88
+define EC_BF614 {timeseries kind 'EC-BF' units 'NONE' }    !RM89
+define EC_BF616 {timeseries kind 'EC-BF' units 'NONE' }    !RM91.5
+define EC_BF619 {timeseries kind 'EC-BF' units 'NONE' }    !RM94
+define EC_BF621 {timeseries kind 'EC-BF' units 'NONE' }    !RM96
+define EC_BF624 {timeseries kind 'EC-BF' units 'NONE' }    !RM99
+define EC_BF625 {timeseries kind 'EC-BF' units 'NONE' }    !RM101
+define EC_BF626 {timeseries kind 'EC-BF' units 'NONE' }    !RM102
+define EC_BF628 {timeseries kind 'EC-BF' units 'NONE' }    !RM105
+define EC_BF629 {timeseries kind 'EC-BF' units 'NONE' }    !RM106
+define EC_BF631 {timeseries kind 'EC-BF' units 'NONE' }    !RM109
+define EC_BF632 {timeseries kind 'EC-BF' units 'NONE' }    !RM110
+define EC_BF634 {timeseries kind 'EC-BF' units 'NONE' }    !RM112.5
+define EC_BF636 {timeseries kind 'EC-BF' units 'NONE' }    !RM114
+define EC_BF637 {timeseries kind 'EC-BF' units 'NONE' }    !RM116
+define EC_BF638 {timeseries kind 'EC-BF' units 'NONE' }    !RM117
+define EC_BF641 {timeseries kind 'EC-BF' units 'NONE' }    !RM119.5
+define EC_BF643 {timeseries kind 'EC-BF' units 'NONE' }    !RM123
+define EC_BF644 {timeseries kind 'EC-BF' units 'NONE' }    !RM124
+define EC_BF646 {timeseries kind 'EC-BF' units 'NONE' }    !RM126
+define EC_BF647 {timeseries kind 'EC-BF' units 'NONE' }    !RM127
+define EC_BF650 {timeseries kind 'EC-BF' units 'NONE' }    !RM132
+
+!*************************Lumped Groundwater Returns************************
+!Group all the groundwater arcs in DSM2
+!to the corresponding CALSIM accretion location
+!CALSIM Node 637
+define I_gw601 { value TD17 + TD603
+            + BF601 + BF602 + BF603}
+
+!CALSIM Node 636
+define I_gw604 { value TD605
+            + BF604 + BF606 + BF607 }
+
+!CALSIM Node 630
+define I_gw608 { value TD616 + TD623 + TD624 + TD628 + TD638
+            + BF611 + BF613 + BF614 + BF616 + BF619 + BF621
+            + BF624 + BF625 + BF626 + BF628 + BF629 + BF631
+            + BF632 + BF634 + BF636 + BF637 + BF638 }
+
+!CALSIM Node 614
+define I_gw642 { value TD641
+            + BF641 + BF643 + BF644 + BF646 + BF647 + BF650 }
+
+!lumped EC
+define EC_Igw601 { value (TD17  * EC_TD17
+            + TD603 * EC_TD603
+            + BF601 * EC_BF601
+            + BF602 * EC_BF602
+            + BF603 * EC_BF603 )
+            / I_gw601 }
+
+define EC_Igw604 { value (TD605 * EC_TD605
+            + BF604 * EC_BF604
+            + BF606 * EC_BF606
+            + BF607 * EC_BF607 )
+            / I_gw604 }
+
+define EC_Igw608 { value (TD616 * EC_TD616
+            + TD623 * EC_TD623
+            + TD624 * EC_TD624
+            + TD628 * EC_TD628
+            + TD638 * EC_TD638
+            + BF611 * EC_BF611
+            + BF613 * EC_BF613
+            + BF614 * EC_BF614
+            + BF616 * EC_BF616
+            + BF619 * EC_BF619
+            + BF621 * EC_BF621
+            + BF624 * EC_BF624
+            + BF625 * EC_BF625
+            + BF626 * EC_BF626
+            + BF628 * EC_BF628
+            + BF629 * EC_BF629
+            + BF631 * EC_BF631
+            + BF632 * EC_BF632
+            + BF634 * EC_BF634
+            + BF636 * EC_BF636
+            + BF637 * EC_BF637
+            + BF638 * EC_BF638 )
+            / I_gw608 }
+
+define EC_Igw642 { value (TD641 * EC_TD641
+            + BF641 * EC_BF641
+            + BF643 * EC_BF643
+            + BF644 * EC_BF644
+            + BF646 * EC_BF646
+            + BF647 * EC_BF647
+            + BF650 * EC_BF650 )
+            / I_gw642 }
+
+!**********************Local Creek Inflow************************
+!Local creek inflow calculation. ID is DSM2 node
+!of the corresponding CALSIM accretion location
+define CI601 { value I637 - I_gw601 }
+define CI631 {timeseries kind 'FLOW-INFLOW' units 'CFS'} !Orestimba Creek (part of I636). Mar 31, 04
+define CI617 {timeseries kind 'FLOW-INFLOW' units 'CFS'} !Del Puerto Creek (part of I636). Mar 31, 04
+define CI604 { value I636 - I_gw604 - I_gw608 - CI631 - CI617 }
+define CI642 { value I614A - I_gw642 }
+
+!EC for local creek inflow between Newman and Vernalis (including Orestimba and Del Puerto creeks)
+define A_CI_Vern { select A_CI_Vern from EC_Creek where month = month }
+define B_CI_Vern { select B_CI_Vern from EC_Creek where month = month}
+define EC_cap { select EC_cap from EC_Creek where month = month}
+define EC_CI_Vern {
+    case Negflow {
+        condition I636 + I637 - I_gw601 - I_gw604 < 0.1
+        value 0.0 }
+    case otherwise {
+        condition always
+        value min( EC_cap, (pow(10.0, A_CI_Vern - B_CI_Vern * log10(I636 + I637 - I_gw601 - I_gw604) ))) }
+    }
+
+define EC_CI601 { value EC_CI_Vern }
+define EC_CI601dv { alias EC_CI601 kind 'EC-CI' units 'none' }
+define EC_CI604 { value EC_CI_Vern }
+define EC_CI604dv { alias EC_CI604 kind 'EC-CI' units 'none' }
+
+define EC_CI617 { value EC_CI_Vern } !Orestimaba Creek
+define EC_CI617dv { alias EC_CI617 kind 'EC-CI' units 'none' }
+
+define EC_CI631 { value EC_CI_Vern } !Del Puerto Creek
+define EC_CI631dv { alias EC_CI631 kind 'EC-CI' units 'none' }
+
+/*
+Residual Load Above Newman, equals (1.) - (2.), constrained to be positive in value, where
+(1.) = "Control Load Above Newman", based on observed flow-EC data from 2000-2004.
+(2.) =  Explicit Load assumptions above Newman (i.e. arriving at nodes 614 and 620)
+*/
+define AbvNwmnResLoad {timeseries kind 'FlowTimesEC' units 'NONE' }    !LDB, 9/21/04
+/*
+Residual Load Between Newman and Maze, equals (1.) - (2.), constrained to be positive in value, where
+(1.) = "Control Load At Maze", based on observed flow-EC data from 1997-2003.
+(2.) =  Explicit Load assumptions above Newman (i.e. arriving at nodes 630 and 636)
+*/
+define BtwMazeNwmnResLoad {timeseries kind 'FlowTimesEC' units 'NONE' }    !LDB, 9/21/04
+
+!EC for local creek inflow in Mud/Salt Slough base flow
+define EC_CI642 { select EC_Mud_Base from EC_Table_WestRtn where month = month}
+define EC_CI642dv { alias EC_CI642 kind 'EC-CI' units 'none' }
+
+!**********************Accretion EC************************
+!CALSIM accretion EC calculation
+define EC_I637    {    !RM601
+    case nearzero {
+              condition I637 < 0.0001
+        value 0.0 }
+    case else {
+        condition always
+        value ( CI601 * EC_CI601 + I_gw601 * EC_Igw601 ) / I637 } }
+
+define EC_I636    {    !RM604
+    case nearzero {
+        condition I636 < 0.0001
+        value 0.0 }
+    case else {
+        condition always
+        value ( CI604 * EC_CI604 + CI617 * EC_CI617    !Integration 03/31/04
+        + CI631 * EC_CI631 + I_gw604 * EC_Igw604) / I636 } }    !Integration 03/31/04
+define EC_I614A    {    !RM121
+    case nearzero {
+        condition I614a < 0.0001
+        value 0.0 }
+    case else {
+        condition always
+        value ( CI642 * EC_CI642 + I_gw642 * EC_Igw642 ) / I614a } }
+
+!Write-out dv value to dss. Same value for all cycles
+define CI601dv { lower -10000 kind 'Creek-inflow' units 'cfs' }
+define CI604dv { lower -10000 kind 'Creek-inflow' units 'cfs' }
+define CI642dv { lower -10000 kind 'Creek-inflow' units 'cfs' }
+
+goal Set_CI601dv { CI601dv = CI601    }
+goal Set_CI604dv { CI604dv = CI604    }
+goal Set_CI642dv { CI642dv = CI642    }
+
+define EC_I637dv     { std kind 'EC-CI' units 'none' } !RM601
+define EC_I636dv    { std kind 'EC-CI' units 'none' } !RM604
+define EC_I614Adv     { std kind 'EC-CI' units 'none' } !RM121
+
+goal set_EC_I637     { EC_I637dv = EC_I637    }
+goal set_I636dv    { EC_I636dv    = EC_I636    }
+goal set_I614Adv     { EC_I614Adv     = EC_I614A   }
+
+!**********************Non-Local Creek Flows************************
+!2005/09/23 A. Fock: In last development phase of Water Quality Module,
+!salt from tile drains and groundwater base flows were embedded into salt closure terms.
+!This phase seperated them from salt closure terms.
+!for Node CALSIM 630
+Define Salt630 { value EC_Igw608 * I_gw608 }
+Define Salt630_dv { alias Salt630 kind 'FlowTimesEC' units 'NONE' }
+
+!for Node CALSIM 636
+Define Salt636 { value EC_Igw604 * I_gw604 }
+Define Salt636_dv { alias Salt636 kind 'FlowTimesEC' units 'NONE' }
+
+
+
+

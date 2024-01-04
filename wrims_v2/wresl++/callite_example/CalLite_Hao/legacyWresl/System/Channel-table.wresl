@@ -1,0 +1,95 @@
+! Feather River
+define C_Orovl {lower 0. upper 12913*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River Downstream of Themolito Diversion Dam
+define minflow_C_Orovl {value 600}
+define C_Orovl_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Orovl_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Orovl_total {C_Orovl=C_Orovl_MIF+C_Orovl_EXC}
+goal C_Orovl_minflow {C_Orovl_MIF < minflow_C_Orovl}
+define C_Therm {lower 0. upper 12913*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River Below Thermolito Return
+define C_Therm_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Therm_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Therm_total {C_Therm=C_Therm_MIF+C_Therm_EXC}
+define C_YubFea {lower 0. upper 19676*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Feather River
+define C_YubFea_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_YubFea_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_YubFea_total {C_YubFea=C_YubFea_MIF+C_YubFea_EXC}
+
+!Yuba River
+define C_EnglB {std kind 'FLOW-CHANNEL' units 'CFS'} 
+goal Channel_EnglB {C_EnglB = I_EnglB}
+define C_Daguer {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Yuba River
+
+!American River
+define C_Folsm {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River Below Folsom Dam
+define C_Nimbus {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River Below Natoma
+define C_Nimbus_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Nimbus_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Nimbus_total {C_Nimbus=C_Nimbus_MIF+C_Nimbus_EXC}
+define C_Hst {lower 0. upper 7071*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !American River Inflow to Sacramento River
+define C_Hst_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Hst_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Hst_total {C_Hst=C_Hst_MIF+C_Hst_EXC}
+
+!Sacramento River
+define C_Trnty {lower 0. upper 1845*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Trinity Lake
+define C_Lwstn {lower 0. upper 6000 kind 'FLOW-CHANNEL' units 'CFS'} !Trinity River
+define C_Lwstn_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Lwstn_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Lwstn_total {C_Lwstn=C_Lwstn_MIF+C_Lwstn_EXC}
+define C_Wkytn {lower 0. upper 3000 kind 'FLOW-CHANNEL' units 'CFS'} !Clear Creek
+define C_Wkytn_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Wkytn_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Wkytn_total {C_Wkytn=C_Wkytn_MIF+C_Wkytn_EXC}
+define C_Shsta {lower 0. upper 4858*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}  !Downstream of Shasta Lake
+define C_Kswck {lower 0. upper 100000 kind 'FLOW-CHANNEL' units 'CFS'} !Downstream of Keswick Reservoir
+define C_Kswck_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Kswck_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Kswck_total {C_Kswck=C_Kswck_MIF+C_Kswck_EXC}
+define C_RedBlf {lower 0. upper 150000 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_RedBlf_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_RedBlf_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_RedBlf_total {C_RedBlf=C_RedBlf_MIF+C_RedBlf_EXC}
+define C_Wilkns {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_Wilkns_MIF {std kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Wilkns_EXC {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C_Wilkns_total {C_Wilkns=C_Wilkns_MIF+C_Wilkns_EXC}
+define C_SacFea {lower 0. upper 6150*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define C_SacAme {lower 0. upper 11000*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+define C_YoloBP {lower 0. upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'} !Yolo Bypass
+
+!Delta
+define C_Dxc {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_Dxc1 {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_NDelta {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_CDelta {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_SJR {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_SJR1 {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_SJR2 {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_SJR3 {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'}
+define C_WDelta {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+
+!Export
+define C_Tracy {std kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_Banks {std kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_SBay {std kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_UpDMC {std kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_SLCVP {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_SLSWP {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_ONlPP {lower unbounded upper unbounded kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_ONlFB {std kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_SWP {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_CVP {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} 
+
+!South of Delta
+define C_DsAmgS {lower 0. upper 8465 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_DsAmgC {lower 0. upper 4635 kind 'FLOW-CHANNEL' units 'CFS'} 
+define C_JtUTerm {lower 0. upper 8100 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_LasPer {lower 0. upper 7300 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_CoastAqdct {lower 0. upper 450 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_KCWA {lower 0. upper 5950 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_CVC {lower 0. upper 5350 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_ChrisPP {lower 0. upper 4400 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_OSO {lower 0. upper 3130 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_WarnePP {lower 0. upper 1565 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_Alamo {lower 0. upper 3160 kind 'FLOW-CHANNEL' units 'CFS'}
+define C_PearBlPP {lower 0. upper 2105 kind 'FLOW-CHANNEL' units 'CFS'}

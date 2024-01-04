@@ -1,0 +1,42 @@
+! Previous_wyt_sjr.wresl
+! Edward Chang
+! 4/04/00
+! Joint Model
+! The code computes the sum of the current or previous two year's water year types.
+! Revised by C. Hsu, 4/3/03, USBR, for review and documentation project
+!#########################################################################
+/*
+The code computes the sum of the current and previous or previous
+two year's water year types, for use in Project Demands, VAMP
+and Mud & Salt Slough Accretion determination
+*/
+! Previous year's SJR water year type index, select water year type from lookup table
+define wyt_SJR_prv1 {
+    case OCTtoJAN {
+         condition     month >= OCT .and. month <= JAN
+         select        index
+         from        wytypeSJR
+         where        wateryear=wateryear - 2.}
+    case rest {
+         condition    always
+         select        index
+         from        wytypeSJR
+         where        wateryear=wateryear -1. }
+        }
+
+! Two years ago's SJR water year type index, select water year type from lookup table
+define wyt_SJR_prv2 {
+    case OCTtoJAN {
+         condition     month >= OCT .and. month <= JAN
+         select        index
+         from        wytypeSJR
+         where        wateryear=wateryear - 3.}
+    case rest {
+         condition    always
+         select        index
+         from        wytypeSJR
+         where        wateryear=wateryear -2. }
+        }
+
+! Average of current and previous 4 water year types
+define wyt_SJRave5 {select index from wytypeSJRave5 where wateryear=wateryear}

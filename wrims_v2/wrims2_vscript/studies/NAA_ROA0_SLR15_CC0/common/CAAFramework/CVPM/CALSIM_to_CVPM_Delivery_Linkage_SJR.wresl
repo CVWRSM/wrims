@@ -1,0 +1,260 @@
+/** R8: Sacramento Co. south of American River, San Joaquin Co **/
+define R8_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R8_NP_DEL { R8_NP_DEL =
+! R8_NP_DEL:
+! Region: Central San Joaquin W.C.D.
+DI512
++ D520A * 0.889 ! Quantity: 80 TAF out of 90 TAF;
+! Region: DSA 59 (partial)
+!+ D502_PAG
+!+ D503A_NP
+!+ D503A_PAG
++ D506C * 0.4 ! Quantity: 1.4 TAF out of 3.5 TAF;
++ D506A * 1 ! Quantity: 13 TAF out of 13 TAF;
+! Region: Stockton East W.D.
++ D507 * 1 ! Quantity: 25 TAF out of 25 TAF;
+}
+define R8_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R8_GW_DEL { R8_GW_DEL =
+! R8_GW_DEL:
+! Region: Central San Joaquin W.C.D.
+GP512 * 1 ! Quantity: 80.7 TAF out of 80.7 TAF;
+! Region: DSA 59 (partial)
++ GP505_PAG * 1 ! Quantity: 146.7 TAF out of 146.7 TAF;
+}
+define R8_CVP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R8_CVP_DEL { R8_CVP_DEL =
+! R8_CVP_DEL:
+! Region: DSA 59 (partial)
+D9B_PAG
+}
+/** R11: Stanislaus River water rights: Modesto ID, Oakdale ID, South San Joaquin ID **/
+define R11_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R11_NP_DEL { R11_NP_DEL =
+! R11_NP_DEL:
+! Region: East bank of San Joaquin R, downstream of Stanislaus R
+D637
++ D639 * 1 ! Quantity: 28.5 TAF out of 28.5 TAF;
+! Region: East bank of San Joaquin R, Tuolumne R to Stanislaus R
++ R534A
++ R534B
++ D630A * 1 ! Quantity: 6.5 TAF out of 6.5 TAF;
++ D630B * 1 ! Quantity: 36.1 TAF out of 36.1 TAF;
+! Region: Modesto I.D.
++ R532
++ R636C * -1 ! Multiplier: -1;
++ D78 * 1 ! Quantity: 202.5 TAF out of 202.5 TAF;
+! Region: Oakdale I.D. (north)
++ D521 * 1 ! Quantity: 434 TAF out of 434 TAF;
+! Region: Oakdale I.D. (south)
++ D520C * 1 ! Quantity: 166 TAF out of 166 TAF;
+! Region: Stanislaus River diversions
++ D528A_riv * 1 ! Quantity: 16.3 TAF out of 16.3 TAF;
+! Region: Tuolumne River diversions
++ D545A_riv * 0.5 ! Quantity: 3.1 TAF out of 6.2 TAF;
+}
+define R11_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R11_GW_DEL { R11_GW_DEL =
+! R11_GW_DEL:
+! Region: East bank of San Joaquin R, Tuolumne R to Stanislaus R
+GP534_PAG
+! Region: Modesto I.D.
++ GP532_MAX_PAG * 1 ! Quantity: 4.6 TAF out of 4.6 TAF;
++ GP532_MAX_PRV * 1 ! Quantity: 14.8 TAF out of 14.8 TAF;
++ GP532_MIN_PAG * 1 ! Quantity: 18.4 TAF out of 18.4 TAF;
++ GP532_MIN_PRV * 1 ! Quantity: 20.8 TAF out of 20.8 TAF;
+! Region: Oakdale I.D. (south)
++ GP530_MAX_PRV * 1 ! Quantity: 2.4 TAF out of 2.4 TAF;
++ GP530_MAX_PAG * 1 ! Quantity: 3.6 TAF out of 3.6 TAF;
++ GP530_MIN_PAG * 1 ! Quantity: 9.8 TAF out of 9.8 TAF;
++ GP530_MIN_PRV * 1 ! Quantity: 9.8 TAF out of 9.8 TAF;
+! Region: South San Joaquin I.D.
++ GP522_MAX_PRV * 1 ! Quantity: 1.2 TAF out of 1.2 TAF;
++ GP522_MIN_PRV * 1 ! Quantity: 9.9 TAF out of 9.9 TAF;
++ GP522_MAX_PAG * 1 ! Quantity: 21.1 TAF out of 21.1 TAF;
++ GP522_MIN_PAG * 1 ! Quantity: 41.1 TAF out of 41.1 TAF;
+}
+/** R12: Turlock ID **/
+define R12_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R12_NP_DEL { R12_NP_DEL =
+! R12_NP_DEL:
+! Region: East bank of San Joaquin R, Merced to Tuolumne R
+D620B * 1 ! Quantity: 72.2 TAF out of 72.2 TAF;
+! Region: Merced I.D.
++ D561_PAG * 0.05 ! Quantity: 18.9 TAF out of 377.7 TAF;
+! Region: Merced River diversions
++ D562A_riv * 0.5 ! Quantity: 10.3 TAF out of 20.6 TAF;
+! Region: Tuolumne River diversions
++ D545A_riv * 0.5 ! Quantity: 3.1 TAF out of 6.2 TAF;
+! Region: Turlock I.D.
++ D79 * 1 ! Quantity: 470.1 TAF out of 470.1 TAF;
+! Region: Turlock I.D. (non-district)
++ R550A
++ R550B
++ D620A * 1 ! Quantity: 19.2 TAF out of 19.2 TAF;
+}
+define R12_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R12_GW_DEL { R12_GW_DEL =
+! R12_GW_DEL:
+! Region: Merced I.D.
+GP570_MAX_PAG
++ GP570_MIN_PAG * 0.05 ! Quantity: 0.48 TAF out of 9.62 TAF;
+! Region: Turlock I.D.
++ GP548_MAX_PAG * 1 ! Quantity: 9.4 TAF out of 9.4 TAF;
++ GP548_MAX_PRV * 1 ! Quantity: 42.8 TAF out of 42.8 TAF;
++ GP548_MIN_PAG * 1 ! Quantity: 66.8 TAF out of 66.8 TAF;
++ GP548_MIN_PRV * 1 ! Quantity: 79 TAF out of 79 TAF;
+! Region: Turlock I.D. (non-district)
++ GP550_PAG * 1 ! Quantity: 10.3 TAF out of 10.3 TAF;
+}
+/** R13: Merced ID. CVP Users: Madera, Chowchilla, Gravely Ford **/
+define R13_NP_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_NP_DEL { R13_NP_DEL =
+! R13_NP_DEL:
+! Region: Chowchilla W.D.
+C590 * -1 ! Multiplier: -1;
++ D582 * 1 ! Quantity: 119.1 TAF out of 119.1 TAF;
+! Region: Madera I.D.
++ D588 * 1 ! Quantity: 21.3 TAF out of 21.3 TAF;
+! Region: Merced I.D.
++ D561_PAG * 0.95 ! Quantity: 358.8 TAF out of 377.7 TAF;
+! Region: Merced River diversions
++ D562A_riv * 0.5 ! Quantity: 10.3 TAF out of 20.6 TAF;
+! Region: West of Madera I.D. and Chowchilla W.D.
++ R585
++ D595 * 1 ! Quantity: 1.2 TAF out of 1.2 TAF;
++ D603 * 1 ! Quantity: 37.1 TAF out of 37.1 TAF;
+! Region: West of Merced I.D. and non-district DAU 210 and 212
++ R573
++ D620C * 1 ! Quantity: 25.4 TAF out of 25.4 TAF;
++ D566 * 1 ! Quantity: 41.1 TAF out of 41.1 TAF;
+}
+define R13_GW_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_GW_DEL { R13_GW_DEL =
+! R13_GW_DEL:
+! Region: Chowchilla W.D.
+GP583_MAX_PAG * 1 ! Quantity: 38.1 TAF out of 38.1 TAF;
++ GP583_MIN_PAG * 1 ! Quantity: 69.3 TAF out of 69.3 TAF;
+! Region: Madera I.D.
++ GP591_MIN_PAG * 1 ! Quantity: 54.8 TAF out of 54.8 TAF;
++ GP591_MAX_PAG * 1 ! Quantity: 134.9 TAF out of 134.9 TAF;
+! Region: Merced I.D.
++ GP570_MAX_PAG
++ GP570_MIN_PAG * 0.95 ! Quantity: 9.14 TAF out of 9.62 TAF;
+! Region: West of Merced I.D. and non-district DAU 210 and 212
++ GP573_PAG * 1 ! Quantity: 251.4 TAF out of 251.4 TAF;
+}
+define R13_FCL1_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_FCL1_DEL { R13_FCL1_DEL =
+! R13_FCL1_DEL:
+! Region: Chowchilla W.D.
+D18B_C1 * 1 ! Quantity: 140 TAF out of 140 TAF;
+}
+define R13_FCL2_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_FCL2_DEL { R13_FCL2_DEL =
+! R13_FCL2_DEL:
+! Region: Chowchilla W.D.
+D18B_C2 * 1 ! Quantity: 346 TAF out of 346 TAF;
+}
+define R13_F215_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_F215_DEL { R13_F215_DEL =
+! R13_F215_DEL:
+! Region: Chowchilla W.D.
+D18B_215 * 1 ! Quantity: 44.48 TAF out of 44.48 TAF;
+}
+/** R16: Eastern Fresno Co. CVP Users: Friant-Kern Canal. Fresno ID, Garfield, International **/
+define R16_FCL1_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R16_FCL1_DEL { R16_FCL1_DEL =
+! R16_FCL1_DEL:
+! Region: _Other_
+D18A_C1 * 0.007 ! Quantity: 4.7 TAF out of 659.45 TAF;
+}
+define R16_FCL2_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R16_FCL2_DEL { R16_FCL2_DEL =
+! R16_FCL2_DEL:
+! Region: _Other_
+D18A_C2 * 0.072 ! Quantity: 75 TAF out of 1041.47 TAF;
+}
+define R16_F215_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R16_F215_DEL { R16_F215_DEL =
+! R16_F215_DEL:
+! Region: _Other_
+D18A_215 * 0.023 ! Quantity: 1.25 TAF out of 54.06 TAF;
+}
+/** R17: CVP Users: Friant-Kern Canal. Hills Valley, Tri-Valley Orange Cove **/
+define R17_FCL1_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R17_FCL1_DEL { R17_FCL1_DEL =
+! R17_FCL1_DEL:
+! Region: _Other_
+D18A_C1 * 0.059 ! Quantity: 39.2 TAF out of 659.45 TAF;
+}
+define R17_F215_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R17_F215_DEL { R17_F215_DEL =
+! R17_F215_DEL:
+! Region: _Other_
+D18A_215 * 0.022 ! Quantity: 1.18 TAF out of 54.06 TAF;
+}
+/** R18: CVP Users: Friant-Kern Canal, County of Fresno, Lower Tule River ID, Pixley ID, portion
+of Rag Gulch, Ducor, County of Tulare, most of Delano Earlimart, Exeter, Ivanhoe, Lewis Cr.,
+Lindmore, Lindsay-Strathmore, Porterville, Sausalito, Stone Corral, Tea Po **/
+define R18_FCL1_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R18_FCL1_DEL { R18_FCL1_DEL =
+! R18_FCL1_DEL:
+! Region: _Other_
+D18A_C1 * 0.553 ! Quantity: 364.65 TAF out of 659.45 TAF;
+}
+define R18_FCL2_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R18_FCL2_DEL { R18_FCL2_DEL =
+! R18_FCL2_DEL:
+! Region: _Other_
+D18A_C2 * 0.543 ! Quantity: 565.2 TAF out of 1041.47 TAF;
+}
+define R18_F215_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R18_F215_DEL { R18_F215_DEL =
+! R18_F215_DEL:
+! Region: _Other_
+D18A_215 * 0.425 ! Quantity: 22.95 TAF out of 54.06 TAF;
+}
+/** R20: CVP Users: Friant-Kern Canal. Shafter-Wasco, S. San Joaquin **/
+define R20_FCL1_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R20_FCL1_DEL { R20_FCL1_DEL =
+! R20_FCL1_DEL:
+! Region: _Other_
+D18A_C1 * 0.223 ! Quantity: 147 TAF out of 659.45 TAF;
+}
+define R20_FCL2_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R20_FCL2_DEL { R20_FCL2_DEL =
+! R20_FCL2_DEL:
+! Region: _Other_
+D18A_C2 * 0.086 ! Quantity: 89.6 TAF out of 1041.47 TAF;
+}
+define R20_F215_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R20_F215_DEL { R20_F215_DEL =
+! R20_F215_DEL:
+! Region: _Other_
+D18A_215 * 0.07 ! Quantity: 3.78 TAF out of 54.06 TAF;
+}
+/** R21B: CVP Users: Arvin Edison **/
+define R21B_FCL1_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_FCL1_DEL { R21B_FCL1_DEL =
+! R21B_FCL1_DEL:
+! Region: _Other_
+D18A_C1 * 0.061 ! Quantity: 40 TAF out of 659.45 TAF;
+}
+define R21B_FCL2_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_FCL2_DEL { R21B_FCL2_DEL =
+! R21B_FCL2_DEL:
+! Region: _Other_
+D852_ILWB_EWA * 0.25 ! Multiplier: 0.25;
++ D859_DW_EWA * 0.25 ! Multiplier: 0.25;
++ I852_ILWB_EWA * -0.25 ! Multiplier: -0.25;
++ I852_WTS * -0.25 ! Multiplier: -0.25;
++ I859_DWEX_EWA * -0.25 ! Multiplier: -0.25;
++ D18A_C2 * 0.299 ! Quantity: 311.68 TAF out of 1041.47 TAF;
+}
+define R21B_F215_DEL { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_F215_DEL { R21B_F215_DEL =
+! R21B_F215_DEL:
+! Region: _Other_
+D18A_215 * 0.46 ! Quantity: 24.87 TAF out of 54.06 TAF;
+}

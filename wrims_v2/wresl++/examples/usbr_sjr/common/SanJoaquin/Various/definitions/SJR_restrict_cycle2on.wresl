@@ -1,0 +1,75 @@
+! SJR_restrict.wresl
+! Nancy Parker
+! 11/02, USBR
+! This code restricts regulated flows in various arcs within the SJR system
+! Revised by C. Hsu, 3/3/03, USBR, for review and documentation project
+! ###############################################################################
+/*
+Restrict Millerton, Hensley, and Eastman regulated releases to deliveries and losses
+The balance of release will be flood-releted
+*/
+! Restrict Millerton regulated release to what is needed to provide for losses and deliveries from 
+! Friant to Gravelly Ford, Gravelly to Bifurcation, taking into consideration the inflows and surface
+! runoff too
+
+define UpperSJRSeep    {value SG_SJR263_880[SJRBASE] + SG_SJR256_879[SJRBASE]
+                            + SG_SJR249_878[SJRBASE] + SG_SJR242_877[SJRBASE] 
+                            + SG_SJR235_876[SJRBASE] + SG_SJR227_875[SJRBASE]}
+define UpperFresnoSeep {value SG_FRS045_826[SJRBASE] + SG_FRS039_825[SJRBASE]
+                            + SG_FRS036_824[SJRBASE]}
+
+! define UpperSJRSeep    {value SG_SJR263_880[SJRBASE_GW1] + SG_SJR256_879[SJRBASE_GW1]
+!                             + SG_SJR249_878[SJRBASE_GW1] + SG_SJR242_877[SJRBASE_GW1] 
+!                             + SG_SJR235_876[SJRBASE_GW1] + SG_SJR227_875[SJRBASE_GW1]}
+! define UpperFresnoSeep {value SG_FRS045_826[SJRBASE_GW1] + SG_FRS039_825[SJRBASE_GW1]
+!                             + SG_FRS036_824[SJRBASE_GW1]}
+
+goal boundC_MLRTNmain { C_MLRTNm < max(0.,-UpperSJRSeep-I_SJR265-I_SJR258-SR_64_SJR227) + D_SJR227_64_PA3 }    
+! Restrict Hensley regulated release to Fresno River losses, Fresno River delivery and Fresno River minimum instream flow 
+goal boundC_HNSLYmain { C_HNSLYm < max(0.,-UpperFresnoSeep + C_FRS036_min - I_FRS046) - SP_MDC019_FRS045 + D_FRS036_64_PA1 }
+! Restrict Eastman regulated release to Chowchilla River delivery & Chowchilla River losses  
+goal boundC_ESTMNmain { C_ESTMNm < D_CHW017_64_PA2 + D_CHW028_ASL013 + D_CHW028_BRS018
+                                   - SG_CHW031_792 - SG_CHW028_791 - SG_CHW024_790
+                                   - SG_CHW021_789 - SG_CHW017_788 - C_MDC032 }
+
+! IMF -- 
+! Upped maxGoodwin value from 1500 to match SAC BO run
+! Regulated releases from Goodwin Dam (Tulloch Reservoir) < 1500 cfs
+define maxGoodwin { value 7500.001 }  
+! Set limits on Goodwin release
+goal RestrGoodwin{ C_STS059 - C_STS059F < maxGoodwin }
+
+/*
+Water released from New Melones for WQ, VAMP, and DO must flow past Goodwin (if below channel capacity)
+*/
+! Water released from New Melones for water quality route past Goodwin
+goal routeC_STS059WQ   {C_STS059WQ = C_MELONWQ}
+! Water released from New Melones for VAMP route past Goodwin
+goal routeC_STS059VAMP {C_STS059VAMP = C_MELONVAMP_M}
+! Water released from New Melones for DO route past Goodwin
+goal routeC_STS059DO   {C_STS059DO = C_MELONDO}
+! Water released from New Melones for minimum flow (?) route past Goodwin
+goal routeC_STS059MIN  {C_STS059MIN = C_MELONMIN}
+! Water released from New Melones for instream flow route past Goodwin
+! goal routeC_STS059INSTREAM {C_STS059INSTREAM = C_MELONINSTREAM}
+! Water released from New Melones for Stan NMFS RPA routed past Goodwin
+goal routeC520RPA      {C_STS059RPA = C_MELONRPA}
+
+
+/*
+Chowchilla Bypass operations
+The Chowchilla Bypass splits Millerton flood flows that flow past Gravelly Ford
+(Millerton does not release water for demands past Gravelly Ford).
+The Bypass structure allows 2000 cfs to flow into the Mendota Pool before routing water
+through the Chowchilla Bypass (in order to protect the Riparian land around the Mendota
+Pool.  The Bypass has a channel capacity of 6500 cfs which if exceeded will flood
+back into the Mendota Pool.  Therefore, the operations are as follows:
+   1)up to 1400 cfs through C_SJR205_main
+   2)the next 6500 cfs through D_SJR214_EBP001
+   3)any flows above 7900 cfs through C_SJR205_flood
+System defined restrictions on D_SJR214_EBP001 give it an upper limit of 6500 and a negative weight
+C_SJR205_flood needs to have a larger negative weight than D_SJR214_EBP001 for a correct order of filling
+*/
+! Set limits on Chowchilla Bypass main channel capacity flow 
+goal restrictC_SJR205_main { C_SJR205_main < 1400. }
+

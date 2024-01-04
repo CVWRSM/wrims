@@ -1,0 +1,100 @@
+! bounds_cycle3.wresl
+! Edward Chang
+! 5/01/2000
+! Joint Model
+! This code bounds decision variables for cycle 3 only (San Joaquin System)
+! Revised by C. Hsu, 3/5/03, USBR, for review and documentation project
+
+!###############################################################################
+/*
+This code bounds decision variables for cycle 3
+*/
+! Restrict DMC inflows to the Mendota Pool
+!goal restrC_DMC116cycle3 { C_DMC116 < C_DMC116[SJR_WQ1] }
+! Mendota Pool Exchange donation to VAMP
+goal restrD_XCC054_VAMPcycle3 { D_XCC054_VAMP = 0. }
+
+
+/*
+Add-water releases
+*/
+! New Melones water quality release
+goal setC_MELONwqcycle3 {C_MELONwq = 0. }
+! New Melones dissolved oxygen release
+goal setC_MELONdocycle3 {C_MELONdo = 0. }
+!goal setC_MELONvampcycle3 { C_MELONvamp = 0. }      
+! New Melones mainstem VAMP release
+goal setC_MELONvamp_mcy3 { C_MELONvamp_m = 0. } 
+! New Melones Medesto ID transfer
+goal setC_MELONvamp_tcy3 { C_MELONvamp_t = 0. }  
+! Don Pedro VAMP release 
+goal setC_PEDROvampcyc3 { C_PEDROvamp = 0. }
+! Don Pedro VAMP release
+goal setC_PEDROstanvampcycle3 { C_PEDRO_STS_vamp = 0. }  
+! McClure VAMP release
+goal setC_MCLREvampcyc3 { C_MCLREvamp = 0. }
+! February Thru June 1995 WQCP Vernalis minflow release
+goal setC_MELONmincycle3 { C_MELONmin = 0. }         
+! McClure minflow release
+goal setC_MCLREMINcycle3 { C_MCLREMIN = 0. }         
+! New Melones RPA release
+goal setC_MELONRPAcycle3 { C_MELONRPA = 0. }    
+! OID reallocated water
+goal setC_MELONinstreamcycle3 { C_MELONinstream = C_MELONinstream[SJRBASE] }    
+! Debt is incurred in cycle 5 but payment is not made until cycle 6 
+goal setD_OAK020_61_NA2 {D_OAK020_61_NA2 = 0.}         
+
+! Tuolumne River FERC minimum flows
+goal boundC_TUO054cycle3 { 
+    lhs C_TUO054_mif 
+    case AprMay {
+        condition   month <= mar .and. month >= jun
+        rhs         C_TUO054_mif[SJRBASE]
+        lhs<rhs     penalty 0 }
+        }
+
+! Stanislaus River below Goodwin (Reach C520) F & W minimum flows for cycle 3 
+goal boundC_STS059cycle3 { 
+    lhs C_STS059_mif 
+    case NotAprMay {
+        condition   month <= mar .and. month >= jun
+        rhs         C_STS059_mif[SJRBASE]
+        lhs<rhs     penalty 0 }
+        }
+! Stanislaus River below Ripon (Reach 528) F & W minimum flows  
+goal boundC_STS017cycle3 { 
+    lhs C_STS017_mif 
+    case NotAprMay {
+        condition   month <= mar .and. month >= jun
+        rhs         C_STS017_mif[SJRBASE]
+        lhs<rhs     penalty 0 }
+        }
+! Stanislaus River below Goodwin excess flows 
+goal bound1C_STS059_exc_acycle3 { 
+     lhs       C_STS059_exc_a
+    case NotAprMay {
+        condition   month <= mar .and. month >= jun
+          rhs       C_STS059_exc_a[SJRBASE] 
+          lhs<rhs   penalty 0 }
+          }
+! Stanislaus River below Ripon excess flows  
+goal bound2C_STS059_exc_acycle3 { 
+     lhs       C_STS059_exc_a
+    case NotAprMay {
+        condition   month <= mar .and. month >= jun
+          rhs       C_STS059_exc_a[SJRBASE] 
+          lhs>rhs   penalty 0 }
+          }
+          
+
+/*
+VAMP book-keeping
+*/
+! VAMP April release from Merced ID 
+goal setMercedIDaddAprc3 { MercedIDaddApr =  0. }
+! VAMP April release from OID
+goal setOIDaddAprc3 { OIDaddApr = 0. }
+! VAMP April release from Exchange Contractors 
+goal setExchangeaddAprc3 { ExchangeaddApr = 0. }
+! VAMP April release from MID/TID
+goal setMIDTIDaddAprc3 { MIDTIDaddApr = 0. }

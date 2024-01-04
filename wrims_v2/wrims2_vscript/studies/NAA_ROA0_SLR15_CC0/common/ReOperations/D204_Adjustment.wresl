@@ -1,0 +1,34 @@
+! D204_Adjustment.wresl
+!
+! Transfers on the Yuba Basin is modeled as an additional supply inputed at I204_WTS and I204_EWA
+! D204_REOP represent the impacts of recharging this GW and SW substitution supply - the magnitude of
+! this impact is debatable and further review should be performed before this code is adopted for Yuba River analyses
+!
+goal setAnnYubaGW_EWAdv {AnnYubaGW_EWAdv = 0.} !if No EWA in this run
+goal setAnnYubaSW_EWAdv {AnnYubaSW_EWAdv = 0.} !if No EWA in this run
+goal setAnnDMC_GW_EWAdv {AnnDMC_GW_EWAdv = 0.} !if No EWA in this run
+goal setAnnCA_GW_EWAdv  {AnnCA_GW_EWAdv = 0.}  !if No EWA in this run
+!
+define PrevYrYuba  {value PrevYrYubaGW + PrevYrYubaSW }
+!
+define D204_Adjustment {
+      case first {
+            condition wateryear == 1922
+            value 0. }
+      case Jan {
+            condition month == Jan
+            value PrevYrYuba*(I230*cfs_taf/(I230*cfs_taf + I230(1)*cfs_taf(1) + I230(2)*cfs_taf(2))) }
+      case Feb {
+            condition month == Feb
+            value PrevYrYuba*(I230*cfs_taf/(I230(-1)*cfs_taf(-1)+I230*cfs_taf + I230(1)*cfs_taf(1))) }
+      case Mar {
+            condition month == Mar
+            value PrevYrYuba*(I230*cfs_taf/(I230(-2)*cfs_taf(-2) + I230(-1)*cfs_taf(-1) + I230*cfs_taf)) }
+      case Apr {
+            condition month == Apr .and. PrevYrYuba>(I230(-1)*cfs_taf(-1) + I230(-2)*cfs_taf(-2)+I230(-3)*I230*cfs_taf(-3))
+            value max(PrevYrYuba-D204_REOP(-1)*cfs_taf(-1)-D204_REOP(-2)*cfs_taf(-2)-D204_REOP(-3)*cfs_taf(-3), 0.)}
+      case otherwise {
+            condition always
+            value 0. }
+      }
+goal set_D204_REOP {D204_REOP < D204_Adjustment*taf_cfs} ! weight is 5600

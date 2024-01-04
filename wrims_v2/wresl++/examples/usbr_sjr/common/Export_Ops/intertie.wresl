@@ -1,0 +1,7 @@
+! Intertie.wresl - implements functionality of DMC/CAQ Intertie
+define Intertie_Cap {value 400.*IntertieSwitch}
+
+goal limit_Intertie {D_DMC007_CAA009 < Intertie_Cap}
+
+!goal rout_Intertie {D804A = D_DMC007_CAA009}
+

@@ -1,0 +1,17 @@
+!This is the Export Operations include file  (E. Reyes)
+
+INCLUDE 'BanksSplit.wresl'
+INCLUDE 'banks_limits.wresl'
+INCLUDE 'banks_pump_allow.wresl'
+
+INCLUDE 'TracySplit.wresl'
+INCLUDE 'tracy_limits.wresl'
+
+INCLUDE 'exportratio.wresl'
+INCLUDE 'april_may_maxexport.wresl'
+
+! define a variable that expresses delta exports to Banks and Tracy
+! i.e. delta exports not including to Contra Costa
+
+define SOD_EXP {std kind 'export' units 'cfs'}
+goal setSOD_EXP {SOD_EXP = C_OMR027 - D_OMR027_DND_1}

@@ -1,0 +1,80 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U gnat.exception_traces%b  g-exctra.adb		9ea56b03 NE OL PK
+W gnat%s		gnat.ads		gnat.ali
+W system%s		system.ads		system.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+
+U gnat.exception_traces%s  g-exctra.ads		0bd8ff04 EE NE OL PK
+W gnat%s		gnat.ads		gnat.ali
+W gnat.traceback%s	g-traceb.adb		g-traceb.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-exctra.ads		20090409150020 14dfe11b
+D a-unccon.ads		20070406091342 51e09df2
+D gnat.ads		20050905075126 96410e68
+D g-exctra.ads		20080408065740 76cb187b
+D g-exctra.adb		20091130102824 153789da
+D g-traceb.ads		20080820135520 eb52e917
+D system.ads		20090410155748 b8eb58c3
+D s-parame.ads		20091130110856 6cdeed25
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-traent.ads		20090417130712 a66ef260
+X 3 a-exctra.ads
+47A9*Tracebacks_Array(16|46M12)<integer>
+X 5 gnat.ads
+36K9*GNAT 39e9 6|53r6 53r26 55r9 98r5 7|37r14 119r5
+X 6 g-exctra.ads
+55K14*Exception_Traces 5|36k9 6|98l10 98e26 7|37b19 119l10 119t26
+60E9*Trace_Kind 70e7 75r31 7|109r31
+61n7*Every_Raise{60E9} 7|112r15
+66n7*Unhandled_Raise{60E9} 7|114r15
+75U14*Trace_On 75>24 7|109b14 117l8 117t16
+75e24 Kind{60E9} 7|109b24 111r12
+78U14*Trace_Off 7|100b14 103l8 103t17
+84P9*Traceback_Decorator(string) 89r47 7|59r24 88r47
+85a16 Traceback{8|88A12}
+89U14*Set_Trace_Decorator 89>35 7|88b14 94l8 94t27
+89p35 Decorator{84P9} 7|88b35 90r28
+X 7 g-exctra.adb
+49V13 Decorator_Wrapper{string} 50>7 51>7 68b13 82l8 82t25 93r15
+50m7 Traceback{9|64M9} 69b7 73r43
+51i7 Len{natural} 70b7 72r52
+59p4 Current_Decorator{6|84P9} 81r14 90m7 92r13
+72a7 Decorator_Traceback{8|88A12} 73m11 78m27 81r37
+X 8 g-traceb.ads
+82K14*Traceback 6|53w11 53r31 8|103e19
+88A12*Tracebacks_Array{3|47A9}<integer> 6|85r28 7|72r29
+X 9 system.ads
+37K9*System 7|34r6 34r35 35r6 35r35 50r19 69r19 9|197e11
+64M9*Address 7|50r26 69r26
+X 11 s-soflin.ads
+45K16*Soft_Links 7|35w13 35r42 11|397e22
+123P9*Traceback_Decorator_Wrapper_Call(string)
+290p4*Traceback_Decorator_Wrapper{123P9} 7|91m7
+X 13 s-stalib.ads
+55K16*Standard_Library 7|34w13 34r42 13|276e28
+243n7*RM_Convention{242E9} 7|102r26
+248n7*Every_Raise{242E9} 7|113r32
+252n7*Unhandled_Raise{242E9} 7|115r32
+259e4*Exception_Trace{242E9} 7|102m7 113m13 115m13
+X 16 s-traent.ads
+46M12*Traceback_Entry{9|64M9}
+

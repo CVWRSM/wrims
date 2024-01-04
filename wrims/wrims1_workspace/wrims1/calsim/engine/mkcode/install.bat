@@ -1,2 +1,0 @@
-copy mkcode.exe ..\..\bin
-

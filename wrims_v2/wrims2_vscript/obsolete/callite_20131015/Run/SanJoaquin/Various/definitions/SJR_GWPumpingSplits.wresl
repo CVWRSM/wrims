@@ -1,0 +1,264 @@
+! SJR_GWPumpingSplits.wresl
+! Nancy Parker (USBR)
+! 2/03
+! This file defines GW pumping decision variables in the San Joaquin basin
+/*
+Revised by: R. Field, 09/25/03, USBR
+Purpose: Incorporate additional groundwater arcs for M&I.
+Revised by C. Hsu, 3/5/03, USBR, for review and documentation project
+*/
+
+!#########################################################################
+
+/*
+Madera ID and Non-District, units = CFS
+*/
+! Madera ID groundwater pumping
+define GP591 {std kind 'GW-PUMPING' units 'cfs'}
+! Madera ID minimum groundwater Ag pumping
+define GP591_min_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Madera ID maximum groundwater Ag pumping
+define GP591_max_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Madera ID non district pumping
+define GP591_ND {std kind 'GW-PUMPING' units 'cfs'}
+! Madera ID M&I delivery
+define GP591_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! East of Madera ID and Non-District DAU 213 M&I delivery
+define GP591_MI_B {std kind 'GW-PUMPING' units 'cfs'}
+! Madera ID total groundwater pumping
+goal totalGP591 {GP591 = GP591_min_pag + GP591_max_pag
+                 + GP591_ND + GP591_MI_A + GP591_MI_B}
+
+/*
+Chowchilla ID groundwater pumping, units = CFS
+*/
+! Chowchilla ID groundwater pumping
+define GP583 {std kind 'GW-PUMPING' units 'cfs'}
+! Chowchilla ID minimum groundwater pumping for Ag
+define GP583_min_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Chowchilla ID maximum groundwater pumping for Ag
+define GP583_max_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Chowchilla Water District M&I groundwater pumping
+define GP583_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! Chowchilla ID total groundwater pumping
+goal totalGP583 {GP583 = GP583_min_pag + GP583_max_pag + GP583_MI_A}
+
+
+/*
+West of Madera and Chowchilla IDs (DAU 215)
+*/
+! Define West of Madera and Chowchilla IDs groundwater pumping
+define GP585 {std kind 'GW-PUMPING' units 'cfs'}
+! Define West of Madera and Chowchilla IDs non district groundwater pumping
+define GP585_ND {std kind 'GW-PUMPING' units 'cfs'}
+! Define West of Madera ID and Chowchill WD M&I groundwater pumping
+define GP585_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! Total groundwater pumping equals to non district pumping and M&I
+goal totalGP584 {GP585 = GP585_nd + GP585_MI_A}
+
+
+/*
+Merced ID and Non-District
+*/
+! Merced ID groundwater pumping
+define GP570 {std kind 'GW-PUMPING' units 'cfs'}
+! Merced ID minimum groundwater pumping for Ag
+define GP570_min_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Merced ID maximum groundwater pumping for Ag
+define GP570_max_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Merced ID minimum private groundwater pumping
+define GP570_min_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Merced ID maximum private groundwater pumping
+define GP570_max_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Merced ID M & I groundwater pumping
+define GP570_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! East of Merced ID M&I groundwater pumping
+define GP570_MI_B {std kind 'GW-PUMPING' units 'cfs'}
+! Merced ID non district groundwater pumping
+define GP570_ND {std kind 'GW-PUMPING' units 'cfs'}
+! Merced ID total groundwater pumping
+goal totalGP570 {GP570 = GP570_min_pag + GP570_max_pag
+     + GP570_min_prv + GP570_max_prv + GP570_ND + GP570_MI_A + GP570_MI_B}
+
+! Merced Non-District, River Diversions Groundwater pumping
+define GP562A {std kind 'GW-PUMPING' units 'cfs'}
+! Merced River Diverions M&I groundwater pumping
+define GP562A_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+goal totalGP562A { GP562A = GP562A_MI_A}
+/*
+Stevenson and El Nido (DAU212)
+*/
+! Define Stevenson and El Nido (DAU212) groundwater pumping
+define GP573 {std kind 'GW-PUMPING' units 'cfs'}
+! Define Stevenson and El Nido (DAU212) project Ag groundwater pumping
+define GP573_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define West of Merced ID and Non-District Areas in DAU 210 and 212 M&I
+define GP573_MI_A {std kind 'GW-PUMPING'units 'cfs'}
+! Total groundwater pumping equals to project Ag pumping and M&I
+goal totalGP573 {GP573 = GP573_pag + GP573_MI_A }
+
+
+/*
+West of Turlock area, units = CFS
+*/
+! Define West of Turlock area groundwater pumping
+define GP550 {std kind 'GW-PUMPING' units 'cfs'}
+! Define West of Turlock area project Ag groundwater pumping
+define GP550_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define East bank of San Joaquin, Merced to Tuolumne M&I groundwater pumping
+define GP550_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! West of Turlock area total groundwater pumping
+goal totalGP550 {GP550 = GP550_pag + GP550_MI_A}
+
+! Define Tuolumne River Diversions M&I groundwater pumping
+define GP545A {std kind 'GW-PUMPING' units 'cfs'}
+! Define Tuolumne River Diversions M&I groundwater pumping
+define GP545A_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! Total Tuolumne River Diversion M&I groundwater pumping
+goal totalGP545A {GP545A = GP545A_MI_A}
+
+/*
+Turlock ID and Non-District, units = CFS
+*/
+! Define Turlock ID groundwater pumping
+define GP548 {std kind 'GW-PUMPING' units 'cfs'}
+! Define Turlock ID minimum project Ag groundwater pumping
+define GP548_min_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Turlock ID maximum project Ag groundwater pumping
+define GP548_max_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Turlock ID minimum private groundwater pumping
+define GP548_min_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Define Turlock ID maximum private groundwater pumping
+define GP548_max_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Define Turlock ID non-district groundwater pumping
+define GP548_ND {std kind 'GW-PUMPING' units 'cfs'}
+! Define East of Turlock ID M&I groundwater pumping
+define GP548_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! Define Turlock ID M&I groundwater pumping
+define GP548_MI_B {std kind 'GW-PUMPING' units 'cfs'}
+! Turlock ID total groundwater pumping
+goal totalGP548 {GP548 = GP548_min_pag + GP548_max_pag
+     + GP548_min_prv + GP548_max_prv + GP548_ND + GP548_MI_A + GP548_MI_B }
+
+/*
+Modesto MI pumping, units = CFS
+*/
+! Define Modesto groundwater pumpng
+define GP78A {std kind 'GW-PUMPING' units 'cfs'}
+! Define Modesto M & I groundwater pumpng
+define GP78A_MI {std kind 'GW-PUMPING' units 'cfs'}
+! Set Modesto M & I pumping equal to groundwater pumping
+goal totalGP78A {GP78A = GP78A_MI}
+
+/*
+Modesto ID and Non-District M & I pumping, units = CFS
+*/
+! Define Modesto ID groundwater pumpng
+define GP532 {std kind 'GW-PUMPING' units 'cfs'}
+! Define Modesto ID minimum project Ag groundwater pumping
+define GP532_min_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Modesto ID maximum project Ag groundwater pumping
+define GP532_max_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Modesto ID minimum private groundwater pumping
+define GP532_min_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Define Modesto ID maximum private groundwater pumping
+define GP532_max_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Define Modesto ID non-district M & I groundwater pumping
+define GP532_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! Modesto total groundwater pumping
+goal totalGP532 {GP532 = GP532_min_pag + GP532_max_pag + GP532_MI_A
+                       + GP532_min_prv + GP532_max_prv}
+
+/*
+West of Modesto area  and Stanislaus River Diversions pumping, units = CFS
+*/
+! Define West of Modesto area groundwater pumping
+define GP534 {std kind 'GW-PUMPING' units 'cfs'}
+! Define West of Modesto area project Ag groundwater pumping
+define GP534_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define East bank of SJ, Tuolumne to Stanislaus M&I groundwater pumping
+define GP534_MI_A {std kind 'GW-PUMPING' units 'cfs' }
+! Set West of Modesto area total pumping equal to project Ag pumping and M&I
+goal totalGP534 {GP534 = GP534_pag + GP534_MI_A}
+
+! Define Stanislaus River Diversions M&I groundwater pumping
+define GPSTANRIPNA {std kind 'GW-PUMPING' units 'cfs'}
+! Define Stanislaus River Diversions M&I groundwater pumping
+define GPSTANRIPNA_MI_A {std kind 'GW-PUMPING' units 'cfs' }
+! Set total Stanislaus River Diversions M&I groundwater pumping
+goal totalGPSTANRIPNA {GPSTANRIPNA = GPSTANRIPNA_MI_A }
+
+/*
+Oakdale ID South and Non-District M & I pumping, units = CFS
+*/
+! Define Oakdale ID South groundwater pumping
+define GP530 {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID South minimum project Ag groundwater pumping
+define GP530_min_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID South maximum project Ag groundwater pumping
+define GP530_max_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID South minimum private groundwater pumping
+define GP530_min_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID South maximum private groundwater pumping
+define GP530_max_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID South total M & I groundwater pumping
+define GP530_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! define East of Modesto ID and Oakdale ID total groundwater pumping
+define GP530_MI_B {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID South non-district groundwater pumping
+define GP530_ND {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID South total groundwater pumping
+goal totalGP530 {GP530 = GP530_min_pag + GP530_max_pag + GP530_MI_A + GP530_MI_B + GP530_ND
+                       + GP530_min_prv + GP530_max_prv}
+
+
+/*
+Oakdale ID North, South San Joaquin ID, M & I and Non-District M & I pumping, units = CFS
+*/
+! Define Oakdale ID North groundwater pumping
+define GP522 {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID North minimum project Ag groundwater pumping
+define GP522_min_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID North maximum project Ag groundwater pumping
+define GP522_max_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID North minimum private groundwater pumping
+define GP522_min_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID North maximum private groundwater pumping
+define GP522_max_prv {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID North M & I groundwater pumping
+define GP522_MI_B {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID non-district M & I groundwater pumping
+define GP522_MI_A {std kind 'GW-PUMPING' units 'cfs'}
+! Define Oakdale ID total groundwater pumping
+goal totalGP522 {GP522 = GP522_min_pag + GP522_max_pag + GP522_MI_A + GP522_MI_B
+                       + GP522_min_prv + GP522_max_prv}
+
+! define CSJID  GW pumping
+define GP512 { std kind 'GW-PUMPING' units 'cfs' }
+
+
+/*
+  Calaveras County Water District groundwater pumping
+*/
+! Define groundwater pumping
+define GP505 {std kind 'GW-PUMPING' units 'cfs'}
+! Define Stockton East Water District minimum project Ag groundwater pumping
+define GP505_pag {std kind 'GW-PUMPING' units 'cfs'}
+! Define Stockton East Water District Non-District groundwater pumping
+define GP505_nd {std kind 'GW-PUMPING' units 'cfs'}
+! Set Calaveras SEWD/Riparin/Nondistrict total groundwater pumping
+goal totalGP505 {GP505 = GP505_pag + GP505_nd}
+
+/*
+City of Stockton/SEWD groundwater pumping
+*/
+! Define City of Stockton and SEWD M7I groundwater pumping
+define GP509 {std kind 'GW-PUMPING' units 'cfs'}
+!SEWD minimum project Ag groundwater pumping
+define GP509_pag { std kind 'GW-PUMPING' units 'cfs'}
+!SEWD Non-District groundwater pumping
+define GP509_nd { std kind 'GW-PUMPING' units 'cfs'}
+! define M&I groundwater pumping
+define GP509_mi { std kind 'GW-PUMPING' units 'cfs'}
+! Set City of Stockton project ag and non project total groundwater pumping
+goal totalGP509 { GP509 = GP509_pag + GP509_nd + GP509_mi}

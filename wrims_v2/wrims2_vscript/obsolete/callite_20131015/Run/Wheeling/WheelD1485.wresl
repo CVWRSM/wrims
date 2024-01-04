@@ -1,0 +1,62 @@
+/*************************************
+WheelD1485.wresl
+
+Sets replacement pumping (payback) for D1485 wheeling. 
+Code modified from OCAP 2008 study by Holly Canada DWR (06/05/2012)
+**************************************/
+
+goal wheeling1d {D_Banks_whlpb = C_Wkytn_whlPB + C_Kswck_whlPB + C_Nimbus_whlPB}
+
+!!ANN flow adjustment (at Hood)
+!goal setANNflowadj {C_Wkytn_whlPB + C_Kswck__whlPB + C_Nimbus_whlPB = C_Hood_whlpb}
+
+! export for south-of-delta CVP: demand + rulecurve
+define maxJonescalc1 {value min(JonesMaxAllow,
+                     4400+perdel_cvpag_s*CVP_pag_ratio_s*dem_D700_pag*taf_cfs,
+                     4200+perdel_cvpag_s*CVP_pag_ratio_s*dem_D700_pag*taf_cfs+perdel_cvpag_s*CVP_pag_ratio_s*dem_D701_pag*taf_cfs+dem_D702_pls*taf_cfs) }
+
+define maxJonescalc {value min(maxJonescalc1 + Intertie_Cap, JonesMaxAllow)}
+
+! Set Up Integer constraints to determine when Jones is pumping max
+define jonesatmax {std kind 'flow-delivery' units 'cfs'}
+define jonesbelowmax {std kind 'flow-delivery' units 'cfs'}
+define jones_int {INTEGER std kind 'INTEGER' units 'NONE'}
+
+goal force_jones_int {D_jones + 0.5 - maxJonescalc = jonesatmax - jonesbelowmax}
+goal force_at {jonesatmax < jones_int * 9999999.0}
+goal force_below {jonesbelowmax < 9999999.0 - jones_int * 9999999.0}
+
+! Set wheeling cap as min of 1600 or amount to CVP rule curve after Jones pumping
+define wheelCap {
+    case JulStorHi {
+    condition   month == JUL .and. S_Shsta(-1) >= 2400. .and. S_slcvp(-1) <= 500.
+    value       1600. /*97.5*taf_cfs*/ }
+    case AugStorHi {
+    condition   month == AUG .and. S_Shsta(-1) >= 2400. .and. S_slcvp(-1) <= 500.
+    value       max(3200. /*195.0*taf_cfs*/ - D_Banks_whlpb(-1),0.)}
+!    case SepStorHi {                                                                   ! AMUNEVAR
+!    condition   month == SEP .and. S4(-1) + S4mod + S44(-1) >= 2400. .and. S11(-1) + S11mod <= 500.      ! AMUNEVAR
+!    value       max(3200. /*195.0*taf_cfs*/ - D419_whlpb(-1) - D419_whlpb(-2),0.)}     ! AMUNEVAR
+    case other {
+    condition   always
+    value       0.0 }
+}
+
+!define wheelcapDV {std kind 'test' units 'cfs'}
+!goal tester1 {wheelcapDV = wheelcap}
+
+goal wheeling1e { D_Banks_whlpb < wheelCap*jones_int }
+
+
+/*
+! make sure wheeled water makes it to CVP San Luis and DMC  
+goal wheeling4 {D804=D_banks_whlpb}
+
+! CVC Operations
+define D_Banks_CVC__z2 {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+goal wheeling9 {D_Banks_cvc=D_Banks_CVC__z2}
+goal wheeling10 {D_Banks_cvcsurp=0.0}
+
+!Capacity reserved at Banks for CVC
+goal CapForCVC { I_CVCWheel = D_Banks_CVC__z2}
+*/

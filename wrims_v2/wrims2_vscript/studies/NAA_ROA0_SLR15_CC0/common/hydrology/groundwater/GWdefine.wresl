@@ -1,0 +1,175 @@
+/*
+This file contains the general define statements for those variables used in
+the groundwater files (timeseries, std, etc).  Variables that are defined
+by calculations or select statements are defined in the file where they are
+used.
+
+Dustin Jones 05/30/01
+JTPAYNE 12 05
+*/
+
+define GP_DSA10 {STD KIND 'FLOW' UNITS 'CFS'}
+define GP_DSA12 {STD KIND 'FLOW' UNITS 'CFS'}
+define GP_DSA15 {STD KIND 'FLOW' UNITS 'CFS'}
+
+define DP_DSA10 {STD KIND 'FLOW' UNITS 'CFS'}
+define DP_DSA12 {STD KIND 'FLOW' UNITS 'CFS'}
+define DP_DSA15 {STD KIND 'FLOW' UNITS 'CFS'}
+
+
+! define current month groundwater storage (units = TAF)
+define g_10  {std kind 'storage' units 'taf'}
+define g_10s {std kind 'storage' units 'taf'}
+define g_12  {std kind 'storage' units 'taf'}
+define g_15  {std kind 'storage' units 'taf'}
+define g_15s {std kind 'storage' units 'taf'}
+define g_58  {std kind 'storage' units 'taf'}
+define g_58s {std kind 'storage' units 'taf'}
+define g_65  {std kind 'storage' units 'taf'}
+define g_69  {std kind 'storage' units 'taf'}
+define g_69s {std kind 'storage' units 'taf'}
+define g_70  {std kind 'storage' units 'taf'}
+define g_70s {std kind 'storage' units 'taf'}
+
+
+! groundwater pumping (groundwater model is TAF)
+define gp60_taf {std kind 'flow' units 'taf'}
+define gp61_taf {std kind 'flow' units 'taf'}
+define gp62_taf {std kind 'flow' units 'taf'}
+define gp63_taf {std kind 'flow' units 'taf'}
+define gp64_taf {std kind 'flow' units 'taf'}
+define gp65_taf {std kind 'flow' units 'taf'}
+define gp66_taf {std kind 'flow' units 'taf'}
+
+
+! define return flow components
+define r109_np     {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 58 non prject returns
+define r109_prj    {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 58 prject returns
+define r156_np     {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 65 non prject returns
+define r156_prj    {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 65 prject retuns
+
+define r169_np     {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 70 non prject returns
+define r169_prj    {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 70 prject returns
+define r169_frwp   {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 70 FRWP returns
+define r169prj_imi    {STD KIND 'FLOW-RETURN' UNITS 'CFS'}
+define r169np_imi     {STD KIND 'FLOW-RETURN' UNITS 'CFS'}
+define r169prj_other  {STD KIND 'FLOW-RETURN' UNITS 'CFS'}
+define r169np_other   {STD KIND 'FLOW-RETURN' UNITS 'CFS'}
+
+define r223_np     {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 69 non prject returns
+define r223_prj    {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 69 prject returns
+define r223_prj_dr  {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 69 project returns - Diversion Requirement
+define r223_prj_exc {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 69 project returns - Excess flow
+define r223_pimi   {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 69 Indoor M&I returns
+define r223_np_dr  {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 69 non project returns - Diversion Requirement
+define r223_np_exc {STD KIND 'FLOW-RETURN' UNITS 'CFS'}  ! DSA 69 non project returns - Excess flow
+
+
+
+! define the bastimeseries kind 'flow' units 'taf'in recharge
+define gr60_taf   {timeseries kind 'deep-perc' units 'taf'}
+define gr60AW_taf {timeseries kind 'deep-perc' units 'taf'}         !recharge from applied water
+define gr60AWnp   {lower unbounded upper unbounded kind 'deep-perc' units 'cfs'}
+define gr60AWprj  {lower unbounded upper unbounded kind 'deep-perc' units 'cfs'}
+define gr61_taf   {timeseries kind 'deep-perc' units 'taf'}
+define gr61AW_taf {std kind 'deep-perc' units 'taf'}
+define gr62_taf   {timeseries kind 'deep-perc' units 'taf'}
+define gr62AW_taf {std kind 'deep-perc' units 'taf'}
+define gr63_taf   {timeseries kind 'deep-perc' units 'taf'}
+define gr63AW_taf {std kind 'deep-perc' units 'taf'}
+define gr64_taf   {timeseries kind 'deep-perc' units 'taf'}
+define gr64AW_taf {timeseries kind 'deep-perc' units 'taf'}
+define gr64AWnp   {lower unbounded upper unbounded kind 'deep-perc' units 'cfs'}
+define gr64AWprj  {lower unbounded upper unbounded kind 'deep-perc' units 'cfs'}
+define gr65_taf   {timeseries kind 'deep-perc' units 'taf'}
+define gr65AW_taf {timeseries kind 'deep-perc' units 'taf'}
+define gr65AWnp   {lower unbounded upper unbounded kind 'deep-perc' units 'cfs'}
+define gr65AWprj  {lower unbounded upper unbounded kind 'deep-perc' units 'cfs'}
+define gr66_taf   {timeseries kind 'deep-perc' units 'taf'}
+define gr66AW_taf {timeseries kind 'deep-perc' units 'taf'}
+define gr66AWnp   {lower unbounded upper unbounded kind 'deep-perc' units 'cfs'}
+define gr66AWprj  {lower unbounded upper unbounded kind 'deep-perc' units 'cfs'}
+
+! Define interaction between groundwater basins (units = TAF)
+! see file parameters.wresl for other parameter values
+define gi60_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gi61_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gi63_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gi65_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gi66_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw60_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw60s_taf {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw61_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw61s_taf {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw62_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw63_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw63s_taf {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw64_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw65_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw65s_taf {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw66_taf  {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define gw66s_taf {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+
+
+!define flood flow links to prevent infeasibility (Overflow Arc)
+define gf_60  {STD kind 'flow' UNITS 'TAF'}
+define gf_60s {STD kind 'flow' UNITS 'TAF'}
+define gf_61  {STD kind 'flow' units 'TAF'}
+define gf_61s {STD kind 'flow' UNITS 'TAF'}
+define gf_62  {STD kind 'flow' units 'TAF'}
+define gf_63  {STD kind 'flow' UNITS 'TAF'}
+define gf_63s {STD kind 'flow' UNITS 'TAF'}
+define gf_64  {STD kind 'flow' UNITS 'TAF'}
+define gf_65  {STD kind 'flow' UNITS 'TAF'}
+define gf_65s {STD kind 'flow' UNITS 'TAF'}
+define gf_66  {STD kind 'flow' UNITS 'TAF'}
+define gf_66s {STD kind 'flow' UNITS 'TAF'}
+
+
+! ===== BASIN GW FLOW DEFINITIONS =====
+define basin_strip10 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define basin_strip15 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define basin_strip58 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define basin_strip69 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define basin_strip70 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+
+
+! ===== INTER-BASIN GW FLOW DEFINITIONS =====
+define interbasin10_12 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin10_15 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin10_58 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin10_69 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin12_10 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin12_15 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin12_65 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin15_10 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin15_12 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin15_65 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin15_69 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin55_65 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin55_70 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin58_10 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin59_70 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin65_12 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin65_15 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin65_69 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin65_70 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin69_10 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin69_15 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin69_65 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin69_70 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin70_65 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interbasin70_69 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+
+
+! ===== INTER-STRIP GW FLOW DEFINITIONS =====
+define interstrip10_15 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interstrip10_58 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interstrip15_10 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interstrip15_70 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interstrip55_70 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interstrip58_10 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interstrip69_70 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interstrip70_15 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+define interstrip70_69 {LOWER -1000000.0 UPPER 1000000.0 KIND 'flow' units 'TAF'}
+

@@ -1,0 +1,182 @@
+! LVE_Demands.wresl
+! L. Brekke  12/22/2005
+! Revised Becky Fedak February 2007 MWH
+! Revised again, Nancy Parker, 4/2007
+! Los Vaqueros Reservoir demands (CCWD, EWA and/or SBA reliability, Mokelumne)
+
+!################  CCWD Base and Reliability Demands  ########################
+
+! Determine the water year type for the current year using MARCH for water year
+define wyt_SAC_LVE {
+    case firstyear {
+        condition month >= oct .and. month < mar .and. wateryear == 1922
+            select SACindex
+            from wytypes
+            where wateryear = wateryear
+    }
+    case Oct_Feb {
+        condition month >= oct .and. month < mar
+        select SACindex
+        from wytypes
+        where wateryear = wateryear-1
+    }
+    case otherwise {
+        condition always
+        select SACindex
+        from wytypes
+        where wateryear = wateryear
+    }
+}
+
+! CCWD monthly base demand in TAF determined from annual value and monthly pattern
+
+define CCWD_ann_basedem {
+    case Exist {
+    condition LVESwitch < 0.5
+    select exist_CCWD_base_demand
+    from LVE_ann_demand
+    where wyear_type = wyt_SAC_LVE
+    }
+    case otherwise {
+    condition always
+    select CCWD_base_demand
+    from LVE_ann_demand
+    where wyear_type = wyt_SAC_LVE
+    }
+}
+
+define CCWD_basedem_pattern {
+    case Exist {
+    condition LVESwitch < 0.5
+    select exist_CCWD_base_demand
+    from   LVE_demand_pattern
+    where  wyear_type = wyt_SAC_LVE,
+    month = month
+    }
+    case otherwise {
+    condition always
+    select CCWD_base_demand
+    from   LVE_demand_pattern
+    where  wyear_type = wyt_SAC_LVE,
+    month = month
+    }
+}
+
+define CCWD_base_dem { value CCWD_basedem_pattern * CCWD_ann_basedem }
+
+
+! CCWD annual reliability demand in TAF
+define CCWD_ann_reldem {
+        select CCWD_rel_demand
+        from LVE_ann_demand
+        where wyear_type = wyt_SAC_LVE
+}
+
+! CCWD monthly reliability demand pattern
+define CCWD_reldem_pattern {
+    select CCWD_rel_demand
+    from   LVE_demand_pattern
+    where  wyear_type = wyt_SAC_LVE,
+    month = month
+}
+
+! CCWD monthly reliability demand in TAF
+define CCWD_rel_dem { value CCWD_reldem_pattern * CCWD_ann_reldem }
+
+
+! CCWD annual and monthly (base + reliability) demand in TAF
+define CCWD_ann_tot_dem { value CCWD_ann_basedem + CCWD_ann_reldem }
+define CCWD_tot_dem { value CCWD_base_dem + CCWD_rel_dem }
+
+! Reporting...
+define CCWDdemdv    { alias CCWD_base_dem*taf_cfs kind 'DEMAND' units 'cfs' }
+define CCWDreldemdv { alias CCWD_rel_dem*taf_cfs  kind 'DEMAND' units 'cfs' }
+
+! Delivery to CCWD is assumed equal to demand
+goal D420_dem    { D420 = CCWD_base_dem*taf_cfs + CCWD_rel_dem*taf_cfs }
+
+! Deliveries restricted to capacity of Contra Costa Canal
+goal restrict_D420 {D420 < CCC_Cap }
+
+
+!################  EWA/SBA Reliability ###########################################
+
+include 'LVE_EwaDemand.wresl'
+include 'LVE_SBA_DEM.wresl'
+
+
+! Replacement of EWA purchases and/or SBA Reliability must be less than demand
+! if deliveries are made to the SBA. If the connection point is Bethany,
+! deliveries are not restricted by demand
+
+! Delivery to SBA/Bethany must be less than pipeline capacity and limited to the
+! EWA/Reliability demand
+goal restrict1_D426_LV { D426_LV < LV_SBA_Cap }
+goal restrict2_D426_LV {
+    lhs D426_LV
+    case Exist_FNA {
+    condition LVESwitch < 1.5
+    rhs 0.0
+    }
+    case PlanA {
+    condition LVEPlan < 1.01
+    rhs MonLVEEWADEMlim1 + ALT_DEMAND_REL
+    lhs>rhs penalty 999999
+    lhs<rhs penalty 0
+    }
+}
+
+
+! Reduction in SBA/Bethany deliveries based on storage level in reservoir
+! This 'pinchpoint' assures all deliveries are made to CCWD and CCWD delivered
+! water quality is not substantially degraded compared to baseline conditions.
+goal restrictD425_Other {
+    lhs D425_Other
+    case below_PPt {
+    condition S422(-1) <= D425_Other_PPt
+    rhs 0.0
+    }
+}
+
+! Establish 'pinchpoint' on EWA deliveries, reserving a portion of the reservoir
+! for SBA reliability deliveries.  This ensures that during a multiple year drought
+! the reservoir will not be drawn down leaving no supply to fulfill reliability demand.
+goal restrictD425_Other2 {
+    lhs D425_Other
+    case reliability {
+        condition S422(-1) <= D426LV_EWA_PPt
+        rhs ALT_DEMAND_REL
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+}
+
+
+!################  Mokelumne Aqueduct Deliveries ###############################
+
+! Mokelumne Intertie deliveries to CCWD/LV
+! Define delivery pattern (full amount delivered in December)
+define I428_pattern {
+    case delivery {
+        condition month == dec
+            value Mok_Del
+    }
+    case otherwise {
+        condition always
+            value 0.0
+    }
+}
+
+! Set Mokelumne inflow equal to defined pattern
+goal set_I428 { I428 = I428_pattern }
+
+! Preferentially deliver Mokelumne water to reservoir unless needed by CCWD for water quality blending
+goal stop_C428A {
+    lhs C428A
+    case no_C428A {
+        condition always
+        rhs 0.0
+        lhs>rhs penalty 25
+        lhs<rhs penalty 0
+        }
+}

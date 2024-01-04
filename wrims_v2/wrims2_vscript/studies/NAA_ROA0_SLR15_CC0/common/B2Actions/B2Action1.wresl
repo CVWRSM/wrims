@@ -1,0 +1,368 @@
+/*
+B2 Action 1: Upstream Minimum Instream Flow Requirement Actions
+
+08/12/03 Hilts: Re-instituted Nov 20th TRIG tables.  The more parsimonious October 2001 Hilts/Lubas-Williams criteria commented out for this run.
+10/30/03 Hilts: Changed sacStorTrigger to be previous month's storage rather than carryover storage in Nov & Dec
+        FYI:  effective_C5min currently = max (inputted TS (SV.DSS) of 3250 cfs, temp ctrl flow)
+        Changed amerAFRPTrigger to be previous month's storage rather than carryover storage in Nov & Dec
+11/13/03 Hilts/Fenolio:  Added 0.1 to StabLimit in case last month's flow was exactly equal to StabLimit.  Lookup tables intended to be used this way.
+*/
+
+!**** Get AFRP Flows from Clear Creek, Keswick and Nimbus ********
+
+! Inputted lookup table of Minimum Instream Flow values
+define minflowAFRPClear {select flow from AFRP_CLEAR given trigger=S1(-1)+S1mod use minimum where month=month}
+
+! Compute the storage trigger value
+define sacStorTrigger {
+  case Oct {
+    condition   month == OCT
+    value       S4(prevSEP) + S44(prevSEP) + S4_mod_dv(prevSep) }
+  case other  {
+    condition   always
+    value       S4(-1) + S44(-1) + S4mod }
+}
+
+! Inputted lookup table of Minimum Instream Flow values
+define minflowAFRPSac {select flow from AFRP_SAC given trigger=sacStorTrigger use linear where month=month}
+
+! Calculate the forecasted inflow into Folsom
+define amerForecast {
+  case MAR_SEP {
+    condition   month >= MAR .and. month <= SEP
+    sum(i=0,SEP-month)  I8(i)*cfs_taf(i) + I300(i)*cfs_taf(i) }  ! sum of the remaining year's inflow
+  case other {
+    condition   always
+    value       0.0   }
+}
+
+! Compute Folsom trigger storage for inputted lookup table of Minimum Instream Flow values
+define amerAFRPTrigger {
+  case Oct {
+    condition   month == OCT
+    value       S8(prevSEP) + S8_mod_dv(prevSep) }
+  case NovFeb {
+    condition   month>=NOV .and. month<=FEB
+    value       S8(-1) + S8mod }
+  case MarSep {
+    condition   always
+    value       S8(-1) + S8mod + frcst_amr}!amerForecast - remDemand_D300 }
+}
+
+define  amerpreCVPIAtrigger {
+  case Oct_Feb {
+    condition   month >= OCT .and. month <= FEB
+    value       S8(-1) + S8mod }
+  case Mar_Sep {
+    condition   always
+    value       S8(-1) + S8mod + frcst_amr}        !amerForecast - remDemand_D300 }
+}
+
+! Inputted lookup table of Minimum Instream Flow values
+define minflowAFRPAmer {select flow from AFRP_AMER given trigger=amerAFRPTrigger use linear where month=month}
+
+!Tries to keep the Oct-Jan b2 Costs < 200 TAF
+
+define FallAcct {
+  case Oct {
+    condition month==OCT
+    value 200.0 }
+  case NovthruJan {
+    condition month>=Nov .and. month<=Jan
+    value max(200.0 - CumB2Costs,0.0) }
+  case otherwise {
+    condition always
+    value 0.0 }
+}
+
+define FallAcctdv {alias FallAcct kind 'test' units 'taf'}
+
+
+define kesMinAbvEff {
+	case Fall {
+		condition month >= OCT .and. month <= Jan
+		value max(0.0,FallAcct - CvpEstFall__wq - ResClearCreekAmt) }
+	case WinterthruSummer {
+		condition month >= Feb .and. month <= Sep
+		value max(0.0,B2Acct - max(CostWqcpEst,0.) - ResClearCreekAmt - ResVampAmt) }
+	case other {
+		condition always
+		value 0.0 }
+}
+
+define kesMinAbveffdv { alias kesMinAbvEff kind 'test' units 'taf' }
+
+
+!**** Clear Creek Below Whiskeytown ****************
+
+! Flow limit over which stability is not enforced
+define ClearStabLimit {select StabFlow from ClearStability where month=month}
+
+! Fraction of previous month's flow to maintain in current month
+define ClearStabFract {select fraction from ClearStability where month=month}
+
+! Minflow is either the inputted lookup table's Minimum Instream Flow value or the stability target
+define minflow_C3b2 {
+  case UnderStabLim {
+    condition   C3(-1) < ClearStabLimit + 0.1
+        value       max(minflowAFRPClear/*, ClearStabFract*C3(-1)*/,clear_min) }
+  case OverStabLim {
+    condition   always
+    value       max( minflowAFRPClear,clear_min)  }
+}
+define minflow_C3b2dv {alias minflow_C3b2 kind 'FLOW-MIN-INSTREAM' units 'CFS'}     !MZEJETA
+
+! Meet the controlling requirement
+goal b2action1Whi_1 {
+  lhs C3_MIF
+  case Action1WhiOn {
+    condition   int(B2Action1WhiOn)==1
+    rhs     minflow_C3b2
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+  case Action1WhiOff {
+    condition   int(B2Action1WhiOn)==0
+    rhs     clear_min
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+}
+
+!**** Sac River Below Keswick ****************
+
+! Minflow is either the inputted lookup table's Minimum Instream Flow value or the stability target
+define minflow_C5b2 { value min(minflowAFRPSac, effective_C5min + kesMinAbvEff*taf_cfs) }
+
+define minflow_C5b2dv {alias minflow_C5b2 kind 'FLOW-MIN-INSTREAM' units 'CFS'}     !MZEJETA
+
+! Meet the controlling requirement
+goal b2action1Sha_2 {
+  lhs   C5_MIF
+  case Action1ShaOn {
+    condition int(B2Action1ShaOn)==1
+    rhs         minflow_C5b2
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+  case Action1ShaOff {
+    condition int(B2Action1ShaOn)==0
+    rhs         effective_C5min
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+}
+!
+! needed for NODOS flows if used
+goal set_C114_NCP {C114_MIF < MIFmax(HC_min,ERP_C114MIF)}
+goal set_C169_MIF {C169_MIF < ERP_C169MIF}
+
+!**** American River Below Nimbus ****************
+
+! Flow limit over which stability is not enforced
+define AmerStabLimit {select StabFlow from AmerStability where month=month}
+
+! Fraction of previous month flow to maintain in current month
+define AmerStabFract {select fraction from AmerStability where month=month}
+
+
+! Begin added by AD, SWRI
+! read in deliveries from previous b2 run for initial diversion estimates
+!define D8_ {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+!define D9_ {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+!define D300_ {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+
+define Amer_MaySep_DelEst {select May_del from AmerRiv_DelEst given per_alloc = perdel_cvpag_sys use linear }
+define Amer_JunSep_DelEst {select Jun_del from AmerRiv_DelEst given per_alloc = perdel_cvpag_sys use linear }
+define Amer_MarMay_DelEst {select Mar_del from AmerRiv_DelEst given per_alloc = perdel_cvpag_sys use linear }
+
+! Calculate the forecasted inflow into Folsom
+define AmerFrcstInflow {
+    case MAR_SEP {
+                condition       month >= MAR .and. month <= SEP
+                sum(i=-(month-MAY),SEP-month)  I8(i)*cfs_taf(i) + I300(i)*cfs_taf(i) }  ! sum of the may to sep inflow , changed to always be mar to may
+    case other {
+        condition       always
+        value           0.0   }
+}
+! Calculate the forecasted diversions from Folsom and Nimbus
+define AmerFrcstDivs {
+    case MAR_SEP {
+                condition       month >= MAR .and. month <= SEP
+                !sum(i=-(month-MAY),SEP-month)  D8_(i)*cfs_taf(i) + D9_(i)*cfs_taf(i) + D300_(i)*cfs_taf(i) }  ! sum of the may to sep diversions , changed to always be mar to may
+                value Amer_MaySep_DelEst }
+    case other {
+        condition       always
+        value           0.0   }
+}
+! Calculate the forecasted evap from Folsom and Nimbus
+define AmerFrcstEvap {
+    case MAR_SEP {
+                condition       month >= MAR .and. month <= SEP
+                sum(i=-(month-MAY),SEP-month)  2. }  ! sum of the may to sep evap , assumed to be 2 taf/yr, changed to always be mar to may
+    case other {
+        condition       always
+        value           0.0   }
+}
+
+define AmerFrcstSummer {
+        case JUN_SEP {
+                condition       month >= JUN .and. month <= SEP
+                !sum(i=-(month-JUN),SEP-month)  I8(i)*cfs_taf(i) + I300(i)*cfs_taf(i) - D8_(i)*cfs_taf(i) - D9_(i)*cfs_taf(i) - D300_(i)*cfs_taf(i) - 2 }  ! sum of the Jun to sep INI
+                value Amer_JunSep_DelEst }
+    case other {
+        condition       always
+        value           0.0   }
+}
+
+define AmerFrcstSpring {
+        case MARforecast{
+                condition       month == MAR
+                !sum(i=-(month-MAR),MAY-month)  I8(i)*cfs_taf(i) + I300(i)*cfs_taf(i) - D8_(i)*cfs_taf(i) - D9_(i)*cfs_taf(i) - D300_(i)*cfs_taf(i) - 2 }  ! sum of the Jun to sep INI
+                value Amer_MarMay_DelEst }
+    case other {
+        condition       always
+        value           0.0   }
+}
+
+! Compute Folsom trigger storage for FMP flows, used in lookup table below       !Changed by AD for FMP 1/8/03
+define amerFMPTrigger {
+    case OctDec {
+        condition   month>=OCT .and. month<=DEC
+                value                   S8(prevSEP) + UARM(prevSEP) }
+    case JanFeb {
+        condition   month>=JAN .and. month<=FEB
+                value                    S8(-1) }                         ! this stays same, but is over-ridden in other FMP code below
+        case MarSep {
+        condition   always
+                value           AmerFrcstInflow - AmerFrcstDivs - AmerFrcstEvap}   !AD added subtraction for evap assumed to be 2taf/mo , Jun to Sep change in other FMP code below
+}
+
+define c9_imp_flow {alias amerFMPTrigger kind 'IMP_FLOW' units 'CFS'}
+define c9_fmp_mif {std kind 'INIT_FLOW' units 'CFS'}    !trying to define a timeseries so that I can retrieve the previous month's final min flow
+
+!lookup the flow prescription
+define minFMPAmerTmp {select fmpflow from FMP_Trigger given trigger=amerFMPTrigger use linear where month=month} !Select the initial minflow from the lookup table using the trigger defined above
+
+define c9_trig {alias amerFMPTrigger kind 'FLOW' units 'CFS'}     !save the trigger to DSS
+define C9_fmp_tmp {alias minFMPAmerTmp kind 'FLOW' units 'CFS'}    !save the initial minflow to DSS
+
+!lookup the SRI yeartype from input
+define sri_ytp {select sriytpnum from SRI_bp given BreakP=SRI use minimum}
+
+define sri_ytp_ {alias sri_ytp kind 'INDEX' units 'NONE'}
+
+define EOMayForecast {
+    case MarForecast {
+        condition       month == MAR
+        value           S8(-1)+AmerFrcstSpring-(minFMPAmerTmp*(92.*1.9835/1000.))   }            !92 days between Mar 1 and May 31
+    case other {
+        condition       always
+        value           0.   }
+ }
+
+! redefine minflow using some rules based on the initial minimum flow values and the previous month's final minimum flow
+define minflowFMPAmer {
+        case OctMax {                                                              !if prescribing 2000, then oct stays at 1500
+                condition    month==OCT .and. minFMPAmerTmp >= 2000.
+                value        1500. }
+        case NovMax {                                                             !if prescribing 2000, then nov steps up from 1500 to 1750 on Nov 2, from 1750 to 2000 on Nov 9
+                condition    month==NOV .and. minFMPAmerTmp >= 2000.
+                value        ((1500.*1) + (1750.*7) + (2000.*22))/30 }
+        case DecMax {                                                             !if prescribing 2000, then dec stays at 2000
+                condition    month==DEC .and. minFMPAmerTmp >= 2000.
+                value        (2000.) }
+        case OctMin {                                                               ! if prescribing <= 1500, then immediately go to 1500 and stay there
+                condition    month>=OCT .and. month<=DEC .and. minFMPAmerTmp <= 1500.
+                value        (minFMPAmerTmp) }
+        case OctOther {                                                          ! if prescribing between 1500 and 2000, then take 250 cfs steps no lower than 1500 on same schedule as above
+                condition    month==OCT .and. minFMPAmerTmp > 1500. .and. minFMPAmerTmp < 2000.
+                value        max(minFMPAmerTmp - 500., 1500.) }
+        case NovOther {
+                condition    month==NOV .and. minFMPAmerTmp > 1500. .and. minFMPAmerTmp < 2000.
+                value        ((max(minFMPAmerTmp - 500., 1500.)*1) + (max(minFMPAmerTmp - 250., 1500.)*7) + (max(minFMPAmerTmp, 1500.)*22)) / 30 }
+        case DecOther {
+                condition    month==DEC .and. minFMPAmerTmp > 1500. .and. minFMPAmerTmp < 2000.
+                value        max(minFMPAmerTmp, 1500.)}
+        case JanFebCMin {
+                condition       month>=JAN .and. month<=FEB .and. sri_ytp == 5 .and. C9_fmp_mif(-1) < 800.     ! if previously below 800 then can go all the way down to 250 (D-893)
+                value           max(250., min(1750., (0.85 * C9_fmp_mif(-1)))) }                                                !updated 3/1/05 for redd dewatering
+        case JanFebC {
+                condition       month>=JAN .and. month<=FEB .and. sri_ytp == 5 .and. C9_fmp_mif(-1) >= 800.                   ! if previously above 800 then must stay above 800
+                value           max(800., min(1750., (0.85 * C9_fmp_mif(-1)))) }
+        case JanLoSto {
+                condition    month==JAN .and. S8(-1) < 300. .and. S8Level5(-1) > S8(-1)    ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        max(800.,min(1750.,0.85 * C9_fmp_mif(-1))) }                          ! If End-of-Jan storage is (projected to be in real world) below 350 TAF, drop flow 28% (monthly surrogate for 15% drops on Jan15th & Jan31st)
+        case FebLoSto {
+                condition    month==FEB .and. S8(-1) < 350. .and. S8Level5(-1) > S8(-1)    ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        max(800.,min(1750.,0.85 * C9_fmp_mif(-1))) }                          ! If End-of-Jan storage is (projected to be in real world) below 350 TAF, drop flow 28% (monthly surrogate for 15% drops on Jan15th & Jan31st)
+        case JanFebDBN {
+                condition       month>=JAN .and. month<=FEB .and. sri_ytp >= 3
+                value           min(1750.,C9_fmp_mif(-1)) }
+        case JanFebANW {
+                condition       month>=JAN .and. month<=FEB  .and. sri_ytp <= 2
+                value           1750.}
+        case MarLow {                                                                  ! Avoid going up in release if End-of-May storage isn't going to hit 700 TAF.    !min flow for 92 days
+                condition    month==MAR .and.  EOMayForecast < 700.
+                value        min(1750., minFMPAmerTmp, C9_fmp_mif(-1)) }
+        case MarOther {                                                                  ! Avoid going up in release if End-of-May storage isn't going to hit 700 TAF.    !min flow for 92 days
+                condition    month==MAR .and. EOMayForecast >= 700.
+                value        min(1750., minFMPAmerTmp) }
+        case APRMay {
+                condition       month>=APR .and. month<=MAY
+                value          C9_fmp_mif(-1)}                      !use previous min flow
+        case JunMin {
+                condition       month==JUN                                ! don't let requirement bring EOSep storage less than 300
+                value           min(1750., minFMPAmerTmp, (max(250.,((S8(-1)+AmerFrcstSummer-300.)*1000.)/(122.*1.9835)) ))}       ! use the minimum of the initial min flow or 1750, use INI    (changed from using prev month's on 9/16/03)
+        case JulAug {
+                condition       month>=JUL .and. month<=AUG
+                value           C9_fmp_mif(-1)}
+        case SepMin {
+                condition       always
+                value           (((C9_fmp_mif(-1) * 4) + (min(C9_fmp_mif(-1), 1500.) * 26)) / 30) } ! set min flow after labor day to max of 1500 cfs, assume labor day on 4th day
+}
+
+define JanFebCrit {
+        case OctDec {
+                condition    month>=OCT .and. month<=DEC
+                value        0. }
+        case JanBoth {
+                condition    month==JAN .and. S8(-1) < 300. .and. S8Level5(-1) > S8(-1) .and. sri_ytp == 5    ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        3. }
+        case JanSto {
+                condition    month==JAN .and. S8(-1) < 300. .and. S8Level5(-1) > S8(-1)    ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        2. }                          ! If End-of-Jan storage is (projected to be in real world) below 350 TAF, drop flow 28% (monthly surrogate for 15% drops on Jan15th & Jan31st)
+        case JanCrit {
+                condition    month==JAN .and. sri_ytp == 5    ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        1. }                          ! If End-of-Jan storage is (projected to be in real world) below 350 TAF, drop flow 28% (monthly surrogate for 15% drops on Jan15th & Jan31st)
+        case FebBoth {
+                condition    month==FEB .and. S8(-1) < 350. .and. S8Level5(-1) > S8(-1) .and. sri_ytp == 5    ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        3. }
+        case FebSto {
+                condition    month==FEB .and. S8(-1) < 350. .and. S8Level5(-1) > S8(-1)    ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        2. }                          ! If End-of-Jan storage is (projected to be in real world) below 350 TAF, drop flow 28% (monthly surrogate for 15% drops on Jan15th & Jan31st)
+        case FebCrit {
+                condition    month==FEB .and. sri_ytp == 5    ! SAFCA diagram can on rare occasion require more than 625 TAF of FC space be maintained in Folsom.
+                value        1. }
+        case JFOther   {
+                condition    always
+                value        0. }
+}
+
+define C9_jf_trig  {alias JanFebCrit kind 'CRITERIA' units 'NONE'}
+
+
+goal set_c9_fmp_mif {c9_fmp_mif = minflowFMPAmer}             ! create time series
+define C9_fmp {alias minflowFMPAmer kind 'FLOW' units 'CFS'}     !save the final minflow to DSS
+
+! Meet the controlling minflow target
+goal b2action1Fol_3 {
+  lhs   C9_MIF
+  case Action1FolOn {
+    condition   int(B2Action1FolOn)==1
+    rhs         C9_mif__z2 !minflow_C9b2
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+  case Action1FolOff {
+    condition   int(B2Action1FolOn)==0
+    rhs         max(nimbus_hist_std, minflowFMPAmer)
+    lhs>rhs     constrain
+    lhs<rhs     penalty 0 }
+}
+

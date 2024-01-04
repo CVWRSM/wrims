@@ -1,0 +1,117 @@
+/*************************************
+SoDeltaChannels.wresl
+ 
+Tom FitzHugh BOR 4/23/2010
+
+This file computes the following:  
+Flow from San Joaquin to the Export pool.
+Flow through Indian Slough.
+
+Flow equations are based on Old River/Middle River functions defined by Paul Hutton (Sep 2007)
+
+HORB is Head of Old River Barrier 
+DICU is Delta Island Consumptive Use
+*************************************/
+
+! Calculate So Delta Channel net DICU for flow split calculations
+! Newly defined splits of DICU and Delta Precip for So Delta Channel calculations
+define netDICU_SOD{ value demand_D_ConeyIs_NP - I_ConeyIs }
+
+!Define case to use appropriate coef. for flow splits
+define casedef {
+     case GLC_in{   !GLC barrier is in June-Aug
+        condition  month >= JUN .AND. month <= AUG
+        value  4.}
+     case LowVernalis {
+        condition  AD_SJR <= 16000
+        value  1.}
+     case MidVernalis{
+         condition  AD_SJR > 16000 .AND. AD_SJR < 28000
+        value  2.}
+     case HiVernalis{
+        condition  AD_SJR >= 28000
+        value  3.}
+     case error {
+        condition  always
+        value  9999.}
+   }
+
+!Define case to use appropriate coef. for flow splits when HORB is in and closed
+define casedef_HORB {
+! HORB Spring operations and appropriate coefficients for spring months - barriers are in and operated
+     case SpringHORB{
+         condition  month == APR .OR. month == MAY
+         value  5.}
+! HORB Fall operations and appropriate coefficients for fall months - barriers are in and operated
+     case FallHORB{
+         condition  month == SEP .OR. month == OCT .OR. month == NOV
+         value  6.}
+     case default {
+         condition  always
+         value  casedef}
+   }
+
+!Get Coefficients based on defined case
+define coefA_init {select coefA from OMRiverFlowEq2 where cond = casedef}
+define coefB_init {select coefB from OMRiverFlowEq2 where cond = casedef}
+define coefC_init {select coefC from OMRiverFlowEq2 where cond = casedef}
+
+define coefA_HORB {select coefA from OMRiverFlowEq2 where cond = casedef_HORB}
+define coefB_HORB {select coefB from OMRiverFlowEq2 where cond = casedef_HORB}
+define coefC_HORB {select coefC from OMRiverFlowEq2 where cond = casedef_HORB}
+
+define coefA{
+     case HORB_Sep{
+         condition Month == SEP .and. casedef_HORB == 6.
+         value coefA_init * 15./30. + coefA_HORB * 15./30.}
+     case HORB{
+! ***** REMOVED Type 5 Spring HORB WHILE USING FWS Delta Smelt BO RPAs
+!         condition casedef_HORB == 5. .or. casedef_HORB == 6.
+         condition casedef_HORB == 6.
+         value coefA_HORB}
+     case otherwise{
+         condition always
+         value coefA_init}
+}
+
+define coefB{
+     case HORB_Sep{
+         condition Month == SEP .and. casedef_HORB == 6.
+         value coefB_init * 15./30. + coefB_HORB * 15./30.}
+     case HORB{
+! ***** REMOVED Type 5 Spring HORB WHILE USING FWS Delta Smelt BO RPAs
+!         condition casedef_HORB == 5. .or. casedef_HORB == 6.
+         condition casedef_HORB == 6.
+         value coefB_HORB}
+     case otherwise{
+         condition always
+         value coefB_init}
+}
+
+define coefC{
+     case HORB_Sep{
+         condition Month == SEP .and. casedef_HORB == 6.
+         value coefC_init * 15./30. + coefC_HORB * 15./30.}
+     case HORB{
+! ***** REMOVED Type 5 Spring HORB WHILE USING FWS Delta Smelt BO RPAs
+!         condition casedef_HORB == 5. .or. casedef_HORB == 6.
+         condition casedef_HORB == 6.
+         value coefC_HORB}
+     case otherwise{
+         condition always
+         value coefC_init}
+}
+
+! Total South of Delta Pumping and Depletions
+define Qsod {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal setQsod { Qsod = D_ExpTD + D_CCWDVCOR + netDICU_SOD}
+
+! Flow split through Indian Slough
+goal setC_IndnSl { C_IndnSl = coefB * Qsod + Qsod } ! Indian Slough component of OMR flow equation
+
+! Flow split from San Joaquin to the Export pool
+goal setC_Vrnlis { C_Vrnlis = coefA * AD_SJR + coefC } ! Vernalis and regression constant components of OMR flow equation
+
+define OMRFlow   {alias C_OMR  kind 'FLOW-CHANNEL' units 'CFS'} ! for output
+define QWestFlow {alias C_SJRVI kind 'FLOW-CHANNEL' units 'CFS'} ! for output

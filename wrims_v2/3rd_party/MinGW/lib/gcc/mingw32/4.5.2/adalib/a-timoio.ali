@@ -1,0 +1,116 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnvnnvnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.text_io.modular_io%b  a-timoio.adb	c3251ab4 NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W ada.text_io.modular_aux%s  a-timoau.adb	a-timoau.ali
+W system%s		system.ads		system.ali
+W system.unsigned_types%s  s-unstyp.ads		s-unstyp.ali
+
+U ada.text_io.modular_io%s  a-timoio.ads	e31c6222 BN NE OL PK GE
+W ada.text_io%s		a-textio.adb		a-textio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-textio.ads		20091028140912 7065b2f2
+D a-timoau.ads		20090409150020 f99269ef
+D a-timoio.ads		20090409150020 9379d0d0
+D a-timoio.adb		20090409150020 6937596e
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-wchcon.ads		20090417130712 30c48dc1
+X 1 ada.ads
+16K9*Ada 19e8 10|45r9 84r5 11|32r6 36r14 38r24 141r5
+X 8 a-textio.ads
+49K13*Text_IO 1|16k9 8|472e16 10|45r13 84r9 11|32r10 36r18 38r28 141r9
+52P9*File_Type(370R9) 10|51r15 60r15 11|45r15 102r15
+74I12*Field{integer} 10|47r20 53r15 57r15 62r15 67r15 11|47r15 64r15 104r15
+. 117r15
+79I12*Number_Base{integer} 10|48r20 63r15 68r15 78r14 11|105r15 118r15 131r14
+299X4*Data_Error 11|59r38 76r38 94r38
+456p4 Current_In{52P9} 11|70r23 72r23
+457p4 Current_Out{52P9} 11|122r23 124r23
+X 9 a-timoau.ads
+41K29*Modular_Aux 87e28 11|32w18 38r36
+45U14*Get_Uns 11|55r14 72r14
+50U14*Get_LLU 11|53r14 70r14
+55U14*Put_Uns 11|111r14 124r14
+61U14*Put_LLU 11|109r14 122r14
+67U14*Gets_Uns 11|90r14
+72U14*Gets_LLU 11|88r14
+77U14*Puts_Uns 11|137r14
+82U14*Puts_LLU 11|135r14
+X 10 a-timoio.ads
+43M9 Num 47r29 52r19 56r19 61r15 66r15 72r18 77r14 11|46r19 52r10 63r19 69r10
+. 81r18 87r10 103r15 108r10 116r15 121r10 130r14 134r10
+45k21*Modular_IO 8|49k13 10|43z9 84l17 84e27 11|36b26 141l17 141t27
+47i4*Default_Width{8|74I12} 62r24 67r24 11|104r24 117r24
+48i4*Default_Base{8|79I12} 63r30 68r30 78r29 11|105r30 118r30 131r29
+50U14*Get 51>7 52<7 53>7 11|44b14 60l8 60t11
+51p7 File{8|52P9} 11|45b7 53r23 55r23
+52*7 Item{43M9} 11|46b7 53m49 55m39
+53i7 Width{8|74I12} 11|47b7 53r56 55r46
+55U14*Get 56<7 57>7 11|62b14 77l8 77t11
+56*7 Item{43M9} 11|63b7 70m55 72m45
+57i7 Width{8|74I12} 11|64b7 70r62 72r52
+59U14*Put 60>7 61>7 62>7 63>7 11|101b14 113l8 113t11
+60p7 File{8|52P9} 11|102b7 109r23 111r23
+61*7 Item{43M9} 11|103b7 109r49 111r39
+62i7 Width{8|74I12} 11|104b7 109r56 111r46
+63i7 Base{8|79I12} 11|105b7 109r63 111r53
+65U14*Put 66>7 67>7 68>7 11|115b14 126l8 126t11
+66*7 Item{43M9} 11|116b7 122r56 124r46
+67i7 Width{8|74I12} 11|117b7 122r63 124r53
+68i7 Base{8|79I12} 11|118b7 122r70 124r60
+70U14*Get 71>7 72<7 73<7 11|79b14 95l8 95t11
+71s7 From{string} 11|80b7 88r24 90r24
+72*7 Item{43M9} 11|81b7 88m50 90m40
+73i7 Last{positive} 11|82b7 88m57 90m47
+75U14*Put 76<7 77>7 78>7 11|128b14 139l8 139t11
+76s7 To{string} 11|129b7 135m24 137m24
+77*7 Item{43M9} 11|130b7 135r48 137r38
+78i7 Base{8|79I12} 11|131b7 135r55 137r45
+X 11 a-timoio.adb
+38K12 Aux=38:36 53r10 55r10 70r10 72r10 88r10 90r10 109r10 111r10 122r10
+. 124r10 135r10 137r10
+X 15 system.ads
+37K9*System 11|34r6 34r33 15|197e11
+X 30 s-unstyp.ads
+42K16*Unsigned_Types 11|34w13 34r40 30|210e26
+47M9*Unsigned 11|52r21 55r29 69r21 72r35 87r21 90r30 108r21 111r29 121r21
+. 124r36 134r21 137r28
+49M9*Long_Long_Unsigned 11|53r29 70r35 88r30 109r29 122r36 135r28
+

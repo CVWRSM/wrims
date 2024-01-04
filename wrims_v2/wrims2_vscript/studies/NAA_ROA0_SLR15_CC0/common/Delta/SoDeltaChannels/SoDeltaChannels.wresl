@@ -1,0 +1,144 @@
+! SoDeltaChannels.wresl
+! This file implements the C417A and B flow split from C644
+! This flow split combined with the added DICU and Delta Precip inputs at node 409
+! and the reconfiguration of the south Delta flow schematic in CALSIM II
+! provides the appropriate flow to the new representation of the combined Old and
+! and Middle River flow arc at C408.
+!
+! Flow equations are based on Old River/Middle River functions defined by Paul Hutton (Sep 2007)
+
+!San Joaquin Vernalis Flows from previous model cycles
+define VernQ {
+     case April {
+          condition month == apr
+          value     C639[SJR_WQ1]*14./daysin + C639[VAMP_AND_DO]*(daysin-14.)/daysin }
+     case MayOnly {
+          condition month == may
+          value     C639[VAMP_AND_DO]*15./daysin + C639[SJR_WQ1]*(daysin-15.)/daysin }
+     case otherwise {
+          condition always
+          value     C639[VAMP_AND_DO]}
+                    }
+
+! Calculate So Delta Channel net DICU for flow split calculations
+! Newly defined splits of DICU and Delta Precip for So Delta Channel calculations
+define netDICU_SOD{ value DEMAND_D409B - I409 }
+
+!Define case to use appropriate coef. for flow splits
+define casedef {
+     case GLC_in{
+  	 condition  month >= JUN .AND. month <= AUG
+  	 value  4.}
+     case LowVernalis {
+  	 condition  VernQ <= 16000
+  	 value  1.}
+     case MidVernalis{
+         condition  VernQ > 16000 .AND. VernQ < 28000
+  	 value  2.}
+     case HiVernalis{
+  	 condition  VernQ >= 28000
+  	 value  3.}
+     case error {
+  	 condition  always
+  	 value  9999.}
+   }
+
+!Define case to use appropriate coef. for flow splits when HORB is in and closed
+define casedef_HORB {
+! HORB Spring operations and appropriate coefficients for spring months - barriers are in and operated
+     case SpringHORB{
+         condition  month == APR .OR. month == MAY
+         value  5.}
+! HORB Fall operations and appropriate coefficients for spring months - barriers are in and operated
+     case FallHORB{
+         condition  month == OCT .OR. month == NOV .OR. month == SEP
+         value  6.}
+     case default {
+         condition  always
+         value  casedef}
+   }
+
+!Get Coefficients based on defined case
+define coefA_init {select coefA from OMRiverFlowEq2 where cond = casedef}
+define coefB_init {select coefB from OMRiverFlowEq2 where cond = casedef}
+define coefC_init {select coefC from OMRiverFlowEq2 where cond = casedef}
+
+define coefA_HORB {select coefA from OMRiverFlowEq2 where cond = casedef_HORB}
+define coefB_HORB {select coefB from OMRiverFlowEq2 where cond = casedef_HORB}
+define coefC_HORB {select coefC from OMRiverFlowEq2 where cond = casedef_HORB}
+
+define coefA{
+     case HORB_Sep{
+         condition Month == SEP .and. casedef_HORB == 6.
+         value coefA_init * 15./30. + coefA_HORB * 15./30.}
+     case HORB{
+! ***** REMOVED Type 5 Spring HORB WHILE USING FWS Delta Smelt BO RPAs
+!         condition casedef_HORB == 5. .or. casedef_HORB == 6.
+         condition casedef_HORB == 6.
+         value coefA_HORB}
+     case otherwise{
+         condition always
+         value coefA_init}
+}
+
+define coefB{
+     case HORB_Sep{
+         condition Month == SEP .and. casedef_HORB == 6.
+         value coefB_init * 15./30. + coefB_HORB * 15./30.}
+     case HORB{
+! ***** REMOVED Type 5 Spring HORB WHILE USING FWS Delta Smelt BO RPAs
+!         condition casedef_HORB == 5. .or. casedef_HORB == 6.
+         condition casedef_HORB == 6.
+         value coefB_HORB}
+     case otherwise{
+         condition always
+         value coefB_init}
+}
+
+define coefC{
+     case HORB_Sep{
+         condition Month == SEP .and. casedef_HORB == 6.
+         value coefC_init * 15./30. + coefC_HORB * 15./30.}
+     case HORB{
+! ***** REMOVED Type 5 Spring HORB WHILE USING FWS Delta Smelt BO RPAs
+!         condition casedef_HORB == 5. .or. casedef_HORB == 6.
+         condition casedef_HORB == 6.
+         value coefC_HORB}
+     case otherwise{
+         condition always
+         value coefC_init}
+}
+
+! Total South of Delta Pumping and Depleations
+!define Qsod {std kind 'FLOW-DELIVERY' units 'CFS'}
+define Qsod {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal setQsod { Qsod = D409 + D408 - D446A + netDICU_SOD}
+
+! Flow split from San Joaquin to the Export pool
+goal setC417B { C417B = coefA * C639 + coefc } ! Vernalis and regression constant components of OMR flow equation
+
+! Flow split through Indian Slough
+define qwest_std { select QWESTstd from qwest where month=month, WYT=wyt_SAC}
+goal setC416B { C416B = coefb * Qsod + Qsod } ! Indian Slough component of OMR flow equation
+goal setQWESTstd { C416A > qwest_std }
+
+!Split QWEST 50-50 between Banks and Tracy
+define C416A_NoEXP1  {lower -99999*taf_cfs upper 99999*taf_cfs kind 'FLOW-CHANNEL' units 'CFS'}
+goal set_C416ANoEXP1 {C416A_NoEXP1 - C416A = D418_EXP1_TD + D419_EXP1_TD + D419_CVPDEDEX1TD}
+
+goal bound_D419qwest {
+  lhs     D419_EXP1_TD
+  rhs     0.5*C416A_NoEXP1 - 0.5*qwest_std
+  lhs>rhs penalty 1285
+  lhs<rhs penalty    0}
+
+goal bound_D418qwest {
+  lhs     D418_EXP1_TD + D419_CVPDEDEX1TD
+  rhs     0.5*C416A_NoEXP1 - 0.5*qwest_std
+  lhs>rhs penalty 1285
+  lhs<rhs penalty    0}
+
+!
+define OMFlow    {alias c408  kind 'FLOW-CHANNEL' units 'CFS'} ! for output
+define QWestFlow {alias c416A kind 'FLOW-CHANNEL' units 'CFS'} ! for output

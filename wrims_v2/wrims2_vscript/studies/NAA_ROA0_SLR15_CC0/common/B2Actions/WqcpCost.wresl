@@ -1,0 +1,131 @@
+! Determine change in CVP storage (WQCP - D1485)
+
+!T. Kyosai 12/30/2002
+!Modified WQCP cost to include only release and export metrics.
+
+define ShaFldFlgWQ {
+	case AtFloodCtrl {
+		condition S4level5 - S4__z1 < 0.01 .and. S4level5 - S4__z2 < 0.01
+		value 0.0 }
+	case other {
+		condition always
+		value 1.0 }
+}
+
+define FolFldFlgWQ {
+	case AtFloodCtrl {
+		condition S8level5 - S8__z1 < 0.01 .and. S8level5 - S8__z2 < 0.01
+		value 0.0 }
+	case other {
+		condition always
+		value 1.0 }
+}
+
+!define ShaFldFlgWQ { value min(1.0,min(ShaFF__z1,1.0)+min(ShaFF__z2,1.0))}
+
+!define FolFldFlgWQ { value min(1.0,min(FolFF__z1,1.0)+min(FolFF__z2,1.0))}
+
+define SFFdv {alias ShaFldFlgWQ kind 'Test' units 'none'}
+define FFFdv {alias FolFldFlgWQ kind 'Test' units 'none'}
+
+! Determine change in CVP releases (WQCP - D1485)
+define WhiRelChg__wq {value (C3__z2 - C3__z1)*cfs_taf }
+define KesRelChg__wq {value (C5__z2 - C5__z1)*cfs_taf }
+define NatRelChg__wq {value (C9__z2 - C9__z1)*cfs_taf }
+define GodRelChg__wq {
+  case OctDec {
+    condition month >= OCT .and. month <= DEC
+        value (C520__z2 - C520__z1 - (C520_MIF__z2 - C520_MIF__z1) - C520INSTREAM__z2)*cfs_taf}
+  case AprMay {
+    condition month >= APR .and. month <= MAY
+    value (C520__z2 - C520__z1 - (C520_MIF__z2 - C520_MIF__z1) - C520VAMP__z2)*cfs_taf}
+    case other {
+    condition always
+    value (C520__z2 - C520__z1 - (C520_MIF__z2 - C520_MIF__z1))*cfs_taf}
+}
+
+define WhiRelChg__wqdv {alias WhiRelChg__wq kind 'RELEASE-CHG' units 'TAF'}
+define KesRelChg__wqdv {alias KesRelChg__wq kind 'RELEASE-CHG' units 'TAF'}
+define NatRelChg__wqdv {alias NatRelChg__wq kind 'RELEASE-CHG' units 'TAF'}
+define GodRelChg__wqdv {alias GodRelChg__wq kind 'RELEASE-CHG' units 'TAF'}
+
+define CvpRelChg__wq {value WhiRelChg__wq + KesRelChg__wq + NatRelChg__wq + GodRelChg__wq }
+define CvpRelChg__wqdv {alias CvpRelChg__wq kind 'RELEASE-CHG' units 'TAF'}
+
+! Determine change in CVP exports (WQCP - D1485)
+define TraExpChg__wq {value (D418_CVP_TD__z2 - D418_CVP_TD__z1)*cfs_taf }
+define BCvpExpChg__wq {value (D419_CVP_TD__z2 - D419_CVP_TD__z1)*cfs_taf }
+
+define CvpExpChg__wq {value TraExpChg__wq + BCvpExpChg__wq }
+define CvpExpChg__wqdv {alias CvpExpChg__wq kind 'EXPORT-CHG' units 'TAF'}
+
+
+! Compute Release Metric
+
+define CvpRelMtr__wq {value max(WhiRelChg__wq + KesRelChg__wq*ShaFldFlgWQ + NatRelChg__wq*FolFldFlgWQ,0.) + max(GodRelChg__wq,0.)}
+define CvpRelMtr__wqdv {alias CvpRelMtr__wq kind 'RELEASE-METRIC' units 'TAF'}
+
+! Compute Export Metric
+define CvpExpMtr__wq {value max(-1.*(TraExpChg__wq + BCvpExpChg__wq),0.) }
+define CvpExpMtr__wqdv {alias CvpExpMtr__wq kind 'EXPORT-METRIC' units 'TAF'}
+
+! Current Period WQCP Cost
+
+define CostWqcp {value CvpRelMtr__wq + CvpExpMtr__wq}
+define CostWqcpdv {alias CostWqcp kind 'COST' units 'TAF'}
+
+! Cummulative WQCP Cost
+define CumCostWqcpdv {lower unbounded kind 'COST' units 'TAF'}
+
+define CumCostWqcp {
+  case Oct {
+    condition month==OCT
+    value     CostWqcp }
+  case other {
+    condition always
+    value     CumCostWqcpdv(-1) + CostWqcp }
+}
+
+goal setCumCostWqcpdv {CumCostWqcpdv = CumCostWqcp}
+
+
+! Determine estimate of future change in CVP releases (WQCP - D1485)
+define CvpRelEst__wq {sum(i=0,SEP-month,1) max(0.,(C3__z2(i)- C3__z1(i)+min(1.0,min(max(0.,S4level5(i) - S4__z1(i)),1.0)+min(max(0.,S4level5(i) - S4__z2(i)),1.0))*C5__z2(i)-C5__z1(i)
+        +min(1.0,min(max(0.,S8level5(i) - S8__z2(i)),1.0)+min(max(0.,S8level5(i) - S8__z1(i)),1.0))*C9__z2(i)-C9__z1(i))*cfs_taf(i))
+        + max(0.,(C520__z2(i)-C520__z1(i) - (C520_MIF__z2(i) - C520_MIF__z1(i)) - C520Instream__z2(i) - C520Vamp__z2(i))*cfs_taf(i)) }
+
+define CvpRelEst__wqdv {alias CvpRelEst__wq kind 'RELEASE-EST' units 'TAF'}
+
+! Determine estimate of future change in CVP exports (WQCP - D1485)
+define TraExpEst__wq {sum(i=0,SEP-month,1) (D418_CVP_TD__z2(i) - D418_CVP_TD__z1(i))*cfs_taf(i) }
+define BCvpExpEst__wq {sum(i=0,SEP-month,1) (D419_CVP_TD__z2(i) - D419_CVP_TD__z1(i))*cfs_taf(i) }
+define CvpExpEst__wq {sum(i=0,SEP-month,1) max(0.,-1.*(D418_CVP_TD__z2(i)+D419_CVP_TD__z2(i)-D418_CVP_TD__z1(i)-D419_CVP_TD__z1(i))*cfs_taf(i)) }
+define CvpExpEst__wqdv {alias CvpExpEst__wq kind 'EXPORT-CHG' units 'TAF'}
+
+! Determine estimate of future remaining WQCP cost
+define CostWqcpEst { value CvpRelEst__wq + CvpExpEst__wq }
+define CostWqcpEstdv {alias CostWqcpEst kind 'COST' units 'TAF'}
+
+define CostWqcpAnndv {lower unbounded kind 'ANNUAL-COST' units 'TAF'}
+
+define CostWqcpAnn {
+  case Oct {
+    condition month==OCT
+    value     CostWqcpEst }
+  case other {
+    condition always
+    value     CostWqcpAnndv(-1) }
+}
+
+goal setAnnualWQCPCost {CostWqcpAnndv = CostWqcpAnn}
+
+! Determine estimate of future change in CVP releases (WQCP - D1485)
+define CvpEstFall__wq {sum(i=0,JAN-month,1) max(0.,(C3__z2(i)- C3__z1(i)+min(1.0,min(max(0.,S4level5(i) - S4__z1(i)),1.0)+min(max(0.,S4level5(i) - S4__z2(i)),1.0))*C5__z2(i)-C5__z1(i)
+        +min(1.0,min(max(0.,S8level5(i) - S8__z2(i)),1.0)+min(max(0.,S8level5(i) - S8__z1(i)),1.0))*C9__z2(i)-C9__z1(i))*cfs_taf(i))
+        + max(0.,(C520__z2(i)-C520__z1(i) - (C520_MIF__z2(i) - C520_MIF__z1(i)) - C520Instream__z2(i) - C520Vamp__z2(i))*cfs_taf(i)) }
+!
+!define CvpEstFall_wqdv {alias CvpRelEstFall__wq kind 'RELEASE-EST' units 'TAF'}
+
+
+
+

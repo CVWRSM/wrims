@@ -1,0 +1,40 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: gov.ca.dwr.wresl.xtext.editor
+Bundle-Vendor: California Department of Water Resources
+Bundle-Version: 1.0.0.0
+Bundle-SymbolicName: gov.ca.dwr.wresl.xtext.editor; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext;bundle-version="2.0.0";visibility:=reexport,
+ org.apache.log4j;bundle-version="1.2.15";visibility:=reexport,
+ org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional;visibility:=reexport,
+ org.eclipse.xtext.generator;resolution:=optional,
+ org.eclipse.emf.codegen.ecore;resolution:=optional,
+ org.eclipse.emf.mwe.utils;resolution:=optional,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types,
+ org.eclipse.core.runtime,
+ org.eclipse.xtext.xbase.lib,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
+Import-Package: org.apache.commons.logging,
+ org.apache.log4j,
+ org.eclipse.xtext.xbase.lib
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: gov.ca.dwr.wresl.xtext.editor,
+ gov.ca.dwr.wresl.xtext.editor.services,
+ gov.ca.dwr.wresl.xtext.editor.wreslEditor,
+ gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl,
+ gov.ca.dwr.wresl.xtext.editor.wreslEditor.util,
+ gov.ca.dwr.wresl.xtext.editor.serializer,
+ gov.ca.dwr.wresl.xtext.editor.parser.antlr,
+ gov.ca.dwr.wresl.xtext.editor.parser.antlr.internal,
+ gov.ca.dwr.wresl.xtext.editor.validation,
+ gov.ca.dwr.wresl.xtext.editor.parser.antlr.lexer,
+ gov.ca.dwr.wresl.xtext.editor.scoping,
+ gov.ca.dwr.wresl.xtext.editor.generator,
+ gov.ca.dwr.wresl.xtext.editor.formatting
+

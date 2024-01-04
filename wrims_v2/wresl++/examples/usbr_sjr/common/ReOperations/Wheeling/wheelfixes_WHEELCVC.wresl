@@ -1,0 +1,299 @@
+! fix swp and coa operations to that without wheeling
+goal fixD14401_NORM {
+  lhs     D14401_NORM
+  rhs     D14401_NORM[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD17501_NORM {
+  lhs     D17501_NORM
+  rhs     D17501_NORM[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD124A_norm {
+  lhs     D124A_norm
+  rhs     D124A_norm[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177A {
+  lhs     c177A
+  rhs     c177A[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177B {
+  lhs     c177B
+  rhs     c177B[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177C_norm {
+  lhs     c177C_norm
+  rhs     c177C_norm[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177D {
+  lhs     c177D
+  rhs     c177D[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc177E {
+  lhs     c177E
+  rhs     c177E[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping1 {
+  lhs     D419_swp
+  rhs     D419_swp[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping2 {
+  lhs     D419_EXP1
+  rhs     D419_EXP1[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSwpPumping3 {
+  lhs     D419_EXP2
+  rhs     D419_EXP2[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping1 {
+  lhs     D418_cvp
+  rhs     D418_cvp[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping2 {
+  lhs     D418_EXP1
+  rhs     D418_EXP1[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCvpPumping3 {
+  lhs     D418_EXP2
+  rhs     D418_EXP2[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+/*
+goal fixD419CVPDED {
+  lhs     D419_CVPDED
+  rhs     D419_CVPDED[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD419CVPDED1 {
+  lhs     D419_CVPDED_EXP1
+  rhs     D419_CVPDED_EXP1[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixD419CVPDED2 {
+  lhs     D419_CVPDED_EXP2
+  rhs     D419_CVPDED_EXP2[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+*/
+goal FixD859GWSWP {
+  lhs     D859_GWRECH_SWP
+  rhs     D859_GWRECH_SWP[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal FixD859GWCVPA {
+  lhs     D859_GWRECH_CVPA
+  rhs     D859_GWRECH_CVPA[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNBPumpingB {
+  lhs     D403B
+  rhs     D403B[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNBPumpingC {
+  lhs     D403C
+  rhs     D403C[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixCCCPumping {
+  lhs     D408
+  rhs     D408[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixfeatherretflow {
+  lhs     c137
+  rhs     c137[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixyubaflow {
+  lhs     C230
+  rhs     C230[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixd207a {
+  lhs     d207a
+  rhs     d207a[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixd207b {
+  lhs     d207b
+  rhs     d207b[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixbearflow {
+  lhs     c282
+  rhs     c282[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixfeatherinflow {
+  lhs     c223
+  rhs     c223[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixfeatherexport {
+  lhs     c225
+  rhs     c225[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixcvprefuge {
+  lhs     d705
+  rhs     d705[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixsouthbay {
+  lhs     d801
+  rhs     d801[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSL {
+  lhs     S_SLUIS_SWP
+  rhs     S_SLUIS_SWP[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+/*
+goal fixSLout {
+  lhs     c_SLUIS_SWP
+  rhs     c_SLUIS_SWP[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+*/
+goal fixSLin {
+  lhs     d805
+  rhs     d805[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixterminals {
+  lhs     c855
+  rhs     c855[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixUNUSEDFS {
+  lhs     UNUSED_FS
+  rhs     UNUSED_FS[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixUNUSEDSS {
+  lhs     UNUSED_SS
+  rhs     UNUSED_SS[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSWPDS {
+  lhs     SWPDS
+  rhs     SWPDS[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNODOSswpDS {
+  lhs     NODOSswpDS
+  rhs     NODOSswpDS[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixSHADS {
+  lhs     SHADS
+  rhs     SHADS[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixFOLDS {
+  lhs     FOLDS
+  rhs     FOLDS[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixWHSSW {
+  lhs     WHSSW
+  rhs     WHSSW[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixNODOScvpDS {
+  lhs     NODOScvpDS
+  rhs     NODOScvpDS[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixUWFE {
+  lhs     UWFE
+  rhs     UWFE[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixIBU {
+  lhs     IBU
+  rhs     IBU[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc184a {
+  lhs     c184a
+  rhs     c184a[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixgc184b {
+  lhs     c184b
+  rhs     c184b[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixc152a {
+  lhs     c152a
+  rhs     c152a[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+goal fixgc152b {
+  lhs     c152b
+  rhs     c152b[WHEELCVC]
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}

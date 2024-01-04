@@ -1,0 +1,26 @@
+/*************************************
+RedBluff_bypassflow.wresl
+ 
+Tom FitzHugh BOR 7/7/2010
+
+Sets minimum instream flow for C_RedBluff, which is maximum of minimum bypass 
+flows at C112 (Red Bluff) and C114 (Hamilton City) in Calsim.
+*************************************/
+
+define Rd_min {select RedMin
+               from   Redbluff_base
+               where  month=month, ShastaIndx=wyt_SHASTA_cvp
+}
+
+define HC_min {
+    case WBA8NNDemand {
+        condition con_114GCID > 100.     !if there is a significant diversion
+        value 4000. }                    !require the bypass flow
+    case other {
+        condition always
+        value 0. }
+}
+
+goal meet_RedBluffQ {C_RedBlf_MIF < max(Rd_min,HC_min)}
+
+

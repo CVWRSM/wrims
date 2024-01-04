@@ -1,0 +1,48 @@
+!Power operation code at New Bullards Bar and Englebright Reservoirs
+!Code by Messele Z Ejeta, 6/26/2001
+!
+/*
+define C31_PR  {std kind 'FLOW_POWER_RELEASE' units 'CFS'}
+goal set_C31_PR { C31_PR = C31_MIF + C31_POW }
+
+define head11 {
+    case firstmonth {
+    condition month==oct.and.wateryear==1922
+        value 592.67}
+    case other {
+    condition always
+        select elevation from YUBA_rel_tlwater given outflow=C31_PR(-1) use linear where chan_num=31}
+}
+define head12 {select elevation from res_info given storage=S31(-1)*1000. use linear where res_num=31}
+define head_nbb {value (head12 - head11)}
+goal power_rel_nbb {C31_PR > 11.815 * 18500/(0.9*head_nbb)}
+define pwr_head_nbb { alias head_nbb kind 'HEAD' units 'FT' }
+
+define head21 {
+    case firstmonth {
+    condition month==oct.and.wateryear==1922
+        value 323.811}
+    case other {
+    condition always 
+        select elevation from YUBA_rel_tlwater given outflow=C37(-1) use linear where chan_num=37}
+}
+define head22 {select elevation from res_info given storage=S37(-1)*1000. use linear where res_num=37}
+define head_eng {value (head22 - head21)}
+!
+define power_rel {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal power_rel {C31_PR > 11.815 * 1.0/(0.9*head_eng)}
+define pwr_head_eng {
+    alias head_eng
+    kind 'HEAD'
+    units 'FT'
+    }
+*/    
+    
+    
+ !Simplified code written by A Draper
+ !define C_NBLDB_POW_MIN {std kind 'FLOW-DELIVERY' units 'CFS'}
+ define C_NBLDB_POW_ADD {std kind 'FLOW-DELIVERY' units 'CFS'}
+ goal minPGERel1 {C_NBLDB_POW = C_NBLDB_POW_MIN + C_NBLDB_POW_ADD}
+ goal minPGERel2 {C_NBLDB_POW_MIN < (18.500/1.13)*taf_cfs}
+ 
+ 

@@ -1,0 +1,76 @@
+/*
+
+References data from cycle BASE to reduce ANN function calls to reduce runtime.
+
+See the *_data.wresl file for how these parameters are calculated.
+
+*/
+
+
+! calculate previous month's value of salinity (using ann directly)
+define RS_EC_Month {std kind 'SALINITY' units 'UMHOS/CM'}
+define RS_EC_Month_sv {value RS_EC_Month[BASE]}
+goal setRS_EC_MON {RS_EC_Month = RS_EC_Month_sv}
+
+define RS_CL_Month {std kind 'SALINITY' units 'MG/L'}
+define RS_CL_Month_sv {value RS_CL_Month[BASE]}
+goal setRS_CL_Month {RS_CL_Month = RS_CL_Month_sv}
+
+
+!****************************************************************************************
+
+! define the CL standard for Contra Costa Canal
+define RS_CL_STD {std kind 'SALINITY' units 'MG/L'}
+define RS_CL_STD_sv {value RS_CL_STD[BASE]}
+goal setRS_CL_STD {RS_CL_STD = RS_CL_STD_sv}
+
+! convert ccc cl std to ORRSL standard - Paul Hutton
+define RS_EC_STD {std kind 'SALINITY' units 'UMHOS/CM'}
+define RS_EC_STD_sv {value RS_EC_STD[BASE]}
+goal setRS_EC_STD {RS_EC_STD = RS_EC_STD_sv}
+
+define RS_EC_STD_225 {value (225. + 23.6)/0.268}!sometimes used for #2&3 if #1 is infeasible (always try to meet the 225 mg/l std)
+
+!*************************************************************************************************************
+!**************   Partition linearization into 3 segments   *****************************
+!*************************************************************************************************************
+
+!get the slope (m) and intercept (b) for the 3-piece linearization.
+!each constraint is in the form Exports <= m * SacFlow + b
+
+!*****Linearization #1***************************************************************
+define RS_m_1 {lower unbounded upper unbounded kind 'SLOPE' units 'NONE'}
+define RS_b_1 {lower unbounded upper unbounded kind 'INTERCEPT' units 'NONE'}
+define RS_m_1_sv {value RS_m_1[BASE]}
+define RS_b_1_sv {value RS_b_1[BASE]}
+goal setRS_m_1 {RS_m_1 = RS_m_1_sv}
+goal setRS_b_1 {RS_b_1 = RS_b_1_sv}
+
+!*****Linearization #2***************************************************************
+define RS_m_2 {lower unbounded upper unbounded kind 'SLOPE' units 'NONE'}
+define RS_b_2 {lower unbounded upper unbounded kind 'INTERCEPT' units 'NONE'}
+define RS_m_2_sv {value RS_m_2[BASE]}
+define RS_b_2_sv {value RS_b_2[BASE]}
+goal setRS_m_2 {RS_m_2 = RS_m_2_sv}
+goal setRS_b_2 {RS_b_2 = RS_b_2_sv}
+
+!*****Linearization #3***************************************************************
+define RS_m_3 {lower unbounded upper unbounded kind 'SLOPE' units 'NONE'}
+define RS_b_3 {lower unbounded upper unbounded kind 'INTERCEPT' units 'NONE'}
+define RS_m_3_sv {value RS_m_3[BASE]}
+define RS_b_3_sv {value RS_b_3[BASE]}
+goal setRS_m_3 {RS_m_3 = RS_m_3_sv}
+goal setRS_b_3 {RS_b_3 = RS_b_3_sv}
+
+!********************************************************************
+!Get the required Sac flow for ZERO exports
+define RS_Sac_ZeroExp {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define RS_Sac_ZeroExp_sv2 {value RS_Sac_ZeroExp[BASE]}
+goal setRS_Sac_ZeroExp {RS_Sac_ZeroExp = RS_Sac_ZeroExp_sv2}
+
+!**************** Shengjun: save the ANN EC with the estimated sa flow and export 3/28/2006
+/*
+define RS_EC_Month_est_ {lower unbounded upper unbounded kind 'SALINITY' units 'UMHOS/CM'}
+define RS_EC_Month_est {value RS_EC_Month_est_[BASE]}
+goal setRSECMonthest {RS_EC_Month_est_ = RS_EC_Month_est_}
+*/

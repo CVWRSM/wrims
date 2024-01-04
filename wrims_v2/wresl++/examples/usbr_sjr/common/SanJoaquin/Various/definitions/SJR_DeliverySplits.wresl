@@ -1,0 +1,203 @@
+! SJR_DeliverySplits.wresl
+! Nancy Parker
+! 2/11/02
+! USBR
+! This code defines delivery arc splits in San Joaquin System
+
+/*
+ Revised by: R. Field, 09/25/03, USBR
+ Purpose: Incorporate additional M&I delivery arcs.
+ Revised by C. Hsu, 3/11/03, USBR, for review and documentation project
+*/
+
+!#########################################################################
+/*
+Delivery arc splits between project Ag, M & I and refuges.
+*/
+! Define San Joaquin monthly Ag distribution factor data for different districts
+define sjr_ag_dist {select sjr_dist from sjr_monthly_data where month=month}
+! Define Madera ID Ag delivery, units = CFS
+define D592_pag {std kind 'flow-delivery' units 'cfs'}
+! Define Madera ID non district delivery, units = CFS
+define D592_nd {std kind 'flow-delivery' units 'cfs'}
+! Define Madera ID M&I delivery
+define D592_MI_A {std kind 'flow-delivery' units 'cfs'}
+! Define East of Madera ID and Non-District Areas in DAU 213 M&I delivery
+define D592_MI_B {std kind 'flow-delivery' units 'cfs'}
+! Madera ID total delivery (project Ag and non district combined)
+goal totalD592 {D592 = D592_pag + D592_nd + D592_MI_A + D592_MI_B}
+! Define Chowchilla ID Ag delivery, units = CFS
+define D584_pag {std kind 'flow-delivery' units 'cfs'}
+! Define Chowchilla Water District M&I delivery
+define D584_MI_A {std kind 'flow-delivery' units 'cfs'}
+! Set Chowchilla ID delivery equal to Ag delivery
+goal totalD584 {D584 = D584_pag + D584_MI_A}
+! Define DAU 215 non district delivery, units = CFS
+define D586_nd {std kind 'flow-delivery' units 'cfs'}
+! Define West of Madera ID and Chowchilla WD M&I delivery
+define D586_MI_A {std kind 'flow-delivery' units 'cfs'}
+! Set DAU 215 delivery equal to non district delivery and M&I
+goal totalD586 {D586 = D586_nd + D586_MI_A}
+! Define Merced River Riparian delivery, units = CFS
+!define D562A_riv {std kind 'flow-delivery' units 'cfs'}
+! Define Merced River Diversion M&I delivery
+define D562A_MI_A {std kind 'flow-delivery' units 'cfs'}
+! Set total Merced river diversion equal to Merced riparian and M&I demand
+goal totalD562A {D562A = D562A_riv + D562A_MI_A }
+! Define Bear Creek Refuge delivery, units = CFS
+define D572_rf {std kind 'flow-delivery' units 'cfs'}
+! Set Bear Creek demand equal to refuge demand
+goal totalD572 {D572 = D572_rf}
+! Define Merced ID delivery, units = CFS
+define D571_pag {std kind 'flow-delivery' units 'cfs'}
+! Define Merced ID M & I delivery, units = CFS
+define D571_mi_A {std kind 'flow-delivery' units 'cfs'}
+! Define East of Merced ID M&I delivery
+define D571_MI_B {std kind 'flow-delivery' units 'cfs'}
+! Define Merced ID non district delivery, units = CFS
+define D571_nd {std kind 'flow-delivery' units 'cfs'}
+! Merced ID total delivery
+goal totalD571 {D571 = D571_pag + D571_mi_A + D571_mi_B + D571_nd}
+! Merced River delivery to Merced ID Ag
+define D561_pag {std kind 'flow-delivery' units 'cfs'}
+! Merced River delivery to Bear Creek Refuge, units = CFS
+define D561_bcr {std kind 'flow-delivery' units 'cfs'}
+! Merced River delivery to DAU 212, units = CFS
+define D561_dau212 {std kind 'flow-delivery' units 'cfs'}
+! Merced M&I delivery to Merced ID
+define D561_MI {std kind 'flow-delivery' units 'cfs'}
+! Merced River total delivery (project Ag + Bear Creek Refuge + DAU 212)
+! goal split_D561 {D561 = D561_pag + D561_BCR + D561_DAU212}
+goal split_D561 {D561 = D561_pag + D561_BCR + D561_DAU212 + D561_MI}
+! Define DAU 212 Ag delivery, units = CFS
+define D574_pag {std kind 'flow-delivery' units 'cfs'}
+! Define West of Merced ID and Non-District areas in DAU 210 and 212 M&I
+define D574_MI_A {std kind 'flow-delivery' units 'cfs'}
+! Set DAU 212 delivery equal to Ag delivery and M&I
+goal totalD574 {D574 = D574_pag + D574_MI_A}
+! Define Tuolumne River Diversion delivery
+!define D545A_riv {std kind 'flow-delivery' units 'cfs'}
+! Define Tuolumne River Diversion M&I delivery
+define D545A_MI_A {std kind 'flow-delivery' units 'cfs'}
+! Set Tuolumne River depletion total equal to river diversion and M&I
+goal totalD545A {D545A = D545A_riv + D545A_MI_A}
+! Define Turlock ID Ag delivery, units = CFS
+define D549_pag {std kind 'flow-delivery' units 'cfs'}
+! Define Turlock ID non district delivery, units = CFS
+define D549_nd {std kind 'flow-delivery' units 'cfs'}
+! Define East of Turlock ID M&I delivery
+define D549_MI_A { std kind 'flow-delivery' units 'cfs' }
+! Define Turlock ID M&I delivery
+define D549_MI_B { std kind 'flow-delivery' units 'cfs'}
+! Turlock ID total delivery equal to Ag and non district delivery combined, units = CFS
+goal totalD549 {D549 = D549_pag + D549_nd + D549_MI_A + D549_MI_B}
+! Define West of Turlock area Ag delivery, units = CFS
+define D551_pag {std kind 'flow-delivery' units 'cfs'}
+! Define East bank of San Joaquin, Merced to Tuolumne M&I delivery
+define D551_MI_A {std kind 'flow-delivery' units 'cfs'}
+! Set West of Turlock area delivery equal to Ag delivery and M&I
+goal totalD551 {D551 = D551_pag + D551_MI_A }
+! Define Modesto area M & I delivery, units = CFS
+define D78A_MI {std kind 'flow-delivery' units 'cfs'}
+! Modesto area total delivery equal to M & I delivery
+goal totalD78A {D78A = D78A_MI}
+! Define Modesto ID Ag delivery, units = CFS
+define D533_pag {std kind 'flow-delivery' units 'cfs'}
+! Define Modesto ID M & I delivery, units = CFS
+define D533_mi_A {std kind 'flow-delivery' units 'cfs'}
+! Set Modesto ID total delivery equal to project Ag and non district M & I combined
+goal totalD533 {D533 = D533_pag + D533_mi_A}
+! Define West of Modesto area Ag delivery, units = CFS
+define D535_pag {std kind 'flow-delivery' units 'cfs'}
+! Define East bank of San Joaquin, Tuolumne to Stanislaus M&I delivery
+define D535_mi_A {std kind 'flow-delivery' units 'cfs'}
+! Set West of Modesto area total delivery equal to Ag delivery and M&I, units = CFS
+goal totalD535 {D535 = D535_pag + D535_mi_A }
+! Define Oakdale ID South Ag delivery, units = CFS
+define D531_pag {std kind 'flow-delivery' units 'cfs'}
+! Define Oakdale ID North M & I delivery, units = CFS
+define D531_mi_B {std kind 'flow-delivery' units 'cfs'}
+! Define East of Modesto ID and Oakdale ID delivery
+define D531_mi_A {std kind 'flow-delivery' units 'cfs'}
+! Define Oakdale ID North non district delivery, units = CFS
+define D531_nd {std kind 'flow-delivery' units 'cfs'}
+! Set Oakdale ID North total delivery equal to Ag plus non district M & I plus non district delivery combined, units = CFS
+goal totalD531 {D531 = D531_pag + D531_mi_A + D531_MI_B + D531_nd}
+! Define Oakdale ID South and South San Joaquin ID Ag delivery, units = CFS
+define D523_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define Oakdale ID North M & I delivery, units = CFS
+define D523_mi_B  {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define South San Joaquin ID non district M & I delivery, units = CFS
+define D523_mi_A  {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Set Oakdale ID South and South San Joaquin ID total delivery equal to Ag plus non district M & I plus M & I delivery combined, units = CFS
+goal totalD523 {D523 = D523_pag + D523_mi_A + D523_mi_B}
+! Define Stanislaus River riparian delivery
+!define D528A_riv {std kind 'FLOW-DELIVERY' units 'cfs'}
+! Define Stanislaus River diversions M&I delivery
+define D528A_MI_A {std kind 'FLOW-DELIVERY' units 'cfs'}
+! Set Stanislaus River Diversions total equal to riparian and M&I
+goal totalD528A {D528A = D528A_riv + D528A_MI_A}
+! Define Stockton East Water District M & I delivery, units = CFS
+define D520_SEWD_PMI { std kind 'FLOW-DELIVERY' units 'cfs' }
+! Define Central San Joaquin Irrigation District delivery, units = CFS
+define D520_CSJSEWD_PAG { std kind 'FLOW-DELIVERY' units 'cfs' }
+! Set SEWD/CSJ total delivery equal to SEWD M & I delivery and CSJSEWD delivery combined, units = CFS
+goal aggregD520 { D520A = D520_SEWD_PMI + D520_CSJSEWD_PAG }
+
+/*
+Mokelumne River delivery spilts                                                     - removed temporarily until Moke redeveloped
+! EBMUD project export, units = CFS                                                 - removed temporarily until Moke redeveloped
+define D90_PRJ {std kind 'FLOW-DELIVERY' units 'CFS'}                               - removed temporarily until Moke redeveloped
+! EBMUD project export for Ag, units = CFS                                          - removed temporarily until Moke redeveloped
+define D90_PAG {std kind 'FLOW-DELIVERY' units 'CFS'}                               - removed temporarily until Moke redeveloped
+! EBMUD project export for M & I , units = CFS
+define D90_PMI {std kind 'FLOW-DELIVERY' units 'CFS'}
+! EBMUD total delivery equal to Ag and M & I combined,  units = CFS
+goal aggregD90 {D90 = D90_PAG + D90_PMI}
+! EBMUD total project delivery equal to Ag and M & I combined,  units = CFS
+goal aggregD90_PRJ { D90_PRJ = D90_PAG + D90_PMI }
+! Define North San Joaquin project demand, units = CFS
+define D502_PRJ {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define North San Joaquin project Ag demand, units = CFS
+define D502_PAG {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define North San Joaquin project M & I delivery, units = CFS
+define D502_PMI {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Set North San Joaquin delivery equal to Ag and M & I combined, units = CFS
+goal aggregD502 {D502 = D502_PAG + D502_PMI}
+! Set North San Joaquin project delivery equal to project Ag and project M & I combined, units = CFS
+goal aggregD502_PRJ { D502_PRJ = D502_PAG + D502_PMI }
+! Define Woodbridge Irrigation project delivery, units = CFS
+define D503A_PRJ {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define Woodbridge Irrigation project Ag delivery, units = CFS
+define D503A_PAG {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define Woodbridge Irrigation project M & I delivery, units = CFS
+define D503A_PMI {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define Woodbridge Irrigation non project delivery, units = CFS
+define D503A_NP {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Set Woodbridge Irrigation delivery equal to project Ag, M & I and non project delivery combined, units = CFS
+goal aggregD503A  {D503A = D503A_PAG + D503A_PMI + D503A_NP}
+! Set Woodbridge Irrigation project delivery equal to project Ag and M & I delivery, units = CFS
+goal aggregD503A_PRJ  { D503A_PRJ = D503A_PAG + D503A_PMI }
+*/
+
+
+/*
+Calaveras River delivery spilts
+*/
+
+! Define Stockton East Water District project Ag delivery
+define D511_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define Calaveras River Riparian Users delivery
+define D511_riv {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Define Stockton East Water District Non-District delivery
+define D511_nd {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Set delivery equal to project Ag, M&I, riparian and non-district
+goal totalD511 {D511 = D511_pag + D511_riv + D511_nd}
+
+! Define SEWD City of Stockton project M & I delivery, units = CFS
+define D510_mi {std kind 'FLOW-DELIVERY' units 'CFS'}
+! Set SEWD City of Stockton delivery equal to project M&I
+goal totalD510 {D510 = D510_mi}
+
+
+

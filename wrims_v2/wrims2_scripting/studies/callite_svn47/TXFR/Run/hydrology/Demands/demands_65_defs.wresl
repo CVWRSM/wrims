@@ -1,0 +1,28 @@
+/*************************************
+demands_65_defs.wresl
+ 
+Tom FitzHugh BOR 5/19/2010
+
+Defines variables for DSA65 delivery logic (these compose part of deliveries at SacAmerican node).
+**************************************/
+! Total contract demand
+define demand_prj_65 {timeseries kind 'DEMAND-CVP-TOTAL' units 'CFS'}
+
+!Define Individual Contract Types
+define dem_d165_PSC {timeseries kind 'DEMAND-CVP-SC' units 'TAF'}  ! City of West Sacramento
+define dem_d163_PSC {timeseries kind 'DEMAND-CVP-SC' units 'TAF'}  ! Right Bank Settlement Contracts
+!Define Total Demand 
+/*** NOTE: these two timeseries are identical to the two above, though they get used differently in code 
+(see demands_65.wresl) ***/
+define dem_d165_PRJ  {timeseries kind 'DEMAND-CVP-TOTAL' units 'TAF'}
+define dem_d163_PRJ  {timeseries kind 'DEMAND-CVP-TOTAL' units 'TAF'}
+
+define d163_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+define d165_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+define d163_prj {std kind 'FLOW-DELIVERY' units 'CFS'}
+define d165_prj {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+
+
+

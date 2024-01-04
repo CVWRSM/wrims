@@ -1,0 +1,38 @@
+/*************************************
+demands_65.wresl
+ 
+Tom FitzHugh BOR 5/19/2010
+
+Handles demand/delivery logic for DSA65  (these compose part of deliveries 
+at SacAmerican node).  Deliveries are limited to the minimum of
+contract demand adjusted by contract cuts and diversion requirement.
+**************************************/
+
+! Set limits on project stream diversion, convert to CFS
+/* The two goals below (originally from demands_65.wresl) don't seem necessary, since 
+these are less restrictive limits than the limits further down (from cvp_bound_del_sys.wresl)
+which use percent delivery x the same contract demand number.  But leaving for now to 
+replicate Calsim */
+goal set_d163_prj  {d163_prj  < dem_d163_prj*taf_cfs}  ! Settlement Demand
+goal set_d165_prj  {d165_prj  < dem_d165_prj*taf_cfs } ! Settlement Demand
+
+! Define the Settlement Contractors Allowable Diversion limits based on contract cuts
+define ad_d163_psc {value perdel_cvpsc_sys*dem_d163_psc*taf_cfs}
+define ad_d165_psc {value perdel_cvpsc_sys*dem_d165_psc*taf_cfs}
+
+! Define demands based on CVP contract amounts
+define con_d163_psc {select contract from nodcvpcontract where contractor=13}
+define con_d165_psc {select contract from nodcvpcontract where contractor=14}
+define con_65_total {select contract from nodcvpcontract where contractor=15} ! DSA 65 total demand
+
+! Define delivery target based on minimum of adjusted contract demands and diversion requirement
+define target_d163_psc {value min(ad_d163_psc, demand_prj_65*con_d163_psc/con_65_total)}
+define target_d165_psc {value min(ad_d165_psc, demand_prj_65*con_d165_psc/con_65_total)}
+
+! Limits deliveries to targets
+goal reduce_d163_psc  {d163_psc < target_d163_psc}
+goal reduce_d165_psc  {d165_psc < target_d165_psc}
+
+! Handle arc splits
+goal splitD163  {d163_prj = d163_psc}
+goal splitD165  {d165_prj = d165_psc}

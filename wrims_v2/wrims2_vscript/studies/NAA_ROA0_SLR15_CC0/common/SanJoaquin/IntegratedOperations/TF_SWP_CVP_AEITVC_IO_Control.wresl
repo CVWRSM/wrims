@@ -1,0 +1,35 @@
+
+!Use these statements to turn off entire cross valley conveyance facilities.
+define switch_TVC {value 1.0} !0 off, 1 on
+define switch_SW {value 0.0}!0 off, 1 on
+define switch_CVC {value 0.0}!0 off, 1 on
+define switch_AEI {value 1.0}!0 off, 1 on
+
+goal set_switch_TVC {C848_TVC_F + C848_TVC_R < switch_TVC*10000.}
+goal set_switch_SW {C851_SW_F + C851_SW_R < switch_SW*10000.}
+goal set_switch_CVC {C855_CVC_F + C855_CVC_R < switch_CVC*10000.}
+goal set_switch_AEI {C861_AEI_F + C861_AEI_R < switch_AEI*10000.}
+
+
+!For now, no transfer back from SWP or CVP to FWUA in USJRS.
+goal no_swp_DFS {DIO_S_F < 0}
+goal no_cvp_DFS {DIO_C_F < 0}
+
+
+!Use this statement to turn off direct circulation.
+!goal turn_off_dc {C848_TVC_DC + C851_SW_DC + C855_CVC_DC < 0}
+
+!Diversion to and from storage switch.
+!goal turn_off_dts {D18_DTS + D18_DFS < 0}
+
+!Drawdown switch
+!goal turn_off_DD {D18_DD < 0}
+
+!Spill capture switch
+!goal Turn_off_SC {D18_SC < 0}
+
+!Turn off groundwater operations
+!goal turn_off_gwr_SU {D419_IO < 0}
+!goal turn_off_SP {D931_GWR_SP + D936_GWR_SP + D950_GWR_SP < 0}
+goal turn_off_GWR {D931_GWR + D936_GWR + D950_GWR < 0}
+goal turn_off_GWP {D933_GWP + D938_GWP + D952_GWP < 0}

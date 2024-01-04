@@ -1,0 +1,118 @@
+! delcar_swp
+! No longer using Delivery - Carryover Curve
+
+define swp_allocation {std kind 'swp-delivery' UNITS 'TAF'}
+
+define max_tableA  {select Total from TableA where Factor=1}
+define tableA_loss {select LOSS  from TableA where Factor=1}
+define SWP_TableA  {value max_tableA - tableA_loss}
+!
+!define init_SWPRuleDrainTar {value 110.}
+define DI_buffer {value 250.}
+!
+! Initial Percent Allocation estimate
+define swp_perdel_raw1 {value max(di_swp - init_SWPRuleDrainTar - 1000. - DI_buffer, 0.) / (SWP_TableA + 0.5 * max(S_OROVL(prevSep) + S_OROVL_mod_dv(prevSEP) - 1000., 0.))}
+! S_SLUIS_SWP target for use in Rule Curve operations
+define SWPRuleDrainTar {value min(init_SWPRuleDrainTar + max(max(swp_perdel_raw1 - 1., 0.) * SWP_TableA - DI_buffer, 0.), S_SLUIS_SWPlevel4)}
+
+! Adjusted Percent Allocation estimate
+define swp_perdel_raw2 {value max(di_swp - SWPRuleDrainTar - 1000. - DI_buffer, 0.) / (SWP_TableA + 0.5 * max(S_OROVL(prevSep) + S_OROVL_mod_dv(prevSEP) - 1000., 0.))}
+! S6 target
+define S6_targ {value 1000. + 0.5 * min(swp_perdel_raw2, 1.) * max(S_OROVL(prevSep) + S_OROVL_mod_dv(prevSEP) - 1000., 0.)}
+define S6_targ_dv {alias S6_targ kind 'swp-delivery' units 'TAF'}
+
+! Delivery Decision unadjusted
+define wsidi_swpdel {value min(swp_perdel_raw2, 1.) * SWP_TableA + tableA_loss}
+define wsidi_swpdel_dv {alias wsidi_swpdel kind 'swp-delivery' units 'TAF'}
+
+!need to adjust deltar to include implicit storage in san luis for article 56 carryover
+!define deltar_adjust {select carryover from wsi_deltar_adjust given deltar=del_swp_trial1 use linear}
+!define deltar_adjustdv {alias deltar_adjust kind 'alias' units 'taf'}
+
+!need to apply a check on deltar to insure that SL supply is used in driest conditions
+!this is assumed to be the previous month SL storage plus a minimum assumed project average export
+!this adjustment is only applied in Apr and May
+define deltar_drymin {
+  case Apr {
+    condition month == APR
+    value     S_SLUIS_SWP(-1)/0.76}  !assumes no additional pumping and typically 76% of delivery occuring in Apr-Aug in critically dry conditions
+  case May {
+    condition month == MAY
+    value     S_SLUIS_SWP(-1)/0.65}  !assumes no additional pumping and typically 65% of delivery occuring in May-Aug in critically dry conditions
+  case otherwise {
+    condition  always
+    value      0}
+}
+
+! This implements the two SL adjustments defined in the previous lines
+define swp_allocation_1 {value max(wsidi_swpdel,deltar_drymin) }
+
+! This implements the export capacity constraint previously determined
+define swp_allocation_2 {
+  case JantoFeb {
+    condition month >= JAN .and. month <= FEB
+    value     swp_allocation_1}
+  case MartoMay {
+    condition month >= MAR .and. month <= MAY
+    value     min(swp_allocation_1, max_exp_based_del_swp)}
+  case otherwise {
+    condition  always
+    value      0}
+}
+
+! Cannot exceed Table A:
+define swp_allocation_3 {value min(max_tableA,swp_allocation_2)}
+
+! This implements the no reduction rule for april to december
+define swp_allocation_final {
+    case start {
+        condition  wateryear==1922 .and. month==oct
+        value      max_tableA*0.5}
+    case JanToApr {                                         ! reductions allowed
+        condition  month >= JAN .and. month <= APR
+        value      swp_allocation_3 }
+    case MayToDec {                                         ! no reductions allowed
+        condition  always
+        value      max(swp_allocation(-1), swp_allocation_3 ) }
+}
+goal setswp_allocation {swp_allocation = swp_allocation_final}
+
+!Percent delivery
+define swp_perdel {value (swp_allocation_final-tableA_loss)/SWP_TableA}
+define swp_perdeldv {alias swp_perdel kind 'swp-delivery' units 'none'}
+define perdel_swp_int  {value 1.0}
+
+!Select demand profile based on percent allocation:
+/*define swp_demprofile {case p30  {condition swp_perdel < 0.40 value   30}
+                       case p50  {condition swp_perdel < 0.65 value   50}
+                       case p100 {condition always            value  100}}*/
+define tableA_total {select Total from TableA where Factor=1}
+define percent_act  {value swp_allocation_final/tableA_total*100.}
+define swp_percent_act {alias percent_act kind 'alias' units 'none'}
+define swp_demprofile {
+    case low  {
+        condition percent_act < 35.
+        value   30.}
+    case lowmed  {
+        condition percent_act < 45.
+        value   30. + (50. - 30.)*(percent_act - 35.)/(45. - 35.)}
+        case med  {
+        condition percent_act < 60.
+        value   50.}
+        case medhigh  {
+        condition percent_act < 70.
+        value   50. + (100. - 50.)*(percent_act - 60.)/(70. - 60.)}
+        case high {
+        condition always
+        value  100}
+}
+define swp_percent {alias swp_demprofile kind 'swp-delivery' units 'none'}
+
+!temp variables:
+define perdel_swp_ag1  {value swp_perdel}
+define perdel_swp_mwd1 {value swp_perdel}
+define perdel_swp_oth1 {value swp_perdel}
+define perdv_swp_ag1 {std kind 'PERCENT-DELIVERY' units 'none'}
+goal setperdv_swp_ag1 {perdv_swp_ag1 = perdel_swp_ag1}
+define perdv_swp_mwd1 {alias perdel_swp_mwd1 kind 'PERCENT-DELIVERY' units 'none'}
+

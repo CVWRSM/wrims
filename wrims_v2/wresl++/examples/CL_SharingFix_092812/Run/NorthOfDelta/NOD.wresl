@@ -1,0 +1,39 @@
+/*************************************
+NOD.wresl
+ 
+Nancy Parker BOR 5/12/2010; Modified by Tom Fitzhugh (11/1/2010) to implement new code for FMSstandard. 
+
+This is the top level include file for general logic in the North of Delta
+sub-basins - Trinity, Upper Sacramento, Feather, and American.  General logic
+includes minimum flows and setting reservoir storage levels. 
+*************************************/
+
+Include 'American\FolRuleCurv.wresl'
+Include 'American\Americanmin.wresl'
+!INCLUDE 'american\NimbusHistMinQ.wresl'
+!INCLUDE 'american\HSt_base.wresl'
+!INCLUDE 'american\FMPInput.wresl'
+INCLUDE 'american\FMStandard.wresl'
+Include 'American\NimbusPower.wresl'  
+ 
+Include 'Clear_Creek\clear_ck_min.wresl'  
+Include 'Trinity\TrinRuleCurv.wresl'  
+Include 'Sacramento\ShaRuleCurv.wresl'
+
+Include 'Trinity\Trinitymin.wresl' 
+Include 'Trinity\TrinityDamPower.wresl' 
+Include 'Trinity\Trinity_import.wresl'
+Include 'Trinity\LewistonSpill.wresl'
+Include 'Sacramento\keswickmin.wresl'   
+Include 'Sacramento\KeswickPower.wresl' 
+Include 'Sacramento\RedBluff_bypassflow.wresl'
+Include 'Sacramento\ncp_relax.wresl' 
+INCLUDE 'Sacramento\setdailyadjmif.wresl'
+
+Include 'Feather\feather_special.wresl'
+Include 'Feather\OroRuleCurv.wresl'
+Include 'Feather\ThermalitoPower.wresl'
+
+Include 'Balance.wresl'
+
+include 'Deliveries\SWP_Project_Del.wresl' 

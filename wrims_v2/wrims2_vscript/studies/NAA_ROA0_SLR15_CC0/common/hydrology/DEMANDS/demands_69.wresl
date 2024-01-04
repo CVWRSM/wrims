@@ -1,0 +1,176 @@
+! This file sets up the diversion requirements for DSA 69
+! Each Diversion Requirement is split between prject and nonprject
+! Non prject diversion requirement is not entitled to releases from
+! prject reservoirs
+! see running gain file for more details
+! Logic developed by RAJ 9/99
+! Changed by DJE 12/6/00
+
+! see demands_69_defs.wresl for timeseries and constant defines
+
+! define project and nonproject diversion requirement
+! project diversion requirement is decreased by any Crop Idling for
+! Transfers.  This restriction will keep GW pumping from
+! making the diversion req't whole.  The impacts are zeroed
+! out in baseline steps.
+!define prj_dr69 {VALUE dr69*perc_dr69 }
+define prj_dr69 {VALUE max(0., dr69*perc_dr69 - WTS_CI69*cfs_taf) }
+
+define np_dr69  {VALUE dr69*(1.0-perc_dr69) }
+
+! ************************************************************************
+
+!Set Project Arc Splits
+
+!Set project and non-project gw pumping arcs
+define gp65_prj   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }! prject groundwater pumping
+define gp65_np    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }! non prject groundwater pumping
+
+! (DJE) No use for gp65_pmi
+!define gp65_pmi  {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+goal   split_gp65 { gp65 = gp65_prj + gp65_np }              ! total pumping
+
+!Split Demand arc d6
+define d6_prj       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d6_pwr       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal   split_d6     {d6 = d6_prj}      !Palermo Canal
+goal   split_d6_prj {d6_prj = d6_pwr}  !Palermo Canal
+
+!Split Demand arc d7a
+define d7a_pag       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7a_pwr       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7a_prj       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7a_prf       {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+GOAL   split_d7a     {d7a = d7a_prj }  ! Western Canal
+GOAL   split_d7a_prj {d7a_prj = d7a_pag + d7a_pwr + d7a_prf}
+
+!(DJE)Need to figure out why continuity does not work here. May be found in Searching for: c220a
+!goal   set_d7a_prf   {d7a_prf < c220a + 0.0001}
+!goal   set_d7a_prf2  {d7a_prf > c220a - 0.0001}
+goal   subcontinuity220   {d7a_prf - c220a = 0}
+
+!Split Demand arc d7b
+define d7b_pag     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7b_pwr     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7b_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d7b_prf     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_d7b     {d7b = d7b_prj}  ! Joint Board Canal
+goal split_d7b_prj {d7b_prj = d7b_pwr + d7b_pag + d7b_prf }
+goal subcontinuity216   {d7b_prf - c216b = 0}
+
+!Split Demand arc d201
+define d201_pmi    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d201_prj    {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d201_pimi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d201_pomi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_201_pmi {d201_pmi = d201_pimi + d201_pomi}
+goal split_201     {d201 = d201_prj}  ! Butte County
+goal split_201_prj {d201_prj = d201_pmi}
+
+!Split Demand arc d202
+define d202_pwr     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d202_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_d202     {d202 = d202_prj}  ! Thermalito ID
+goal split_d202_prj {d202_prj = d202_pwr}
+
+!Split Demand arc d204
+define d204_pmi     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d204_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d204_pimi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d204_pomi   {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_204_pmi {d204_pmi = d204_pimi + d204_pomi}
+goal split_d204     {d204 = d204_prj}  ! Yuba City
+goal split_d204_prj {d204_prj = d204_pmi}
+
+!Split Demand arc d206a
+define d206a_pag     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d206a_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_d206a     {d206a = d206a_prj}  ! Feather WD
+goal split_d206a_prj {d206a_prj = d206a_pag}
+
+!Split Demand arc d206b
+define d206b_pag     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d206b_pwr     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d206b_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_d206b     {d206b = d206b_prj } ! Miscellaneous FRSA
+goal split_d206b_prj {d206b_prj = d206b_pag + d206b_pwr}
+
+!Split Demand arc d206c
+define d206c_pag     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d206c_pwr     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d206c_prj     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+goal split_d206c     {d206c = d206c_prj } ! Miscellaneous FRSA
+goal split_d206c_prj {d206c_prj = d206c_pag + d206c_pwr}
+
+!(DJE) Split NP delivery arc D230 (as is consistent with above)
+define D230_mi      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define D230_np      {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+goal split_D230     {D230 = D230_np}    !Yuba County Water Agency
+goal split_D230_np  {D230_np = D230_mi}
+
+!(DJE)Constrain D230_mi delivery (Is there a more appropriate file to do this in?)
+goal set_D230_mi        {D230_mi < dem_D230_MI}        ! Yuba County Water Agency
+
+!(DJE) Split NP delivery arc d285 (as is consistent with above)
+define d285_ag     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+define d285_np     {STD KIND 'FLOW-DELIVERY' UNITS 'CFS'}
+goal split_d285    {d285 = d285_np}  !Camp Far West ID
+goal split_d285_np {d285_np = d285_ag}
+
+!(DJE)Constrain d285_ag delivery (Is there a more appropriate file to do this in?)
+goal set_d285_ag    {d285_ag < dem_d285_AG}      ! Camp Far West ID
+
+!(DJE)Split the diversion requirement arc C209
+define c209_prj   {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total prj deliveries and gw applied to 210
+define C209_prj_dr {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total prj deliveries and gw applied to 210 for the Diversion Requirement
+define C209_prj_exc {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total prj deliveries and gw applied to 210 in excess of the Diversion Requirement
+define c209_np    {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total np deliveries and gw applied to 210
+define C209_np_dr {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total np deliveries and gw applied to 210 for the Diversion Requirement
+define C209_np_exc {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total np deliveries and gw applied to 210 in excess of the Diversion Requirement
+define c209_pimi  {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total prj Indoor M&I deliveries applied to 210 (Not applid to Diversion Requirement)
+define c209_pomi  {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total prj Outdoor M&I deliveries applied to 210
+define c209_pag   {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total prj AG deliveries applied to 210
+define c209_pwr   {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total prj WR deliveries applied to 210
+define c209_pgw   {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total prj gw applied to 210
+define c209_mi    {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total NP M&I deliveries applied to 210
+define c209_ag    {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total NP AG deliveries applied to 210
+define c209_gw    {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total np gw applied to 210
+define c209_rg    {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total np rg applied to 210
+define c209_bc    {STD KIND 'FLOW-CHANNEL' UNITS 'CFS' }  ! total np Butte Creek diversion applied to 210
+goal split_C209      {C209     = C209_prj + C209_np + C209_pimi}
+goal split_C209_prj  {C209_prj = C209_pomi + C209_pag + C209_pwr + c209_pgw}
+goal split_C209_prj2 {C209_prj = C209_prj_dr + C209_prj_exc}
+goal split_C209_np   {C209_np  = C209_mi + C209_ag + c209_gw + C209_rg + C209_bc}
+goal split_C209_np2  {C209_np = C209_np_dr + C209_np_exc}
+
+!(DJE) Constrain flow in the C209_prj and its sub arcs.
+goal set_c209_prj_dr   {C209_prj_dr  = prj_dr69*taf_cfs}
+goal set_C209_pomi  {C209_pomi = D201_pomi + D204_pomi}
+goal set_C209_pag   {C209_pag  = D7a_pag + D7b_pag + D206a_pag + D206b_pag + D206c_pag}
+goal set_C209_pwr   {C209_pwr  = D6_pwr + D7a_pwr + D7b_pwr + D202_pwr + D206b_pwr + D206c_pwr}
+goal set_C209_pgw   {C209_pgw  = gp65_prj}
+
+!(DJE) Constrain flow in C209_np and its sub arcs.
+goal set_c209_np_dr   {C209_np_dr = np_dr69*taf_cfs }
+goal set_c209_mi   {C209_mi = D230_mi}
+goal set_C209_ag   {C209_ag = d285_ag}
+goal set_C209_gw   {C209_gw = gp65_np}
+goal set_c209_rg   {C209_rg = D207a}
+goal set_c209_bc   {C209_bc = D217}
+
+! Constrain flow in C209_pimi
+goal set_C209_pimi  {C209_pimi = D201_pimi + D204_pimi}
+
+! define minimum monthly groundwater pumping (using minimum value from  1980-1993 Historical Level CVGSM run)
+! minimum pumping cannot be more than the diversion requirement
+define minpump_69_prj {VALUE min(mingw_69*perc_dr69,prj_dr69)  }       ! (UNITS = TAF)
+define minpump_69_np  {VALUE min(mingw_69*(1.0-perc_dr69),np_dr69)  }  ! (UNITS = TAF)
+goal set_gp65_prj   {gp65_prj > minpump_69_prj*taf_cfs  }
+goal set_gp65_np    {gp65_np > minpump_69_np*taf_cfs  }
+
+! redistribute these exports based on DSA 70 diversion requirement
+goal set_d283    { d283 < dem_d283_exp}          ! Camp Far West Exports to DSA 70
+goal set_d223     { d223  < dem_d223_exp*taf_cfs}             ! Left Bank Exports to DSA 70
+
+

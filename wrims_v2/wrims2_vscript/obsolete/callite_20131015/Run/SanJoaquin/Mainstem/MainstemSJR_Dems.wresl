@@ -1,0 +1,29 @@
+! MainstemSJR_Dems.wresl
+
+! Author: Unknown
+! Agency: Unknown
+! Date: Unknown
+! San Joaquin River mainstem demands
+
+/*
+Negative accretions at node 620 are defined separately as a demand in such a
+way that there is no chance they'll pull water from storage.  
+
+Merced has minimum flows at 561 and 564. If there is water in C561 above
+minimum it should only be there to satisfy D562 or C564. Water in C564
+above the minimum should only be there due to C20F, C20VAMP, or C20MIN.
+*/
+
+/*
+Revised by:  T. Crawford, USBR, 03/12/03
+Purpose:  Review and comment file
+*/
+
+!############################################################################
+
+! Retrieve negative SJR accretion values from predefined timeseries
+define I620neg {timeseries kind 'demand' units 'taf' convert 'cfs'}
+
+! Limit D_SJRMER negative accretions to the value defined in I620neg timeseries
+goal limitD_SJRMERaccr {D_SJRMERaccr < I620neg}
+

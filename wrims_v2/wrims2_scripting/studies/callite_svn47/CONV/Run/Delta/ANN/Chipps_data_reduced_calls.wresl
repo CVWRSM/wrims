@@ -1,0 +1,16 @@
+/*
+ 
+References data from cycle BASE to reduce ANN function calls to reduce runtime.
+
+See the *_data.wresl file for how these parameters are calculated.
+
+*/
+
+!****************************************************************************************
+
+! calculate previous month's value of salinity
+define CH_EC_Month {std kind 'SALINITY' units 'UMHOS/CM'}
+define CH_EC_Month_sv {value CH_EC_Month[BASE]}
+goal setCH_EC_MON {CH_EC_Month = CH_EC_Month_sv}
+
+!****************************************************************************************

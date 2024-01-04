@@ -1,0 +1,550 @@
+! IMF @@@
+! Fix values/rules for SJW stand-alone
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! (Fix inflows/salinities at Banks and Tracy, outflows at SBA, CAA172)
+goal   fixBanks         { C_CAA003        = D419 }  ! fix Banks (pumping)
+goal   setCAA000_cvp    { CAA000_CVP      = D419_CVPwhl + D419_CVC} ! total CVP pumping @ Banks
+goal   setCAA000_cvc    { CAA000_CVC      = D419_CVC}               ! CVC pumping @ Banks
+goal   fixSBA           { D_CAA005_SBA000 = D801 }  ! fix SBA diversion
+goal   fixJones         { C_DMC003        = D418 }  ! fix Jones (pumping)
+goal   fixCAA172        { C_CAA172        = C830 }  ! fix flow out of system...
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! (Fix SWP and CVP allocations -- DV's)
+goal   setperdv_cvpag_s { perdv_cvpag_s = perdel_cvpag_s}   ! @@ USUALLY SET IN cvpcut_s.wresl,
+goal   setperdv_cvpmi_s { perdv_cvpmi_s = perdel_cvpmi_s}   ! @@ 
+goal   setperdv_cvpex_s { perdv_cvpex_s = perdel_cvpex_s}   ! @@
+goal   setperdv_cvprf_s { perdv_cvprf_s = perdel_cvprf_s}   ! @@ 
+goal   setperdel_s      { perdel_s      = perdel_sdv    }   ! @@ perdel_s AND perdel_sys ORIGINALLY SET
+goal   setperdel_sys    { perdel_sys    = perdel_sysdv  }   ! @@ IN cvpcut_s.wresl. COMMENTED THERE AND SET HERE.
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! (Constrain CAA->DMC intertie)
+! (NOTE: intertie should be capped at 400 cfs -- limit_Intertie1)
+! (NOTE: flow should ONLY go from DMC to CAA if Tracy exceeds 4200 cfs -- limit_Intertie2)
+!        constraints cause infeasibility...achieved behavior by adding small penalty to intertie flow)
+! (NOTE: flow should ONLY go from DMC to CAA, not reverse -- limit_Intertie3)
+
+! define IntertieSwitch   {
+!        select OnOff from NewFacSwitch where  Facility = 1}
+define IntertieSwitch    { value 1.0 }
+define Intertie_Cap      { value 400.0*IntertieSwitch }
+goal   limit_Intertie1   { D_DMC007_CAA009 < Intertie_Cap }
+! goal   limit_Intertie2   { C_DMC003 - D_DMC007_CAA009 > 4200 }
+goal   limit_Intertie3   { D_CAA009_DMC007 = 0.0 }
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Constrain CVP water in CAA
+
+! cvp water balance @ CAA067
+goal limitC_CAA067_CVP  { C_CAA067_CVP < C_CAA067 }
+goal setC_CAA067_CVP    { C_CAA067_CVP = D_DMC007_CAA009 + CAA000_CVP - D_CAA012_71_PU1 - D_CAA046_71_PA7 - D_CAA066_71_PU2}
+
+
+! sum of cvp joint use branch deliveries (INCLUDE CVP LOSSES!)
+define CVP_JUB_delivs   { std kind 'delivery' units 'cfs' }
+goal setCVP_JUB_delivs  { CVP_JUB_delivs = D_CAA087_73_PA1 + D_CAA095_72_PU  + D_CAA109_73_PA3
+                                         + D_CAA109_90_PA1 + D_CAA143_90_PA1 + D_CAA155_90_PA1 + D_CAA172_90_PA1
+                                         + D_CAA143_90_PA2 + D_CAA143_90_PU  + D_CAA156_90_PU  + D_CAA165_90_PU 
+                                         + SG_R3_CVP       + SG_R4_CVP       + SG_R5_CVP       + SG_R6_CVP       + SG_R7_CVP + err_pos - err_neg}                                          
+
+! sum of all cvp inflows/outflows to CAA
+define caa_cvp_INFLOWS  { alias CAA000_CVP+D_DMC007_CAA009+D_DMC070_CAA069+C_SLUIS_CVP                                                     kind 'TESTING' units 'CFS' }
+define caa_cvp_OUTFLOWS { alias D_CAA012_71_PU1+D_CAA046_71_PA7+D_CAA066_71_PU2+D_CAA069_SLUIS_F+D_CAA069_DMC070+CVP_JUB_delivs+CAA000_CVC kind 'TESTING' units 'CFS' }
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Constrain outflow from Mud Slough North (MSN004) to equal sum of relevant return flows
+! (this prohibits water from being pulled out of DMC/CAA/SLUIS via Volta Wasteway or out of XCC via D_XCC054_LBN008
+!  to meet demands off of the SJR further down the system, or to releive demands from other tributaries)
+goal set_MSN004_cap     { C_MSN004 < C_BANOS
+                                   + R_73_PA1_LBN025
+                                   + R_72_PR1_LBN012
+                                   + D_XCC054_LBN008
+                                   + R_72_PR5_MSN009
+                                   + R_73_PA3_SLD027
+                                   + R_73_XA_SLD027
+                                   + R_73_PA2_SLD027
+                                   + SR_73_SLD027
+                                   + SR_73_MSN004
+                                   + SR_72_MSN004
+                                   + SR_71_MSN004
+                                   + R_72_PR2_MSN004
+                                   + R_RFS72B_MSN004 }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Constrain outflow from Mendota Pool to equal sum of losses/diversions between
+! Mendota Pool and SJR166 (river forced dry at SJR166)
+goal limitC_MDOTA       { C_MDOTA  < D_SJR180_ARY010 
+                                   - SG_SJR180_818   
+                                   - SG_SJR185_829
+                                   - SG_SJR192_843   
+                                   - SG_SJR198_858 }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Force water in EBP through Mariposa Bypass instead of EBP
+! (this is to match CS2, where all water goes down C587A instead of C587)
+goal limitC_EBP041      { C_EBP041 = 0.0 }
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! IMF --- 
+! CAUSES INTEGER INFEASIBILITY...
+! APPLYING SMALL PENALTY TO D_CAA069_DMC070 ELIMINATES CROSS-FLOW (SIMULTANEOUS CAA->DMC & DMC->CAA)
+
+! Limit simultaneious flow between DMC and CAA at SLUIS
+! (D_DMC070_CAA069 > 0.0 **OR** D_CAA069_DMC070 > 0.0)
+! define int_DMC_CAA       { INTEGER std kind 'INTEGER' units 'NONE' }
+! goal DMC_CAA_force       { D_DMC070_CAA069 < int_DMC_CAA * 99999.  }
+! goal CAA_DMC_force       { D_CAA069_DMC070 < 99999. - int_DMC_CAA*99999.  }
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Fix west-side demands based on allocations allocations
+! (define AW and UD variables as values instead of timeseries)
+! ** FIXED FOR WEST-SIDE PROJECT DEMAND UNITS ONLY!
+! ** FIXED AW ASSUMED TO BE 95% AWO, 5% AWR
+
+define  CLM_Factor      { value 1.00 }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! WBA 50
+
+! AWO = <TimeSeries>
+! AWR = <TimeSeries>
+! AW  = AWO + AWR
+! AWO+AWR ARE NOT IN SV YET...
+/*
+define  AW_50_PA        {std kind 'APPLIED-WATER'         units 'CFS'}         
+define  AWO_50_PA       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_50_PA       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  UD_50_PU        {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+*/
+
+
+! AW  = <Monthly Contract Limit>*<Factor>
+! AWO = 0.95*AW
+! AWR = 0.05*AW
+define  AW_50_PA        { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_50_PAv       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_50_PA *taf_cfs*perdel_cvpag_s }
+define  UD_50_PUv       {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}   ! { value CLM_Factor*CLM_50_PU *taf_cfs*perdel_cvpmi_s }
+define  UD_50_PU        { value UD_50_PUV }
+define  AWO_50_PA       { value AW_50_PAV*0.95 }
+define  AWR_50_PA       { value AW_50_PAV*0.05 }
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! WBA 71
+
+! AWO = <TimeSeries>
+! AWR = <TimeSeries>
+! AW  = AWO + AWR
+/*
+define  AW_71_PA1       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_71_PA1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_71_PA1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_71_PA2       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_71_PA2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_71_PA2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_71_PA3       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_71_PA3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_71_PA3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_71_PA4       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_71_PA4      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_71_PA4      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_71_PA5       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_71_PA5      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_71_PA5      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_71_PA6       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_71_PA6      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_71_PA6      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_71_PA7       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_71_PA7      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_71_PA7      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_71_PA8       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_71_PA8      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_71_PA8      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  UD_71_PU1       {timeseries kind 'URBAN-DEMAND'   units 'TAF' convert 'CFS'}
+define  UD_71_PU2       {timeseries kind 'URBAN-DEMAND'   units 'TAF' convert 'CFS'}
+*/
+
+! AW  = <Monthly Contract Limit>*<Factor>
+! AWO = 0.95*AW
+! AWR = 0.05*AW
+define  AW_71_PA1v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PA1*taf_cfs*perdel_cvpag_s }
+define  AW_71_PA2v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PA2*taf_cfs*perdel_cvpag_s }
+define  AW_71_PA3v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PA3*taf_cfs*perdel_cvpag_s }
+define  AW_71_PA4v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PA4*taf_cfs*perdel_cvpag_s }
+define  AW_71_PA5v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PA5*taf_cfs*perdel_cvpag_s }
+define  AW_71_PA6v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PA6*taf_cfs*perdel_cvpag_s }
+define  AW_71_PA7v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PA7*taf_cfs*perdel_cvpag_s } 
+define  AW_71_PA8v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PA8*taf_cfs*perdel_cvpag_s }
+define  UD_71_PU1v      {timeseries kind 'URBAN-DEMAND'   units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PU1*taf_cfs*perdel_cvpmi_s }
+define  UD_71_PU2v      {timeseries kind 'URBAN-DEMAND'   units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_71_PU2*taf_cfs*perdel_cvpmi_s }
+define  UD_71_PU1       { value UD_71_PU1v }
+define  UD_71_PU2       { value UD_71_PU2v }
+define  AWO_71_PA1      { value AW_71_PA1V*0.95 }
+define  AWR_71_PA1      { value AW_71_PA1V*0.05 }
+define  AWO_71_PA2      { value AW_71_PA2V*0.95 }
+define  AWR_71_PA2      { value AW_71_PA2V*0.05 }
+define  AWO_71_PA3      { value AW_71_PA3V*0.95 }
+define  AWR_71_PA3      { value AW_71_PA3V*0.05 }
+define  AWO_71_PA4      { value AW_71_PA4V*0.95 }
+define  AWR_71_PA4      { value AW_71_PA4V*0.05 }
+define  AWO_71_PA5      { value AW_71_PA5V*0.95 }
+define  AWR_71_PA5      { value AW_71_PA5V*0.05 }
+define  AWO_71_PA6      { value AW_71_PA6V*0.95 }
+define  AWR_71_PA6      { value AW_71_PA6V*0.05 }
+define  AWO_71_PA7      { value AW_71_PA7V*0.95 }
+define  AWR_71_PA7      { value AW_71_PA7V*0.05 }
+define  AWO_71_PA8      { value AW_71_PA8V*0.95 }
+define  AWR_71_PA8      { value AW_71_PA8V*0.05 }
+define  AW_71_PA1       { std kind 'APPLIED-WATER' units 'CFS' }              
+define  AW_71_PA2       { std kind 'APPLIED-WATER' units 'CFS' }              
+define  AW_71_PA3       { std kind 'APPLIED-WATER' units 'CFS' }              
+define  AW_71_PA4       { std kind 'APPLIED-WATER' units 'CFS' }              
+define  AW_71_PA5       { std kind 'APPLIED-WATER' units 'CFS' }              
+define  AW_71_PA6       { std kind 'APPLIED-WATER' units 'CFS' }              
+define  AW_71_PA7       { std kind 'APPLIED-WATER' units 'CFS' }              
+define  AW_71_PA8       { std kind 'APPLIED-WATER' units 'CFS' }              
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! WBA 72
+
+! AWO = <TimeSeries>
+! AWR = <TimeSeries>
+! AW  = AWO + AWR
+/*
+define  AW_72_PA        {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_PA       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_PA       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_72_XA1       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_XA1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_XA1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_72_XA2       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_XA2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_XA2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_72_XA3       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_XA3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_XA3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}  
+
+define  AW_72_PR1       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_PR1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_PR1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWW_72_PR1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_72_PR2       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_PR2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_PR2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWW_72_PR2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}     
+
+define  AW_72_PR3       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_PR3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_PR3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWW_72_PR3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_72_PR4       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_PR4      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_PR4      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWW_72_PR4      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}    
+
+define  AW_72_PR5       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_PR5      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_PR5      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWW_72_PR5      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}   
+
+define  AW_72_PR6       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_72_PR6      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_72_PR6      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWW_72_PR6      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  UD_72_PU        {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}   
+*/
+
+! AW  = <Monthly Contract Limit>*<Factor>
+! AWO = 0.95*AW
+! AWR = 0.05*AW
+define  AW_72_PAv       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_PA *taf_cfs*perdel_cvpag_s }
+define  AW_72_XA1v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_XA1*taf_cfs*perdel_cvpex_s }
+define  AW_72_XA2v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_XA2*taf_cfs*perdel_cvpex_s }
+define  AW_72_XA3v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_XA3*taf_cfs*perdel_cvpex_s }
+define  AW_72_PR1v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_PR1*taf_cfs*perdel_cvprf_s }
+define  AW_72_PR2v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_PR2*taf_cfs*perdel_cvprf_s }
+define  AW_72_PR3v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_PR3*taf_cfs*perdel_cvprf_s }
+define  AW_72_PR4v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_PR4*taf_cfs*perdel_cvprf_s }
+define  AW_72_PR5v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_PR5*taf_cfs*perdel_cvprf_s }
+define  AW_72_PR6v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_PR6*taf_cfs*perdel_cvprf_s }
+define  UD_72_PUv       {timeseries kind 'URBAN-DEMAND'   units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_72_PU *taf_cfs*perdel_cvpmi_s }
+define  UD_72_PU        { value UD_72_PUV}
+define  AWO_72_PA       { value AW_72_PAV *0.95 }
+define  AWR_72_PA       { value AW_72_PAV *0.05 }
+define  AWO_72_XA1      { value AW_72_XA1V*0.95 }
+define  AWR_72_XA1      { value AW_72_XA1V*0.05 }
+define  AWO_72_XA2      { value AW_72_XA2V*0.95 }
+define  AWR_72_XA2      { value AW_72_XA2V*0.05 }
+define  AWO_72_XA3      { value AW_72_XA3V*0.95 }
+define  AWR_72_XA3      { value AW_72_XA3V*0.05 }
+define  AWO_72_PR1      { value 0.0 }
+define  AWR_72_PR1      { value 0.0 }
+define  AWW_72_PR1      { value AW_72_PR1V*1.0  }
+define  AWO_72_PR2      { value 0.0 }
+define  AWR_72_PR2      { value 0.0 }
+define  AWW_72_PR2      { value AW_72_PR2V*1.0  } 
+define  AWO_72_PR3      { value 0.0 }
+define  AWR_72_PR3      { value 0.0 }
+define  AWW_72_PR3      { value AW_72_PR3V*1.0  }
+define  AWO_72_PR4      { value 0.0 }
+define  AWR_72_PR4      { value 0.0 }
+define  AWW_72_PR4      { value AW_72_PR4V*1.0  }
+define  AWO_72_PR5      { value 0.0 }
+define  AWR_72_PR5      { value 0.0 }
+define  AWW_72_PR5      { value AW_72_PR5V*1.0  }
+define  AWO_72_PR6      { value 0.0 }
+define  AWR_72_PR6      { value 0.0 } 
+define  AWW_72_PR6      { value AW_72_PR6V*1.0  }
+define  AW_72_PA        { std kind 'APPLIED-WATER' units 'CFS' }                  
+define  AW_72_XA1       { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_72_XA2       { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_72_XA3       { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_72_PR1       { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_72_PR2       { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_72_PR3       { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_72_PR4       { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_72_PR5       { std kind 'APPLIED-WATER' units 'CFS' }
+define  AW_72_PR6       { std kind 'APPLIED-WATER' units 'CFS' }
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! WBA 73
+
+! AWO = <TimeSeries>
+! AWR = <TimeSeries>
+! AW  = AWO + AWR
+/*
+define  AW_73_PA1       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_73_PA1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_73_PA1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_73_PA2       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_73_PA2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_73_PA2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} 
+
+define  AW_73_PA3       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_73_PA3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_73_PA3      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} 
+
+define  AW_73_XA        {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_73_XA       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_73_XA       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+*/
+
+! AW  = <Monthly Contract Limit>*<Factor>
+! AWO = 0.95*AW
+! AWR = 0.05*AW
+define  AW_73_PA1v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_73_PA1*taf_cfs*perdel_cvpag_s }
+define  AW_73_PA2v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_73_PA2*taf_cfs*perdel_cvpag_s }
+define  AW_73_PA3v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_73_PA3*taf_cfs*perdel_cvpag_s }
+define  AW_73_XAv       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_73_XA *taf_cfs*perdel_cvpex_s }
+define  AWO_73_PA1      { value AW_73_PA1V*0.95 }
+define  AWR_73_PA1      { value AW_73_PA1V*0.05 }
+define  AWO_73_PA2      { value AW_73_PA2V*0.95 }
+define  AWR_73_PA2      { value AW_73_PA2V*0.05 }
+define  AWO_73_PA3      { value AW_73_PA3V*0.95 }
+define  AWR_73_PA3      { value AW_73_PA3V*0.05 }
+define  AWO_73_XA       { value AW_73_XAV *0.95 }
+define  AWR_73_XA       { value AW_73_XAV *0.05 }
+define  AW_73_PA1       { std kind 'APPLIED-WATER' units 'CFS'}                 
+define  AW_73_PA2       { std kind 'APPLIED-WATER' units 'CFS'}                 
+define  AW_73_PA3       { std kind 'APPLIED-WATER' units 'CFS'}                 
+define  AW_73_XA        { std kind 'APPLIED-WATER' units 'CFS'}                 
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+! WBA 90
+
+! AWO = <TimeSeries>
+! AWR = <TimeSeries>
+! AW  = AWO + AWR
+/*
+define  AW_90_PA1       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_90_PA1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_90_PA1      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} 
+
+define  AW_90_PA2       {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_90_PA2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_90_PA2      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  UD_90_PU        {timeseries kind 'URBAN-DEMAND' units 'TAF' convert 'CFS'}
+*/
+
+! AW  = <Monthly Contract Limit>*<Factor>
+! AWO = 0.95*AW
+! AWR = 0.05*AW
+define  AW_90_PA1v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_90_PA1*taf_cfs*perdel_cvpag_s }
+define  AW_90_PA2v      {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_90_PA2*taf_cfs*perdel_cvpag_s }
+define  UD_90_PUv       {timeseries kind 'URBAN-DEMAND'   units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_90_PU *taf_cfs*perdel_cvpmi_s }
+define  UD_90_PU        { value UD_90_PUv }
+define  AWO_90_PA1      { value AW_90_PA1V*0.95 }
+define  AWR_90_PA1      { value AW_90_PA1V*0.05 }
+define  AWO_90_PA2      { value AW_90_PA2V*0.95 }
+define  AWR_90_PA2      { value AW_90_PA2V*0.05 }
+define  AW_90_PA1       { std kind 'APPLIED-WATER' units 'CFS'}                 
+define  AW_90_PA2       { std kind 'APPLIED-WATER' units 'CFS'}                 
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! WBA 91
+
+! AWO = <TimeSeries>
+! AWR = <TimeSeries>
+! AW  = AWO + AWR
+! AWO+AWR ARE NOT IN SV YET...
+/*
+define  AW_91_PA        {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_91_PA       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_91_PA       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+
+define  AW_91_PR        {std kind 'APPLIED-WATER'         units 'CFS'}
+define  AWO_91_PR       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWR_91_PR       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+define  AWW_91_PR       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'}
+*/
+
+! AW  = <Monthly Contract Limit>*<Factor>
+! AWO = 0.95*AW
+! AWR = 0.05*AW
+define  AW_91_PA        { std kind 'APPLIED-WATER' units 'CFS'}
+define  AW_91_PR        { std kind 'APPLIED-WATER' units 'CFS'}
+define  AW_91_PAv       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_91_PA *taf_cfs*perdel_cvpag_s }
+define  AW_91_PRv       {timeseries kind 'APPLIED-WATER'  units 'TAF' convert 'CFS'} ! { value CLM_Factor*CLM_91_PR *taf_cfs*perdel_cvprf_s }
+define  AWO_91_PA       { value AW_91_PAV*0.95 }
+define  AWR_91_PA       { value AW_91_PAV*0.05 }
+define  AWO_91_PR       { value 0.0 }
+define  AWR_91_PR       { value 0.0 }
+define  AWW_91_PR       { value AW_91_PRV*1.0  }
+          
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                         
+! Fix GW pumping to 0.0
+! (force GP to be while fixing demands to allocations...
+!  since demand=allocation, GP should only be needed to make up for losses...
+!  we can fix demands to ~0.75*CLM if needed...)
+
+/*
+goal limitGP_50_PA      { GP_50_PA  = 0.0 }       
+! goal limitGP_50_PU      { GP_50_PU  < DL_50_PU }  
+
+! goal limitGP_64_XA      { GP_64_XA  = 0.0 }       
+
+goal limitGP_71_PA1     { GP_71_PA1 = 0.0 }       
+goal limitGP_71_PA2     { GP_71_PA2 = 0.0 }       
+goal limitGP_71_PA3     { GP_71_PA3 = 0.0 }       
+goal limitGP_71_PA4     { GP_71_PA4 = 0.0 }       
+goal limitGP_71_PA5     { GP_71_PA5 = 0.0 }       
+goal limitGP_71_PA6     { GP_71_PA6 = 0.0 }       
+goal limitGP_71_PA7     { GP_71_PA7 = 0.0 }       
+goal limitGP_71_PA8     { GP_71_PA8 = 0.0 }       
+! goal limitGP_71_PU1     { GP_71_PU1 < DL_71_PU1 } 
+! goal limitGP_71_PU2     { GP_71_PU2 < DL_71_PU2 } 
+
+goal limitGP_72_PA      { GP_72_PA  = 0.0 }       
+goal limitGP_72_PR1     { GP_72_PR1 = 0.0 }       
+goal limitGP_72_PR2     { GP_72_PR2 = 0.0 }       
+goal limitGP_72_PR3     { GP_72_PR3 = 0.0 }       
+goal limitGP_72_PR4     { GP_72_PR4 = 0.0 }       
+goal limitGP_72_PR5     { GP_72_PR5 = 0.0 }       
+goal limitGP_72_PR6     { GP_72_PR6 = 0.0 }       
+goal limitGP_72_XA1     { GP_72_XA1 = 0.0 }       
+goal limitGP_72_XA2     { GP_72_XA2 = 0.0 }       
+! goal limitGP_72_XA3     { GP_72_XA3 = 0.0 }       
+! goal limitGP_72_PU      { GP_72_PU  < DL_72_PU }  
+
+goal limitGP_73_PA1     { GP_73_PA1 = 0.0 }       
+goal limitGP_73_PA2     { GP_73_PA2 = 0.0 }       
+goal limitGP_73_PA3     { GP_73_PA3 = 0.0 }       
+goal limitGP_73_XA      { GP_73_XA  = 0.0 }       
+
+goal limitGP_90_PA1     { GP_90_PA1 = 0.0 }       
+goal limitGP_90_PA2     { GP_90_PA2 = 0.0 }       
+! goal limitGP_90_PU      { GP_90_PU  < DL_90_PU }  
+
+goal limitGP_91_PA      { GP_91_PA  = 0.0 }       
+goal limitGP_91_PR      { GP_91_PR  = 0.0 }       
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! TEMPORARY DEBUGGING...
+! FIX VALUES TO ISOLATE PROBLEM...
+! (force water into SLUIS by limiting flows out wasteways, out of domain)
+
+! Fix wasteway flows to zero/returns...
+! (limit flow through FBW, NMW, WWW...
+!  why are we losing water to lower SJR through wasteways -- is this just a release valve? 
+!  why is water moving through WWW to SJR instead of through MDOTA -- this is probably OK, but not consistent with ops)
+! goal limitC_WWW001         { C_WWW001       < R_71_PA3_WWW001 }
+! goal limitC_NMW004         { C_NMW004       < R_RFS71C_NMW004 }
+! goal limitC_FBW001         { C_FBW001       = 0.0 }
+! goal limitC_VLW008         { C_VLW008       = 0.0 }
+
+
+! Fix deliveries from SJR to zero
+! goal limitD_SJR062_50_PA  { D_SJR062_50_PA  = 0.0}
+! goal limitD_SJR082_71_PA2 { D_SJR082_71_PA2 = 0.0}
+! goal limitD_SJR096_71_PA4 { D_SJR096_71_PA4 = 0.0}
+
+
+! Fix connection between DMC and XCC to zero (push water through MDOTA)
+! goal limitD_DMC076_XCC043 { D_DMC076_XCC043 = 0.0 }
+
+
+! Limit diversions down XCC to sum of XCC diversions
+! (set diversion from MDOTA less than sum of deliveries off of XCC)
+! goal limitD_MDOTA_XCC010  { D_MDOTA_XCC010  < D_XCC010_72_XA2 + D_XCC025_72_PA  + D_XCC025_72_PR6
+!                                             + D_XCC033_72_PR4 + D_XCC033_72_PR2 + D_XCC054_72_PR5
+!                                             + D_XCC054_72_XA3 }
+                            
+! Limit flow lost down SJR out of domain
+! (set diversion from MDOTA to SJR less than remaining losses/diversions in domain)
+! (OR set SJR180 to zero, which eliminates flow out of the domain via SJR)
+! (*** THESE MUST BE TEMPORARY ***)
+! goal limitC_MDOTA         { C_MDOTA         < D_SJR180_ARY010 - SG_SJR180_818   - SG_SJR185_829
+!                                             - SG_SJR192_843   - SG_SJR198_858 }
+
+

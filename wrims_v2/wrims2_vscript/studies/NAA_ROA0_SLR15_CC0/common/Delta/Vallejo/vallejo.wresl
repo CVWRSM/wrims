@@ -1,0 +1,5 @@
+! This file defines the demand for Vallejo in the delta.
+
+define demand_D403A {select demand from demand where D_arc=403.1,month=month}
+
+goal SetDiv403A {D403A < demand_d403A*taf_cfs}

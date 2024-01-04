@@ -1,0 +1,223 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnvnnnnnvvnvnnnnvnnnnnnnnnnvnnnvnnvnnnnnnnnvvnnnvnvvnvnnnnnnnnnnnnnnnn
+
+U system.finalization_implementation%b  s-finimp.adb  21ce43e5 OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.restrictions%s	s-restri.adb		s-restri.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+
+U system.finalization_implementation%s  s-finimp.ads  c92bd850 EB EE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.streams%s		a-stream.ads		a-stream.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_conversion%s
+W system%s		system.ads		system.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+W system.stream_attributes%s  s-stratt.adb	s-stratt.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finimp.adb		20090409150020 b6211bf4
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-restri.ads		20091130110856 ed2f1d3a
+D s-rident.ads		20090409150020 e38f8060
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 8|32r6 47r39 9|32r6 33r6 41r8 55r10 76r28 79r45 341r9 387r17
+. 395r21 443r19
+X 2 a-except.ads
+55K13*Exceptions 370e19 9|32w10 41r12
+63P9*Exception_Id(17|122R9) 9|336r15 343r12
+66p4*Null_Id{63P9} 9|343r28
+68R9*Exception_Occurrence 332e14 9|57r51 70r20 503r20
+71P9*Exception_Occurrence_Access(68R9) 9|341r35
+X 4 a-tags.ads
+39K13*Tags 569e13 9|33w10 76r32 79r49 387r21 395r25
+43P9*Tag(226A12) 9|76r37 79r54 387r26
+70V13*Parent_Tag{43P9} 9|395r30
+223P9 Prim_Ptr
+224A9 Address_Array(223P9)<integer>
+226A12 Dispatch_Table{224A9}<integer>
+X 5 a-unccon.ads
+17+9 Source 8|48r7
+18+9 Target 8|48r33
+20v14*Unchecked_Conversion 8|32w10 47r43 9|55r14 341r13 443r23
+X 6 system.ads
+37K9*System 197e11 8|34r6 35r6 37r9 40r24 41r24 48r17 114r11 142r23 158r5
+. 9|35r6 37r6 39r14 42r8 44r24 83r40 236r11 352r10 386r40 540r5
+64M9*Address 8|48r24 114r18 142r30 9|55r36 79r32 83r47 236r18 386r47 423r34
+. 434r43 443r45
+68N4*Storage_Unit 9|429r49 433r49
+X 8 s-finimp.ads
+37K16*Finalization_Implementation 6|37k9 8|158l12 158e39 9|39b21 540l12 540t39
+40K12*SSE=40:31 51r60 9|46r13 76r49 80r13 94r29 388r17 429r29 431r37 433r29
+41K12*SFR=41:31 48r43 50r47 62r24 70r24 71r24 85r43 92r21 102r33 105r42 113r18
+. 129r42 130r11 154r51 9|235r18 239r29 473r21
+47V13*To_Finalizable_Ptr[5|20]{10|42P9} 51r40 9|112r20 239r52 387r33
+50p4*Collection_Finalization_Started{10|42P9} 9|184r17
+62p4*Global_Final_List{10|42P9} 9|324r22
+66U14*Finalize_Global_List 9|302b14 325l8 325t28 539r32
+69U14*Attach_To_Final_List 70=7 71=7 72>7 9|162b14 228l8 228t28 244r10 250r10
+. 487r7
+70p7 L{10|42P9} 9|163b7 171r22 172m10 184r13 191r28 192r28 193r13 194r13
+. 217r23 218m13
+71c7 Obj{10|56C12} 9|164b7 171m10 172m22 191m13 192m13 193m28 194m28 210m36
+. 218m18 225m10 226m10
+72i7 Nb_Link{short_short_integer} 9|165b7 170r10 179r13 208r13 224r13 487r47
+85P9*Finalizable_Ptr_Ptr(10|42P9) 93r14 9|474r14
+91U14*Move_Final_List 92=7 93>7 9|472b14 494l8 494t23
+92p7 From{10|42P9} 9|473b7 487r37 491m7
+93p7 To{85P9} 9|474b7 487r29
+102U14*Finalize_List 102>29 9|295r7 324r7 331b14 368l8 368t21
+102p29 L{10|42P9} 9|331b29 332r30
+105U14*Finalize_One 105=28 9|374b14 380l8 380t20
+105c28 Obj{10|56C12} 9|374b28 376m31 377m17
+112U14*Deep_Tag_Attach 113=7 114>7 115>7 9|234b14 252l8 252t23
+113p7 L{10|42P9} 9|235b7 244m32 250m32
+114m7 A{6|64M9} 9|236b7 239r72 240r60
+115i7 B{short_short_integer} 9|237b7 244r51 250r42
+129R9*Limited_Record_Controller<10|53R9> 131e14 133P25 133r53 136P25 136r51
+. 141r11 9|293r51 456r23 10|60p14
+130p7*F{10|42P9} 9|126m20 138r28 139m14 295r29
+133U25*Initialize<10|58p14> 133=37 9|455b25 461l8 461t18
+133r37 Object{129R9} 9|456b7 458r29
+136U25*Finalize<10|59p14> 136=35 9|154r10 293b25 296l8 296t16
+136r35 Object{129R9} 9|293b35 295r22
+140R9*Record_Controller<129R9> 136P25 143e17 145P25 145r53 148P25 148r49
+. 9|52r30 91r49 463r53
+142m10*My_Address{6|64M9} 9|95r29 145m14 465m14
+145U25*Initialize<133p25> 145=37 9|463b25 466l8 466t18
+145r37 Object{140R9} 9|463b37 465m7 465m28
+148U25*Adjust<10|60p14> 148=33 9|91b25 156l8 156t14
+148r33 Object{140R9} 9|91b33 95r22 95m42 126m13 138r21 139m7 145m7 145m28
+. 154m20
+154U14*Detach_From_Final_List 154=38 9|262b14 287l8 287t30 376r7
+154c38 Obj{10|56C12} 9|262b38 269r10 269r36 271r10 271r14 271r27 272r10 272r14
+. 272r27 277m10 278m10
+X 9 s-finimp.adb
+44K12 SSL=44:31 190r13 195r13 199r16 270r10 280r10 285r10 323r7 353r23 481r7
+. 493r7 539r4
+52P9 RC_Ptr(8|140R9) 55r45 83r63 240r29 386r63
+54V13 To_RC_Ptr[5|20]{52P9} 407r17 446r20
+57U14 Raise_From_Controlled_Operation 57>47 59b<ada,ada__exceptions__raise_from_controlled_operation>12
+. 61r22 532r10
+57r47 X{2|68R9}
+67U14 Raise_From_Finalize 68>7 69>7 70>7 364r10 379r30 500b14 534l8 534t27
+68p7 L{10|42P9} 501b7 505r30
+69b7 From_Abort{boolean} 502b7 524r10
+70r7 E_Occ{2|68R9} 503b7 532r43
+76V13 RC_Offset{18|54I9} 76>24 77b<ada,ada__tags__get_rc_offset>24 388r39
+. 396r21
+76p24 T{4|43P9}
+79V13 Parent_Size{18|62I12} 79>26 79>41 81b<ada,ada__tags__parent_size>24
+. 432r27
+79m26 Obj{6|64M9}
+79p41 T{4|43P9}
+83V13 Get_Deep_Controller{52P9} 83>34 240r39 386b13 449l8 449t27
+83m34 Obj{6|64M9} 386b34 387r53 407r28 432r40 446m43
+93p7 First_Comp{10|42P9} 138m7 140m19 141r23
+94i7 My_Offset{18|54I9} 112r56
+97U17 Ptr_Adjust 97=29 109b17 114l11 114t21 123r13 140r7
+97p29 Ptr{10|42P9} 109b29 111r13 112m13 112r49
+100U17 Reverse_Adjust 100>33 120b17 124r13 128l11 128t25 141r7
+100p33 P{10|42P9} 120b33 122r13 123r25 124r29 125r21 126r25
+189q10 Locked_Processing 201l14 201e31
+210p13 P{10|42P9} 213r19 214m16 214r21 217r13
+239p7 V{10|42P9} 249r10 250r35
+240p7 Controller{52P9} 243r10 244r35
+332p7 P{10|42P9} 356r13 357r15 358r20 359m10
+333p7 Q{10|42P9} 357m10 359r15 365r12
+335R12 Fake_Exception_Occurence 337e17 338r30
+336p10 Id{2|63P9} 353r50
+338P12 Ptr(335R12) 341r64
+340V16 To_Ptr[5|20]{338P12} 353r15
+343p7 X{2|63P9} 353m10 366r12
+363r12 E_Occ{2|68R9} 367r12
+379r12 E_Occ{2|68R9} 379r64
+387p7 The_Tag{4|43P9} 388r50 395m10 395r42 396r32 432r45
+388i7 Offset{18|54I9} 394r13 396m10 401r10 406r13 407r34
+422R18 Faked_Record_Controller 424e23 438r29
+423m16 Tag{6|64M9}
+423m21 Prec{6|64M9}
+423m27 Next{6|64M9}
+429N13 D 432r56
+431A18 Parent_Type<18|70A9><18|54I9> 434r17 437r25
+436R18 Faked_Type_Of_Obj 439e23 441r40
+437a16 Parent{431A18}
+438r16 Controller{422R18} 446m48
+441P18 Obj_Ptr(436R18) 443r54
+442V22 To_Obj_Ptr[5|20]{441P18} 446r31
+505p7 P{10|42P9} 512r13 513r15 516r23 521m10
+506p7 Q{10|42P9} 513m10 521r15
+X 10 s-finroo.ads
+37K16*Finalization_Root 8|35w13 41r31 9|42r15 10|85e29
+40R9*Root_Controlled 8|129r46
+42P9*Finalizable_Ptr(53R9) 8|48r47 50r51 62r28 70r28 85r47 92r25 102r37 113r22
+. 130r15 9|68r20 93r20 97r42 100r37 109r42 120r37 163r24 210r17 235r22 239r33
+. 331r33 332r11 333r11 473r25 501r20 505r11 506r11
+47V13*To_Addr[5|20]{6|64M9} 9|112r40
+54p7*Prev{42P9} 9|192m17 192r35 193m20 225m14 269r40 271m19 271r31 272r14
+. 278m14
+54p13*Next{42P9} 9|123m27 124r31 171m14 191m17 191r30 192r30 193r15 194m15
+. 213r21 214r23 217m15 226m14 269r14 271r14 272m19 272r31 277m14 357r17 513r17
+56C12*Finalizable<53R9> 8|71r28 105r46 154r55 9|164r24 249r19 262r51 374r42
+59U14*Finalize 9|358R10 377R7 516R13
+60U14*Adjust 9|125R13
+X 12 s-restri.ads
+45K16*Restrictions 9|37w13 352r17 12|73e24
+61V13*Abort_Allowed{boolean} 9|352r30
+X 15 s-soflin.ads
+45K16*Soft_Links 9|35w13 44r31 15|397e22
+60P9*No_Param_Proc
+80P9*Get_EOA_Call(2|71P9)
+167p4*Abort_Defer{60P9} 9|323r11 481r11
+171p4*Abort_Undefer{60P9} 9|493r11
+185p4*Lock_Task{60P9} 9|190r17 270r14
+195p4*Unlock_Task{60P9} 9|195r17 199r20 280r14 285r14
+224p4*Finalize_Global_List{60P9} 9|539m8
+247p4*Get_Current_Excep{80P9} 9|353r27
+X 17 s-stalib.ads
+122R9*Exception_Data
+X 18 s-stoele.ads
+42K16*Storage_Elements 8|34w13 40r31 18|117e28
+54I9*Storage_Offset<integer> 9|46r17 76r53 94r33 388r21 429r33 433r33
+62I12*Storage_Count{54I9} 9|80r17
+64M9*Storage_Element
+70A9*Storage_Array(64M9)<54I9> 9|431r41
+76V13*"+"{6|64M9} 9|407r32
+86V13*"-"{6|64M9} 9|112r54
+91V13*"-"{54I9} 9|95r40
+107V13*To_Address{6|64M9} 8|51r64
+

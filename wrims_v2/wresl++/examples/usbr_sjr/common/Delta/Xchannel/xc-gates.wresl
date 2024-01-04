@@ -1,0 +1,51 @@
+! E. Reyes 7/2/98
+! A. Munevar 11/20/99
+
+!Cross Channel Code
+
+/*
+The flow through the Delta cross channel and Georgianna Slough are given by:
+
+    DXC & Georg. Sl. Flow = (a * Sac Flow) + b
+        where a = 0.293 , b = 2090 cfs ==> OPEN GATE POSITION
+        where a = 0.133 , b = 829 cfs  ==> CLOSED GATE POSITION
+
+ We can break the equation into individual components that will give the same result:
+
+  Georgianna Sl. Flow           = 0.133*Qsac + 829  ==> OPEN OR CLOSED GATE POSITION
+  DXC Flow                              = 0.160*Qsac + 1261 ==> OPEN GATE POSITION
+  DXC Flow                              = 0.0               ==> CLOSED GATE POSITION
+*/
+
+
+! Georgiana Sl. component is always this equation
+goal GeorgSlough {C_SAC029B = 0.133*C_SAC041 + 829.0}
+
+! Number of days in each month that the DXC gate is open
+define numberofdaysopen {select days_open from xchanneldays where month=month}
+
+! Fraction of month gates are open
+define fract_open     {value   numberofdaysopen/daysin}
+define fract_open_    {alias fract_open kind 'DXC-FRACT-OPEN' UNITS 'NONE'}  !for output only
+
+! ######### Sac Flow Closure ###############
+! Sac flow at which gates will be closed
+define SAC_threshold  { value 25000.0} ! units =cfs
+
+! The following variables are zero or one if their corresponding condition is false or true, respectively
+define int_SAC_below  {INTEGER std kind 'INTEGER' units 'NONE'}                  ! 0: high flow; 1:  low flow
+define int_SAC_above  {alias 1. - int_SAC_below kind 'INTEGER' units 'NONE'}     ! 1: high flow; 0:  low flow
+define SAC_above      {std kind 'FLOW-SAC-ABV' units 'CFS'}      ! zero if C_SAC041 < threshold
+define SAC_below      {std kind 'FLOW-SAC-BEL' units 'CFS'}      ! zero if C_SAC041 > threshold
+define SAC_max        {value 99999.*taf_cfs} ! over 1,600,000 cfs (plenty big)
+
+! following constraints allow only one of the two flow variables to be positive
+goal SAC_flood_flow   {SAC_above - SAC_below = C_SAC041 - SAC_threshold }
+goal SAC_abv_force    {SAC_above < int_SAC_above * SAC_max}
+goal SAC_bel_force    {SAC_below < int_SAC_below * SAC_max}
+
+
+! Gate open and closure equations with the automatic Sac closure
+goal open_cond_flow   {D_SAC030_MOK014 = 0.160*SAC_threshold*int_SAC_below*fract_open - 0.160*SAC_below*fract_open + int_SAC_below*1261.0*fract_open }
+
+GOAL HELP_INTEGER {LHS C_SAC029A RHS 0.0 LHS>RHS PENALTY 0.000001}

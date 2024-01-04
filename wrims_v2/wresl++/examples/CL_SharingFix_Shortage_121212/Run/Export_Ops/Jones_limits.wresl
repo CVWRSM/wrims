@@ -1,0 +1,14 @@
+/*************************************
+Jones_limits.wresl
+ 
+Nazrul Islam DWR (04/27/2010)
+
+ This is the permit export capacity and physical capacity for Jones.
+
+**************************************/
+
+! Jones Permitted Pumping Amount
+define JonesCapPermit {select PermitCap from JonesLimits where month=month}
+
+! Jones Physical Capactiy
+define JonesCapPhys {select PhysCap from JonesLimits where month=month }

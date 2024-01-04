@@ -1,0 +1,24 @@
+
+goal meetCH {
+  lhs D409
+  case NoSalinityControlPossible{
+    condition abs(CH_m_sv) <= 0.001 .and. int(CH_b_sv) == 0
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case NegSlope{
+    condition CH_m_sv <= 0.0
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case HighCost{
+    condition CH_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  /*case NegCarriage{
+    condition abs(CH_m_sv) >= 1.0
+    rhs 999999.
+    lhs<rhs penalty 0}*/
+  case Normal {
+    condition always
+    rhs CH_m_sv*c400_ANN + CH_m_sv*c157 + CH_b_sv
+    lhs<rhs penalty 0}
+}

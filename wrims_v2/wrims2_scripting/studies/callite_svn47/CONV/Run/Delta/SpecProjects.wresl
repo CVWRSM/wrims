@@ -1,0 +1,32 @@
+/************************************
+SpecProjects.wresl
+
+Hao Xie DWR 5/16/2010
+
+Delta demand from special projects
+************************************/
+
+!******************************************************************************
+! City of Antioch - Pre-1914 water rights
+! When Antioch's water intake at Rodger's Point gets too salty, the city purchases water from CCWD instead.
+! A California Supreme Court decision required the State to ensure that Antioch had fresh water at its intake.
+! The State and federal governments reimburse Antioch about 2/3rds of the cost of purchasing the CCWD water.
+! For modeling, it is assumed that the Pre-1914 water is diverted when Rock Slough is below the 150 mg/l Cl- standard.
+
+define Antioch_demand {        ! TAF/mon
+    case goodWQ {
+        condition WQ408_RS <= 150.
+        value 25. * cfs_taf }
+    case Other {
+        condition always
+        value 0. }
+}
+goal set_D_Antioch_NP { D_Antioch_NP < Antioch_demand * taf_cfs}
+
+
+! Fairfield, Vacaville and Benecia Agreement for Settlement Water
+define FVB_demand { value 2.635 }  ! TAF/mon
+!Limit Diversions for FVB Settlement Water to times when the system is in UWFE Condition
+!Also weighted such that excess flow conditions in the Delta need to occur
+goal set_D_FVB { D_FVB < FVB_demand * int_IBU_UWFE * taf_cfs}
+

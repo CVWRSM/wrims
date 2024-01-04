@@ -1,0 +1,2380 @@
+/*
+
+Copyright (C) 1998, 2000 State of California, Department of Water Resources.
+
+This program is licensed to you under the terms of the GNU General Public
+License, version 2, as published by the Free Software Foundation.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, contact Dr. Sushil Arora, below, or the
+Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+THIS SOFTWARE AND DOCUMENTATION ARE PROVIDED BY THE CALIFORNIA DEPARTMENT
+OF WATER RESOURCES AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE CALIFORNIA DEPARTMENT OF WATER RESOURCES OR ITS
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OR SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+For more information, contact:
+
+Dr. Sushil Arora
+California Dept. of Water Resources
+Office of State Water Project Planning, Hydrology and Operations Section
+1416 Ninth Street
+Sacramento, CA  95814
+916-653-7921
+sushil@water.ca.gov
+
+*/
+
+
+options {
+  DEBUG_PARSER = false;  DEBUG_TOKEN_MANAGER = false;
+  IGNORE_CASE = true;
+  STATIC = false;
+}
+
+PARSER_BEGIN(WreslParser)
+
+package calsim.wreslcoder.wresl;
+import java.util.*;
+import java.io.*;
+//import calsim.wreslcoder.wresl.*;
+
+/**
+ *	WreslParser class for Calsim. Contains the entire WRESL language definition.
+ * @author Armin Munevar
+ * @version $Id: wresl.jj,v 1.1.2.17.2.1 2002/05/02 01:06:28 adraper Exp $
+ */
+public class WreslParser {
+  public static String version = new String("Wresl Parser Version 0.97");
+  static java.io.PrintWriter goals, defines, globalDefines, weights, dssInit, externals, externalsLib;
+  static java.io.PrintWriter globalCodeSelect, globalDssInit, globalExternals, globalExternalsLib;
+  static java.io.PrintWriter _controlDefines, localDefines;
+  static ReportWriter svReport;
+//  static InitSVWriter initSVReport;
+//  static DumpSVWriter dumpSVReport;
+  static ReservedWords reservedList;	// predefined variables
+  static UniqueList tableDefList;   	// stores rdbms table names
+  static UniqueList tagList;   				// stores goal names
+
+  // GLOBAL lists
+  static UniqueList valueDefList;   	// stores names of value variables
+  static UniqueList tsDefList;   			// stores names of timeseries variables
+  static UniqueList dvarList;   			// stores names of decision variables
+  static UniqueList dllList;
+
+  // LOCAL lists
+  static UniqueList valueDefLocalList;   	// stores names of value variables
+  static UniqueList tsDefLocalList;   			// stores names of timeseries variables
+  static UniqueList dvarLocalList;   			// stores names of decision variables
+
+  static Hashtable fileList;
+  static Hashtable tsParamList;
+  static Hashtable externalList;
+  static Hashtable sequenceList;
+  static Hashtable seqConditionList;
+  static Hashtable goalLocalList;
+  static Hashtable includeLocalList;
+
+  static PrintWriter logger;
+  static String rootDirectory;
+  
+  public static File _lastFileParsed; // CB added
+
+  public int includeLevel = 0; // for printing indents only
+  private File parserInputPath;
+  static String _currentModel;
+  static Integer _currentOrder;
+  static String _currentOrderString;
+  static String _currentIncludeFile = " ";
+  static boolean  _fileIsLocal = false;
+  private int _numberCycles = 1;
+  private boolean condIsAlways = false;
+  private static boolean _hideWarnings;        // CB added
+  private static boolean _hideProgressDetails; // CB added
+  
+//  private static Hashtable _doublePrecisionHashtable; // CB added for double precision
+  private static boolean _isInDoublePrecisionRoutine = false;  // CB added for double precision
+  private static boolean _isInParenthesizedIdentifierRoutine = false;  // CB added to prevent double precision inside parentheses
+  private static int _ParenthesizedIdentifierNestingCount = 0;
+  private static boolean _isInLookupRDBDefRoutine = false; // CB added to prevent double precision for table lookup parameters
+  private static boolean _isInExternalCall = false; // CB added to insure doubles are cast to int if an integer number is an arg to an external routine
+  private static boolean _isInINTIntrinsic = false; // CB added to NOT allow real(int(XXXXX), 4) of integers parameters of external functions
+  private static boolean _isDoublePrecisionANN = true;
+
+  /**
+   *  Initializes parameters for a new parse
+   */
+  public static void initParameters(String objPath, PrintWriter logStream, 
+  	boolean hideWarnings, boolean hideProgressDetails) 
+    throws IOException {
+    logger = logStream;
+    rootDirectory = objPath;
+    _hideWarnings = hideWarnings;
+    _hideProgressDetails = hideProgressDetails;
+    reset();
+  }
+  
+  /**
+   *
+   */
+  public int getNumberOfWreslCycles() {
+    return _numberCycles;
+  }
+
+  /**
+   *  Initializes the sequence output files
+   */
+  public static void initOutput(String seqNumber,int ncycles) throws IOException {
+    FileWriter goalsFile, definesFile, weightsFile, localDefinesFile;
+
+    goalsFile = new FileWriter(rootDirectory + "\\goals"+seqNumber+".txt");
+    definesFile = new FileWriter(rootDirectory + "\\defines"+seqNumber+".txt");
+    weightsFile = new FileWriter(rootDirectory + "\\weights"+seqNumber+".txt");
+    localDefinesFile = new FileWriter(rootDirectory + "\\deflocal.txt");
+
+    defines = new PrintWriter(new BufferedWriter(definesFile));
+    goals = new PrintWriter(new BufferedWriter(goalsFile));
+    weights = new PrintWriter(new BufferedWriter(weightsFile));
+    localDefines = new PrintWriter(new BufferedWriter(localDefinesFile), false);
+    resetDefs(ncycles);
+  }
+
+  /**
+   *  Writes out all defines and resets the defines local lists
+   */
+  public static void resetDefs(int ncycles) throws IOException {
+    valueDefLocalList.removeAllElements();
+    tsDefLocalList.removeAllElements();
+    dvarLocalList.removeAllElements();
+  }
+
+  /**
+   *  Opens global files which will contain the sub-files for each sequence
+   */
+  public static void openGlobalFiles() throws IOException {
+    FileWriter globalCodeSelectFile, globalDefinesFile, globalDssInitFile, globalStateReportFile,
+      globalExternalsFile, globalExternalsLibFile;
+
+    globalCodeSelectFile = new FileWriter(rootDirectory + "\\code.f90");
+    globalDefinesFile = new FileWriter(rootDirectory + "\\defines00.txt");
+    globalDssInitFile = new FileWriter(rootDirectory + "\\dss_init.f90");
+    globalExternalsFile = new FileWriter(rootDirectory + "\\externals.rsp");
+    globalExternalsLibFile = new FileWriter(rootDirectory + "\\externalsLib.rsp");
+
+    globalCodeSelect = new PrintWriter(new BufferedWriter(globalCodeSelectFile));
+    globalDefines = new PrintWriter(new BufferedWriter(globalDefinesFile), false);
+    globalDssInit = new PrintWriter(new BufferedWriter(globalDssInitFile));
+    globalExternals = new PrintWriter(new BufferedWriter(globalExternalsFile));
+    globalExternalsLib = new PrintWriter(new BufferedWriter(globalExternalsLibFile));
+
+//    FileWriter initSVReportFile = new FileWriter(rootDirectory + "\\init_reader.f90");
+//    initSVReport = new InitSVWriter(new PrintWriter(new BufferedWriter(initSVReportFile)));
+//    FileWriter dumpSVReportFile = new FileWriter(rootDirectory + "\\dump_writer.f90");
+//    dumpSVReport = new DumpSVWriter(new PrintWriter(new BufferedWriter(dumpSVReportFile)));
+    FileWriter svReportFile = new FileWriter(rootDirectory + "\\report_writer.f90");
+    svReport = new ReportWriter(new PrintWriter(new BufferedWriter(svReportFile)));
+  }
+
+  /**
+   *  Begins the global code and report_writer file statements
+   */
+  public static void beginGlobalCode() {
+    globalCodeSelect.println("SUBROUTINE CODE(number,needToSimulate,p)");
+    globalCodeSelect.println(" ");
+    globalCodeSelect.println("USE GLOBAL");
+    globalCodeSelect.println("IMPLICIT NONE");
+    globalCodeSelect.println("INTEGER :: number, p");
+    globalCodeSelect.println("LOGICAL, INTENT(INOUT) :: needToSimulate");
+    globalCodeSelect.println("INTEGER :: goal_count = 1");
+    globalCodeSelect.println("EXTERNAL CODE00");
+
+    beginDssInitializer();
+  }
+
+  /**
+   *  Adds external statements to the global code file
+   */
+  public static void externalGlobalCode(String number) {
+    globalCodeSelect.println("EXTERNAL CODE"+number);
+  }
+
+  /**
+   *  Adds conditional statements to the global code and report_writer files
+   */
+  public static void conditionGlobalCode(String number, String cond) {
+    globalCodeSelect.println("IF (number=="+number+") needToSimulate="+cond);
+    globalCodeSelect.println("IF (number=="+number+".and.("+cond+")) CALL CODE"+number+"(p, goal_count)");
+  }
+
+  /**
+   *  Ends the global code and report_writer file statements and closes files
+   */
+  public static void endGlobalCode() {
+    globalCodeSelect.println("IF (number==0) THEN");
+    globalCodeSelect.println("	CALL CODE00(p)");
+    globalCodeSelect.println("	goal_count = 1");
+    globalCodeSelect.println("END IF");
+    globalCodeSelect.println("END SUBROUTINE");
+    globalCodeSelect.close();
+
+    globalDefines.close();
+
+    endDssInitializer();
+
+    globalExternals.close();
+    globalExternalsLib.close();
+    //
+//    initSVReport.close();
+//    dumpSVReport.close();
+    svReport.close();
+  }
+
+  /**
+   *  Initializes and resets the symbol tables.
+   */
+  private static void reset() {
+    tagList = new UniqueList();   // stores goal names
+    tableDefList = new UniqueList();   // stores rdbms table definition names
+    valueDefList = new UniqueList();   // stores value definition names
+    valueDefLocalList = new UniqueList();   // stores value definition names
+    tsDefList = new UniqueList();   // stores value definition names
+    tsDefLocalList = new UniqueList();   // stores value definition names
+    dvarList = new UniqueList();   // stores names of decision variables
+    dllList = new UniqueList();  // stores names of imported dll's
+    dvarLocalList = new UniqueList();   // stores names of decision variables
+    reservedList = new ReservedWords();    // predefined variables
+    fileList = new Hashtable(10);
+    tsParamList = new Hashtable();
+    externalList = new Hashtable();
+    sequenceList = new Hashtable();
+    seqConditionList = new Hashtable();
+    goalLocalList = new Hashtable();
+    includeLocalList = new Hashtable();
+  }
+
+  /**
+   *  Writes the define statements for global and local variables at the current sequence
+   */
+  public static void writeOutput() throws IOException {
+    FileWriter localDefinesFile;
+    String line = new String();
+    localDefines.close();
+    BufferedReader fin1 = new BufferedReader(new FileReader(rootDirectory + "\\deflocal.txt"));
+    line = fin1.readLine();
+    while (line!=null) {
+      defines.println( line );
+      line = fin1.readLine();
+    }
+    fin1.close();
+    new File(rootDirectory,"\\deflocal.txt").delete();
+    localDefinesFile = new FileWriter(rootDirectory + "\\deflocal.txt");
+    localDefines = new PrintWriter(new BufferedWriter(localDefinesFile));
+    return;
+  }
+
+  /**
+   *  Closes all files, and also produces the state variable report writer
+   *  subroutine. Merges the global and local defines for the current sequence.
+   */
+  public static void closeOutput(int ncycles) throws IOException {
+//    String line = new String();
+    UniqueList mergeDefList = new UniqueList();
+//    String f = new String();
+
+/*CB    defines.close();
+    weights.close();
+    goals.close();
+    globalDefines.flush();
+    localDefines.close();
+*/
+    closeLocalFiles();
+
+    for (Enumeration e = valueDefList.elements() ; e.hasMoreElements() ;) {
+      mergeDefList.newItem(e.nextElement());
+    }
+
+    for (Enumeration e = valueDefLocalList.elements() ; e.hasMoreElements() ;) {
+      mergeDefList.newItem(e.nextElement());
+    }
+    //
+    svReport.mkReport(valueDefLocalList,_currentOrder.intValue());
+//    initSVReport.mkReport(valueDefLocalList,_currentOrder.intValue());
+//    dumpSVReport.mkReport(valueDefLocalList,_currentOrder.intValue());
+    if ( _currentOrder.intValue() == ncycles) {
+      svReport.mkReport(valueDefList,0);
+//      initSVReport.mkReport(valueDefList,0);
+//      dumpSVReport.mkReport(valueDefList,0);
+    }
+    return;
+  }
+  
+  public static void closeLocalFiles() {
+    defines.close();
+    weights.close();
+    goals.close();
+    globalDefines.flush();
+    localDefines.close();
+  }
+
+  public static void closeAllFiles() {
+    defines.close();
+    weights.close();
+    goals.close();
+    globalDefines.close();
+    weights.close();
+    localDefines.close();
+    if (dssInit != null) dssInit.close();
+    if (externals != null) externals.close();
+    if (externalsLib != null) externalsLib.close();
+    if (globalCodeSelect != null) globalCodeSelect.close();
+    if (globalDssInit != null) globalDssInit.close();
+    if (globalExternals != null) globalExternals.close();
+    if (globalExternals != null) globalExternalsLib.close();
+  }  
+
+  /**
+   *  Writes the sole condition term for the define and goal .txt files
+   */
+  private void soleCondition(PrintWriter s) {
+    s.println("1                SoleCondition");
+    s.println("always");
+  }
+
+  /**
+   *  Writes the no more case term for the define and goal .txt files
+   */
+  private void noMoreCases(PrintWriter s) {
+    s.println("99999D0            No more cases");
+  }
+
+  /**
+   *  Writes the beginning statements for the DSS init file
+   */
+  private static void beginDssInitializer() {
+    globalDssInit.println("! Automatically generated by WreslParser");
+    globalDssInit.println("subroutine dss_init");
+    globalDssInit.println("use code_utils");
+    globalDssInit.println("call allocateTables");
+  }
+
+  /**
+   *  Writes the ending statements for the DSS init file
+   */
+  private static void endDssInitializer() {
+    int nDvar = dvarList.size();
+    int nTS = tsDefList.size();
+    globalDssInit.println("contains");
+    globalDssInit.println("  subroutine allocateTables");
+    globalDssInit.println("  use code_utils");
+    globalDssInit.println("  call dss_init_tables("+nDvar+","+nTS+")");
+    globalDssInit.println("  end subroutine allocateTables");
+    globalDssInit.println("end subroutine");
+    globalDssInit.close();
+  }
+
+
+  /**
+   * Adds .wresl if not already present in file name
+   *
+   * @param name the Wresl file name
+   * @return if <i>name</i> does not end in <b>.wresl</b>, then
+   * <i>name</i>.wresl, otherwise <i>name</i>
+   */
+  public static String nameWithExtension( String name) {
+    String extension = ".wresl";
+    if (name.toLowerCase().endsWith( extension)) return name;
+    else return name.concat( extension);
+  }
+
+
+  /**
+   *  Handles all the include file info. Starts a new parser for each new file.
+   *	 Keeps track of the include levels.
+   */
+  void includeFile (Token t) throws ParseException {
+    if (includeLevel > 10)  // this is an arbitrary number and may be increased
+      throw wreslError(t, "Hmm.  Including too many files!");
+    String fname = nameWithExtension( t.image.substring(1,t.image.length()-1));
+    File incFile = new File( parserInputPath.getParent(), fname);
+
+    FileInputStream f = null;
+    try {
+      f = new FileInputStream(incFile);
+      _lastFileParsed = incFile;
+      WreslParser include = new WreslParser(f);
+      include.includeLevel = includeLevel + 1;
+      include.identify( incFile);
+      include.CompilationUnit();
+      try { 	// if token error, attempts to go send parser back to StudyUnit to catch error
+	int byt1 = f.read(); // must access a method of f - JAVA bug  (yes)
+	include.StudyUnit();
+      } catch (IOException ie) { // must catch IOException otherwise no error will be caught - JAVA bug
+      }
+    } catch (FileNotFoundException e) {
+      throw wreslError(t, "Can't open include file "
+		       + incFile.getAbsolutePath());
+    } finally {
+      if( f != null) try {
+	f.close();
+      } catch (IOException ie) {
+	// swallow
+      }
+    }
+  }
+
+  /**
+   * Makes string exactly 32 chars long, Fortran-style
+   */
+  StringBuffer make32(String e) {
+    StringBuffer sb = new StringBuffer(e);
+    sb.append("                                ").setLength(32);
+    return sb;
+  }
+
+  /**
+   * Makes a Fortran Double from a string
+   */
+  void makeReal(StringBuffer e) {
+    Double d;
+    try {
+      d = new Double(e.toString());
+    } catch (NumberFormatException nn) {
+      return;
+    }
+    e.setLength(0);
+    e.append(d);
+  }
+
+
+  /**
+   * Identifies the source file to utility portions of the parser.
+   * This is not available to the JavaCC user by
+   * other means because components of ASCII_CharStream are private.
+   * Also, adds its name to a static list of files
+   *    and their modification dates
+   *
+   * @param curFile The name of the file that is input to this parser
+   */
+  public void identify(File curFile) {
+    parserInputPath = curFile;
+    fileList.put( new Long( curFile.lastModified()),curFile.getPath());
+    if (!_hideProgressDetails) {
+       for(int i=0;i<includeLevel;i++) logger.print("    ");
+       logger.println(curFile.getPath() + ":  ");
+    }
+  }
+
+  /**
+   * Retrieves a list of input filenames that are newer than the given one
+   *
+   * @param comparisonFileName A file to compare modification dates against
+   * @return a Vector of Strings naming files that are newer
+   */
+  public Vector newerFiles(String comparisonFileName) {
+    Long comparisonTime = new Long(new File(comparisonFileName).lastModified());
+    Vector newOnes = new Vector();
+    Enumeration listOfTimes = fileList.keys();
+    Long t;
+    while (listOfTimes.hasMoreElements()) {
+      t = (Long) listOfTimes.nextElement();
+      if (t.longValue() > comparisonTime.longValue()) newOnes.addElement(fileList.get(t));
+    }
+    return newOnes;
+  }
+
+  //****************************************************************************
+  //The following methods were added to develop date range logical expressions
+  // ***************************************************************************
+   //Method checkDate inserts a "0" to the front of the date where necessary
+   public String checkDate(String image, int length) {
+
+   	StringBuffer temp = new StringBuffer(image);
+
+   	if (temp.length()==length - 1) {
+   			temp.insert(0,"0");
+   	}
+
+   	return temp.toString();
+   }
+
+   //Method changeToWaterYear converts a calendar year to a wateryear given the
+   //wateryear month index.
+   public int changeToWaterYear(int year, int month) {
+   	if (month >= 1 && month <= 3) {
+   		year++;
+   	}
+   	return year;
+   }
+
+   //Method createMonthRange creates a month range logical expression
+   public String createMonthRange(Token var,String beg, String end) throws ParseException {
+
+   	int begMonth, endMonth;
+   	String e = new String();
+
+     	begMonth	= new Integer(beg).intValue();
+   	endMonth	= new Integer(end).intValue();
+
+   	if (Math.min(begMonth,endMonth) < 1 || Math.max(begMonth,endMonth) > 12) {
+   		throw wreslError(var,"Illegal bounds in month range.");
+   	}
+   	else if (endMonth >= begMonth) {
+   		e =	"(date%month >= " + begMonth + " .and. date%month <= " + endMonth + ")";
+   	}
+   	else {
+   		e =	"(.not. (date%month > " + endMonth + " .and. date%month < " +
+   			begMonth + "))";
+   	}
+
+   	return e;
+   }
+
+   //Method createDayRange creates a day range logical expression
+   public String createDayRange(Token var, String beg, String end) throws ParseException {
+
+   	int begDay, endDay;
+   	String e = new String();
+
+   	begDay	= new Integer(beg).intValue();
+   	endDay	= new Integer(end).intValue();
+
+   	if (Math.min(begDay,endDay) < 1 || Math.max(begDay,endDay) > 31) {
+   		throw wreslError(var,"Illegal bounds in day range.");
+   	}
+   	else if (endDay >= begDay) {
+   		e =	"(date%day >= " + begDay + " .and. date%day <= " + endDay + ")";
+   	}
+   	else {
+   		e =	"(.not. (date%day > " + endDay + " .and. date%day < " + begDay + "))";
+   	}
+
+   	return e;
+   }
+
+   //Method createOrdinaryRange creates a non-time oriented range
+   public String createOrdinaryRange(String var, String beg, String end) {
+
+   	String e = new String();
+
+   	e =	"(" + var + " >= " + beg + " .and. " + var + " <= " + end + ")";
+
+   	return e;
+   }
+
+   //Method createDayMonthRange creates a day-month range logical expression
+   public String createDayMonthRange(String beg, String end) {
+
+   	int begDay, endDay, begMonth, endMonth;
+   	StringBuffer e = new StringBuffer();
+
+   	begDay 		= new Integer(beg.substring(0,2)).intValue();
+   	begMonth	= new Integer(reservedList.fortranExpr(beg.substring(2,5))).intValue();
+
+   	endDay 		= new Integer(end.substring(0,2)).intValue();
+   	endMonth	= new Integer(reservedList.fortranExpr(end.substring(2,5))).intValue();
+
+   	if (endMonth > begMonth) {
+   		e.append("((date%month == " + begMonth + " .and. date%day >= " +
+   			begDay + ") .or. (date%month > " + begMonth +
+   			" .and. date%month < " + endMonth + ") .or. (date%month == " +
+   			endMonth + " .and. date%day <= " + endDay + "))");
+   	}
+   	else if (endMonth == begMonth) {
+   		if (endDay >= begDay) {
+   			e.append("(date%month == " + begMonth + " .and. date%day >= " +
+   			begDay + " .and. date%day <= " + endDay + ")");
+   		}
+   		else {
+   			e.append("(.not. (date%month == " + begMonth + " .and. date%day > " +
+   			endDay + " .and. date%day < " + begDay + "))");
+   		}
+   	}
+   	else {
+   		e.append("(.not. ((date%month == " + endMonth + " .and. date%day > " +
+   			endDay + ") .or. (date%month > " + endMonth +
+   			" .and. date%month < " + begMonth + ") .or. (date%month == " +
+   			begMonth + " .and. date%day < " + begDay + ")))");
+   	}
+
+   	return e.toString();
+   }
+
+   //Method createMonthYearRange creates a month-year range logical expression
+   public String createMonthYearRange(Token t, String beg, String end) throws ParseException {
+
+   	int begYear, endYear, begMonth, endMonth;
+   	StringBuffer e = new StringBuffer();
+
+   	begMonth	= new Integer(reservedList.fortranExpr(beg.substring(0,3))).intValue();
+   	begYear 	= changeToWaterYear(new Integer(beg.substring(3,7)).intValue(),begMonth);
+
+   	endMonth	= new Integer(reservedList.fortranExpr(end.substring(0,3))).intValue();
+   	endYear 	= changeToWaterYear(new Integer(end.substring(3,7)).intValue(),endMonth);
+
+   	if (endYear > begYear) {
+   		e.append("((date%wateryear == " + begYear + " .and. date%month >= " +
+   			begMonth + ") .or. (date%wateryear > " + begYear +
+   			" .and. date%wateryear < " + endYear + ") .or. (date%wateryear == " +
+   			endYear + " .and. date%month <= " + endMonth + "))");
+   	}
+   	else if (endYear == begYear) {
+   		if (endMonth >= begMonth) {
+   			e.append("(date%wateryear == " + begYear + " .and. date%month >= " +
+   			begMonth + " .and. date%month <= " + endMonth + ")");
+   		}
+   		else {
+   			throw wreslError(t,"Illegal date range");
+   		}
+   	}
+   	else {
+   		throw wreslError(t,"Illegal date range");
+   	}
+
+   	return e.toString();
+   }
+
+   //Method createDayMonthYearRange creates a day-month-year range logical expression
+   public String createDayMonthYearRange(Token t, String beg, String end) throws ParseException {
+
+   	int begDay, endDay, begMonth, endMonth, begYear, endYear;
+   	StringBuffer e = new StringBuffer();
+
+   	begDay		= new Integer(beg.substring(0,2)).intValue();
+   	begMonth	= new Integer(reservedList.fortranExpr(beg.substring(2,5))).intValue();
+   	begYear 	= changeToWaterYear(new Integer(beg.substring(5,9)).intValue(),begMonth);
+
+   	endDay 		= new Integer(end.substring(0,2)).intValue();
+   	endMonth	= new Integer(reservedList.fortranExpr(end.substring(2,5))).intValue();
+   	endYear 	= changeToWaterYear(new Integer(end.substring(5,9)).intValue(),endMonth);
+
+   	if (endYear > begYear) {
+   		e.append("((date%wateryear == " + begYear + " .and. " +
+   		"((date%month == " + begMonth + " .and. date%day >= " + begDay +
+   		") .or. date%month > " + begMonth + ")) .or. (date%wateryear > " + begYear +
+   		" .and. date%wateryear < " + endYear + ") .or. (date%wateryear == " + endYear +
+   		" .and. (date%month < " + endMonth + " .or. (date%month == " + endMonth +
+   		" .and. date%day <= " + endDay + "))))");
+   	}
+   	else if (endYear == begYear) {
+   		if (endMonth > begMonth || (endMonth == begMonth && endDay >= begDay)) {
+   			e.append("(date%wateryear == " + begYear + " .and. (" +
+   			createDayMonthRange(beg,end) + "))");
+   		}
+   		else {
+   			throw wreslError(t,"Illegal date range");
+   		}
+   	}
+   	else {
+   		throw wreslError(t,"Illegal date range");
+   	}
+
+   	return e.toString();
+   }
+   //******************************************************************************************
+   //******************************************************************************************
+
+
+  /**
+   * Produces a useful error message.  Includes the line and column number.
+   *
+   * @param t the Token at which the error occurred
+   * @param message A submessage for this error
+   * @return A new ParseException with a useful combination of information
+   *         taken from the arguments supplied to this method
+   */
+  final public ParseException wreslError(Token t, String message) {
+    message = "In file " + parserInputPath.getPath() + ":\n" + message
+      + " at line " + t.beginLine + ", column " + t.beginColumn + ".";
+    return new ParseException(message);
+  }
+
+}
+
+PARSER_END(WreslParser)
+
+
+SKIP : {
+ " "
+|  "\t"
+|  "\n"
+|  "\r"
+}
+
+
+<*> SKIP : {                                                                 // comments
+   <SL_COMMENT: ("//" | "!") (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+|  <ML_COMMENT: "/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/">
+}
+
+
+TOKEN : /* RESERVED WORDS AND LITERALS */
+{
+  < LHS: "lhs" >
+| < RHS: "rhs" >
+| < LESSTHAN: "lhs<rhs" >
+| < GRTRTHAN: "lhs>rhs" >
+| < UNBOUNDED: "unbounded" >
+| < PENALTY: "penalty" >
+| < CONSTRAIN: "constrain" | "never">
+| < SEQUENCE: "sequence" >
+| < MODEL: "model" >
+| < ORDER: "order" >
+//| < ONLY: "only" >
+| < INCLUDE: "include" >
+| < VALUE: "value" >
+| < KIND: "kind" >
+| < UNITS: "units" >
+| < CONVERT: "convert" >
+| < ALIAS: "alias" >
+| < SELECT: "select" >
+| < WHERE: "where" >
+| < DESC: "desc" >
+| < HEADER: "header" >
+| < TIMESERIES: "timeseries" >
+| < FROM: "from" >
+| < MAXIMUM: "maximum" >
+| < MINIMUM: "minimum" >
+| < MEAN: "mean" >
+| < LINEAR: "linear" >
+| < UNKNOWN: "unknown" >
+| < USE: "use" >
+| < GIVEN: "given" >
+| < RESULT: "result" >
+| < STD: "std" >
+| < ALWAYS: "always" >
+| < GOAL: "goal" >
+| < GOALSET: "goalset" >
+| < DEFINE: "define" >
+| < CONDITION: "condition" >
+| < SUM: "sum" >
+| < EXTERNAL: "external" >
+| < CASE: "case" >
+| < LOWER: "lower" >
+| < UPPER: "upper" >
+| < INTEGER: "integer" >
+| < ADD: "+" >
+| < SUBTRACT: "-" >
+| < MULTIPLY: "*" >
+| < DIVIDE: "/" >
+| < AND: ".and." >
+| < OR: ".or." >
+| < NOT: ".not." >
+| < GT: ">" >
+| < LT: "<" >
+| < SINGLE_EQ: "=">
+| < GE: ">=" >
+| < LE: "<=" >
+| < EQ: "==" >
+| < NE: "/=" >
+| < OBJECTIVE: "objective" >
+| < DABS: "abs" >
+| < INT: "int" >
+| < DFLOATI: "real" >
+| < MOD: "mod" >
+| < EXP: "exp" >
+| < LOG: "log" >
+| < LOG10: "log10" >
+| < SQRT: "sqrt" >
+| < DMAX1: "max" >
+| < DMIN1: "min" >
+//| < DMIN1: "min" >  // CB changed for double precision in the FORTRAN (NEEDED COMPILER SWITCH TOO)
+| < POW: "pow" >
+| < RANGE: "range" >   	//Added to implement "range" logical expression***************
+| < DATE: "date" >	//Added to implement "date" in "range" logical expression
+| < ARRAY: "array" >	//Added to implement "array"
+| < FILLARRAY: "fillarray" >	//Added to implement "fillarray"
+
+| < LOCAL: "local" >
+| < GLOBAL: "global" >
+
+}
+
+TOKEN :			//Added to implement date range logical expression
+{
+  < DAYMONTH: <DAY> <MONTH> >
+| < MONTHYEAR: <MONTH> <YEAR> >
+| < DAYMONTHYEAR: <DAY> <MONTH> <YEAR> >
+| < #DAY: (("0")? ["1" - "9"])|(["1","2"] ["0" - "9"])|("3" ["0","1"]) >
+| < #MONTH: "jan"|"feb"|"mar"|"apr"|"may"|"jun"|"jul"|"aug"|"sep"|"oct"|"nov"|"dec" >
+| < #YEAR: ["0" - "9"] ["0" - "9"] ["0" - "9"] ["0" - "9"] >
+}
+
+
+
+TOKEN :
+{
+  < CONSTANT: <DOUBLE> | <DOUBLE> ( ["e","E"] ([ "-","+"])? <ID> )?>
+| < #DOUBLE: <ID> "." | <ID> ( "." <ID> )? | "." <ID> >
+| < #DIGIT: [ "0" - "9" ]>
+| < #ID: (<DIGIT>)+ >
+| < #TIME_UNIT: ["w","m","d","y"] >      /* weeks, months, days, years */
+}
+
+TOKEN :
+{
+   < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>|"_")* >
+|  < #LETTER: ["a" - "z", "A" - "Z"] >
+|  < QUOTED_LITERAL: "'" (~["'"] | "\\'")* "'">
+}
+
+TOKEN :			//Added to import dll's
+{
+   < DLL:  <IDENTIFIER> "." ["d","D"] ["l","L"] ["l","L"] >
+}
+/*TOKEN :			//Added to implement array expression
+{
+  < NEGCONSTANT: <SUBTRACT> <CONSTANT> >
+}*/
+
+
+
+
+// *****************************************
+// THE WRESL LANGUAGE GRAMMAR STARTS HERE *
+// *****************************************
+
+/**
+  *  Study Entry point.  Scans for Wresl Study.
+  */
+void StudyUnit() :
+{
+}
+{
+    ( ModelUnit() | SequenceUnit() )+ <EOF>
+    {
+    }
+}
+
+
+
+/**
+  *  Sequence Entry point.  Scans for Wresl Sequence blocks.
+  */
+void SequenceUnit() :
+{	Token order,model;
+    Token tag;
+    String s;
+    String neworder = new String();
+  	String expr=new String(".true.");
+}
+{
+    <SEQUENCE> (tag=<IDENTIFIER>|tag=<DAYMONTH>|tag=<MONTHYEAR>|tag=<DAYMONTHYEAR>) "{"
+    <MODEL> (model=<IDENTIFIER>|model=<DAYMONTH>|model=<MONTHYEAR>|model=<DAYMONTHYEAR>)
+    ( <CONDITION> expr=ConditionalExpression() )? <ORDER> order=<CONSTANT> "}"
+    {
+        seqConditionList.put(model.image.toUpperCase(),expr);
+        neworder = new String(order.image);
+        if (order.image.length()<2) neworder=new String("0"+order.image);
+        sequenceList.put(model.image.toUpperCase(),neworder);
+        s = (String) sequenceList.get(model.image.toUpperCase()); // delete later
+        if (!_hideProgressDetails) {
+       	   logger.println("Sequence: "+tag.image+" Model: "+model.image + " Order: " +s);
+       	}
+        Integer i = new Integer(order.image.toUpperCase());
+        if (_numberCycles <= i.intValue() ) _numberCycles = i.intValue();
+        externalGlobalCode(s);
+    }
+}
+
+/**
+  *  Model Entry point.  Scans for Wresl Model blocks.
+  */
+void ModelUnit() :
+{
+	Token model;
+ 	String s;
+ 	String condition;
+}
+{
+     <MODEL> (model=<IDENTIFIER>|model=<DAYMONTH>|model=<MONTHYEAR>|model=<DAYMONTHYEAR>)
+    {
+        _currentModel = model.image.toUpperCase();
+        s = (String) sequenceList.get(model.image.toUpperCase());
+        if (s==null) throw wreslError(model,"Model '"+model.image+"' not included in sequence!");
+        _currentOrder = new Integer(s);
+        _currentOrderString = new String(s);
+        if (!_hideProgressDetails) {
+       	   logger.println("Model: "+model.image+" Order: "+s);
+       	}
+        condition = (String) seqConditionList.get(_currentModel);
+    	try {
+        	initOutput(s,_numberCycles);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to initialize output: "+e.getMessage());
+        }
+        conditionGlobalCode(s,condition);
+    }
+    "{" CompilationUnit() "}"
+    {
+        try {writeOutput();} catch (Exception e) { throw new RuntimeException (e.getMessage());}
+        try {closeOutput(_numberCycles);} catch (Exception e) {
+	  e.printStackTrace(System.err);
+	  throw new RuntimeException (e.getMessage());
+	}
+    }
+}
+
+/**
+  *  Entry point.  Scans for Wresl statements or include-file directives.
+  */
+void CompilationUnit() :
+{}
+{
+    ( Statements() | Include() )+
+    {
+    if (!_hideProgressDetails) {
+      for(int i=0;i<includeLevel;i++) logger.print("    ");
+         logger.println("Parsed successfully");
+         logger.println(""); // CB added
+    }
+    }
+}
+
+/**
+  *  Include a file.  Inserts the specified QUOTED_LITERAL file into the parse
+  *  stream.
+  */
+void Include() :
+{
+	Token scope = new Token();
+	scope.kind=GLOBAL;
+	Token fname;
+}
+
+{
+  <INCLUDE> ("[" (scope=<LOCAL>|scope=<GLOBAL>) "]")? fname=<QUOTED_LITERAL>
+  {
+       try {writeOutput();} catch (Exception e) { throw new RuntimeException (e.getMessage());}
+       if (scope.kind==GLOBAL && includeLevel==0) _fileIsLocal = false;
+       if (scope.kind==LOCAL) _fileIsLocal = true;
+       _currentIncludeFile = new String(fname.image.toUpperCase());
+       if (_fileIsLocal) includeLocalList.put(_currentIncludeFile,_currentOrder);
+       includeFile(token);
+       if (includeLevel==0) _fileIsLocal = false;
+  }
+}
+
+/**
+  *  Wresl statements.  Definitions, goals, or goal sets.
+  */
+void Statements() :
+{}
+{
+    DefineStatement() | GoalStatement() | GoalsetStatement() | ObjectiveStatement() | ArrayStatement() /*| FillArrayStatement()*/
+}
+
+/**
+  */
+void ObjectiveStatement() :
+{
+  Token id;
+}
+{
+    <OBJECTIVE> (id=<IDENTIFIER>|id=<DAYMONTH>|id=<MONTHYEAR>|id=<DAYMONTHYEAR>) "=" "{"
+    (ObjectiveListTerm())+ "}"
+}
+
+/**
+  *  Definition statement.
+  */
+void DefineStatement() :
+{
+	Token id;
+ 	Integer gp_level = new Integer(1);
+	Token scope = new Token();
+	scope.kind=GLOBAL;
+}
+{
+    <DEFINE> ("[" (scope=<LOCAL>|scope=<GLOBAL>) "]")?
+    (id=<IDENTIFIER>|id=<DAYMONTH>|id=<MONTHYEAR>|id=<DAYMONTHYEAR>)
+
+    {
+			// dvars -- have max of 16 and are checked below
+    	if (id.image.length() > 32) throw wreslError(id,
+			    	"Identifier '" + id.image + "' exceeds max of 32 characters");
+  		if (scope.kind==LOCAL || _fileIsLocal) {
+        scope.kind=LOCAL;
+    		_controlDefines = localDefines;
+  		} else {
+    		_controlDefines = globalDefines;
+  		}
+    }
+
+    "{" DefinitionSpec(id, scope) "}"
+}
+
+
+/**
+  * The type of definition:  decision variable, alias, timeseries lookup,
+  * external procedure, or value definition.
+  */
+void DefinitionSpec(Token id, Token scope) :
+{   
+    if (reservedList.isIn(id.image)) {
+    	throw wreslError(id,
+    	"Identifier '" + id.image + "' is predefined and may not be reused");
+    }
+}
+{
+    ( DvarDef(id, scope) 	{
+    				if (id.image.length() > 2) {
+    					if (id.image.substring(0,3).equalsIgnoreCase("OBJ")) {
+    						throw wreslError(id,
+    						"Decision variable names can not begin with letter sequence 'OBJ'");
+    					}
+    				}
+    				}			
+    | AliasDef(id, scope) 	{
+    				if (id.image.length() > 2) {
+    					if (id.image.substring(0,3).equalsIgnoreCase("OBJ")) {
+    						throw wreslError(id,
+    						"Decision variable names can not begin with letter sequence 'OBJ'");
+    					}
+    				}
+    				}
+    | LookupTimeseriesDef(id, scope)
+    | ExternalProc(id)
+    | ValueDef(id, scope) )       // ValueDef must be the LAST ONE!
+}
+
+
+/**
+  *  Declares the name of an external object file to link in to the model.
+  */
+void ExternalProc( Token id) :
+{
+	Token type;
+ 	type = null;
+ 	String name = id.image.toUpperCase();
+}
+{
+    <EXTERNAL> (type=<DLL>|(type=<IDENTIFIER>|type=<DAYMONTH>|type=<MONTHYEAR>|type=<DAYMONTHYEAR>)*)
+    {
+      if (externalList.containsKey(name))
+      	throw wreslError(id, "Redefining External Procedure '" + name + "'");
+      else {
+      	externalList.put(name,_currentOrder);
+	_controlDefines.println(name);
+	_controlDefines.println("-1               ExternalProc");
+      }
+
+      if (!type.image.toLowerCase().endsWith(".dll")) {
+      	if (!new File(rootDirectory + "\\" + "external" + "\\",name+".obj").exists())
+      		throw wreslError(id, "External Procedure '" + name + ".obj' does not exist in external directory.");
+	globalExternals.print( rootDirectory + "\\" + "external" + "\\");
+	globalExternals.println( name + ".obj");
+	if (type.image.equalsIgnoreCase("dll")) {
+		if (!new File(rootDirectory + "\\" + "external" + "\\",name+".lib").exists())
+      		throw wreslError(id, "External Procedure '" + name + ".lib' does not exist in external directory.");
+      		globalExternalsLib.print( "-lib " + rootDirectory + "\\" + "external" + "\\");
+		globalExternalsLib.println( name + ".lib");
+	}
+      }
+      else {
+      	if (dllList.newItem(type.image.toUpperCase())) {
+      		if (!new File(rootDirectory + "\\" + "external" + "\\",type.image).exists())
+      			throw wreslError(id, "External Procedure '" + type.image + "' does not exist in external directory.");
+		globalExternalsLib.println( "-implib " + rootDirectory + "\\external\\" + type.image);
+	}
+	globalExternalsLib.println( "-import " + name);
+      }
+    }
+}
+
+
+/**
+  *  Definition of a state variable.
+  */
+void ValueDef(Token id, Token scope) :
+{
+  int caseNum = 1;
+  UniqueList caseList = new UniqueList(4,4);   // stores case (condition) names
+  String name = id.image.toUpperCase();
+
+  condIsAlways = false;
+  // NOTICE: this will be executed before it determines that this is indeed a value def
+  if (scope.kind==LOCAL) {
+  	if ( !valueDefLocalList.newItem(name)) throw wreslError(id, "Redefining '" + name + "' within Model");
+    if ( valueDefList.getIdCode(name)!=null) throw wreslError(id, "Redefining '" + name + "'");
+  	_controlDefines.println(make32( name));
+  } else {
+  	if (!valueDefList.newItem(name)) throw wreslError(id, "Redefining '" + name + "'");
+  	_controlDefines.println(make32(name).append(valueDefList.getIdCode(name)));
+  }
+}
+
+{
+  (
+
+    ( CaseStatement(caseNum++, caseList, _controlDefines)  ValueExpression() "}" )+
+  | { soleCondition(_controlDefines); } ValueExpression()
+  )
+    { noMoreCases(_controlDefines);
+    	if (caseNum > 1 && !condIsAlways) throw wreslError(id,"Final condition must be 'always' for '"+name+"'");
+		}
+}
+
+
+/**
+  *  A constant state variable definition.
+  */
+void ValueExpression() :        // will generate a fortran assignment statement
+{
+  StringBuffer expr = new StringBuffer();
+}
+{
+   ( <VALUE> NonDvarExpression(expr) | LookupRDBDef(expr) | SumExpression(expr) )
+   {
+        _controlDefines.println(expr.toString());  // fortran expression
+   }
+}
+
+/**
+  *  A state variable summation definition.
+  */
+void SumExpression(StringBuffer expr) :
+{
+  Token index;
+  StringBuffer beg = new StringBuffer();
+  StringBuffer end = new StringBuffer();
+  StringBuffer step = new StringBuffer();
+
+}
+{
+    <SUM> "(" (index=<IDENTIFIER>|index=<DAYMONTH>|index=<MONTHYEAR>|index=<DAYMONTHYEAR>) "="
+    NonDvarExpression(beg) "," NonDvarExpression(end)
+    ("," NonDvarExpression(step))? ")" NonDvarExpression(expr)
+      {
+        if (step.toString().compareTo("")== 0) {           // blank string
+        	_controlDefines.println("$"+index.image+"="+beg.toString()+","+end.toString());
+        } else {
+        	_controlDefines.println("$"+index.image+"="+beg.toString()+","+end.toString()+","+step.toString());
+        }
+      }
+}
+
+
+/**
+  *  A database lookup definition.  Consists of several forms.
+  */
+void LookupRDBDef(StringBuffer expr) :
+{
+  Token table, result;
+  StringBuffer givenColumn = new StringBuffer();
+  StringBuffer givenExpr = new StringBuffer();
+  StringBuffer whereColumns = new StringBuffer();
+  StringBuffer valueColumns = new StringBuffer();
+  _isInLookupRDBDefRoutine = true;
+  int useMethod = 0;
+}
+{
+    <SELECT> (result=<IDENTIFIER>|result=<DAYMONTH>|result=<MONTHYEAR>|result=<DAYMONTHYEAR>)
+    <FROM> (table=<IDENTIFIER>|table=<DAYMONTH>|table=<MONTHYEAR>|table=<DAYMONTHYEAR>)
+    (
+      <GIVEN> ItemValuePair(givenColumn, givenExpr)
+      <USE> (<MINIMUM> | <LINEAR> | <MEAN> | <MAXIMUM>)
+    {
+      if (token.kind == MINIMUM)          useMethod=1;
+      else if (token.kind == LINEAR)      useMethod=2;
+      else if (token.kind == MEAN)        useMethod=3;
+      else /* MAX */                      useMethod=4;
+    }
+    )?
+    ( <WHERE> MultipleOA(whereColumns, valueColumns) )?
+    {
+      if (useMethod==0 && whereColumns.length()==0) {
+          throw wreslError(table,"Must specify GIVEN and/or WHERE tags");
+      } else if (useMethod==0) {
+          // they gave us only Select
+        	expr.append("tableBasic( '"+table.image+"','"+result.image+"',"
+             	+ "wc="+whereColumns+",wv="+valueColumns+")");
+      } else if (whereColumns.length()==0) {
+          // they gave us only Given/Use
+          	expr.append("tableLookup( '"+table.image+"','"+result.image+"',"
+	          	+ "gv="+givenExpr+",gc="+givenColumn+",um="+useMethod+")");
+      } else {
+          // they gave us both
+          	expr.append("tableComplex( '"+table.image+"','"+result.image+"',"
+              	+ "gv="+givenExpr+",gc="+givenColumn+",um="+useMethod+
+                ",wc="+whereColumns+",wv="+valueColumns+")");
+      }
+      _isInLookupRDBDefRoutine = false;
+    }
+}
+
+/**
+  *  A collection of ItemValuePairs, collated.
+  *
+  */
+void MultipleOA(StringBuffer items, StringBuffer values) :
+{
+  StringBuffer oa_item, oa_value;
+  int comma;
+}
+{
+    ItemValuePair(oa_item = new StringBuffer(), oa_value = new StringBuffer())
+    {
+            items.append(oa_item);
+            values.append(oa_value);
+    }
+    ( "," ItemValuePair(oa_item = new StringBuffer(), oa_value = new StringBuffer())
+    {
+        items.append("," + oa_item);
+        values.append("," + oa_value);
+    }
+    )*
+    {
+        items.insert(0,"(/");
+        values.insert(0,"(/");
+        items.append("/)");
+        values.append("/)");
+    }
+}
+
+
+
+/**
+  *  An item name and an optional value identifier.  Expressions of the form
+  *  <i>item = value</i> or <i>item</i> where the value is assumed to be
+  *  an identifier having the same name as <i>item</i>.
+  */
+void ItemValuePair(StringBuffer expr1, StringBuffer expr2) :
+{
+  StringBuffer given=new StringBuffer("");
+  Token fieldname;
+}
+{
+    (fieldname=<IDENTIFIER>|fieldname=<DAYMONTH>|fieldname=<MONTHYEAR>|fieldname=<DAYMONTHYEAR>)
+    ( "=" NonDvarExpression(given) )?
+    {
+    if (given.length() == 0) {
+      	if (valueDefList.getIndexOf(fieldname.image) >= 0) {
+           given.append(fieldname);
+       	} else {
+           if (reservedList.isIn(fieldname.image)) {
+           	given.append("real(" +
+            reservedList.fortranExpr(fieldname.image) + ")" );
+        } else {
+           throw wreslError(fieldname,"Must use '=' or define '"
+              + fieldname.image + "' as a value definition.");
+        }
+       }
+    } else {
+        given.insert(0,"real(").append(")");
+    }
+    expr1.append("'" + make32(fieldname.image) + "'");
+    expr2.append(given);
+    }
+}
+
+
+/**
+  *  Definition of a value to be read in from a timeseries database.
+  */
+void LookupTimeseriesDef(Token id, Token scope) :
+{
+  Token kind,units,bpart;
+  Token convert = new Token();
+  convert.image = "UNKNOWN";
+  bpart=new Token();
+  bpart.image = "'" + id + "'";
+  Timeseries ts;
+  String name = id.image.toUpperCase();
+}
+{
+	<TIMESERIES>
+	( bpart=<QUOTED_LITERAL> )?
+	<KIND> kind=<QUOTED_LITERAL>
+	<UNITS> units=<QUOTED_LITERAL>
+	(<CONVERT> convert=<QUOTED_LITERAL>)?
+
+	{
+    ts = new Timeseries(id.image.toUpperCase(),bpart.image,kind.image,units.image,convert.image);
+    tsParamList.put(id.image.toUpperCase(),ts);
+
+    if (scope.kind==LOCAL) {
+      if ( !tsDefLocalList.newItem(name)) throw wreslError(id, "Redefining '" + name + "' within Model");
+//    	if (tsDefList.getIdCode(name)!=null) throw wreslError(id,"Redefining '" + name + "'");
+      // fix scoping ts
+      if (_hideWarnings) { // CB added to allow user to turn off warning messages
+        tsDefList.newItem(name);
+      } else {
+        if (!tsDefList.newItem(name)) logger.println("Warning! Local TS '" + name 
+          + "' value will be same as Global.");
+      }          
+      globalDssInit.print("call dss_ts_init(  " + String.valueOf(tsDefList.getIndexOf(name)+1)+ ","
+        + bpart.image + "," + kind.image + "," + units.image);
+    } else {
+      if (!tsDefList.newItem(name)) throw wreslError(id,"Redefining '" + name + "'");
+        globalDssInit.print("call dss_ts_init(  " 
+          + String.valueOf(tsDefList.getIndexOf(name)+1)+ "," + bpart.image+"," + kind.image+","
+          + units.image);
+    }
+}
+
+    ( <DESC> <QUOTED_LITERAL> { globalDssInit.print(", desc=" +token.image); } ) ?
+    {
+      globalDssInit.println(")");
+    }
+}
+
+
+
+/**
+  *  Definition of an LP decision variable.
+  */
+void DvarDef(Token id, Token scope):
+{
+  DvarBounder dvarDef = new DvarBounder(id.image);
+  String kind = new String("'LP DVAR'");
+  String units= new String("'UNKNOWN'");
+  String name = id.image.toUpperCase();
+
+  if (id.image.length() > 16) throw wreslError(id,
+    "Identifier '" + id.image + "' exceeds max of 16 characters");
+  if (name.indexOf("SURPL")==0 || name.indexOf("SLACK")==0 )
+    throw wreslError(id,"SURPL and SLACK are reserved strings! Rename '" + name + "'");
+  if (scope.kind==LOCAL) {
+    if ( !dvarLocalList.newItem(name)) throw wreslError(id, "Redefining '" + name + "' within Model");
+//    if (dvarList.getIdCode(name)!=null) throw wreslError(id,"Redefining '" + name + "'");
+     // fix scoping dvar bounds
+     if (_hideWarnings) { // CB added to allow user to turn off warning messages
+       dvarList.newItem(name); // warnings off
+     } else {
+       if (!dvarList.newItem(name)) logger.println("Warning! Local Dvar '" + name 
+         + "' bounds will be same as Global.");
+     }
+  } else {
+     if (!dvarList.newItem(name)) throw wreslError(id,"Redefining '" + name + "'");
+  }
+}
+{
+    ( <INTEGER> { dvarDef.setInteger(); } (<CONSTANT> {dvarDef.setIntegerPriority(token.image);} )? )?
+    ( UpperLowerSpec(dvarDef)  |  <STD> )
+//    ( <KIND> <QUOTED_LITERAL> { kind=token.image; } )?
+    	<KIND> <QUOTED_LITERAL> { kind=token.image; }
+    	<UNITS> <QUOTED_LITERAL> { units=token.image; }
+    {
+        dvarDef.output(goals);
+        globalDssInit.print("call dss_dvar_init( " +
+                String.valueOf(dvarList.getIndexOf(name)+1)
+        				+ ",'" + name + "'," + kind + "," + units);
+    }
+    ( <DESC> <QUOTED_LITERAL> { globalDssInit.print(", desc=" +token.image); } ) ?
+    ( <HEADER> <QUOTED_LITERAL> { globalDssInit.print(",&\r\n   header=" +token.image); } ) ?
+    {
+        globalDssInit.println(")");
+    }
+}
+
+
+/**
+  *  The upper or lower bound for the specified decision variable.
+  *  @param dv The specific decision variable bounding instance.
+  */
+void UpperLowerSpec(DvarBounder dv) :
+{}
+{
+    ( UpperSpec(dv) | LowerSpec(dv) )+
+}
+
+
+/**
+  *  An upper bound to be applied to this decision variable.
+  */
+void UpperSpec(DvarBounder dv) :
+{}
+{
+      <UPPER> ( PossiblyUnboundedExpr() )
+              {
+                if (token.kind != UNBOUNDED) dv.setUpper(token.image);
+                else dv.setUpper();
+              }
+}
+
+/**
+  * A lower bound to be applied to this decision variable.
+  */
+void LowerSpec(DvarBounder dv) :
+{}
+{
+      <LOWER> ( PossiblyUnboundedExpr() )
+              {
+                if (token.kind != UNBOUNDED) dv.setLower(token.image);
+                else dv.setLower();
+              }
+}
+
+
+/**
+  *  Sets the current token to either the UNBOUNDED token or to
+  *  an expression of non-decision variable terms.
+  */
+void PossiblyUnboundedExpr() :
+{
+    StringBuffer e = new StringBuffer();
+}
+{
+    <UNBOUNDED> | NonDvarExpression(e)
+            {
+            token.image = e.toString();
+            }
+}
+
+
+/**
+  *  An Alias definition.  Defines a dummy goal to accomplish the alias.
+  *
+  *  @param id The token containing the name for the alias.
+  */
+void AliasDef(Token id, Token scope) :     // basically, an unconstrained goal
+{
+  LPExpression aliasedExpr;
+  DvarBounder dvarDef = new DvarBounder(id.image);
+  dvarDef.setLower();  // unbounded lower limit
+  Token units;
+  Token kind = new Token();
+  kind.image="'ALIAS'";
+  String name = id.image.toUpperCase();
+  String aliasTag = new String(name+"_alias");
+}
+{
+
+
+  <ALIAS> LinearExpression(aliasedExpr=new LPExpression())
+  (<KIND> kind=<QUOTED_LITERAL>)?
+  <UNITS> units=<QUOTED_LITERAL>
+  {
+    if (id.image.length() > 16) throw wreslError(id,
+      "Identifier '" + id.image + "' exceeds max of 16 characters");
+    if (scope.kind==LOCAL) {
+      if ( !dvarLocalList.newItem(name)) throw wreslError(id, "Redefining '" + name + "' within Model");
+      // if (dvarList.getIdCode(name)!=null) throw wreslError(id,"Redefining '" + name + "'");
+      if (_hideWarnings) { // CB added to allow user to turn off warning messages
+        dvarList.newItem(name); // warnings off
+      } else {
+        if (!dvarList.newItem(name)) logger.println("Warning! Local Alias '" + name 
+          + "' bounds will be same as Global.");
+      }
+      aliasTag = _currentOrderString.concat(aliasTag);
+    } else {
+      if (!dvarList.newItem(name)) throw wreslError(id,"Redefining '" + name + "'");
+      aliasTag = "00"+aliasTag;
+    }
+
+    dvarDef.output(goals);
+    LPExpression theAlias = new LPExpression(new LPTerm(name,"1"));   // add the new alias dvar to the LP Expression
+    theAlias.merge(aliasedExpr);
+    Penalizer p = new Penalizer();
+    goals.println(make32(aliasTag)); // goal name
+    soleCondition(goals);               // always condition
+    theAlias.output(goals);             // lhs and rhs printout
+    goals.println(p.asString());        // lhs>rhs: constrain
+    goals.println(p.asString());        // lhs<rhs: constrain
+    noMoreCases(goals);                 // 99999   end of cases
+    globalDssInit.println("call dss_dvar_init( " +	String.valueOf(dvarList.getIndexOf(name)+1) +
+        								",'" + name + "',"+kind.image+","+units.image+")");
+  }
+}
+
+
+/**
+  *  Introduction of a goal set.  It contains one or more goals.
+  */
+void GoalsetStatement() :        // this is used to group a bunch of goals together
+{}
+{
+  <GOALSET> (<IDENTIFIER>|<DAYMONTH>|<MONTHYEAR>|<DAYMONTHYEAR>)  "{" ( GoalStatement() )+ "}"
+}
+
+
+/**
+  *  A goal statement, or penalized LP constraint.
+  */
+void GoalStatement() :
+{
+  LPExpression lhs;
+  Integer gp_level = new Integer(0);
+  Token tag;
+	Token scope = new Token();
+	scope.kind=GLOBAL;
+}
+{
+  <GOAL> ("[" (scope=<LOCAL>|scope=<GLOBAL>) "]")? /*gp_level=GPLevelSpec()*/
+  (tag=<IDENTIFIER>|tag=<DAYMONTH>|tag=<MONTHYEAR>|tag=<DAYMONTHYEAR>)
+      {
+  			if (tag.image.length()>29) throw wreslError(tag,
+  				"Goal name '" + tag.image + "' exceeds max of 29 characters");
+        if (scope.kind==LOCAL || _fileIsLocal) {
+        	tag.image = _currentOrderString.concat(tag.image);
+        } else {
+        	tag.image = "00" + tag.image;
+        }
+
+        if (!tagList.newItem(tag.image) || goalLocalList.containsKey(tag.image) ) {
+          	throw wreslError(tag, "Redefining '" + tag.image.substring(1) + "'");
+        }
+        goals.println( make32(tag.image));
+        if (scope.kind==LOCAL || _fileIsLocal) goalLocalList.put(tag.image,_currentOrder);
+      }
+  "{"
+(
+  <LHS>  LinearExpression(lhs=new LPExpression())
+  GoalBody(lhs)
+|
+  InlineGoal()
+)  "}"
+      {
+         noMoreCases(goals);
+      }
+}
+
+
+/**
+  *  A goal programming priority level.  Default is 0 if omitted.
+  *
+  *  @return The desired priority level
+  */
+Integer GPLevelSpec() :
+{Token gp;}
+{
+   ( "[" gp=<CONSTANT> "]"
+      {
+         int level=0;
+         try {
+             level = Integer.parseInt(gp.image);
+         } catch (NumberFormatException ee) {
+             throw wreslError(gp,"Must be an integer");
+         }
+         if (level < 1 || level > 9)
+             throw wreslError(gp,"Priority Level must be between 1 and 9");
+         return new Integer(level);
+      }
+   )?
+   {
+      return new Integer(0);
+   }
+}
+
+
+/**
+  *  Shorthand statement for an unpenalized goal.
+  */
+void InlineGoal() :
+{
+  LPExpression lhs = new LPExpression();
+  LPExpression rhs = new LPExpression();
+  Token comp;
+}
+{
+  LinearExpression(lhs) (comp=<GT> | comp=<LT> | comp=<SINGLE_EQ>) LinearExpression(rhs)
+  {
+    lhs.merge(rhs);
+    Penalizer greater = new Penalizer();
+    Penalizer less = new Penalizer();
+    if (comp.kind == GT) greater.newPenalty("0.");
+    if (comp.kind == LT) less.newPenalty("0.");
+    soleCondition(goals);               // always condition
+    lhs.output(goals);                  // both lhs and rhs printout
+    goals.println(greater.asString());        // lhs>rhs: constrain
+    goals.println(less.asString());        // lhs<rhs: constrain
+  }
+}
+
+
+
+/**
+  *  Standard goal statement body.  Consists of either a set of cases
+  *  or a sole condition.
+  *
+  *  @param lhs The expression specified under the LHS token
+  */
+void GoalBody(LPExpression lhs) :
+{
+  int caseNumber = 1;
+  UniqueList caseList = new UniqueList(4,4);   // stores case (condition) names
+}
+{
+
+  ( CaseStatement(caseNumber++, caseList, goals) LRSpecification(lhs) "}" )+
+  |
+      {
+         soleCondition(goals);
+      }
+  LRSpecification(lhs)
+}
+
+
+/**
+  *  A RHS expression, optionally with penalties.
+  *
+  *  @param lhs The expression specified under the LHS token
+  */
+void LRSpecification(LPExpression lhs):
+{
+  LPExpression rhs= new LPExpression();
+  rhs.keepLeft();
+  Penalizer grtrthan, lessthan;
+}
+{              // code here combines the LPConstraint objects then writes out the final result
+
+  <RHS> LinearExpression(rhs)
+    {
+      LPExpression constraint = new LPExpression(lhs);  // resultant one (final output)
+      constraint.merge(rhs);
+      constraint.output(goals);
+    }
+  PenaltySpec(lessthan = new Penalizer(), grtrthan = new Penalizer())
+    {
+        goals.println(grtrthan.asString());       // their lhs > rhs spec
+        goals.println(lessthan.asString());       // their lhs < rhs spec
+    }
+}
+
+
+/**
+  *  Specification of penalties to be applied to this constraint.
+  */
+void PenaltySpec(Penalizer lessthan, Penalizer grtrthan) :
+{}
+{
+   (
+     (
+       <GRTRTHAN> PenaltyExpression(grtrthan)
+       (<LESSTHAN> PenaltyExpression(lessthan))?
+     )
+   |
+     (
+       <LESSTHAN> PenaltyExpression(lessthan)
+       (<GRTRTHAN> PenaltyExpression(grtrthan))?
+     )
+   )?
+ }
+
+
+
+/**
+  *  An expression that will be applied to a particular penalty.
+  */
+void PenaltyExpression(Penalizer p) :
+{
+  StringBuffer e = new StringBuffer("");
+}
+{
+    <PENALTY> NonDvarExpression(e)
+    {
+      p.newPenalty(e.toString());  // CB TO DO: NEED???????  It was commented out for some reason.
+    }
+  | <CONSTRAIN>
+}
+
+
+/**
+  *  One particular case.
+  *
+  *  @param number The case number, assigned by the calling method.
+  *  @param caseList  The list of condition names in this block of cases
+  *  @param s Destination for the value of this case
+  */
+void CaseStatement(int number, UniqueList caseList, java.io.PrintWriter s) :
+{
+  Token id;
+  String expr;
+}
+{
+  <CASE> (id=<IDENTIFIER>|id=<DAYMONTH>|id=<MONTHYEAR>|id=<DAYMONTHYEAR>)
+  {
+  	if (id.image.length()>32) throw wreslError(id,
+  		"Case name '" + id.image + "' exceeds max of 32 characters");
+  	if (!caseList.newItem(id.image)) throw wreslError(id,
+    	"Redefining case '" + id.image + "'");
+  }
+  "{" <CONDITION> expr=ConditionalExpression()
+  {
+    if (expr.equalsIgnoreCase("ALWAYS")) condIsAlways = true;
+    else condIsAlways = false;
+  	s.println(number + "                " + id.image);
+   	s.println(expr.toLowerCase());           // thing for the Fortran IF statement
+  }
+}
+
+/**
+  *  A combination of one or more logically-valued expressions.
+  *  Optionally, the ALWAYS token which is equivalent to logical TRUE.
+  *
+  */
+String ConditionalExpression() :
+{
+  StringBuffer e = new StringBuffer();
+}
+{
+     <ALWAYS>
+     {
+       return new String(token.image);
+     }
+
+  |  LogicalExpression(e)  ( (<AND> | <OR>) {e.append(token.image);} LogicalExpression(e) )*
+     {
+       return e.toString();
+     }
+}
+
+/**
+  *  Two numeric expressions joined by a logical operator or
+  *  a range specification for a given parameter from which a logical
+  *  expression can be constructed.
+  */
+void LogicalExpression(StringBuffer e) :
+{}
+{
+   (<NOT> {e.append(token.image);})?
+   (LOOKAHEAD(2) RangeExpression(e)		//Added to imlement "range" logical expression****************
+  | (NonDvarExpression(e)
+    (<LT>|<GT>|<GE>|<LE>|<EQ>|<NE>) {e.append(token.image);}
+    NonDvarExpression(e)))
+}
+
+/**
+  *  A range logical expression.
+  */
+void RangeExpression(StringBuffer e) :		//Added to implement "range" logical expression
+{}
+{
+	<RANGE> "(" (DateRangeExpression(e) | NonDvarRangeExpression(e)) ")"
+}
+
+/**
+  *  A range logical expression where the variable and upper and
+  *  lower bounds are made up of NonDvarExpressions
+  */
+void NonDvarRangeExpression(StringBuffer e) :	//Added to implement "range" logical expression
+{
+	Token varToken = new Token();
+	StringBuffer var, beg, end;
+	boolean monthrange = false;
+	boolean dayrange = false;
+}
+{
+	NonDvarExpression(var = new StringBuffer())
+	{
+		varToken = token;
+		if (token.image.equalsIgnoreCase("month")) {
+			monthrange = true;
+		}
+		else if (token.image.equalsIgnoreCase("day")) {
+			dayrange = true;
+		}
+	}
+	","
+	NonDvarExpression(beg = new StringBuffer())
+	","
+	NonDvarExpression(end = new StringBuffer())
+	{
+		if (monthrange) {
+			e.append(createMonthRange(varToken, beg.toString(), end.toString()));
+		}
+		else if (dayrange) {
+			e.append(createDayRange(varToken,beg.toString(),end.toString()));
+		}
+		else {
+			e.append(createOrdinaryRange(var.toString(),beg.toString(),end.toString()));
+		}
+	}
+}
+
+/**
+  *  A range logical expression where the parameter is "date" and
+  *  the lower and upper bounds are defined in one of three formats:
+  *  "01APR1976","01APR", or "APR1976"
+  */
+void DateRangeExpression(StringBuffer e) :	//Added to implement "range" logical expression
+{}
+{
+	<DATE> ","
+	( DayMonthYearRangeExpression(e)
+	| DayMonthRangeExpression(e)
+	| MonthYearRangeExpression(e))
+
+}
+
+
+/**
+  *A date range logical expression where date is of form "01APR"
+  */
+void DayMonthRangeExpression(StringBuffer e) :	//Added to implement "range" logical expression
+{
+	String beg, end;
+	int length = 5;
+}
+{	<DAYMONTH> {beg = new String(checkDate(token.image, length));}
+	","
+	<DAYMONTH> {end = new String(checkDate(token.image, length));}
+	{e.append(createDayMonthRange(beg,end));}
+}
+
+/**
+  *A date range logical expression where date is of form "APR1976"
+  */
+void MonthYearRangeExpression(StringBuffer e) :	//Added to implement "range" logical expression
+{
+	String beg, end;
+}
+{	<MONTHYEAR> {beg = new String(token.image);}
+	","
+	<MONTHYEAR> {end = new String(token.image);}
+	{e.append(createMonthYearRange(token,beg,end));}
+}
+
+/**
+  *A date range logical expression where date is of form "01APR1976"
+  */
+void DayMonthYearRangeExpression(StringBuffer e) ://Added to implement "range" logical expression
+{
+	String beg, end;
+	int length = 9;
+}
+{	<DAYMONTHYEAR> {beg = new String(checkDate(token.image, length));}
+	","
+	<DAYMONTHYEAR> {end = new String(checkDate(token.image, length));}
+	{e.append(createDayMonthYearRange(token,beg,end));}
+}
+/**
+  * A set of non-decision variable expressions delimited by commas - .
+  */
+void CommaSeparatedList(StringBuffer e) :
+{}
+{
+    NonDvarExpression(e) ( "," {e.append(",");} NonDvarExpression(e) )*
+}
+/**
+  * Two non-decision variable expressions delimited by a single comma.
+  */
+void OneCommaSeparatedList(StringBuffer e) :
+{}
+{
+    NonDvarExpression(e) ","
+    {
+    	e.append(",");
+   	}
+    NonDvarExpression(e)
+}
+/**
+  * A set of non-decision variable expressions delimited by commas - at least one comma.
+  */
+void MultiCommaSeparatedList(StringBuffer e) :
+{}
+{
+    NonDvarExpression(e) ( "," {e.append(",");} NonDvarExpression(e) )+
+}
+
+/**
+  * A list of decision variables and coeficients making up the objective function.
+  */
+void ObjectiveListTerm() :
+{
+	Token d;
+  StringBuffer sb = new StringBuffer();
+}
+{
+   "[" (d=<IDENTIFIER>|d=<DAYMONTH>|d=<MONTHYEAR>|d=<DAYMONTHYEAR>) ","
+   NonDvarExpression(sb) "]" (",")?
+   	{
+      if (dvarList.getIndexOf(d.image)<0) throw wreslError(d,"Decision variable '"	+ d.image
+      	+ "' has not been defined. No weight should be specified!");
+      weights.println("\"" + sb.toString().toUpperCase() + "\",\"" + d.image + "\",\"00\"");
+    }
+}
+
+/**
+  * A symbolic expression that contains no current timestep decision variables.
+  */
+void NonDvarExpression(StringBuffer e) :
+{
+    LPExpression expr = new LPExpression();
+    expr.keepLeft();     // prevents constant (a.k.a. RHS) terms from being negated
+}
+{
+      LinearExpression(expr)
+      {
+        if (expr.isConstant()) {
+           if (_isInDoublePrecisionRoutine && !_isInParenthesizedIdentifierRoutine) {  // CB added for double precision
+              try {
+//                 System.out.println(expr.asString());
+                 Double.parseDouble(expr.asString());
+                 e.append(expr.asString());
+                 e.append("D0");
+//                 System.out.println(e.toString());
+//                 System.out.println();
+              } catch (NumberFormatException nfe) {
+                 e.append(expr.asString());
+              }
+           } else e.append(expr.asString());
+        } else {
+           throw wreslError(token, "No decision variable terms allowed here");
+        }
+      }
+}
+
+/**
+  * A linear combination of decision variables with coefficients and a
+  * constant term.
+  */
+void LinearExpression(LPExpression curExpr) :
+{
+  Token x;
+  LPTerm a,b;
+}
+{
+   TermExpr(a=new LPTerm()) { curExpr.add(a); }
+   (
+       (x=<ADD> | x=<SUBTRACT>) TermExpr(b=new LPTerm())
+       {
+           if (x.kind == SUBTRACT) b.negate();
+           curExpr.add(b);
+       }
+   )*
+}
+
+
+/**
+  * An LP term, optionally multiplied or divided by one or more other terms
+  */
+void TermExpr(LPTerm ourTerm) :
+{
+  Token x;
+  LPTerm a;
+}
+{
+    UnaryExpr(ourTerm) (
+      (x=<MULTIPLY>|x=<DIVIDE>) UnaryExpr(a = new LPTerm())
+      {
+          try {
+          if (x.kind == MULTIPLY)
+        ourTerm.multiply(a);
+          else
+        ourTerm.divide(a);
+      } catch (ParseException pe) {
+          throw wreslError(x, pe.getMessage());
+      }
+      }
+    )*
+}
+
+
+/**
+  *  A primary LP term, optionally negated.
+  */
+void UnaryExpr(LPTerm ourTerm) :
+{}
+{
+    <SUBTRACT> PrimaryExpr(ourTerm)
+    {
+           ourTerm.negate();
+    }
+  |
+    PrimaryExpr(ourTerm)
+}
+
+
+/**
+  *  A primary term, consisting of at least one of two items, which
+  *  are symbolically multiplied together.
+  *  These items are (1) an decision variable identifier; and
+  *  (2) an expression of non-decision variables.
+  */
+void PrimaryExpr(LPTerm ourTerm) :
+{
+  StringBuffer e;
+  Timeseries ts;
+}
+{
+   LOOKAHEAD(2) ParenthesizedIdentifier(ourTerm) | LOOKAHEAD(2) BracketedIdentifier(ourTerm)
+ 	| LOOKAHEAD(2) IntrinsicFunction(ourTerm) | (<IDENTIFIER>|<DAYMONTH>|<MONTHYEAR>|<DAYMONTHYEAR>)
+   {
+     	int pos;
+    	// prevent globals from accessing locals
+  	if (_fileIsLocal==false && includeLevel > 0 &&
+    	   dvarList.getIndexOf(token.image) < 0 &&  	   //not Dvar
+    	   valueDefList.getIndexOf(token.image) < 0 &&     //nor global value svar
+    	   tsDefList.getIndexOf(token.image) < 0 &&        //nor global timeseries svar
+           !reservedList.isIn(token.image) )               //nor Reserved
+               throw wreslError(token, "Variable '" + token.image + "' not defined within global scope.");
+
+       if (reservedList.isIn(token.image)) {
+          ourTerm.coef = reservedList.fortranExpr(token.image);
+       } else if (dvarList.getIndexOf(token.image)>=0) { // found a decision variable
+          ourTerm.setDvar(token.image);
+       } else if (valueDefList.getIndexOf(token.image)>=0 ||
+       	  valueDefLocalList.getIndexOf(token.image)>=0 ) { // found a value variable
+       	  ourTerm.coef = token.image;
+          try {
+             Double.parseDouble(ourTerm.coef);
+             if (!_isInParenthesizedIdentifierRoutine)
+                ourTerm.coef = ourTerm.coef.concat("D0");
+          } catch (NumberFormatException nfe) {
+             // Do nothing
+             if (!_isDoublePrecisionANN && _isInExternalCall 
+                   && _ParenthesizedIdentifierNestingCount == 1 && !_isInINTIntrinsic)
+                ourTerm.coef = "real(" + ourTerm.coef + ",4)";
+          }
+       } else if ((pos=tsDefList.getIndexOf(token.image))>=0) { // found a timeseries variable
+          ts = (Timeseries) tsParamList.get(token.image.toUpperCase());
+          if (ts.getConvert().equals("'CFS'") && ts.getUnits().equals("'TAF'")) {
+             if (!_isDoublePrecisionANN && _isInExternalCall 
+                   && _ParenthesizedIdentifierNestingCount == 1 && !_isInINTIntrinsic) {
+                ourTerm.coef = new String("real(dssin("+String.valueOf(pos+1)+",0)*taf_cfs(), 4)");
+             } else {
+                ourTerm.coef = new String("dssin("+String.valueOf(pos+1)+",0)*taf_cfs()");
+             }
+          } else if (ts.getConvert().equals("'TAF'") && ts.getUnits().equals("'CFS'")) {
+             if (!_isDoublePrecisionANN && _isInExternalCall 
+                   && _ParenthesizedIdentifierNestingCount == 1 && !_isInINTIntrinsic) {
+                ourTerm.coef = new String("real(dssin("+String.valueOf(pos+1)+",0)*cfs_taf(), 4)");
+             } else {
+                ourTerm.coef = new String("dssin("+String.valueOf(pos+1)+",0)*cfs_taf()");
+             }
+          } else {
+             if (!_isDoublePrecisionANN && _isInExternalCall 
+                   && _ParenthesizedIdentifierNestingCount == 1 && !_isInINTIntrinsic) {
+                ourTerm.coef = new String("real(dssin("+String.valueOf(pos+1)+",0), 4)");
+             } else {
+                ourTerm.coef = new String("dssin("+String.valueOf(pos+1)+",0)");
+             }
+          }
+       } else {
+           throw wreslError(token,"Undeclared variable " + token.image);
+       }
+
+
+   }
+ | <CONSTANT>
+   {
+       ourTerm.coef = token.image;      // found a nonnegative numeric constant
+       if (!_isInParenthesizedIdentifierRoutine) {
+          if (_ParenthesizedIdentifierNestingCount != 1)
+             ourTerm.coef = ourTerm.coef.concat("D0");
+          else {
+             try {
+                Integer.parseInt(ourTerm.coef);
+                ourTerm.coef = "int(" + ourTerm.coef.concat("D0)");
+             } catch (NumberFormatException nfe) {
+                ourTerm.coef = ourTerm.coef.concat("D0");  // make the single into a double
+             }
+    	  }
+       }
+   }
+ | "(" NonDvarExpression(e=new StringBuffer()) ")"
+   {
+       ourTerm.coef = new String("(" + e.toString().toUpperCase() + ")");
+   }
+}
+
+
+
+/**
+  *  An identifier followed by an expression in parentheses.
+  */
+void ParenthesizedIdentifier(LPTerm ourTerm) :
+{
+  Token x;
+  StringBuffer e;
+  Timeseries ts;
+  _isInParenthesizedIdentifierRoutine = true;
+  _ParenthesizedIdentifierNestingCount++;
+}
+{
+   (x=<IDENTIFIER>|x=<DAYMONTH>|x=<MONTHYEAR>|x=<DAYMONTHYEAR>)
+  {
+    if (externalList.containsKey(x.image.toUpperCase())) {
+       _isInExternalCall = true;
+    }
+  }
+   
+   "(" CommaSeparatedList(e=new StringBuffer()) ")"
+//   (x=<IDENTIFIER>|x=<DAYMONTH>|x=<MONTHYEAR>|x=<DAYMONTHYEAR>)
+// "(" MultiCommaSeparatedList(e=new StringBuffer()) ")"
+   {
+       _isInParenthesizedIdentifierRoutine = false;
+       _ParenthesizedIdentifierNestingCount--;
+       int pos;
+       if ((pos=dvarList.getIndexOf(x.image))>=0) {
+          if (!_isDoublePrecisionANN && _isInExternalCall 
+                && _ParenthesizedIdentifierNestingCount == 1 && !_isInINTIntrinsic) {
+             ourTerm.coef = new String("real(dssdvar("+ String.valueOf(pos+1) + ",int(" + e + ")),4)");
+          } else {
+             ourTerm.coef = new String("dssdvar("+ String.valueOf(pos+1) + ",int(" + e + "))");
+          }
+       } else if ((pos=tsDefList.getIndexOf(x.image))>=0) { // found a timeseries variable
+          ts = (Timeseries) tsParamList.get(x.image.toUpperCase());
+          if (ts.getConvert().equals("'CFS'") && ts.getUnits().equals("'TAF'")) {
+             if (!_isDoublePrecisionANN && _isInExternalCall 
+                   && _ParenthesizedIdentifierNestingCount == 1 && !_isInINTIntrinsic) {
+                ourTerm.coef = new String("real(dssin("+String.valueOf(pos+1)+",int(" + e 
+                   + "))*taf_cfs(" + e + "),4)");
+             } else {
+                ourTerm.coef = new String("dssin("+String.valueOf(pos+1)+",int(" + e + "))*taf_cfs("
+                   + e + ")");
+             }
+          } else if (ts.getConvert().equals("'TAF'") && ts.getUnits().equals("'CFS'")) {
+             if (!_isDoublePrecisionANN && _isInExternalCall 
+                   && _ParenthesizedIdentifierNestingCount == 1 && !_isInINTIntrinsic) {
+                ourTerm.coef = new String("real(dssin("+String.valueOf(pos+1)+",int("
+                   + e + "))*cfs_taf(" + e + "),4)");
+             } else {
+                ourTerm.coef = new String("dssin("+String.valueOf(pos+1)+",int("
+                   + e + "))*cfs_taf(" + e + ")");
+             }
+          } else {
+             if (!_isDoublePrecisionANN && _isInExternalCall 
+                   && _ParenthesizedIdentifierNestingCount == 1 && !_isInINTIntrinsic) {
+                ourTerm.coef = new String("real(dssin("+String.valueOf(pos+1)+",int(" + e
+	                           + ")),4)");
+             } else {
+                ourTerm.coef = new String("dssin("+String.valueOf(pos+1)+",int(" + e + "))");
+             }
+          }
+       } else if (valueDefList.getIndexOf(x.image) >= 0) {
+          throw wreslError(x,"Previous values of '" + x.image + "' are not available.");
+       } else if (reservedList.isIn(x.image)) {           // reserved words
+           ourTerm.coef = new String(x.image + "(" + e + ")");
+       } else if (externalList.containsKey(x.image.toUpperCase())) {      // external function call
+           ourTerm.coef = new String(x.image + "(" + e + ")");
+       } else {
+          throw wreslError(x,"Undeclared Variable '" + x.image + "'");
+       }
+       if (_isInExternalCall && _ParenthesizedIdentifierNestingCount == 0)
+          _isInExternalCall = false;
+    }
+}
+/**
+  *  An intrinsic function - LF90 intrinsic
+  */
+void IntrinsicFunction(LPTerm ourTerm) :
+{
+    StringBuffer e = new StringBuffer("");
+    Token x;
+    _isInDoublePrecisionRoutine = true; // CB added (here, because a ParseException is thrown if x is not one of the listed tokens
+}
+{
+  x=<DABS>
+  "(" NonDvarExpression(e) ")"
+  { 
+      ourTerm.coef = new String("d" + x.image + "(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<INT> 
+  {  
+      _isInINTIntrinsic = true;
+  }
+  "(" NonDvarExpression(e) ")"
+  {
+      ourTerm.coef = new String(x.image + "(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+      _isInINTIntrinsic = false;
+  } |
+  x=<DFLOATI>  // DFLOATI ?????????????????????????
+  "(" NonDvarExpression(e) ")"
+  {
+      ourTerm.coef = new String("dfloati(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<EXP>  // DEXP ???????????????????????
+  "(" NonDvarExpression(e) ")"
+  {
+      ourTerm.coef = new String(x.image + "(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<LOG>  // DLOG ???????????????????????
+  "(" NonDvarExpression(e) ")"
+  {
+      ourTerm.coef = new String(x.image + "(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<LOG10>  // DLOG10 ???????????????????????
+  "(" NonDvarExpression(e) ")"
+  {
+      ourTerm.coef = new String(x.image + "(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<SQRT>  // DSQRT ???????????????????????
+  "(" NonDvarExpression(e) ")"
+  {
+      ourTerm.coef = new String(x.image + "(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<DMAX1>
+  "(" MultiCommaSeparatedList(e) ")"
+  { 
+      ourTerm.coef = new String("d" + x.image + "1(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<DMIN1>
+  "(" MultiCommaSeparatedList(e) ")"
+  {
+      ourTerm.coef = new String("d" + x.image + "1(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<POW>
+  "(" OneCommaSeparatedList(e) ")"
+  {
+      ourTerm.coef = new String(x.image + "(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  } |
+  x=<MOD>  // DMOD ???????????????????????
+  "(" OneCommaSeparatedList(e) ")"
+  {
+      ourTerm.coef = new String(x.image + "(" + e + ")");
+      _isInDoublePrecisionRoutine = false; // CB added to each type because one at the end did not work in the .jj file
+  }
+}
+
+
+/**
+  *  An identifier followed by an expression in brackets.
+  */
+void BracketedIdentifier(LPTerm ourTerm) :
+{
+  Token x;
+  StringBuffer e;
+  Timeseries ts;
+}
+{
+//   (x=<IDENTIFIER>|x=<DAYMONTH>|x=<MONTHYEAR>|x=<DAYMONTHYEAR>) "[" CommaSeparatedList(e=new StringBuffer()) "]"
+//   (x=<IDENTIFIER>|x=<DAYMONTH>|x=<MONTHYEAR>|x=<DAYMONTHYEAR>) "[" NonDvarExpression(e=new StringBuffer()) "]"
+	(x=<IDENTIFIER>|x=<DAYMONTH>|x=<MONTHYEAR>|x=<DAYMONTHYEAR>) "[" ModelDvarReference(e=new StringBuffer()) "]"
+
+	{
+		int pos;
+		if (_fileIsLocal==false && includeLevel > 0 ) {
+    	throw wreslError(x,"Variable '" + x.image + "[]' not accessible from global scope");
+ 		} else if ((pos=dvarList.getIndexOf(x.image))>=0) {
+    	ourTerm.coef = new String("dsscycle("+ String.valueOf(pos+1) + ",int(" + e + "))");
+ 		} else if (valueDefList.getIndexOf(x.image) >= 0) {
+    	throw wreslError(x,"Previous values of '" + x.image + "' are not available.");
+   	} else if (tsDefList.getIndexOf(x.image) >= 0) {
+    	throw wreslError(x,"Timeseries variable '"	+ x.image + "' should not be followed by [] brackets");
+		} else {
+    	throw wreslError(x,"Undefined term in brackets: "+ x.image);
+  	}
+	}
+}
+
+/**
+  *
+  */
+void ModelDvarReference(StringBuffer e) :
+{
+  String refmod;
+  String reforder;
+  Integer refint;
+  Token x;
+}
+{
+  (x=<IDENTIFIER>|x=<DAYMONTH>|x=<MONTHYEAR>|x=<DAYMONTHYEAR>)
+
+  {
+	  refmod = x.image.toUpperCase();
+		reforder = (String) sequenceList.get(refmod);
+	  if (reforder==null) {
+	  	throw wreslError(x,"Model '"+x.image+"' not defined!");
+	  } else {
+	    refint = new Integer(reforder);
+      int iref = refint.intValue();
+      int icur = _currentOrder.intValue();
+      if (iref>=icur) {
+        throw wreslError(x,"Model '"+refmod+"' may not be referenced here! Not yet solved.");
+      } else {
+        e.append(iref-icur);
+			}
+	  }
+  }
+}
+
+
+/**
+  *  Definition of an array.
+  */
+void ArrayStatement() :
+{
+  StringBuffer sb = new StringBuffer();
+  Token scope,id,size,beg,end,step,counter,expr;
+  scope=new Token();
+  scope.kind=GLOBAL;
+  id=new Token();
+  size=new Token();
+  counter=new Token();
+  beg=new Token();
+  end=new Token();
+  step=new Token();
+  expr=new Token();
+  String name;
+  int caseNum = 1;
+  UniqueList caseList = new UniqueList(4,4);   // stores case (condition) names
+}
+{
+  <ARRAY> ("[" (scope=<LOCAL>|scope=<GLOBAL>) "]")?
+  id=<IDENTIFIER> "[" size=<CONSTANT> "]"
+  "{" "(" counter=<IDENTIFIER> "=" beg=<CONSTANT> ","
+                                   end=<CONSTANT> ","
+                                   step=<CONSTANT> ")"
+
+  {
+	name = id.image.toUpperCase();
+	if (scope.kind==LOCAL || _fileIsLocal) {
+	  _controlDefines = localDefines;
+      if ( !valueDefLocalList.newItem(name)) throw wreslError(id, "Redefining '" + name + "' within Model");
+	  if ( valueDefList.getIdCode(name)!=null) throw wreslError(id, "Redefining '" + name + "'");
+	  _controlDefines.println(make32( "$"+name));
+	} else {
+	  _controlDefines = globalDefines;
+  	  if (!valueDefList.newItem(name)) throw wreslError(id, "Redefining '" + name + "'");
+	  _controlDefines.println(make32("$"+name).append(valueDefList.getIdCode(name)));
+	}
+	_controlDefines.println(size.toString());
+	_controlDefines.println(counter.toString()+"="+beg.toString()+","+end.toString()+","+step.toString());
+	_controlDefines.println(counter.toString());
+  }
+
+
+//  NonDvarExpression(sb) "}"
+
+  ( (( CaseStatement(caseNum++,caseList,_controlDefines) FillArrayStatement(_controlDefines) "}")+
+     | { soleCondition(_controlDefines); } FillArrayStatement(_controlDefines)
+    )
+  "}"
+  )
+      { noMoreCases(_controlDefines);
+      	if (caseNum > 1 && !condIsAlways) throw wreslError(id,"Final condition must be 'always' for '"+name+"'");
+	  }
+
+  {
+//	soleCondition(_controlDefines);
+//	_controlDefines.println(sb);
+//	noMoreCases(_controlDefines);
+  }
+}
+
+
+/**
+  *  Definition of an fillarray.
+  */
+void FillArrayStatement(java.io.PrintWriter s) :
+{
+  StringBuffer sb = new StringBuffer();
+}
+{
+  NonDvarExpression(sb)
+  {
+	s.println(sb);
+  }
+}
+

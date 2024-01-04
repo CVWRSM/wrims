@@ -1,0 +1,112 @@
+!M. Reginato 08/07/2009 IFDiversion Criteria  per BDCP Draft Proposed
+!Long Term BDCP Water Operations Range of Criteria (July16,2009)
+/*
+If SAC river flow is between minrangeN and maxrangeN the bypass requirement is:
+minbypN + coefN * the amount over the maxrangeN
+
+where N is one of the 4 flow ranges specified in the Draft Proposed Long Term BDCP
+
+Input tables to this code, each scenario(Range A, Proposed Ops and Range B) will have a different set of tables
+IFBypassFlows.table
+IFBypassFlows_1.table
+IFBypassFlows_2.table
+
+*/
+
+!Split of C169 according to Diversion capabilities
+define int_hoodbyps0  {INTEGER std kind 'INTEGER' units 'NONE'}
+define int_hoodbyps1  {INTEGER std kind 'INTEGER' units 'NONE'}
+define int_hoodbyps2  {INTEGER std kind 'INTEGER' units 'NONE'}
+define int_hoodbyps3  {INTEGER std kind 'INTEGER' units 'NONE'}
+
+!Get Coefficients that limits diversions from lookup table
+define maxrange1 {
+ 	case DryCritical { condition wyt_SAC >=4 .and. month>=DEC .and. month<=JUN       !Case DryCritical applied only for Prop Ops(Dec-Jun)
+		 value 9000. }
+	case other {condition always
+		select maxv from IFBypassFlows where qRange = 1}
+}
+define maxrange2 {select maxv from IFBypassFlows where qRange = 2}
+define maxrange3 {select maxv from IFBypassFlows where qRange = 3}
+define maxrange4 {select maxv from IFBypassFlows where qRange = 4}
+
+define deltarange1 {value maxrange1}
+define deltarange2 {value maxrange2-maxrange1}
+define deltarange3 {value maxrange3-maxrange2}
+define deltarange4 {value maxrange4-maxrange3}
+
+define coef1 {select Range1 from IFBypassFlows_1 where month=month}
+define coef2 {select Range2 from IFBypassFlows_1 where month=month}
+define coef3 {select Range3 from IFBypassFlows_1 where month=month}
+define coef4 {select Range4 from IFBypassFlows_1 where month=month}
+define coef5 {select switch from IFBypassFlows_1 where month=month}
+
+define minbyp1 {select min1 from IFBypassFlows_2 where month=month}
+define minbyp2 {
+	case DryCritical { condition wyt_SAC >=4 .and. month>=DEC .and. month<=JUN       !Case DryCritical applied only for Prop Ops
+		 value 9000. }
+	case other {condition always
+		  select min2 from IFBypassFlows_2 where month=month }
+}
+
+define minbyp3 {select min3 from IFBypassFlows_2 where month=month}
+define minbyp4 {select min4 from IFBypassFlows_2 where month=month}
+
+!define min_bypassq {select minbypass from IFDiversionCriteria where month=month}
+!define shldr_boost {select shldr from IFDiversionCriteria where month=month}
+!define Hood_require {value  min_bypassq}
+
+define C169_0 {upper maxrange1 lower 0. kind 'flow-channel' units 'cfs'}
+define C169_1 {upper maxrange2 lower 0. kind 'flow-channel' units 'cfs'}
+define C169_2 {upper maxrange3 lower 0. kind 'flow-channel' units 'cfs'}
+define C169_3 {upper maxrange4 lower 0. kind 'flow-channel' units 'cfs'}
+
+
+!Definition of Minimum bypass flow
+define C169_IFMIN {upper 99999. lower 0. kind 'flow-channel' units 'cfs'} !Minimum flow at SAC, cannot be diverted into IF
+define C169_IF400 {upper 99999. kind 'flow-channel' units 'cfs'} !Max Flow that will be diverted at D400
+
+!define C169_HOODREQ {alias Hood_require kind 'FLOW-CHANNEL' units 'CFS' }
+goal setinthbypsssum {  int_hoodbyps0+int_hoodbyps1+int_hoodbyps2+int_hoodbyps3 = 1.}
+
+!Local Continuity, split of SAC river in bins
+goal setC169_part {C169 = C169_0 + C169_1 + C169_2+ C169_3}
+
+goal setC169_0  {C169_0 > int_hoodbyps1*deltarange1+int_hoodbyps2*deltarange1+int_hoodbyps3*deltarange1}
+goal setC169_1a {C169_1 < int_hoodbyps1*deltarange2+int_hoodbyps2*deltarange2+int_hoodbyps3*deltarange2}
+
+goal setC169_1b  {C169_1 > int_hoodbyps2*deltarange2+int_hoodbyps3*deltarange2}
+goal setC169_2a  {C169_2 < int_hoodbyps2*deltarange3+int_hoodbyps3*deltarange3}
+
+goal setC169_2b  {C169_2 > int_hoodbyps3*deltarange3}
+goal setC169_3   {C169_3 < int_hoodbyps3 *maxrange4}
+
+
+! Minimum flow definition
+goal requirement0 { C169_IFMIN > minbyp1*int_hoodbyps0*coef5 + C169_0*coef1}
+goal requirement1 { C169_IFMIN > minbyp2*int_hoodbyps1*coef5 + C169_1*coef2 - int_hoodbyps0*99999.}
+goal requirement2 { C169_IFMIN > minbyp3*int_hoodbyps2*coef5+ C169_2*coef3 - int_hoodbyps0*999999.- int_hoodbyps1*99999.}
+goal requirement3 { C169_IFMIN > minbyp4*int_hoodbyps3*coef5+ C169_3*coef4- int_hoodbyps0*999999. - int_hoodbyps1*999999. - int_hoodbyps2*99999.}
+goal requirement4 { C169_IFMIN < minbyp4+ C169_3*coef4 }
+
+
+goal setC169_ifmin {C169 = C169_IFMIN + C169_IF400}
+
+
+!Cap IF diversion
+goal setD400_169 {
+	lhs D400
+	case other {
+	condition always
+	rhs C169_IF400 lhs<rhs penalty 0.}
+}
+
+!****************************END***************************************
+
+
+
+
+
+
+
+

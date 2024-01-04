@@ -1,0 +1,2103 @@
+/*
+  ARCS-WUFACTORS.WRESL
+ CALSIM III SYSTEM FILE
+  
+  Purpose: Define water use factors
+
+  NAMING TAKES THE FOLLOWING FORMS:
+  EVF_{Upstream CalSim-III node}_{demand unit} - evaporative conveyance loss
+  DPF_{Upstream CalSim-III node}_{demand unit} - deep percolation conveyance loss
+  LFF_{Upstream CalSim-III node}_{demand unit} - lateral flow conveyance loss (from canal to toe drain)
+  SPF_{Upstream CalSim-III node}_{demand unit} - spill conveyance loss (from canal to drain outfall - not available for reuse)
+  
+  RUF_{demand unit} - reuse fraction
+  RPF_{demand unit}     - riparian and miscellaneous field/on-farm evaporative losses 
+  EV_{demand unit}      - total evaporative loss associated with surface water conveyance           
+  DP_{demand unit}      - total deep percolation loss associated with surface water conveyance              
+  LF_{demand unit}      - total lateral flow loss associated with surface water conveyance              
+  SP_{demand unit}      - total spill associated with surface water conveyance              
+  DL_{demand unit}      - total loss associated with surface water conveyance (evaporation loss+deep percolation+lateral flow+spill)        
+  
+
+ Edited ADraper, MWH, 05/11/08
+ Edited by DJones 04/22/08
+ Edited ADraper, MWH, 11/15/06
+*/
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 1       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 1_NA -
+!==============================
+/*define EVF_CWD032_1_NA    {value 0.01} !evaporative loss fraction
+define DPF_CWD032_1_NA  {value 0.09} !deep percolation loss fraction
+define LFF_CWD032_1_NA  {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_CWD032_1_NA  {value 0.00} !spill fraction
+
+define RUF_1_NA     {value 0.10} !reuse fraction
+define RPF_1_NA     {value 0.07} !riparian and miscellaneous ET fraction
+
+define EV_1_NA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_1_NA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_1_NA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_1_NA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_1_NA      {std kind 'DELIVERY-LOSS' units 'CFS'}*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 2       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 2_NA -
+!==============================
+define EVF_CWD009_2_NA  {value 0.01} !evaporative loss fraction
+define DPF_CWD009_2_NA  {value 0.12} !deep percolation loss fraction
+define LFF_CWD009_2_NA  {value 0.12} !lateral flow loss fraction lateral flow
+define SPF_CWD009_2_NA  {value 0.00} !spill fraction
+
+define EVF_CLR009_2_NA  {value 0.01} !evaporative loss fraction
+define DPF_CLR009_2_NA  {value 0.12} !deep percolation loss fraction
+define LFF_CLR009_2_NA  {value 0.12} !lateral flow loss fraction lateral flow
+define SPF_CLR009_2_NA  {value 0.00} !spill fraction
+
+define RUF_2_NA     {value 0.00} !reuse fraction
+define RPF_2_NA     {value 0.07} !riparian and miscellaneous ET fraction
+
+define EV_2_NA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_2_NA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_2_NA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_2_NA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_2_NA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 2_SA -
+!==============================
+define EVF_SAC296_2_SA  {value 0.01} !evaporative loss fraction
+define DPF_SAC296_2_SA  {value 0.145} !deep percolation loss fraction
+define LFF_SAC296_2_SA  {value 0.145} !lateral flow loss fraction lateral flow
+define SPF_SAC296_2_SA  {value 0.44} !spill fraction
+
+define RUF_2_SA     {value 0.10} !reuse fraction
+define RPF_2_SA     {value 0.07} !riparian and miscellaneous ET fraction
+
+define EV_2_SA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_2_SA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_2_SA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_2_SA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_2_SA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 2_PA -
+!==============================
+define EVF_WKYTN_2_PA   {value 0.00} !evaporative loss fraction
+define DPF_WKYTN_2_PA   {value 0.00} !deep percolation loss fraction
+define LFF_WKYTN_2_PA   {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_WKYTN_2_PA   {value 0.00} !spill fraction
+
+define RUF_2_PA     {value 0.15} !reuse fraction
+define RPF_2_PA     {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_2_PA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_2_PA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_2_PA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_2_PA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_2_PA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 2_PU -
+!==============================
+define EF_WTPCSD_2_PU   {value 0.0} !non recoverable loss fraction
+define SF_WTPCSD_2_PU   {value 0.0} !non recoverable loss fraction
+
+define DL_WTPCSD_2_PU   {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPCSD_2_PU   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPCSD_2_PU   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_2_PU      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 2_SU -
+!==============================
+define EF_WTPFTH_2_SU   {value 0.0} !non recoverable loss fraction
+define SF_WTPFTH_2_SU   {value 0.0} !non recoverable loss fraction
+
+define DL_WTPFTH_2_SU   {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPFTH_2_SU   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPFTH_2_SU   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_2_SU      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 3       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 3_NA -
+!==============================
+define EVF_BTL006_3_NA  {value 0.01} !evaporative loss fraction
+define DPF_BTL006_3_NA  {value 0.024} !deep percolation loss fraction
+define LFF_BTL006_3_NA  {value 0.036} !lateral flow loss fraction lateral flow
+define SPF_BTL006_3_NA  {value 0.03} !spill fraction
+
+define EVF_COW014_3_NA  {value 0.01} !evaporative loss fraction
+define DPF_COW014_3_NA  {value 0.024} !deep percolation loss fraction
+define LFF_COW014_3_NA  {value 0.036} !lateral flow loss fraction lateral flow
+define SPF_COW014_3_NA  {value 0.03} !spill fraction
+
+define EVF_BCN005_3_NA  {value 0.01} !evaporative loss fraction
+define DPF_BCN005_3_NA  {value 0.024} !deep percolation loss fraction
+define LFF_BCN005_3_NA  {value 0.036} !lateral flow loss fraction lateral flow
+define SPF_BCN005_3_NA  {value 0.03} !spill fraction
+
+define RUF_3_NA     {value 0.15} !reuse fraction
+define RPF_3_NA     {value 0.08} !riparian and miscellaneous ET fraction
+
+define EV_3_NA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_3_NA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_3_NA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_3_NA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_3_NA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 3_PA -
+!==============================
+define EVF_SAC294_3_PA  {value 0.01} !evaporative loss fraction
+define DPF_SAC294_3_PA  {value 0.055} !deep percolation loss fraction
+define LFF_SAC294_3_PA  {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SAC294_3_PA  {value 0.03} !spill fraction
+
+define RUF_3_PA     {value 0.10} !reuse fraction
+define RPF_3_PA     {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_3_PA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_3_PA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_3_PA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_3_PA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_3_PA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 3_SA -
+!==============================
+define EVF_SAC289_3_SA  {value 0.01} !evaporative loss fraction
+define DPF_SAC289_3_SA  {value 0.2625} !deep percolation loss fraction
+define LFF_SAC289_3_SA  {value 0.0875} !lateral flow loss fraction lateral flow
+define SPF_SAC289_3_SA  {value 0.30} !spill fraction
+
+define RUF_3_SA     {value 0.10} !reuse fraction
+define RPF_3_SA     {value 0.12} !riparian and miscellaneous ET fraction
+
+define EV_3_SA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_3_SA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_3_SA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_3_SA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_3_SA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 3_SU -
+!==============================
+define EF_WTPFTH_3_SU   {value 0.0} !non recoverable loss fraction
+define SF_WTPFTH_3_SU   {value 0.0} !non recoverable loss fraction
+
+define DL_WTPFTH_3_SU   {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPFTH_3_SU   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPFTH_3_SU   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_3_SU      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 3_PU1 -
+!==============================
+define EF_WTPJMS_3_PU1  {value 0.0} !non recoverable loss fraction
+define SF_WTPJMS_3_PU1  {value 0.0} !non recoverable loss fraction
+
+define DL_WTPJMS_3_PU1  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPJMS_3_PU1  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPJMS_3_PU1  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_3_PU1     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 3_PU2 -
+!==============================
+define EF_SAC_3_PU2 {value 0.0} !non recoverable loss fraction
+define SF_SAC_3_PU2 {value 0.0} !non recoverable loss fraction
+
+define DL_SAC_3_PU2 {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_SAC_3_PU2 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_SAC_3_PU2 {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_3_PU2     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 3_PU3 -
+!==============================
+define EF_WTPBUK_3_PU3  {value 0.0} !non recoverable loss fraction
+define SF_WTPBUK_3_PU3  {value 0.0} !non recoverable loss fraction
+
+define DL_WTPBUK_3_PU3  {std kind 'DELIVERY-LOSS'  units 'CFS'}
+define EL_WTPBUK_3_PU3  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPBUK_3_PU3  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_3_PU3     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 4       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 4_NA -
+!==============================
+define EVF_SAC224_4_NA  {value 0.00} !evaporative loss fraction
+define DPF_SAC224_4_NA  {value 0.00} !deep percolation loss fraction
+define LFF_SAC224_4_NA  {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_SAC224_4_NA  {value 0.00} !spill fraction
+
+define EVF_ELD012_4_NA  {value 0.01} !evaporative loss fraction
+define DPF_ELD012_4_NA  {value 0.0975} !deep percolation loss fraction
+define LFF_ELD012_4_NA  {value 0.0325} !lateral flow loss fraction lateral flow
+define SPF_ELD012_4_NA  {value 0.00} !spill fraction
+
+define EVF_THM012_4_NA  {value 0.01} !evaporative loss fraction
+define DPF_THM012_4_NA  {value 0.0975} !deep percolation loss fraction
+define LFF_THM012_4_NA  {value 0.0325} !lateral flow loss fraction lateral flow
+define SPF_THM012_4_NA  {value 0.00} !spill fraction
+
+define RUF_4_NA     {value 0.10} !reuse fraction
+define RPF_4_NA     {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_4_NA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_4_NA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_4_NA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_4_NA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_4_NA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 4_PA1 -
+!==============================
+define EVF_CCL005_4_PA1 {value 0.00} !evaporative loss fraction
+define DPF_CCL005_4_PA1 {value 0.00} !deep percolation loss fraction
+define LFF_CCL005_4_PA1 {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_CCL005_4_PA1 {value 0.00} !spill fraction
+
+define RUF_4_PA1    {value 0.10} !reuse fraction
+define RPF_4_PA1    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_4_PA1     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_4_PA1     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_4_PA1     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_4_PA1     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_4_PA1     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 4_PA2 -
+!==============================
+define EVF_TCC022_4_PA2 {value 0.00} !evaporative loss fraction
+define DPF_TCC022_4_PA2 {value 0.00} !deep percolation loss fraction
+define LFF_TCC022_4_PA2 {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_TCC022_4_PA2 {value 0.00} !spill fraction
+
+define RUF_4_PA2    {value 0.10} !reuse fraction
+define RPF_4_PA2    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_4_PA2     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_4_PA2     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_4_PA2     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_4_PA2     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_4_PA2     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!=======================================================================
+! 4_TCCL - Tehama-Colusa Canal loss
+!=======================================================================
+define EVF_4_TCCL   {value 0.01} !evaporative loss fraction
+define DPF_4_TCCL   {value 0.005} !deep percolation loss fraction
+
+define EV_4_TCCL    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_4_TCCL    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define SG_TCC022    {std kind 'STREAM-GAIN' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 5       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 5_NA -
+!==============================
+define EVF_SAC240_5_NA  {value 0.00}    !evaporative loss fraction
+define DPF_SAC240_5_NA  {value 0.00}    !deep percolation loss fraction
+define LFF_SAC240_5_NA  {value 0.00}    !lateral flow loss fraction lateral flow
+define SPF_SAC240_5_NA  {value 0.00}    !spill fraction
+
+define EVF_ANT010_5_NA  {value 0.015}   !evaporative loss fraction
+define DPF_ANT010_5_NA  {value 0.22125} !deep percolation loss fraction
+define LFF_ANT010_5_NA  {value 0.07375} !lateral flow loss fraction lateral flow
+define SPF_ANT010_5_NA  {value 0.25}    !spill fraction
+
+define EVF_MLC006_5_NA  {value 0.015}   !evaporative loss fraction
+define DPF_MLC006_5_NA  {value 0.22125} !deep percolation loss fraction
+define LFF_MLC006_5_NA  {value 0.07375} !lateral flow loss fraction lateral flow
+define SPF_MLC006_5_NA  {value 0.25}    !spill fraction
+
+define EVF_DRC010_5_NA  {value 0.015}   !evaporative loss fraction
+define DPF_DRC010_5_NA  {value 0.22125} !deep percolation loss fraction
+define LFF_DRC010_5_NA  {value 0.07375} !lateral flow loss fraction lateral flow
+define SPF_DRC010_5_NA  {value 0.25}    !spill fraction
+
+define RUF_5_NA     {value 0.10} !reuse fraction
+define RPF_5_NA     {value 0.12} !riparian and miscellaneous ET fraction
+
+define EV_5_NA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_5_NA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_5_NA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_5_NA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_5_NA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 6       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 6_PA -
+!==============================
+define EVF_STN021_6_PA  {value 0.01} !evaporative loss fraction
+define DPF_STN021_6_PA  {value 0.411} !deep percolation loss fraction
+define LFF_STN021_6_PA  {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_STN021_6_PA  {value 0.00} !spill fraction
+
+define EVF_STN026_6_PA  {value 0.01} !evaporative loss fraction
+define DPF_STN026_6_PA  {value 0.411} !deep percolation loss fraction
+define LFF_STN026_6_PA  {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_STN026_6_PA  {value 0.00} !spill fraction
+
+define EVF_STN_6_PA {value (EVF_STN021_6_PA + EVF_STN026_6_PA)/2.} 
+define DPF_STN_6_PA {value (DPF_STN021_6_PA + DPF_STN026_6_PA)/2.} 
+define LFF_STN_6_PA {value (LFF_STN021_6_PA + LFF_STN026_6_PA)/2.} 
+define SPF_STN_6_PA {value (SPF_STN021_6_PA + SPF_STN026_6_PA)/2.} 
+
+define RUF_6_PA     {value 0.10} !reuse fraction
+define RPF_6_PA     {value 0.045} !riparian and miscellaneous ET fraction
+
+define EV_6_PA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_6_PA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_6_PA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_6_PA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_6_PA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!===================================================================
+! 6_STNL - Stony Creek to Tehama-Colusa Canal diversion loss
+!===================================================================
+define EVF_6_STNL   {value 0.01} !evaporative loss fraction
+define DPF_6_STNL   {value 0.411} !deep percolation loss fraction
+
+define EV_6_STNL    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_6_STNL    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define SG_TCC031    {std kind 'STREAM-GAIN' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 7 North     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 7N_PA -
+!==============================
+define EVF_TCC036_7N_PA {value 0.00} !evaporative loss fraction
+define DPF_TCC036_7N_PA {value 0.00} !deep percolation loss fraction
+define LFF_TCC036_7N_PA {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_TCC036_7N_PA {value 0.00} !spill fraction
+
+define RUF_7N_PA    {value 0.10} !reuse fraction
+define RPF_7N_PA    {value 0.025} !riparian and miscellaneous ET fraction
+
+define EV_7N_PA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_7N_PA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_7N_PA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_7N_PA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_7N_PA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 7 South     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 7S_PA -
+!==============================
+define EVF_TCC081_7S_PA {value 0.00} !evaporative loss fraction
+define DPF_TCC081_7S_PA {value 0.00} !deep percolation loss fraction
+define LFF_TCC081_7S_PA {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_TCC081_7S_PA {value 0.00} !spill fraction
+
+define EVF_TCC111_7S_PA {value 0.00} !evaporative loss fraction
+define DPF_TCC111_7S_PA {value 0.00} !deep percolation loss fraction
+define LFF_TCC111_7S_PA {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_TCC111_7S_PA {value 0.00} !spill fraction
+
+define RUF_7S_PA    {value 0.00} !reuse fraction
+define RPF_7S_PA    {value 0.025} !riparian and miscellaneous ET fraction
+
+define EV_7S_PA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_7S_PA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_7S_PA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_7S_PA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_7S_PA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8 North     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 8N_PA -
+!==============================
+define EVF_CBD049_8N_PA {value 0.005} !evaporative loss fraction
+define DPF_CBD049_8N_PA {value 0.0075} !deep percolation loss fraction
+define LFF_CBD049_8N_PA {value 0.0225} !lateral flow loss fraction lateral flow
+define SPF_CBD049_8N_PA {value 0.00} !spill fraction
+
+define RUF_8N_PA    {value 0.10} !reuse fraction
+define RPF_8N_PA    {value 0.025} !riparian and miscellaneous ET fraction
+
+define EV_8N_PA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8N_PA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8N_PA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8N_PA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8N_PA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 8N_PR1 -
+!==============================
+define EVF_GCC027_8N_PR1{value 0.005} !evaporative loss fraction
+define DPF_GCC027_8N_PR1{value 0.04125} !deep percolation loss fraction
+define LFF_GCC027_8N_PR1{value 0.12375} !lateral flow loss fraction lateral flow
+define SPF_GCC027_8N_PR1{value 0.00} !spill fraction
+
+define RUF_8N_PR1   {value 0.10} !reuse fraction
+define RPF_8N_PR1   {value 0.035} !riparian and miscellaneous ET fraction
+
+define EV_8N_PR1    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8N_PR1    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8N_PR1    {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8N_PR1    {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8N_PR1    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 8N_PR2 -
+!==============================
+define EVF_GCC039_8N_PR2{value 0.005} !evaporative loss fraction
+define DPF_GCC039_8N_PR2{value 0.04125} !deep percolation loss fraction
+define LFF_GCC039_8N_PR2{value 0.12375} !lateral flow loss fraction lateral flow
+define SPF_GCC039_8N_PR2{value 0.00} !spill fraction
+
+define RUF_8N_PR2   {value 0.10} !reuse fraction
+define RPF_8N_PR2   {value 0.035} !riparian and miscellaneous ET fraction
+
+define EV_8N_PR2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8N_PR2    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8N_PR2    {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8N_PR2    {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8N_PR2    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 8N_SA1 -
+!==============================
+define EVF_SAC178_8N_SA1{value 0.005} !evaporative loss fraction
+define DPF_SAC178_8N_SA1{value 0.046} !deep percolation loss fraction
+define LFF_SAC178_8N_SA1{value 0.069} !lateral flow loss fraction lateral flow
+define SPF_SAC178_8N_SA1{value 0.03} !spill fraction
+
+define EVF_SAC159_8N_SA1{value 0.005} !evaporative loss fraction
+define DPF_SAC159_8N_SA1{value 0.046} !deep percolation loss fraction
+define LFF_SAC159_8N_SA1{value 0.069} !lateral flow loss fraction lateral flow
+define SPF_SAC159_8N_SA1{value 0.03} !spill fraction
+
+define EVF_CBD049_8N_SA1{value 0.005} !evaporative loss fraction
+define DPF_CBD049_8N_SA1{value 0.0125} !deep percolation loss fraction
+define LFF_CBD049_8N_SA1{value 0.0375} !lateral flow loss fraction lateral flow
+define SPF_CBD049_8N_SA1{value 0.05} !spill fraction
+
+define RUF_8N_SA1   {value 0.10} !reuse fraction
+define RPF_8N_SA1   {value 0.025} !riparian and miscellaneous ET fraction
+
+define EV_8N_SA1    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8N_SA1    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8N_SA1    {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8N_SA1    {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8N_SA1    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 8N_SA2 -
+!==============================
+define EVF_GCC027_8N_SA2{value 0.005} !evaporative loss fraction
+define DPF_GCC027_8N_SA2{value 0.04125} !deep percolation loss fraction
+define LFF_GCC027_8N_SA2{value 0.12375} !lateral flow loss fraction lateral flow
+define SPF_GCC027_8N_SA2{value 0.05} !spill fraction
+
+define RUF_8N_SA2   {value 0.10} !reuse fraction
+define RPF_8N_SA2   {value 0.025} !riparian and miscellaneous ET fraction
+
+define EV_8N_SA2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8N_SA2    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8N_SA2    {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8N_SA2    {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8N_SA2    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 8 South     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 8S_SA1 -
+!==============================
+define EVF_SAC159_8S_SA1{value 0.005} !evaporative loss fraction
+define DPF_SAC159_8S_SA1{value 0.046} !deep percolation loss fraction
+define LFF_SAC159_8S_SA1{value 0.069} !lateral flow loss fraction lateral flow
+define SPF_SAC159_8S_SA1{value 0.03} !spill fraction
+
+define EVF_CBD041_8S_SA1{value 0.005} !evaporative loss fraction
+define DPF_CBD041_8S_SA1{value 0.0125} !deep percolation loss fraction
+define LFF_CBD041_8S_SA1{value 0.0375} !lateral flow loss fraction lateral flow
+define SPF_CBD041_8S_SA1{value 0.05} !spill fraction
+
+define RUF_8S_SA1   {value 0.10} !reuse fraction
+define RPF_8S_SA1   {value 0.025} !riparian and miscellaneous ET fraction
+define EV_8S_SA1    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8S_SA1    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8S_SA1    {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8S_SA1    {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8S_SA1    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 8S_SA2 -
+!==============================
+define EVF_GCC046_8S_SA2{value 0.005} !evaporative loss fraction
+define DPF_GCC046_8S_SA2{value 0.04125} !deep percolation loss fraction
+define LFF_GCC046_8S_SA2{value 0.12375} !lateral flow loss fraction lateral flow
+define SPF_GCC046_8S_SA2{value 0.05} !spill fraction
+
+define EVF_CBD041_8S_SA2{value 0.005} !evaporative loss fraction
+define DPF_CBD041_8S_SA2{value 0.0125} !deep percolation loss fraction
+define LFF_CBD041_8S_SA2{value 0.0375} !lateral flow loss fraction lateral flow
+define SPF_CBD041_8S_SA2{value 0.05} !spill fraction
+
+define RUF_8S_SA2   {value 0.10} !reuse fraction
+define RPF_8S_SA2   {value 0.025} !riparian and miscellaneous ET fraction
+
+define EV_8S_SA2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8S_SA2    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8S_SA2    {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8S_SA2    {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8S_SA2    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 8S_SA3 -
+!==============================
+define EVF_SAC121_8S_SA3{value 0.005} !evaporative loss fraction
+define DPF_SAC121_8S_SA3{value 0.02375} !deep percolation loss fraction
+define LFF_SAC121_8S_SA3{value 0.07125} !lateral flow loss fraction lateral flow
+define SPF_SAC121_8S_SA3{value 0.03} !spill fraction
+
+define EVF_SAC109_8S_SA3{value 0.005} !evaporative loss fraction
+define DPF_SAC109_8S_SA3{value 0.02375} !deep percolation loss fraction
+define LFF_SAC109_8S_SA3{value 0.07125} !lateral flow loss fraction lateral flow
+define SPF_SAC109_8S_SA3{value 0.03} !spill fraction
+
+define RUF_8S_SA3   {value 0.10} !reuse fraction
+define RPF_8S_SA3   {value 0.025} !riparian and miscellaneous ET fraction
+
+define EV_8S_SA3    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8S_SA3    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8S_SA3    {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8S_SA3    {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8S_SA3    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 8S_PR -
+!==============================
+define EVF_GCC046_8S_PR {value 0.005} !evaporative loss fraction
+define DPF_GCC046_8S_PR {value 0.04125} !deep percolation loss fraction
+define LFF_GCC046_8S_PR {value 0.12375} !lateral flow loss fraction lateral flow
+define SPF_GCC046_8S_PR {value 0.00} !spill fraction
+
+define EVF_CBD037_8S_PR {value 0.005} !evaporative loss fraction
+define DPF_CBD037_8S_PR {value 0.0125} !deep percolation loss fraction
+define LFF_CBD037_8S_PR {value 0.0375} !lateral flow loss fraction lateral flow
+define SPF_CBD037_8S_PR {value 0.00} !spill fraction
+
+define RUF_8S_PR    {value 0.10} !reuse fraction
+define RPF_8S_PR    {value 0.035} !riparian and miscellaneous ET fraction
+
+define EV_8S_PR     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8S_PR     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8S_PR     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8S_PR     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8S_PR     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 8S_PA -
+!==============================
+define EVF_CBD028_8S_PA {value 0.005} !evaporative loss fraction
+define DPF_CBD028_8S_PA {value 0.0075} !deep percolation loss fraction
+define LFF_CBD028_8S_PA {value 0.0225} !lateral flow loss fraction lateral flow
+define SPF_CBD028_8S_PA {value 0.00} !spill fraction
+
+define RUF_8S_PA    {value 0.10} !reuse fraction
+define RPF_8S_PA    {value 0.025} !riparian and miscellaneous ET fraction
+
+define EV_8S_PA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_8S_PA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_8S_PA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_8S_PA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_8S_PA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 9       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 9_NA
+!==============================
+define EVF_LCC024_9_NA  {value 0.01} !evaporative loss fraction
+define DPF_LCC024_9_NA  {value 0.24} !deep percolation loss fraction
+define LFF_LCC024_9_NA  {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_LCC024_9_NA  {value 0.03} !spill fraction
+
+define EVF_SAC196_9_NA  {value 0.01} !evaporative loss fraction
+define DPF_SAC196_9_NA  {value 0.045} !deep percolation loss fraction
+define LFF_SAC196_9_NA  {value 0.045} !lateral flow loss fraction lateral flow
+define SPF_SAC196_9_NA  {value 0.03} !spill fraction
+
+define RUF_9_NA     {value 0.10} !reuse fraction
+define RPF_9_NA     {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_9_NA      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_9_NA      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_9_NA      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_9_NA      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_9_NA      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 9_SA1
+!==============================
+define EVF_ESL008_9_SA1 {value 0.01} !evaporative loss fraction
+define DPF_ESL008_9_SA1 {value 0.24} !deep percolation loss fraction
+define LFF_ESL008_9_SA1 {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_ESL008_9_SA1 {value 0.03} !spill fraction
+
+define EVF_SAC196_9_SA1 {value 0.01} !evaporative loss fraction
+define DPF_SAC196_9_SA1 {value 0.045} !deep percolation loss fraction
+define LFF_SAC196_9_SA1 {value 0.045} !lateral flow loss fraction lateral flow
+define SPF_SAC196_9_SA1 {value 0.03} !spill fraction
+
+define RUF_9_SA1    {value 0.10} !reuse fraction
+define RPF_9_SA1    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_9_SA1     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_9_SA1     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_9_SA1     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_9_SA1     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_9_SA1     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 9_SA2
+!==============================
+define EVF_BTC012_9_SA2 {value 0.01} !evaporative loss fraction
+define DPF_BTC012_9_SA2 {value 0.036} !deep percolation loss fraction
+define LFF_BTC012_9_SA2 {value 0.054} !lateral flow loss fraction lateral flow
+define SPF_BTC012_9_SA2 {value 0.03} !spill fraction
+
+define EVF_SAC162_9_SA2 {value 0.01} !evaporative loss fraction
+define DPF_SAC162_9_SA2 {value 0.036} !deep percolation loss fraction
+define LFF_SAC162_9_SA2 {value 0.054} !lateral flow loss fraction lateral flow
+define SPF_SAC162_9_SA2 {value 0.03} !spill fraction
+
+define RUF_9_SA2    {value 0.10} !reuse fraction
+define RPF_9_SA2    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_9_SA2     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_9_SA2     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_9_SA2     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_9_SA2     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_9_SA2     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 9_PR 
+!==============================
+define EVF_SAC196_9_PR  {value 0.01} !evaporative loss fraction
+define DPF_SAC196_9_PR  {value 0.036} !deep percolation loss fraction
+define LFF_SAC196_9_PR  {value 0.054} !lateral flow loss fraction lateral flow
+define SPF_SAC196_9_PR  {value 0.03} !spill fraction
+
+define RUF_9_PR {value 0.10} !reuse fraction
+define RPF_9_PR {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_9_PR      {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_9_PR      {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_9_PR      {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_9_PR      {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_9_PR      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 10      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 10_NA -
+!==============================
+define EVF_BTC043_10_NA {value 0.01} !evaporative loss fraction
+define DPF_BTC043_10_NA {value 0.03} !deep percolation loss fraction
+define LFF_BTC043_10_NA {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_BTC043_10_NA {value 0.03} !spill fraction
+
+define EVF_BTC036_10_NA {value 0.01} !evaporative loss fraction
+define DPF_BTC036_10_NA {value 0.03} !deep percolation loss fraction
+define LFF_BTC036_10_NA {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_BTC036_10_NA {value 0.03} !spill fraction
+
+define EVF_MIO023_10_NA {value 0.01} !evaporative loss fraction
+define DPF_MIO023_10_NA {value 0.03} !deep percolation loss fraction
+define LFF_MIO023_10_NA {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_MIO023_10_NA {value 0.03} !spill fraction
+
+define RUF_10_NA    {value 0.10} !reuse fraction
+define RPF_10_NA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_10_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_10_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_10_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_10_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_10_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 11      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 11_NU2
+!==============================
+/*define EF_SNK_11_NU2  {value 0.05001} !non recoverable loss fraction
+define SF_SNK_11_NU2    {value 0.04999} !non recoverable loss fraction
+
+define DL_SNK_11_NU2    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_SNK_11_NU2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_SNK_11_NU2    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_11_NU2        {std kind 'DELIVERY-LOSS' units 'CFS'}
+*/
+!==============================
+! 11_NA
+!==============================
+define EVF_DWRPS2_11_NA {value 0.00} !evaporative loss fraction
+define DPF_DWRPS2_11_NA {value 0.00} !deep percolation loss fraction
+define LFF_DWRPS2_11_NA {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_DWRPS2_11_NA {value 0.00} !spill fraction
+
+define RUF_11_NA    {value 0.00} !reuse fraction
+define RPF_11_NA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_11_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_11_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_11_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_11_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_11_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 11_SA1
+!==============================
+define EVF_WEC000_11_SA1    {value 0.01} !evaporative loss fraction
+define DPF_WEC000_11_SA1    {value 0.03} !deep percolation loss fraction
+define LFF_WEC000_11_SA1    {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_WEC000_11_SA1    {value 0.03} !spill fraction
+
+define RUF_11_SA1       {value 0.10} !reuse fraction
+define RPF_11_SA1       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_11_SA1        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_11_SA1        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_11_SA1        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_11_SA1        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_11_SA1        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 11_SA2
+!==============================
+define EVF_RVC005_11_SA2    {value 0.01} !evaporative loss fraction
+define DPF_RVC005_11_SA2    {value 0.02875} !deep percolation loss fraction
+define LFF_RVC005_11_SA2    {value 0.08625} !lateral flow loss fraction lateral flow
+define SPF_RVC005_11_SA2    {value 0.03} !spill fraction
+
+define EVF_LDC007_11_SA2    {value 0.01} !evaporative loss fraction
+define DPF_LDC007_11_SA2    {value 0.02875} !deep percolation loss fraction
+define LFF_LDC007_11_SA2    {value 0.08625} !lateral flow loss fraction lateral flow
+define SPF_LDC007_11_SA2    {value 0.03} !spill fraction
+
+define RUF_11_SA2       {value 0.10} !reuse fraction
+define RPF_11_SA2       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_11_SA2        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_11_SA2        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_11_SA2        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_11_SA2        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_11_SA2        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 11_SA3
+!==============================
+define EVF_JBC004_11_SA3    {value 0.01} !evaporative loss fraction
+define DPF_JBC004_11_SA3    {value 0.02875} !deep percolation loss fraction
+define LFF_JBC004_11_SA3    {value 0.08625} !lateral flow loss fraction lateral flow
+define SPF_JBC004_11_SA3    {value 0.03} !spill fraction
+
+define RUF_11_SA3       {value 0.10} !reuse fraction
+define RPF_11_SA3       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_11_SA3        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_11_SA3        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_11_SA3        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_11_SA3        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_11_SA3        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 11_SA4
+!==============================
+define EVF_SEC009_11_SA4    {value 0.01} !evaporative loss fraction
+define DPF_SEC009_11_SA4    {value 0.0125} !deep percolation loss fraction
+define LFF_SEC009_11_SA4    {value 0.0375} !lateral flow loss fraction lateral flow
+define SPF_SEC009_11_SA4    {value 0.00} !spill fraction
+
+define RUF_11_SA4       {value 0.10} !reuse fraction
+define RPF_11_SA4       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_11_SA4        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_11_SA4        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_11_SA4        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_11_SA4        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_11_SA4        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 11_NU1 -
+!==============================
+define EF_PCL000_11_NU1 {value 0.0}
+define SF_PCL000_11_NU1 {value 0.0}
+
+define DL_PCL000_11_NU1 {std kind 'DELIVERY-LOSS'  units 'CFS'}
+define EL_PCL000_11_NU1 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_PCL000_11_NU1 {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!define DL_WBF015_12_NU1    {std kind 'DELIVERY-LOSS'  units 'CFS'}
+!define EL_WBF015_12_NU1    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define SL_WBF015_12_NU1    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_11_NU1    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 11_PR
+!==============================
+define EVF_WEC000_11_PR {value 0.01} !evaporative loss fraction
+define DPF_WEC000_11_PR {value 0.03} !deep percolation loss fraction
+define LFF_WEC000_11_PR {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_WEC000_11_PR {value 0.03} !spill fraction
+
+define EVF_RVC005_11_PR {value 0.01}    !evaporative loss fraction
+define DPF_RVC005_11_PR {value 0.02875} !deep percolation loss fraction
+define LFF_RVC005_11_PR {value 0.08625} !lateral flow loss fraction lateral flow
+define SPF_RVC005_11_PR {value 0.03}    !spill fraction
+
+define RUF_11_PR    {value 0.10} !reuse fraction
+define RPF_11_PR    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_11_PR     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_11_PR     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_11_PR     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_11_PR     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_11_PR     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 12      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 12_NU1 -
+!==============================
+!define EF_FTR_12_NU1   {value 0.0}
+!define SF_FTR_12_NU1   {value 0.0}
+define EF_MIO023_12_NU1 {value 0.0}
+define SF_MIO023_12_NU1 {value 0.0}
+
+!define DL_FTR_12_NU1   {std kind 'DELIVERY-LOSS'  units 'CFS'}
+!define EL_FTR_12_NU1   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define SL_FTR_12_NU1   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_MIO023_12_NU1 {std kind 'DELIVERY-LOSS'  units 'CFS'}
+define EL_MIO023_12_NU1 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_MIO023_12_NU1 {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!define DL_RFS13_12_NU1 {std kind 'DELIVERY-LOSS'  units 'CFS'}
+!define EL_RFS13_12_NU1 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define SL_RFS13_12_NU1 {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_12_NU1        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 12_NA -
+!==============================
+define EVF_RFS13_12_NA  {value 0.00} !evaporative loss fraction
+define DPF_RFS13_12_NA  {value 0.00} !deep percolation loss fraction
+define LFF_RFS13_12_NA  {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_RFS13_12_NA  {value 0.00} !spill fraction
+
+!define EVF_FTR059_12_NA    {value 0.00} !evaporative loss fraction
+!define DPF_FTR059_12_NA    {value 0.00} !deep percolation loss fraction
+!define LFF_FTR059_12_NA    {value 0.00} !lateral flow loss fraction lateral flow
+!define SPF_FTR059_12_NA    {value 0.00} !spill fraction
+
+define RUF_12_NA    {value 0.00} !reuse fraction
+define RPF_12_NA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_12_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_12_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_12_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_12_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_12_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 12_SA -
+!==============================
+define EVF_FTR059_12_SA {value 0.01}  !evaporative loss fraction
+define DPF_FTR059_12_SA {value 0.055} !deep percolation loss fraction
+define LFF_FTR059_12_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR059_12_SA {value 0.03}  !spill fraction
+
+define RUF_12_SA    {value 0.10}  !reuse fraction
+define RPF_12_SA    {value 0.06}  !riparian and miscellaneous ET fraction
+
+define EV_12_SA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_12_SA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_12_SA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_12_SA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_12_SA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 13      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 13_NA -
+!==============================
+define EVF_MNRRH_13_NA  {value 0.03} !evaporative loss fraction
+define DPF_MNRRH_13_NA  {value 0.512} !deep percolation loss fraction
+define LFF_MNRRH_13_NA  {value 0.128} !lateral flow loss fraction lateral flow
+define SPF_MNRRH_13_NA  {value 0.00} !spill fraction
+
+define EVF_OWC000_13_NA {value 0.03} !evaporative loss fraction
+define DPF_OWC000_13_NA {value 0.512} !deep percolation loss fraction
+define LFF_OWC000_13_NA {value 0.128} !lateral flow loss fraction lateral flow
+define SPF_OWC000_13_NA {value 0.00} !spill fraction
+
+define RUF_13_NA    {value 0.10} !reuse fraction
+define RPF_13_NA    {value 0.17} !riparian and miscellaneous ET fraction
+
+define EV_13_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_13_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_13_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_13_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_13_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 13_NU1 -
+!==============================
+
+define EF_WTPMNR_13_NU1 {value 0.0}
+define SF_WTPMNR_13_NU1 {value 0.0}
+
+define DL_WTPMNR_13_NU1 {std kind 'DELIVERY-LOSS'  units 'CFS'}
+define EL_WTPMNR_13_NU1 {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPMNR_13_NU1 {std kind 'SEENUGE-LOSS'     units 'CFS'}
+
+define DL_13_NU1        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 13_NU2 -
+!==============================
+
+define EF_MNRRH_13_NU2  {value 0.0}
+define SF_MNRRH_13_NU2  {value 0.0}
+
+define DL_MNRRH_13_NU2  {std kind 'DELIVERY-LOSS'  units 'CFS'}
+define EL_MNRRH_13_NU2  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_MNRRH_13_NU2  {std kind 'SEENUGE-LOSS'     units 'CFS'}
+
+define DL_13_NU2        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 14      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 14_NA - BVID irrigators   
+!==============================
+define EVF_FDC006_14_NA {value 0.01} !evaporative loss fraction
+define DPF_FDC006_14_NA {value 0.08} !deep percolation loss fraction
+define LFF_FDC006_14_NA {value 0.08} !lateral flow loss fraction lateral flow
+define SPF_FDC006_14_NA {value 0.03} !spill fraction
+
+define EVF_YUB013_14_NA {value 0.01} !evaporative loss fraction
+define DPF_YUB013_14_NA {value 0.08} !deep percolation loss fraction
+define LFF_YUB013_14_NA {value 0.08} !lateral flow loss fraction lateral flow
+define SPF_YUB013_14_NA {value 0.03} !spill fraction
+
+define RUF_14_NA    {value 0.10} !reuse fraction
+define RPF_14_NA    {value 0.105} !riparian and miscellaneous ET fraction
+
+define EV_14_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_14_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_14_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_14_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_14_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 14_NU1 -
+!==============================
+
+define EF_NIDN2_14_NU1  {value 0.0}
+define SF_NIDN2_14_NU1  {value 0.0}
+
+define DL_NIDN2_14_NU1  {std kind 'DELIVERY-LOSS'  units 'CFS'}
+define EL_NIDN2_14_NU1  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_NIDN2_14_NU1  {std kind 'SEENUGE-LOSS'     units 'CFS'}
+
+define DL_14_NU1        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 14_NU2 - 
+!==============================
+!no surface diversions for 14_NU2
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 15-North    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 15N_NA1 - 
+!==============================
+!  no conveyance losses, groundwater pumping only
+
+!==============================
+! 15N_NA2 -                     
+!============================== 
+define EVF_YUB011_15N_NA2   {value 0.01} !evaporative loss fraction
+define DPF_YUB011_15N_NA2   {value 0.055} !deep percolation loss fraction
+define LFF_YUB011_15N_NA2   {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_YUB011_15N_NA2   {value 0.03} !spill fraction
+
+define RUF_15N_NA2      {value 0.10} !reuse fraction
+define RPF_15N_NA2      {value 0.06} !riparian and miscellaneous ET fraction
+
+define EV_15N_NA2       {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_15N_NA2       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_15N_NA2       {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_15N_NA2       {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_15N_NA2       {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 15N_SA -                  
+!============================== 
+define EVF_FTR045_15N_SA    {value 0.01}  !evaporative loss fraction
+define DPF_FTR045_15N_SA    {value 0.055} !deep percolation loss fraction
+define LFF_FTR045_15N_SA    {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR045_15N_SA    {value 0.03}  !spill fraction
+
+define RUF_15N_SA       {value 0.10}  !reuse fraction
+define RPF_15N_SA       {value 0.06}  !riparian and miscellaneous ET fraction
+
+define EV_15N_SA        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_15N_SA        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_15N_SA        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_15N_SA        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_15N_SA        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 15N_NU - 
+!============================== 
+define EF_YUB_15N_NU    {value 0.0}
+define SF_YUB_15N_NU    {value 0.0}
+
+define DL_YUB_15N_NU    {std kind 'DELIVERY-LOSS'  units 'CFS'}
+define EL_YUB_15N_NU    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_YUB_15N_NU    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_15N_NU    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 15-South    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 15S_NA1 - 
+!==============================
+!  no conveyance losses, groundwater pumping only
+
+!==============================
+! 15S_NU - 
+!============================== 
+!  no conveyance loss, groundwater pumping only
+
+!==============================
+! 15S_NA2 -         
+!==============================
+define EVF_YUB011_15S_NA2   {value 0.01} !evaporative loss fraction
+define DPF_YUB011_15S_NA2   {value 0.055} !deep percolation loss fraction
+define LFF_YUB011_15S_NA2   {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_YUB011_15S_NA2   {value 0.03} !spill fraction
+
+define RUF_15S_NA2      {value 0.10} !reuse fraction
+define RPF_15S_NA2      {value 0.06} !riparian and miscellaneous ET fraction
+
+define EV_15S_NA2       {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_15S_NA2       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_15S_NA2       {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_15S_NA2       {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_15S_NA2       {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 15S_SA -          
+!==============================
+define EVF_FTR018_15S_SA    {value 0.01} !evaporative loss fraction
+define DPF_FTR018_15S_SA    {value 0.055} !deep percolation loss fraction
+define LFF_FTR018_15S_SA    {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR018_15S_SA    {value 0.03} !spill fraction
+
+define EVF_FTR028_15S_SA    {value 0.01} !evaporative loss fraction
+define DPF_FTR028_15S_SA    {value 0.055} !deep percolation loss fraction
+define LFF_FTR028_15S_SA    {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR028_15S_SA    {value 0.03} !spill fraction
+
+define RUF_15S_SA       {value 0.10} !reuse fraction
+define RPF_15S_SA       {value 0.06} !riparian and miscellaneous ET fraction
+
+define EV_15S_SA        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_15S_SA        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_15S_SA        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_15S_SA        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_15S_SA        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 16      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 16_NM -
+!==============================
+!  no conveyance loss, groundwater pumping only
+
+!define EF_FTR_16_NM     {value 0.05001}
+!define SF_FTR_16_NM     {value 0.04999}
+
+!define DL_FTR_16_NM     {std kind 'DELIVERY-LOSS' units 'CFS'}
+!define EL_FTR_16_NM     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define SL_FTR_16_NM     {std kind 'SEEPAGE-LOSS' units 'CFS'}
+
+!goal setEL_FTR_16_NM    {EL_FTR_16_NM = D_FTR028_16_NM  * EF_FTR_16_NM}
+!goal setSL_FTR_16_NM    {SL_FTR_16_NM = D_FTR028_16_NM  * SF_FTR_16_NM}
+!goal setDL_FTR_16_NM    {DL_FTR_16_NM = EL_FTR_16_NM    + SL_FTR_16_NM}
+
+!define DL_16_NM         {std kind 'DELIVERY-LOSS' units 'CFS'}
+!goal setDL_16_NM    {DL_16_NM = DL_FTR_16_NM}
+
+
+!==============================
+! 16_PA - Feather Water District
+!==============================
+define EVF_FTR021_16_PA {value 0.01} !evaporative loss fraction
+define DPF_FTR021_16_PA {value 0.055} !deep percolation loss fraction
+define LFF_FTR021_16_PA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR021_16_PA {value 0.03} !spill fraction
+
+define RUF_16_PA        {value 0.10} !reuse fraction
+define RPF_16_PA        {value 0.06} !riparian and miscellaneous ET fraction
+
+define EV_16_PA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_16_PA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_16_PA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_16_PA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_16_PA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 16_SA -
+!==============================
+define EVF_FTR021_16_SA {value 0.01} !evaporative loss fraction
+define DPF_FTR021_16_SA {value 0.055} !deep percolation loss fraction
+define LFF_FTR021_16_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR021_16_SA {value 0.03} !spill fraction
+
+define EVF_FTR018_16_SA {value 0.01} !evaporative loss fraction
+define DPF_FTR018_16_SA {value 0.055} !deep percolation loss fraction
+define LFF_FTR018_16_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR018_16_SA {value 0.03} !spill fraction
+
+define EVF_FTR014_16_SA {value 0.01} !evaporative loss fraction
+define DPF_FTR014_16_SA {value 0.055} !deep percolation loss fraction
+define LFF_FTR014_16_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR014_16_SA {value 0.03} !spill fraction
+
+define EVF_FTR008_16_SA {value 0.01} !evaporative loss fraction
+define DPF_FTR008_16_SA {value 0.055} !deep percolation loss fraction
+define LFF_FTR008_16_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR008_16_SA {value 0.03} !spill fraction
+
+define EVF_DWRPS2_16_SA {value 0.00} !evaporative loss fraction
+define DPF_DWRPS2_16_SA {value 0.00} !deep percolation loss fraction
+define LFF_DWRPS2_16_SA {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_DWRPS2_16_SA {value 0.00} !spill fraction
+
+define RUF_16_SA        {value 0.10} !reuse fraction
+define RPF_16_SA        {value 0.06} !riparian and miscellaneous ET fraction
+
+define EV_16_SA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_16_SA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_16_SA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_16_SA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_16_SA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 16_PU -
+!==============================
+define EF_FTR_16_PU  {value 0.0}
+define SF_FTR_16_PU  {value 0.0}
+
+define DL_FTR_16_PU  {std kind 'DELIVERY-LOSS' units 'CFS'}
+define EL_FTR_16_PU  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_FTR_16_PU  {std kind 'SEEPAGE-LOSS' units 'CFS'}
+
+define DL_16_PU          {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 16_NA2
+!==============================
+define EVF_DWRPS1_16_NA2    {value 0.00} !evaporative loss fraction
+define DPF_DWRPS1_16_NA2    {value 0.00} !deep percolation loss fraction
+define LFF_DWRPS1_16_NA2    {value 0.00} !lateral flow loss fraction lateral flow
+define SPF_DWRPS1_16_NA2    {value 0.00} !spill fraction
+
+define RUF_16_NA2   {value 0.00} !reuse fraction
+define RPF_16_NA2   {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_16_NA2        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_16_NA2        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_16_NA2        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_16_NA2        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_16_NA2        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 16_NA1 - 
+!==============================
+!  no conveyance losses, groundwater pumping only
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 17-North    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 17N_PS -
+!==============================
+!Does not exist in schematic
+!define EF_SAC_17N_PS    {value 0.05001}
+!define SF_SAC_17N_PS    {value 0.04999}
+
+!define EL_SAC_17N_PS    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+!define SL_SAC_17N_PS    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define DL_SAC_17N_PS    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!goal setEL_SAC_17N_PS   {EL_SAC_17N_PS = D_SAC148_17N_PS  * EF_SAC_17N_PS}
+!goal setSL_SAC_17N_PS   {SL_SAC_17N_PS = D_SAC148_17N_PS  * SF_SAC_17N_PS}
+!goal setDL_SAC_17N_PS   {DL_SAC_17N_PS = EL_SAC_17N_PS    + SL_SAC_17N_PS}
+
+!define DL_17N_PS    {std kind 'DELIVERY-LOSS' units 'CFS'}
+!goal setDL_17N_PS   {DL_17N_PS = DL_SAC_17N_PS}
+
+!==============================
+! 17N_PR -
+!==============================
+define EVF_JBC002_17N_PR    {value 0.01} !evaporative loss fraction
+define DPF_JBC002_17N_PR    {value 0.02875} !deep percolation loss fraction
+define LFF_JBC002_17N_PR    {value 0.08625} !lateral flow loss fraction lateral flow
+define SPF_JBC002_17N_PR    {value 0.03} !spill fraction
+
+define EVF_BGD000_17N_PR    {value 0.01} !evaporative loss fraction
+define DPF_BGD000_17N_PR    {value 0.02875} !deep percolation loss fraction
+define LFF_BGD000_17N_PR    {value 0.08625} !lateral flow loss fraction lateral flow
+define SPF_BGD000_17N_PR    {value 0.03} !spill fraction
+
+define RUF_17N_PR       {value 0.10} !reuse fraction
+define RPF_17N_PR       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_17N_PR        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_17N_PR        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_17N_PR        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_17N_PR        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_17N_PR        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 17N_NR -
+!==============================
+!define EVF_BTC012_17N_NR   {value 0.01} !evaporative loss fraction
+!define DPF_BTC012_17N_NR   {value 0.036} !deep percolation loss fraction
+!define LFF_BTC012_17N_NR   {value 0.054} !lateral flow loss fraction lateral flow
+!define SPF_BTC012_17N_NR   {value 0.03} !spill fraction
+
+define EVF_CRK005_17N_NR    {value 0.01} !evaporative loss fraction
+define DPF_CRK005_17N_NR    {value 0.036} !deep percolation loss fraction
+define LFF_CRK005_17N_NR    {value 0.054} !lateral flow loss fraction lateral flow
+define SPF_CRK005_17N_NR    {value 0.03} !spill fraction
+
+define RUF_17N_NR       {value 0.10} !reuse fraction
+define RPF_17N_NR       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_17N_NR        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_17N_NR        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_17N_NR        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_17N_NR        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_17N_NR        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 17N_NA -
+!==============================
+!Groundwater only
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 17-South    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 17S_PR -
+!==============================
+define EVF_SBP028_17S_PR    {value 0.01} !evaporative loss fraction
+define DPF_SBP028_17S_PR    {value 0.055} !deep percolation loss fraction
+define LFF_SBP028_17S_PR    {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SBP028_17S_PR    {value 0.03} !spill fraction
+
+define RUF_17S_PR       {value 0.10} !reuse fraction
+define RPF_17S_PR       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_17S_PR        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_17S_PR        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_17S_PR        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_17S_PR        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_17S_PR        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 17S_NA -
+!==============================
+define EVF_SBP014_17S_NA    {value 0.01} !evaporative loss fraction
+define DPF_SBP014_17S_NA    {value 0.055} !deep percolation loss fraction
+define LFF_SBP014_17S_NA    {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SBP014_17S_NA    {value 0.03} !spill fraction
+
+define RUF_17S_NA       {value 0.10} !reuse fraction
+define RPF_17S_NA       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_17S_NA        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_17S_NA        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_17S_NA        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_17S_NA        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_17S_NA        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 17S_SA -
+!==============================
+define EVF_FTR003_17S_SA    {value 0.01}  !evaporative loss fraction
+define DPF_FTR003_17S_SA    {value 0.055} !deep percolation loss fraction
+define LFF_FTR003_17S_SA    {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_FTR003_17S_SA    {value 0.03}  !spill fraction
+
+define RUF_17S_SA       {value 0.10}  !reuse fraction
+define RPF_17S_SA       {value 0.06}  !riparian and miscellaneous ET fraction
+
+define EV_17S_SA        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_17S_SA        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_17S_SA        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_17S_SA        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_17S_SA        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 18      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 18_NA -
+!==============================
+define EVF_BSL001_18_NA {value 0.01} !evaporative loss fraction
+define DPF_BSL001_18_NA {value 0.055} !deep percolation loss fraction
+define LFF_BSL001_18_NA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_BSL001_18_NA {value 0.03} !spill fraction
+
+define EVF_SBP031_18_NA {value 0.01} !evaporative loss fraction
+define DPF_SBP031_18_NA {value 0.055} !deep percolation loss fraction
+define LFF_SBP031_18_NA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SBP031_18_NA {value 0.03} !spill fraction
+
+define RUF_18_NA    {value 0.10} !reuse fraction
+define RPF_18_NA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_18_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_18_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_18_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_18_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_18_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 18_SA -
+!==============================
+define EVF_SAC141_18_SA {value 0.01} !evaporative loss fraction
+define DPF_SAC141_18_SA {value 0.055} !deep percolation loss fraction
+define LFF_SAC141_18_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SAC141_18_SA {value 0.03} !spill fraction
+
+define RUF_18_SA    {value 0.10} !reuse fraction
+define RPF_18_SA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_18_SA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_18_SA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_18_SA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_18_SA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_18_SA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 19      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 19_NA -
+!==============================
+/*define EVF_SAC097_19_NA   {value 0.01} !evaporative loss fraction
+define DPF_SAC097_19_NA {value 0.055} !deep percolation loss fraction
+define LFF_SAC097_19_NA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SAC097_19_NA {value 0.03} !spill fraction
+
+define RUF_19_NA    {value 0.10} !reuse fraction
+define RPF_19_NA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_19_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_19_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_19_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_19_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_19_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}*/
+
+!==============================
+! 19_SA
+!==============================
+define EVF_SAC091_19_SA {value 0.01} !evaporative loss fraction
+define DPF_SAC091_19_SA {value 0.055} !deep percolation loss fraction
+define LFF_SAC091_19_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SAC091_19_SA {value 0.03} !spill fraction
+
+define EVF_SAC099_19_SA {value 0.01} !evaporative loss fraction
+define DPF_SAC099_19_SA {value 0.055} !deep percolation loss fraction
+define LFF_SAC099_19_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SAC099_19_SA {value 0.03} !spill fraction
+
+define EVF_SAC115_19_SA {value 0.01} !evaporative loss fraction
+define DPF_SAC115_19_SA {value 0.055} !deep percolation loss fraction
+define LFF_SAC115_19_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SAC115_19_SA {value 0.03} !spill fraction
+
+define EVF_SAC122_19_SA {value 0.01} !evaporative loss fraction
+define DPF_SAC122_19_SA {value 0.055} !deep percolation loss fraction
+define LFF_SAC122_19_SA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_SAC122_19_SA {value 0.03} !spill fraction
+
+define RUF_19_SA    {value 0.10} !reuse fraction
+define RPF_19_SA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_19_SA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_19_SA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_19_SA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_19_SA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_19_SA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 20      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 20_NA1 -
+!==============================
+define EVF_CCH030_20_NA1    {value 0.01} !evaporative loss fraction
+define DPF_CCH030_20_NA1    {value 0.03} !deep percolation loss fraction
+define LFF_CCH030_20_NA1    {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_CCH030_20_NA1    {value 0.03} !spill fraction
+
+define EVF_CCH052_20_NA1    {value 0.01} !evaporative loss fraction
+define DPF_CCH052_20_NA1    {value 0.03} !deep percolation loss fraction
+define LFF_CCH052_20_NA1    {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_CCH052_20_NA1    {value 0.03} !spill fraction
+
+define RUF_20_NA1       {value 0.10} !reuse fraction
+define RPF_20_NA1       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_20_NA1        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_20_NA1        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_20_NA1        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_20_NA1        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_20_NA1        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 20_PA -
+!==============================
+define EVF_PSC003_20_PA {value 0.01} !evaporative loss fraction
+define DPF_PSC003_20_PA {value 0.03} !deep percolation loss fraction
+define LFF_PSC003_20_PA {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_PSC003_20_PA {value 0.03} !spill fraction
+
+define RUF_20_PA        {value 0.10} !reuse fraction
+define RPF_20_PA        {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_20_PA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_20_PA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_20_PA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_20_PA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_20_PA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 20_NM = 20_NA2 AND 20_NU
+!==============================
+! no conveyance losses, groundwater pumping only
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 21      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 21_NA -
+!==============================
+! not in schematic
+!define EF_CCH_21_NA     {value 0.05001}
+!define SF_CCH_21_NA     {value 0.04999}
+
+!define EL_CCH_21_NA     {std kind 'DELIVERY-LOSS'    units 'CFS'}
+!define SL_CCH_21_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define DL_CCH_21_NA     {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!goal setEL_CCH_21_NA    {EL_CCH_21_NA = D_CCH000_21_NA  * EF_CCH_21_NA}
+!goal setSL_CCH_21_NA    {SL_CCH_21_NA = D_CCH000_21_NA  * SF_CCH_21_NA}
+!goal setDL_CCH_21_NA    {DL_CCH_21_NA = EL_CCH_21_NA + SL_CCH_21_NA}
+
+!define EF_SAC_21_NA     {value 0.05001}
+!define SF_SAC_21_NA     {value 0.04999}
+
+!define EL_SAC_21_NA     {std kind 'DELIVERY-LOSS'    units 'CFS'}
+!define SL_SAC_21_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+!define DL_SAC_21_NA     {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!goal setEL_SAC_21_NA    {EL_SAC_21_NA = D_SAC085_21_NA  * EF_SAC_21_NA}
+!goal setSL_SAC_21_NA    {SL_SAC_21_NA = D_SAC085_21_NA  * SF_SAC_21_NA}
+!goal setDL_SAC_21_NA    {DL_SAC_21_NA = EL_SAC_21_NA    + SL_SAC_21_NA}
+
+!define DL_21_NA         {std kind 'DELIVERY-LOSS' units 'CFS'}
+!goal setDL_21_NA    {DL_21_NA = DL_CCH_21_NA + DL_SAC_21_NA}
+
+!==============================
+! 21_PU -
+!==============================
+define EF_WTPBTB_21_PU   {value 0.0}
+define SF_WTPBTB_21_PU   {value 0.0}
+
+define DL_WTPBTB_21_PU   {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPBTB_21_PU   {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPBTB_21_PU   {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_21_PU      {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 21_SA -
+!==============================
+define EVF_SAC074_21_SA {value 0.01} !evaporative loss fraction
+define DPF_SAC074_21_SA {value 0.03} !deep percolation loss fraction
+define LFF_SAC074_21_SA {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_SAC074_21_SA {value 0.03} !spill fraction
+
+define EVF_SAC083_21_SA {value 0.01} !evaporative loss fraction
+define DPF_SAC083_21_SA {value 0.03} !deep percolation loss fraction
+define LFF_SAC083_21_SA {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_SAC083_21_SA {value 0.03} !spill fraction
+
+!define EVF_CCH003_21_SA    {value 0.01} !evaporative loss fraction
+!define DPF_CCH003_21_SA    {value 0.03} !deep percolation loss fraction
+!define LFF_CCH003_21_SA    {value 0.03} !lateral flow loss fraction lateral flow
+!define SPF_CCH003_21_SA    {value 0.03} !spill fraction
+
+define EVF_YBP023_21_SA {value 0.01} !evaporative loss fraction
+define DPF_YBP023_21_SA {value 0.03} !deep percolation loss fraction
+define LFF_YBP023_21_SA {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_YBP023_21_SA {value 0.03} !spill fraction
+
+define RUF_21_SA    {value 0.10} !reuse fraction
+define RPF_21_SA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_21_SA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_21_SA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_21_SA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_21_SA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_21_SA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 21_PA -
+!==============================
+define EVF_KLR005_21_PA {value 0.01} !evaporative loss fraction
+define DPF_KLR005_21_PA {value 0.03} !deep percolation loss fraction
+define LFF_KLR005_21_PA {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_KLR005_21_PA {value 0.03} !spill fraction
+
+define RUF_21_PA        {value 0.10} !reuse fraction
+define RPF_21_PA        {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_21_PA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_21_PA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_21_PA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_21_PA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_21_PA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 22      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 22_SA1
+!==============================
+define EVF_SAC082_22_SA1    {value 0.01} !evaporative loss fraction
+define DPF_SAC082_22_SA1    {value 0.018} !deep percolation loss fraction
+define LFF_SAC082_22_SA1    {value 0.042} !lateral flow loss fraction lateral flow
+define SPF_SAC082_22_SA1    {value 0.03} !spill fraction
+
+define EVF_SAC078_22_SA1    {value 0.01} !evaporative loss fraction
+define DPF_SAC078_22_SA1    {value 0.018} !deep percolation loss fraction
+define LFF_SAC078_22_SA1    {value 0.042} !lateral flow loss fraction lateral flow
+define SPF_SAC078_22_SA1    {value 0.03} !spill fraction
+
+define EVF_CRC002_22_SA1    {value 0.01} !evaporative loss fraction
+define DPF_CRC002_22_SA1    {value 0.018} !deep percolation loss fraction
+define LFF_CRC002_22_SA1    {value 0.042} !lateral flow loss fraction lateral flow
+define SPF_CRC002_22_SA1    {value 0.03} !spill fraction
+
+define RUF_22_SA1   {value 0.10} !reuse fraction
+define RPF_22_SA1   {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_22_SA1        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_22_SA1        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_22_SA1        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_22_SA1        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_22_SA1        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 22_SA2
+!==============================
+define EVF_FTR008_22_SA2    {value 0.0} !evaporative loss fraction
+define DPF_FTR008_22_SA2    {value 0.0} !deep percolation loss fraction
+define LFF_FTR008_22_SA2    {value 0.0} !lateral flow loss fraction lateral flow
+define SPF_FTR008_22_SA2    {value 0.0} !spill fraction
+
+define RUF_22_SA2   {value 0.0} !reuse fraction
+define RPF_22_SA2   {value 0.0} !riparian and miscellaneous ET fraction
+
+define EV_22_SA2        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_22_SA2        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_22_SA2        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_22_SA2        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_22_SA2        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 23      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 23_NA
+!==============================
+!define EVF_BRR016_23_NA    {value 0.01} !evaporative loss fraction
+!define DPF_BRR016_23_NA    {value 0.055} !deep percolation loss fraction
+!define LFF_BRR016_23_NA    {value 0.055} !lateral flow loss fraction lateral flow
+!define SPF_BRR016_23_NA    {value 0.03} !spill fraction
+
+define EVF_BRR017_23_NA {value 0.01} !evaporative loss fraction
+define DPF_BRR017_23_NA {value 0.055} !deep percolation loss fraction
+define LFF_BRR017_23_NA {value 0.055} !lateral flow loss fraction lateral flow
+define SPF_BRR017_23_NA {value 0.03} !spill fraction
+
+define RUF_23_NA    {value 0.10} !reuse fraction
+define RPF_23_NA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_23_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_23_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_23_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_23_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_23_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 24      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!==============================
+! 24_NA1
+!==============================
+define EVF_CBC007_24_NA1    {value 0.01} !evaporative loss fraction
+define DPF_CBC007_24_NA1    {value 0.27} !deep percolation loss fraction
+define LFF_CBC007_24_NA1    {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_CBC007_24_NA1    {value 0.03} !spill fraction
+
+define EVF_ABN024_24_NA1    {value 0.01} !evaporative loss fraction
+define DPF_ABN024_24_NA1    {value 0.27} !deep percolation loss fraction
+define LFF_ABN024_24_NA1    {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_ABN024_24_NA1    {value 0.03} !spill fraction
+
+!define EVF_STH000_24_NA1   {value 0.01} !evaporative loss fraction
+!define DPF_STH000_24_NA1   {value 0.27} !deep percolation loss fraction
+!define LFF_STH000_24_NA1   {value 0.09} !lateral flow loss fraction lateral flow
+!define SPF_STH000_24_NA1   {value 0.03} !spill fraction
+
+define RUF_24_NA1       {value 0.10} !reuse fraction
+define RPF_24_NA1       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_24_NA1        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_24_NA1        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_24_NA1        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_24_NA1        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_24_NA1        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 24_NA2
+!==============================
+define EVF_ABN010_24_NA2    {value 0.01} !evaporative loss fraction
+define DPF_ABN010_24_NA2    {value 0.27} !deep percolation loss fraction
+define LFF_ABN010_24_NA2    {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_ABN010_24_NA2    {value 0.03} !spill fraction
+
+define RUF_24_NA2       {value 0.10} !reuse fraction
+define RPF_24_NA2       {value 0.05
+} !riparian and miscellaneous ET fraction
+
+define EV_24_NA2        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_24_NA2        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_24_NA2        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_24_NA2        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_24_NA2        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 24_NA3
+!==============================
+define EVF_STH004_24_NA3    {value 0.01} !evaporative loss fraction
+define DPF_STH004_24_NA3    {value 0.27} !deep percolation loss fraction
+define LFF_STH004_24_NA3    {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_STH004_24_NA3    {value 0.03} !spill fraction
+
+define EVF_LBC049_24_NA3    {value 0.01} !evaporative loss fraction
+define DPF_LBC049_24_NA3    {value 0.27} !deep percolation loss fraction
+define LFF_LBC049_24_NA3    {value 0.09} !lateral flow loss fraction lateral flow
+define SPF_LBC049_24_NA3    {value 0.03} !spill fraction
+
+define RUF_24_NA3       {value 0.10} !reuse fraction
+define RPF_24_NA3       {value 0.05
+} !riparian and miscellaneous ET fraction
+
+define EV_24_NA3        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_24_NA3        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_24_NA3        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_24_NA3        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_24_NA3        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 24_NU2
+!==============================
+define EF_WTPFSS_24_NU2  {value 0.0}
+define SF_WTPFSS_24_NU2  {value 0.0}
+
+define DL_WTPFSS_24_NU2  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPFSS_24_NU2  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPFSS_24_NU2  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPSRW_24_NU2  {value 0.0}
+define SF_WTPSRW_24_NU2  {value 0.0}
+
+define DL_WTPSRW_24_NU2  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPSRW_24_NU2  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPSRW_24_NU2  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPOPH_24_NU2  {value 0.0}
+define SF_WTPOPH_24_NU2  {value 0.0}
+
+define DL_WTPOPH_24_NU2  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPOPH_24_NU2  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPOPH_24_NU2  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_24_NU2     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 24_NU1
+!==============================
+define EF_WTPBWM_24_NU1  {value 0.0}
+define SF_WTPBWM_24_NU1  {value 0.0}
+
+define DL_WTPBWM_24_NU1  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPBWM_24_NU1  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPBWM_24_NU1  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPAUB_24_NU1  {value 0.0}
+define SF_WTPAUB_24_NU1  {value 0.0}
+
+define DL_WTPAUB_24_NU1  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_WTPAUB_24_NU1  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_WTPAUB_24_NU1  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_24_NU1     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 24_NU3
+!==============================
+define EF_CBC007_24_NU3  {value 0.0}
+define SF_CBC007_24_NU3  {value 0.0}
+
+define DL_CBC007_24_NU3  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_CBC007_24_NU3  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_CBC007_24_NU3  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_24_NU3     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 25      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 25_PA2 -
+!==============================
+define EVF_PSC006_25_PA2    {value 0.01} !evaporative loss fraction
+define DPF_PSC006_25_PA2    {value 0.03} !deep percolation loss fraction
+define LFF_PSC006_25_PA2    {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_PSC006_25_PA2    {value 0.03} !spill fraction
+
+define EVF_RFS25_25_PA2 {value 0.01} !evaporative loss fraction
+define DPF_RFS25_25_PA2 {value 0.03} !deep percolation loss fraction
+define LFF_RFS25_25_PA2 {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_RFS25_25_PA2 {value 0.03} !spill fraction
+
+define RUF_25_PA2   {value 0.10} !reuse fraction
+define RPF_25_PA2   {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_25_PA2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_25_PA2    {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_25_PA2    {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_25_PA2    {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_25_PA2    {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 25_NA -
+!==============================
+define EVF_CSL005_25_NA {value 0.01} !evaporative loss fraction
+define DPF_CSL005_25_NA {value 0.03} !deep percolation loss fraction
+define LFF_CSL005_25_NA {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_CSL005_25_NA {value 0.03} !spill fraction
+
+define RUF_25_NA    {value 0.10} !reuse fraction
+define RPF_25_NA    {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_25_NA     {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_25_NA     {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_25_NA     {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_25_NA     {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_25_NA     {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 25_PA1 -
+!==============================
+define EVF_PSC003_25_PA1    {value 0.01} !evaporative loss fraction
+define DPF_PSC003_25_PA1    {value 0.03} !deep percolation loss fraction
+define LFF_PSC003_25_PA1    {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_PSC003_25_PA1    {value 0.03} !spill fraction
+
+define RUF_25_PA1       {value 0.10} !reuse fraction
+define RPF_25_PA1       {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_25_PA1        {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_25_PA1        {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_25_PA1        {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_25_PA1        {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_25_PA1        {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 25_PU
+!==============================
+define DL_25_PU  {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 26N     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define EF_WTPSRW_26N_PU1     {value 0.0}
+define SF_WTPSRW_26N_PU1     {value 0.0}
+
+define EF_WTPRSV_26N_PU1     {value 0.0}
+define SF_WTPRSV_26N_PU1     {value 0.0}
+
+define DL_26N_PU1    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26N_PU1    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26N_PU1    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPSJP_26N_PU2     {value 0.0}
+define SF_WTPSJP_26N_PU2     {value 0.0}
+
+define DL_26N_PU2    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26N_PU2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26N_PU2    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPSJP_26N_PU3     {value 0.0}
+define SF_WTPSJP_26N_PU3     {value 0.0}
+
+define DL_26N_PU3    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26N_PU3    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26N_PU3    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPBJM_26N_NU2     {value 0.0}
+define SF_WTPBJM_26N_NU2     {value 0.0}
+
+define DL_26N_NU2    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26N_NU2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26N_NU2    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPFBN_26N_NU1     {value 0.0}
+define SF_WTPFBN_26N_NU1     {value 0.0}
+
+define EF_WTPSJP_26N_NU1     {value 0.0}
+define SF_WTPSJP_26N_NU1     {value 0.0}
+
+define EF_WTPSRW_26N_NU1     {value 0.0}
+define SF_WTPSRW_26N_NU1     {value 0.0}
+
+define DL_26N_NU1    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26N_NU1    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26N_NU1    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPFBN_26N_NU3     {value 0.0}
+define SF_WTPFBN_26N_NU3     {value 0.0}
+
+define EF_WTPSAC_26N_NU3     {value 0.0}
+define SF_WTPSAC_26N_NU3     {value 0.0}
+
+define EF_WTPSRW_26N_NU3     {value 0.0}
+define SF_WTPSRW_26N_NU3     {value 0.0}
+
+define DL_26N_NU3    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26N_NU3    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26N_NU3    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPFBN_26N_NU4     {value 0.0}
+define SF_WTPFBN_26N_NU4     {value 0.0}
+
+define DL_26N_NU4    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26N_NU4    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26N_NU4    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 26S     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define EF_WTPFOL_26S_PU1     {value 0.0}
+define SF_WTPFOL_26S_PU1     {value 0.0}
+
+define EF_WTPVNY_26S_PU1     {value 0.0}
+define SF_WTPVNY_26S_PU1     {value 0.0}
+
+define DL_26S_PU1    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_PU1    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_PU1    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPCOL_26S_PU2     {value 0.0}
+define SF_WTPCOL_26S_PU2     {value 0.0}
+
+define DL_26S_PU2    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_PU2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_PU2    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPSAC_26S_NU1     {value 0.0}
+define SF_WTPSAC_26S_NU1     {value 0.0}
+
+define EF_WTPFBN_26S_NU1     {value 0.0}
+define SF_WTPFBN_26S_NU1     {value 0.0}
+
+define DL_26S_NU1    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_NU1    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_NU1    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPSAC_26S_PU4     {value 0.0}
+define SF_WTPSAC_26S_PU4     {value 0.0}
+
+define EF_WTPVNY_26S_PU4     {value 0.0}
+define SF_WTPVNY_26S_PU4     {value 0.0}
+
+define DL_26S_PU4    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_PU4    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_PU4    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPFBN_26S_NU2     {value 0.0}
+define SF_WTPFBN_26S_NU2     {value 0.0}
+
+define DL_26S_NU2    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_NU2    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_NU2    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPVNY_26S_PU5     {value 0.0}
+define SF_WTPVNY_26S_PU5     {value 0.0}
+
+define DL_26S_PU5    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_PU5    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_PU5    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPVNY_26S_PU6     {value 0.0}
+define SF_WTPVNY_26S_PU6     {value 0.0}
+
+define DL_26S_PU6    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_PU6    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_PU6    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_FSC003_26S_PU3     {value 0.0}
+define SF_FSC003_26S_PU3     {value 0.0}
+
+define DL_26S_PU3    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_PU3    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_PU3    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define EF_WTPFOL_26S_NU4     {value 0.0}
+define SF_WTPFOL_26S_NU4     {value 0.0}
+
+define DL_26S_NU4    {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_26S_NU4    {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_26S_NU4    {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! WBA 60N     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!==============================
+! 60N_NA2
+!==============================
+define EVF_FSC015_60N_NA2   {value 0.01} !evaporative loss fraction
+define DPF_FSC015_60N_NA2   {value 0.03} !deep percolation loss fraction
+define LFF_FSC015_60N_NA2   {value 0.03} !lateral flow loss fraction lateral flow
+define SPF_FSC015_60N_NA2   {value 0.03} !spill fraction
+
+define RUF_60N_NA2      {value 0.10} !reuse fraction
+define RPF_60N_NA2      {value 0.05} !riparian and miscellaneous ET fraction
+
+define EV_60N_NA2       {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define DP_60N_NA2       {std kind 'PERCOLATION-LOSS' units 'CFS'}
+define LF_60N_NA2       {std kind 'LATERAL-FLOW-LOSS' units 'CFS'}
+define SP_60N_NA2       {std kind 'SPILL-LOSS' units 'CFS'}
+define DL_60N_NA2       {std kind 'DELIVERY-LOSS' units 'CFS'}
+
+!==============================
+! 60N_PU
+!==============================
+define EF_FSC025_60N_PU  {value 0.0}
+define SF_FSC025_60N_PU  {value 0.0}
+
+define DL_FSC025_60N_PU  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_FSC025_60N_PU  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_FSC025_60N_PU  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_60N_PU     {std kind 'DELIVERY-LOSS' units 'CFS'}
+/*
+!==============================
+! EBMUD
+!==============================
+define EF_FSC027_EBMUD  {value 0.05001}
+define SF_FSC027_EBMUD  {value 0.04999}
+
+define DL_FSC027_EBMUD  {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_FSC027_EBMUD  {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_FSC027_EBMUD  {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_EBMUD     {std kind 'DELIVERY-LOSS' units 'CFS'}
+*/
+!==============================
+! EBMUD
+!==============================
+/*
+define EF_EBA_EBMUD {value 0.0}
+define SF_EBA_EBMUD {value 0.0}
+
+define DL_EBA_EBMUD {std kind 'DELIVERY-LOSS'    units 'CFS'}
+define EL_EBA_EBMUD {std kind 'EVAPORATIVE-LOSS' units 'CFS'}
+define SL_EBA_EBMUD {std kind 'SEEPAGE-LOSS'     units 'CFS'}
+
+define DL_EBMUD     {std kind 'DELIVERY-LOSS' units 'CFS'}
+*/

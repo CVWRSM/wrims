@@ -1,0 +1,88 @@
+! bounds_cycle2.wresl
+! Edward Chang
+! 6/28/2000
+! Joint Model
+! This file bounds within the San Joaquin basin for cycle 2 only (San Joaquin River System)
+! Revised by C. Hsu, 5/3/03, USBR, for review and documentation project
+!###################################################################################################
+/*
+This code bounds decision variables for cycle 2 only
+*/
+! CVP Lower DMC Volta Refuge
+goal setC_CVPDMCcycle2 { C_CVPDMC < C_CVPDMC[SJRBASE]}
+! Mendota Pool Exchange donation to VAMP
+goal restrC_MDOTABVAMPcycle2 { C_MDOTABVAMP = 0. }
+
+/*
+Add-water releases for cycle 2
+*/
+! New Melones dissolved oxygen release
+goal setC_MELONDOcycle2 { C_MELONDO = 0. }
+! New Melones VAMP mainstem release
+goal setC_MELONvamp_mcycle2 { C_MELONvamp_m = 0. }
+! New Melones own to Don Pedro
+goal setC_MELONvamp_tcycle2 { C_MELONvamp_t = 0. }
+! Don Pedro VAMP release
+goal setC_PEDROvampcycle2 { C_PEDROvamp = 0. }
+! Don Pedro VAMP release
+goal setC_PEDROstanvampcycle2 { C_PEDRO_stan_vamp = 0. }
+! McClure VAMP release
+goal setC_MCLREvampcycle2 { C_MCLREvamp = 0. }
+! Debt is incurred in cycle 5 but payment is not made until cycle 6
+goal setD530_VAMP {D530_VAMP = 0.}
+! February Thru June 1995 WQCP Vernalis Minflow release
+goal setC_MELONMINcycle2 { C_MELONMIN = 0. }
+! October Merced Releases
+goal setC_MCLREMINcycle2 { C_MCLREMIN = 0. }
+! New Melones RPA release
+goal setC_MELONRPAcycle2 { C_MELONRPA = 0. }    
+! OID reallocated water
+goal setC_MELONINSTREAMcycle2 { C_MELONINSTREAM = C_MELONINSTREAM[sjrbase] }
+
+/*
+Tuolumne River FERC minimum flows
+*/
+! Bounds Tuolumne minflow in cycle 2
+goal boundC_TUOLcycle2 { C_TUOL_mif < C_TUOL_mif[SJRBASE] }
+
+/*
+Stanislaus River F & W minimum flows and excess arcs
+*/
+! Stanislaus River F & W minimum flows
+/*
+goal boundC520cycle2 {
+     lhs C520_mif
+     rhs C520_mif[SJRBASE]
+     lhs<rhs penalty 0 }
+goal boundC520instreamcycle2 {
+     lhs C520instream
+     rhs C520instream[SJRBASE]
+     lhs<rhs penalty 0 }
+*/
+! Stanislaus River excess flows for cycle 2 ( Why bound1C520_exc_acycle2 & bound2C520_exc_acycle2 ?)
+goal bound1C_STANGDWN_exc_acycle2 {
+     lhs       C_STANGDWN_exc_a
+     rhs       C_STANGDWN_exc[SJRBASE]
+     lhs<rhs   penalty 0 }
+! Stanislaus River excess flows for cycle 2
+goal bound2C_STANGDWN_exc_acycle2 {
+     lhs       C_STANGDWN_exc_a
+     rhs       C_STANGDWN_exc[SJRBASE]
+     lhs>rhs   penalty 0 }
+
+! Stanislaus River minimum flow for cycle 2
+goal boundC_STANRIPNcycle2 { C_STANRIPN_mif < C_STANRIPN_mif[SJRBASE] }
+goal boundC_STANGDWNacycle2 { C_STANGDWN_mif < C_STANGDWN_mif[SJRBASE] }
+goal boundC_STANGDWNbcycle2 { C_STANGDWNinstream = C_STANGDWNinstream[SJRBASE] }
+
+/*
+VAMP book-keeping
+*/
+! VAMP April release from Merced ID
+goal setMercedIDaddAprc2 { MercedIDaddApr =  0. }
+! VAMP April release from OID
+goal setOIDaddAprc2 { OIDaddApr = 0. }
+! VAMP April release from Exchange Contractors
+goal setExchangeaddAprc2 { ExchangeaddApr = 0. }
+! VAMP April release from MID/TID
+goal setMIDTIDaddAprc2 { MIDTIDaddApr = 0. }

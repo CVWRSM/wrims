@@ -1,0 +1,57 @@
+! File fixes SWP allocation to that of D1641.
+
+define swp_allocation {std kind 'swp-delivery' UNITS 'TAF'}
+
+define max_tableA  {select Total from TableA where Factor=1}
+define tableA_loss {select LOSS  from TableA where Factor=1}
+define SWP_TableA  {value max_tableA - tableA_loss}
+!
+define DrainTar_buffer {value 250.}
+
+!NODOS Rule for supplementing adverse SWP allocation conditions
+define nds_swpdel_adj {value ndsswpdeladj__z4}
+define nds_swpdel_adjdv {alias nds_swpdel_adj kind 'swp-delivery' units 'TAF'}
+
+! set the SWP allocation to previous step value
+define swp_allocation_final {value swp_alloc__z4 }
+goal setswp_allocation {swp_allocation = swp_allocation_final}
+
+!Percent delivery
+define swp_perdel {value (swp_allocation_final-tableA_loss)/SWP_TableA}
+define swp_perdeldv {alias swp_perdel kind 'swp-delivery' units 'none'}
+define perdel_swp_int  {value 1.0}
+
+!Select demand profile based on percent allocation:
+/*define swp_demprofile {case p30  {condition swp_perdel < 0.40 value   30}
+                       case p50  {condition swp_perdel < 0.65 value   50}
+                       case p100 {condition always            value  100}}*/
+define tableA_total {select Total from TableA where Factor=1}
+define percent_act  {value swp_allocation_final/tableA_total*100.}
+define swp_percent_act {alias percent_act kind 'alias' units 'none'}
+define swp_demprofile {
+    case low  {
+        condition percent_act < 35.
+        value   30.}
+    case lowmed  {
+        condition percent_act < 45.
+        value   30. + (50. - 30.)*(percent_act - 35.)/(45. - 35.)}
+        case med  {
+        condition percent_act < 60.
+        value   50.}
+        case medhigh  {
+        condition percent_act < 70.
+        value   50. + (100. - 50.)*(percent_act - 60.)/(70. - 60.)}
+        case high {
+        condition always
+        value  100}
+}
+
+define swp_percent {alias swp_demprofile kind 'swp-delivery' units 'none'}
+
+!temp variables:
+define perdel_swp_ag1  {value swp_perdel}
+define perdel_swp_mwd1 {value swp_perdel}
+define perdel_swp_oth1 {value swp_perdel}
+define perdv_swp_ag1 {std kind 'PERCENT-DELIVERY' units 'none'}
+goal setperdv_swp_ag1 {perdv_swp_ag1 = perdel_swp_ag1}
+define perdv_swp_mwd1 {alias perdel_swp_mwd1 kind 'PERCENT-DELIVERY' units 'none'}

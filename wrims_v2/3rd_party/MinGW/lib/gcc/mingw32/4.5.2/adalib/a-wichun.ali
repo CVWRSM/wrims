@@ -1,0 +1,97 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.wide_characters.unicode%b  a-wichun.adb	bc1ae9d8 NE OL PK
+W ada.wide_characters%s	a-widcha.ads		a-widcha.ali
+
+U ada.wide_characters.unicode%s  a-wichun.ads	9bd7902a BN NE OL PK
+W ada.wide_characters%s	a-widcha.ads		a-widcha.ali
+W system%s		system.ads		system.ali
+W system.utf_32%s	s-utf_32.adb		s-utf_32.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-widcha.ads		20091030133032 cb199d20
+D a-wichun.ads		20091030133032 71c8f0f4
+D a-wichun.adb		20091030133032 cdd2192c
+D system.ads		20090410155748 b8eb58c3
+D s-utf_32.ads		20090417130712 2106fdfe
+X 1 ada.ads
+16K9*Ada 19e8 3|39r9 188r5 4|32r14 165r5
+X 2 a-widcha.ads
+19K13*Wide_Characters 1|16k9 2|21e24 3|39r13 188r9 4|32r18 165r9
+X 3 a-wichun.ads
+39K29*Unicode 2|19k13 3|188l25 188e32 4|32b34 165l25 165t32
+45E9*Category<6|55E9> 78r54 93r28 105r27 120r26 129r27 138r33 146r27 153r33
+. 4|40r54 42r14 54r27 68r28 91r26 105r33 119r27 133r33 147r27
+78V13*Get_Category{45E9} 78>27 4|40b13 43l8 43t20
+78e27 U{wide_character} 4|40b27 42r60
+92V13*Is_Letter{boolean} 92>24 4|63b13 66l8 66t17
+92e24 U{wide_character} 4|63b24 65r54
+93V13*Is_Letter{boolean} 93>24 4|68b13 71l8 71t17
+93e24 C{45E9} 4|68b24 70r46
+104V13*Is_Digit{boolean} 104>23 4|49b13 52l8 52t16
+104e23 U{wide_character} 4|49b23 51r53
+105V13*Is_Digit{boolean} 105>23 4|54b13 57l8 57t16
+105e23 C{45E9} 4|54b23 56r45
+111V13*Is_Line_Terminator{boolean} 111>33 112r19 4|77b13 80l8 80t26
+111e33 U{wide_character} 4|77b33 79r63
+119V13*Is_Mark{boolean} 119>22 4|86b13 89l8 89t15
+119e22 U{wide_character} 4|86b22 88r52
+120V13*Is_Mark{boolean} 120>22 4|91b13 94l8 94t15
+120e22 C{45E9} 4|91b22 93r44
+128V13*Is_Other{boolean} 128>23 4|114b13 117l8 117t16
+128e23 U{wide_character} 4|114b23 116r53
+129V13*Is_Other{boolean} 129>23 4|119b13 122l8 122t16
+129e23 C{45E9} 4|119b23 121r45
+137V13*Is_Punctuation{boolean} 137>29 4|128b13 131l8 131t22
+137e29 U{wide_character} 4|128b29 130r59
+138V13*Is_Punctuation{boolean} 138>29 4|133b13 136l8 136t22
+138e29 C{45E9} 4|133b29 135r51
+145V13*Is_Space{boolean} 145>23 4|142b13 145l8 145t16
+145e23 U{wide_character} 4|142b23 144r53
+146V13*Is_Space{boolean} 146>23 4|147b13 150l8 150t16
+146e23 C{45E9} 4|147b23 149r45
+152V13*Is_Non_Graphic{boolean} 152>29 4|100b13 103l8 103t22
+152e29 U{wide_character} 4|100b29 102r59
+153V13*Is_Non_Graphic{boolean} 153>29 4|105b13 108l8 108t22
+153e29 C{45E9} 4|105b29 107r51
+181V13*To_Upper_Case{wide_character} 181>28 182r19 4|156b13 163l8 163t21
+181e28 U{wide_character} 4|157b7 162r56
+X 4 a-wichun.adb
+34K12 G=34:29 42r24 51r14 56r14 56r33 65r14 70r14 70r34 79r14 88r14 93r14
+. 93r32 102r14 107r14 107r39 116r14 121r14 121r33 130r14 135r14 135r39 144r14
+. 149r14 149r33 162r12
+X 5 system.ads
+37K9*System 3|37r6 45r25 4|34r22 5|197e11
+X 6 s-utf_32.ads
+46K16*UTF_32 3|37w13 45r32 4|34r29 6|197e18
+48I9*UTF_32<integer>
+55E9*Category 3|45r39 4|56r35 70r36 93r34 107r41 121r35 135r41 149r35 6|86e9
+88V13*Get_Category{55E9} 4|42r26
+101V13*Is_UTF_32_Letter{boolean} 4|65r16
+102V13*Is_UTF_32_Letter{boolean} 4|70r16
+113V13*Is_UTF_32_Digit{boolean} 4|51r16
+114V13*Is_UTF_32_Digit{boolean} 4|56r16
+120V13*Is_UTF_32_Line_Terminator{boolean} 4|79r16
+128V13*Is_UTF_32_Mark{boolean} 4|88r16
+129V13*Is_UTF_32_Mark{boolean} 4|93r16
+137V13*Is_UTF_32_Other{boolean} 4|116r16
+138V13*Is_UTF_32_Other{boolean} 4|121r16
+146V13*Is_UTF_32_Punctuation{boolean} 4|130r16
+147V13*Is_UTF_32_Punctuation{boolean} 4|135r16
+154V13*Is_UTF_32_Space{boolean} 4|144r16
+155V13*Is_UTF_32_Space{boolean} 4|149r16
+161V13*Is_UTF_32_Non_Graphic{boolean} 4|102r16
+162V13*Is_UTF_32_Non_Graphic{boolean} 4|107r16
+190V13*UTF_32_To_Upper_Case{48I9} 4|162r14
+

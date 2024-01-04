@@ -1,0 +1,26 @@
+# Description:
+# Historical operation of the temporary barriers
+OPERATING_RULE
+NAME                      ACTION                                                                                                                                TRIGGER                                       
+
+#Sutter_Slough_install_in  "SET gate_install(gate=Sutter_Slough) TO 1.0"                                                                                      "DATETIME >= 01Apr2014"                 
+#Sutter_Slough_install_out "SET gate_install(gate=Sutter_Slough) TO 0.0"                                                                                      "DATETIME < 01Apr2014"                 
+
+#Steamboat_Slough_install_in  "SET gate_install(gate=Steamboat_Slough) TO 1.0"                                                                                "DATETIME >= 01Apr2014"                 
+#Steamboat_Slough_install_out "SET gate_install(gate=Steamboat_Slough) TO 0.0"                                                                                "DATETIME < 01Apr2014"                 
+
+#WestFalse_River_install_in  "SET gate_install(gate=WestFalse_River) TO 1.0"                                                                                  "DATETIME >= 01Apr2014"                 
+#WestFalse_River_install_out "SET gate_install(gate=WestFalse_River) TO 0.0"                                                                                  "DATETIME < 01Apr2014"                 
+
+oldr_install_in              "SET gate_install(gate=oldr_gate) TO 1.0"                                                                                      "DATETIME >= 01Apr2014" 
+oldr_install_out             "SET gate_install(gate=oldr_gate) TO 0.0"                                                                                       "DATETIME < 01Apr2014" 
+
+conn_sl_install_in           "SET gate_install(gate=conn_sl_gate) TO 1.0"                                                                                    "DATETIME >= 01Apr2014" 
+conn_sl_install_out          "SET gate_install(gate=conn_sl_gate) TO 0.0"                                                                                    "DATETIME < 01Apr2014" 
+
+Empire_Cut_install_in           "SET gate_install(gate=Empire_Cut_gate) TO 1.0"                                                                               "DATETIME >= 01Apr2014" 
+Empire_Cut_install_out          "SET gate_install(gate=Empire_Cut_gate) TO 0.0"                                                                               "DATETIME < 01Apr2014" 
+
+END
+
+

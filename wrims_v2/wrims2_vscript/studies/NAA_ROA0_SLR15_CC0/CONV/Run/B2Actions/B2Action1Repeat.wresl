@@ -1,0 +1,81 @@
+! This file imposes all the (b)(2) upstream actions that are taken in the (b)(2) run
+
+! NMFS BO Action I.1.1 Clear Creek - Spring Attraction Flows
+! 600 cfs for 3 days twice in the month of May
+define ClrCk_NMFS_target {
+    case May {
+        condition month == MAY
+        value max(C3_NMFSBase, C3MIF__z3) * (daysin - 6.)/daysin + 600.*6./daysin }
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! (Per D. Hilts 10/16/09) Reinstate CC Stability Criteria (for future b2 runs turn Action 1 ON always)
+
+! Flow limit over which stability is not enforced
+define ClearStabLimit {select StabFlow from ClearStability where month=month}
+
+! Fraction of previous month's flow to maintain in current month
+define ClearStabFract {select fraction from ClearStability where month=month}
+
+define C3_adj {
+	case BelowMin {! Don't allow flows to drop below 50
+		condition C3MIF__z3 < 50.
+			value 50.0 }
+	case JuneDip { ! Don't allow flows to drop below 85.0 cfs
+		condition month == JUN
+		value max(85.0,C3MIF__z3) }
+	case Otherwise {
+		condition always
+			value 0.0}
+}
+
+! Minflow is either the inputted lookup table's Minimum Instream Flow value or the stability target
+define minflow_C3b2 {
+  case UnderStabLim {
+    condition   C3(-1)< ClearStabLimit + 0.1 .and. month > 1
+        value       max(C3(-1),C3_adj)*ClearStabFract }
+  case OverStabLim {
+    condition   always
+    value       0.0}
+}
+
+! B2 Action 1: Upstream AFRP Actions
+goal b2action1Whi_1 {
+  lhs C3_MIF
+    rhs       max(C3_adj,ClrCk_NMFS_target, minflow_C3b2, C3MIF__z3, clear_min)
+    lhs>rhs   constrain
+    lhs<rhs   penalty 99. }
+
+! (Per D. Hilts and P. Fujitani 10/16/09) Conserve Shasta storage for NMFS RPAs in Fall (Oct - Dec)
+
+define minflow_C5adj {
+	case OctDec {
+		condition month < 4 .and. C5MIF__z3 >= 4500.0
+			value 4000.0
+	}
+	case otherwise {
+		condition always
+			value max(C5MIF__z3,effective_C5min, ERP_C5MIF)
+	}
+}
+
+
+goal b2action1Sha_2 {
+  lhs C5_MIF
+    rhs       minflow_C5adj
+    lhs>rhs   constrain
+    lhs<rhs   penalty 99. }
+
+! NODOS ERA related constraints
+goal set_C114_NCP {C114_MIF < ERP_C114MIF}
+goal set_C169_MIF {C169_MIF < ERP_C169MIF}
+
+! B2 Action 1: Upstream AFRP Actions continued
+goal b2action1Fol_3 {
+  lhs C9_MIF
+    rhs       max(C9MIF__z3, /*nimbus_hist_std,*/ minflowFMPAmer)
+    lhs>rhs   constrain
+    lhs<rhs   penalty 0 }
+

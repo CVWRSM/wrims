@@ -1,0 +1,189 @@
+! ProjectDemands.wresl
+! R. Yaworski
+! Date Unknown
+! Reclamation
+! Revised Andy Draper 01/31/2005
+
+
+/* This file defines all demands (OUWUA, TCCA, etc.) for Nodes 42, 17301 & 173
+   OUWUA South & North Canal demands based on 1999-2000 data.
+*/
+
+define WSmax_dv      {std kind 'water-supply'  units 'taf'}
+define inflow_dv     {std kind 'flow-inflow'   units 'taf'}
+define ouwua_cuawdv  {std kind 'demand-annual' units 'taf'}
+define tcca_demdv    {std kind 'demand-annual' units 'taf'}
+define total_allocdv {std kind 'demand-annual' units 'taf'}
+define ouwua_allocdv {std kind 'demand-annual' units 'taf'}
+define tcca_allocdv  {std kind 'demand-annual' units 'taf'}
+
+
+define apr_sep_inflow {
+        case WY1922 { ! Special case for 1st water year
+        condition month >= OCT .and. month <= MAR .and. wateryear == 1922
+                select   apr_sep
+                from     apr_sep_inflow_nat
+                where    wateryear = wateryear }
+    case april_september {
+        condition month == APR
+        select apr_sep
+        from apr_sep_inflow_nat
+        where wateryear = wateryear}
+    case otherwise {
+        condition always
+        value inflow_dv(-1) }
+        }
+
+goal setinflow_dv {inflow_dv = apr_sep_inflow}
+
+define WSmax {
+    case WY1922 { ! Special case for 1st water year
+        condition month >= OCT .and. month <= MAR .and. wateryear == 1922
+        value 250.0 }
+    case april_WSmax {
+        condition month == APR
+        value S40(prevMAR) + S41(prevMAR) + S42(prevMAR) + apr_sep_inflow}
+    case otherwise {
+        condition always
+        value WSmax_dv(-1) }
+        }
+
+goal setWSmax_dv {WSmax_dv = WSmax}
+
+define carryover_target {
+    case carryover_trigger {
+        condition WSmax <= 60.0
+        value 5.0 }
+    case otherwise {
+        condition always
+        value 32.5 }
+        }
+
+define evap_tot {
+    case evap_trigger {
+        condition WSmax <= 60.0
+        value 5.0 }
+    case otherwise {
+        condition always
+        value 12.5 }
+        }
+
+define StonyCkSupply   {value max(WSmax - carryover_target - evap_tot,0.)}
+define StonyCkSupplydv {alias StonyCkSupply kind 'supply' units 'taf'}
+
+! Define project annual cuaw
+
+define Anncuaw_17302Pdv {std kind 'demand' units 'taf'}
+define Anncuaw_17302P {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) cuaw_17302P(i)*cfs_taf(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) cuaw_17302P(i)*cfs_taf(i) }
+
+       case April { ! April for wateryears 1922 - 2002
+       condition month == APR .and. wateryear < 2003
+       sum(i=0,11,1) cuaw_17302P(i)*cfs_taf(i) }
+
+       case Rest {
+       condition always
+       value Anncuaw_17302Pdv(-1) }
+}
+
+goal set_Anncuaw_17302P {Anncuaw_17302Pdv = Anncuaw_17302P}
+
+define Annmingw17302Pdv {std kind 'min-pump' units 'taf'}
+define Annmingw17302P {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) minpump_17302P(i)*cfs_taf(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) minpump_17302P(i)*cfs_taf(i) }
+
+       case April { ! April for wateryears 1922 - 2002
+       condition month == APR .and. wateryear < 2003
+       sum(i=0,11,1) minpump_17302P(i)*cfs_taf(i) }
+
+       case Rest {
+       condition always
+       value Annmingw17302Pdv(-1) }
+}
+
+goal Annmingw17302P_ {Annmingw17302Pdv = Annmingw17302P}
+
+define ouwua_maxdem {value max(((Anncuaw_17302P/OnFarmEff_17302P)*(1-ReuseFact_17302P) - Annmingw17302P)*(1/(1-ConvLs_17302P)),0.)}
+define ouwua_maxdemdv {alias ouwua_maxdem kind 'demand' units 'taf'}
+
+define tcca_dem {value 38.3}
+
+goal settcca_demdv {tcca_demdv = tcca_dem}
+
+define final_alloc { value min(ouwua_maxdem + tcca_dem,StonyCkSupply) }
+
+goal settot_allocdv {total_allocdv = final_alloc}
+
+define alloc_ouwua {
+    case met_ouwua {
+        condition final_alloc >= ouwua_maxdem
+        value ouwua_maxdem }
+    case otherwise {
+        condition always
+        value final_alloc }
+        }
+
+goal setouwua_allocdv {ouwua_allocdv = alloc_ouwua}
+
+define alloc_tcca {
+    case met_tcca {
+        condition final_alloc >= ouwua_maxdem + tcca_dem
+        value tcca_dem }
+    case partial_tcca {
+        condition final_alloc >= ouwua_maxdem
+        value final_alloc - ouwua_maxdem }
+    case otherwise {
+        condition always
+        value 0.0 }
+        }
+
+goal settcca_allocdv {tcca_allocdv = alloc_tcca}
+
+
+! define the monthly allocation for OUWUA South Canal (units = cfs)
+define dmd_ouwua_s {VALUE max((alloc_ouwua/ouwua_maxdem)*0.68*(target_D17302P-minpump_17302P)*(1/(1-ConvLs_17302PS)),0.) }
+goal set_d42 { d42  < dmd_ouwua_s }
+
+! define the monthly allocation for OUWUA North Canal (units = cfs)
+define dmd_ouwua_n {VALUE max((alloc_ouwua/ouwua_maxdem)*0.32*(target_D17302P-minpump_17302P)*(1/(1-ConvLs_17302PN)),0.) }
+goal set_d17301 { d17301  < dmd_ouwua_n }
+
+! define monthly distribution percent for TCCA
+define per_tcca_tot {SELECT per_tcca FROM tcca_per where month=month }
+
+! define the monthly allocation for TCCA (units = TAF)
+define dmd_tcca {VALUE alloc_tcca*per_tcca_tot }
+
+goal set_C173B_1 { C173B_Sac = C172}
+goal set_C173B_2 { C173B_StCr_TCCA < dmd_tcca*taf_cfs} ! Limit Stony Creek water going to meet Tehama-Colusa Canal demand
+
+define OUWUATOTDEL { alias d42 + d17301 KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+/*
+! Temporary constraint
+define Stcr_Div {
+        case StorageLow {
+        condition S40(-1) + S41(-1) + S42(-1) < 12.
+                value 0. }
+    case otherwise {
+        condition always
+        value 999999. }
+        }
+
+goal set_C173A_dry { C173A_EXC < Stcr_Div} !
+goal set_C173B_dry { C173B_StCr < Stcr_Div} !
+*/

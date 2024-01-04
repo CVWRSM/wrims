@@ -1,0 +1,413 @@
+! SJRGW_restrict
+
+! Author: Unknown
+! Agency: Unknown
+! Date: Unknown
+! Code restricts groundwater pumping to previously calculated quantities
+
+/*
+The following code brackets groundwater pumping
+
+Groundwater pumping is bracketed so it doesn't vary when additional
+requirements are added to the system. This file is called in cycles 2
+through 6.
+*/
+
+/*
+Revised by: R. Field, USBR, 09/25/03
+Purpose: Incorporate additional groundwater pumping arcs for M&I.
+Comment locations indicate the boundary areas.
+Revised by: T. Crawford, USBR, 03/12/03
+Purpose: Review and comment code
+*/
+
+!############################################################################
+
+! Constrain min Madera ID project GW pumping to value defined in Cycle 1
+goal set1_GP591_min_pag {
+    lhs GP591_min_pag
+        rhs GP591_min_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Madera ID project GW pumping to value defined in Cycle 1
+goal set1_GP591_max_pag {
+    lhs GP591_max_pag
+        rhs GP591_max_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Madera non-district GW pumping to value defined in Cycle 1
+goal set1_GP591_ND {
+    lhs GP591_ND
+        rhs GP591_ND[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Madera ID M&I GW pumping to value defined in Cycle 1
+goal set1_GP591_MI_A {
+    lhs GP591_MI_A
+        rhs GP591_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain East of Madera ID and Non-District DAU 213 M&I GW pumping to value defined in Cycle 1
+goal set1_GP591_MI_B {
+    lhs GP591_MI_B
+        rhs GP591_MI_B[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Chowchilla ID project GW pumping to value defined in Cycle 1
+goal set1_GP583_min_pag {
+    lhs GP583_min_pag
+        rhs GP583_min_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Chowchilla WD M&I GW pumping to value defined in Cycle 1
+goal set1_GP583_MI_A {
+    lhs GP583_MI_A
+        rhs GP583_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Chowchilla ID project GW pumping to value defined in Cycle 1
+goal set1_GP583_max_pag {
+    lhs GP583_max_pag
+        rhs GP583_max_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Chowchilla non-district GW pumping to value defined in Cycle 1
+goal set1_GP585_ND {
+    lhs GP585_ND
+        rhs GP585_ND[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain West of Madera ID and Chowchilla WD M&I GW pumping to value defined in Cycle 1
+goal set1_GP585_MI_A {
+    lhs GP585_MI_A
+        rhs GP585_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Merced ID project GW pumping to value defined in Cycle 1
+goal set1_GP570_min_pag {
+    lhs GP570_min_pag
+        rhs GP570_min_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Merced ID project GW pumping to value defined in Cycle 1
+goal set1_GP570_max_pag {
+    lhs GP570_max_pag
+        rhs GP570_max_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Merced ID private GW pumping to value defined in Cycle 1
+goal set1_GP570_min_prv {
+    lhs GP570_min_prv
+        rhs GP570_min_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Merced ID private GW pumping to value defined in Cycle 1
+goal set1_GP570_max_prv {
+    lhs GP570_max_prv
+        rhs GP570_max_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Merced non-district GW pumping to value defined in Cycle 1
+goal set1_GP570_ND {
+    lhs GP570_ND
+        rhs GP570_ND[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Merced ID M&I GW pumping to value defined in Cycle 1
+goal set1_GP570_MI_A {
+     lhs GP570_MI_A
+        rhs GP570_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! East of Merced ID M&I GW pumping to value defined in Cycle 1
+goal set1_GP570_MI_B {
+     lhs GP570_MI_B
+        rhs GP570_MI_B[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Merced River Diversion M&I GW pumping to value defined in Cycle 1
+goal set1_GP562A_MI_A {
+     lhs GP562A_MI_A
+         rhs GP562A_MI_A[SJRBASE]
+         lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+/*
+Constrain Merced ID sphere-of-influence project GW pumping to value defined
+in Cycle 1; "sphere-of-influence" consists of Stevinson ID, El Nido, and
+others.
+*/
+goal set1_GP573_pag {
+    lhs GP573_pag
+        rhs GP573_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+ ! West of merced ID and Non-District Areas in DAU 210 and 212 M&I GW pumping to value defined in Cycle 1
+ goal set1_GP573_MI_A {
+     lhs GP573_MI_A
+         rhs GP573_MI_A[SJRBASE]
+         lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! East bank of San Joaquin, Merced to Tuolumne M&I GW pumping to value defined in Cycle 1
+goal set1_GP550_MI_A {
+    lhs GP550_MI_A
+        rhs GP550_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Tuolumne River Diversions M&I GW pumping to value defined in Cycle 1
+goal set1_GP545A_MI_A {
+    lhs GP545A_MI_A
+        rhs GP545A_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain West of Turlock project GW pumping to value defined in Cycle 1
+goal set1_GP550_pag {
+    lhs GP550_pag
+        rhs GP550_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Turlock ID project GW pumping to value defined in Cycle 1
+goal set1_GP548_min_pag {
+    lhs GP548_min_pag
+        rhs GP548_min_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Turlock ID project GW pumping to value defined in Cycle 1
+goal set1_GP548_max_pag {
+    lhs GP548_max_pag
+        rhs GP548_max_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Turlock ID private GW pumping to value defined in Cycle 1
+goal set1_GP548_min_prv {
+    lhs GP548_min_prv
+        rhs GP548_min_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Turlock ID private GW pumping to value defined in Cycle 1
+goal set1_GP548_max_prv {
+    lhs GP548_max_prv
+        rhs GP548_max_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Turlock non-district GW pumping to value defined in Cycle 1
+goal set1_GP548_ND {
+    lhs GP548_ND
+        rhs GP548_ND[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! East of Turlock ID M&I GW pumping to value defined in Cycle 1
+goal set1_GP548_MI_A {
+    lhs GP548_MI_A
+        rhs GP548_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Turlock ID M&I GW pumping to value defined in Cycle 1
+goal set1_GP548_MI_B {
+    lhs GP548_MI_B
+        rhs GP548_MI_B[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Modesto Area M&I GW pumping to value defined in Cycle 1
+goal set1_GP78A_MI {
+    lhs GP78A_MI
+        rhs GP78A_MI[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Modesto ID project GW pumping to value defined in Cycle 1
+goal set1_GP532_min_pag {
+    lhs GP532_min_pag
+        rhs GP532_min_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Modesto ID project GW pumping to value defined in Cycle 1
+goal set1_GP532_max_pag {
+    lhs GP532_max_pag
+        rhs GP532_max_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Modesto ID private GW pumping to value defined in Cycle 1
+goal set1_GP532_min_prv {
+    lhs GP532_min_prv
+        rhs GP532_min_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Modesto ID private GW pumping to value defined in Cycle 1
+goal set1_GP532_max_prv {
+    lhs GP532_max_prv
+        rhs GP532_max_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Modesto ID total GW pumping to value defined in Cycle 1
+goal set1_GP532_MI_A {
+    lhs GP532_MI_A
+        rhs GP532_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Stanislaus non-project GW pumping to value defined in Cycle 1
+goal set1_GP534_pag {
+    lhs GP534_pag
+        rhs GP534_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain East bank of SJ, Tuolumne to Stanislaus M&I GW pumping to value defined in Cycle 1
+goal set1_GP534_MI_A {
+    lhs GP534_MI_A
+        rhs GP534_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Stanislaus River Diversions M&I GW pumping to value defined in Cycle 1
+goal set1_GPSTANRIPNA_MI_A {
+    lhs GPSTANRIPNA_MI_A
+        rhs GPSTANRIPNA_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Oakdale ID project GW pumping to value defined in Cycle 1
+goal set1_GP530_min_pag {
+    lhs GP530_min_pag
+        rhs GP530_min_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Oakdale ID project GW pumping to value defined in Cycle 1
+goal set1_GP530_max_pag {
+    lhs GP530_max_pag
+        rhs GP530_max_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min Oakdale ID private GW pumping to value defined in Cycle 1
+goal set1_GP530_min_prv {
+    lhs GP530_min_prv
+        rhs GP530_min_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max Oakdale ID project GW pumping to value defined in Cycle 1
+goal set1_GP530_max_prv {
+    lhs GP530_max_prv
+        rhs GP530_max_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Oakdale I.D. South M&I GW pumping to value defined in Cycle 1
+goal set1_GP530_MI_A {
+    lhs GP530_MI_A
+        rhs GP530_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain East of Modesto ID and Oakdale ID total M&I GW pumping to value defined in Cycle 1
+goal set1_GP530_MI_B {
+    lhs GP530_MI_B
+        rhs GP530_MI_B[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Oakdale non-project GW pumping to value defined in Cycle 1
+goal set1_GP530_ND {
+    lhs GP530_ND
+        rhs GP530_ND[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min SSJID project GW pumping to value defined in Cycle 1
+goal set1_GP522_min_pag {
+    lhs GP522_min_pag
+        rhs GP522_min_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max SSJID project GW pumping to value defined in Cycle 1
+goal set1_GP522_max_pag {
+    lhs GP522_max_pag
+        rhs GP522_max_pag[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain min SSJID private GW pumping to value defined in Cycle 1
+goal set1_GP522_min_prv {
+    lhs GP522_min_prv
+        rhs GP522_min_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain max SSJID private GW pumping to value defined in Cycle 1
+goal set1_GP522_max_prv {
+    lhs GP522_max_prv
+        rhs GP522_max_prv[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain South San Joaquin ID M&I GW pumping to value defined in Cycle 1
+goal set1_GP522_MI_A {
+    lhs GP522_MI_A
+        rhs GP522_MI_A[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain Oakdale ID North M&I GW pumping to value defined in Cycle 1
+goal set1_GP522_MI_B {
+    lhs GP522_MI_B
+        rhs GP522_MI_B[SJRBASE]
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 999999}
+
+! Constrain SEWD/Riparian Users project GW pumping to value defined in Cycle 1
+goal set1_GP505_pag {
+  lhs   GP505_pag
+      rhs GP505_pag[SJRBASE]
+      lhs>rhs penalty 999999
+      lhs<rhs penalty 999999}
+
+! Constrain Calaveras County Water District non-district GW pumping to value defined in Cycle 1
+goal set1_GP505_nd {
+  lhs   GP505_nd
+      rhs GP505_nd[SJRBASE]
+      lhs>rhs penalty 999999
+      lhs<rhs penalty 999999}
+
+! Constrain Calaveras River project M&I GW pumping to value defined in Cycle 1
+!goal set1_GP509_mi {
+!  lhs   GP509_mi
+!      rhs GP509_mi[SJRBASE]
+!      lhs>rhs penalty 999999
+!      lhs<rhs penalty 999999}

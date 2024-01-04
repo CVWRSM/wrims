@@ -1,0 +1,33 @@
+!WRESL code for DWSP arc-splits
+!AF May 2004
+!DWSP Diversion: D514a
+Define D514a_1 {std kind 'FLOW-DELIVERY' units 'CFS'} !1485 water
+Define D514a_2 {std kind 'FLOW-DELIVERY' units 'CFS'} !area of origin water
+
+goal setD514a {D514a = D514a_1 + D514a_2 } !1485 water & Area-of-origin
+
+!DWSP WTP to meet demand: C513A
+Define C513A_n {std kind 'FLOW-DELIVERY' units 'CFS'} !DWSP to COSMA north
+Define C513A_c {std kind 'FLOW-DELIVERY' units 'CFS'} !DWSP to COSMA central
+Define C513A_s {std kind 'FLOW-DELIVERY' units 'CFS'} !DWSP to COSMA south
+
+goal setC513A { C513A = C513A_n + C513A_c + C513A_s }
+
+!SEWD WTP to COSMA: C509
+Define C509_n {std kind 'FLOW-DELIVERY' units 'CFS'} !SEWD to COSMA north
+Define C509_c {std kind 'FLOW-DELIVERY' units 'CFS'} !SEWD to COSMA central
+Define C509_s {std kind 'FLOW-DELIVERY' units 'CFS'} !SEWD to COSMA south
+
+goal setC510 {C509 = C509_n + C509_c + C509_s }
+
+!COSMA M&I demand: D510_mi
+Define D510_mi_n {std kind 'FLOW-DELIVERY' units 'CFS'} !COSMA north delivery
+!goal setD510_mi_n { D510_mi_n = C509_n + C513A_n + GP509_mi_n }
+
+Define D510_mi_c {std kind 'FLOW-DELIVERY' units 'CFS'} !COSMA central delivery
+!goal setD510_mi_c { D510_mi_c = C509_c + C513A_c + GP509_mi_c }
+
+Define D510_mi_s {std kind 'FLOW-DELIVERY' units 'CFS'} !COSMA south delivery
+!goal setD510_mi_s { D510_mi_s = C509_s + C513A_s + GP509_mi_s }
+
+goal setTotalD510_mi {D510_mi = D510_mi_n + D510_mi_c + D510_mi_s }

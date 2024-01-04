@@ -1,0 +1,38 @@
+! LVE_SBA_DEM.wresl
+! Andy Draper 01/31/2005 MWH
+! Nancy Parker 09/2005 USBR
+! Los Vaqueros Reservoir connection to SBA.
+
+/*
+ This file establishes the reliability demands and sets up LVE supply.
+ Delivery to SBA is handled in LVE_SBA_REL.wresl - included in EWA step.
+*/
+
+!#################################################################
+
+! Define operating rules
+define D426_REL {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+define LV_REL_DEM_ACFC1 { timeseries kind 'DEMAND' units 'CFS' }
+define LV_REL_DEM_ACFC2 { timeseries kind 'DEMAND' units 'CFS' }
+define LV_REL_DEM_ACWA  { timeseries kind 'DEMAND' units 'CFS' }
+define LV_REL_DEM_SC    { timeseries kind 'DEMAND' units 'CFS' }
+define ALT_DEMAND_REL1  { value LV_REL_DEM_ACFC1 + LV_REL_DEM_ACFC2
+                              + LV_REL_DEM_ACWA + LV_REL_DEM_SC}
+
+define ALT_DEMAND_REL { 
+    case PlanC {
+    condition LVEPlan == 3. 
+    value ALT_DEMAND_REL1
+    }
+    case otherwise {
+    condition always
+    value 0.
+    }
+}
+define ALT_DEMAND_RELdv { std kind 'FLOW-INFLOW' units 'CFS' }
+goal setALT_DEMAND_REL  {ALT_DEMAND_RELdv = ALT_DEMAND_REL}
+
+goal setD426_SBAREL1 { D426_REL < ALT_DEMAND_REL }             !demand limit
+goal setD426_SBAREL2 { D426_REL < LV_SBA_Cap*LV_SBA_REL_Flag1 }   !conveyance limit
+

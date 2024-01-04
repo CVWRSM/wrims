@@ -1,0 +1,60 @@
+!Feather River
+goal continuityOrovl {I_Orovl-C_Orovl-F_Orovl-E_Orovl-D_Orovl=S_Orovl*taf_cfs-S_Orovl(-1)*taf_cfs}
+goal continuityTherm {C_Orovl+R_Therm-C_Therm-D_Therm=0}
+goal continuityYubFea {C_Therm+C_Daguer+R_YubFea-C_YubFea-D_YubFea=0}
+
+!Yuba River
+!goal continuityNBldB {I_NBldB-C_NBldB-F_NBldB-E_NBldB=S_NBldB*taf_cfs-S_NBldB(-1)*taf_cfs}
+!goal continuityEnglB {C_NBldB+R_EnglB-C_EnglB=0}
+goal continuityDaguer {C_EnglB+R_Daguer-D_Daguer-C_Daguer=0}
+
+!American River
+goal continuityFolsm {I_Folsm-C_Folsm-F_Folsm-E_Folsm-D_Folsm=S_Folsm*taf_cfs-S_Folsm(-1)*taf_cfs}
+goal continuityNimbus {C_Folsm+R_Nimbus-C_Nimbus-D_Nimbus=0}
+goal continuityHSt {C_Nimbus+R_HSt-C_HSt-D_HSt=0}
+
+!Sacramento River
+goal continuityTrnty {I_Trnty-C_Trnty-F_Trnty-E_Trnty=S_Trnty*taf_cfs-S_Trnty(-1)*taf_cfs} !Trinity
+goal continuityLwstn {C_Trnty+R_Lwstn-D_ClearTu-C_Lwstn=0}
+goal continuityWkytn {I_Wkytn+D_ClearTu-D_Spring-C_Wkytn-F_Wkytn-E_Wkytn=S_Wkytn*taf_cfs-S_Wkytn(-1)*taf_cfs} !Whiskeytown Lake
+goal continuityShsta {I_Shsta-C_Shsta-F_Shsta-E_Shsta=S_Shsta*taf_cfs-S_Shsta(-1)*taf_cfs} !Shasta Lake
+goal continuityKswck {C_Shsta+R_Kswck+D_Spring-C_Kswck=0}
+goal continuityRedBlf {C_Kswck+C_Wkytn+R_RedBlf-D_RedBlf-C_RedBlf=0}
+goal continuityWilkns {C_RedBlf+R_Wilkns-D_Wilkns-C_Wilkns=0}
+goal continuitySacFea {C_Wilkns+C_YubFea+R_SacFea-C_SacFea-D_SacFea=0}
+goal continuitySacAme {C_SacFea+C_HSt+R_SacAme-C_SacAme-D_SacAme-D_SacAme1=0}
+goal continuityYoloBP {D_SacFea+D_SacAme1+R_YoloBP-C_YoloBP=0}
+
+!Delta
+goal continuityDxc {C_SacAme+R_Dxc-C_Dxc-C_Dxc1=0}
+goal continuityNDelta {C_YoloBP+C_Dxc+R_NDelta-D_NDelta-C_NDelta=0}
+goal continuityCDelta {C_Dxc1+R_CDelta+I_East-C_CDelta=0}
+goal continuitySDelta {I_SJR+C_CDelta+R_SDelta-C_SJR=0}
+goal continuitySJR1 {C_SJR-C_SJR1-C_Tracy=0}
+goal continuitySJR2 {C_SJR1-C_SJR2-C_Banks=0}
+goal continuitySJR3 {C_SJR2-C_SJR3-D_CCWD=0}
+goal continuityWDelta {C_NDelta+C_SJR3+R_WDelta-C_WDelta=0}
+
+!Export
+goal continuitySBay {C_Banks-C_SBay-D_SBay=0}
+goal continuityONlFB {C_SBay+C_SLCVP+C_SLSWP+C_ONlPP-C_ONlFB=0}
+goal continuityUpDMC {C_Tracy-C_UpDMC-D_UpDMC=0}
+goal continuityONlPP {C_UpDMC+R_ONlPP-C_ONlPP-D_ONlPP=0}
+goal continuitySLCVP {-C_SLCVP-D_SLCVP-F_SLCVP-E_SLCVP=S_SLCVP*taf_cfs-S_SLCVP(-1)*taf_cfs} !CVP San Luis
+goal continuitySLSWP {-C_SLSWP-F_SLSWP-E_SLSWP=S_SLSWP*taf_cfs-S_SLSWP(-1)*taf_cfs} !SWP San Luis
+goal continuityCVPSWP {C_ONlFB-C_SWP-C_CVP=0}
+
+!South of Delta
+goal continuityDsAmgS {C_SWP-D_DosAmigosSWP-C_DsAmgS=0}
+goal continuityDsAmgC {C_CVP-D_DosAmigosCVP-C_DsAmgC=0}
+goal continuityJtUTerm {C_DsAmgS+C_DsAmgC-C_JtUTerm=0}
+goal continuityLasPer {C_JtUTerm-C_CoastAqdct-D_Emp2Dud-C_LasPer=0}
+goal continuityBadgerHill {C_CoastAqdct-D_CoastAqdct=0}
+goal continuityKCWA {C_LasPer-D_KCWA-C_KCWA=0}
+goal continuityCVC {C_KCWA-D_CVPRfg_854-D_CVP_CVC-C_CVC=0}
+goal continuityChrisPP {C_CVC+I_Kern-D_CVC2Chris-C_ChrisPP=0}
+goal continuityOABP {C_ChrisPP-C_OSO-C_Alamo=0}
+goal continuityWarnePP {C_OSO-C_WarnePP-D_OSO=0}
+goal continuityWestBranch {C_WarnePP-D_WarnePP=0}
+goal continuityPearBlPP {C_Alamo-C_PearBlPP-D_Alamo=0}
+goal continuityEastBranch {C_PearBlPP-D_PearBlPP=0}

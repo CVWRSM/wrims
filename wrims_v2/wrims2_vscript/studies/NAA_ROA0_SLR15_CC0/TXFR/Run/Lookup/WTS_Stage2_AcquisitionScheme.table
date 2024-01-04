@@ -1,0 +1,38 @@
+! BST_WTS_Inputs_Future_081109.xls
+!
+! This is the Stage 2 Acquisition Scheme
+! These are the rules the WTS uses to pair up Purchases with Suppliere for Stage 2
+! In Stage 2 the SWP Contractors in the South Bay and South Coast regions are the purchasers - the
+!    supplies acquired under this stage are banked in local DSA inline storage (if implemented)
+!    and/or delivered when capacity at Banks PP permits.
+!
+! The following sources of supply are permitted for Stage 2
+!   - Yuba; GW substitution supplies are generated in the lower Yuba River region at I204;
+!   - Feather; both supply types are generated at Thermalito at D7B from sources in the FRSA
+!   - Sac Valley; both supply types are generated at the Sac R at D114, D122 from sources in the Colusa Basin
+!   - Sac Other; both supply types are generated at the Sac R at D128 from sources along the Sacramento River
+!   - CA; GW substitution supplies are generated in the Tulare Basin region and delivered to the CA at I852
+!         Crop Idling supplies are generated along the Eastside of the SJ Valley and delivered to the CA at I839
+!
+! This is a prioritization Table - each row represents the solution given the Annual Total
+! The annual total is the sum of the LCPSIM based Transfer Targets (see LCPSIM related inputs)
+!    plus an additional amount for estimated salinity costs and losses defined in the WTS_JobControl
+!     table file, minus the unused amount remaining of Stage 1
+! The purchase water is allocated according to the LCPSIM Targets breakdown
+!
+! Stage 2 transfers are not allowed in Wet and Above Normal years - this constraint is implemented in the input targets
+!
+! The Stage 2 code assumes that the Yuba sources would be used first and GW sources would be used second
+! The Stage 2 code assumes that each source is used in a single table step, graduated steps are not allowed
+! If these assumptions are not so, than the code will need to be revised to implement the desired scheme
+!
+! If the Annual total for a specfic row can not be accomplished with the selection shown, the next
+!    higher row is used to search for incremental supplies to satisfy the purchase request
+!
+WTS_Stage2_AcquisitionScheme
+Total         Yuba_GW       Yuba_SW       Feather_GW    Feather_CI    SacValley_GW  SacValley_CI  SacOther_CI   CA_CI
+0             0             0             0             0             0             0             0             0
+200           0             0             0             0             0             0             0             200
+345           51.5          0             100           0             45            0             0             200
+640           51.5          0             100           55            45            140           100           200
+9999          51.5          0             100           55            45            140           100           200

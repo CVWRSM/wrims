@@ -1,0 +1,29 @@
+
+!required sac flow for estimated exports considering all ann stations:
+!define AnnSacReq {value min(max(0.0,RSReqSac,JPReqSac,EMReqSac,COReqSac),EstTotExp/0.65+6000.)}
+define AnnSacReq {
+!/* Don't use this goal if IF is available as alternate export pathway
+    case JunSep {
+    condition month>=Jun.and.month<=Sep
+    value min(max(0.0,RSReqSac,JPReqSac,EMReqSac,COReqSac),EstTotExp/0.65+7000.)}
+    case other {
+    condition always
+    value max(0.0,RSReqSac,JPReqSac,EMReqSac,COReqSac)}
+!*/
+!    value 0.
+}
+
+!define AnnSacReq {value max(0.0,RSReqSac,JPReqSac,EMReqSac,COReqSac)}
+define AnnSacReqdv {alias AnnSacReq kind 'FLOW' units 'CFS'}
+
+!split C400 & C157:
+define C400_mif {std kind 'FLOW-MIN-INSTREAM' units 'cfs'}
+!define C400_reop {std kind 'FLOW-REOP-ADJ' units 'cfs'}
+define C400_exc {std kind 'FLOW-EXCESS-INSTREAM' units 'cfs'}
+goal C400total {c400_ANN = C400_mif + C400_reop + C400_exc}
+define C157_mif {std kind 'FLOW-MIN-INSTREAM' units 'cfs'}
+define C157_exc {std kind 'FLOW-EXCESS-INSTREAM' units 'cfs'}
+goal C157total {c157 = C157_mif + C157_exc}
+
+
+goal setAnnSacFlow {C400_mif + C157_mif < AnnSacReq}

@@ -1,0 +1,35 @@
+# Description:
+# Historical operation of the temporary barriers
+OPERATING_RULE
+NAME                      ACTION                                                                                                                                TRIGGER                                       
+
+#Sutter_Slough_install_in  "SET gate_install(gate=Sutter_Slough) TO 1.0"                                                                                      "DATETIME >= 01Apr2014"                 
+#Sutter_Slough_install_out "SET gate_install(gate=Sutter_Slough) TO 0.0"                                                                                      "DATETIME < 01Apr2014"                 
+
+#Steamboat_Slough_install_in  "SET gate_install(gate=Steamboat_Slough) TO 1.0"                                                                                "DATETIME >= 01Apr2014"                 
+#Steamboat_Slough_install_out "SET gate_install(gate=Steamboat_Slough) TO 0.0"                                                                                "DATETIME < 01Apr2014"                 
+
+#WestFalse_River_install_in  "SET gate_install(gate=WestFalse_River) TO 1.0"                                                                                  "DATETIME >= 01Apr2014"                 
+#WestFalse_River_install_out "SET gate_install(gate=WestFalse_River) TO 0.0"                                                                                  "DATETIME < 01Apr2014"                 
+
+#oldr_close                  "SET gate_op(gate=oldr_gate,device=radial_gates,direction=from_node) TO 0.0 RAMP 30MIN"                                          "gate_dclose AND (DATETIME >= 01Apr2014)" 
+#oldr_open                   "SET gate_op(gate=oldr_gate,device=radial_gates,direction=from_node) TO 1.0 RAMP 30MIN"                                          "gate_dopen  OR (DATETIME < 01Apr2014)" 
+
+#conn_sl_close               "SET gate_op(gate=conn_sl_gate,device=radial_gates,direction=from_node) TO 0.0"                                                  "gate_dclose AND (DATETIME >= 01Apr2014)" 
+#conn_sl_open                "SET gate_op(gate=conn_sl_gate,device=radial_gates,direction=from_node) TO 1.0"                                                  "gate_dopen OR (DATETIME < 01Apr2014)" 
+
+oldr_install_in              "SET gate_install(gate=oldr_gate) TO 1.0"                                                                                      "DATETIME >= 01Apr2014" 
+oldr_install_out             "SET gate_install(gate=oldr_gate) TO 0.0"                                                                                       "DATETIME < 01Apr2014" 
+
+conn_sl_install_in           "SET gate_install(gate=conn_sl_gate) TO 1.0"                                                                                    "DATETIME >= 01Apr2014" 
+conn_sl_install_out          "SET gate_install(gate=conn_sl_gate) TO 0.0"                                                                                    "DATETIME < 01Apr2014" 
+
+
+END
+
+
+OPRULE_EXPRESSION
+NAME          DEFINITION                                                                
+gate_dopen   "chan_vel(channel=83,dist=0) > 0"   
+gate_dclose  "chan_vel(channel=83,dist=0) < 0"                                      
+END

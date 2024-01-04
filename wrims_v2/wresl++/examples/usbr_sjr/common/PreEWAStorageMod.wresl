@@ -1,0 +1,163 @@
+! **************************************************************
+! PreEWAStorageMod.wresl
+! **************************************************************
+!
+! This file sets storage adjustments of NOD storage values to 
+! compensate for NOD debt and NOD backed-up water due to EWA actions.
+!
+! This file is called in pre-EWA steps of a multi-step study.
+!
+! The initial condition of upward adjustment for debt 
+! and downward adjustment for backed-up water is represented by
+! S*_mod_dv(PrevSep), which is set in the EWA step.
+!
+! This file then checks if the NOD reservoirs encroach on their
+! flood control cap or if SL reservoirs encroach on their capacities.
+! As these encroachments happen, the initial condition adjustment
+! (i.e. S*_mod_dv(PrevSep) gets reduced and possibly erased during the 
+! simulated year).  Reduction potential is checked each month 
+! (i.e. S*FillAmt).
+
+!Flood Control Caps for NOD reservoirs
+/*define S_TRNTY_L4_month {
+    case october {
+        condition month==OCT
+        value 12 }
+    case otherwise {
+        condition always 
+        value month-1 }
+}
+define S_TRNTYlevel4_prev {select target from res_level where res_num=1,level=4,month=s1_L4_month}
+define S_SHSTAlevel5_temp {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S_OROVLlevel5_temp {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S_FOLSMlevel5_temp {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+
+!Amount to reduce initial storage adjustment from EWA step (prevSep)
+define S_TRNTYFillAmt {
+    case October {
+        condition month==OCT
+        value 0. }
+    case ResFill {
+        condition S1(-1) > S1level4_prev-.5
+        value max(S1(-1)-S1(-2),0.) }
+    case otherwise {
+        condition always 
+        value 0. }
+}
+define S_SHSTAFillAmt {
+    case October {
+        condition month==OCT
+        value 0. }
+    case ResFill {
+        condition S_SHSTA(-1) > S_SHSTAlevel5_temp-.5
+        value max(S_SHSTA(-1)-S_SHSTA(-2),0.) }
+    case otherwise {
+        condition always 
+        value 0. }
+}
+define S_OROVLFillAmt {
+    case October {
+        condition month==OCT
+        value 0. }
+    case ResFill {
+        condition S_OROVL(-1) > S_OROVLlevel5_temp-.5
+        value max(S_OROVL(-1)-S_OROVL(-2),0.) }
+    case otherwise {
+        condition always 
+        value 0. }
+}
+define S_FOLSMFillAmt {
+    case October {
+        condition month==OCT
+        value 0. }
+    case ResFill {
+        condition S_FOLSM(-1) > S_FOLSMlevel5_temp-.5
+        value max(S_FOLSM(-1)-S_FOLSM(-2),0.) }
+    case otherwise {
+        condition always 
+        value 0. }
+}
+*/
+define S_TRNTY_mod_dv {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_SHSTA_mod_dv {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_OROVL_mod_dv {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_FOLSM_mod_dv {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+/*
+define S_TRNTYdebtdv {std kind 'debt' units 'taf'}
+define S_SHSTAdebtdv {std kind 'debt' units 'taf'}
+define S_OROVLdebtdv {std kind 'debt' units 'taf'}
+define S_FOLSMdebtdv {std kind 'debt' units 'taf'}
+
+define S_SHSTA_EWAdv {std kind 'storage' units 'taf'}
+define S_OROVL_EWAdv {std kind 'storage' units 'taf'}
+define S_FOLSM_EWAdv {std kind 'storage' units 'taf'}
+
+define S_TRNTYdebt {
+    case October {
+        condition month==oct
+        value S1_mod_dv(prevSep) }
+    case ResFill {
+        condition always
+        value max(0., S1Debtdv(-1)-S1FillAmt) }
+}
+define S_SHSTAdebt {
+    case October {
+        condition month==oct
+        value max(0., S_SHSTA_mod_dv(prevSep)+S_SHSTA_EWAdv(prevSep)) }
+    case ResFill {
+        condition always
+        value max(0., S_SHSTADebtdv(-1)-S_SHSTAFillAmt) }
+}
+define S_OROVLdebt {
+    case October {
+        condition month==oct
+        value max(0., S_OROVL_mod_dv(prevSep)+S_OROVL_EWAdv(prevSep)) }
+    case ResFill {
+        condition always
+        value max(0., S_OROVLDebtdv(-1)-S_OROVLFillAmt) }
+}
+define S_FOLSMdebt {
+    case October {
+        condition month==oct
+        value max(0., S_FOLSM_mod_dv(prevSep)+S_FOLSM_EWAdv(prevSep)) }
+    case ResFill {
+        condition always
+        value max(0., S_FOLSMDebtdv(-1)-S_FOLSMFillAmt) }
+}
+
+goal set_S_TRNTYdebtdv {S_TRNTYdebtdv = S_TRNTYdebt}
+goal set_S_SHSTAdebtdv {S_SHSTAdebtdv = S_SHSTAdebt}
+goal set_S_OROVLdebtdv {S_OROVLdebtdv = S_OROVLdebt}
+goal set_S_FOLSMdebtdv {S_FOLSMdebtdv = S_FOLSMdebt}
+
+define S_TRNTYmod {value S_TRNTYdebt}
+define S_SHSTAmod {value S_SHSTAdebt - S_SHSTA_EWAdv(prevSep)}
+define S_OROVLmod {value S_OROVLdebt - S_OROVL_EWAdv(prevSep)}
+define S_FOLSMmod {value S_FOLSMdebt - S_FOLSM_EWAdv(prevSep)}
+*/
+define S_TRNTYmod {value 0}
+define S_SHSTAmod {value 0}
+define S_OROVLmod {value 0}
+define S_FOLSMmod {value 0}
+
+goal set_S_TRNTY_mod_dv {S_TRNTY_mod_dv = S_TRNTYmod }
+goal set_S_SHSTA_mod_dv {S_SHSTA_mod_dv = S_SHSTAmod }
+goal set_S_OROVL_mod_dv {S_OROVL_mod_dv = S_OROVLmod }
+goal set_S_FOLSM_mod_dv {S_FOLSM_mod_dv = S_FOLSMmod }
+
+/*
+!San Luis storage adjustments don't include EWA assets
+define S_SLUIS_CVPmodDV {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_SLUIS_SWPmodDV {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_SLUIS_CVPmod { value min(min(972.-S_SLUIS_CVP(-1),S_SLUIS_CVPmodDV(prevSep)),S_SLUIS_CVPmodDV(-1)) }
+define S_SLUIS_SWPmod { value min(min(1067.-S_SLUIS_SWP(-1),S_SLUIS_SWPmodDV(prevSep)),S_SLUIS_SWPmodDV(-1)) }
+goal set_S_SLUIS_CVPmodDV {S_SLUIS_CVPmodDV = S_SLUIS_CVPmod }
+goal set_S_SLUIS_SWPmodDV {S_SLUIS_SWPmodDV = S_SLUIS_SWPmod }
+*/
+
+define S_SLUIS_CVPmodDV {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_SLUIS_SWPmodDV {lower -1000 kind 'STORAGE-MOD' units 'TAF'}
+define S_SLUIS_CVPmod { value 0. }
+define S_SLUIS_SWPmod { value 0. }
+goal set_S_SLUIS_CVPmodDV {S_SLUIS_CVPmodDV = S_SLUIS_CVPmod }
+goal set_S_SLUIS_SWPmodDV {S_SLUIS_SWPmodDV = S_SLUIS_SWPmod }

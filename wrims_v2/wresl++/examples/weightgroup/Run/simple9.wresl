@@ -1,0 +1,29 @@
+SEQUENCE CYCLE1 {
+    model   first
+    order   1
+    }
+
+	
+MODEL first { 
+
+  !include 'moreWreslFiles\weight-table.wresl' 
+  define[local] x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define[local] y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define[local] z { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define[local] a { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define[local] b { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  
+  goal[local] g1 { x+y+z+a+b < 100/0 }
+  goal g2 { x < 3 }
+  
+  Objective TTT {
+	weight 6
+	DeviationPenalty 0.1
+	deviationTolerance 5
+	variable x y z a b
+  }
+  
+}
+
+

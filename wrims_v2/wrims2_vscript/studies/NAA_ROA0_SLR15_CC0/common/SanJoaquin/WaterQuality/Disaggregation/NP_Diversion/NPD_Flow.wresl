@@ -1,0 +1,139 @@
+!Anna Fock  Oct 2003
+/* SJR Non-Project Diversion Definition
+Disaggregation of one CALSIM Non-Project Diversion arc to DSM2-based arcs (Part B prefix, # of arcs)
+based on SJRIO riparian and post-1914 diversion along the SJR
+CALSIM                        DSM2
+SJR Non-Project Diversion(D,1)    = SJR Non-Project Diversion(NPD,multiple)
+
+**********************Westside Non-Project returns************************
+Westside returns of pumped groundwater. ID is DSM2 node
+Source:    2003SJRIO\DPMP.dat (Post-1914 diversion at various river-miles)
+        2003SJRIO\HRPMP.dat (dry year annual SJR diversion for pasture, corn, and almond at various river-miles)
+*/
+!Spacial distribution of CALSIM Non-project diversions under DSM2 schematic
+define Frac_NPD17  { select factor from DSM2_NPD where nodeID = 17  }    !D639 at DSM2 border weight = 1.00
+define Frac_NPD601 { select factor from DSM2_NPD where nodeID = 601 }    !D637 at RM75        weight = 1.00
+define Frac_NPD602 { select factor from DSM2_NPD where nodeID = 602 }    !D630B at RM76        weight = 0.30
+define Frac_NPD603 { select factor from DSM2_NPD where nodeID = 603 }    !D630B at RM77        weight = 0.55
+define Frac_NPD604 { select factor from DSM2_NPD where nodeID = 604 }    !D630B at RM78.5    weight = 0.07
+define Frac_NPD605 { select factor from DSM2_NPD where nodeID = 605 }    !D630B at RM80        weight = 0.07
+define Frac_NPD611 { select factor from DSM2_NPD where nodeID = 611 }    !D620B at RM86        weight = 0.06
+define Frac_NPD612 { select factor from DSM2_NPD where nodeID = 612 }    !D620B at RM87        weight = 0.05
+define Frac_NPD613 { select factor from DSM2_NPD where nodeID = 613 }    !D620B at RM88        weight = 0.03
+define Frac_NPD614 { select factor from DSM2_NPD where nodeID = 614 }    !D620B at RM89        weight = 0.03
+define Frac_NPD615 { select factor from DSM2_NPD where nodeID = 615 }    !D620B at RM90        weight = 0.03
+define Frac_NPD616 { select factor from DSM2_NPD where nodeID = 616 }    !D620B at RM91.5    weight = 0.07
+define Frac_NPD624 { select factor from DSM2_NPD where nodeID = 624 }    !D620B at RM99        weight = 0.03
+define Frac_NPD627 { select factor from DSM2_NPD where nodeID = 627 }    !D620B at RM103    weight = 0.07
+define Frac_NPD628 { select factor from DSM2_NPD where nodeID = 628 }    !D620B at RM105    weight = 0.32
+define Frac_NPD629 { select factor from DSM2_NPD where nodeID = 629 }    !D620B at RM106    weight = 0.02
+define Frac_NPD630 { select factor from DSM2_NPD where nodeID = 630 }    !D620B at RM107.5    weight = 0.02
+define Frac_NPD631 { select factor from DSM2_NPD where nodeID = 631 }    !D620B at RM109    weight = 0.05
+define Frac_NPD632 { select factor from DSM2_NPD where nodeID = 632 }    !D620B at RM110    weight = 0.03
+define Frac_NPD636 { select factor from DSM2_NPD where nodeID = 636 }    !D620B at RM114    weight = 0.07
+define Frac_NPD637 { select factor from DSM2_NPD where nodeID = 637 }    !D620B at RM116    weight = 0.04
+define Frac_NPD638 { select factor from DSM2_NPD where nodeID = 638 }    !D620B at RM117    weight = 0.04
+define Frac_NPD645 { select factor from DSM2_NPD where nodeID = 645 }    !D620B at RM125    weight = 0.02
+define Frac_NPD649 { select factor from DSM2_NPD where nodeID = 649 }    !D620B at RM130    weight = 0.04
+
+!Flow calculation under DSM2 schematic
+define NPD17  { std kind 'NPD-Flow' Units 'CFS' }    !D639 at DSM2 border
+define NPD601 { std kind 'NPD-Flow' Units 'CFS' }    !D637 at RM75
+define NPD602 { std kind 'NPD-Flow' Units 'CFS' }    !D630B at RM76
+define NPD603 { std kind 'NPD-Flow' Units 'CFS' }    !D630B at RM77
+define NPD604 { std kind 'NPD-Flow' Units 'CFS' }    !D630B at RM78.5
+define NPD605 { std kind 'NPD-Flow' Units 'CFS' }    !D630B at RM80
+define NPD611 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM86
+define NPD612 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM87
+define NPD613 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM88
+define NPD614 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM89
+define NPD615 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM90
+define NPD616 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM91.5
+define NPD624 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM99
+define NPD627 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM103
+define NPD628 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM105
+define NPD629 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM106
+define NPD630 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM107.5
+define NPD631 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM109
+define NPD632 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM110
+define NPD636 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM114
+define NPD637 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM116
+define NPD638 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM117
+define NPD645 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM125
+define NPD649 { std kind 'NPD-Flow' Units 'CFS' }    !D620B at RM130
+
+Goal Set_NPD17  { NPD17  = D639  * Frac_NPD17  }    !D639 at DSM2 border
+Goal Set_NPD601 { NPD601 = D637  * Frac_NPD601 }    !D637 at RM75
+Goal Set_NPD602 { NPD602 = D630B * Frac_NPD602 }    !D630B at RM76
+Goal Set_NPD603 { NPD603 = D630B * Frac_NPD603 }    !D630B at RM77
+Goal Set_NPD604 { NPD604 = D630B * Frac_NPD604 }    !D630B at RM78.5
+Goal Set_NPD605 { NPD605 = D630B * Frac_NPD605 }    !D630B at RM80
+Goal Set_NPD611 { NPD611 = D620B * Frac_NPD611 }    !D620B at RM86
+Goal Set_NPD612 { NPD612 = D620B * Frac_NPD612 }    !D620B at RM87
+Goal Set_NPD613 { NPD613 = D620B * Frac_NPD613 }    !D620B at RM88
+Goal Set_NPD614 { NPD614 = D620B * Frac_NPD614 }    !D620B at RM89
+Goal Set_NPD615 { NPD615 = D620B * Frac_NPD615 }    !D620B at RM90
+Goal Set_NPD616 { NPD616 = D620B * Frac_NPD616 }    !D620B at RM91.5
+Goal Set_NPD624 { NPD624 = D620B * Frac_NPD624 }    !D620B at RM99
+Goal Set_NPD627 { NPD627 = D620B * Frac_NPD627 }    !D620B at RM103
+Goal Set_NPD628 { NPD628 = D620B * Frac_NPD628 }    !D620B at RM105
+Goal Set_NPD629 { NPD629 = D620B * Frac_NPD629 }    !D620B at RM106
+Goal Set_NPD630 { NPD630 = D620B * Frac_NPD630 }    !D620B at RM107.5
+Goal Set_NPD631 { NPD631 = D620B * Frac_NPD631 }    !D620B at RM109
+Goal Set_NPD632 { NPD632 = D620B * Frac_NPD632 }    !D620B at RM110
+Goal Set_NPD636 { NPD636 = D620B * Frac_NPD636 }    !D620B at RM114
+Goal Set_NPD637 { NPD637 = D620B * Frac_NPD637 }    !D620B at RM116
+Goal Set_NPD638 { NPD638 = D620B * Frac_NPD638 }    !D620B at RM117
+Goal Set_NPD645 { NPD645 = D620B * Frac_NPD645 }    !D620B at RM125
+Goal Set_NPD649 { NPD649 = D620B * Frac_NPD649 }    !D620B at RM130
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,15 @@
+! code by A. Munevar 7/8/98
+!
+! THIS IS THE MAIN MINIMUM REQUIRED DELTA OUTFLOW FILE
+! It includes all the files that contain MRDO constraints
+
+
+INCLUDE 'salinity\gmodel\gmodel-main.wresl'
+!INCLUDE 'x2\x2req.wresl'
+INCLUDE 'delta-outflow\delta-outflow.wresl'
+
+define AnnDOReq { value 0.0}  !R Leaf
+INCLUDE 'final-mrdo\final-mrdo.wresl'
+
+! keep C_SAC041_MIF at zero:
+goal control_C_SAC041 {C_SAC041_MIF < 0.} !to do: remove C_SAC041_MIF and weight from system files.

@@ -1,0 +1,353 @@
+// Profiling settings for JRockit Flight Recorder 
+{
+	"http://www.oracle.com/jrockit/jvm/" : {
+
+                // Catch-all settings for JVM events
+	        "*" : {
+		    "enable" : false,            // make sure we explicitly turn on event we want
+		    "stacktrace" : false,
+		    "threshold" : 10ms,
+		    "period" : 1000ms
+		},
+
+
+                //////// Miscellaneous JVM events
+
+                // JVM instance info
+		// Constant event, only generated once per recording, when period=0
+		"vm/info" : {
+		     "enable" : true,
+		     "period" : 0
+		},
+
+                // CPU info
+		// Constant event, only generated once per recording, when period=0
+		"vm/cpu_info" : {
+		     "enable" : true,
+		     "period" : 0
+		},
+
+                // System properties key/value pairs at JVM startup
+		// Constant event, only generated once per recording, when period=0
+		"vm/system_properties" : {
+		     "enable" : true,
+		     "period" : 0
+		},
+
+                // Environment variables key/value pairs at JVM startup
+		// Constant event, only generated once per recording, when period=0
+		"os/environment" : {
+		     "enable" : true,
+		     "period" : 0
+		},
+
+                // Compiler statistics                	    
+	        // Only generate this at start+end of recordings
+                "vm/compiler/compiler_statistics" : {
+		    "enable" : true,
+                    "period" : 0
+		},
+
+                // Thread context switchrate
+	        // Only generate this at start+end of recordings
+	        "os/context_switch_rate" : {
+		     "enable" : true,
+		     "period" : 0
+		},
+
+                // Snapshot of virtual memory footprint
+	        // Only generate this at start+end of recordings
+                "vm/prof/memory_usage" : {
+		    "enable" : true,
+                    "period" : 0
+		},
+
+                // Snapshot of a thread's state (hotspot sampling)
+                "vm/prof/execution_sample" : {
+		    "enable" : true,
+                    "period" : 30ms
+		},
+
+		// Java exception stats
+		"java/statistics/exceptions" : {
+		     "enable" : true,
+                     "period" : 1000ms
+		},
+
+		// CPU load
+		"os/cpu_load" : {
+		     "enable" : true,
+                     "period" : 1000ms
+		},
+
+                // Physical memory stats (total, used)
+		"os/physical_memory" : {
+		     "enable" : true,
+                     "period" : 1000ms
+		},
+
+
+                //////// JVM synchronization related events
+
+                // JVM mutex enter
+                "vm/sync/mutex_enter" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},
+
+                // JVM monitor wait
+                "vm/sync/monitor_wait" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},
+
+                // JVM lock profiling
+                "vm/sync/lock_profile" : {
+		     "enable" : true
+		},
+
+                // JVM event wait
+                "vm/sync/event_wait" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},
+ 
+                //////// Java synchronization related events
+
+                // Java monitor enter, wait
+                "java/monitor_enter" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},
+
+                "java/monitor_wait" : {
+		     "enable" : true,
+		     "threshold" : 50ms,
+                     "stacktrace" : true
+		},
+
+                // Java lock profiling
+                // NOTE: Lock profiling requires extra VM flag -XX:+UseLockProfiling
+                "java/statistics/lock_profile" : {
+		     "enable" : true,
+		},
+                
+ 
+                //////// JVM thread related events
+
+                // JVM thread sleep, suspend, suspended
+                "vm/thread/*" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},    
+ 
+                //////// Java thread related events
+
+                // Java thread start
+                "java/thread_start" : {
+		     "enable" : true
+		},
+
+                // Java thread end
+                "java/thread_end" : {
+		     "enable" : true
+		},
+
+		// Java thread park
+                "java/thread_park" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},
+
+		// Java thread sleep
+                "java/thread_sleep" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},
+
+                // Java thread stats (active, daemon, accumulated, peak), requestable, periodic
+		"java/statistics/threads" : {
+		     "enable" : true,
+                     "period" : 1000ms
+		},
+
+
+		//////// Java I/O related events
+
+		// Socket/SocketChannel read/write
+                "java/socket_*" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},
+
+		// FileInputStream/RandomAccessFile/FileChannel read/write
+                "java/file_*" : {
+		     "enable" : true,
+		     "threshold" : 20ms,
+                     "stacktrace" : true
+		},
+
+                //////// Class loading related events
+                // Class load
+                "vm/class/load" : {
+		     "enable" : true,
+                     "stacktrace" : true
+		},
+
+                // Free class bytes
+                "vm/class/free" : {
+		     "enable" : true
+		},
+
+                // Class unlink
+                "vm/class/unlink" : {
+		     "enable" : true
+		},
+
+                // Class unload
+                "vm/class/unload" : {
+		     "enable" : true
+		},
+
+
+		//////// Code GC related events
+
+		// All code GC events
+                "vm/codegc/*" : {
+		     "enable" : true
+		},
+
+
+                //////// Code generation related events
+
+                // Phase during JIT compilation of a method
+		// Only log codegen events if they take to long (expensive to log events during codegen)
+		"vm/compiler/phases/jit_phase_level_*" : {
+		     "enable" : true,
+		     "threshold" : 100ms
+		},
+
+                // Phase during optimization of a method
+		"vm/compiler/phases/opt_phase_level_*" : {
+		     "enable" : true,
+		     "threshold" : 500ms
+		},
+
+                // Tracing phase during compilation of a method
+		// These is very verbose events (not costly per event but a lot of events)
+		"vm/compiler/phases/*phase_trace_level_*" : {
+		     "enable" : true,
+		     "threshold" : 500ms
+		},
+
+		// Performance warnings for generated code
+                "vm/compiler/performance_log" : {
+		     "enable" : true
+		},
+
+		// Aborted code generation due to exceptional condition
+                "vm/compiler/fail" : {
+		     "enable" : true
+		},
+
+		// Code generation (JIT and opt)
+                "vm/compiler/*compile" : {
+		     "enable" : true
+		},
+
+
+                //////// Garbage collection and memory management related events
+
+		// All GC events are enabled by default, except the exceptions below.
+		"vm/gc/*" : {
+		     "enable" : true,
+		     "threshold" : 0ms, // All GCs should be included by default, even very short ones.
+		     "period" : 0       // Requestable events should only be send at start+end of recordings.
+		},
+
+                // Statistics for contiguous blocks of heap memory (used, free, dark matter) and per class
+                // Requested at start+end of recording.
+		"vm/gc/heap_statistics/*" : {
+		     "enable" : true
+		},
+
+                // Detailed information on all pairs of semiref class and referent class (Expensive, off by default)
+		"vm/gc/semiref/details_class" : {
+		     "enable" : false
+		},
+
+                // Allocation request triggering the GC
+		"vm/gc/request" : {
+		     "enable" : true,
+		     "threshold" : 0ms,
+		     "stacktrace" : true
+		},
+
+                // Pending allocation request related events, could be O(number of Java threads).
+		"vm/gc/alloc_pending/request_*" : {
+		     "enable" : true,
+		     "stacktrace" : true
+		},
+
+                // GC sub-level phase events, too many and not relevant.
+		"vm/gc/phases_sublevels/*" : {
+		     "enable" : false
+		},
+
+                // GC sub-level phase events
+		"vm/gc/phases_sublevels/level_1/*" : {
+		     "enable" : true,
+                     "threshold" : 0
+		},
+
+                // GC top-level phase related events
+		"vm/gc/phases/transition_*" : {
+		     "enable" : true,
+		     "threshold" : 0
+		},
+
+
+                //////// Freemem related events
+
+                // Summary of free memory on the freemem list, excluding the freemem cache and TLA cache
+		"vm/freemem/list_total" : {
+		     "enable" : true
+		},
+
+                // Summary of free memory on the freemem cache, excluding the freemem list and TLA cache
+		"vm/freemem/cache_total" : {
+		     "enable" : true
+		},
+
+                // Summary of an individual bucket in the freemem cache
+		"vm/freemem/cache_bucket_total" : {
+		     "enable" : true
+		},
+
+
+                //////// Java object allocation related events
+
+                // Summary of how many bytes and TLAs that have been allocated, for all threads and total
+		"java/statistics/alloc_*" : {
+		     "enable" : true
+		},
+
+                // Object allocation, both inside TLA and outside TLA
+		"java/object_alloc_*" : {
+		     "enable" : true,
+                     "threshold" : 20ms,
+                     "stacktrace" : true
+		}
+	},
+	"http://www.oracle.com/jrockit/jfr-info/*" : {
+		"enable" : true
+	}
+}

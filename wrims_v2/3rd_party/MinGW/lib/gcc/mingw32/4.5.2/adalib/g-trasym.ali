@@ -1,0 +1,98 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U gnat.traceback.symbolic%b  g-trasym.adb	9e408841 NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.exceptions.traceback%s  a-exctra.adb	a-exctra.ali
+W gnat.traceback%s	g-traceb.adb		g-traceb.ali
+W system%s		system.ads		system.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+L "-laddr2line"
+L "-lbfd"
+L "-liberty"
+
+U gnat.traceback.symbolic%s  g-trasym.ads	1ffc3996 EB NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W gnat.traceback%s	g-traceb.adb		g-traceb.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-exctra.ads		20090409150020 14dfe11b
+D a-unccon.ads		20070406091342 51e09df2
+D gnat.ads		20050905075126 96410e68
+D g-traceb.ads		20080820135520 eb52e917
+D g-trasym.ads		20090416125228 c0d6b092
+D g-trasym.adb		20090424143522 2bac1020
+D system.ads		20090410155748 b8eb58c3
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-traent.ads		20090417130712 a66ef260
+X 1 ada.ads
+16K9*Ada 19e8 7|82r6 82r26 8|37r6 37r36
+X 2 a-except.ads
+55K13*Exceptions 370e19 7|82w10 82r30 8|37r10 37r40
+68R9*Exception_Occurrence 332e14 7|93r37 8|149r37
+X 3 a-exctra.ads
+40K24*Traceback 55e29 8|37w21 37r51
+47A9*Tracebacks_Array(17|46M12)<integer>
+50V13*Tracebacks{47A9} 8|151r34
+X 5 gnat.ads
+36K9*GNAT 39e9 7|84r9 96r5 8|39r14 154r5
+X 6 g-traceb.ads
+82K14*Traceback 5|36k9 6|103e19 7|84r14 96r10 8|39r19 154r10
+88A12*Tracebacks_Array{3|47A9}<integer> 7|87r45 8|68r45
+X 7 g-trasym.ads
+84K24*Symbolic 6|82k14 7|96l20 96e28 8|39b29 154l20 154t28
+87V13*Symbolic_Traceback{string} 87>33 8|68b13 147l8 147t26 151r14
+87a33 Traceback{6|88A12} 8|68b33 97r32 106r10 131r22 131r41
+93V13*Symbolic_Traceback{string} 93>33 8|149b13 152l8 152t26
+93r33 E{2|68R9} 8|149b33 151r46
+X 8 g-trasym.adb
+45K12 TSL=45:31 121r7 135r7
+54m4 Exename{9|64M9} 124m10 128r10 131r13 141r10
+58b4 Exename_Resolved{boolean} 123r14 125m10
+70U17*convert_addresses 71>10 72>10 73>10 74>10 75>10 76b<c,convert_addresses>25
+. 130r10
+71m10 filename{9|64M9}
+72m10 addrs{9|64M9}
+73i10 n_addrs{integer}
+74m10 buf{9|64M9}
+75m10 len{9|64M9}
+89A12 Argv_Array(9|64M9)<integer> 90r26
+93V16*locate_exec_on_path{9|64M9} 94>10 95b<c,__gnat_locate_exec_on_path>25
+. 124r21
+94m10 c_exename{9|64M9}
+97a7 Res{string} 129r17 132m13 142r17
+98i7 Len{integer} 129m10 132m30 142r27
+X 9 system.ads
+37K9*System 8|36r6 45r24 54r14 71r21 72r21 74r21 75r21 89r44 94r22 94r45
+. 100r16 128r21 141r21 9|197e11
+64M9*Address 8|54r21 71r28 72r28 74r28 75r28 89r51 94r29 94r52 100r23
+66m4*Null_Address{64M9} 8|128r28 141r28
+78V13*"="{boolean} 8|128r18 141r18
+X 12 s-soflin.ads
+45K16*Soft_Links 8|36w13 45r31 12|397e22
+60P9*No_Param_Proc
+185p4*Lock_Task{60P9} 8|121r11
+195p4*Unlock_Task{60P9} 8|135r11
+X 17 s-traent.ads
+46M12*Traceback_Entry{9|64M9}
+

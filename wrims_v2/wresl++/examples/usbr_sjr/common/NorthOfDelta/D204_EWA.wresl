@@ -1,0 +1,59 @@
+! D204_EWA.wresl
+
+define I_FTR028_EWA {std kind 'flow-inflow' units 'cfs'}
+goal set_I_FTR028_EWA {I_FTR028_EWA = 0} ! weight is 5600
+
+define D_FTR028_EWA {std kind 'FLOW-DELIVERY' units 'CFS'} !Yuba Inflow Reduction for previous year NOD purchase
+
+! The assumption of NOD purchases originating in the Yuba Basin implies
+! additional releases from Yuba storage during July through September 
+! to provide the NOD purchase water.  To maintain water balance in the Yuba
+! an its input to the CVP/SWP system, the Yuba inflows in the subsequent 
+! year must be curtailed.  This curtailment is defined to occur during the
+! following winter (Jan-Mar).  If there is not enough Yuba inflow to the 
+! CVP/SWP system during Jan-Mar, then the curtailment is continued into Apr, which
+! has been found to be a sufficient extension of the curtailment period during logic development.  
+
+define PrevYrNPurchdv {std kind 'EWA-Purchase' units 'taf'}
+define PrevYrNPurch {
+      case FirstYr {
+            condition wateryear == 1922 
+            value 0. }
+      case Oct {
+            condition month == OCT
+            value   I_FTR028_EWA(prevSep)*cfs_taf(prevSep) 
+                  + I_FTR028_EWA(prevAug)*cfs_taf(prevAug)  
+                  + I_FTR028_EWA(prevJul)*cfs_taf(prevJul)  }
+      case otherwise {
+            condition always
+            value PrevYrNPurchdv(-1) }
+}
+goal setPrevYrNPurchdv {PrevYrNPurchdv = PrevYrNPurch }
+
+!The curtailment of Yuba Inflows is represented by an artificial demand
+!situated at node 204.  This has the effect of removing water from the 
+!CVP/SWP that should not have arrived from the Yuba due to last year's
+!NOD purchase.  The distribution of water removal during Jan-Mar is proportionate
+!to the distribution of water addition from the Yuba during those months (I_YUB003)
+
+define D_FTR028_EWA_tgt {
+      case first { 
+            condition wateryear == 1922
+            value 0. }
+      case Jan {
+            condition month == Jan
+            value PrevYrNPurch*(I_YUB003*cfs_taf/(I_YUB003*cfs_taf + I_YUB003(1)*cfs_taf(1) + I_YUB003(2)*cfs_taf(2))) }
+      case Feb {
+            condition month == Feb
+            value PrevYrNPurch*(I_YUB003*cfs_taf/(I_YUB003(-1)*cfs_taf(-1)+I_YUB003*cfs_taf + I_YUB003(1)*cfs_taf(1))) }
+      case Mar {
+            condition month == Mar
+            value PrevYrNPurch*(I_YUB003*cfs_taf/(I_YUB003(-1)*cfs_taf(-1) + I_YUB003(-2)*cfs_taf(-2) + I_YUB003*cfs_taf)) }
+      case Apr {
+            condition month == Apr .and. PrevYrNPurch>(I_YUB003(-1)*cfs_taf(-1) + I_YUB003(-2)*cfs_taf(-2)+I_YUB003(-3)*I_YUB003*cfs_taf(-3))
+            value max(PrevYrNPurch-D_FTR028_EWA(-1)*cfs_taf(-1)-D_FTR028_EWA(-2)*cfs_taf(-2)-D_FTR028_EWA(-3)*cfs_taf(-3), 0.)} 
+      case otherwise {
+            condition always 
+            value 0. }
+      }
+goal set_D_FTR028_EWA {D_FTR028_EWA < D_FTR028_EWA_tgt*taf_cfs} ! weight is 5600

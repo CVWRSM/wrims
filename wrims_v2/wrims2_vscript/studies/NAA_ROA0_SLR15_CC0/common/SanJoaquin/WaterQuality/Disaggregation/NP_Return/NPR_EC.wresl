@@ -1,0 +1,54 @@
+!Anna Fock  Oct 2003
+/* SJR Non-Project Returns Definition
+Disaggregation of one CALSIM Non-Project Return arc to DSM2-based arcs (Part B prefix, # of arcs)
+based on SJRIO riparian and post-1914 diversion along the SJR
+CALSIM                        DSM2
+SJR Non-Project Return(R,1)    = SJR Non-Project Return(NPR,multiple)
+
+**********************Westside Non-Project returns************************
+Westside returns of pumped groundwater. ID is DSM2 node
+Source:    2003SJRIO\DPMP.dat (Post-1914 diversion at various river-miles)
+        2003SJRIO\HRPMP.dat (dry year annual SJR diversion for pasture, corn, and almond at various river-miles)
+        Table 8. (Page C-45), Regulation of Agricultural Drainage to the SJR: Appendix C (Return flow location of SJR diversion)
+*/
+!Assign EC value under DSM2 schematic
+define EC_NPR601 { timeseries kind 'EC-NPR' units 'none' }    !R639A at RM75
+define EC_NPR602 { timeseries kind 'EC-NPR' units 'none' }    !R637D at RM76
+define EC_NPR603 { timeseries kind 'EC-NPR' units 'none' }    !R637D at RM77
+define EC_NPR604 { timeseries kind 'EC-NPR' units 'none' }    !R637D at RM78.5
+define EC_NPR605 { timeseries kind 'EC-NPR' units 'none' }    !R637D at RM80
+define EC_NPR612 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM87
+define EC_NPR616 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM91.5
+define EC_NPR617 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM93
+define EC_NPR623 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM98
+define EC_NPR628 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM105
+define EC_NPR631 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM109
+define EC_NPR635 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM113
+define EC_NPR638 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM117
+define EC_NPR645 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM125
+define EC_NPR649 { timeseries kind 'EC-NPR' units 'none' }    !R630M at RM130
+
+!EC calculation of CALSIM non-project returns
+define EC_R639A { value EC_NPR601 }
+define EC_R637D { value ( EC_NPR602 * Frac_NPR602
+                    + EC_NPR603 * Frac_NPR603
+                    + EC_NPR604 * Frac_NPR604
+                    + EC_NPR605 * Frac_NPR605    ) }
+define EC_R630M { value ( EC_NPR612 * Frac_NPR612
+                    + EC_NPR616 * Frac_NPR616
+                    + EC_NPR617 * Frac_NPR617
+                    + EC_NPR623 * Frac_NPR623
+                    + EC_NPR628 * Frac_NPR628
+                    + EC_NPR631 * Frac_NPR631
+                    + EC_NPR635 * Frac_NPR635
+                    + EC_NPR638 * Frac_NPR638
+                    + EC_NPR645 * Frac_NPR645
+                    + EC_NPR649 * Frac_NPR649    ) }
+
+define EC_R639A_dv { std kind 'EC-NPR' units 'none' }
+define EC_R637D_dv { std kind 'EC-NPR' units 'none' }
+define EC_R630M_dv { std kind 'EC-NPR' units 'none' }
+
+goal set_ECR639A { EC_R639A_dv = EC_R639A }
+goal set_ECR637D { EC_R637D_dv = EC_R637D }
+goal    set_ECR630M { EC_R630M_dv = EC_R630M }

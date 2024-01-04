@@ -1,0 +1,16 @@
+// Additional settings for debugging freemem/fragmentation problems
+{
+        "http://www.oracle.com/jrockit/jvm/" : {
+
+                // All freemem related events on
+		"vm/freemem/*" : {
+		     "enable" : true
+		},
+
+                // Statistics for contiguous blocks of heap memory (used, free, dark matter)
+		"vm/gc/heap_statistics/blocks" : {
+		     "enable" : true,
+                     "period" : 10000ms
+		}
+	}
+}

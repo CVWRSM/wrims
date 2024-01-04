@@ -1,0 +1,57 @@
+! Banks Split between SWP and CVP
+
+define D419_swp {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! SWP Banks
+define D419_cvp {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! Total CVP wheeling at Banks
+
+define D419_cvc {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVC wheeling at Banks
+define D419_cvcrels {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVC - Released Water
+define D419_cvcsurp {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVC - Surplus Only
+define D419_cvcsurp1 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define D419_cvcsurp2 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+
+define D419_cvpwhl {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! CVP Wheeling to CVP San Luis
+define D419_whlrels {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! JPOD - Released Water
+define D419_whlsurp {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! JPOD - Surplus Only
+define D419_whlsurp1 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define D419_whlsurp2 {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+
+define D419_WTS {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! Water transfer export at Banks
+
+define D419_ewa {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks
+define D419_ewapurch {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Purchase Transfer
+define D419_ewa_dwex {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Dry/Wet Exchange
+define D419_ewarels {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Release
+define D419_ewasurp {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Surp
+define D419_ewasurp1 {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Surp
+define D419_ewasurp2 {std KIND 'FLOW-DELIVERY' UNITS 'CFS'} ! EWA Banks - Surp
+
+define D419_cvpded {std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define D419_cvpded_Exp1 { std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+define D419_cvpded_Exp2 { std kind 'FLOW-DELIVERY' UNITS 'CFS'}
+
+define D419_EXP1 {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D419_EXP2 {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+define Surp1Terms {std kind 'FLOW-CHANNEL' units 'CFS'}
+define Surp2Terms {std kind 'FLOW-CHANNEL' units 'CFS'}
+define SurpTerms {std kind 'FLOW-CHANNEL' units 'CFS'}
+
+goal totalBanks {D419 = D419_swp + D419_cvp + D419_ewa + D419_WTS} !Total Banks
+goal totalcvpWheel {D419_cvp = D419_cvc + D419_cvpwhl + D419_cvpded} ! Total Wheeling at Banks for CVP.
+
+goal totalcvpded {D419_cvpded = D419_cvpded_exp1 + D419_cvpded_exp2}
+
+goal totalcvcwhl {D419_cvc = D419_cvcrels + D419_cvcsurp}
+goal totalcvcsurp {D419_cvcsurp = D419_cvcsurp1 + D419_cvcsurp2}
+
+goal totaljpodwhl {D419_cvpwhl = D419_whlrels + D419_whlsurp}
+goal totalcvpwhlsurp {D419_whlsurp = D419_whlsurp1 + D419_whlsurp2}
+
+goal totalewa {D419_ewa = D419_ewapurch + D419_ewa_dwex + D419_ewarels + D419_ewasurp}
+goal totalewasurp {D419_ewasurp = D419_ewasurp1 + D419_ewasurp2}
+
+goal SetSurp1Terms {Surp1Terms = D419_cvcsurp1 + D419_whlsurp1 + D419_ewasurp1}
+goal SetSurp2Terms {Surp2Terms = D419_cvcsurp2 + D419_whlsurp2 + D419_ewasurp2}
+goal SetSurpTerms {SurpTerms = Surp1Terms + Surp2Terms}
+
+

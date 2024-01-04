@@ -1,0 +1,21 @@
+
+!Get the required Sac flow for ESTIMATED exports
+define ANReqSac {
+  case NoSalinityControlPossible{
+    condition abs(AN_m_sv) <= 0.001 .and. int(AN_b_sv) == 0
+    value 0.}
+  case NegSlope{
+    condition AN_m_sv <= 0.0
+    value 0.}
+  case highcost{
+    condition AN_Sac_ZeroExp_sv2 >= ANNcap
+    value 0.}
+  case control{
+    condition month == Apr
+    value max(0., (EstTotExp-AN_b_sv)/AN_m_sv)}
+  case other {
+    condition  always
+    value 0.}
+}
+define ANReqSacDV {alias ANReqSac kind 'FLOW' units 'CFS'}
+

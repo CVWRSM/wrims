@@ -1,0 +1,13 @@
+! ==========================================================================
+!
+define HC_min {
+    case WBA8NNDemand {
+        condition con_114GCID > 100.     !if there is a significant diversion
+        value 4000. }                    !require the bypass flow
+    case other {
+        condition always
+        value 0. }
+}
+!goal meet_HamiltonCityQ {C114_MIF < HC_min}
+
+! ==========================================================================

@@ -1,0 +1,175 @@
+
+goal maxD27PMIdeliv   {D27_PMI_swp   < dem_d27_pmi *taf_cfs*perdel_21}
+goal maxD885PMIdeliv  {D885_PMI_swp  < dem_D885_PMI*taf_cfs*perdel_23}
+goal maxD895PMIdeliv  {D895_PMI_swp  < dem_D895_PMI*taf_cfs*perdel_24}
+goal maxD899PMIdeliv  {D899_PMI_swp  < dem_D899_PMI*taf_cfs*perdel_25}
+
+define dem_D27_PMI_100   {select demand from swp_3pattern_demands given percent=100 use linear where contractor=21,month=month}
+define dem_D885_PMI_100  {select demand from swp_3pattern_demands given percent=100 use linear where contractor=23,month=month}
+define dem_D895_PMI_100  {select demand from swp_3pattern_demands given percent=100 use linear where contractor=24,month=month}
+define dem_D899_PMI_100  {select demand from swp_3pattern_demands given percent=100 use linear where contractor=25,month=month}
+define remainTA_21_100 {select remainDemand from swp_3pattern_demands given percent=100 use linear where contractor=21,month=month} !METROPOLITAN WDSC
+define remainTA_23_100 {select remainDemand from swp_3pattern_demands given percent=100 use linear where contractor=23,month=month} !METROPOLITAN WDSC
+define remainTA_24_100 {select remainDemand from swp_3pattern_demands given percent=100 use linear where contractor=24,month=month} !METROPOLITAN WDSC
+define remainTA_25_100 {select remainDemand from swp_3pattern_demands given percent=100 use linear where contractor=25,month=month} !METROPOLITAN WDSC
+
+define swpdel_PMI27io { ! Actual MWD-MI Deliveries at node 27
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D27_PMI_fmp(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D27_PMI_fmp(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI885io {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D885_PMI_fmp(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D885_PMI_fmp(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI899io {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D899_PMI_fmp(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D899_PMI_fmp(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define swpdel_PMI895io {
+
+       case      Oct_DEC  {
+       condition month >= OCT .and. month <= DEC .and. Wateryear > 1922
+       sum(i=-1,prevJAN,-1) D895_PMI_fmp(i) * cfs_taf(i) }
+
+       case      Feb_SEP {
+       condition month >= FEB .and. month <= SEP
+       sum(i=-1,prevJAN,-1) D895_PMI_fmp(i) * cfs_taf(i) }
+
+       case      otherwise {
+       condition always
+       value     0 }
+       }
+
+define rem_Dem_MWD_100 {value max(0.0, req_mwd_swp - co_est_15 - swpdel_PMI27 - swpdel_PMI851B - swpdel_PMI885 - swpdel_PMI895 - swpdel_PMI899 
+				- swpdel_PMI27io - swpdel_PMI885io - swpdel_PMI895io - swpdel_PMI899io)}
+define rem_dem_mwd_io {value max(0.0, rem_dem_MWD_100 - remainDemand_MWD)}
+define rem_dem_mwd_io_ {alias rem_dem_mwd_io kind 'demand' units 'taf'}
+define rem_Dem_21 {value rem_dem_mwd_io*dem_tableA_21/(dem_tableA_21 + dem_tableA_23 + dem_tableA_24 + dem_tableA_25)} !METROPOLITAN WDSC
+define rem_Dem_23 {value rem_dem_mwd_io*dem_tableA_23/(dem_tableA_21 + dem_tableA_23 + dem_tableA_24 + dem_tableA_25)} !METROPOLITAN WDSC
+define rem_Dem_24 {value rem_dem_mwd_io*dem_tableA_24/(dem_tableA_21 + dem_tableA_23 + dem_tableA_24 + dem_tableA_25)} !METROPOLITAN WDSC
+define rem_Dem_25 {value rem_dem_mwd_io*dem_tableA_25/(dem_tableA_21 + dem_tableA_23 + dem_tableA_24 + dem_tableA_25)} !METROPOLITAN WDSC
+
+
+define dem_d27_pmi_gp {
+	case HighDeliveries {
+		condition	swp_perdel > 0.7
+		value		0.
+	}
+	case LowDeliveries {
+		condition range(month,apr,dec)
+		value  rem_dem_21*dem_D27_PMI_100/remainTA_21_100
+	}
+	case PrevLowDeliveries {
+		condition swp_perdeldv(-month+3) < 0.7
+		value  rem_dem_21*dem_D27_PMI_100/remainTA_21_100
+	}
+	case otherwise {
+		condition always
+		value 0.
+	}
+}
+define dem_d885_pmi_gp {
+	case HighDeliveries {
+		condition	swp_perdel > 0.7
+		value		0.
+	}
+	case LowDeliveries {
+		condition range(month,apr,dec)
+		value  rem_dem_23*dem_D885_PMI_100/remainTA_23_100
+	}
+	case PrevLowDeliveries {
+		condition swp_perdeldv(-month+3) < 0.7
+		value  rem_dem_23*dem_D885_PMI_100/remainTA_23_100
+	}
+	case otherwise {
+		condition always
+		value 0.
+	}
+}
+define dem_d895_pmi_gp {
+	case HighDeliveries {
+		condition	swp_perdel > 0.7
+		value		0.
+	}
+	case LowDeliveries {
+		condition range(month,apr,dec)
+		value  rem_dem_24*dem_D895_PMI_100/remainTA_24_100
+	}
+	case PrevLowDeliveries {
+		condition swp_perdeldv(-month+3) < 0.7
+		value  rem_dem_24*dem_D895_PMI_100/remainTA_24_100
+	}
+	case otherwise {
+		condition always
+		value 0.
+	}
+}
+define dem_d899_pmi_gp {
+	case HighDeliveries {
+		condition	swp_perdel > 0.7
+		value		0.
+	}
+	case LowDeliveries {
+		condition range(month,apr,dec)
+		value  rem_dem_25*dem_D899_PMI_100/remainTA_25_100
+	}
+	case PrevLowDeliveries {
+		condition swp_perdeldv(-month+3) < 0.7
+		value  rem_dem_25*dem_D899_PMI_100/remainTA_25_100
+	}
+	case otherwise {
+		condition always
+		value 0.
+	}
+}
+
+goal maxD27PMIfmp   {D27_PMI_fmp   < dem_d27_pmi_gp*taf_cfs}
+goal maxD885PMIfmp  {D885_PMI_fmp  < dem_d885_pmi_gp*taf_cfs}
+goal maxD895PMIfmp  {D895_PMI_fmp  < dem_d895_pmi_gp*taf_cfs}
+goal maxD899PMIfmp  {D899_PMI_fmp  < dem_d899_pmi_gp*taf_cfs}
+
+!Output for analysis
+define dem_D27PMI100   {alias dem_D27_PMI_100 kind 'demand' units 'taf'}
+define dem_D885PMI100  {alias dem_D885_PMI_100 kind 'demand' units 'taf'}
+define dem_D895PMI100  {alias dem_D895_PMI_100 kind 'demand' units 'taf'}
+define dem_D899PMI100  {alias dem_D899_PMI_100 kind 'demand' units 'taf'}
+
+define dem_D27PMIGP   {alias dem_D27_PMI_GP kind 'demand' units 'taf'}
+define dem_D885PMIGP  {alias dem_D885_PMI_GP kind 'demand' units 'taf'}
+define dem_D895PMIGP  {alias dem_D895_PMI_GP kind 'demand' units 'taf'}
+define dem_D899PMIGP  {alias dem_D899_PMI_GP kind 'demand' units 'taf'}
+
+

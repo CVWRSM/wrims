@@ -1,0 +1,34 @@
+! SJR_Rest_VAMPDO.wresl
+
+! For the VAMP_AND_DO cycle, releases have already been set in previous cycles.
+! In this cycle, April and May are treated as if the whole month operates under
+! the VAMP period criteria.  In June-Sept, each month is treated normally.
+
+! In April, the release must be computed as the combination of the April 15 and 
+! April 16-30 restoration flow releases.  In May-Sept, restoration release req'ts
+! do not change through the month, so they are set as the normal monthly release.
+
+
+define SJRR_rel {
+        case JunToMar {
+                condition range(month,jun,mar)
+                value SJRR_relDV[SJRBASE] }
+        case AprilMay {
+                condition always
+                value SJRR_relDV[SJR_PULSE]}
+}
+define SJRR_relDV {alias SJRR_rel kind 'flow-min-requirement' units 'cfs'}
+
+! restrict the release from Friant to be the restoration release target
+! this value includes Gravelly Ford diversions and losses.  Set the segment
+! of flow below Gravelly Ford as the actual restoration flow - this will be
+! passed on to the restoration channel in SJR_Restrict.wresl
+goal boundC18main { C18m < SJRR_rel  }
+define SJRR_L605 {value max(0., min(SJRR_rel - C18_min*taf_cfs, 0.05*(SJRR_rel - C18_min*taf_cfs) + 95.))}
+goal setC603_mainSJRR {C603_mainSJRR < max(0.,SJRR_rel - C18_min*taf_cfs - SJRR_L605)}
+!goal setC603_mainSJRR {C603_mainSJRR < SJRR_rel - D603 - L603}
+!goal setC605C {C605C = C603_mainsjrr}
+
+goal set_D603 { D603 < 0.4 * min(SJRR_rel, C18_min * taf_cfs) }
+goal set_L603 { L603 = min(SJRR_rel, C18_min * taf_cfs) - D603 }
+goal lim_I18_rest_bal {I18_rest_bal < max(0., SJRR_rel - SJRR_mon - max(0., (SJRR_mon - I18 - (sio_fwua(-1)-s18level1-S17level1)*taf_cfs)*30./16. ))}

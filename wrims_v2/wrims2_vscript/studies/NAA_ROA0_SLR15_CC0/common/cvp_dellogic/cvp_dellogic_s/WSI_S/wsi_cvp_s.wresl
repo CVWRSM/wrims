@@ -1,0 +1,24 @@
+! Rich Juricich & Ajay Dev 10/19/1999
+
+! wsi_cvp_s
+! edited by Edward Chang to conform to CALSIM cycles 4/27/99
+
+! ********************************* DEFINES *******************************************
+/*
+ The Water Supply Index (WSI) for the CVP SOD is the sum of the beginning of months storages
+ (BOM) for Trinity Lake (S1), Shasta Lake (S4), Folsom Lake (S8), and CVP-San Luis Reservoir
+ (S11), and the Forecast of Runoff for the American and Sacramento River.
+*/
+
+! Water Supply Index for Central Valley Project = Previous month storage plus forecast inflow
+define WSI_CVP_s {
+    case MartoMay {
+           condition  month >= MAR .and. month <= MAY
+           value      WSI_CVP_sys                          ! The WSI for the south is the same as that for the system     
+               }
+    case JuntoFeb {
+           condition  always
+           value      0 }
+               }
+
+define WSI_CVP_sdv {alias WSI_CVP_s kind 'water-supply-index' units 'taf'}               

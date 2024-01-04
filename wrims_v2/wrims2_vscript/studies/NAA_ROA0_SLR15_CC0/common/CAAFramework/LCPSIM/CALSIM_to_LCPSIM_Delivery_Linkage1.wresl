@@ -1,0 +1,82 @@
+define SB_PMI_DEL_SWP { lower unbounded upper unbounded kind 'Delivery-LCPSIM' units 'CFS'}
+goal set_SB_PMI_DEL_SWP { SB_PMI_DEL_SWP =
+! SB_PMI_DEL_SWP:
+! Diverter: Alameda Co. F.C.&W.C.D., Zone 7
+D810_PCO
++ D810_PMI ! Includes PCO amount
++ D813_PCO
++ D813_PMI ! Includes PCO amount
+! Diverter: Alameda County W.D.
++ D814_PCO
++ D814_PMI ! Includes PCO amount
+! Diverter: Santa Clara Valley W.D.
++ D815_PCO
++ D815_PMI ! Includes PCO amount
+}
+define SB_PMI_DEL_CVP { lower unbounded upper unbounded kind 'Delivery-LCPSIM' units 'CFS'}
+goal set_SB_PMI_DEL_CVP { SB_PMI_DEL_CVP =
+! SB_PMI_DEL_CVP:
+! Diverter: Antioch, City of
+D406B ! Only when Chloride level is less than 150 mg/l
+! Diverter: Contra Costa W.D.
+!+ D168B_ccwd ! Not currently used - check assumption
++ D420 ! Delivery to service area from LV and Delta diversion locations (D408 and D168B_ccwd)
+! Diverter: East Bay M.U.D.
+!+ D168B_ebmud ! EBMUDSIM simultion result - Check if already included in LCPSIM inputs
+! Diverter: Santa Clara Valley W.D.
++ D710_PAG * 0.442 ! Ag Use included in LCPSIM as well since unused Ag may go to meet M&I needs in some cases
++ D711_PMI * 0.935
+}
+define SC_PMI_DEL_SWP { lower unbounded upper unbounded kind 'Delivery-LCPSIM' units 'CFS'}
+goal set_SC_PMI_DEL_SWP { SC_PMI_DEL_SWP =
+! SC_PMI_DEL_SWP:
+! Diverter: ** Adjustment for EWA source shifting
+D885_SS_EWA ! EWA - Source Shift delivery adjustment
++ D895_SS_EWA ! EWA - Source Shift delivery adjustment
++ D899_SS_EWA ! EWA - Source Shift delivery adjustment
+! Diverter: Castaic Lake W.A.
++ D896_PCO
++ D896_PMI ! Includes PCO amount
+! Diverter: Metropolitan W.D.S.C.
++ D27_PCO
++ D27_PMI ! Includes PCO amount
++ D885_PCO
++ D885_PMI ! Includes PCO amount
++ D895_PCO
++ D895_PMI ! Includes PCO amount
++ D899_PCO
++ D899_PMI ! Includes PCO amount
+! Diverter: San Bernardino Valley M.W.D.
++ D886_PCO
++ D886_PMI ! Includes PCO amount
+! Diverter: San Gabriel Valley M.W.D.
++ D887_PCO
++ D887_PMI ! Includes PCO amount
+! Diverter: San Gorgonio Pass W.A.
++ D888_PCO
++ D888_PMI ! Includes PCO amount
+! Diverter: Ventura County F.C.D.
++ D28_PCO
++ D28_PMI ! Includes PCO amount
++ D29_PCO
++ D29_PMI ! Includes PCO amount
+}
+define SB_PIN_DEL { lower unbounded upper unbounded kind 'Delivery-LCPSIM' units 'CFS'}
+goal set_SB_PIN_DEL { SB_PIN_DEL =
+! SB_PIN_DEL:
+! Diverter: Alameda Co. F.C.&W.C.D., Zone 7
+D810_PIN
+! Diverter: Alameda County W.D.
++ D814_PIN
+! Diverter: Santa Clara Valley W.D.
++ D815_PIN
+}
+define SC_PIN_DEL { lower unbounded upper unbounded kind 'Delivery-LCPSIM' units 'CFS'}
+goal set_SC_PIN_DEL { SC_PIN_DEL =
+! SC_PIN_DEL:
+! Diverter: Metropolitan W.D.S.C.
+D27_PIN
++ D885_PIN
++ D895_PIN
++ D899_PIN
+}

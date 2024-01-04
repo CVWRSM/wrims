@@ -1,0 +1,43 @@
+SEQUENCE CYCLE1 {
+    model   first
+    order   1
+    }
+
+MODEL inC2 { 
+
+
+  define S2 {value 9}
+  
+}	
+	
+MODEL iNc { 
+
+  include 'x.wresl' ! t svar 
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  include model inC2
+  define S3 {value 9}
+  
+}
+	
+MODEL first { 
+
+  define S1 {value 8}
+  include model inC
+  define b { std kind 'FLOW-CHANNEL' units 'CFS'}
+  include 'a.wresl'
+  define c { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  
+  goal g1 { x+y+a+b+c < 100 + S3 }
+  
+  
+  Objective obj = {[x, 5] [y, 5] }
+  Objective TTT {
+	weight 6
+	deviationPenalty 0.1
+	variable a b c
+  }
+  
+}
+
+

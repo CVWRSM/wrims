@@ -1,0 +1,56 @@
+! deliver_mok.wresl
+
+! Author unknown
+! Date Unknown
+! Determines percent deliveries and reduced demands along the Mokelumne River.
+
+
+
+!##########################################################################################
+
+! Pre-operation of Mokelumne Diversions
+
+! Riparian diversions upstream of flow requirement
+define D_MOK050_60N_NA5_SV  {value 0.} ! timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+
+! Riparian diversions downstream of flow requirement
+define D_MOK034_60N_NA5_SV  {value 0.} ! timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+
+! Jackson Valley Irrigation District
+define D_PARDE_AMADR_SV     {value 0.} ! timeseries  kind 'DIVERSION' units 'TAF' convert 'CFS'}
+
+! EBMUD
+define D_PARDE_EBA000_SV     {value 0.} ! timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+
+! North San Joaquin Water Conservation District
+define D_MOK050_60N_NA3_SV  {value 0.} ! timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+
+! Woodbridge Irrigation District
+define D_MOK035_60N_NA4_SV  {value 0.} ! timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+
+! Woodbridge Irrigation District sale to City of Stockton
+define D_MOK035_WTPDWS_SV   {value 0.} ! timeseries kind 'DIVERSION' units 'TAF' convert 'CFS'}
+
+! Restrict diversions to pre-operated values
+goal setD_MOK050_60N_NA5    {D_MOK050_60N_NA5 < D_MOK050_60N_NA5_SV }
+goal setD_MOK034_60N_NA5    {D_MOK034_60N_NA5 < D_MOK034_60N_NA5_SV }
+goal setD_D_PARDE_AMADR     {D_PARDE_AMADR < D_PARDE_AMADR_SV }
+goal setD_PARDE_EBA000      {D_PARDE_EBA000 < D_PARDE_EBA000_SV }
+goal setD_MOK050_60N_NA3    {D_MOK050_60N_NA3 < D_MOK050_60N_NA3_SV }
+goal setD_MOK035_60N_NA4    {D_MOK035_60N_NA4 < D_MOK035_60N_NA4_SV }
+goal setD_MOK035_WTPDWS {D_MOK035_WTPDWS < D_MOK035_WTPDWS_SV }
+
+! Minimum Mokulumne Instream Flow Requirements
+define minflow_C_CMCHE      {select minflow from minflow_EastSide where C_arc=91,wateryear=wyt_SJR,month=month}
+define minflow_C_MOK050     {select minflow from minflow_EastSide where C_arc=502,wateryear=wyt_SJR,month=month}
+define minflow_C_MOK035     {select minflow from minflow_EastSide where C_arc=503,wateryear=wyt_SJR,month=month}
+
+! Ensure that wildlife and fish minimum flow requirements will be met
+goal maxC_CMCHE_MIF     {C_CMCHE_MIF < minflow_C_CMCHE*taf_cfs  }
+goal maxC_MOK050_MIF    {C_MOK050_MIF < minflow_C_MOK050*taf_cfs }
+goal maxC_MOK035_MIF    {C_MOK035_MIF < minflow_C_MOK035*taf_cfs }
+
+
+
+
+

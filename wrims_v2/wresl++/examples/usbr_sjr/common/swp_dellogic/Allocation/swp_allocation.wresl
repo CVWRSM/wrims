@@ -1,0 +1,62 @@
+! R WILBUR 3/7/07
+
+define swp_allocation {std kind 'swp-delivery' UNITS 'TAF'}
+define SWP_Delivery {STD KIND 'DELIVERY' UNITS 'TAF'}
+define S6_Dec {STD KIND 'STORAGE' UNITS 'TAF'} ! S6 is CalSim-II name for Oroville Reservoir
+
+define max_tableA  {select Total from TableA where Factor=1}
+define tableA_loss {select LOSS  from TableA where Factor=1}
+define SWP_TableA  {value max_tableA - tableA_loss}
+
+! Get annual delivery from allocation model
+define cam_swpdel {
+  case JantoJun {
+    condition  month >=JAN .and. month <=may
+    value      SWP_Delivery[ALLOCATION] + 64.5 + max(S6_Dec[ALLOCATION]-55.,0.)}
+  case start {
+    condition  wateryear==1922 .and. month==oct
+    value      0.}
+  case otherwise {
+    condition  always
+    value      0.}
+}
+define cam_swpdel_dv {alias cam_swpdel kind 'swp-delivery' units 'TAF'}
+
+! Cannot exceed Table A:
+define swp_allocation_1 {value min(max_tableA,cam_swpdel)}
+
+! This implements the no reduction rule for april to december
+define swp_allocation_final {
+  case JanToApr {
+    condition  month >= JAN .and. month <= APR
+    value      swp_allocation_1}
+  /*case PA {
+    condition  month==oct
+    value      4216.}*/
+  case start {
+    condition  wateryear==1922 .and. month==oct
+    value      max_tableA*0.5}
+  case MayToDec {
+    condition  always
+    value      max(swp_allocation(-1), swp_allocation_1)}
+}
+goal setswp_allocation {swp_allocation = swp_allocation_final}
+
+!Percent delivery
+define swp_perdel {value (swp_allocation_final-tableA_loss)/SWP_TableA}
+define swp_perdeldv {alias swp_perdel kind 'swp-delivery' units 'none'}
+define perdel_swp_int  {value 1.0}
+
+!Select demand profile based on percent allocation:
+define swp_demprofile {case p30  {condition swp_perdel < 0.40 value   30}
+                       case p50  {condition swp_perdel < 0.65 value   50}
+                       case p100 {condition always            value  100}}
+define swp_percent {alias swp_demprofile kind 'swp-delivery' units 'none'}
+
+!temp variables:
+define perdel_swp_ag1  {value swp_perdel}
+define perdel_swp_mwd1 {value swp_perdel}
+define perdel_swp_oth1 {value swp_perdel}
+define perdv_swp_ag1 {std kind 'PERCENT-DELIVERY' units 'none'}
+goal setperdv_swp_ag1 {perdv_swp_ag1 = perdel_swp_ag1}
+define perdv_swp_mwd1 {alias perdel_swp_mwd1 kind 'PERCENT-DELIVERY' units 'none'}

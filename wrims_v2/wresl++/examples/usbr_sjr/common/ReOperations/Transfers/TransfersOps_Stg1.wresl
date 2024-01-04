@@ -1,0 +1,149 @@
+! TransferOps_Stg1.wresl
+! This file operates Stage 1 Transfers
+
+!******************************************************************************
+! This section establishes the accounting of transfers backed up in system storage.
+! Initial cycle results signal if there has been a flood control release.
+! From this information we can determine how much backed up storage may have spilled.
+! Accounts for transfer water to back up into Shasta and Oroville are defined in TransfersCore.wresl
+
+! Shasta Backed Up Transfer Water
+define SP4_WTS_Stg1 {
+    case Oct1922 {
+        condition   month==OCT .and. wateryear==1922
+        value       0.0 }
+    case spill {
+        condition   S4_WTSBase + .5 > S4level5
+!        value       min(S4_WTS_Stg1(-1),max(0.,S4_WTSBase-S4(-1))) }
+        value       min(S4_WTS(-1),max(0.,S4_WTSBase-S4(-1))) }
+    case other {
+        condition   always
+        value       0. }
+}
+define SP4_WTS_Stg1dv {alias SP4_WTS_Stg1 kind 'VOLUME-SPILL' units 'TAF'}
+!goal set_S4_WTS_Stg1 {S4_WTS_Stg1 = S4_WTS_Stg1(-1) + I4_WTS_Stg1*cfs_taf - C5_WTS_Stg1*cfs_taf - SP4_WTS_Stg1 }
+goal set_S4_WTS_Stg1 {S4_WTS_Stg1 = S4_WTS(-1) + I4_WTS_Stg1*cfs_taf - C5_WTS_Stg1*cfs_taf - SP4_WTS_Stg1 }
+
+! Oroville Backed Up Transfer Water
+define SP6_WTS_Stg1 {
+    case Oct1922 {
+        condition   month==OCT .and. int(wateryear)==1922
+        value       0.0 }
+    case spill {
+        condition   S6_WTSBase + .5 > S6level5
+ !       value       min(S6_WTS_Stg1(-1),max(0.,S6_WTSBase-S6(-1))) }
+        value       min(S6_WTS(-1),max(0.,S6_WTSBase-S6(-1))) }
+    case other {
+        condition   always
+        value       0. }
+}
+define SP6_WTS_Stg1dv {alias SP6_WTS_Stg1 kind 'VOLUME-SPILL' units 'TAF'}
+!goal set_S6_WTS_Stg1 {S6_WTS_Stg1 = S6_WTS_Stg1(-1) + I6_WTS_Stg1*cfs_taf - C6_WTS_Stg1*cfs_taf - SP6_WTS_Stg1 }
+goal set_S6_WTS_Stg1 {S6_WTS_Stg1 = S6_WTS(-1) + I6_WTS_Stg1*cfs_taf - C6_WTS_Stg1*cfs_taf - SP6_WTS_Stg1 }
+
+!******************************************************************************
+! Measure the amount of transfer water that is backed up into System storage
+! These terms are used in the COA and related files to keep the books straight
+
+! Shasta
+! An integer determines if Shasta release changes from the previous cycle.  An increase
+! in release will be due to release of backed up transfer water.  A decrease will be due to
+! backing up transfer water that can't be exported. The system will do one or the
+! other or neither, but not both.
+goal C5_WTS_Stg1_change {I4_WTS_Stg1 - C5_WTS_Stg1 = C5_WTSBase - C5}
+
+! I4_WTS is the amount of this month's transfer that backs up into Shasta.  This
+! quantity is ADDED to the C5_m term in the coa definition for Shasta storage
+! change (SHADS).  This term is zeroed in previous cycles and fixed in subsequent
+!`cycles.
+goal I4_WTS_Stg1_force {I4_WTS_Stg1 < int_C5_WTS_Stg1 * 99999.}         ! if int=0, I4_WTS=0, C5_WTS=pos
+
+! C5_WTS is release of transfer water that was backed up previously.  Any increase in
+! Shasta release over the previous cycle is due to these releases.
+goal C5_WTS_Stg1_force {C5_WTS_Stg1 < 99999. - int_C5_WTS_Stg1 * 99999.}! if int=1, I4_WTS=pos, C5_WTS=0
+
+!this is a necessary subset of the previous set_S4_WTS goal to remove the I4_WTS component
+goal limit_C5_WTS_Stg1 {C5_WTS_Stg1 < (S4_WTS_Stg1(-1) - SP4_WTS_Stg1)*taf_cfs}
+
+! Feather and Yuba Basin Transfer
+! These two transfer sources are combined since both can end up backed up into Oroville
+! system storage
+! See comments above on integer designation of release increase or decrease.
+goal C6_WTS_Stg1_change {I6_WTS_Stg1 - C6_WTS_Stg1 = C6_WTSBase - C6}
+
+! I6_WTS is the amount of this month's transfer that backs up into Oroville.
+goal I6_WTS_Stg1_force {I6_WTS_Stg1 < int_C6WTS_Stg1 * 99999.}         ! if int=0, I6_WTS=0, C6_WTS=pos
+
+! C6_WTS is release of backed up transfer water.
+goal C6_WTS_Stg1_force {C6_WTS_Stg1 < 99999. - int_C6WTS_Stg1 * 99999.}! if int=1, I6_WTS=pos, C6_WTS=0
+
+!this is a necessary subset of the previous set_S6_WTS goal to remove the I6_WTS component
+goal limit_C6_WTS_Stg1 {C6_WTS_Stg1 < (S6_WTS_Stg1(-1) - SP6_WTS_Stg1)*taf_cfs}
+
+!******************************************************************************
+! Bound storage reop(fill) for Stage1 - this is done in an aggregate sense which allows the
+! underlying storage and other programs to have more operational flexibility
+goal lmtStg1StorFill {I4_WTS_Stg1 + I6_WTS_Stg1
+            < WTS_Yuba_Stg1 + WTS_DSA12_Stg1 + WTS_DSA15_Stg1 + WTS_DSA69_Stg1 + WTS_DSA70_Stg1}
+
+!******************************************************************************
+! COA Adjustment
+!goal set_C203_WTS {C203_WTS = C203 - C203_WTSBase}     !This does not make sense
+!goal lmt_C203_WTS_Stg1 {C203_WTS_Stg1 = WTS_DSA69_Stg1 + C6_WTS_Stg1 - I6_WTS_Stg1}     !This does not make sense
+goal lmt_C203_WTS_Stg1 {C203_WTS_Stg1 = C6_WTS_Stg1} !this means there is no difference in adjustment to COA equation and release of WTS from storage for stage 1 - all other effects of diversion change shows up in C203_m
+
+!******************************************************************************
+! Do exports of transfers:
+
+! This is the grand continuity equation that keeps the entire Transfer structure together
+! WTS_DSA12 is the Sacramento Basin Transfer water acquired this month
+! WTS_DSA69 is the Feather Basin Transfer water acquired this month
+! D418_WTS and D419_WTS are the exports of Transfers
+! C407_WTS is the Carriage Water cost of Exporting Transfered water
+! Refer to above for the other terms not mentioned
+goal Transfer_Cont_Stg1 {WTS_Yuba_Stg1 + WTS_DSA12_Stg1 + WTS_DSA15_Stg1 + WTS_DSA69_Stg1 + WTS_DSA70_Stg1
+                       + C5_WTS_Stg1 + C6_WTS_Stg1 + SP4_WTS_Stg1*taf_cfs + SP6_WTS_Stg1*taf_cfs
+                       = I4_WTS_Stg1 + I6_WTS_Stg1 + D418_WTS_Stg1 + D419_WTS_Stg1 + C407_WTS_Stg1
+               + WTS_Spill_Stg1
+                       + WTS_Bal_Err_stg1}
+! Spill
+goal zero_Spill_Stg1 {WTS_Spill_stg1 = 0.}  !No Spill defined
+
+! ERROR
+goal zero_BalanceError1 {
+    lhs WTS_Bal_Err_stg1
+    rhs 0.
+    lhs>rhs penalty 99999}
+
+! This is the second grand continuity equation that checks to allow the cost of the first
+! Don't pay if over 35% CW cost - if no pay, then no export
+goal CWcost_Check_Stg1 {
+    lhs C407_WTS_Stg1
+    rhs .35*WTS_Yuba_Stg1
+      + .35*WTS_DSA12_Stg1 + .35*WTS_DSA15_Stg1 + .35*C5_WTS_Stg1 - .35*I4_WTS_Stg1
+      + .35*WTS_DSA69_Stg1 + .35*WTS_DSA70_Stg1 + .35*C6_WTS_Stg1 - .35*I6_WTS_Stg1
+    lhs<rhs penalty 0
+    lhs>rhs penalty 1285}
+
+!******************************************************************************
+! Control which export capacity is used for what
+goal Transfer_Tracy {
+    lhs D418_WTS_Stg1
+    rhs max(CVP_Targ-CVP_Stg1_Met,0.)*taf_cfs
+    lhs>rhs penalty 1000
+    lhs<rhs penalty 0
+}
+goal Transfer_Banks {
+    lhs D419_WTS_Stg1
+    rhs max(SWP_Targ-SWP_Stg1_Met,0.)*taf_cfs
+    lhs>rhs penalty 1000
+    lhs<rhs penalty 0
+}
+
+! Try to balance the two
+goal balanceTransfers {
+    lhs    D418_WTS_Stg1
+    rhs D419_WTS_Stg1
+    lhs>rhs penalty 0
+    lhs<rhs penalty 20  !Preference Tracy PP just because it has more frequent capacity limitations
+}

@@ -1,0 +1,194 @@
+/*
+SEEPAGE ARCS
+
+The sign of GetSeep is with respect to groundwater; i.e.
+
+  positive seepage (GetSeep) = loosing stream
+  negative seepage (GetSeep) = gaining stream
+
+When multiplied by -1, it reflects stream's perspective.  
+
+Original formulation _ AJD, jtpayne July 2006
+updated _ Can Dogrul June 2007
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! California Aqueduct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
+
+! goal setSG_CAA005_multi     {SG_CAA005_multi    =  SG_CAA005_multi[sjrbase] }
+goal setSG_CAA005_589       {SG_CAA005_589      =  SG_CAA005_589[sjrbase] }
+goal setSG_CAA005_602       {SG_CAA005_602      =  SG_CAA005_602[sjrbase] }
+! goal setSG_CAA051_multi     {SG_CAA051_multi    =  SG_CAA051_multi[sjrbase] }
+goal setSG_CAA051_608       {SG_CAA051_608      =  SG_CAA051_608[sjrbase] }
+goal setSG_CAA051_609       {SG_CAA051_609      =  SG_CAA051_609[sjrbase] }
+goal setSG_CAA051_611       {SG_CAA051_611      =  SG_CAA051_611[sjrbase] }
+goal setSG_CAA051_613       {SG_CAA051_613      =  SG_CAA051_613[sjrbase] }
+goal setSG_CAA051_631       {SG_CAA051_631      =  SG_CAA051_631[sjrbase] }
+goal setSG_CAA051_647       {SG_CAA051_647      =  SG_CAA051_647[sjrbase] }
+goal setSG_CAA051_658       {SG_CAA051_658      =  SG_CAA051_658[sjrbase] }
+goal setSG_CAA051_669       {SG_CAA051_669      =  SG_CAA051_669[sjrbase] }
+goal setSG_CAA051_680       {SG_CAA051_680      =  SG_CAA051_680[sjrbase] }
+goal setSG_CAA051_681       {SG_CAA051_681      =  SG_CAA051_681[sjrbase] }
+! goal setSG_CAA067_multi     {SG_CAA067_multi    =  SG_CAA067_multi[sjrbase] }
+goal setSG_CAA067_711       {SG_CAA067_711      =  SG_CAA067_711[sjrbase] }
+goal setSG_CAA067_723       {SG_CAA067_723      =  SG_CAA067_723[sjrbase] }
+goal setSG_CAA067_758       {SG_CAA067_758      =  SG_CAA067_758[sjrbase] }
+goal setSG_CAA067_763       {SG_CAA067_763      =  SG_CAA067_763[sjrbase] }
+! goal setSG_CAA087_multi     {SG_CAA087_multi    =  SG_CAA087_multi[sjrbase] }
+goal setSG_CAA087_764       {SG_CAA087_764      =  SG_CAA087_764[sjrbase] }
+goal setSG_CAA087_780       {SG_CAA087_780      =  SG_CAA087_780[sjrbase] }
+goal setSG_CAA087_793       {SG_CAA087_793      =  SG_CAA087_793[sjrbase] }
+! goal setSG_CAA109_multi     {SG_CAA109_multi    =  SG_CAA109_multi[sjrbase] }
+goal setSG_CAA109_814       {SG_CAA109_814      =  SG_CAA109_814[sjrbase] }
+goal setSG_CAA109_839       {SG_CAA109_839      =  SG_CAA109_839[sjrbase] }
+goal setSG_CAA109_854       {SG_CAA109_854      =  SG_CAA109_854[sjrbase] }
+goal setSG_CAA109_862       {SG_CAA109_862      =  SG_CAA109_862[sjrbase] }
+! goal setSG_CAA143_multi     {SG_CAA143_multi    =  SG_CAA143_multi[sjrbase] }
+goal setSG_CAA143_866       {SG_CAA143_866      =  SG_CAA143_866[sjrbase] }
+goal setSG_CAA143_869       {SG_CAA143_869      =  SG_CAA143_869[sjrbase] }
+goal setSG_CAA143_883       {SG_CAA143_883      =  SG_CAA143_883[sjrbase] }
+goal setSG_CAA143_888       {SG_CAA143_888      =  SG_CAA143_888[sjrbase] }
+goal setSG_CAA143_903       {SG_CAA143_903      =  SG_CAA143_903[sjrbase] }
+goal setSG_CAA143_920       {SG_CAA143_920      =  SG_CAA143_920[sjrbase] }
+goal setSG_CAA143_968       {SG_CAA143_968      =  SG_CAA143_968[sjrbase] }
+goal setSG_CAA143_846       {SG_CAA143_846      =  SG_CAA143_846[sjrbase] }
+goal setSG_CAA143_954       {SG_CAA143_954      =  SG_CAA143_954[sjrbase] }
+goal setSG_CAA143_961       {SG_CAA143_961      =  SG_CAA143_961[sjrbase] }
+! goal setSG_CAA155_multi     {SG_CAA155_multi    =  SG_CAA155_multi[sjrbase] }
+goal setSG_CAA155_977       {SG_CAA155_977      =  SG_CAA155_977[sjrbase] }
+goal setSG_CAA155_990       {SG_CAA155_990      =  SG_CAA155_990[sjrbase] }
+goal setSG_CAA155_1009      {SG_CAA155_1009     =  SG_CAA155_1009[sjrbase] }
+! goal setSG_CAA172_multi     {SG_CAA172_multi    =  SG_CAA172_multi[sjrbase] }
+goal setSG_CAA172_1020      {SG_CAA172_1020     =  SG_CAA172_1020[sjrbase] }
+goal setSG_CAA172_1038      {SG_CAA172_1038     =  SG_CAA172_1038[sjrbase] }
+goal setSG_CAA172_1053      {SG_CAA172_1053     =  SG_CAA172_1053[sjrbase] }
+goal setSG_CAA172_1062      {SG_CAA172_1062     =  SG_CAA172_1062[sjrbase] }
+!goal setSG_CAA173_1113     {SG_CAA173_1113     =  SG_CAA173_1113[sjrbase] }
+!goal setSG_CAA185_multi    {SG_CAA185_multi    =  SG_CAA185_multi[sjrbase] }
+!goal setSG_CAA197_multi    {SG_CAA197_multi    =  SG_CAA197_multi[sjrbase] }
+!goal setSG_CAA210_multi    {SG_CAA210_multi    =  SG_CAA210_multi[sjrbase] }
+!goal setSG_CAA218_multi    {SG_CAA218_multi    =  SG_CAA218_multi[sjrbase] }
+!goal setSG_CAA230_multi    {SG_CAA230_multi    =  SG_CAA230_multi[sjrbase] }
+!goal setSG_CAA238_multi    {SG_CAA238_multi    =  SG_CAA238_multi[sjrbase] }
+!goal setSG_CAA249_multi    {SG_CAA249_multi    =  SG_CAA249_multi[sjrbase] }
+!goal setSG_CAA262_multi    {SG_CAA262_multi    =  SG_CAA262_multi[sjrbase] }
+!goal setSG_CAA271_multi    {SG_CAA271_multi    =  SG_CAA271_multi[sjrbase] }
+!goal setSG_CAA277_multi    {SG_CAA277_multi    =  SG_CAA277_multi[sjrbase] }
+!goal setSG_CAA280_multi    {SG_CAA280_multi    =  SG_CAA280_multi[sjrbase] }
+!goal setSG_CAA293_multi    {SG_CAA293_multi    =  SG_CAA293_multi[sjrbase] }
+!goal setSG_CAA299_multi    {SG_CAA299_multi    =  SG_CAA299_multi[sjrbase] }
+!goal setSG_CAA304_multi    {SG_CAA304_multi    =  SG_CAA304_multi[sjrbase] }
+!goal setSG_CAA306_multi    {SG_CAA306_multi    =  SG_CAA306_multi[sjrbase] }
+!goal setSG_CAA324_multi    {SG_CAA324_multi    =  SG_CAA324_multi[sjrbase] }
+!goal setSG_CAA337_multi    {SG_CAA337_multi    =  SG_CAA337_multi[sjrbase] }
+!goal setSG_CAA348_multi    {SG_CAA348_multi    =  SG_CAA348_multi[sjrbase] }
+!goal setSG_CAA355_multi    {SG_CAA355_multi    =  SG_CAA355_multi[sjrbase] }
+!goal setSG_CAA360_multi    {SG_CAA360_multi    =  SG_CAA360_multi[sjrbase] }
+!goal setSG_CAA403_multi    {SG_CAA403_multi    =  SG_CAA403_multi[sjrbase] }
+!goal setSG_CAA406_multi    {SG_CAA406_multi    =  SG_CAA406_multi[sjrbase] }
+!goal setSG_CAA408_multi    {SG_CAA408_multi    =  SG_CAA408_multi[sjrbase] }
+!goal setSG_CAA411_multi    {SG_CAA411_multi    =  SG_CAA411_multi[sjrbase] }
+!goal setSG_CAA413_multi    {SG_CAA413_multi    =  SG_CAA413_multi[sjrbase] }
+!goal setSG_CAA425_multi    {SG_CAA425_multi    =  SG_CAA425_multi[sjrbase] }
+!goal setSG_CAA440_multi    {SG_CAA440_multi    =  SG_CAA440_multi[sjrbase] }
+
+goal setCAA005_CAALOS       {D_CAA005_CAALOS    = SG_CAA005_589  + SG_CAA005_602}
+goal setCAA006_CAALOS       {D_CAA006_CAALOS    = 0.0}
+goal setCAA009_CAALOS       {D_CAA009_CAALOS    = 0.0}
+goal setCAA012_CAALOS       {D_CAA012_CAALOS    = 0.0}
+goal setCAA024_CAALOS       {D_CAA024_CAALOS    = 0.0}
+goal setCAA046_CAALOS       {D_CAA046_CAALOS    = 0.0}
+goal setCAA051_CAALOS       {D_CAA051_CAALOS    = SG_CAA051_608  + SG_CAA051_609  + SG_CAA051_611  + SG_CAA051_613  + SG_CAA051_631
+                                                + SG_CAA051_647  + SG_CAA051_658  + SG_CAA051_669  + SG_CAA051_680  + SG_CAA051_681}
+goal setCAA066_CAALOS       {D_CAA066_CAALOS    = 0.0}
+goal setCAA067_CAALOS       {D_CAA067_CAALOS    = SG_CAA067_711  + SG_CAA067_723  + SG_CAA067_758  + SG_CAA067_763}
+goal setCAA069_CAALOS       {D_CAA069_CAALOS    = 0.0}
+goal setCAA071_CAALOS       {D_CAA071_CAALOS    = 0.0}
+goal setCAA087_CAALOS       {D_CAA087_CAALOS    = SG_CAA087_764  + SG_CAA087_780  + SG_CAA087_793}
+goal setCAA095_CAALOS       {D_CAA095_CAALOS    = 0.0}
+goal setCAA109_CAALOS       {D_CAA109_CAALOS    = SG_CAA109_814  + SG_CAA109_839  + SG_CAA109_854  + SG_CAA109_862}
+goal setCAA143_CAALOS       {D_CAA143_CAALOS    = SG_CAA143_846  + SG_CAA143_866  + SG_CAA143_869  + SG_CAA143_883  + SG_CAA143_888
+                                                + SG_CAA143_903  + SG_CAA143_920  + SG_CAA143_954  + SG_CAA143_961  + SG_CAA143_968}
+goal setCAA155_CAALOS       {D_CAA155_CAALOS    = SG_CAA155_977  + SG_CAA155_990  + SG_CAA155_1009}
+goal setCAA156_CAALOS       {D_CAA156_CAALOS    = 0.0}
+goal setCAA165_CAALOS       {D_CAA165_CAALOS    = 0.0}
+goal setCAA172_CAALOS       {D_CAA172_CAALOS    = SG_CAA172_1020 + SG_CAA172_1038 + SG_CAA172_1053 + SG_CAA172_1062}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Delta Mendota Canal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal setSG_DMC003_590       {SG_DMC003_590      =  SG_DMC003_590[sjrbase] }
+goal setSG_DMC007_590       {SG_DMC007_590      =  SG_DMC007_590[sjrbase] }
+! goal setSG_DMC011_multi     {SG_DMC011_multi    =  SG_DMC011_multi[sjrbase] }
+goal setSG_DMC011_602       {SG_DMC011_602      =  SG_DMC011_602[sjrbase] }
+goal setSG_DMC011_608       {SG_DMC011_608      =  SG_DMC011_608[sjrbase] }
+goal setSG_DMC016_609       {SG_DMC016_609      =  SG_DMC016_609[sjrbase] }
+goal setSG_DMC021_611       {SG_DMC021_611      =  SG_DMC021_611[sjrbase] }
+goal setSG_DMC024_614       {SG_DMC024_614      =  SG_DMC024_614[sjrbase] }
+goal setSG_DMC030_631       {SG_DMC030_631      =  SG_DMC030_631[sjrbase] }
+goal setSG_DMC034_647       {SG_DMC034_647      =  SG_DMC034_647[sjrbase] }
+goal setSG_DMC039_658       {SG_DMC039_658      =  SG_DMC039_658[sjrbase] }
+goal setSG_DMC044_669       {SG_DMC044_669      =  SG_DMC044_669[sjrbase] }
+goal setSG_DMC049_680       {SG_DMC049_680      =  SG_DMC049_680[sjrbase] }
+goal setSG_DMC054_692       {SG_DMC054_692      =  SG_DMC054_692[sjrbase] }
+goal setSG_DMC058_711       {SG_DMC058_711      =  SG_DMC058_711[sjrbase] }
+goal setSG_DMC064_723       {SG_DMC064_723      =  SG_DMC064_723[sjrbase] }
+! goal setSG_DMC070_multi     {SG_DMC070_multi    =  SG_DMC070_multi[sjrbase] }
+goal setSG_DMC070_758       {SG_DMC070_758      =  SG_DMC070_758[sjrbase] }
+goal setSG_DMC070_763       {SG_DMC070_763      =  SG_DMC070_763[sjrbase] }
+goal setSG_DMC074_764       {SG_DMC074_764      =  SG_DMC074_764[sjrbase] }
+goal setSG_DMC080_780       {SG_DMC080_780      =  SG_DMC080_780[sjrbase] }
+goal setSG_DMC085_793       {SG_DMC085_793      =  SG_DMC085_793[sjrbase] }
+goal setSG_DMC091_815       {SG_DMC091_815      =  SG_DMC091_815[sjrbase] }
+goal setSG_DMC097_840       {SG_DMC097_840      =  SG_DMC097_840[sjrbase] }
+! goal setSG_DMC105_multi     {SG_DMC105_multi    =  SG_DMC105_multi[sjrbase] }
+goal setSG_DMC105_841       {SG_DMC105_841      =  SG_DMC105_841[sjrbase] }
+goal setSG_DMC105_842       {SG_DMC105_842      =  SG_DMC105_842[sjrbase] }
+goal setSG_DMC111_858       {SG_DMC111_858      =  SG_DMC111_858[sjrbase] }
+goal setSG_DMC116_872       {SG_DMC116_872      =  SG_DMC116_872[sjrbase] }
+
+goal setDMC003_DMCLOS       {D_DMC003_DMCLOS    = SG_DMC003_590}
+goal setDMC007_DMCLOS       {D_DMC007_DMCLOS    = SG_DMC007_590}
+goal setDMC011_DMCLOS       {D_DMC011_DMCLOS    = SG_DMC011_602 + SG_DMC011_608}
+goal setDMC016_DMCLOS       {D_DMC016_DMCLOS    = SG_DMC016_609}
+goal setDMC021_DMCLOS       {D_DMC021_DMCLOS    = SG_DMC021_611}
+goal setDMC024_DMCLOS       {D_DMC024_DMCLOS    = SG_DMC024_614}
+goal setDMC030_DMCLOS       {D_DMC030_DMCLOS    = SG_DMC030_631}
+goal setDMC034_DMCLOS       {D_DMC034_DMCLOS    = SG_DMC034_647}
+goal setDMC039_DMCLOS       {D_DMC039_DMCLOS    = SG_DMC039_658}
+goal setDMC044_DMCLOS       {D_DMC044_DMCLOS    = SG_DMC044_669}
+goal setDMC049_DMCLOS       {D_DMC049_DMCLOS    = SG_DMC049_680}
+goal setDMC054_DMCLOS       {D_DMC054_DMCLOS    = SG_DMC054_692}
+goal setDMC058_DMCLOS       {D_DMC058_DMCLOS    = SG_DMC058_711}
+goal setDMC064_DMCLOS       {D_DMC064_DMCLOS    = SG_DMC064_723}
+goal setDMC070_DMCLOS       {D_DMC070_DMCLOS    = SG_DMC070_758 + SG_DMC070_763}
+goal setDMC074_DMCLOS       {D_DMC074_DMCLOS    = SG_DMC074_764}
+goal setDMC076_DMCLOS       {D_DMC076_DMCLOS    = 0.0}          
+goal setDMC080_DMCLOS       {D_DMC080_DMCLOS    = SG_DMC080_780}
+goal setDMC085_DMCLOS       {D_DMC085_DMCLOS    = SG_DMC085_793}
+goal setDMC091_DMCLOS       {D_DMC091_DMCLOS    = SG_DMC091_815}
+goal setDMC097_DMCLOS       {D_DMC097_DMCLOS    = SG_DMC097_840}
+goal setDMC105_DMCLOS       {D_DMC105_DMCLOS    = SG_DMC105_841 + SG_DMC105_842}
+goal setDMC111_DMCLOS       {D_DMC111_DMCLOS    = SG_DMC111_858}
+goal setDMC116_DMCLOS       {D_DMC116_DMCLOS    = SG_DMC116_872}
+
+goal setMDOTA_LOSS          {D_MDOTA_LOSS       = SG_MDOTA_872}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Fresno Slough    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal setFSL012_892          {SG_FSL012_892 = SG_FSL012_892[sjrbase] }
+goal setFSL005_886          {SG_FSL005_886 = SG_FSL005_886[sjrbase] }
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Orestimba Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setORT014_681          {SG_ORT014_681 = SG_ORT014_681[sjrbase] }
+goal setORT009_682          {SG_ORT009_682 = SG_ORT009_682[sjrbase] }
+
+

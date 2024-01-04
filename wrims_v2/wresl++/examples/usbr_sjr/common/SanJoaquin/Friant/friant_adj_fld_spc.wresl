@@ -1,0 +1,48 @@
+! Friant_adj_fld_spc.wresl
+! MBK (consultants for USBR)
+! 11/21/02
+! Created for the Upper San Joaquin River Basin Storage Investigation Project
+! Adjust required flood space in Millerton based on Mammoth storage
+! Revised by C. Hsu, 02/25/03, USBR, for review and documentation project
+!##############################################################################
+
+! Read flood control storage level (S_MLRTNlevel4) from table
+define S_MLRTNlevel4_ini {
+    select max_storage
+    from Friant_FC_limits
+    where contract_month = contract_month }
+
+! Storage in Mammoth Pool
+define mammoth_storage {timeseries kind 'Storage' units 'TAF'}
+
+! Maximum Storage in Mammoth Pool, value = 120 TAF
+define mam_max_stor { value 120.0 }
+
+! Storage for level 5 is 524 TAF
+define S_MLRTNlevel5 {value 524.}
+
+! Friant flood space requirement is the storage level difference between level 5 and 4
+define Friant_fs_req { value S_MLRTNlevel5 - S_MLRTNlevel4_ini }
+
+
+/*
+Mammoth Pool Credit - if required Friant flood space exceeds 85 TAF, allow for up to 85 TAF of
+the remaining required Friant space to be made available in Mammoth Pool
+*/
+define mam_fc_credit {
+    case mammoth_storage_allowed {
+    condition Friant_fs_req > 85.
+       value max(0.0, min ((mam_max_stor - mammoth_storage), (Friant_fs_req - 85.0))) }
+    case mammoth_storage_not_allowed {
+    condition always
+        value 0. }}
+
+! Redefined amount of flood control space required for Friant
+!define S_MLRTNlevel4 { value S_MLRTNlevel5 - Friant_fs_req  + mam_fc_credit }
+define S_MLRTNlevel4 { value S_MLRTNlevel4_ini  + mam_fc_credit }
+! Storage space for level 4 is the difference between level 4 and 3
+goal S_MLRTNZone4 {S_MLRTN_4 < S_MLRTNlevel4-S_MLRTNlevel3}
+! Storage space for level 5 is the difference between level 5 and 4
+goal S_MLRTNZone5 {S_MLRTN_5 < S_MLRTNlevel5-S_MLRTNlevel4}
+
+

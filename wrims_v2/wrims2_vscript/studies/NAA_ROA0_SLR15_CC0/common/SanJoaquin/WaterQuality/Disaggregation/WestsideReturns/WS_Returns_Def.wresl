@@ -1,0 +1,93 @@
+!Anna Fock  Oct 2003
+/* Westside Returns Definition (Global)
+Disaggregation of one CALSIM Westside Return arc to DSM2-based arcs (Part B prefix, # of arcs)
+CALSIM                DSM2
+Westside Return(R,1)    = Westside Groundwater Returns (GWR,multiple) <--- from SJRIO
+                    + Westside Surface Water Return (SWR,1) <--- from calculation
+
+Lump DSM2-based groundwater arcs to ONE at the corresponding CALSIM Westside return location in DSM2
+CALSIM                DSM2
+Westside Return(R,1)     = Westside Groundwater Return (R_gw,1)
+                    + Westside Surface Water Return (SWR,1)<--- from calculation
+*/
+!***************************Westside Groundwater Returns*****************************
+!Westside returns of pumped groundwater. ID is DSM2 node
+!Source:    2003SJRIO\DWSF.dat (monthly spatial and temporal distribution)
+!        2003SJRIO\HWSF.dat (dry year monthly groundwater pumpage of each township)
+!same monthly flow for every year
+define GWR603 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM77
+define GWR604 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM79
+define GWR605 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM80
+define GWR612 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM87
+define GWR616 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM91
+define GWR617 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM92
+define GWR619 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM94
+define GWR622 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM97
+define GWR623 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM98
+define GWR624 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM100
+define GWR628 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM105
+define GWR631 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM109
+define GWR635 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM113
+define GWR638 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM117
+define GWR640 {timeseries kind 'GWR-FLOW' units 'CFS' }    !RM119
+
+define EC_GWR603 {timeseries kind 'EC-GWR' units 'none' }    !RM77
+define EC_GWR604 {timeseries kind 'EC-GWR' units 'none' }    !RM79
+define EC_GWR605 {timeseries kind 'EC-GWR' units 'none' }    !RM80
+define EC_GWR612 {timeseries kind 'EC-GWR' units 'none' }    !RM87
+define EC_GWR616 {timeseries kind 'EC-GWR' units 'none' }    !RM91
+define EC_GWR617 {timeseries kind 'EC-GWR' units 'none' }    !RM92
+define EC_GWR619 {timeseries kind 'EC-GWR' units 'none' }    !RM94
+define EC_GWR622 {timeseries kind 'EC-GWR' units 'none' }    !RM97
+define EC_GWR623 {timeseries kind 'EC-GWR' units 'none' }    !RM98
+define EC_GWR624 {timeseries kind 'EC-GWR' units 'none' }    !RM100
+define EC_GWR628 {timeseries kind 'EC-GWR' units 'none' }    !RM105
+define EC_GWR631 {timeseries kind 'EC-GWR' units 'none' }    !RM109
+define EC_GWR635 {timeseries kind 'EC-GWR' units 'none' }    !RM113
+define EC_GWR638 {timeseries kind 'EC-GWR' units 'none' }    !RM117
+define EC_GWR640 {timeseries kind 'EC-GWR' units 'none' }    !RM119
+
+!**********************Westside surface water returns************************
+!In DSM2 schematic
+!EC value is assigned here. Flow calculation in Cycle 2, 4, 6, and 7
+define EC_SWR17  { timeseries kind 'EC-SWR' units 'none' }    !DSM2 boundary
+define EC_SWR607 { timeseries kind 'EC-SWR' units 'none' }    !RM83
+define EC_SWR613 { timeseries kind 'EC-SWR' units 'none' }    !RM88
+define EC_SWR622 { timeseries kind 'EC-SWR' units 'none' }    !RM97
+define EC_SWR624 { timeseries kind 'EC-SWR' units 'none' }    !RM99
+define EC_SWR628 { timeseries kind 'EC-SWR' units 'none' }    !RM105
+define EC_SWR631 { timeseries kind 'EC-SWR' units 'none' }    !RM109
+define EC_SWR642 { timeseries kind 'EC-SWR' units 'none' }    !RM121
+define EC_SWR648 { timeseries kind 'EC-SWR' units 'none' }    !RM129.5
+
+!*************************Lumped Groundwater Returns************************
+!In DSM2 schematic:
+!Lumping all Westside groundwater returns to the corresponding surface water return location
+define R_gw17 { value GWR603 }
+define R_gw607 { value GWR604 + GWR605 + GWR612 }
+define R_gw622 { value GWR616 + GWR617 + GWR619 + GWR622 + GWR623 }
+define R_gw624 { value GWR624 }
+define R_gw628 { value GWR628 }
+define R_gw631 { value GWR631 + GWR635 + GWR638 + GWR640 }
+
+!define RGW17dv  { alias R_gw17  kind 'temp' units 'none'}
+!define RGW607dv { alias R_gw607 kind 'temp' units 'none'}
+!define RGW622dv { alias R_gw622 kind 'temp' units 'none'}
+!define RGW624dv { alias R_gw624 kind 'temp' units 'none'}
+!define RGW628dv { alias R_gw628 kind 'temp' units 'none'}
+!define RGW631dv { alias R_gw631 kind 'temp' units 'none'}
+
+!Flow-weighted EC values in DSM2 schematic
+define EC_R_gw17     { value EC_GWR603 }
+
+define EC_R_gw607     { value ( GWR604 * EC_GWR604 + GWR605 * EC_GWR605
+                        + GWR612 * EC_GWR612 ) / R_gw607 }
+define EC_R_gw622     { value ( GWR616 * EC_GWR616 + GWR617 * EC_GWR617
+                        + GWR619 * EC_GWR619  + GWR622 * EC_GWR622
+                        + GWR623 * EC_GWR623 ) / R_gw622 }
+define EC_R_gw624     { value EC_GWR624 }
+define EC_R_gw628     { value EC_GWR628 }
+define EC_R_gw631     { value ( GWR631 * EC_GWR631 + GWR635 * EC_GWR635
+                        + GWR638 * EC_GWR638 + GWR640 * EC_GWR640 ) / R_gw631  }
+
+

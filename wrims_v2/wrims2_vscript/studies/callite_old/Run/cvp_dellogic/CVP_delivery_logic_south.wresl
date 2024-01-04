@@ -1,0 +1,20 @@
+/*************************************
+CVP_delivery_logic_south.wresl
+ 
+Tom FitzHugh BOR 5/20/2010
+Modified by Nazrul Islam, DWR, 10/14/2010 to implement B2 actions delcar_cvp_south_B2.wresl
+
+This is the top level include file for CVP SOD delivery logic. 
+*************************************/
+
+INCLUDE '\CVP_delivery_logic_south\Export_index_delivery_CVP.wresl'  ! Computes Export Index for SOD based 
+                                                                     ! upon Delta index
+!INCLUDE '\CVP_delivery_logic_south\Delivery_carryover_split_CVP_south.wresl'  ! Estimates delivery target from Export
+INCLUDE '\CVP_delivery_logic_south\delcar_cvp_south_B2BO.wresl'  ! Estimates delivery target from Export
+                                                                              ! Index (rest is carryover)
+INCLUDE '\CVP_delivery_logic_south\CVPcut_south.wresl'      ! Cuts back SOD deliveries based on difference 
+                                                            ! between delivery target and contract demands
+INCLUDE '\CVP_delivery_logic_south\cvp_arcsplit_south.wresl'    ! Splits SOD CVP delivery arcs
+INCLUDE '\CVP_delivery_logic_south\cvp_bound_del_south.wresl'   ! Constrains SOD deliveries based on cutbacks 
+                                                                ! computed above, and computes final CalLite deliveries
+INCLUDE '\CVP_delivery_logic_south\cvp_to_swp_south.wresl'      ! bounds non-wheeling interconnections between CVP and SWP

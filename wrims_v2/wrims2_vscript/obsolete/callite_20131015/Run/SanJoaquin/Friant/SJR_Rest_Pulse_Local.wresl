@@ -1,0 +1,58 @@
+! SJR_Rest_Pulse.wresl
+
+! Retrieve SJR Restoration Settlement flow requirements.
+! This file is included in the pulse period cycle and uses the restoration flow
+! requirements for April 16-30 in April.  The flow requirement is the same for the 
+! whole month of May, so it is just defined as such.
+
+define SJRR_rel {
+
+        case April_F {
+                condition 	month==APR .and. REST_REQ == 1
+                value		rest_req_p_F*taf_cfs*30./16.}
+        case April_I {
+		condition 	month==APR .and. REST_REQ == 0
+                value		rest_req_p_I*taf_cfs*30./16.}     
+        case MayOtherwise {
+                condition 	always
+                value		SJRR_mon}
+}
+
+define SJRR_relDV {alias SJRR_rel kind 'flow-min-requirement' units 'cfs'}
+
+define SJRR_rel_np {
+	case April_F {
+		condition	month==APR .and. REST_REQ == 1
+		value		rest_req_np_F*taf_cfs*30./14.
+	}
+	case April_I {
+			condition	month==APR .and. REST_REQ == 0
+			value		rest_req_np_I*taf_cfs*30./14.
+	}
+	case Otherwise {
+		condition	always
+		value		SJRR_mon
+	}
+}
+
+define rel_def_np {value max(0., SJRR_rel - SJRR_rel_np)}
+define rel_def_p {value max(0., SJRR_rel_np - SJRR_rel)}
+
+define rel_add_np {value min(rel_def_np, Fr_snow_rel*taf_cfs*30./14.)}
+define rel_add_p {value min(rel_def_p, Fr_snow_rel*taf_cfs*30./16.)}
+define rel_add_mon {value max(0.,Fr_snow_rel*taf_cfs - rel_add_np*14./30. - rel_add_p*16./30.)}
+
+!Set snowmelt release
+goal set_C_MLRTNA { C_MLRTNA < rel_add_p + rel_add_mon}
+
+
+! restrict the release from Friant to be the restoration release target
+! this value includes Gravelly Ford diversions and losses.  Set the segment
+! of flow below Gravelly Ford as the actual restoration flow - this will be
+! passed on to the restoration channel in SJR_Restrict.wresl
+goal boundC_MLRTNMain { C_MLRTNM < SJRR_rel  }
+define SJRR_L_SJRcb {value max(0., min(SJRR_rel - C_MLRTN_min*taf_cfs, 0.05*(SJRR_rel - C_MLRTN_min*taf_cfs) + 95.))}
+goal setC_GRAVF_mainSJRR {C_GRAVF_mainSJRR < max(0.,SJRR_rel - C_MLRTN_min*taf_cfs - SJRR_L_SJRcb)}
+goal set_D_GRAVF { D_GRAVF < 0.4 * min(SJRR_rel, C_MLRTN_min * taf_cfs) }
+goal set_L_GRAVF { L_GRAVF = min(SJRR_rel, C_MLRTN_min * taf_cfs) - D_GRAVF }
+goal lim_I18_rest_bal {I18_rest_bal < max(0., SJRR_rel - SJRR_mon - max(0., (SJRR_mon - I_MLRTN - (sio_fwua(-1)-S_MLRTNlevel1-S17level1)*taf_cfs)*30./16. ))}

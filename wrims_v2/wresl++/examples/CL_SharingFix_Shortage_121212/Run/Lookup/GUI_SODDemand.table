@@ -1,0 +1,27 @@
+! Switches related to CVP and SWP SOD demands, user-defined demands, and adjustment percent for interruptible deliveries.  
+! These values will be written out by the GUI.
+! User-defined demands cannot exceed Full Table A amounts (for SWP) and Full contract amounts (for CVP). 
+!   SWP MWD max is 1911.5 
+!   SWP Other MI max is 1189.4 (1226.5 total - 37.1 NOD) 
+!   SWP Ag max is 1032.1
+!   CVP AG max is 1963.1; MI max is 147.65; Refuge max is 281.06 
+!0   1   !SWP demand type  1=non-user-defined demands  2=user-defined demands
+!1   1911.5  !SWP MWD user-defined demands
+!2   1189.4  !SWP Other MI user-defined demands
+!3   1032.1  !SWP Ag user-defined demands
+!4   1   !User-defined ratio for interruptible deliveries
+!5   1   !CVP demand type  1=non-user-defined demands  2=user-defined demands
+!6   1963.1  !CVP Ag user-defined demands
+!7   147.65  !CVP MI user-defined demands
+!8   281.06  !CVP Refuge user-defined demands
+GUI_SODdemand
+Index	Option
+0	1	!SWP demand type  1=non-user-defined demands  2=user-defined demands
+1	1911.5	!SWP MWD user-defined demands
+2	1189.4	!SWP Other MI user-defined demands
+3	1032.1	!SWP Ag user-defined demands
+4	0	!User-defined ratio for interruptible deliveries
+5	1	!CVP demand type  1=non-user-defined demands  2=user-defined demands
+6	1963.1	!CVP Ag user-defined demands
+7	147.65	!CVP MI user-defined demands
+8	281.06	!CVP Refuge user-defined demands

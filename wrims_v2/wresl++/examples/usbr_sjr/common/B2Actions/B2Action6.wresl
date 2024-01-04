@@ -1,0 +1,32 @@
+/*
+B2 Action 6: CVP VAMP Export Extension (Apr 1-14)
+
+A. Munevar 10/19/2001.
+*/
+
+!**** VAMP Export Restriction Extension (Apr1-14) ****************
+
+! Monthly VAMP export restriction for CVP during April 1-14
+goal b2action6_1 {
+  lhs C_DMC003 + CAA000_CVP
+  case Apr {
+    condition  month==APR .and. int(B2Action6On)==1
+    rhs        max(800.0,PulseExpRes*0.5)
+    lhs<rhs    penalty 0 }
+}
+
+!for output only:
+define b2_6_1cap {std kind 'OUTPUT' units 'CFS'}
+goal setb2_6_1 {
+  lhs b2_6_1cap
+  case Apr {
+    condition  month==APR .and. int(B2Action6On)==1
+    rhs        max(800.0,PulseExpRes*0.5)
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+  case other {
+    condition  always
+    rhs        20000.
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+}

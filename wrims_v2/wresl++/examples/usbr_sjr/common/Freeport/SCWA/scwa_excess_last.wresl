@@ -1,0 +1,65 @@
+!SCWA_excess_last.wresl
+!04/30/02
+!Edward Chang (EBMUD)
+!Sets up Requested Diversions from Freeport for Sacramento County
+!This information is based on correspondance with Tad Berkebile at SacCo as of Jan 2002
+
+!priorities:
+!1)  cvp Freeport at meets Freeport demands
+!2)  Excess at Freeport meets total demands unmet by sum of
+!    cvp freeport and SCWA Fazio.
+
+!Excess taken as last priority (i.e. below wheeling, and interruptibles)
+
+!In cycle 8 no excess is taken
+
+goal setFPT_SCWA_exc {FPT_SCWA_exc < alloc_scwa_total - D_WTPSAC_SCWA[wheeling] - FPT_SCWA_CVP[wheeling] - FPT_SCWA_oth[wheeling] + 0.0001}
+
+define C169__z2 { timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define C407__z2 { timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define C407_divertable {
+	case yes{
+	condition C407__z2 >= 500.
+	value C407__z2}
+	case no{
+	condition always
+	value 0.0001}
+}
+define C407_divrtble_dv {alias C407_divertable kind 'FLOW' units 'TAF'}
+
+!define ANN Sac flow variables { timeseries kind 'FLOW' units 'CFS'}
+define CCCsacreq_1adv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define CCCsacreq_2adv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define CCCsacreq_3adv__z2 {timeseries kind 'FLOW' units 'CFS'}
+!define CCCsacreq_fixadv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define COsacreq_1dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define COsacreq_2dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define COsacreq_3dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+!define COsacreq_fixdv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define CCCsacreq_1dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define CCCsacreq_2dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define CCCsacreq_3dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+!define CCCsacreq_fixdv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define EMsacreq_1dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define EMsacreq_2dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define EMsacreq_3dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+!define EMsacreq_fixdv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define JPsacreq_1dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define JPsacreq_2dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+define JPsacreq_3dv__z2 {timeseries kind 'FLOW' units 'CFS'}
+!define JPsacreq_fixdv__z2 {timeseries kind 'FLOW' units 'CFS'}
+
+!Excess amount taken limited by max Sac flow requirement from the four ANN stations
+define SAC041_EXC_estim {
+		value max(C169__z2 - max (CCCsacreq_1adv__z2, CCCsacreq_2adv__z2, CCCsacreq_3adv__z2, !CCCsacreq_fixadv__z2,
+                                          COsacreq_1dv__z2, COsacreq_2dv__z2, COsacreq_3dv__z2, !COsacreq_fixdv__z2,
+                                          CCCsacreq_1dv__z2, CCCsacreq_2dv__z2, CCCsacreq_3dv__z2, !CCCsacreq_fixdv__z2,
+                                          EMsacreq_1dv__z2, EMsacreq_2dv__z2, EMsacreq_3dv__z2, !EMsacreq_fixdv__z2,
+                                          JPsacreq_1dv__z2, JPsacreq_2dv__z2, JPsacreq_3dv__z2 !, JPsacreq_fixdv__z2
+                                          ), 0.)
+		}
+define SAC041_EXC_est_dv {alias SAC041_EXC_estim kind 'FLOW' units 'TAF'}
+
+goal limitFRWP_SC_exc {FRWP_SCWA_exc < min(C407_divertable,SAC041_EXC_estim)}
+
+

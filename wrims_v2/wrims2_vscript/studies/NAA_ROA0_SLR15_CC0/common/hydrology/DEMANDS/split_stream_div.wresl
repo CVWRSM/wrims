@@ -1,0 +1,19 @@
+!Code by E. Reyes as of 11/19/99
+
+! This code splits the project stream diverson arcs by type (i.e. AG, SC, MI.  Not REF)
+
+! DSA58
+define d104_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+define d104_pmi {std kind 'FLOW-DELIVERY' units 'CFS'}
+define d104_pag {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD104  {d104_prj = d104_psc + d104_pmi + d104_pag}
+
+!DSA65
+define d163_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD163  {d163_prj = d163_psc}
+
+define d165_psc {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal splitD165  {d165_prj = d165_psc}
+
+
+

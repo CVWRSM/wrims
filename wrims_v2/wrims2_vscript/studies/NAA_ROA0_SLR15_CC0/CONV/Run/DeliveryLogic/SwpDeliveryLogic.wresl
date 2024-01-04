@@ -1,0 +1,32 @@
+!R Wilbur 3/7/07
+
+!Step 1: Determine SWP allocation (use either WSI-DI or CAM):
+  !Option 1a - WSI-DI Procedure:
+INCLUDE '..\..\..\common\swp_dellogic\wsi_di\wsi_swp.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\wsi_di\di_swp.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\wsi_di\export_index_swp.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\wsi_di\exp_based_del_swp_s.wresl'
+INCLUDE 'delcar_swp.wresl'
+  !Option 1b - CAM Procedure (note - must also include CAM cycle in main file):
+!INCLUDE '..\..\..\common\swp_dellogic\allocation\swp_allocation.wresl'
+
+!Step 2: Define delivery parameters for each contractor:
+INCLUDE '..\..\..\common\swp_dellogic\demands\swp_arcsplit.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\demands\swp_demands_s.wresl'
+
+!Step 3: Keep a running account of actual deliveries made to each contractor
+INCLUDE '..\..\..\common\swp_dellogic\deliveries\sumswpdel.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\deliveries\swp_delivery_summary.wresl'
+
+!Step 4: Distribute SWP allocation to each contractor:
+INCLUDE '..\..\..\common\swp_dellogic\allocation\swp_contractor_perdel_A.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\allocation\carryover_allocation.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\allocation\swp_contractor_perdel_B.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\allocation\swp_feather_perdel.wresl'
+INCLUDE '..\..\..\common\swp_dellogic\deliveries\swp_bound_del.wresl'
+
+!Misc. code related to SWP facilities:
+  !Seismic concerns have reduced maximum operating capacity at Lake Perris to 74 TAF:
+goal PerrisSeismic {S27 < 74.}
+  !Pumping capacity is not 100% reliable; must take unit outages into account:
+INCLUDE '..\..\..\common\swp_dellogic\conveyance_limits.wresl'

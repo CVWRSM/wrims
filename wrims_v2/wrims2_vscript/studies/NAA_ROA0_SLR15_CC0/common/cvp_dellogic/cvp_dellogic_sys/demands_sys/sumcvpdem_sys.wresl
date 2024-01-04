@@ -1,0 +1,285 @@
+! E. Reyes 10/27/00
+
+! This file sums the monthly demands by type into annual demands
+
+!  NORTH OF DELTA
+!=====================================================================================================
+!=====================================================================================================
+
+! Misc DSA 70 values
+define dem_DSA70_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_DSA70_PAG {timeseries kind 'DEMAND-CVP-AG' units 'TAF'}
+define dem_DSA70_PSC {timeseries kind 'DEMAND-CVP-SC' units 'TAF'}
+
+!******************* CUMULATIVE YEARLY DEMANDS  ****************************
+! This section calculates the ANNUAL CVP SOD demands based on Maximum Demands in input
+
+! AG DEMANDS
+define acvpdem_pag_ndv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_pag_n {   ! CVP SOD AG DEMANDS, used in cvpcut_n and cvpmkup_n
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) (dem_d104_pag(i) + (con_D171_pag(i) + con_D172_pag(i) + con_D174_pag(i) + con_D178_pag(i))*1.01*cfs_taf(i) + dem_DSA70_pag(i)) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) (dem_d104_pag(i) + (con_D171_pag(i) + con_D172_pag(i) + con_D174_pag(i) + con_D178_pag(i))*1.01*cfs_taf(i) + dem_DSA70_pag(i)) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) (dem_d104_pag(i) + (con_D171_pag(i) + con_D172_pag(i) + con_D174_pag(i) + con_D178_pag(i))*1.01*cfs_taf(i) + dem_DSA70_pag(i)) }
+
+       case Rest {
+       condition always
+       value acvpdem_pag_ndv(-1) }
+
+        }
+
+
+goal set_annual_ag_n {acvpdem_pag_ndv = acvpdem_pag_n}
+
+! MI DEMANDS
+define acvpdem_pmi_ndv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_pmi_n {   ! CVP SOD MI DEMANDS, used in cvpcut_n and cvpmkup_n
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_d104_pmi(i) + dem_DSA70_pmi(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_d104_pmi(i) + dem_DSA70_pmi(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_d104_pmi(i) + dem_DSA70_pmi(i) }
+
+       case Rest {
+       condition always
+       value acvpdem_pmi_ndv(-1) }
+
+        }
+goal set_annual_mi_n {acvpdem_pmi_ndv = acvpdem_pmi_n}
+
+! SETTLEMENT CONTRACT DEMANDS
+define acvpdem_psc_ndv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_psc_n {    ! CVP SOD sc DEMANDS, used in cvpcut_n and cvpmkup_n
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) (dem_d104_psc(i) + (con_14301SC(i) + con_114GCID(i) + con_14501SC(i) + con_18301SC(i) + con_131SC(i))*cfs_taf(i) + dem_dsa65_psc(i) + dem_DSA70_psc(i))  }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) (dem_d104_psc(i) + (con_14301SC(i) + con_114GCID(i) + con_14501SC(i) + con_18301SC(i) + con_131SC(i))*cfs_taf(i) + dem_dsa65_psc(i) + dem_DSA70_psc(i))   }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) (dem_d104_psc(i) + (con_14301SC(i) + con_114GCID(i) + con_14501SC(i) + con_18301SC(i) + con_131SC(i))*cfs_taf(i) + dem_dsa65_psc(i) + dem_DSA70_psc(i))   }
+
+       case Rest {
+       condition always
+       value acvpdem_psc_ndv(-1) }
+
+        }
+
+goal set_annual_sc_n {acvpdem_psc_ndv = acvpdem_psc_n}
+
+! REFUGE DEMANDS
+define acvpdem_prf_ndv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_prf_n {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) ((con_D14302_prf(i) + con_D18201A_prf(i) + con_D18201B_prf(i))*cfs_taf(i))  }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) ((con_D14302_prf(i) + con_D18201A_prf(i) + con_D18201B_prf(i))*cfs_taf(i)) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) ((con_D14302_prf(i) + con_D18201A_prf(i) + con_D18201B_prf(i))*cfs_taf(i)) }
+
+       case Rest {
+       condition always
+       value acvpdem_prf_ndv(-1) }
+
+        }
+
+goal set_annual_rf_n {acvpdem_prf_ndv = acvpdem_prf_n}
+
+
+
+!***   TOTAL  NORTH *************************************************************************************
+define acvpdem_total_n {value acvpdem_pag_n + acvpdem_pmi_n + acvpdem_psc_n + acvpdem_prf_n }
+
+
+
+
+
+
+
+!  SOUTH OF DELTA
+!=====================================================================================================
+!=====================================================================================================
+
+!******************* CUMULATIVE MONTHLY DEMANDS  ****************************
+define dem_totcvps_pag {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_totcvps_pmi {timeseries kind 'demand-cvp-mi' units 'taf'}
+define dem_totcvps_pex {timeseries kind 'demand-cvp-ex' units 'taf'}
+define dem_totcvps_prf {timeseries kind 'demand-cvp-rf' units 'taf'}
+define dem_totcvps_pls {timeseries kind 'demand-cvp-ls' units 'taf'}
+
+!******************* CUMULATIVE YEARLY DEMANDS  ****************************
+! This section calculates the ANNUAL CVP SOD demands based on Maximum Demands in input
+
+! AG DEMANDS
+define acvpdem_pag_sdv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_pag_s {   ! CVP SOD AG DEMANDS, used in cvpcut_s and cvpmkup_s
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_totcvps_pag(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_totcvps_pag(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_totcvps_pag(i) }
+
+       case Rest {
+       condition always
+       value acvpdem_pag_sdv(-1) }
+
+        }
+
+goal set_annual_ag_s {acvpdem_pag_sdv = acvpdem_pag_s}
+
+! MI DEMANDS
+define acvpdem_pmi_sdv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_pmi_s {   ! CVP SOD MI DEMANDS, used in cvpcut_s and cvpmkup_s
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_totcvps_pmi(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_totcvps_pmi(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_totcvps_pmi(i) }
+
+       case Rest {
+       condition always
+       value acvpdem_pmi_sdv(-1) }
+
+        }
+
+goal set_annual_mi_s {acvpdem_pmi_sdv = acvpdem_pmi_s}
+
+! EXCHANGE DEMANDS
+define acvpdem_pex_sdv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_pex_s {    ! CVP SOD EX DEMANDS, used in cvpcut_s and cvpmkup_s
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_totcvps_pex(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_totcvps_pex(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_totcvps_pex(i) }
+
+       case Rest {
+       condition always
+       value acvpdem_pex_sdv(-1) }
+
+        }
+
+goal set_annual_ex_s {acvpdem_pex_sdv = acvpdem_pex_s}
+
+! REFUGE DEMANDS
+define acvpdem_prf_sdv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_prf_s {    ! CVP SOD REFUGE DEMANDS, used in cvpcut_s and cvpmkup_s
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_totcvps_prf(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_totcvps_prf(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_totcvps_prf(i) }
+
+       case Rest {
+       condition always
+       value acvpdem_prf_sdv(-1) }
+
+        }
+
+goal set_annual_rf_s {acvpdem_prf_sdv = acvpdem_prf_s}
+
+! LOSSES
+define acvpdem_pls_sdv {std kind 'demand-annual' units 'taf'}
+
+define acvpdem_pls_s {
+
+       case Oct1922 {  ! special case for first wateryear, Sum Oct-Sep
+       condition month == OCT .and. wateryear == 1922
+       sum(i=0,11,1) dem_totcvps_pls(i) }
+
+       case Mar2003 {  ! special case for last wateryear, Sum Oct-Sep
+       condition month == MAR .and. wateryear == 2003
+       sum(i=prevOCT,SEP-month,1) dem_totcvps_pls(i) }
+
+       case March { ! March for wateryears 1922 - 2002
+       condition month == MAR .and. wateryear < 2003
+       sum(i=0,11,1) dem_totcvps_pls(i) }
+
+       case Rest {
+       condition always
+       value acvpdem_pls_sdv(-1) }
+
+        }
+
+goal set_annual_ls_s {acvpdem_pls_sdv = acvpdem_pls_s}
+
+!***   TOTAL  SOUTH ************************************************************************************
+define acvpdem_total_s {value acvpdem_pag_s + acvpdem_pmi_s + acvpdem_pex_s + acvpdem_prf_s + acvpdem_pls_s }
+
+
+
+
+!   TOTAL SYSTEM
+!=======================================================================================================
+!=======================================================================================================
+
+define acvpdem_pag_sys {value acvpdem_pag_n + acvpdem_pag_s}
+define acvpdem_pmi_sys {value acvpdem_pmi_n + acvpdem_pmi_s}
+define acvpdem_pex_sys {value acvpdem_pex_s}
+define acvpdem_psc_sys {value acvpdem_psc_n}
+define acvpdem_prf_sys {value acvpdem_prf_n + acvpdem_prf_s}
+define acvpdem_pls_sys {value acvpdem_pls_s}
+
+define acvpdem_tot_sys {value acvpdem_total_n + acvpdem_total_s}
+

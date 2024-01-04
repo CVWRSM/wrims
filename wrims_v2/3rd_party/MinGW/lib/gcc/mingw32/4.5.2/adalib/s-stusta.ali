@@ -1,0 +1,135 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnvnnvnnnnnnnnnnnnnnnnnn
+
+U system.stack_usage.tasking%b  s-stusta.adb	b6881db6 NE OL PK
+W system%s		system.ads		system.ali
+W system.img_int%s	s-imgint.adb		s-imgint.ali
+W system.io%s		s-io.adb		s-io.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.stack_usage%s	s-stausa.adb		s-stausa.ali
+W system.task_primitives%s  s-taspri.ads	s-taspri.ali
+W system.task_primitives.operations%s  s-taprop.adb  s-taprop.ali
+W system.tasking%s	s-taskin.adb		s-taskin.ali
+W system.tasking.debug%s  s-tasdeb.adb		s-tasdeb.ali
+
+U system.stack_usage.tasking%s  s-stusta.ads	649931e1 NE OL PK
+W system.stack_usage%s	s-stausa.adb		s-stausa.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-atacco.ads		20090409150020 60789a20
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-imgint.ads		20090409150020 f77d133c
+D s-io.ads		20090409150020 0212e19c
+D s-osinte.ads		20090422121236 e19b549f
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stausa.ads		20090429103054 146a8ff1
+D s-stusta.ads		20090707124244 70f3be10
+D s-stusta.adb		20090429105038 37e1340e
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-tasinf.ads		20090409150020 ff3904e8
+D s-taspri.ads		20090409150020 f6de4d95
+D s-taprop.ads		20090409150020 25a7965c
+D s-taskin.ads		20090707124244 78c4deed
+D s-tasdeb.ads		20090416093440 c2456f99
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-win32.ads		20100128134454 4b10300f
+X 7 system.ads
+37K9*System 197e11 18|42r9 62r34 77r5 19|34r6 38r6 39r6 41r6 43r14 44r8 46r36
+. 63r13 72r13 82r36 84r7 85r7 93r12 94r16 96r14 102r19 103r15 105r19 122r14
+. 128r27 142r7 154r10 159r7 189r15 194r19 206r18 215r16 216r13 217r12 219r25
+. 261r5
+X 11 s-io.ads
+37K16*IO 64e14 19|41w13 44r15
+44U14*Put 19|97r10 123r10
+45U14*Put_Line 19|254r10
+X 17 s-stausa.ads
+37K16*Stack_Usage 7|37k9 17|345e23 18|42r16 62r41 77r12 19|34w13 43r21 63r20
+. 72r20 84r14 85r14 96r21 122r21 154r17 189r22 194r26 206r25 215r23 216r20
+. 219r32 261r12
+53R9*Task_Result 65e14 18|62r53 19|63r32 72r32 206r37
+54a7*Task_Name{string} 19|216r49 243r20 244r17 251r42 252r17
+56i7*Value{natural} 19|256r32
+60i7*Variation{natural} 19|257r32
+64i7*Max_Size{natural} 19|255r56
+67A9*Result_Array_Type(53R9)<integer>
+240b4*Is_Enabled{boolean} 19|96r33 122r33
+243U14*Compute_Result 19|84r26
+265U14*Report_Result 19|85r26
+271U14*Output_Results 19|154r29
+286a7*Task_Name{string} 19|217r48
+327P9 Result_Array_Ptr(67A9)
+329p4 Result_Array{327P9} 19|189r34 194r38 215r35 216r32 219r44
+X 18 s-stusta.ads
+42K28*Tasking 17|37k16 18|77l24 77e31 19|43b33 261l24 261t31
+44U14*Report_All_Tasks 50r7 19|167b14 170l8 170t24
+53U14*Report_Current_Task 59r7 19|176b14 181l8 181t27
+62R12*Stack_Usage_Result{17|53R9} 66r35 68r43 74r27 19|64r17 73r17 177r13
+. 204r43 205r13 237r27
+65A9*Stack_Usage_Result_Array(62R12)<integer> 71r40 19|187r40 188r13
+68V13*Get_Current_Task_Usage{62R12} 19|179r14 204b13 231l8 231t30
+71V13*Get_All_Tasks_Usage{65A9} 19|187b13 198l8 198t27
+74U14*Print 74>21 19|180r7 237b14 259l8 259t13
+74r21 Obj{62R12} 19|237b21 243r16 244r13 251r38 252r13 255r52 256r28 257r28
+X 19 s-stusta.adb
+46U14 Report_For_Task 46>31 82b14 86l8 86t23 110r13 128r10
+46p31 Id{26|106P9} 82b31 84r42 85r41
+49U14 Compute_All_Tasks 92b14 114l8 114t25 147r10
+53U14 Compute_Current_Task 120b14 131l8 131t28 149r10
+57U14 Report_Impl 57>27 57>48 137b14 161l8 161t19 169r7 191r7 210r7
+57b27 All_Tasks{boolean} 137b27 146r10
+57b48 Do_Print{boolean} 137b48 153r10
+62U14 Convert 63>7 64<7 71b14 76l8 76t15 194r10 229r7
+63r7 TS{17|53R9} 72b7 75r14
+64r7 Res{18|62R12} 73b7 75m7
+93p7 Id{26|106P9} 105m13 106r23 110r30
+102i14 J{integer} 105r53
+177r7 Res{18|62R12} 179m7 180r14
+188a7 Res{18|65A9} 193r16 194m56 197r14
+193i11 J{integer} 194r52 194r61
+205r7 Res{18|62R12} 229m26 230r14
+206r7 Original{17|53R9} 219m13 229r16
+207b7 Found{boolean} 220m13 227r22
+215i11 T{integer} 216r46 219r58
+238i7 Pos{positive} 245m13 252r36
+243i11 S{integer} 244r28 245r20
+251a10 T_Name{string} 255r20
+X 24 s-taspri.ads
+41K16*Task_Primitives 19|39r13 142r14 159r14 24|124e27
+X 25 s-taprop.ads
+39K32*Operations 19|39w29 142r30 159r30 25|546e38
+418U14*Lock_RTS 19|142r41
+421U14*Unlock_RTS 19|159r41
+X 26 s-taskin.ads
+46K16*Tasking 19|38r13 46r43 82r43 93r19 94r23 102r26 103r22 105r26 128r34
+. 217r19 26|1117e19
+104R9*Ada_Task_Control_Block 1072e14
+106P9*Task_Id(104R9) 19|46r51 82r51 93r27 94r31
+113V13*Self{106P9} 19|128r42 217r27
+608r7*Analyzer{17|69R9} 19|84m52 85r51 217r39
+880r7*Common{449R9} 19|84m45 85r44 217r32
+X 27 s-tasdeb.ads
+38K24*Debug 19|38w21 102r34 103r30 105r34 27|148e25
+68a4*Known_Tasks(26|106P9) 19|102r40 103r36 105r40
+

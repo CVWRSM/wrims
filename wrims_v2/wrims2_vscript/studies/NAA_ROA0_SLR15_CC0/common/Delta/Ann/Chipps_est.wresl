@@ -1,0 +1,21 @@
+
+!Get the required Sac flow for ESTIMATED exports
+define CHReqSac {
+  case NoSalinityControlPossible{
+    condition abs(CH_m_sv) <= 0.001 .and. int(CH_b_sv) == 0
+    value 0.}
+  case NegSlope{
+    condition CH_m_sv <= 0.0
+    value 0.}
+  case highcost{
+    condition CH_Sac_ZeroExp_sv2 >= ANNcap
+    value 0.}
+  case control{
+    condition month >= Oct .and. month <= May
+    value max(0., (EstTotExp-CH_b_sv)/CH_m_sv)}
+  case other {
+    condition  always
+    value 0.}
+}
+define CHReqSacDV {alias CHReqSac kind 'FLOW' units 'CFS'}
+

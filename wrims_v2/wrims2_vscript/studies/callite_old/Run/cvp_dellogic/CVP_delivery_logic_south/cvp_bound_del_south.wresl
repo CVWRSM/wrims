@@ -1,0 +1,111 @@
+/*************************************
+cvp_bound_del_south.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+This file sets the upper bounds for SOD Deliveries based on the contract demands and 
+SOD Percent Delivery.  These deliveries are then summed into CalLite SOD deliveries.
+
+1/5/2011: Added ratios to adjust for user-defined demands -TF
+*************************************/
+
+!**************  GOALS for SOD with SOD percent deliveries  *************
+!  AG Demands    Reduce demands from maximum to reflect cut back
+goal s_reduce_D700_pag {D700_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D700_pag*taf_cfs}
+goal s_reduce_D701_pag {D701_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D701_pag*taf_cfs}
+goal s_reduce_D706_pag {D706_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D706_pag*taf_cfs}
+goal s_reduce_D607A_pag {D607A_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D607A_pag*taf_cfs}
+goal s_reduce_D833_pag {D833_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D833_pag*taf_cfs}
+goal s_reduce_D835_pag {D835_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D835_pag*taf_cfs}
+goal s_reduce_D836_pag {D836_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D836_pag*taf_cfs}
+goal s_reduce_D837_pag {D837_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D837_pag*taf_cfs}
+goal s_reduce_D839_pag {D839_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D839_pag*taf_cfs}
+goal s_reduce_D841_pag {D841_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D841_pag*taf_cfs}
+goal s_reduce_D843_pag {D843_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D843_pag*taf_cfs}
+goal s_reduce_D710_pag {D710_pag < perdel_cvpag_s*CVP_pag_ratio_s*dem_D710_pag*taf_cfs}
+!Lines below not needed when implementing CVC wheeling
+!goal s_reduce_D855_pag {D855_pag < perdel_cvpag_s*dem_D855_pag*taf_cfs}
+!goal zero_D855   {D855 = 0.}
+
+!  MI demands    Reduce demands from maximum to reflect cut back
+goal s_reduce_D711_pmi {D711_pmi < perdel_cvpmi_s*CVP_pmi_ratio_s*dem_D711_pmi*taf_cfs}
+goal s_reduce_D844_pmi {D844_pmi < perdel_cvpmi_s*CVP_pmi_ratio_s*dem_D844_pmi*taf_cfs}
+
+!  Exchange Demands   Reduce demands from maximum to reflect cut back
+goal s_reduce_D707_pex {D707_pex < perdel_cvpex_s*dem_D707_pex*taf_cfs}
+goal s_reduce_D607B_pex {D607B_pex < perdel_cvpex_s*dem_D607B_pex*taf_cfs}
+goal s_reduce_D608B_pex {D608B_pex < perdel_cvpex_s*dem_D608B_pex*taf_cfs}
+
+!  Refuge Demands   Reduce demands from maximum to reflect cut back
+goal s_reduce_D708_prf {D708_prf < perdel_cvprf_s*CVP_prf_ratio_s*dem_D708_prf*taf_cfs}
+goal s_reduce_D607C_prf {D607C_prf < perdel_cvprf_s*CVP_prf_ratio_s*dem_D607C_prf*taf_cfs}
+goal s_reduce_D608C_prf {D608C_prf < perdel_cvprf_s*CVP_prf_ratio_s*dem_D608C_prf*taf_cfs}
+goal s_reduce_D856_prf {D856_prf < perdel_cvprf_s*CVP_prf_ratio_s*dem_D856_prf*taf_cfs}
+
+!  Losses
+goal set_D702_pls  {D702_pls < dem_D702_pls*taf_cfs}
+goal set_D834_pls  {D834_pls < dem_D834_pls*taf_cfs}
+goal set_D838_pls  {D838_pls < dem_D838_pls*taf_cfs}
+goal set_D840_pls  {D840_pls < dem_D840_pls*taf_cfs}
+goal set_D842_pls  {D842_pls < dem_D842_pls*taf_cfs}
+goal set_D845_pls  {D845_pls < dem_D845_pls*taf_cfs}
+goal set_D607D_pls {D607d_pls < dem_D607d_pls*taf_cfs}
+
+! Variables to hold CalLite deliveries by type
+define D_MendotaPl_pag {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_MendotaPl_pex {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_MendotaPl_prf {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_MendotaPl_pls {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+define D_UpDMC_pag {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_UpDMC_pls {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+define D_CVPJU_LDMC_pag {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_CVPJU_LDMC_pex {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_CVPJU_LDMC_prf {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+define D_SLCVP_pag {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_SLCVP_pmi {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+define D_DsAmgosCVP_pag {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_DsAmgosCVP_pls {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_DsAmgosCVP_pmi {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+define D_CVP_CVC_pag {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+define D_CVPRfg_854_prf {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_CVPRfg_854_pls {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+/***  Aggregating final deliveries for CalLite, and deliveries by type ***/
+goal setD_MendotaPl {D_MendotaPl = D607A_pag + D607B_pex + D607C_prf + D607D_pls + D608B_pex + D608C_prf}
+goal setD_MendotaPl_pag {D_MendotaPl_pag = D607A_pag}
+goal setD_MendotaPl_pex {D_MendotaPl_pex = D607B_pex + D608B_pex}
+goal setD_MendotaPl_prf {D_MendotaPl_prf = D607C_prf + D608C_prf}
+goal setD_MendotaPl_pls {D_MendotaPl_pls = D607D_pls}
+
+goal setD_UpDMC_P {D_UpDMC_P = D700_pag + D701_pag + D702_pls}
+goal setD_UpDMC_pag {D_UpDMC_pag = D700_pag + D701_pag}
+goal setD_UpDMC_pls {D_UpDMC_pls = D702_pls}
+
+goal setD_CVPJU_LDMC_P {D_CVPJU_LDMC_P = D706_pag + D707_pex + D708_prf}
+goal setD_CVPJU_LDMC_pag {D_CVPJU_LDMC_pag = D706_pag}
+goal setD_CVPJU_LDMC_pex {D_CVPJU_LDMC_pex = D707_pex}
+goal setD_CVPJU_LDMC_prf {D_CVPJU_LDMC_prf = D708_prf}
+
+goal setD_SLCVP_P {D_SLCVP_P = D710_pag + D711_pmi}
+goal setD_SLCVP_pag {D_SLCVP_pag = D710_pag}
+goal setD_SLCVP_pmi {D_SLCVP_pmi = D711_pmi}
+
+goal setD_DosAmigosCVP_P {D_DosAmigosCVP_P = D833_pag + D834_pls + D835_pag + D836_pag + D837_pag + D838_pls 
+                        + D839_pag + D840_pls + D841_pag + D842_pls + D843_pag + D844_pmi + D845_pls} 
+goal setD_DsAmgosCVP_pag {D_DsAmgosCVP_pag = D833_pag + D835_pag + D836_pag + D837_pag + D839_pag + D841_pag + D843_pag}
+goal setD_DsAmgosCVP_pls {D_DsAmgosCVP_pls = D834_pls + D838_pls + D840_pls + D842_pls + D845_pls}
+goal setD_DsAmgosCVP_pmi {D_DsAmgosCVP_pmi = D844_pmi}
+
+goal setD_CVP_CVC_P {D_CVP_CVC_P = D855_pag}
+goal setD_CVP_CVC_pag {D_CVP_CVC_pag = D855_pag}
+
+goal setD_CVPRfg_854_P {D_CVPRfg_854_P = D854_pls + D856_prf}
+goal setD_CVPRfg_854_prf {D_CVPRfg_854_prf = D856_prf}
+goal setD_CVPRfg_854_pls {D_CVPRfg_854_pls = D854_pls}
+

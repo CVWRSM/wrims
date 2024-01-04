@@ -1,0 +1,313 @@
+/** R8: Sacramento Co. south of American River, San Joaquin Co **/
+define R8_NP_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R8_NP_AW { R8_NP_AW =
+! R8_NP_AW:
+! Region: Central San Joaquin W.C.D.
+! conversion method: ESJR
+DI512 * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ D520A * 0.889 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 80 TAF out of 90 TAF;
+! Region: DSA 59 (partial)
+! conversion method: ESJR
+!+ D502_PAG * ( 1. - 0.3 ) / ( 1. - 0.1 )
+!+ D503A_NP * ( 1. - 0.3 ) / ( 1. - 0.1 )
+!+ D503A_PAG * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ D506C * 0.4 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 1.4 TAF out of 3.5 TAF;
++ D506A * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 13 TAF out of 13 TAF;
+! Region: Stockton East W.D.
+! conversion method: ESJR
++ D507 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 25 TAF out of 25 TAF;
+}
+define R8_GW_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R8_GW_AW { R8_GW_AW =
+! R8_GW_AW:
+! Region: Central San Joaquin W.C.D.
+! conversion method: ESJRGW
+GP512 * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 80.7 TAF out of 80.7 TAF;
+! Region: DSA 59 (partial)
+! conversion method: ESJRGW
++ GP505_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 146.7 TAF out of 146.7 TAF;
+}
+define R8_CVP_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R8_CVP_AW { R8_CVP_AW =
+! R8_CVP_AW:
+! Region: DSA 59 (partial)
+! conversion method: ESJR
+D9B_PAG * ( 1. - 0.3 ) / ( 1. - 0.1 )
+}
+/** R11: Stanislaus River water rights: Modesto ID, Oakdale ID, South San Joaquin ID **/
+define R11_NP_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R11_NP_AW { R11_NP_AW =
+! R11_NP_AW:
+! Region: East bank of San Joaquin R, downstream of Stanislaus R
+! conversion method: ESJR
+D637 * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ D639 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 28.5 TAF out of 28.5 TAF;
+! Region: East bank of San Joaquin R, Tuolumne R to Stanislaus R
+! conversion method: ESJR
++ R534A * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ R534B * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ D630A * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 6.5 TAF out of 6.5 TAF;
++ D630B * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 36.1 TAF out of 36.1 TAF;
+! Region: Modesto I.D.
+! conversion method: ESJR
++ R532 * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ R636C * -1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Multiplier: -1;
++ D78 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 202.5 TAF out of 202.5 TAF;
+! Region: Oakdale I.D. (north)
+! conversion method: ESJR
++ D521 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 434 TAF out of 434 TAF;
+! Region: Oakdale I.D. (south)
+! conversion method: ESJR
++ D520C * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 166 TAF out of 166 TAF;
+! Region: Stanislaus River diversions
+! conversion method: ESJR
++ D528A_riv * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 16.3 TAF out of 16.3 TAF;
+! Region: Tuolumne River diversions
+! conversion method: ESJR
++ D545A_riv * 0.5 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 3.1 TAF out of 6.2 TAF;
+}
+define R11_GW_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R11_GW_AW { R11_GW_AW =
+! R11_GW_AW:
+! Region: East bank of San Joaquin R, Tuolumne R to Stanislaus R
+! conversion method: ESJRGW
+GP534_PAG * ( 1. - 0 ) / ( 1. - 0.1 )
+! Region: Modesto I.D.
+! conversion method: ESJRGW
++ GP532_MAX_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 4.6 TAF out of 4.6 TAF;
++ GP532_MAX_PRV * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 14.8 TAF out of 14.8 TAF;
++ GP532_MIN_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 18.4 TAF out of 18.4 TAF;
++ GP532_MIN_PRV * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 20.8 TAF out of 20.8 TAF;
+! Region: Oakdale I.D. (south)
+! conversion method: ESJRGW
++ GP530_MAX_PRV * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 2.4 TAF out of 2.4 TAF;
++ GP530_MAX_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 3.6 TAF out of 3.6 TAF;
++ GP530_MIN_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 9.8 TAF out of 9.8 TAF;
++ GP530_MIN_PRV * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 9.8 TAF out of 9.8 TAF;
+! Region: South San Joaquin I.D.
+! conversion method: ESJRGW
++ GP522_MAX_PRV * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 1.2 TAF out of 1.2 TAF;
++ GP522_MIN_PRV * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 9.9 TAF out of 9.9 TAF;
++ GP522_MAX_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 21.1 TAF out of 21.1 TAF;
++ GP522_MIN_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 41.1 TAF out of 41.1 TAF;
+}
+/** R12: Turlock ID **/
+define R12_NP_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R12_NP_AW { R12_NP_AW =
+! R12_NP_AW:
+! Region: East bank of San Joaquin R, Merced to Tuolumne R
+! conversion method: ESJR
+D620B * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 72.2 TAF out of 72.2 TAF;
+! Region: Merced I.D.
+! conversion method: ESJR
++ D561_PAG * 0.05 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 18.9 TAF out of 377.7 TAF;
+! Region: Merced River diversions
+! conversion method: ESJR
++ D562A_riv * 0.5 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 10.3 TAF out of 20.6 TAF;
+! Region: Tuolumne River diversions
+! conversion method: ESJR
++ D545A_riv * 0.5 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 3.1 TAF out of 6.2 TAF;
+! Region: Turlock I.D.
+! conversion method: ESJR
++ D79 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 470.1 TAF out of 470.1 TAF;
+! Region: Turlock I.D. (non-district)
+! conversion method: ESJR
++ R550A * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ R550B * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ D620A * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 19.2 TAF out of 19.2 TAF;
+}
+define R12_GW_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R12_GW_AW { R12_GW_AW =
+! R12_GW_AW:
+! Region: Merced I.D.
+! conversion method: ESJRGW
+GP570_MAX_PAG * ( 1. - 0 ) / ( 1. - 0.1 )
++ GP570_MIN_PAG * 0.05 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 0.48 TAF out of 9.62 TAF;
+! Region: Turlock I.D.
+! conversion method: ESJRGW
++ GP548_MAX_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 9.4 TAF out of 9.4 TAF;
++ GP548_MAX_PRV * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 42.8 TAF out of 42.8 TAF;
++ GP548_MIN_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 66.8 TAF out of 66.8 TAF;
++ GP548_MIN_PRV * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 79 TAF out of 79 TAF;
+! Region: Turlock I.D. (non-district)
+! conversion method: ESJRGW
++ GP550_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 10.3 TAF out of 10.3 TAF;
+}
+/** R13: Merced ID. CVP Users: Madera, Chowchilla, Gravely Ford **/
+define R13_NP_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_NP_AW { R13_NP_AW =
+! R13_NP_AW:
+! Region: Chowchilla W.D.
+! conversion method: ESJR
+C590 * -1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Multiplier: -1;
++ D582 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 119.1 TAF out of 119.1 TAF;
+! Region: Madera I.D.
+! conversion method: ESJR
++ D588 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 21.3 TAF out of 21.3 TAF;
+! Region: Merced I.D.
+! conversion method: ESJR
++ D561_PAG * 0.95 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 358.8 TAF out of 377.7 TAF;
+! Region: Merced River diversions
+! conversion method: ESJR
++ D562A_riv * 0.5 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 10.3 TAF out of 20.6 TAF;
+! Region: West of Madera I.D. and Chowchilla W.D.
+! conversion method: ESJR
++ R585 * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ D595 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 1.2 TAF out of 1.2 TAF;
++ D603 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 37.1 TAF out of 37.1 TAF;
+! Region: West of Merced I.D. and non-district DAU 210 and 212
+! conversion method: ESJR
++ R573 * ( 1. - 0.3 ) / ( 1. - 0.1 )
++ D620C * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 25.4 TAF out of 25.4 TAF;
++ D566 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 41.1 TAF out of 41.1 TAF;
+}
+define R13_GW_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_GW_AW { R13_GW_AW =
+! R13_GW_AW:
+! Region: Chowchilla W.D.
+! conversion method: ESJRGW
+GP583_MAX_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 38.1 TAF out of 38.1 TAF;
++ GP583_MIN_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 69.3 TAF out of 69.3 TAF;
+! Region: Madera I.D.
+! conversion method: ESJRGW
++ GP591_MIN_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 54.8 TAF out of 54.8 TAF;
++ GP591_MAX_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 134.9 TAF out of 134.9 TAF;
+! Region: Merced I.D.
+! conversion method: ESJRGW
++ GP570_MAX_PAG * ( 1. - 0 ) / ( 1. - 0.1 )
++ GP570_MIN_PAG * 0.95 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 9.14 TAF out of 9.62 TAF;
+! Region: West of Merced I.D. and non-district DAU 210 and 212
+! conversion method: ESJRGW
++ GP573_PAG * 1 * ( 1. - 0 ) / ( 1. - 0.1 ) ! Quantity: 251.4 TAF out of 251.4 TAF;
+}
+define R13_FCL1_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_FCL1_AW { R13_FCL1_AW =
+! R13_FCL1_AW:
+! Region: Chowchilla W.D.
+! conversion method: ESJR
+D18B_C1 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 140 TAF out of 140 TAF;
+}
+define R13_FCL2_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_FCL2_AW { R13_FCL2_AW =
+! R13_FCL2_AW:
+! Region: Chowchilla W.D.
+! conversion method: ESJR
+D18B_C2 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 346 TAF out of 346 TAF;
+}
+define R13_F215_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R13_F215_AW { R13_F215_AW =
+! R13_F215_AW:
+! Region: Chowchilla W.D.
+! conversion method: ESJR
+D18B_215 * 1 * ( 1. - 0.3 ) / ( 1. - 0.1 ) ! Quantity: 44.48 TAF out of 44.48 TAF;
+}
+/** R16: Eastern Fresno Co. CVP Users: Friant-Kern Canal. Fresno ID, Garfield, International **/
+define R16_FCL1_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R16_FCL1_AW { R16_FCL1_AW =
+! R16_FCL1_AW:
+! Region: _Other_
+! conversion method: TULARE16
+D18A_C1 * 0.007 * ( 1. - 0.25 ) / ( 1. - 0.1 ) ! Quantity: 4.7 TAF out of 659.45 TAF;
+}
+define R16_FCL2_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R16_FCL2_AW { R16_FCL2_AW =
+! R16_FCL2_AW:
+! Region: _Other_
+! conversion method: TULARE16
+D18A_C2 * 0.072 * ( 1. - 0.25 ) / ( 1. - 0.1 ) ! Quantity: 75 TAF out of 1041.47 TAF;
+}
+define R16_F215_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R16_F215_AW { R16_F215_AW =
+! R16_F215_AW:
+! Region: _Other_
+! conversion method: TULARE16
+D18A_215 * 0.023 * ( 1. - 0.25 ) / ( 1. - 0.1 ) ! Quantity: 1.25 TAF out of 54.06 TAF;
+}
+/** R17: CVP Users: Friant-Kern Canal. Hills Valley, Tri-Valley Orange Cove **/
+define R17_FCL1_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R17_FCL1_AW { R17_FCL1_AW =
+! R17_FCL1_AW:
+! Region: _Other_
+! conversion method: TULARE17
+D18A_C1 * 0.059 * ( 1. - 0.25 ) / ( 1. - 0.1 ) ! Quantity: 39.2 TAF out of 659.45 TAF;
+}
+define R17_F215_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R17_F215_AW { R17_F215_AW =
+! R17_F215_AW:
+! Region: _Other_
+! conversion method: TULARE17
+D18A_215 * 0.022 * ( 1. - 0.25 ) / ( 1. - 0.1 ) ! Quantity: 1.18 TAF out of 54.06 TAF;
+}
+/** R18: CVP Users: Friant-Kern Canal, County of Fresno, Lower Tule River ID, Pixley ID, portion
+of Rag Gulch, Ducor, County of Tulare, most of Delano Earlimart, Exeter, Ivanhoe, Lewis Cr.,
+Lindmore, Lindsay-Strathmore, Porterville, Sausalito, Stone Corral, Tea Po **/
+define R18_FCL1_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R18_FCL1_AW { R18_FCL1_AW =
+! R18_FCL1_AW:
+! Region: _Other_
+! conversion method: TULARE18
+D18A_C1 * 0.553 * ( 1. - 0.2 ) / ( 1. - 0.1 ) ! Quantity: 364.65 TAF out of 659.45 TAF;
+}
+define R18_FCL2_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R18_FCL2_AW { R18_FCL2_AW =
+! R18_FCL2_AW:
+! Region: _Other_
+! conversion method: TULARE18
+D18A_C2 * 0.543 * ( 1. - 0.2 ) / ( 1. - 0.1 ) ! Quantity: 565.2 TAF out of 1041.47 TAF;
+}
+define R18_F215_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R18_F215_AW { R18_F215_AW =
+! R18_F215_AW:
+! Region: _Other_
+! conversion method: TULARE18
+D18A_215 * 0.425 * ( 1. - 0.2 ) / ( 1. - 0.1 ) ! Quantity: 22.95 TAF out of 54.06 TAF;
+}
+/** R20: CVP Users: Friant-Kern Canal. Shafter-Wasco, S. San Joaquin **/
+define R20_FCL1_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R20_FCL1_AW { R20_FCL1_AW =
+! R20_FCL1_AW:
+! Region: _Other_
+! conversion method: TULARE20
+D18A_C1 * 0.223 * ( 1. - 0.15 ) / ( 1. - 0.1 ) ! Quantity: 147 TAF out of 659.45 TAF;
+}
+define R20_FCL2_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R20_FCL2_AW { R20_FCL2_AW =
+! R20_FCL2_AW:
+! Region: _Other_
+! conversion method: TULARE20
+D18A_C2 * 0.086 * ( 1. - 0.15 ) / ( 1. - 0.1 ) ! Quantity: 89.6 TAF out of 1041.47 TAF;
+}
+define R20_F215_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R20_F215_AW { R20_F215_AW =
+! R20_F215_AW:
+! Region: _Other_
+! conversion method: TULARE20
+D18A_215 * 0.07 * ( 1. - 0.15 ) / ( 1. - 0.1 ) ! Quantity: 3.78 TAF out of 54.06 TAF;
+}
+/** R21B: CVP Users: Arvin Edison **/
+define R21B_FCL1_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_FCL1_AW { R21B_FCL1_AW =
+! R21B_FCL1_AW:
+! Region: _Other_
+! conversion method: TULARE
+D18A_C1 * 0.061 * ( 1. - 0.05 ) / ( 1. - 0.01 ) ! Quantity: 40 TAF out of 659.45 TAF;
+}
+define R21B_FCL2_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_FCL2_AW { R21B_FCL2_AW =
+! R21B_FCL2_AW:
+! Region: _Other_
+! conversion method: TULARE
+D852_ILWB_EWA * 0.25 * ( 1. - 0.05 ) / ( 1. - 0.01 ) ! Multiplier: 0.25;
++ D859_DW_EWA * 0.25 * ( 1. - 0.05 ) / ( 1. - 0.01 ) ! Multiplier: 0.25;
++ I852_ILWB_EWA * -0.25 * ( 1. - 0.05 ) / ( 1. - 0.01 ) ! Multiplier: -0.25;
++ I852_WTS * -0.25 * ( 1. - 0.05 ) / ( 1. - 0.01 ) ! Multiplier: -0.25;
++ I859_DWEX_EWA * -0.25 * ( 1. - 0.05 ) / ( 1. - 0.01 ) ! Multiplier: -0.25;
++ D18A_C2 * 0.299 * ( 1. - 0.05 ) / ( 1. - 0.01 ) ! Quantity: 311.68 TAF out of 1041.47 TAF;
+}
+define R21B_F215_AW { lower unbounded upper unbounded kind 'Delivery-CVPM' units 'CFS'}
+goal set_R21B_F215_AW { R21B_F215_AW =
+! R21B_F215_AW:
+! Region: _Other_
+! conversion method: TULARE
+D18A_215 * 0.46 * ( 1. - 0.05 ) / ( 1. - 0.01 ) ! Quantity: 24.87 TAF out of 54.06 TAF;
+}

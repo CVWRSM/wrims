@@ -1,0 +1,48 @@
+! bounds_cycle1.wresl
+! Edward Chang
+! 6/28/2000
+! Joint Model
+! This file defines bounds within the San Joaquin basin for cycle 1 only (San Joaquin System)
+! Revised by C. Hsu, 5/3/03, USBR, for review and documentation project 
+!#############################################################################################
+/*
+This code bounds decision variables for cycle 1 only
+*/
+! DMC VAMP at expense of MP Exchange
+goal setC607BVAMPcycle1 { C607BVAMP = 0. }        
+! New Melones water quality release
+goal setC10WQcycle1 { C10WQ = 0. }      
+! New Melones dissolved oxygen release
+goal setC10DOcycle1 { C10DO = 0. }      
+! New Melones mainstem VAMP release
+goal setC10vamp_mcycle1 { C10vamp_m = 0. }  
+! New Melones Modesto transfer release
+goal setC10vamp_tcycle1 { C10vamp_t = 0. }  
+! Don Pedro VAMP release
+goal setC81vampcycle1 { C81vamp = 0. }  
+! Don Pedro VAMP release
+goal setC81stanvampcycle1 { C81_stan_vamp = 0. }  
+! McClure VAMP release
+goal setC20vampcycle1 { C20vamp = 0. }  
+! February Thru June 1995 WQCP Vernalis Minflow release
+goal setC10MINcycle1 { C10MIN = 0. }    
+! McClure minflow release
+goal setC20MINcycle1 { C20MIN = 0. }    
+! New Melones RPA release
+goal setC10RPAcycle1 { C10RPA = 0. }    
+! New Melones instream release
+!goal setC10INSTREAMcycle1 { C10INSTREAM = 0. }    
+! Debt is incurred in cycle 5 but payment is not made until cycle 6 
+goal setD530_VAMP {D530_VAMP = 0.}          
+
+/*
+VAMP book-keeping
+*/
+! VAMP April release from Merced ID
+goal setMercedIDaddAprc1 { MercedIDaddApr =  0. }
+! VAMP April release from OID
+goal setOIDaddAprc1 { OIDaddApr = 0. }
+! VAMP April release from Exchange Contractors
+goal setExchangeaddAprc1 { ExchangeaddApr = 0. }
+! VAMP April release from MID/TID
+goal setMIDTIDaddAprc1 { MIDTIDaddApr = 0. }

@@ -1,0 +1,97 @@
+initial {
+
+	const option_A { 4 }
+
+}
+
+sequence CYCLE1 {
+    model   fiRst
+    order   1
+
+}
+
+sequence CYCLE2 {
+    model   second
+    order   2
+
+}
+	
+model first { 
+
+	define X { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define Y { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+	goal g0 { x + y < 100 }
+  
+	if int(option_A)==1 {
+		
+		include 'goalX1.wresl' 
+		svar k { value 1 }
+		svar m { value 11 }
+		include 'goalY1.wresl' 	
+		dvar d { upper 1 kind 'na' units 'na' }
+		alias al { x+100 }
+		timeseries ts1 { name 'v1' kind 'partc' units 'taf'}		
+	} 
+	elseif int(option_A)==2 {
+	
+		include 'goalX2.wresl'
+		svar k { value 2 }
+		svar m { value 22 }
+		include 'goalY2.wresl' 	
+		dvar d { upper 2 kind 'na' units 'na' }
+		alias al { x+200 }
+		timeseries ts1 { name 'v2' kind 'partc' units 'taf'}
+	}
+	elseif int(option_A)==3 {
+	
+		include 'goalX3.wresl'
+		svar k { value 3 }
+		svar m { value 33 }
+		include 'goalY3.wresl' 
+		dvar d { upper 3 kind 'na' units 'na' }
+		alias al { x+300 }
+		timeseries ts1 { name 'v3' kind 'partc' units 'taf'}
+	}
+	elseif int(option_A)==4 {	
+	
+		include 'goalX4.wresl'
+		svar k { value 4 }
+		svar m { value 44 }
+		include 'goalY4.wresl' 
+		dvar d { upper 4 kind 'na' units 'na' }
+		alias al { x+400 }		
+		timeseries ts1 { name 'v4' kind 'partc' units 'taf'}
+		
+	}
+	else {
+	
+		svar k { value 5 }
+		svar m { value 55 }		
+		
+	}
+ 
+	svar tssv { value k }
+	!alias alias_ts { ts }
+		
+	objective obj {
+		[x, 5] 
+		[y, 5] 
+		[d, 5] 
+	}
+  
+}
+
+model second {
+
+	dvar x { std kind 'na' units 'na' }
+	dvar y { std kind 'na' units 'na' }
+	goal gx { x = 3 }
+	goal gy { y = 3 }
+	! svar alias_cycle1 { value al[first] }
+	svar ts_cycle1 { value tssv[first] }
+
+	objective obj {
+		[x, 5] 
+	}
+}

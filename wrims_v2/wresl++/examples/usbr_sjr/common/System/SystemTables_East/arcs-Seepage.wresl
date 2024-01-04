@@ -1,0 +1,175 @@
+
+
+/*
+CALSIM III SYSTEM FILE
+ARCS-SEEPAGE.WRESL
+
+
+NAMING TAKES THE FOLLOWING FORM:
+SG_{CalSim_3 Node}_{corresponding C2VSIM Groundwater Node}
+
+positive seepage = gaining stream
+negative seepage = loosing stream
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+!define     {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!C2VSIM Element Node    C2VSIM River Node
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear Creek      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_BCK040_741    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!741    105
+define SG_BCK035_740    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!740    106
+define SG_BCK031_739    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!739    107
+define SG_BCK024_738    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!738    108
+define SG_BCK017_737    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!737    109
+define SG_BCK010_736    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!736    110
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Calaveras River     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_CLV035_564    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!564    161
+define SG_CLV028_563    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!563    162
+define SG_CLV023_562    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!562    163
+define SG_CLV016_561    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!561    164
+define SG_CLV010_560    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!560    165
+define SG_CLV004_559    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!559    166
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla Bypass/Eastside Bypass !!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_EBP016_819    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!819    76
+define SG_EBP030_785    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!785    87
+define SG_EBP042_750    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!750   100
+define SG_EBP048_729    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!729   111
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_CHW031_792    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!792    80
+define SG_CHW028_791    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!791    81
+define SG_CHW024_790    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!790    82
+define SG_CHW021_789    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!789    83
+define SG_CHW017_788    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!788    84
+define SG_CHW011_787    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!787    85
+define SG_CHW006_786    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!786    86
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deadman Creek   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_DED044_757    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!757    93
+define SG_DED038_756    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!756    94
+define SG_DED035_755    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!755    95
+define SG_DED032_754    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!754    96
+define SG_DED025_753    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!753    97
+define SG_DED019_752    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!752    98
+define SG_DED010_751    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!751    99
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Fresno River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_FRS045_826    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!826    69
+define SG_FRS039_825    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!825    70
+define SG_FRS036_824    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!824    71
+define SG_FRS032_823    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!823    72
+define SG_FRS025_822    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!822    73
+define SG_FRS020_821    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!821    74
+define SG_FRS016_820    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!820    75
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Merced River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_MCD052_701    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!701    116
+define SG_MCD048_700    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!700    117
+define SG_MCD042_699    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!699    118
+define SG_MCD036_698    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!698    119
+define SG_MCD028_697    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!697    120
+define SG_MCD021_696    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!696    121
+define SG_MCD014_695    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!695    122
+define SG_MCD009_694    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!694    123
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Joaquin River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_SJR263_880    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!880    54  
+define SG_SJR256_879    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!879    55  
+define SG_SJR249_878    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!878    56  
+define SG_SJR242_877    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!877    57  
+define SG_SJR235_876    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!876    58  
+define SG_SJR227_875    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!875    59  
+define SG_SJR221_874    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!874    60  
+define SG_SJR214_873    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!873    61  
+define SG_SJR198_858    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!858    64  
+define SG_SJR192_843    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!843    65  
+define SG_SJR185_829    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!829    66  
+define SG_SJR180_818    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!818    67  
+define SG_SJR173_798    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!798    68/77/78  
+define SG_SJR166_784    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!784    79/88/89  
+define SG_SJR157_769    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!769    90  
+define SG_SJR152_768    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!768    91  
+define SG_SJR145_749    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!749    92/101/102  
+define SG_SJR141_728    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!728    103 
+define SG_SJR134_715    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!715    104/112/113 
+define SG_SJR123_702    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!702    114 
+define SG_SJR116_693    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!693    115/124/125 
+define SG_SJR111_683    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!683    126 
+define SG_SJR106_671    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!671    127/130/131 
+define SG_SJR096_660    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!660    132 
+define SG_SJR090_649    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!649    133 
+define SG_SJR081_633    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!633    134/143/144 
+define SG_SJR072_615    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!615    145/154/155 
+define SG_SJR062_605    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!605    156 
+define SG_SJR056_592    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!592    157 
+define SG_SJR048_576    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!576    158 
+define SG_SJR042_567    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!567    159 
+define SG_SJR038_558    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!558    160/167/168 
+define SG_SJR033_553    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!553    169 
+define SG_SJR028_543    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!543    170 
+define SG_SJR023_540    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!540    171 
+define SG_SJR022_520    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!520    172/199/200 
+define SG_SJR013_534    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!534    201 
+define SG_SJR009_533    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!533    202
+define SG_SJR006_532    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!532    203
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stanislaus River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_STS058_623    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!623    146
+define SG_STS053_622    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!622    147
+define SG_STS050_621    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!621    148
+define SG_STS043_620    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!620    149
+define SG_STS036_619    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!619    150
+define SG_STS030_618    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!618    151
+define SG_STS020_617    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!617    152
+define SG_STS011_616    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!616    153
+define SG_WDWRD         {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}
+! Woodward Reservoir seepage - repeating monthly rates presented in a 
+! timeseries input to make forecasting easier in Stanislaus_ops.wresl
+define SG_WDWRD_seep    {timeseries kind 'SEEPAGE' units 'taf'}
+define SG_UFC000_599    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Tuolumne River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define SG_TUO053_657    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!657    135
+define SG_TUO047_656    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!656    136
+define SG_TUO043_655    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!655    137
+define SG_TUO036_654    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!654    138
+define SG_TUO030_653    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!653    139
+define SG_TUO022_652    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!652    140
+define SG_TUO015_651    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!651    141
+define SG_TUO010_650    {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}!650    142
+define SG_MDSTO_644     {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}
+define SG_TRLCH_666     {lower unbounded upper unbounded kind 'CHANNEL-SEEPAGE' units 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! COMPATIBILITY WITH CALSIM-II     !!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+! Madera Canal
+define D_MDC006_MDCLOS  {std kind 'channel-seepage' units 'cfs'} !L590
+
+
+

@@ -1,0 +1,19 @@
+define DC_trigger {timeseries kind 'direct-circulation' units 'none'}
+goal set_lim_DC1 {C848_TVC_DC < DC_trigger*10000.}
+goal set_lim_DC2 {C851_SW_DC < DC_trigger*10000.}
+goal set_lim_DC3 {C855_CVC_DC < DC_trigger*10000.}
+
+!Direct Circulation Algorithm
+
+!Limit Arvin-Edison transfer to available Friant surface deliveries from Tule south
+!goal lim_C925_to_C905 {C925 < C905}
+
+!TURN OFF DC
+!GOAL DC_OFF {C848_TVC_DC + C851_SW_DC < 0}
+
+!Route direct diversion
+goal lim_C925_to_TVC {C861_AEI_R_DC + C855_CVC_R_DC + C851_SW_R_DC = C848_TVC_DC + C851_SW_DC + C855_CVC_DC}
+goal local_div_TVC_DC {C848_TVC_DC < D931A + D931B}
+goal local_div_SW_DC {C851_SW_DC < D936}
+goal mix_div_CVC_DC {C855_CVC_DC < 0.1*C920}
+

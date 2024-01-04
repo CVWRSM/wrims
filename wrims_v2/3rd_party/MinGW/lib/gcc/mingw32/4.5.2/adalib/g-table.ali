@@ -1,0 +1,105 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnvnnnnnnvnnnnnnnnnnnnnnnnnn
+
+U gnat.table%b		g-table.adb		c30bc584 NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.unchecked_conversion%s
+W gnat%s		gnat.ads		gnat.ali
+W system%s		system.ads		system.ali
+W system.memory%s	s-memory.adb		s-memory.ali
+
+U gnat.table%s		g-table.ads		39ad50a4 BN EB NE OL PK GE
+W gnat%s		gnat.ads		gnat.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-unccon.ads		20070406091342 51e09df2
+D gnat.ads		20050905075126 96410e68
+D g-table.ads		20090506092936 afec5ecc
+D g-table.adb		20090506092936 436f58ca
+D system.ads		20090410155748 b8eb58c3
+D s-memory.ads		20090417131548 c68306b3
+X 1 ada.ads
+16K9*Ada 19e8 5|37r6 68r31 69r31
+X 2 a-unccon.ads
+20v14*Unchecked_Conversion 5|37w10 68r35 69r35
+X 3 gnat.ads
+36K9*GNAT 39e9 4|58r9 206r5 5|39r14 331r5
+X 4 g-table.ads
+51+9 Table_Component_Type 107r43 179r32 192r15 5|94r32 241r16 294r34
+52I9 Table_Index_Type 54r22 107r13 109r37 142r25 159r21 162r34 191r15 199r50
+. 5|77r50 87r14 96r17 176r25 178r14 240r16 250r36 288r37 316r34
+54*4 Table_Low_Bound{52I9} 109r18 159r41 5|41r39 230r37
+55i4 Table_Initial{positive} 5|152r25
+56i4 Table_Increment{natural} 5|199r42
+58k14*Table 3|36k9 4|51z9 52z9 54z4 55z4 56z4 206l10 206e15 5|39b19 331l10
+. 331t15
+106A9*Table_Type(51+9)<52I9> 109r6 187r37 5|103r37 207r18 250r9
+108A12*Big_Table_Type{106A9}<52I33> 117r33
+117P9*Table_Ptr(108A12) 118r8 122r20 5|68r57 69r66
+122p4*Table{117P9} 5|125r25 126m7 209r10 210m10 213m10 214r53 218r31 250r21
+. 255r35 297m13 308m10
+129b4*Locked{boolean} 5|190r29
+135U14*Init 5|147b14 170l8 170t12 330r4
+142V13*Last{52I9} 143r19 5|176b13 179l8 179t12
+149U14*Release 5|228b14 233l8 233t15
+155U14*Free 5|123b14 128l8 128t12
+159*4*First{52I9}
+162U14*Set_Last 162>24 163r19 5|296r13 305r13 316b14 327l8 327t16
+162*24 New_Val{52I9} 5|316b24 318r19 319r31 321r31
+171U14*Increment_Last 172r19 5|134b14 141l8 141t22
+175U14*Decrement_Last 176r19 5|114b14 117l8 117t22
+179U14*Append 179>22 180r19 5|94b14 97l8 97t14 106r10
+179*22 New_Val{51+9} 5|94b22 96r50
+187U14*Append_All 187>26 5|103b14 108l8 108t18
+187a26 New_Vals{106A9} 5|103b26 105r16 106r18
+190U14*Set_Item 191>7 192>7 193r19 5|96r7 239b14 310l8 310t16
+191*7 Index{52I9} 5|240b8 277r51 296r23 297r20 304r22 305r23 308r17
+192*7 Item{51+9} 5|241b8 286r45 287r18 294r58 308r27
+199V13*Allocate{52I9} 199>23 200r19 5|77b13 88l8 88t16
+199i23 Num{integer} 5|77b23 81r30
+X 5 g-table.adb
+41i4 Min{integer} 151r19 152r19 153r25 201r20 206r24
+44i4 Max{integer} 83r21 138r21 152m7 153r19 189r10 192r16 201m13 206r18 231m7
+. 250r54 277r60 288r55 323r24
+47i4 Length{integer} 127m7 148r40 153m7 160r23 198m13 199r26 200r26 201r26
+. 218r10 230m7
+51i4 Last_Val{integer} 78r38 81m7 81r19 83r10 96r35 116m7 116r19 136m7 136r19
+. 138r10 151m7 178r32 189r16 192r22 230r17 231r17 304r31 318r30 319m10 321m10
+. 323r13
+58U14 Reallocate 84r10 139r10 168r10 185b14 222l8 222t18 232r7 324r13
+68V13 To_Address[2|20]{6|64M9} 125r13 214r41
+69V13 To_Pointer[2|20]{4|117P9} 210r19 214r12
+78i7 Old_Last{integer} 87r32
+105i11 J 106r28
+148i7 Old_Length{integer} 160r10
+186m7 New_Size{7|48M9} 205m7 210r38 212r13 215r41
+249A15 Allocated_Table_T{4|106A9}<4|52I33> 260r25
+254m7 Allocated_Table_Address{6|64M9} 263r39
+260a7 Allocated_Table{249A15} 261m27 262r43 263m11 286m18 288m20
+277b7 Need_Realloc{boolean} 285r10
+294*13 Item_Copy{4|51+9} 297r30
+X 6 system.ads
+37K9*System 5|34w6 34r25 35r6 35r25 254r42 6|197e11
+64M9*Address 5|68r68 69r57 254r49
+68N4*Storage_Unit 5|207r46
+74V13*"<"{boolean} 5|287r31
+75V13*"<="{boolean} 5|286r42
+X 7 s-memory.ads
+45K16*Memory 5|35w13 35r32 7|107e18
+48M9*size_t 5|186r18 206r9
+53V13*Alloc{6|64M9} 5|210r31
+68U14*Free 5|125r7
+76V13*Realloc{6|64M9} 5|214r24
+77m7 Ptr{6|64M9} 5|214r33
+78m7 Size{48M9} 5|215r33
+

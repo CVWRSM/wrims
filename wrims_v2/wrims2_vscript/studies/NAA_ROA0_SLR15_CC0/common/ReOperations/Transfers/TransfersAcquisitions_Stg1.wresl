@@ -1,0 +1,146 @@
+! TransfersAcquisitions_Stg1.wresl
+!
+!******************************************************************************
+! In Stage 1 the SWP and CVP projects are the purchasers - the supplies acquired under this stage
+!    are banked in project storage facilties and/or delivered according to the governing rules of
+!    SWP and CVP project operations.
+!
+! The following sources of supply are permitted for Stage 1
+!   - Yuba; GW supplies are generated in the lower Yuba River region at I204;
+!           SW supplies are generated in reoperation of NBB under LYRA - transferrable amount reserved in D230_LYRA;
+!   - Feather; both supply types are generated at Thermalito at D7B from sources in the FRSA
+!   - Sac Valley; both supply types are generated at the Sac R at D114, D122 from sources in the Colusa Basin
+!   - Sac Other; both supply types are generated at the Sac R at D128 from sources along the Sacramento River
+!******************************************************************************
+!
+! Read in Desired Stage 1 Acquisitions from Priority Table and
+! Compute Stage 1 Acquisitions from Priority Table and check against Max
+
+!******************************************************************************
+!define SaltCostFact_stg1 {select ItemValue from WTS_JobControl where Item=11.}
+define SJRExchLossFact {select ItemValue from WTS_JobControl where Item=22.}
+
+!******************************************************************************
+! Do SOD first
+! Assume Target acquisition based on SJR Exchange Loss Factor
+define Tot_Stg1_SJRTacq {value Total_Stg1_Targ/(1.-SJRExchLossFact)}
+
+!******************************************************************************
+! DMC acquisitions deactivated for Stage 1
+define DMCGW_Stg1 {value 0.}
+define DMCCI_Stg1 {value 0.}
+
+! Do California Aqueduct regions
+!define CAGW_Dsr1 {select CA_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SJRTacq use linear}
+!define CACI_Dsr1 {select CA_CI from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SJRTacq use linear}
+!define WTS_Dsr1_SJRLmt {value min(Tot_Stg1_SJRTarg/(1.-SJRExchLossFact),
+!                                min(CAGW_Dsr1,CAGW_Max1)
+!                              + min(CACI_Dsr1,CACI_Max1))}
+!define CAGW_Stg1 {value min(CAGW_Dsr1,CAGW_Max1,
+!                            max(WTS_Dsr1_SJRLmt-min(CACI_Dsr1,CACI_Max1),0.) )}
+!define CACI_Stg1 {value min(CACI_Dsr1,CACI_Max1,
+!                            max(WTS_Dsr1_SJRLmt-min(CAGW_Dsr1,CAGW_Max1),0.) )}
+define CAGW_Stg1 {value 0.}
+define CACI_Stg1 {value 0.}
+
+! Calc SOD Total
+define TOTAL_SJRStg1 {value DMCGW_Stg1 + DMCCI_Stg1 + CAGW_Stg1 + CACI_Stg1}
+define WTS_SJR_Stg1 {alias TOTAL_SJRStg1 kind 'Stage1-Acquisition' units 'taf'}
+
+!******************************************************************************
+! Do NOD second
+! Assume Target acquisition based on Delta Carriage Water and Loss Factor
+! and considering what has already been acquired SOD
+!
+! get update on use of SJV supplies
+!define CAGW_temp1 {select CA_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SJRTacq use maximum}
+!define CACI_temp1 {select CA_CI from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SJRTacq use maximum}
+define CAGW_temp1 {value 0.}
+define CACI_temp1 {value 0.}
+!
+define Tot_Stg1_SACTacq {value Total_Stg1_Targ/(1.-SaltCostFact_stg1)
+                             - TOTAL_SJRStg1*(1.-SJRExchLossFact)/(1.-SaltCostFact_stg1) !adjust for SOD which has already been considered
+                             + CAGW_temp1 + CACI_temp1}                                  !shift total since SOD is complete
+
+!******************************************************************************
+! Because the maximum for many of these terms varies apart from the maximum included in the
+!   Acquisition Table - determine initial amounts and a modification to SACTacq that will
+!   allow for proper acquistion selection
+define YubaGW_Dsr1_       {select Yuba_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+define YubaSW_Dsr1_       {select Yuba_SW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+define FeathGW_Dsr1_    {select Feather_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+!define FeathCI_Dsr1_    {select Feather_CI from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+define FeathCI_Dsr1_    {value 0.}
+define SacGW_Dsr1_      {select SacValley_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+!define SacCI_Dsr1_      {select SacValley_CI from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+define SacCI_Dsr1_      {value 0.}
+define SacOthGW_Dsr1_   {select SacOther_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+!define SacOthCI_Dsr1_   {select SacOther_CI from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+define SacOthCI_Dsr1_   {value 0.}
+define AmerRGW_Dsr1_    {select AmerR_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTacq use linear}
+! Calculated adjusted Acquistion Target
+define Tot_Stg1_SACTadj {value Tot_Stg1_SACTacq
+                             + max(YubaGW_Dsr1_-YubaGW_Max1,0.)
+                             + max(YubaSW_Dsr1_-YubaSW_Max1,0.)
+                             + max(FeathGW_Dsr1_-FeathGW_Max1,0.)
+                             + max(FeathCI_Dsr1_-FeathCI_Max1,0.)
+                             + max(SacGW_Dsr1_-SacGW_Max1,0.)
+                             + max(SacCI_Dsr1_-SacCI_Max1,0.)
+                             + max(SacOthGW_Dsr1_-SacOthGW_Max1,0.)
+                             + max(SacOthCI_Dsr1_-SacOthCI_Max1,0.)
+                             + max(AmerRGW_Dsr1_-AmerRGW_Max1,0.)}
+
+!******************************************************************************
+! Yuba GW
+define YubaGW_Dsr1 {select Yuba_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define YubaGW_Stg1 {value min(YubaGW_Dsr1,YubaGW_Max1)}
+! Yuba SW
+define YubaSW_Dsr1 {select Yuba_SW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define YubaSW_Stg1 {value min(YubaSW_Dsr1,YubaSW_Max1)}
+! Feather GW
+define FeathGW_Dsr1 {select Feather_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define FeathGW_Stg1 {value min(FeathGW_Dsr1,FeathGW_Max1)}
+! Feather CI
+!define FeathCI_Dsr1 {select Feather_CI from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define FeathCI_Dsr1 {value 0.}
+define FeathCI_Stg1 {value min(FeathCI_Dsr1,FeathCI_Max1)}
+! Sac Valley GW
+define SacGW_Dsr1 {select SacValley_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define SacGW_Stg1 {value min(SacGW_Dsr1,SacGW_Max1)}
+! Sac Valley CI
+!define SacCI_Dsr1 {select SacValley_CI from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define SacCI_Dsr1 {value 0.}
+define SacCI_Stg1 {value min(SacCI_Dsr1,SacCI_Max1)}
+! Sac Other GW
+define SacOthGW_Dsr1 {select SacOther_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define SacOthGW_Stg1 {value min(SacOthGW_Dsr1,SacOthGW_Max1)}
+! Sac Other CI
+!define SacOthCI_Dsr1 {select SacOther_CI from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define SacOthCI_Dsr1 {value 0.}
+define SacOthCI_Stg1 {value min(SacOthCI_Dsr1,SacOthCI_Max1)}
+! American R GW
+define AmerRGW_Dsr1 {select AmerR_GW from WTS_Stage1_AcquisitionScheme given Total=Tot_Stg1_SACTadj use linear}
+define AmerRGW_Stg1 {value min(AmerRGW_Dsr1,AmerRGW_Max1)}
+
+! Calc NOD Total
+define TOTAL_SACStg1 {value YubaGW_Stg1 + YubaSW_Stg1 + FeathGW_Stg1 + FeathCI_Stg1 + SacGW_Stg1 + SacCI_Stg1 + SacOthGW_Stg1 + SacOthCI_Stg1 + AmerRGW_Stg1}
+define WTS_SAC_Stg1 {alias TOTAL_SACStg1 kind 'Stage1-Acquisition' units 'taf'}
+
+!******************************************************************************
+! Calc Total and any Adjustment for output purposes
+define WTS_Total_Stg1 {alias TOTAL_SACStg1 + TOTAL_SJRStg1 kind 'Stage1-Acquisition' units 'taf'}
+define WTS_Stg1Targ_adj {alias Total_SACStg1*(1.-SaltCostFact_stg1) + Total_SJRStg1*(1.-SJRExchLossFact)
+                             - Total_Stg1_Targ kind 'Stage1-Target-Adjustment' units 'taf'}
+
+
+define YubaGW_Stg1_dv   {alias YubaGW_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define YubaSW_Stg1_dv   {alias YubaSW_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define FeathGW_Stg1_dv  {alias FeathGW_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define FeathCI_Stg1_dv  {alias FeathCI_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define SacGW_Stg1_dv    {alias SacGW_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define SacCI_Stg1_dv    {alias SacCI_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define SacOthGW_Stg1_dv {alias SacOthGW_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define SacOthCI_Stg1_dv {alias SacOthCI_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define AmerRGW_Stg1_dv  {alias AmerRGW_Stg1 kind 'Stage1-Acquisition' units 'taf'}
+define Stg1_SACTacq_dv  {alias Tot_Stg1_SACTacq kind 'Stage1-Acquisition' units 'taf'}
+define Stg1_SACTadj_dv  {alias Tot_Stg1_SACTadj kind 'Stage1-Acquisition' units 'taf'}

@@ -1,0 +1,20 @@
+! This file sets the adjustments to minimum instream flows bsaed on daily variations of unregulated flow toe better match system representation with USRDOM.
+
+!BEND BRIDGE
+
+
+!RED BLUFF
+define ts_adj_rb {timeseries kind 'FLOW' units 'CFS'} !Max adjustment specified as timeseries
+define flow_adj_rb {alias ts_adj_rb kind 'FLOW' units 'CFS'}
+goal set_da_adj_rb {C112_MIF_DAILY < ts_adj_rb}
+
+!HAMILTON CITY
+define ts_adj_hc {timeseries kind 'FLOW' units 'CFS'} !Max adjustment specified as timeseries
+define flow_adj_hc {alias ts_adj_hc kind 'FLOW' units 'CFS'}
+goal set_da_adj_hc {C114_MIF_DAILY < ts_adj_hc}
+
+
+!WILKINS SLOUGH
+define ts_adj_wlk {timeseries kind 'FLOW' units 'CFS'} !Max adjustment specified as timeseries
+define flow_adj_wlk {alias ts_adj_wlk kind 'FLOW' units 'CFS'}
+goal set_da_adj_wlk {C129_MIF_DAILY < ts_adj_wlk}

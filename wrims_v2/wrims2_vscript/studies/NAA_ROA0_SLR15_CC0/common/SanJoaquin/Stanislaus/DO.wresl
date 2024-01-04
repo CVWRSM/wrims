@@ -1,0 +1,60 @@
+! DO.wresl
+! Edward Chang
+! 5/01/2000
+! DWR
+! This code computes and meets the required releases for Stanislaus Dissolved Oxygen requirement.
+! Revised by C. Hsu, 3/10/03, USBR, for review and documentation project
+!####################################################################################
+
+/*
+Dissolved Oxygen requirement from a table
+month   Req      ReqCrit
+1       0          0
+2       0          0
+3       0          0
+4       0          0
+5       0          0
+6       0          0
+7       0          0
+8       0          0
+9       15.2       11.9
+10      16.3       12.3
+11      17.4       12.3
+12      14.8       11.9
+*/
+! Select DO requirement from lookup table
+define DO_req {
+   case ConfCrit {
+   condition  NMforecast1 < 940.
+        select ReqCrit from DO where month = month
+   }
+   case otherwise {
+   condition always
+        select Req from DO where month = month
+   }
+}
+define DO_req_dv {alias DO_req kind 'DO-flow-req' units 'taf'}
+
+! Define DO flow release requirement (New Melones)
+define DO_req_rel {
+    case JunthruSep {
+        condition   month >= jun .and. month <= sep
+        value       max(    0.,
+                            DO_req * TAF_cfs - C520[SJR_WQ1]
+                            ) }
+    case otherwise {
+        condition   always
+        value       0. }
+        }
+! DO release requirement for June-September window
+goal releaseforDO {
+    lhs C10DO
+    case JunthruSep {
+        condition   month >= jun .and. month <= sep
+        rhs      DO_req_rel
+        lhs<rhs penalty 0 }
+     case otherwise {
+          condition always
+          rhs       0.
+          lhs<rhs   penalty 0 }
+        }

@@ -1,0 +1,106 @@
+/*weir_steps_monthops.wresl
+
+This file is the section of Fremont and Sacramento weirs extracted from the weir_steps.wresl
+file. It will be run only during cycle 6 and then these weirs will be
+operated on daily approach as described in code of file weir_steps_dailyops.wresl
+
+*******************************************************************************
+
+Sacramento River - Butte & Colusa Basin, and Weir Overflow Operation.
+Weir and Overflow ratings are estimates and therefore subject to change.
+River Miles based on miles above Collinsville.
+
+
+*******************************************************************************
+*******************************************************************************
+NOTES:
+
+- Weir flows are significantly influenced by backwater effects and weir submergence,
+  making it difficult to measure or estimate weir spills.
+
+- To simplify weir and overflow operation, the flow arcs are defined by a simple
+  linear equation.  This should not be a significant issue in a real application,
+  since actual weir flow is not terribly important output for a monthly time step.
+  However, a reasonable representation of weir flow is more important for weekly
+  and shorter time steps, especially daily; therefore, future revisions may be necessary.
+
+- Since estimates of the river flow at weir crest elevation are reasonably known,
+  this point was fixed in the analysis.  This approach was used for all weirs
+  except the gated Sacramento Weir, as noted below.
+
+- The weir flows are computed from the inflows to the nodes before taking deliveries
+  out since this is the order that it's done in PROSIM.  Weir flows are not
+  available to the demands at the nodes.
+
+Sacramento Weir Flow to Yolo Bypass
+- The Sacramento Weir is the only weir with operating gates (48).  The weir rating curve
+  assumes all 48 gates are open.
+- It appears that PROSIM also assumes the gates remain open at all times.  This operation
+  will cause spills more frequently than would normally occur.  Under actual
+  current operation, the gates remain closed during normal (non-flood) operation and are
+  not opened until stages at the "I" Street gage exceed or are forecasted to exceed 27.5 feet.
+  The 48 gates are then opened, as needed, to prevent stages greater than 29.0 ft.
+  However, the complication is that the gates must remain open until stages in the river
+  and bypass drop below the weir crest (river flows less than 37,000 cfs), when the gates
+  can be raised.
+- When the Sacramento Weir gates are opened during a flood, water flows upstream
+  from the American River to the weir.  Therefore, the weir arc is included at
+  the junction of the American River (Node 166).
+- The weir logic, below, is a very simplified representation of weir gate operation,
+  refinements may be required during model calibration.
+
+*******************************************************************************
+*******************************************************************************
+
+
+This file contains statements that set up the following weirs and overflows:
+- Fremont Weir Overflow to Yolo Bypass, River Mile 82
+- Sacramento Weir Overflow to Yolo Bypass, River Mile 63       */
+
+! *******************************************************************************
+! Estimated Overflow Rating for Fremont Weir to the Yolo Bypass
+! (River Mile 82), DSA 69.
+
+! Estimated Sacramento River flow at weir crest elevation is 62,000 cfs
+define C160_0 {upper 62000. kind 'flow-channel' units 'cfs'}         ! segment from 0 to 62000
+define C160_1 {upper unbounded kind 'flow-channel' units 'cfs'}     ! segment above 62000
+goal sumN160in {C134 + C137 + C223 + R160 = C160_0 + C160_1 }
+
+! slopes of Fremont Weir overflow curves for each segment of Sac River flow
+define int_fweir {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+define fwslope0 {value 0.0}
+define fwslope1 {value 0.79808}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal actfwflow {D160 = fwslope0*C160_0 + fwslope1*C160_1 }
+
+! integer variable to bound segments for proper filling step by step
+goal boundN160in_0 {C160_0 > int_fweir * 62000.}
+goal boundN160in_1 {C160_1 < int_fweir * 9999999.}
+
+define QsacFth {alias C134 + C137 + C223 + R160  kind 'flow-channel' units 'cfs'}
+
+! *******************************************************************************
+! Estimated Overflow Rating for Sacramento Weir to the Yolo Bypass
+! (River Mile 63), DSA 70.
+! See notes at top of file for a discussion of the Sacramento Weir.
+
+! flow in cfs
+define C166_0 {upper 73000. kind 'flow-channel' units 'cfs'}           ! segment from 0 to 73000
+define C166_1 {upper unbounded kind 'flow-channel' units 'cfs'}       ! segment above 73000
+goal sumN166in {C165 + C303 + C308 + I166 - D166B = C166_0 + C166_1}
+
+! slopes of Sacramento Weir overflow curves for each segment of Sac River flow
+define swslope0 {value 0.0}
+define swslope1 {value 0.8738}
+
+! weir flow will be a sum of all the segment's linearized functions
+goal actswflow {D166A = swslope0*C166_0 + swslope1*C166_1 }
+
+! integer variable to bound segments for proper filling step by step
+define int_sweir {INTEGER STD KIND 'INTEGER' UNITS 'NONE'}
+goal boundC166_0 {C166_0 > int_sweir * 73000.}
+goal boundC166_1 {C166_1 < int_sweir * 9999999.}
+
+define Qsac166 {alias C165 + C303 + C308 + I166 - D166B  kind 'flow-channel' units 'cfs'}
+

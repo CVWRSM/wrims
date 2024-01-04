@@ -1,0 +1,32 @@
+! Robert Leaf 10/09/2001
+
+! export_index
+/*
+ Using the Export Based rule for CVP SOD Delivery, Maximum Delivery is computed from the
+ Export Index.  The Export Index (Mar-Aug) is increased by the EOFeb CVP SL over low point target.
+ Then divided by the fraction of Mar-Aug CVP Delivery of total Annual CVP Delivery, thus
+ providing an estimate of Delivery capability associated with the Export Index.
+*/
+
+define init_CVPRuleDrainTar {value 90.}
+
+! Determination of Maximum SOD CVP Delivery
+define Exp_Idx_CVP_adj {
+    case MartoMay {
+            condition month >= MAR .and. month <= MAY
+            value Exp_Idx_CVP_s + S11(PrevFEB)+S11mod - init_CVPRuleDrainTar + jbypass_del + AnnualBanksCVP}
+
+    case JuntoFeb {
+           condition  always
+           value      0 }
+                       }
+
+define Exp_Idx_CVP_adj_io {
+    case MartoMay {
+            condition month >= MAR .and. month <= MAY
+            value Exp_Idx_CVP_s + S11(PrevFEB)+S11mod - init_CVPRuleDrainTar + jbypass_del + AnnualBanksCVP + min(SIO_CVP(PrevFEB), max_return_cvp)}
+
+    case JuntoFeb {
+           condition  always
+           value      0 }
+                       }

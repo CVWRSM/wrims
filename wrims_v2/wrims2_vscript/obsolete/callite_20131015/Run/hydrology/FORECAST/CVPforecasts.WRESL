@@ -1,0 +1,89 @@
+/*This file defines the forecast information used by the CVP.
+  Dustin Jones 01/11/00
+
+  Forecast of Runoff for CVP is defined as: [ Shasta Lake Inflow forecast based on the
+  Sacramento R. component of SRI - Sum of Shasta Lake Inflows (I4) since 1-OCT ] +
+  [ American R. Component of the SRI - Sum of Folsom Lake Inflows (I8 + I17) since 1-OCT ].
+
+  Forecast of Runoff for the CVP NOD is defined as: [ Shasta Lake Inflow forecast based
+  on the Sacramento R. component of SRI - Sum of Shasta Lake Inflows (I4) since 1-OCT ].
+*/
+
+
+! Forecast of Sacramento River Runoff into Shasta Lake for REMAINDER of WATER YEAR
+define frcst_sac {
+       case Febfore {
+           condition  month == FEB
+           select     FEB
+           from       sacramento_runoff_forecast
+           where      wateryear=wateryear }
+       case MARfore {
+           condition  month == MAR
+           select     MAR
+           from       sacramento_runoff_forecast
+           where      wateryear=wateryear }
+       case APRfore {
+           condition  month == APR
+           select     APR
+           from       sacramento_runoff_forecast
+           where      wateryear=wateryear }
+       case MAYfore {
+           condition  month == MAY
+           select     MAY
+           from       sacramento_runoff_forecast
+           where      wateryear=wateryear }
+
+       case JuntoJan {
+           condition  always
+           value      0  }
+       }
+
+
+! Forecast of American River Runoff into Folsom Lake for REMAINDER of WATER YEAR
+define frcst_amr {
+       case Febfore {
+           condition  month == FEB
+           select     FEB
+           from       american_runoff_forecast
+           where      wateryear=wateryear }
+       case MARfore {
+           condition  month == MAR
+           select     MAR
+           from       american_runoff_forecast
+           where      wateryear=wateryear }
+       case APRfore {
+           condition  month == APR
+           select     APR
+           from       american_runoff_forecast
+           where      wateryear=wateryear }
+       case MAYfore {
+           condition  month == MAY
+           select     MAY
+           from       american_runoff_forecast
+           where      wateryear=wateryear }
+       case JUNfore {
+                condition  month == JUN
+                select     JUN
+                from       american_runoff_forecast
+           where      wateryear=wateryear }
+       case JULfore {
+                condition  month == JUL
+                select     JUL
+                from       american_runoff_forecast
+           where      wateryear=wateryear }
+      case AUGfore {
+               condition  month == AUG
+               select     AUG
+               from       american_runoff_forecast
+           where      wateryear=wateryear }
+      case SEPfore {
+                condition  month == SEP
+                select     SEP
+                from       american_runoff_forecast
+           where      wateryear=wateryear }
+
+      case Oct_Jan {
+                condition  always
+                value 0.0 }
+       }
+

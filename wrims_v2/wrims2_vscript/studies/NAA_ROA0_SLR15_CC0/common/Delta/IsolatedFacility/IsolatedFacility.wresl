@@ -1,0 +1,45 @@
+!Isolated Facility Operation
+
+! Isolated Diversion Limits, ready to implement limits in IF diversions as a function of Sac Flows due to fish screens at the IF intake
+define max_IF_cap  {select capacity from IsolatedFacility where month=month}
+define IFBypassPerc   {select minbypass from IsolatedFacility where month=month}
+define IFPercentFlow {select perc_flow from IsolatedFacility where month=month}
+define CCWDmaxIF   {select CCWDmax from IsolatedFacility where month=month}
+
+!Switches that turn IF arcs ON and OFF
+define JonesIFSwitch   {select switch from IsolatedFacilityControl where user = 1}
+define BanksIFSwitch   {select switch from IsolatedFacilityControl where user = 2}
+define CCWDIFSwitch    {select switch from IsolatedFacilityControl where user = 3}
+define TDExports       {select switch from IsolatedFacilityControl where user = 4}
+
+goal setActivateJonesIF { D418_IF  < JonesIFSwitch * 99999.}
+goal setActivateBanksIF { D419_IF  < BanksIFSwitch * 99999.}
+goal setActivateCCWDIF  { D446A    < CCWDIFSwitch * 99999.}
+
+goal MaxHoodDiv { D400 < max_IF_cap }
+goal MaxHoodReq { D400 < C169*IFPercentFlow }
+goal BypassReq  { D400 < C169*(1.-IFBypassPerc) }
+goal MaxCCWDIFDiv { D446A < C169*IFPercentFlow }
+
+
+!Exports only from IF if TD switch is off
+goal setd409zero {D409 < TDExports * 99999.}
+
+!Accounting of IF flow between CVP and SWP
+goal setexportsIF { D400 = D419_IF + D418_IF + D446A}
+
+!CCWD Limit
+goal limitD446A { D446A < D408 + D416 }
+
+!OutputVariables
+!Total Exports
+define TOTAL_EXP  {alias D419 + D418 kind 'FLOW-DELIVERY' UNITS 'CFS'}  !for output only
+
+
+
+
+!INCLUDE '\IFDiversionCriteria.wresl'
+
+
+
+

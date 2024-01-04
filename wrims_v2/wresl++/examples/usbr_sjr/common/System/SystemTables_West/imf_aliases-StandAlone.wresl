@@ -1,0 +1,264 @@
+! IMF @@@
+! Aliases for debugging
+
+
+! (west-side demands)
+define AW_50_PA_A       { alias AW_50_PA  kind 'APPLIED-WATER' units 'cfs'}
+define UD_50_PU_A       { alias UD_50_PU  kind 'URBAN-DEMAND'  units 'cfs'}
+
+/*
+East side stuff...here for west-side-only model...
+define AW_64_XA_A       { alias AW_64_XA  kind 'APPLIED-WATER' units 'cfs'}
+*/
+
+define AW_71_NA1_A      { alias AW_71_NA1 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_NA2_A      { alias AW_71_NA2 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_PA1_A      { alias AW_71_PA1 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_PA2_A      { alias AW_71_PA2 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_PA3_A      { alias AW_71_PA3 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_PA4_A      { alias AW_71_PA4 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_PA5_A      { alias AW_71_PA5 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_PA6_A      { alias AW_71_PA6 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_PA7_A      { alias AW_71_PA7 kind 'APPLIED-WATER' units 'cfs'}
+define AW_71_PA8_A      { alias AW_71_PA8 kind 'APPLIED-WATER' units 'cfs'}
+define UD_71_NU_A       { alias UD_71_NU  kind 'URBAN-DEMAND'  units 'cfs'}
+define UD_71_PU1_A      { alias UD_71_PU1 kind 'URBAN-DEMAND'  units 'cfs'}
+define UD_71_PU2_A      { alias UD_71_PU2 kind 'URBAN-DEMAND'  units 'cfs'}
+
+define AW_72_NA1_A      { alias AW_72_NA1 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_NA2_A      { alias AW_72_NA2 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_PA_A       { alias AW_72_PA  kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_XA1_A      { alias AW_72_XA1 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_XA2_A      { alias AW_72_XA2 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_XA3_A      { alias AW_72_XA3 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_PR1_A      { alias AW_72_PR1 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_PR2_A      { alias AW_72_PR2 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_PR3_A      { alias AW_72_PR3 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_PR4_A      { alias AW_72_PR4 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_PR5_A      { alias AW_72_PR5 kind 'APPLIED-WATER' units 'cfs'}
+define AW_72_PR6_A      { alias AW_72_PR6 kind 'APPLIED-WATER' units 'cfs'}
+define UD_72_NU_A       { alias UD_72_NU  kind 'URBAN-DEMAND'  units 'cfs'}
+define UD_72_PU_A       { alias UD_72_PU  kind 'URBAN-DEMAND'  units 'cfs'}
+
+define AW_73_PA1_A      { alias AW_73_PA1 kind 'APPLIED-WATER' units 'cfs'}
+define AW_73_PA2_A      { alias AW_73_PA2 kind 'APPLIED-WATER' units 'cfs'}
+define AW_73_PA3_A      { alias AW_73_PA3 kind 'APPLIED-WATER' units 'cfs'}
+define AW_73_XA_A       { alias AW_73_XA  kind 'APPLIED-WATER' units 'cfs'}
+define UD_73_NU_A       { alias UD_73_NU  kind 'URBAN-DEMAND'  units 'cfs'}
+
+define AW_90_PA1_A      { alias AW_90_PA1 kind 'APPLIED-WATER' units 'cfs'}
+define AW_90_PA2_A      { alias AW_90_PA2 kind 'APPLIED-WATER' units 'cfs'}
+define UD_90_PU_A       { alias UD_90_PU  kind 'URBAN-DEMAND'  units 'cfs'}
+
+define AW_91_PA_A       { alias AW_91_PA  kind 'APPLIED-WATER' units 'cfs'}
+define AW_91_PR_A       { alias AW_91_PR  kind 'APPLIED-WATER' units 'cfs'}
+
+
+
+! (west-side allocations)
+define perdel_cvpag_sa  { alias perdel_cvpag_s kind 'percent-delivery' units 'none' }
+define perdel_cvpmi_sa  { alias perdel_cvpmi_s kind 'percent-delivery' units 'none' }
+define perdel_cvpex_sa  { alias perdel_cvpex_s kind 'percent-delivery' units 'none' }
+define perdel_cvprf_sa  { alias perdel_cvprf_s kind 'percent-delivery' units 'none' }
+define perdel_sa        { alias perdel_s       kind 'percent-delivery' units 'none' }
+define perdel_sysa      { alias perdel_sys     kind 'percent-delivery' units 'none' }
+define perdel_swpa      { alias swp_perdel     kind 'percent-delivery' units 'none' }  
+
+define SWALLOC_50_PA    { alias CLM_50_PA *taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_50_PU    { alias CLM_50_PU *taf_cfs*perdv_cvpmi_s kind 'TESTING' units 'CFS' }
+define SWALLOC_64_XA    { alias CLM_64_XA *taf_cfs*perdv_cvpex_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PA1   { alias CLM_71_PA1*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PA2   { alias CLM_71_PA2*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PA3   { alias CLM_71_PA3*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PA4   { alias CLM_71_PA4*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PA5   { alias CLM_71_PA5*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PA6   { alias CLM_71_PA6*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PA7   { alias CLM_71_PA7*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PA8   { alias CLM_71_PA8*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PU1   { alias CLM_71_PU1*taf_cfs*perdv_cvpmi_s kind 'TESTING' units 'CFS' }
+define SWALLOC_71_PU2   { alias CLM_71_PU2*taf_cfs*perdv_cvpmi_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_PA    { alias CLM_72_PA *taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_PR1   { alias CLM_72_PR1*taf_cfs*perdv_cvprf_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_PR2   { alias CLM_72_PR2*taf_cfs*perdv_cvprf_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_PR3   { alias CLM_72_PR3*taf_cfs*perdv_cvprf_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_PR4   { alias CLM_72_PR4*taf_cfs*perdv_cvprf_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_PR5   { alias CLM_72_PR5*taf_cfs*perdv_cvprf_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_PR6   { alias CLM_72_PR6*taf_cfs*perdv_cvprf_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_XA1   { alias CLM_72_XA1*taf_cfs*perdv_cvpex_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_XA2   { alias CLM_72_XA2*taf_cfs*perdv_cvpex_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_XA3   { alias CLM_72_XA3*taf_cfs*perdv_cvpex_s kind 'TESTING' units 'CFS' }
+define SWALLOC_72_PU    { alias CLM_72_PU *taf_cfs*perdv_cvpmi_s kind 'TESTING' units 'CFS' }
+define SWALLOC_73_PA1   { alias CLM_73_PA1*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_73_PA2   { alias CLM_73_PA2*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_73_PA3   { alias CLM_73_PA3*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_73_XA    { alias CLM_73_XA *taf_cfs*perdv_cvpex_s kind 'TESTING' units 'CFS' }
+define SWALLOC_90_PA1   { alias CLM_90_PA1*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_90_PA2   { alias CLM_90_PA2*taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_90_PU    { alias CLM_90_PU *taf_cfs*perdv_cvpmi_s kind 'TESTING' units 'CFS' }
+define SWALLOC_91_PA    { alias CLM_91_PA *taf_cfs*perdv_cvpag_s kind 'TESTING' units 'CFS' }
+define SWALLOC_91_PR    { alias CLM_91_PR *taf_cfs*perdv_cvprf_s kind 'TESTING' units 'CFS' }
+
+! (SLUIS storage levels)
+! define S_SLUIS_CVPlevel1_a {alias S_SLUIS_CVPlevel1 kind 'STORAGE-ZONE' units 'TAF' } 
+! define S_SLUIS_CVPlevel2_a {alias S_SLUIS_CVPlevel2 kind 'STORAGE-ZONE' units 'TAF' } 
+! define S_SLUIS_CVPlevel3_a {alias S_SLUIS_CVPlevel3 kind 'STORAGE-ZONE' units 'TAF' } 
+! define S_SLUIS_CVPlevel4_a {alias S_SLUIS_CVPlevel4 kind 'STORAGE-ZONE' units 'TAF' } 
+! define S_SLUIS_CVPlevel5_a {alias S_SLUIS_CVPlevel5 kind 'STORAGE-ZONE' units 'TAF' } 
+! 
+! define S_SLUIS_SWPlevel1_a {alias S_SLUIS_SWPlevel1 kind 'STORAGE-ZONE' units 'TAF' } 
+! define S_SLUIS_SWPlevel2_a {alias S_SLUIS_SWPlevel2 kind 'STORAGE-ZONE' units 'TAF' } 
+! define S_SLUIS_SWPlevel3_a {alias S_SLUIS_SWPlevel3 kind 'STORAGE-ZONE' units 'TAF' } 
+! define S_SLUIS_SWPlevel4_a {alias S_SLUIS_SWPlevel4 kind 'STORAGE-ZONE' units 'TAF' } 
+! define S_SLUIS_SWPlevel5_a {alias S_SLUIS_SWPlevel5 kind 'STORAGE-ZONE' units 'TAF' } 
+
+
+! (SLUIS storage @ previous time -- as CFS)
+! define S_SLUIS_A        {alias S_SLUIS*taf_cfs     kind 'STORAGE' units 'CFS' }
+! define S_SLUIS_CVPA     {alias S_SLUIS_CVP*taf_cfs kind 'STORAGE' units 'CFS' } 
+! define S_SLUIS_SWPA     {alias S_SLUIS_SWP*taf_cfs kind 'STORAGE' units 'CFS' }
+! define S_SLUIS_AP       {alias S_SLUIS(-1)*taf_cfs     kind 'STORAGE' units 'CFS' }
+! define S_SLUIS_CVPAP    {alias S_SLUIS_CVP(-1)*taf_cfs kind 'STORAGE' units 'CFS' } 
+! define S_SLUIS_SWPAP    {alias S_SLUIS_SWP(-1)*taf_cfs kind 'STORAGE' units 'CFS' }
+
+! (SLUIS releases -- as TAF)
+! define C_SLUIS_A        {alias C_SLUIS*cfs_taf     kind 'CHANNEL' units 'TAF' }
+! define C_SLUIS_CVPA     {alias C_SLUIS_CVP*cfs_taf kind 'CHANNEL' units 'TAF' }
+! define C_SLUIS_SWPA     {alias C_SLUIS_SWP*cfs_taf kind 'CHANNEL' units 'TAF' }
+! define D_CAA069_SLUIS_FA {alias D_CAA069_SLUIS_F*cfs_taf kind 'DIVERSION' units 'TAF' }
+! define D_CAA069_SLUIS_SA {alias D_CAA069_SLUIS_S*cfs_taf kind 'DIVERSION' units 'TAF' }
+
+! (Seepage by reach)
+define SG_R1R2_SWP_A    {alias SG_R1R2_SWP kind 'CANAL-LOSS' units 'CFS'}  
+define SG_R3_SWP_A      {alias SG_R3_SWP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_R3_CVP_A      {alias SG_R3_CVP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_R4_SWP_A      {alias SG_R4_SWP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_R4_CVP_A      {alias SG_R4_CVP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_R5_SWP_A      {alias SG_R5_SWP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_R5_CVP_A      {alias SG_R5_CVP   kind 'CANAL-LOSS' units 'CFS'}
+define SG_R6_SWP_A      {alias SG_R6_SWP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_R6_CVP_A      {alias SG_R6_CVP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_R7_SWP_A      {alias SG_R7_SWP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_R7_CVP_A      {alias SG_R7_CVP   kind 'CANAL-LOSS' units 'CFS'} 
+define SG_DMC_LOWER_A   {alias SG_DMC_LOWER kind 'CANAL-LOSS' units 'CFS'}
+define SG_DMC_UPPER_A   {alias SG_DMC_UPPER kind 'CANAL-LOSS' units 'CFS'}
+
+
+
+! ---------------------------------------------------------------------------------
+! Lumped terms
+! CAA
+define D_UpperCAA_SWP     {std kind 'TESTING' units 'CFS' }
+goal   setD_UpperCAA_SWP  {D_UpperCAA_SWP  = D_CAA005_SBA000 }
+
+define SG_UpperCAA_SWP    {std kind 'TESTING' units 'CFS' }
+goal   setSG_UpperCAA_SWP {SG_UpperCAA_SWP = SG_R1R2_SWP }
+
+define D_UpperCAA_CVP     {std kind 'TESTING' units 'CFS' }
+goal   setD_UpperCAA_CVP  {D_UpperCAA_CVP  = D_CAA012_71_PU1 + D_CAA046_71_PA7 + D_CAA066_71_PU2 }
+
+define SG_UpperCAA_CVP    {std kind 'TESTING' units 'CFS' }
+goal   setSG_UpperCAA_CVP {SG_UpperCAA_CVP = 0.0 }
+
+define D_LowerCAA_SWP     {std kind 'TESTING' units 'CFS' }
+goal   setD_LowerCAA_SWP  {D_LowerCAA_SWP  = 0.0 }
+
+define SG_LowerCAA_SWP    {std kind 'TESTING' units 'CFS' }
+goal   setSG_LowerCAA_SWP {SG_LowerCAA_SWP = SG_R3_SWP + SG_R4_SWP + SG_R5_SWP + SG_R6_SWP + SG_R7_SWP }
+
+define D_LowerCAA_CVP     {std kind 'TESTING' units 'CFS' }
+goal   setD_LowerCAA_CVP  {D_LowerCAA_CVP  = D_CAA087_73_PA1 + D_CAA095_72_PU  + D_CAA109_73_PA3 + D_CAA109_90_PA1
+                                           + D_CAA143_90_PA1 + D_CAA143_90_PA2 + D_CAA143_90_PU  + D_CAA155_90_PA1
+                                           + D_CAA156_90_PU  + D_CAA165_90_PU  + D_CAA172_90_PA1 }
+                                           
+define SG_LowerCAA_CVP    {std kind 'TESTING' units 'CFS' }
+goal   setSG_LowerCAA_CVP {SG_LowerCAA_CVP = SG_R3_CVP + SG_R4_CVP + SG_R5_CVP + SG_R6_CVP + SG_R7_CVP }
+
+
+! DMC
+define D_UpperDMC_CVP     {std kind 'TESTING' units 'CFS' }
+goal   setD_UpperDMC_CVP  {D_UpperDMC_CVP  = D_DMC011_71_PA8 + D_DMC016_WTPJJO + D_DMC021_50_PA  + D_DMC030_71_PA1
+                                           + D_DMC034_71_PA2 + D_DMC034_WWW001 + D_DMC034_71_PA3 + D_DMC044_71_PA4
+                                           + D_DMC044_71_PA5 + D_DMC054_NMW004 + D_DMC064_71_PA6 }
+                                           
+define SG_UpperDMC_CVP    {std kind 'TESTING' units 'CFS' }
+goal   setSG_UpperDMC_CVP {SG_UpperDMC_CVP = SG_DMC_UPPER }
+
+define D_LowerDMC_CVP     {std kind 'TESTING' units 'CFS' } ! NOTE: Does not include seepage @ DMC070!
+goal   setD_LowerDMC_CVP  {D_LowerDMC_CVP  = /*D_DMC070_73_PA1 +*/ D_DMC076_XCC043 + D_DMC091_73_PA3 
+                                           + D_DMC105_73_PA2 + D_DMC111_73_XA + D_DMC111_FBW001 }
+
+define SG_LowerDMC_CVP    {std kind 'TESTING' units 'CFS' }
+goal   setSG_LowerDMC_CVP {SG_LowerDMC_CVP = SG_DMC_LOWER }
+
+define D_UpperDMC_SWP     {std kind 'TESTING' units 'CFS' }
+goal   setD_UpperDMC_SWP  {D_UpperDMC_SWP  = 0.0 }
+
+define SG_UpperDMC_SWP    {std kind 'TESTING' units 'CFS' }
+goal   setSG_UpperDMC_SWP {SG_UpperDMC_SWP = 0.0 } 
+
+define D_LowerDMC_SWP     {std kind 'TESTING' units 'CFS' }
+goal   setD_LowerDMC_SWP  {D_LowerDMC_SWP  = 0.0 } 
+                                           
+define SG_LowerDMC_SWP    {std kind 'TESTING' units 'CFS' }
+goal   setSG_LowerDMC_SWP {SG_LowerDMC_SWP = 0.0 } 
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! Add variables for lumped demands (for debug/comparison to CalSim-II)
+define  TotalInflows       { std kind 'TESTING' units 'CFS' }
+goal    setTotalInflows    { TotalInflows = C_CAA003 + C_DMC003 + C_SLUIS + C_FSL005 + C_SJR205 }
+
+define  TotalSeepage       { std kind 'TESTING' units 'CFS' }
+goal    setTotalSeepage    { TotalSeepage = SG_DMC_UPPER + SG_DMC_LOWER + SG_R1R2_SWP 
+                                          + SG_R3_SWP    + SG_R3_CVP    + SG_R4_SWP   + SG_R4_CVP
+                                          + SG_R5_SWP    + SG_R5_CVP    + SG_R6_SWP   + SG_R6_CVP
+                                          + SG_R7_SWP    + SG_R7_CVP }
+
+define  TotalOutflow       { std kind 'TESTING' units 'CFS' }
+goal    setTotalOutflow    { TotalOutflow =    C_CAA172     + C_SJR180     + D_CAA069_SLUIS }
+
+define  WestSide_DEMAND    { std kind 'TESTING' units 'CFS' }  
+goal    setWestSide_DEMAND { WestSide_DEMAND = AW_50_PA  + UD_50_PU 
+                                          + UD_71_PU1 + UD_71_PU2 + AW_71_PA1 + AW_71_PA2 + AW_71_PA3 + AW_71_PA4 
+                                          + AW_71_PA5 + AW_71_PA6 + AW_71_PA7 + AW_71_PA8 + AW_72_PA  + AW_72_XA1
+                                          + AW_72_XA2 + AW_72_XA3 + AW_72_PR1 + AW_72_PR2 + AW_72_PR3 + AW_72_PR4
+                                          + AW_72_PR5 + AW_72_PR6 + UD_72_PU  + AW_73_PA1 + AW_73_PA2 + AW_73_PA3
+                                          + AW_73_XA  + AW_90_PA1 + AW_90_PA2 + UD_90_PU  + AW_91_PA  + AW_91_PR }
+
+define  WestSide_Return    { std kind 'TESTING' units 'CFS' }
+goal    setWestSide_Return { WestSide_Return = R_TCWWTP_OMR039 + R_RFS71A_OMR039 + R_50_PA_SJR056  + R_71_PA1_SJR075 + R_71_PA2_SJR075
+                                          + R_71_PA7_SJR091 + R_71_PA4_SJR091 + R_RFS71B_SJR091 + R_RFS71B_SJR106 + R_RFS72B_SJR106
+                                          + C_WWW001        + C_MSN004        + C_SAl006        + C_FBW001 }
+ 
+define  WestSide_DG        { std kind 'TESTING' units 'CFS' }
+goal    setWestSide_DG     { WestSide_DG  = DG_50_PA  + DG_50_PU 
+                                          + DG_71_PU1 + DG_71_PU2 + DG_71_PA1 + DG_71_PA2 + DG_71_PA3 + DG_71_PA4 
+                                          + DG_71_PA5 + DG_71_PA6 + DG_71_PA7 + DG_71_PA8 + DG_72_PA  + DG_72_XA1
+                                          + DG_72_XA2 + DG_72_XA3 + DG_72_PR1 + DG_72_PR2 + DG_72_PR3 + DG_72_PR4
+                                          + DG_72_PR5 + DG_72_PR6 + DG_72_PU  + DG_73_PA1 + DG_73_PA2 + DG_73_PA3
+                                          + DG_73_XA  + DG_90_PA1 + DG_90_PA2 + DG_90_PU  + DG_91_PA  + DG_91_PR }
+ 
+define  WestSide_DN        { std kind 'TESTING' units 'CFS' }
+goal    setWestSide_DN     { WestSide_DN  = DN_50_PA  + DN_50_PU 
+                                          + DN_71_PU1 + DN_71_PU2 + DN_71_PA1 + DN_71_PA2 + DN_71_PA3 + DN_71_PA4 
+                                          + DN_71_PA5 + DN_71_PA6 + DN_71_PA7 + DN_71_PA8 + DN_72_PA  + DN_72_XA1
+                                          + DN_72_XA2 + DN_72_XA3 + DN_72_PR1 + DN_72_PR2 + DN_72_PR3 + DN_72_PR4
+                                          + DN_72_PR5 + DN_72_PR6 + DN_72_PU  + DN_73_PA1 + DN_73_PA2 + DN_73_PA3
+                                          + DN_73_XA  + DN_90_PA1 + DN_90_PA2 + DN_90_PU  + DN_91_PA  + DN_91_PR }                                    
+ 
+! define  WestSide_DL     { std kind 'TESTING' units 'CFS' }
+! goal    setWestSide_DL  { WestSide_DL  = DL_50_PA  + DL_50_PU 
+!                                        + DL_71_PU1 + DL_71_PU2 + DL_71_PA1 + DL_71_PA2 + DL_71_PA3 + DL_71_PA4 
+!                                        + DL_71_PA5 + DL_71_PA6 + DL_71_PA7 + DL_71_PA8 + DL_72_PA  + DL_72_XA1
+!                                        + DL_72_XA2 + DL_72_XA3 + DL_72_PR1 + DL_72_PR2 + DL_72_PR3 + DL_72_PR4
+!                                        + DL_72_PR5 + DL_72_PR6 + DL_72_PU  + DL_73_PA1 + DL_73_PA2 + DL_73_PA3
+!                                        + DL_73_XA  + DL_90_PA1 + DL_90_PA2 + DL_90_PU  + DL_91_PA  + DL_91_PR }   
+ 
+! define  WestSide_SWALLOC    { std kind 'TESTING' units 'CFS' }
+! goal    setWestSide_SWALLOC { WestSide_SWALLOC = SWALLOC_50_PA  + SWALLOC_50_PU 
+!                                              + SWALLOC_71_PU1 + SWALLOC_71_PU2 + SWALLOC_71_PA1 + SWALLOC_71_PA2 + SWALLOC_71_PA3 + SWALLOC_71_PA4 
+!                                              + SWALLOC_71_PA5 + SWALLOC_71_PA6 + SWALLOC_71_PA7 + SWALLOC_71_PA8 + SWALLOC_72_PA  + SWALLOC_72_XA1
+!                                              + SWALLOC_72_XA2 + SWALLOC_72_XA3 + SWALLOC_72_PR1 + SWALLOC_72_PR2 + SWALLOC_72_PR3 + SWALLOC_72_PR4
+!                                              + SWALLOC_72_PR5 + SWALLOC_72_PR6 + SWALLOC_72_PU  + SWALLOC_73_PA1 + SWALLOC_73_PA2 + SWALLOC_73_PA3
+!                                              + SWALLOC_73_XA  + SWALLOC_90_PA1 + SWALLOC_90_PA2 + SWALLOC_90_PU  + SWALLOC_91_PA  + SWALLOC_91_PR } 

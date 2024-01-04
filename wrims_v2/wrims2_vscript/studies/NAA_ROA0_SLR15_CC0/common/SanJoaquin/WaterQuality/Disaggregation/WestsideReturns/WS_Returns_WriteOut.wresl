@@ -1,0 +1,489 @@
+!Anna Fock  Nov 2003
+!Non-pulse period. Calculation of Westside Return Disggregation
+!In DSM2-SJR schmatic
+define SR17_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR17_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR17_C5 }
+            }
+
+define SR607_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR607_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR607_C5 }
+            }
+
+define SR613_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR613_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR613_C5 }
+            }
+
+define SR622_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR622_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR622_C5 }
+            }
+
+define SR624_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR624_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR624_C5 }
+            }
+
+define SR628_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR628_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR628_C5 }
+            }
+
+define SR631_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR631_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR631_C5 }
+            }
+
+define SR642_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR642_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR642_C5 }
+            }
+
+define SR648_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value SWR648_C2  }
+    case NonPulsePlusDO {
+        condition always
+        value SWR648_C5 }
+            }
+
+!write-out Non-Pulse period result for DSM2 in the last cycle
+define SWR17_NP  { lower -100000 kind 'SWR-Flow' units 'cfs'}    !DSM2 boundary
+define SWR607_NP { lower -100000 kind 'SWR-Flow' units 'cfs'}    !RM83
+define SWR613_NP { lower -100000 kind 'SWR-Flow' units 'cfs'}    !RM88
+define SWR622_NP { lower -100000 kind 'SWR-Flow' units 'cfs'}    !RM97
+define SWR624_NP { lower -100000 kind 'SWR-Flow' units 'cfs'}    !RM99
+define SWR628_NP { lower -100000 kind 'SWR-Flow' units 'cfs'}    !RM105
+define SWR631_NP { lower -100000 kind 'SWR-Flow' units 'cfs'}    !RM109
+define SWR642_NP { lower -100000 kind 'SWR-Flow' units 'cfs'}    !RM121
+define SWR648_NP { lower -100000 kind 'SWR-Flow' units 'cfs'}    !RM129.5
+
+goal    set_SWR17_NP  { SWR17_NP  = SR17_NP     }
+goal    set_SWR607_NP { SWR607_NP = SR607_NP    }
+goal    set_SWR613_NP { SWR613_NP = SR613_NP    }
+goal    set_SWR622_NP { SWR622_NP = SR622_NP    }
+goal    set_SWR624_NP { SWR624_NP = SR624_NP    }
+goal    set_SWR628_NP { SWR628_NP = SR628_NP    }
+goal    set_SWR631_NP { SWR631_NP = SR631_NP    }
+goal    set_SWR642_NP { SWR642_NP = SR642_NP    }
+goal    set_SWR648_NP { SWR648_NP = SR648_NP    }
+
+!Pulse period. Calculation of Westside Return Disggregation
+!In DSM2-SJR schmatic
+define SR17_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR17_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SR607_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR607_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SR613_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR613_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SR622_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR622_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SR624_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR624_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SR628_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR628_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SR631_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR631_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SR642_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR642_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define SR648_P {
+    case APRILMAY {
+          condition month >= apr .and. month <= may
+          value SWR648_C5 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+!write-out Pulse period result for DSM2 in the last cycle
+define SWR17_P  { lower -100000 kind 'SWR-Flow' units 'cfs' }    !DSM2 boundary
+define SWR607_P { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM83
+define SWR613_P { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM88
+define SWR622_P { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM97
+define SWR624_P { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM99
+define SWR628_P { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM105
+define SWR631_P { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM109
+define SWR642_P { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM121
+define SWR648_P { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM129.5
+
+goal    set_SWR17_P   { SWR17_P   = SR17_P   }
+goal    set_SWR607_P  { SWR607_P  = SR607_P  }
+goal    set_SWR613_P  { SWR613_P  = SR613_P  }
+goal    set_SWR622_P  { SWR622_P  = SR622_P  }
+goal    set_SWR624_P  { SWR624_P  = SR624_P  }
+goal    set_SWR628_P  { SWR628_P  = SR628_P  }
+goal    set_SWR631_P  { SWR631_P  = SR631_P  }
+goal    set_SWR642_P  { SWR642_P  = SR642_P  }
+goal    set_SWR648_P  { SWR648_P  = SR648_P  }
+
+!write-out Final result for DSM2 in the last cycle
+define SWR17_Final  { lower -100000 kind 'SWR-Flow' units 'cfs' }    !DSM2 boundary
+define SWR607_Final { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM83
+define SWR613_Final { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM88
+define SWR622_Final { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM97
+define SWR624_Final { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM99
+define SWR628_Final { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM105
+define SWR631_Final { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM109
+define SWR642_Final { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM121
+define SWR648_Final { lower -100000 kind 'SWR-Flow' units 'cfs' }    !RM129.5
+
+goal set_SWR17_FINAL {
+     lhs SWR17_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR17_NP/30. + 16.* SR17_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR17_P/31. + 16.* SR17_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR17_NP }
+                    }
+
+goal set_SWR607_FINAL {
+     lhs SWR607_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR607_NP/30. + 16.* SR607_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR607_P/31. + 16.* SR607_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR607_NP }
+                    }
+
+goal set_SWR613_FINAL {
+     lhs SWR613_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR613_NP/30. + 16.* SR613_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR613_P/31. + 16.* SR613_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR613_NP }
+                }
+
+goal set_SWR622_FINAL {
+     lhs SWR622_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR622_NP/30. + 16.* SR622_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR622_P/31. + 16.* SR622_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR622_NP }
+                    }
+
+goal set_SWR624_FINAL {
+     lhs SWR624_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR624_NP/30. + 16.* SR624_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR624_P/31. + 16.* SR624_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR624_NP }
+                    }
+
+goal set_SWR628_FINAL {
+     lhs SWR628_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR628_NP/30. + 16.* SR628_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR628_P/31. + 16.* SR628_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR628_NP }
+                    }
+
+goal set_SWR631_FINAL {
+     lhs SWR631_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR631_NP/30. + 16.* SR631_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR631_P/31. + 16.* SR631_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR631_NP }
+                    }
+
+goal set_SWR642_FINAL {
+     lhs SWR642_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR642_NP/30. + 16.* SR642_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR642_P/31. + 16.* SR642_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR642_NP }
+                    }
+
+goal set_SWR648_FINAL {
+     lhs SWR648_FINAL
+     case April {
+          condition month == apr
+          rhs (14.* SR648_NP/30. + 16.* SR648_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* SR648_P/31. + 16.* SR648_NP/31.) }
+     case otherwise {
+          condition always
+          rhs SR648_NP }
+                    }
+
+define EC_R639_P {
+    case APRILMAY {
+            condition month >= apr .and. month <= may
+          value EC5_R639 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define EC_R639_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value EC2_R639 }
+    case NonPulsePlusDO {
+        condition always
+        value EC5_R639 }
+            }
+
+define EC_R639W_F { std kind 'EC-WSReturn' units 'none' }
+goal set_EC_R639W_F {
+     lhs EC_R639W_F
+     case April {
+          condition month == apr
+          rhs (14.* EC_R639_NP/30. + 16.* EC_R639_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* EC_R639_P/31. + 16.* EC_R639_NP/31.) }
+     case otherwise {
+          condition always
+          rhs EC_R639_NP }
+                    }
+
+
+define EC_R630_P {
+    case APRILMAY {
+            condition month >= apr .and. month <= may
+          value EC5_R630 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define EC_R630_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value EC2_R630 }
+    case NonPulsePlusDO {
+        condition always
+        value EC5_R630 }
+            }
+
+define EC_R630W_F { std kind 'EC-WSReturn' units 'none' }
+goal set_EC_R630W_F {
+     lhs EC_R630W_F
+     case April {
+          condition month == apr
+          rhs (14.* EC_R630_NP/30. + 16.* EC_R630_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* EC_R630_P/31. + 16.* EC_R630_NP/31.) }
+     case otherwise {
+          condition always
+          rhs EC_R630_NP }
+                    }
+
+
+define EC_R614_P {
+    case APRILMAY {
+            condition month >= apr .and. month <= may
+          value EC5_R614 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define EC_R614_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value EC2_R614 }
+    case NonPulsePlusDO {
+        condition always
+        value EC5_R614 }
+            }
+
+define EC_R614W_F { std kind 'EC-WSReturn' units 'none' }
+goal set_EC_R614W_F {
+     lhs EC_R614W_F
+     case April {
+          condition month == apr
+          rhs (14.* EC_R614_NP/30. + 16.* EC_R614_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* EC_R614_P/31. + 16.* EC_R614_NP/31.) }
+     case otherwise {
+          condition always
+          rhs EC_R614_NP }
+                    }
+
+
+define EC_R619_P {
+    case APRILMAY {
+            condition month >= apr .and. month <= may
+          value EC5_R619 }
+    case Otherwise {
+        condition always
+        value 0.0 }
+            }
+
+define EC_R619_NP {
+    case NonPulseNonDO {
+        condition month <= may
+        value EC2_R619 }
+    case NonPulsePlusDO {
+        condition always
+        value EC5_R619 }
+            }
+
+define EC_C619_F { std kind 'EC-WSReturn' units 'none' }
+goal set_EC_C619_F {
+     lhs EC_C619_F
+     case April {
+          condition month == apr
+          rhs (14.* EC_R619_NP/30. + 16.* EC_R619_P/30.) }
+     case MayOnly {
+          condition month == may
+          rhs (15.* EC_R619_P/31. + 16.* EC_R619_NP/31.) }
+     case otherwise {
+          condition always
+          rhs EC_R619_NP }
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

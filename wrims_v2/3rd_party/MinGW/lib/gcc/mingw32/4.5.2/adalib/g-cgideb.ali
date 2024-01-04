@@ -1,0 +1,150 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnvvnnvnnvnnvnnnnvnnvnnnnvnnnnnnvnnvnnnnnnnnnnnnnvnnvnvvnnnnnnnnnnnnnnn
+
+U gnat.cgi.debug%b	g-cgideb.adb		1ded2b7c OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.streams%s		a-stream.ads		a-stream.ali
+W ada.strings%s		a-string.ads		a-string.ali
+W ada.strings.unbounded%s  a-strunb.adb		a-strunb.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W gnat.cgi%s		g-cgi.adb		g-cgi.ali
+W system%s		system.ads		system.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.img_enum_new%s	s-imenne.adb		s-imenne.ali
+W system.parameters%s	s-parame.adb		s-parame.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.standard_library%s  s-stalib.adb	s-stalib.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+U gnat.cgi.debug%s	g-cgideb.ads		026a9b3f EE NE OL PK
+W gnat.cgi%s		g-cgi.adb		g-cgi.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-charac.ads		20070912115822 506ce725
+D a-chlat1.ads		20070912115822 e9ee6d0a
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-stream.ads		20090409150020 34aca5be
+D a-string.ads		20070406091342 87b4230b
+D a-strmap.ads		20090409150020 5253a637
+D a-strunb.ads		20090409150020 f0549c04
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D gnat.ads		20050905075126 96410e68
+D g-cgi.ads		20090611154814 2c2022fc
+D g-cgideb.ads		20050905080700 2e4ab9c3
+D g-cgideb.adb		20080820135520 c3f30ebb
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-imenne.ads		20090417131548 ef3ea0ac
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+X 1 ada.ads
+16K9*Ada 19e8 15|34r6 38r8
+X 7 a-string.ads
+16K13*Strings 35e16 15|34r10 38r12
+X 9 a-strunb.ads
+39K21*Unbounded 428e26 15|34w18 38r20
+42R9*Unbounded_String 395e14 15|131r19
+57V13*To_Unbounded_String{42R9} 15|135r12
+63V13*To_String{string} 15|161r17
+86V13*"&"{42R9} 15|142r15 143r15 147r12 148r12 149r12 154r18 157r18
+X 12 gnat.ads
+36K9*GNAT 39e9 14|37r9 49r5 15|36r14 316r5
+X 13 g-cgi.ads
+106K14*CGI 12|36k9 13|257e13 14|37r14 49r10 15|36r19 316r10
+131E9*Metavariable_Name 166e23 15|151r19 155r30
+191V13*Metavariable{string} 15|156r30
+198V13*Metavariable_Exists{boolean} 15|152r16
+206V13*Argument_Count{natural} 15|140r24
+222V13*Value{string} 15|142r42
+230V13*Key{string} 15|142r33
+X 14 g-cgideb.ads
+37K18*Debug 13|106k14 14|49l14 49e19 15|36b23 316l14 316t19
+43V13*Text_Output{string} 15|310b13 314l8 314t19
+46V13*HTML_Output{string} 15|300b13 304l8 304t19
+X 15 g-cgideb.adb
+46K12 IO 72l8 72e10 82r26 105r26 124b17 164l8 164t10 303r14 313r14
+48H12*Format 48e49 50r31 52p16 53r18 58p16 58r33 62p16 62r30 66p16 67r17
+. 82r29 105r29 130r31
+50V16*Output{string} 50>24 130b16 162l11 162t17 303r17 313r17
+50c24 Mode<48R12> 130b24 136r22 137r25 138r27 142r27 143r27 147r24 148r22
+. 149r24 154r30 157r30 303r25 313r25
+52y16*Variable{string} 53>10 54>10 55>10 142R17 154R20
+53r10 Mode{48R12}
+54s10 Name{string}
+55s10 Value{string}
+58y16*New_Line{string} 58>26 138R17 143R17 147R14 149R14 157R20
+58r26 Mode{48R12}
+62y16*Title{string} 62>23 62>38 136R15
+62r23 Mode{48R12}
+62s38 Str{string}
+66y16*Header{string} 67>10 68>10 137R17 148R14
+67r10 Mode{48R12}
+68s10 Str{string}
+78K12 HTML_IO 95l8 95e15 170b17 242l8 242t15 301r14
+82R12*Format<48R12> 82e52 84P16 85r18 89P16 89r31 91P16 91r28 93P16 93r29
+. 193r29 212r31 222r28 233r18 301r22
+84V16*Variable{string}<52p16> 85>10 86>10 87>10 232b16 240l11 240t19
+85r10 IO{82R12} 233b10 237r31
+86s10 Name{string} 234b10 239r23
+87s10 Value{string} 235b10 239r47
+89V16*New_Line{string}<58p16> 89>26 212b16 216l11 216t19
+89r26 IO{82R12} 212b26 213r31
+91V16*Title{string}<62p16> 91>23 91>36 222b16 226l11 226t16
+91r23 IO{82R12} 222b23 223r31
+91s36 Str{string} 222b36 225r52
+93V16*Header{string}<66p16> 93>24 93>37 193b16 197l11 197t17
+93r24 IO{82R12} 193b24 194r31
+93s37 Str{string} 193b37 196r26
+101K12 Text_IO 118l8 118e15 248b17 294l8 294t15 311r14
+105R12*Format<48R12> 105e52 107P16 108r18 112P16 112r31 114P16 114r28 116P16
+. 116r29 254r29 263r31 273r28 285r18 311r22
+107V16*Variable{string}<52p16> 108>10 109>10 110>10 284b16 292l11 292t19
+108r10 IO{105R12} 285b10 289r31
+109s10 Name{string} 286b10 291r25
+110s10 Value{string} 287b10 291r40
+112V16*New_Line{string}<58p16> 112>26 256r32 263b16 267l11 267t19 277r32
+112r26 IO{105R12} 263b26 264r31
+114V16*Title{string}<62p16> 114>23 114>36 273b16 278l11 278t16
+114r23 IO{105R12} 273b23 277r42
+114s36 Str{string} 273b36 274r45 277r26
+116V16*Header{string}<66p16> 116>24 116>37 254b16 257l11 257t17
+116r24 IO{105R12} 254b24 256r42
+116s37 Str{string} 254b37 256r26
+131r10 Result{9|42R9} 134m10 141m13 141r23 146m10 146r20 153m16 153r26 161r28
+140i14 K{integer} 142r38 142r49
+151e14 P{13|131E9} 152r37 155r55 156r44
+172a7 NL{string} 196r42 215r26 225r74
+174V16 Bold{string} 174>22 184b16 187l11 187t15 239r17
+174s22 S{string} 184b22 186r25
+177V16 Italic{string} 177>24 203b16 206l11 206t17 239r39
+177s24 S{string} 203b24 205r25
+274i10 Spaces{natural} 275r41
+275a10 Indent{string} 277r17
+301r7 HTML{82R12} 303r33
+311r7 Text{105R12} 313r33
+

@@ -1,0 +1,7 @@
+define perdel_cvpag_sys{
+	value  0.75
+}
+
+define swp_allocation {timeseries kind 'SWP-DELIVERY' units 'TAF'}
+define swp_alloc_final{std kind 'swp-delivery' UNITS 'TAF'}
+goal setswp_allocation{ swp_alloc_final=swp_allocation}

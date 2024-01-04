@@ -1,0 +1,73 @@
+! VAMP_transfer.wresl
+
+! Author unkonwn
+! Date unknown
+! Cycle 6 operation of VAMP transfer between OID and Modesto.
+
+
+/* 
+ This file specifies the operation for the VAMP transfer between OID and Modesto
+ the logic takes place in cycle 6, so values for flows are full-month averages.
+*/
+ 
+/*
+ Revised by: R. Field, 05/02/2003, USBR
+ Purpose: Review and comemnt code.
+*/
+
+!###################################################################################
+
+/* 
+ Define account for how much NewMelones owes NewDonPedro.
+ Each month, release water from New Melones subject to the following limitations
+       up to capacity of the canal
+       to the amount of the debt
+       up to the cycle2 surface delivery to Modesto from Tuolomne
+ computed surface water delivery to 
+*/
+define VAMP_debt {std kind 'FLOW-RELEASE' units 'TAF'}
+goal setVAMP_debt {
+    lhs VAMP_debt
+    case firstyear {
+        condition month <= mar .and. wateryear == 1922
+        rhs VAMP_DEBT(-1) }
+    case April {
+        condition   month == apr
+        rhs         VAMP_debt(-1) + 16.*C81_STAN_VAMP[VAMP_AND_DO]*cfs_taf/30. - D530_VAMP*cfs_taf}
+    case May {
+        condition   month == may
+        rhs         VAMP_debt(-1) + 15.*C81_STAN_VAMP[VAMP_AND_DO]*cfs_taf/31. - D530_VAMP*cfs_taf}
+    case otherwise {
+        condition   always
+        rhs         VAMP_debt(-1) - D530_VAMP*cfs_taf }
+    }
+
+
+/*
+ Limitations on the transfer to Modesto are to 
+ 1 - only transfer up to the remaining debt, 
+ 2 - only transfer the water being released from NM (i.e. not GW), and
+ 3 - the physical capacity of the transfer
+*/
+goal limitD530_VAMP1 {
+    lhs D530_VAMP 
+    case april {
+        condition month==apr 
+        rhs     (16.*C81_STAN_VAMP[VAMP_AND_DO]*cfs_taf/30. + VAMP_debt(-1))*taf_cfs
+        lhs<rhs penalty 0 } 
+    case may {
+        condition month==may 
+        rhs     (15.*C81_STAN_VAMP[VAMP_AND_DO]*cfs_taf/31. + VAMP_debt(-1))*taf_cfs
+        lhs<rhs penalty 0 } 
+    case otherwise  {
+        condition always
+        rhs     VAMP_debt(-1)*taf_cfs
+        lhs<rhs penalty 0 }
+}
+
+! Set release from Stanislaus to equal the transfer amount       
+goal limitD530_VAMP2 {D530_VAMP = C10VAMP_T} 
+
+! Set release from Stanislaus to be less than the physical capacity of 50 CFS
+goal limitD530_VAMP3 {D530_VAMP < 50.}  
+

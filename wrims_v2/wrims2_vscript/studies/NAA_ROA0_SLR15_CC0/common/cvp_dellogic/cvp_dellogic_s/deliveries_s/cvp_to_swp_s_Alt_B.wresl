@@ -1,0 +1,31 @@
+! Code by E. Reyes as of 1/4/99
+! Later Edited by Ajay Dev 10/19/1999
+
+! This code Bounds the Non-Wheeling interconnections between SWP and CVP.
+
+
+!Joint Use Branch
+!************************************************************************************************************
+
+! Make sure CVP uses only the water it supplies to CVP Joint Use Branch.
+! Do not let CVP use State Water.
+
+
+goal return_it { D807 + I839_WTS + I839_SCI_EWA + D630C + D644 - C700A_16A - D703_16A = C845 }       !Whatever the state supplies to the JUB it must get back - adjusted for WTS operations
+
+!The CVP must supply to the JUB exactly what it is going to deliver to its Obligations.
+goal CVP_joint { D704 = D833 + D834 + D835 + D836 + D837 + D838 + D839 + D840 + D841 + D842 + D843 + D844 + D845 + D630C + D644 - C700A_16A - D703_16A }
+
+!************************************************************************************************************
+
+
+
+!Cross Valley Demands
+!************************************************************************************************************
+
+! The CVP must transfer water to the SWP aqueduct to meet the CVP demands along the aqueduct (D855 & D856).
+
+
+goal Cross_Val { D705 = /*D855 +*/ D856 + D859_GWRECH_CVPA + I607_WTS}    !I607_WTS is DMC pool supply going to South Coast
+
+!*****************************************************************************************************

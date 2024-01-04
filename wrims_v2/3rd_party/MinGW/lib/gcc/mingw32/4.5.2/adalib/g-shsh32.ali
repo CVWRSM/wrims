@@ -1,0 +1,92 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnn
+
+U gnat.secure_hashes.sha2_32%b  g-shsh32.adb	90bd05df NE OL PK
+W gnat.secure_hashes%s	g-sechas.adb		g-sechas.ali
+
+U gnat.secure_hashes.sha2_32%s  g-shsh32.ads	e57680b0 BN EE OL PK
+W ada.tags%s		a-tags.adb		a-tags.ali
+W gnat%s		gnat.ads		gnat.ali
+W gnat.byte_swapping%s	g-bytswa.adb		g-bytswa.ali
+W gnat.secure_hashes%s	g-sechas.adb		g-sechas.ali
+W gnat.secure_hashes.sha2_common%s  g-shshco.adb  g-shshco.ali
+W interfaces%s		interfac.ads		interfac.ali
+W system%s		system.ads		system.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D gnat.ads		20050905075126 96410e68
+D g-bytswa.ads		20070912115918 ba821d78
+D g-sechas.ads		20100125162420 67b714d5
+D g-sechas.adb		20091130155640 6f6a80fe
+D g-shsh32.ads		20091130155116 2a6fc90f
+D g-shsh32.adb		20091130155116 bad2ccd0
+D g-shshco.ads		20091130155116 b4b0ed4e
+D g-shshco.adb		20091130155116 ccdf65bc
+D interfac.ads		20090409150020 a69cad5c
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+X 5 gnat.ads
+36K9*GNAT 39e9 9|39r6 40r6 42r9 48r25 108r5 10|32r14 80r5
+X 6 g-bytswa.ads
+162K14*Byte_Swapping 206e23 9|39w11 48r30
+196U14*Swap4 9|48r44
+X 7 g-sechas.ads
+43K14*Secure_Hashes 5|36k9 7|193e23 9|40r11 42r14 108r10 10|32r19 80r10
+71M12 Word 9|47r7
+74U22 Swap 9|48r7
+77e7 Hash_Bit_Order{14|88E9} 9|49r7
+80k12*Hash_Function_State 92e27 9|46r30
+82A12 State(71M12[11|48])<integer> 9|52r28[46] 88r44[46] 97r44[46]
+X 9 g-shsh32.ads
+42K28*SHA2_32 7|43k14 9|108l24 108e31 10|32b33 80l24 80t31
+44M12*Word{13|57M9} 47r25 71r25 71r38 72r25 72r38 73r21 73r34 74r21 74r34
+. 10|40r25 40r38 51r25 51r38 62r21 62r34 73r21 73r34
+46K12*Hash_State[7|80] 52r17 80r21 88r33 97r33
+52a4*K{7|82A12[46]} 81r21
+71V13*Sigma0{44M12} 71>21 75r19 83r21 10|40b13 45l8 45t14
+71m21 X{44M12} 10|40b21 42r28 43r28 44r28
+72V13*Sigma1{44M12} 72>21 75r27 84r21 10|51b13 56l8 56t14
+72m21 X{44M12} 10|51b21 53r28 54r28 55r28
+73V13*S0{44M12} 73>17 75r35 85r21 10|62b13 67l8 67t10
+73m17 X{44M12} 10|62b17 64r28 65r28 66r28
+74V13*S1{44M12} 74>17 75r39 86r21 10|73b13 78l8 78t10
+74m17 X{44M12} 10|73b17 75r28 76r28 77r28
+79U14*Transform[11|62] 12|38b14
+88a4*SHA224_Init_State{7|82A12[46]}
+97a4*SHA256_Init_State{7|82A12[46]}
+X 11 g-shshco.ads
+42K28*SHA2_Common 9|40w25 79r31 11|66e35
+48K20 Hash_State 9|80r7
+50i7 Rounds{natural} 9|82r7
+53a7 K{7|82A12[48]} 9|81r7
+56V21 Sigma0{7|71M12[48]} 9|83r7
+57V21 Sigma1{7|71M12[48]} 9|84r7
+58V21 S0{7|71M12[48]} 9|85r7
+59V21 S1{7|71M12[48]} 9|86r7
+62u14*Transform 9|79r43
+X 13 interfac.ads
+36K9*Interfaces 9|38w6 44r20 10|34r8 13|171e15
+57M9*Unsigned_32 9|44r31
+107V13*Shift_Right{57M9} 10|66r14 77r14
+119V13*Rotate_Right{57M9} 10|42r14 43r14 44r14 53r14 54r14 55r14 64r14 65r14
+. 75r14 76r14
+X 14 system.ads
+37K9*System 9|49r25 14|197e11
+88n23*High_Order_First{88E9} 9|49r32
+

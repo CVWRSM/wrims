@@ -1,0 +1,39 @@
+! Delta Regulation Switches
+! ===========================================
+! 10/19/2010 created by Z.Q. Richard Chen DWR
+! 05/04/2012 Added D1485 switches: Holly Canada, DWR
+! ===========================================
+! ID SwithName        D1641  NOREGULATION   USER_DEFINED  D1485
+!  1 DCC_DLTSW         1         0            2		    3		    
+!  2 EI_DLTSW          1         0            2		    N/A
+!  3 NDO_DLTSW         1         0            2             3
+!  4 RV_DLTSW          1         0            2		    3	
+!  5 X2_DLTSW          1         0            2		    N/A
+!  6 X2ROE_DLTSW       1         0            N/A	    N/A
+!  7 VAMP_DLTSW        1         0            N/A	    N/A
+!  8 EM_DLTSW          1         0            N/A	    3  (D1485 and D1641 are same)
+!  9 JP_DLTSW          1         0            N/A	    3  (D1485 and D1641 are same)
+! 10 RS_DLTSW          1         0            N/A	    3  (D1485 and D1641 are same)
+! 11 CO_DLTSW          1         0            N/A	    3  (D1485 and D1641 are same)
+! 12 AN_DLTSW          N/A       0            N/A           3
+! 13 CH_DLTSW          N/A       0            N/A           3	
+! 14 TRNTY_DLTSW       1         N/A	      N/A           3/1  
+! 15 PUMP_DLTSW        1         N/A	      N/A           3  
+! ==========================================
+GUI_Regs
+Index	Option
+1	3	!DCC_DLTSW -  Delta Cross Channel
+2	0	!EI_DLTSW -  Export-Inflow Ratio
+3	3	!NDO_DLTSW -  Minimum Net Delta Outflow
+4	3	!RV_DLTSW -  Sacramento River at Rio Vista Minimum Flow
+5	0	!X2_DLTSW -  X2 Requirements
+6	0	!X2ROE_DLTSW -  Roe Trigger
+7	0	!VAMP_DLTSW -  Vernalis (3 = Take VAMP "on" D1641 hydrology with a D1485 run)
+8	3	!EM_DLTSW -  Emmaton
+9	3	!JP_DLTSW -  Jersey Point
+10	3	!RS_DLTSW -  Rock Slough
+11	3	!CO_DLTSW -  Collinsville
+12	3	!AN_DLTSW - Antioch Waterworks Intake on SJR for D-1485
+13	3	!CH_DLTSW - Chipps Island for D-1485
+14	1   !TRNTY_DLTSW - Trinity Minimum Flows (1 = higher min. flows; 3 = lower min. flows)
+15	3	!PUMP_DLTSW - Permitted Pumping Limits at Jones/Banks

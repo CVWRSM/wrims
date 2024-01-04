@@ -1,0 +1,477 @@
+! TransfersCore.wresl
+!
+!******************************************************************************
+! First get defines
+include '..\..\..\..\common\Reoperations\Transfers\TransfersDefines.wresl'
+
+!******************************************************************************
+! placeholder for last months SWP allocation (w/o Makeup added)
+!define WTS_SWPAlloc {std kind 'percent-delivery' units 'none'}
+define WTS_SWPAlloc {alias WTS_SWPAlloc__z4 kind 'percent-delivery' units 'none'}
+
+!******************************************************************************
+! Read Acquisition targets for Stage 1 - these are defined for each year
+! Stage 1 is water acquired for general SWP and CVP delivery - the acquired water is
+! managed in a coordinated fashion throughout NOD, the transfer is made to the Export pumps
+! based on a shares assumed in this timeseries data
+! Here are the Export Targets:
+!define CVP_Targ {select CVP_Phase8 from WTS_Stage1_Targets where year=transfersyear} !this is defined in custom version of delcar_cvp_sys.wresl
+define WTS_CVP_Targ {alias CVP_Targ kind 'WTS-Transfer-Target' units 'taf'}
+define SWP_TargP1 {select SWP_LYRA from WTS_Stage1_Targets where year=transfersyear}
+define SWP_TargP2 {select SWP_Phase8 from WTS_Stage1_Targets where year=transfersyear}
+define SWP_Targ {value SWP_TargP1 + SWP_TargP2 }
+define WTS_SWP_Targ {alias SWP_Targ kind 'WTS-Transfer-Target' units 'taf'}
+define Total_Stg1_Targ {value SWP_Targ + CVP_Targ}
+
+! Get Stage1 Acquisitions
+include '..\..\..\..\common\Reoperations\Transfers\TransfersAcquisitions_Max1.wresl'
+!define SaltCostFact_stg1 {select ItemValue from WTS_JobControl where Item=11.}
+include '..\..\..\..\common\Reoperations\Transfers\TransfersAcquisitions_Stg1.wresl'
+
+!******************************************************************************
+! Stage 2 is water acquired for specific regions
+! D815_Targ is the desired transfer to the South Bay Area
+! D885_Targ and D895_Targ is the desired transfer to the South Coast
+!
+! These defines use the Stage2 Targets inputs
+/*
+define D815_SJR_Targ {select D815_SJR_Targ from WTS_Stage2_Targets where year=transfersyear}
+define D815_SAC_Targ {select D815_SAC_Targ from WTS_Stage2_Targets where year=transfersyear}
+!
+define D885_SJR_Targ {select D885_SJR_Targ from WTS_Stage2_Targets where year=transfersyear}
+define D885_SAC_Targ {select D885_SAC_Targ from WTS_Stage2_Targets where year=transfersyear}
+!
+define D895_SJR_Targ {select D895_SJR_Targ from WTS_Stage2_Targets where year=transfersyear}
+define D895_SAC_Targ {select D895_SAC_Targ from WTS_Stage2_Targets where year=transfersyear}
+*/
+! These defines use the LCPSIM Adjustments
+!   Maximums predetermined through iterative CALSIM testing
+define SAC_MAX_TRANS  {select SAC_MAX_TRANS from WTS_Stage2_MaxTarget where year=transfersyear}
+define SJV_MAX_TRANS  {select SJV_MAX_TRANS from WTS_Stage2_MaxTarget where year=transfersyear}
+define SB_MAX_TRANS  {select SB_MAX_TRANS from WTS_Stage2_MaxTarget where year=transfersyear}
+define SC_MAX_TRANS  {select SC_MAX_TRANS from WTS_Stage2_MaxTarget where year=transfersyear}
+!   Requests from LCPSIM
+define SB_SAC_TRANS_1  {select SAC_TRANS from LCPSIM_SB_Output where year=transfersyear}
+define SB_SJR_TRANS_1  {select SJV_TRANS from LCPSIM_SB_Output where year=transfersyear}
+define SC_SAC_TRANS_1  {select SAC_TRANS from LCPSIM_SC_Output where year=transfersyear}
+define SC_SJR_TRANS_1  {select SJV_TRANS from LCPSIM_SC_Output where year=transfersyear}
+!   Determine components of transfer requests - Preference SB and SJV
+!      Check each by source total and destination total
+define SB_SJR_TRANS_SY  {value min(SB_SJR_TRANS_1,SJV_MAX_TRANS,                SB_MAX_TRANS)}
+define SB_SAC_TRANS_SY  {value min(SB_SAC_TRANS_1,SAC_MAX_TRANS,                SB_MAX_TRANS-SB_SJR_TRANS_SY)}
+define SC_SJR_TRANS_SY  {value min(SC_SJR_TRANS_1,SJV_MAX_TRANS-SB_SJR_TRANS_SY,SC_MAX_TRANS)}
+define SC_SAC_TRANS_SY  {value min(SC_SAC_TRANS_1,SAC_MAX_TRANS-SB_SAC_TRANS_SY,SC_MAX_TRANS-SC_SJR_TRANS_SY)}
+!
+define D815_SAC_Targ {value SB_SAC_TRANS_SY}
+define D815_SJR_Targ {value SB_SJR_TRANS_SY}
+define D815_Targ {value D815_SAC_Targ + D815_SJR_Targ}
+!
+define D885_SAC_Targ {value SC_SAC_TRANS_SY*0.5}
+define D885_SJR_Targ {value SC_SJR_TRANS_SY*0.5}
+define D885_Targ {value D885_SAC_Targ + D885_SJR_Targ}
+define D895_SAC_Targ {value SC_SAC_TRANS_SY*0.5}
+define D895_SJR_Targ {value SC_SJR_TRANS_SY*0.5}
+define D895_Targ {value D895_SAC_Targ + D895_SJR_Targ}
+!
+! these are the totals
+define WTS_D815_Targ {alias D815_Targ kind 'WTS-Transfer-Target' units 'taf'}
+define WTS_D885_Targ {alias D885_Targ kind 'WTS-Transfer-Target' units 'taf'}
+define WTS_D895_Targ {alias D895_Targ kind 'WTS-Transfer-Target' units 'taf'}
+define Tot_Stg2_SACTarg {value D815_SAC_Targ + D885_SAC_Targ + D895_SAC_Targ}
+define Tot_Stg2_SJRTarg {value D815_SJR_Targ + D885_SJR_Targ + D895_SJR_Targ}
+define Total_Stg2_Targ {value D815_Targ + D885_Targ + D895_Targ}
+
+! Get Stage2 Acquisitions
+include '..\..\..\..\common\Reoperations\Transfers\TransfersAcquisitions_Max2.wresl'
+include '..\..\..\..\common\Reoperations\Transfers\TransfersAcquisitions_Stg2.wresl'
+
+/*
+!******************************************************************************
+! Determine acquisition shortages from previous month operation for each source area
+! Compute adjustments for only the portion that is less than or equal to GW(or Storage Reop) quantity
+! Assume acquisition shortages are for Stage 2 up to the Stage 2 limit
+! Code assumes Stage 1 is never shorted-calculate an error term if Stage 1 is short
+! Stage2 GW shortages will be added to this month's pattern in the following section
+! Yuba
+define prvYubashort {
+    case initial {
+        condition  month == Apr .or. transfersyear == 1921
+         value 0.}
+    case otherwise {
+        condition  always
+         value min(WTS_YubaShort(-1),WTS_Yuba_Stg1(-1)+WTS_Yuba_Stg2(-1))}
+}
+define prvYubaStg2short {
+    case initial {
+        condition  month == Apr .or. transfersyear == 1921
+         value 0.}
+    case otherwise {
+        condition  always
+         value min(Yuba_Stg2*taf_cfs,prvYubashort,WTS_Yuba_Stg2(-1))}
+}
+define prvYubaStg1short {value prvYubashort-prvYubaStg2short}
+define WTS_YubaStg1Err  {alias prvYubaStg1short kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+! Sac Valley
+define prvGW12short     {
+    case initial {
+        condition  month == Apr .or. transfersyear == 1921
+         value 0.}
+    case otherwise {
+        condition  always
+                value min(WTS_DSA12Short(-1),WTS_GW12_Stg1(-1)+WTS_GW12_Stg2(-1))}
+}
+define prvGW12Stg2short {
+    case initial {
+        condition  month == Apr .or. transfersyear == 1921
+         value 0.}
+    case otherwise {
+        condition  always
+         value min(FeathGW_Stg2*taf_cfs+FeathCI_Stg2*taf_cfs,prvGW12short,WTS_GW12_Stg2(-1))}
+}
+define prvGW12Stg1short {value prvGW12short-prvGW12Stg2short}
+define WTS_DSA12Stg1Err {alias prvGW12Stg1short kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+! Feather
+define prvGW69short     {
+    case initial {
+        condition  month == Apr .or. transfersyear == 1921
+         value 0.}
+    case otherwise {
+        condition  always
+                value min(WTS_DSA69Short(-1),WTS_GW69_Stg1(-1)+WTS_GW69_Stg2(-1))}
+}
+define prvGW69Stg2short {
+    case initial {
+        condition  month == Apr .or. transfersyear == 1921
+         value 0.}
+    case otherwise {
+        condition  always
+         value min(SacGW_Stg2*taf_cfs+SacCI_Stg2*taf_cfs,prvGW69short,WTS_GW69_Stg2(-1))}
+}
+define prvGW69Stg1short {value prvGW69short-prvGW69Stg2short}
+define WTS_DSA69Stg1Err {alias prvGW69Stg1short kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+
+! American
+define prvGW70short     {
+    case initial {
+        condition  month == Apr .or. transfersyear == 1921
+         value 0.}
+    case otherwise {
+        condition  always
+         value min(WTS_DSA70Short(-1),WTS_GW70_Stg1(-1)+WTS_GW70_Stg2(-1))}
+}
+define prvGW70Stg2short {
+    case initial {
+        condition  month == Apr .or. transfersyear == 1921
+         value 0.}
+    case otherwise {
+        condition  always
+         value min(AmerRGW_Stg2*taf_cfs+AmerRCI_Stg2*taf_cfs,prvGW70short,WTS_GW70_Stg2(-1))}
+}
+define prvGW70Stg1short {value prvGW70short-prvGW70Stg2short}
+define WTS_DSA70Stg1Err {alias prvGW70Stg1short kind 'TRANSFER-SUPPLYSHORTAGE' units 'CFS'}
+
+! No shortage calculation required for SODCA
+*/
+
+!******************************************************************************
+! Define the monthly targets for each transfer source.
+! The Yuba source is an inflow.
+!       Yuba River (additional inflows)
+goal setWTS_YubaGW_Stg1 {WTS_YubaGW_Stg1 = YubaGW_Stg1 * YubaPattrnFactGW * taf_cfs}
+!goal setWTS_YubaSW_Stg1 {WTS_YubaSW_Stg1 = YubaSW_Stg1 * YubaPattrnFactSW * taf_cfs}
+goal setWTS_YubaSW_Stg1 {WTS_YubaSW_Stg1 = min(YubaSW_Stg1 * YubaPattrnFactSW, RemSWPExpCng) * taf_cfs}  ! constrain to what is due to Apr and May NMFS and FWS BO impact on SWP exports
+goal setWTS_YubaGW_Stg2 {WTS_YubaGW_Stg2 = YubaGW_Stg2 * YubaPattrnFactGW * taf_cfs} !+ prvYubaStg2short}
+goal setWTS_YubaSW_Stg2 {WTS_YubaSW_Stg2 = YubaSW_Stg2 * YubaPattrnFactSW * taf_cfs}
+goal setYubaGWdv {YubaGWdv = YubaGW_Stg1 + YubaGW_Stg2}
+goal setYubaSWdv {YubaSWdv = YubaSW_Stg1 + YubaSW_Stg2}
+! The Sac sources come from either groundwater substitution or crop idling in DSA 12 and 15.
+!       DSA 12 delivery (distributed between D114 - GCID Canal, and D122A, and D122B - Other Settlement)
+define WTS_CI12_Stg1 {value SacCI_Stg1 * SacPattrnFactCI * taf_cfs}
+goal setWTS_GW12_Stg1 {WTS_GW12_Stg1 = SacGW_Stg1 * SacPattrnFactGW * taf_cfs}
+goal setWTS_DSA12_Stg1 {WTS_DSA12_Stg1 = WTS_GW12_Stg1 + WTS_CI12_Stg1}
+define WTS_CI12_Stg2 {value SacCI_Stg2 * SacPattrnFactCI * taf_cfs}
+goal setWTS_GW12_Stg2 {WTS_GW12_Stg2 = SacGW_Stg2 * SacPattrnFactGW * taf_cfs} !+ prvGW12Stg2short}
+goal setWTS_DSA12_Stg2 {WTS_DSA12_Stg2 = WTS_GW12_Stg2 + WTS_CI12_Stg2}
+goal setSacGWdv {SacGWdv = SacGW_Stg1 + SacGW_Stg2}
+define WTS_CI12 {value WTS_CI12_Stg1 + WTS_CI12_Stg2}
+!       DSA 15 delivery (D128 - Other Sac)
+define WTS_CI15_Stg1 {value SacOthCI_Stg1 * OthPattrnFactCI * taf_cfs}
+goal setWTS_GW15_Stg1 {WTS_GW15_Stg1 = SacOthGW_Stg1 * OthPattrnFactGW * taf_cfs}
+goal setWTS_DSA15_Stg1 {WTS_DSA15_Stg1 = WTS_CI15_Stg1 + WTS_GW15_Stg1}
+define WTS_CI15_Stg2 {value SacOthCI_Stg2 * OthPattrnFactCI * taf_cfs}
+goal setWTS_GW15_Stg2 {WTS_GW15_Stg2 = SacOthGW_Stg2 * OthPattrnFactGW * taf_cfs}
+goal setWTS_DSA15_Stg2 {WTS_DSA15_Stg2 = WTS_CI15_Stg2 + WTS_GW15_Stg2}
+goal setSacOthGWdv {SacOthGWdv = SacOthGW_Stg1 + SacOthGW_Stg2}
+define WTS_CI15 {value WTS_CI15_Stg1 + WTS_CI15_Stg2}
+! The Feather sources come from either groundwater substitution or crop idling in DSA 69.
+!       DSA 69 delivery (D7b - Joint Canal)
+define WTS_CI69_Stg1 {value FeathCI_Stg1 * FeaPattrnFactCI * taf_cfs}
+goal setWTS_GW69_Stg1 {WTS_GW69_Stg1 = FeathGW_Stg1 * FeaPattrnFactGW * taf_cfs}
+goal setWTS_DSA69_Stg1 {WTS_DSA69_Stg1 = WTS_GW69_Stg1 + WTS_CI69_Stg1}
+define WTS_CI69_Stg2 {value FeathCI_Stg2 * FeaPattrnFactCI * taf_cfs}
+goal setWTS_GW69_Stg2 {WTS_GW69_Stg2 = FeathGW_Stg2 * FeaPattrnFactGW * taf_cfs} !+ prvGW69Stg2short}
+goal setWTS_DSA69_Stg2 {WTS_DSA69_Stg2 = WTS_GW69_Stg2 + WTS_CI69_Stg2}
+goal setFeathGWdv {FeathGWdv = FeathGW_Stg1 + FeathGW_Stg2}
+define WTS_CI69 {value WTS_CI69_Stg1 + WTS_CI69_Stg2}
+! The American sources come from either groundwater substitution or crop idling in DSA 12 and 15.
+!       DSA 70 delivery (D168A - Depletion adjustment)
+!define WTS_CI70_Stg1 {value AmerRCI_Stg1 * AmRPattrnFactCI * taf_cfs}
+define WTS_CI70_Stg1 {value 0.}
+goal setWTS_GW70_Stg1 {WTS_GW70_Stg1 = AmerRGW_Stg1 * AmRPattrnFactGW * taf_cfs}
+goal setWTS_DSA70_Stg1 {WTS_DSA70_Stg1 = WTS_GW70_Stg1 + WTS_CI70_Stg1}
+!define WTS_CI70_Stg2 {value AmerRCI_Stg2 * AmRPattrnFactCI * taf_cfs}
+define WTS_CI70_Stg2 {value 0.}
+goal setWTS_GW70_Stg2 {WTS_GW70_Stg2 = AmerRGW_Stg2 * AmRPattrnFactGW * taf_cfs} !+ prvGW70Stg2short}
+goal setWTS_DSA70_Stg2 {WTS_DSA70_Stg2 = WTS_GW70_Stg2 + WTS_CI70_Stg2}
+goal setAmerRGWdv {AmerRGWdv = AmerRGW_Stg1 + AmerRGW_Stg2}
+define WTS_CI70 {value WTS_CI70_Stg1 + WTS_CI70_Stg2}
+goal setWTS_GW70 {WTS_GW70 = WTS_GW70_Stg1 + WTS_GW70_Stg2}
+! DMC sources come from either groundwater substitution or crop idling in regions served by the DMC and Mendota Pool
+goal setWTS_DMCGW_Stg1 {WTS_DMCGW_Stg1 = DMCGW_Stg1 * (1.-SJRExchLossFact) * DMCPattrnFactGW * taf_cfs}
+goal setWTS_DMCGW_Stg2 {WTS_DMCGW_Stg2 = DMCGW_Stg2 * (1.-SJRExchLossFact) * DMCPattrnFactGW * taf_cfs}
+goal setWTS_DMCCI_Stg1 {WTS_DMCCI_Stg1 = DMCCI_Stg1 * (1.-SJRExchLossFact) * DMCPattrnFactCI * taf_cfs}
+goal setWTS_DMCCI_Stg2 {WTS_DMCCI_Stg2 = DMCCI_Stg2 * (1.-SJRExchLossFact) * DMCPattrnFactCI * taf_cfs}
+goal setWTS_DMC_Stg1 {WTS_DMC_Stg1 = WTS_DMCGW_Stg1 + WTS_DMCCI_Stg1}
+goal setWTS_DMC_Stg2 {WTS_DMC_Stg2 = WTS_DMCGW_Stg2 + WTS_DMCCI_Stg2}
+goal setDMCGWdv {DMCGWdv = DMCGW_Stg1 + DMCGW_Stg2}
+! CA sources come from either groundwater substitution or crop idling in regions served by the California Aqueduct
+goal setWTS_CAGW_Stg1 {WTS_CAGW_Stg1 = CAGW_Stg1 * (1.-SJRExchLossFact) * CAPattrnFactGW * taf_cfs}
+goal setWTS_CAGW_Stg2 {WTS_CAGW_Stg2 = CAGW_Stg2 * (1.-SJRExchLossFact) * CAPattrnFactGW * taf_cfs}
+goal setWTS_CACI_Stg1 {WTS_CACI_Stg1 = CACI_Stg1 * (1.-SJRExchLossFact) * CAPattrnFactCI * taf_cfs}
+goal setWTS_CACI_Stg2 {WTS_CACI_Stg2 = CACI_Stg2 * (1.-SJRExchLossFact) * CAPattrnFactCI * taf_cfs}
+goal setWTS_CA_Stg1 {WTS_CA_Stg1 = WTS_CAGW_Stg1 + WTS_CACI_Stg1}
+goal setWTS_CA_Stg2 {WTS_CA_Stg2 = WTS_CAGW_Stg2 + WTS_CACI_Stg2}
+goal setWTS_CAGW  {WTS_CAGW = WTS_CAGW_Stg1 + WTS_CAGW_Stg2}
+goal setWTS_CACI  {WTS_CACI = WTS_CACI_Stg1 + WTS_CACI_Stg2}
+goal setCAGWdv {CAGWdv = CAGW_Stg1 + CAGW_Stg2}
+!
+! Total Acquisitions for the month (cfs)
+goal setWTS_YubaGW {WTS_YubaGW = WTS_YubaGW_Stg1 + WTS_YubaGW_Stg2 - WTS_YubaGWShort}
+goal setWTS_YubaSW {WTS_YubaSW = WTS_YubaSW_Stg1 + WTS_YubaSW_Stg2 - WTS_YubaSWShort}
+goal setWTS_Yuba {WTS_Yuba = WTS_YubaGW + WTS_YubaSW}
+goal set_WTS_DSA12 {WTS_DSA12 = WTS_DSA12_Stg1 + WTS_DSA12_Stg2 - WTS_DSA12Short}
+goal set_WTS_DSA15 {WTS_DSA15 = WTS_DSA15_Stg1 + WTS_DSA15_Stg2 - WTS_DSA15Short}
+goal set_WTS_DSA69 {WTS_DSA69 = WTS_DSA69_Stg1 + WTS_DSA69_Stg2 - WTS_DSA69Short}
+goal set_WTS_DSA70 {WTS_DSA70 = WTS_DSA70_Stg1 + WTS_DSA70_Stg2 - WTS_DSA70Short}
+goal setWTS_DMC {WTS_DMC = WTS_DMC_Stg1 + WTS_DMC_Stg2 - WTS_DMCShort}
+goal setWTS_CA {WTS_CA = WTS_CA_Stg1 + WTS_CA_Stg2 - WTS_CAShort}
+
+! Shortage bounds
+goal ZeroWTS_YubaGWShort {
+    lhs WTS_YubaGWShort
+    rhs 0.
+    lhs>rhs penalty 9999 }
+goal MaxWTS_YubaGWShort {WTS_YubaGWShort < WTS_YubaGW_Stg1 + WTS_YubaGW_Stg2}
+
+goal ZeroWTS_YubaSWShort {
+    lhs WTS_YubaSWShort
+    rhs 0.
+    lhs>rhs penalty 9999 }
+goal MaxWTS_YubaSWShort {WTS_YubaSWShort < WTS_YubaSW_Stg1 + WTS_YubaSW_Stg2}
+
+goal setWTS_YubaShort {WTS_YubaShort = WTS_YubaGWShort + WTS_YubaSWShort}
+
+goal ZeroWTS_DSA12Short {
+    lhs WTS_DSA12Short
+    rhs 0.
+    lhs>rhs penalty 9999 }
+goal MaxWTS_DSA12Short {WTS_DSA12Short < WTS_DSA12_Stg1 + WTS_DSA12_Stg2}
+
+goal ZeroWTS_DSA15Short {
+    lhs WTS_DSA15Short
+    rhs 0.
+    lhs>rhs penalty 9999 }
+goal MaxWTS_DSA15Short {WTS_DSA15Short < WTS_DSA15_Stg1 + WTS_DSA15_Stg2}
+
+goal ZeroWTS_DSA69Short {
+    lhs WTS_DSA69Short
+    rhs 0.
+    lhs>rhs penalty 9999 }
+goal MaxWTS_DSA69Short {WTS_DSA69Short < WTS_DSA69_Stg1 + WTS_DSA69_Stg2}
+
+goal ZeroWTS_DSA70Short {
+    lhs WTS_DSA70Short
+    rhs 0.
+    lhs>rhs penalty 9999 }
+goal MaxWTS_DSA70Short {WTS_DSA70Short < WTS_DSA70_Stg1 + WTS_DSA70_Stg2}
+
+goal ZeroWTS_DMCShort {
+    lhs WTS_DMCShort
+    rhs 0.
+    lhs>rhs penalty 9999 }
+goal MaxWTS_DMCShort {WTS_DMCShort < WTS_DMC_Stg1 + WTS_DMC_Stg2}
+
+goal ZeroWTS_CAShort {
+    lhs WTS_CAShort
+    rhs 0.
+    lhs>rhs penalty 9999 }
+goal MaxWTS_CAShort {WTS_CAShort < WTS_CA_Stg1 + WTS_CA_Stg2}
+
+!******************************************************************************
+! SAC Stage 1 Aquisition Achieved
+define WTS_SACAcq_Stg1 {std kind 'WTS-Acquisition-Met' units 'taf'}
+define SACAcq_Stg1_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_SACAcq_Stg1(-1) + WTS_YubaGW_Stg1(-1) * cfs_taf(-1)
+                              + WTS_YubaSW_Stg1(-1) * cfs_taf(-1)
+                              + WTS_DSA12_Stg1(-1) * cfs_taf(-1)
+                              + WTS_DSA15_Stg1(-1) * cfs_taf(-1)
+                              + WTS_DSA69_Stg1(-1) * cfs_taf(-1)
+                              + WTS_DSA70_Stg1(-1) * cfs_taf(-1) }
+}
+goal set_WTS_SACAcq_Stg1 {WTS_SACAcq_Stg1 = SACAcq_Stg1_Met}
+! SJR Stage 1 Aquisition Achieved
+define WTS_SJRAcq_Stg1 {std kind 'WTS-Acquisition-Met' units 'taf'}
+define SJRAcq_Stg1_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_SJRAcq_Stg1(-1) + WTS_DMC_Stg1(-1) * cfs_taf(-1)
+                                  + WTS_CA_Stg1(-1)  * cfs_taf(-1)}
+}
+goal set_WTS_SJRAcq_Stg1 {WTS_SJRAcq_Stg1 = SJRAcq_Stg1_Met}
+! SAC Stage 2 Aquisition Achieved
+define WTS_SACAcq_Stg2 {std kind 'WTS-Acquisition-Met' units 'taf'}
+define SACAcq_Stg2_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_SACAcq_Stg2(-1) + WTS_YubaGW_Stg2(-1)  * cfs_taf(-1) !- prvYubaStg2short * cfs_taf(-1)
+                              + WTS_YubaSW_Stg2(-1)  * cfs_taf(-1)
+                              + WTS_DSA12_Stg2(-1) * cfs_taf(-1) !- prvGW12Stg2short   * cfs_taf(-1)
+                              + WTS_DSA15_Stg2(-1) * cfs_taf(-1) !- prvGW15Stg2short   * cfs_taf(-1)
+                              + WTS_DSA69_Stg2(-1) * cfs_taf(-1) !- prvGW69Stg2short   * cfs_taf(-1)
+                              + WTS_DSA70_Stg2(-1) * cfs_taf(-1)}!- prvGW70Stg2short   * cfs_taf(-1)}
+}
+goal set_WTS_SACAcq_Stg2 {WTS_SACAcq_Stg2 = SACAcq_Stg2_Met}
+! SJR Stage 2 Aquisition Achieved
+define WTS_SJRAcq_Stg2 {std kind 'WTS-Acquisition-Met' units 'taf'}
+define SJRAcq_Stg2_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_SJRAcq_Stg2(-1) + WTS_DMC_Stg2(-1) * cfs_taf(-1)
+                                  + WTS_CA_Stg2(-1)  * cfs_taf(-1) }
+}
+goal set_WTS_SJRAcq_Stg2 {WTS_SJRAcq_Stg2 = SJRAcq_Stg2_Met}
+
+!******************************************************************************
+! Stage 1 Export targets are set by lookup table based on total Annual Target.
+define WTS_CVP_Stg1 {std kind 'WTS-Transfer-Met' units 'taf'}
+define CVP_Stg1_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_CVP_Stg1(-1) + D418_WTS_Stg1(-1) * cfs_taf(-1) }
+}
+goal set_WTS_CVP_Stg1 {WTS_CVP_Stg1 = CVP_Stg1_Met}
+!
+define WTS_SWP_Stg1 {std kind 'WTS-Transfer-Met' units 'taf'}
+define SWP_Stg1_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_SWP_Stg1(-1) + D419_WTS_Stg1(-1) * cfs_taf(-1) }
+}
+goal set_WTS_SWP_Stg1 {WTS_SWP_Stg1 = SWP_Stg1_Met}
+
+!******************************************************************************
+! Stage 2 Delivery targets are set by lookup table based on total Annual Target.
+define WTS_D815_Stg2 {std kind 'WTS-Transfer-Met' units 'taf'}
+define D815_Stg2_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_D815_Stg2(-1) + D815_WTS(-1) * cfs_taf(-1) }
+}
+goal set_WTS_D815_Stg2 {WTS_D815_Stg2 = D815_Stg2_Met}
+!
+define WTS_D885_Stg2 {std kind 'WTS-Transfer-Met' units 'taf'}
+define D885_Stg2_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_D885_Stg2(-1) + D885_WTS(-1) * cfs_taf(-1) }
+}
+goal set_WTS_D885_Stg2 {WTS_D885_Stg2 = D885_Stg2_Met}
+!
+define WTS_D895_Stg2 {std kind 'WTS-Transfer-Met' units 'taf'}
+define D895_Stg2_Met {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_D895_Stg2(-1) + D895_WTS(-1) * cfs_taf(-1) }
+}
+goal set_WTS_D895_Stg2 {WTS_D895_Stg2 = D895_Stg2_Met}
+
+! Keep track of spills
+define WTS_SPILLED_Stg2 {std kind 'WTS-Spilled' units 'taf'}
+define SPILLED_Stg2 {
+    case first_yr {
+        condition month<APR .and. wateryear==1922
+        value 0. }
+    case April {
+        condition month==APR
+        value 0. }
+    case otherwise {
+        condition always
+    value WTS_SPILLED_Stg2(-1) + WTS_Spill_Stg2(-1) * cfs_taf(-1) }
+}
+goal set_WTS_SPILLED_Stg2 {
+  lhs WTS_SPILLED_Stg2
+  rhs SPILLED_Stg2
+  lhs>rhs penalty 99999
+  lhs<rhs penalty 99999
+}
+
+
+! Add some controls to reproduce previous step results
+!goal lmtD418_WTS_Stg1 {D418_WTS_Stg1 < D418_WTS_Stg1__z4}
+!goal lmtD419_WTS_Stg1 {D419_WTS_Stg1 < D419_WTS_Stg1__z4}

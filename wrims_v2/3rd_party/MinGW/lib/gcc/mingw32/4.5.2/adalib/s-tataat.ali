@@ -1,0 +1,166 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnvnnnnnnnnnnnnvnnvvnnnvnnnnnnnnnnnnnnnnnvnnnnnnnnvvnnnvnvvnvnnnnnnnnnnnnnnnn
+
+U system.tasking.task_attributes%b  s-tataat.adb  5e28fe1e NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_conversion%s
+W system%s		system.ads		system.ali
+W system.exp_uns%s	s-expuns.adb		s-expuns.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.task_primitives%s  s-taspri.ads	s-taspri.ali
+W system.task_primitives.operations%s  s-taprop.adb  s-taprop.ali
+W system.tasking%s	s-taskin.adb		s-taskin.ali
+W system.tasking.initialization%s  s-tasini.adb	s-tasini.ali
+
+U system.tasking.task_attributes%s  s-tataat.ads  22ef5cd3 EE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.finalization%s	a-finali.adb		a-finali.ali
+W ada.finalization.list_controller%s  a-filico.adb  a-filico.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W system%s		system.ads		system.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+W system.tasking%s	s-taskin.adb		s-taskin.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D interfac.ads		20090409150020 a69cad5c
+D i-c.ads		20070406091342 bc3ef662
+D i-cstrin.ads		20090417131548 d0370103
+D system.ads		20090410155748 b8eb58c3
+D s-atacco.ads		20090409150020 60789a20
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-expuns.ads		20090409150020 f2f8b43d
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-osinte.ads		20090422121236 e19b549f
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stausa.ads		20090429103054 146a8ff1
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-tasinf.ads		20090409150020 ff3904e8
+D s-taspri.ads		20090409150020 f6de4d95
+D s-taprop.ads		20090409150020 25a7965c
+D s-taskin.ads		20090707124244 78c4deed
+D s-tasini.ads		20090409150020 75677a05
+D s-tataat.ads		20080326073520 412c3461
+D s-tataat.adb		20080326073520 1e24bbd4
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-win32.ads		20100128134454 4b10300f
+X 1 ada.ads
+16K9*Ada 19e8 32|37r6 51r35 74r25 33|35r6 45r38
+X 3 a-finali.ads
+42K13*Finalization 71e21 32|37w10 74r29
+53H9*Limited_Controlled 69e55 32|74r42
+56U14*Initialize<16|58p14>
+X 7 a-unccon.ads
+20v14*Unchecked_Conversion 32|51r39 33|35w10 45r42
+X 11 system.ads
+37K9*System 197e11 32|39r6 41r9 76r31 129r5 33|37r6 38r6 40r14 101r17 202r18
+. 217r5
+64M9*Address
+X 16 s-finroo.ads
+60U14*Adjust
+X 24 s-stoele.ads
+42K16*Storage_Elements 117e28 32|39w13 76r38 33|202r25
+105M9*Integer_Address 32|76r55
+107V13*To_Address{11|64M9} 33|202r42
+X 28 s-taspri.ads
+41K16*Task_Primitives 124e27 33|37r13 42r8
+X 29 s-taprop.ads
+39K32*Operations 546e38 33|37w29 42r24
+172U14*Write_Lock 33|106r16
+226U14*Unlock 33|129r16
+418U14*Lock_RTS 33|64r7 192r7
+421U14*Unlock_RTS 33|135r7 208r7
+X 30 s-taskin.ads
+46K16*Tasking 11|37k9 30|1117e19 32|41r16 129r12 33|38r13 40r21 43r8 101r24
+. 217r12
+104R9*Ada_Task_Control_Block 1072e14
+106P9*Task_Id(104R9) 32|116r41 122r39 33|55r33 101r32 159r39 186r41 188r26
+113V13*Self{106P9} 33|55r44 188r37
+546p7*All_Tasks_Link{106P9} 33|130r30
+669p4*All_Tasks_List{106P9} 33|101r43
+843P9*Access_Address(11|64M9) 32|52r7 33|46r20
+859I9*Direct_Index<short_short_integer> 32|78r15
+866M9*Direct_Attribute_Element 33|201r15
+869A9*Direct_Attribute_Array(866M9)<859I9>
+872M9*Direct_Index_Vector 32|109r13
+880r7*Common{449R9} 33|130r23
+1057a7*Direct_Attributes{869A9} 33|200m15
+1063p7*Indirect_Attributes{843P9} 33|108r39 118m24 161r44 171m9
+X 31 s-tasini.ads
+35K24*Initialization 190e34 33|38w21 43r16
+107U14*Defer_Abort 33|191r7
+110U14*Undefer_Abort 33|209r7
+115U14*Defer_Abort_Nestable 33|63r7
+118U14*Undefer_Abort_Nestable 33|143r7
+X 32 s-tataat.ads
+41K24*Task_Attributes 30|46k16 32|129l20 129e35 33|40b29 217l20 217t35
+43I9*Attribute<integer> 100r23
+47R9*Node 48r35 88c9 92e14 98r28
+48P9*Access_Node(47R9) 52r23 67r53 91r18 33|46r7 54r24 102r17 160r11 161r11
+51V13*To_Access_Node[7|20]{48P9} 33|108r21 161r26
+56R9*Dummy_Wrapper 57r44 97c9 102e14 104r8
+57P9*Access_Dummy_Wrapper(56R9) 58r31 62r8 89r18
+67P9*Deallocator 75r23
+67p42 P{48P9}
+70R9*Instance 72r39 74c9 86r35 33|53r35
+72P9*Access_Instance(70R9) 82r14 90r18 112r21 33|69r14 70r14 187r17
+74R9*Instance<3|53R9> 3|56P14 16|60p14 32|84e14 86P14
+75p7*Deallocate{67P9} 33|140r12 168r34
+76m7*Initial_Value{24|105M9} 33|202r56
+78i7*Index{30|859I9} 33|86r12 90r50 199r15 200r36
+82p7*Next{72P9} 33|74r28 80r33 82m15 82r25 205r17
+86U14*Finalize<3|57p14> 86=24 33|53b14 150l8 150t16
+86r24 X{74R9} 33|53b24 73m40 86r10 90r48 110m41 140r10
+88R9*Node
+89p7*Wrapper{57P9}
+90p7*Instance{72P9} 33|110r29 168r25
+91p7*Next{48P9} 33|113r26 118r68 120m24 120r34 125m21 139r37 168r17
+98r7*Dummy_Node{88R9}
+100i7*Value{43I9}
+109m4*In_Use{30|872M9} 33|90m10 90r20
+112p4*All_Attributes{72P9} 33|70r33 80m13 196r12
+116U14*Initialize_Attributes 116>37 33|186b14 215l8 215t29
+116p37 T{30|106P9} 33|186b37 200r13
+122U14*Finalize_Attributes 122>35 33|159b14 178l8 178t27
+122p35 T{30|106P9} 33|159b35 161r42 171r7
+X 33 s-tataat.adb
+45V13 To_Access_Address[7|20]{30|843P9} 118r47
+54p7 Q{32|48P9} 108m16 109r22 110r27 112r24 113m19 113r24 116r19 118r66 120r32
+. 125r19 126r34 138m10 140m28
+54p10 To_Be_Freed{32|48P9} 125r29 126m19 137r13 138r15 139m10 139r25
+55p7 Self_Id{30|106P9} 63r29 143r31
+69p10 P{32|72P9} 74m13 79r13 82r13
+70p10 Q{32|72P9} 73r16 73r35 74r18 74m21 74r26 77r25 80r31 82r23
+101p13 C{30|106P9} 105r19 106r28 108r37 118r22 129r24 130m16 130r21
+102p13 P{32|48P9} 112m19 117r22 120r22
+160p7 P{32|48P9} 167m10 168r23 168m50
+161p7 Q{32|48P9} 166r13 167r15 168m10 168r15
+187p7 P{32|72P9} 196m7 198r13 199r13 200r34 202r54 205m10 205r15
+188p7 Self_Id{30|106P9} 191r20 209r22
+

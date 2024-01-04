@@ -1,0 +1,149 @@
+! cvp_bound_del_sys.wresl
+
+! Author Unknown
+! Agency Unknown
+! Date Unknown
+! This file sets the upper bounds for delivieries.
+
+/* This code checks to see if the Project Diversion Requirement (PDR) for NOD
+is less than the amount allocated by the Contract Cut Procedure.  If the PDR
+is less than the allocation, then  the stream diversions are limited further to match the PDR.
+*/
+
+/*
+   Revised by DJE, DWR, 12/7/2000
+   C216b and C221 are not constrained by CVP allocation schedule.
+   Will now bound D7a_prf and D7b_prf by SWP allocation schedule in swp_bound_del.
+   These del arcs directly feed c221 and c216b respectively.
+   !goal reduce_c216b {c216b < perdel_cvprf_sys*dem_c216b_prf*taf_cfs }  ! Gray Lodge
+   !goal reduce_c221 {c221 < perdel_cvprf_sys*dem_c221_prf*taf_cfs }  ! Butte Sink Duck Clubs Western Canal Supply
+
+
+   Revised by Erik Reyes, DWR, 12/06/1999
+
+   Revised by R. Leaf, USBR Contractor, Date unknown
+   Purpose: Modify DSA 70 check project diversion requirement
+
+   Revised by Russ Yaworsky, USBR, 12/16/1999
+   Purpose: DSA 70 checks to see if the Project Diversion Requirement is less
+   than the amount allocated by the Water Forum and CVP Cut Procedures, where
+   appropriate.  If the PDR is less than the allocation, then limit the stream
+   diversions further to match the PDR.  Indoor MI is assumed to have 100%
+   return flow.
+
+   Revised by MZE, 10/22/03, to include land use based demand in calculating demand upper bound
+
+*/
+!###########################################################################
+
+/* DSA 58 (Sacramento River above Red Bluff) First define the AGricultural
+Allowable Diversion limits based on contract cuts
+*/
+define ad_d104_pag {value perdel_cvpag_sys*dem_d104_pag*taf_cfs}
+/* DSA 58 (Sacramento River above Red Bluff) First define the Municipal and
+Industrial Allowable Diversion limits based on contract cuts
+*/
+define ad_d104_pmi {value perdel_cvpmi_sys*dem_d104_pmi*taf_cfs}
+/* DSA 58 (Sacramento River above Red Bluff) First define the Settlement
+Contractors Allowable Diversion limits based on contract cuts
+*/
+define ad_d104_psc {value perdel_cvpsc_sys*dem_d104_psc*taf_cfs}
+
+! Contract based demand definition and calculation for DSA 58 starts here -- MZE
+define demand_prj_58 {value max((prj_dr58*taf_cfs - mingw_58*perc_dr58*taf_cfs),0.0)}
+define con_d104_pag {select contract from nodcvpcontract where contractor=1}
+define con_d104_pmi {select contract from nodcvpcontract where contractor=2}
+define con_d104_psc {select contract from nodcvpcontract where contractor=3}
+define con_58_total {select contract from nodcvpcontract where contractor=4} !total DSA 58 contract demand
+
+define target_d104_pag {value min(ad_d104_pag, demand_prj_58*con_d104_pag/con_58_total)}
+define target_d104_pmi {value min(ad_d104_pmi, demand_prj_58*con_d104_pmi/con_58_total)}
+define target_d104_psc {value min(ad_d104_psc, demand_prj_58*con_d104_psc/con_58_total)}
+! End of Modification for DSA 58 -- MZE
+
+! Set limit on DSA 58 contract demands -- MZE
+goal limit_d104_pag  {d104_pag < target_d104_pag}
+goal limit_d104_pmi  {d104_pmi < target_d104_pmi}
+goal limit_d104_psc  {d104_psc < target_d104_psc}
+
+! DSA 12 - refer to Colusa Basin logic for information
+
+/* DSA 65 (North Delta Streams and West-Lower Sacramento River) First define the
+Settlement Contractors Allowable Diversion limits based on contract cuts
+*/
+define ad_d163_psc {value perdel_cvpsc_sys*dem_d163_psc*taf_cfs}
+/* DSA 65 (North Delta Streams and West-Lower Sacramento River) First define the
+Settlement Contractors Allowable Diversion limits based on contract cuts
+*/
+define ad_d165_psc {value perdel_cvpsc_sys*dem_d165_psc*taf_cfs}
+
+! Contract based demand definition and calculation for DSA 65 starts here -- MZE
+define demand_prj_65 {value max((prj_dr65*taf_cfs - mingw_65*perc_dr65*taf_cfs),0.0)}
+define con_d163_psc {select contract from nodcvpcontract where contractor=13}
+define con_d165_psc {select contract from nodcvpcontract where contractor=14}
+define con_65_total {select contract from nodcvpcontract where contractor=15} ! DSA 65 total demand
+
+define target_d163_psc {value min(ad_d163_psc, demand_prj_65*con_d163_psc/con_65_total)}
+define target_d165_psc {value min(ad_d165_psc, demand_prj_65*con_d165_psc/con_65_total)}
+! End of Modification for DSA 65 -- MZE
+
+! Set limit on DSA 65 contract demand -- MZE
+goal reduce_d163_psc  {d163_psc < target_d163_psc}
+goal reduce_d165_psc  {d165_psc < target_d165_psc}
+
+!********************************************************************************
+!DSA 70 shortage and allowable deliveries logic located in demands_70.wresl
+!(i.e. variables extra_dXXX_XXX and ad_dXXX_XXX)
+!********************************************************************************
+
+! Set Refuge Demands Reduce demands from maximum to reflect cut back (GOALS for NOD with System-Wide percent deliveries) Sacramento Valley refuges
+! CBTEST goal reduce_D143B {D143B < perdel_cvprf_sys*(dem_D143Ba_prf*taf_cfs + dem_D143Bb_prf*taf_cfs + dem_D143Bc_prf*taf_cfs) }
+! Set Refuge Demands Reduce demands from maximum to reflect cut back (GOALS for NOD with System-Wide percent deliveries) Sutter Refuge
+goal reduce_c136b {c136b < perdel_cvprf_sys*dem_c136b_prf*taf_cfs }
+
+
+!  This section distributes the required Calculated Water Forum and CVP cuts to the demand nodes
+!  Edited by Russ Yaworsky 12/16/99
+
+!**************  GOALS for DSA 70 percent deliveries  *************
+goal reduce_d162a_psc      {d162a_psc < ad_d162a_psc - extra_d162a_psc}
+goal reduce_d162b_psc      {d162b_psc < ad_d162b_psc - extra_d162b_psc}
+goal reduce_d162c_psc      {d162c_psc < ad_d162c_psc - extra_d162c_psc}
+goal reduce_d162e_pmi      {d162e_pmi < ad_d162e_pmi - extra_d162e_pmi}
+goal reduce_d167b_pmi      {d167b_pmi < ad_d167b_pmi - extra_d167b_pmi}
+goal reduce_d168c_frwp_pmi {d168c_frwp_pmi < ad_d168c_frwp_pmi }
+goal reduce_d300_pmi       {d300_pmi < ad_d300_pmi - extra_d300_pmi}
+goal reduce_d8b_pmi        {d8b_pmi < ad_d8b_pmi - extra_d8b_pmi}
+goal reduce_d8e_pmi        {d8e_pmi < ad_d8e_pmi - extra_d8e_pmi}
+goal reduce_d8f_pmi        {d8f_pmi < ad_d8f_pmi - extra_d8f_pmi}
+goal reduce_d8g_pmi        {d8g_pmi < ad_d8g_pmi - extra_d8g_pmi}
+goal reduce_d8h_pmi        {d8h_pmi < ad_d8h_pmi - extra_d8h_pmi}
+goal reduce_d8i_pmi        {d8i_pmi < ad_d8i_pmi - extra_d8i_pmi}
+goal reduce_d9a_pmi        {d9a_pmi < ad_d9a_pmi - extra_d9a_pmi}
+goal reduce_d9b_pmi        {d9b_pmi < ad_d9b_pmi}
+
+goal reduce_d162d_np  {d162d_np  < ad_d162d_np  - extra_d162d_np}
+goal reduce_d162e_np  {d162e_np  < ad_d162e_np  - extra_d162e_np}
+goal reduce_d167a_np  {d167a_np < ad_d167a_np - extra_d167a_np}
+goal reduce_d300_np   {d300_np < ad_d300_np - extra_d300_np}
+goal reduce_d302a_np  {d302a_np < ad_d302a_np - extra_d302a_np}
+goal reduce_d302b_np  {d302b_np < ad_d302b_np - extra_d302b_np}
+goal reduce_d302c_np  {d302c_np < ad_d302c_np - extra_d302c_np}
+goal reduce_d8a_np    {d8a_np < ad_d8a_np - extra_d8a_np}
+goal reduce_d8b_np    {d8b_np < ad_d8b_np - extra_d8b_np}
+goal reduce_d8c_np    {d8c_np < ad_d8c_np - extra_d8c_np}
+goal reduce_d8d_np    {d8d_np < ad_d8d_np - extra_d8d_np}
+goal reduce_d8e_np    {d8e_np < ad_d8e_np - extra_d8e_np}
+goal reduce_d8f_np    {d8f_np < ad_d8f_np - extra_d8f_np}
+goal reduce_d8g_np    {d8g_np < ad_d8g_np - extra_d8g_np}
+goal reduce_d9a_np    {d9a_np < ad_d9a_np - extra_d9a_np}
+goal reduce_d9b_np    {d9b_np < ad_d9b_np}
+
+
+!define ad_d162_pscdv {alias ad_d162_psc units 'cfs'}
+!define ad_d167b_pmidv {alias ad_d167b_pmi units 'cfs'}
+
+define ad_sum_70_prjdv {alias ad_sum_70_prj units 'cfs'}
+define extra_70_prjdv  {alias extra_70_prj  units 'cfs'}
+define ad_sum_70_npdv  {alias ad_sum_70_np units 'cfs'}
+define extra_70_npdv   {alias extra_70_np  units 'cfs'}

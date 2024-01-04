@@ -1,0 +1,154 @@
+HOW SPECIAL TOKENS ARE SENT TO THE PARSER:
+
+Special tokens are like tokens, except that they are permitted to
+appear anywhere in the input file (between any two tokens).  Special
+tokens can be specified in the grammar input file using the reserved
+word "SPECIAL_TOKEN" instead of "TOKEN" as in:
+
+SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
+}
+
+CCB - possible specialToken handling:
+
+SPECIAL_TOKEN : /* COMMENTS */
+{
+    <SLASH_SLASH_COMMENT :  "//" (~["\n","\r"])*                                        >
+    // <SINGLE_LINE_COMMENT :  "//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")                     >
+/*  |
+    <FORMAL_COMMENT      :  "/**" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/" >
+*/
+    |
+    <SLASH_STAR_COMMENT  :  "/*" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/"  > {
+        /*
+        This is not needed, use beginLine and endLine!
+        if (-1 != matchedToken.image.indexOf('\r') || -1 != matchedToken.image.indexOf('\n')) {
+            matchedToken.containsNewline =  true;
+        }//endif
+        */
+    }
+}// COMMENTS
+
+
+CCB - Also below
+
+SPECIAL_TOKEN : /* COMMENTS */
+{
+    <SLASH_SLASH_COMMENT :  "//" (~["\n","\r"])*                                        >
+
+    |
+    <SLASH_STAR_COMMENT  :  "/*" (~["*"])* "*" ("*" | (~["*","/"] (~["*"])* "*"))* "/"  > {
+        /*
+        The code below is not needed, use beginLine and endLine!
+        if (-1 != matchedToken.image.indexOf('\r') || -1 != matchedToken.image.indexOf('\n')) {
+            matchedToken.containsNewline =  true;
+        }//endif
+        */
+    }
+}// COMMENTS
+
+CCB - for comparison:
+
+|  <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+|  <"/*" (~["*"])* "*" ("*" | ~["*","/"] (~["*"])* "*")* "/">
+
+
+CCB - below is from Java1.1.jj!!!!!
+
+
+/* COMMENTS */
+
+MORE :
+{
+  "//" : IN_SINGLE_LINE_COMMENT
+|
+  <"/**" ~["/"]> : IN_FORMAL_COMMENT
+|
+  "/*" : IN_MULTI_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n" > : DEFAULT
+}
+
+<IN_FORMAL_COMMENT>
+SPECIAL_TOKEN :
+{
+  <FORMAL_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_MULTI_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <MULTI_LINE_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_SINGLE_LINE_COMMENT,IN_FORMAL_COMMENT,IN_MULTI_LINE_COMMENT>
+MORE :
+{
+  < ~[] >
+}
+
+
+
+
+Token specialToken; - this field points to the special token immediately prior to the
+current token (special or otherwise).  If the token immediately prior
+to the current token is a regular token (and not a special token),
+then this field is set to null.  The "next" field's of regular tokens
+continue to have the same meaning - i.e., they point to the next
+regular token except in the case of the EOF token where the "next"
+field is null.  The "next" field of special tokens point to the
+special token immediately following the current token.  If the token
+immediately following the current token is a regular token, the "next"
+field is set to null.
+
+This is clarified by the following example.  Suppose you wish to print
+all special tokens prior to the regular token "t" (but only those that
+are after the regular token before "t"):
+
+  //determines if there are special tokens; if not, return control to the caller.
+  if (t.specialToken == null) return;
+    
+  Token temp_t = t.specialToken;
+
+  // The next line walks back the special token chain until it reaches 
+  // the first special token after the previous regular token.
+  while (temp_t.specialToken != null)  temp_t = temp_t.specialToken;
+
+  // The next while loop walks the special token chain in the forward direction. 
+  while (temp_t != null) {
+    System.out.println(temp_t.image);  // CCB - need to change this to a printWriter
+    temp_t = temp_t.next;
+  }
+
+CCB - the next bit of code does the same as the above code, then puts all the specialTokens from the first Token through the current Token in a stringbuffer then appends the current Token image to the stringbuffer
+
+Token firstToken = getToken(1);
+.
+.
+.
+String s = getTokenText(firstToken, getNextToken());
+.
+.
+.
+private static String getTokenText(Token first, Token cur) {
+  Token t;
+  StringBuffer sb = new StringBuffer();
+
+  for (t=first; t != cur.next; t = t.next) {
+    if (t.specialToken != null) {
+      Token tt=t.specialToken;
+      while (tt.specialToken != null) 
+        tt = tt.specialToken;
+      for (; tt != null; tt = tt.next) 
+        sb.append(tt.image);
+    };
+    sb.append(t.image);
+  };
+  return sb.toString();
+}
+

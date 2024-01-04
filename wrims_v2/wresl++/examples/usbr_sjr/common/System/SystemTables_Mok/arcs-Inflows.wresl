@@ -1,0 +1,33 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-INFLOWS.WRESL
+
+NAMING TAKES THE FOLLOWING FORMS:
+
+I_{DESTINATION NODE}    - boundary inflow
+SR_{WBA}        - aggregated precipitation runoff from specific WBA 
+
+Original formulation: C. Olson (MWH) December 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! SURFACE RUNOFF FROM WBAs   !!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+define  SR_26S_MOK014    {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}
+define  SR_60N_MOK019       {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}
+define  SR_60N_MOK035       {timeseries kind 'SURFACE-RUNOFF' units 'TAF' convert 'CFS'}
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+! BOUNDARY INFLOWS   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!! Mokelumne/Cosumnes
+define I_CSM035         {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'}!Cosumnes River
+define I_DSC035         {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'}!Dry Creek
+define I_DEE023         {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'}!Deer Creek
+define I_AMADR          {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'}!Jackson Creek
+define I_CMCHE          {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'}!Local inflow to  Camanche Reservoir
+define I_PARDE          {timeseries kind 'INFLOW' units 'TAF' convert 'CFS'}!Local inflow to Pardee Reservoir
+

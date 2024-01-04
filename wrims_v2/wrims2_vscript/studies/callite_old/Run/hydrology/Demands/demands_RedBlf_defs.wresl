@@ -1,0 +1,74 @@
+/*************************************
+demands_RedBlf_defs.wresl
+ 
+Tom FitzHugh BOR 5/13/2010
+
+Defines variables for Red Bluff delivery logic
+**************************************/
+
+/****** Red Bluff deliveries by type ******/
+define D_RedBlf_pag {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_RedBlf_pmi {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define D_RedBlf_psc {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+/****** DSA58 ******/
+! Total demand for DSA58
+define demand_prj_58 {timeseries kind 'DEMAND-CVP-TOTAL' units 'CFS'}
+
+! Total Demand for Delivery arc D104
+define dem_d104_PRJ {timeseries kind 'DEMAND-CVP-TOTAL' units 'TAF'}
+
+! Total Contract Demand for each type (AG, MI, or SC)
+define dem_d104_PMI {timeseries kind 'DEMAND-CVP-MI' units 'TAF'}
+define dem_d104_PAG {timeseries kind 'DEMAND-CVP-AG' units 'TAF'}
+define dem_d104_PSC {timeseries kind 'DEMAND-CVP-SC' units 'TAF'}
+
+! Project deliveries by contractor type
+define d104_pag {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d104_pmi {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+define d104_psc {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' }
+
+! Total project deliveries
+define d104_prj {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' } 
+
+/****** Corning Canal ******/
+! According to historical record, CVP deliveries through Corning canal is limited.
+define L17101 {std kind 'FLOW-DELIVERY' units 'CFS'} !Corning Canal loss
+define D171 {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' } ! project stream diversion
+define ConvLs_17101 {value 0.15}     ! Conveyance loss factor 
+define con_D171_pag {timeseries kind 'DEMAND' units 'CFS'} !Monthly contract amount, this must be updated if min gw is greater than 0.0
+
+define target_D17101 {timeseries kind 'DIV-REQUIREMENT' units 'CFS'} ! sw diversion requirement which incorporates on-farm efficiency and reuse factor
+
+/****** WBA4 along Tehama-Colusa Canal ******/
+define D112 {std kind 'flow-delivery' units 'cfs'} !TC Canal diversion from the Sacramento River at Red Bluff
+define L17201 {std kind 'FLOW-DELIVERY' units 'CFS'} !TC Canal Loss
+define D172 {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' } ! project stream diversion
+define ConvLs_17201 {value 0.01}     ! Conveyance loss factor
+define con_D172_pag {timeseries kind 'DEMAND' units 'CFS'} !Monthly contract amount, this must be updated if min gw is greater than 0.0
+
+define ConvLs_172 {value 0.01}  ! Conveyance loss factor for TC Canal
+
+define target_D17201 {timeseries kind 'DIV-REQUIREMENT' units 'CFS'} ! sw diversion requirement which incorporates on-farm efficiency and reuse factor
+
+define C_StCr_TC {timeseries kind 'FLOW-CHANNEL' units 'CFS'} !Diversion from Stony Creek into Tehama-Colusa Canal
+define C_TC_GC {timeseries kind 'flow-channel' units 'cfs'} !Flow from TC canal to GC canal through interties
+define L172 {std kind 'flow-delivery' units 'cfs'}  !TC canal losses
+
+
+/****** WBA7N ******/
+define L17401 {std kind 'FLOW-DELIVERY' units 'CFS'} !Canal losses
+define D174 {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' } ! project stream diversion
+define ConvLs_17401 {value 0.01}     ! Conveyance loss factor
+define con_D174_pag {timeseries kind 'DEMAND' units 'CFS'} !Monthly contract amount, this must be updated if min gw is greater than 0.0
+
+define target_D17401 {timeseries kind 'DIV-REQUIREMENT' units 'CFS'} ! sw diversion requirement which incorporates on-farm efficiency and reuse factor
+
+/****** WBA7S ******/
+define L17801 {std kind 'FLOW-DELIVERY' units 'CFS'} !
+define D178 {STD KIND 'FLOW-DELIVERY' UNITS 'CFS' } ! project stream diversion
+define ConvLs_17801 {value 0.01}     ! Conveyance loss factor
+define con_D178_pag {timeseries kind 'DEMAND' units 'CFS'} !Monthly contract amount, this must be updated if min gw is greater than 0.0
+
+define target_D17801 {timeseries kind 'DIV-REQUIREMENT' units 'CFS'} ! sw diversion requirement which incorporates on-farm efficiency and reuse factor
+

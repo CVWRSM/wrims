@@ -1,0 +1,153 @@
+! WriteCycle.wresl
+! Edward Chang
+! 8/13/99  11:30am
+! Main include file for writing cycle output to DSS in the San Joaquin System
+!############################################################################
+
+INCLUDE 'CYCLE1OUT.WRESL'
+INCLUDE 'CYCLE2OUT.WRESL'
+INCLUDE 'CYCLE3OUT.WRESL'
+INCLUDE 'CYCLE4OUT.WRESL'
+INCLUDE 'CYCLE5OUT.WRESL'
+
+
+! (For debugging WDWRD blow-up)
+define C_MELONc1             { alias C_MELON[sjrbase]          kind 'cycle1out' units 'cfs'}
+define C_MELONc2             { alias C_MELON[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define C_MELONc3             { alias C_MELON[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define C_MELONc4             { alias C_MELON[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define C_MELONc5             { alias C_MELON[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+! define C_MELONc6             { alias C_MELON[monthlyweighted]  kind 'cycle6out' units 'cfs'}
+! define C_MELONc7             { alias C_MELON[wqbound]          kind 'cycle7out' units 'cfs']
+
+define C_TULOCc1             { alias C_TULOC[sjrbase]          kind 'cycle1out' units 'cfs'}
+define C_TULOCc2             { alias C_TULOC[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define C_TULOCc3             { alias C_TULOC[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define C_TULOCc4             { alias C_TULOC[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define C_TULOCc5             { alias C_TULOC[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+! define C_TULOCc6             { alias C_TULOC[monthlyweighted]  kind 'cycle6out' units 'cfs'}
+! define C_TULOCc7             { alias C_TULOC[wqbound]          kind 'cycle7out' units 'cfs']
+
+define C_STS059c1            { alias C_STS059[sjrbase]         kind 'cycle1out' units 'cfs'}
+define C_STS059c2            { alias C_STS059[sjr_wq1]         kind 'cycle2out' units 'cfs'}
+define C_STS059c3            { alias C_STS059[sjr_pulse]       kind 'cycle3out' units 'cfs'}
+define C_STS059c4            { alias C_STS059[sjr_wq2]         kind 'cycle4out' units 'cfs'}
+define C_STS059c5            { alias C_STS059[vamp_and_do]     kind 'cycle5out' units 'cfs'}
+! define C_STS059c6            { alias C_STS059[monthlyweighted] kind 'cycle6out' units 'cfs'}
+! define C_STS059c7            { alias C_STS059[wqbound]         kind 'cycle7out' units 'cfs']
+
+define C_SSJ001c1            { alias C_SSJ001[sjrbase]         kind 'cycle1out' units 'cfs'}
+define C_SSJ001c2            { alias C_SSJ001[sjr_wq1]         kind 'cycle2out' units 'cfs'}
+define C_SSJ001c3            { alias C_SSJ001[sjr_pulse]       kind 'cycle3out' units 'cfs'}
+define C_SSJ001c4            { alias C_SSJ001[sjr_wq2]         kind 'cycle4out' units 'cfs'}
+define C_SSJ001c5            { alias C_SSJ001[vamp_and_do]     kind 'cycle5out' units 'cfs'}
+! define C_SSJ001c6            { alias C_SSJ001[monthlyweighted] kind 'cycle6out' units 'cfs'}
+! define C_SSJ001c7            { alias C_SSJ001[wqbound]         kind 'cycle7out' units 'cfs']
+
+define S_WDWRDc1             { alias S_WDWRD[sjrbase]          kind 'cycle1out' units 'cfs'}
+define S_WDWRDc2             { alias S_WDWRD[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define S_WDWRDc3             { alias S_WDWRD[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define S_WDWRDc4             { alias S_WDWRD[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define S_WDWRDc5             { alias S_WDWRD[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+! define S_WDWRDc6             { alias S_WDWRD[monthlyweighted]  kind 'cycle6out' units 'cfs'}
+! define S_WDWRDc7             { alias S_WDWRD[wqbound]          kind 'cycle7out' units 'cfs']
+
+define ErrPos_WDWRDc1        { alias ErrPos_WDWRD[sjrbase]          kind 'cycle1out' units 'cfs'}
+define ErrPos_WDWRDc2        { alias ErrPos_WDWRD[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define ErrPos_WDWRDc3        { alias ErrPos_WDWRD[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define ErrPos_WDWRDc4        { alias ErrPos_WDWRD[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define ErrPos_WDWRDc5        { alias ErrPos_WDWRD[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+! define ErrPos_WDWRDc6        { alias ErrPos_WDWRD[monthlyweighted]  kind 'cycle6out' units 'cfs'}
+! define ErrPos_WDWRDc7        { alias ErrPos_WDWRD[wqbound]          kind 'cycle7out' units 'cfs']
+
+define ErrNeg_WDWRDc1        { alias ErrNeg_WDWRD[sjrbase]          kind 'cycle1out' units 'cfs'}
+define ErrNeg_WDWRDc2        { alias ErrNeg_WDWRD[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define ErrNeg_WDWRDc3        { alias ErrNeg_WDWRD[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define ErrNeg_WDWRDc4        { alias ErrNeg_WDWRD[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define ErrNeg_WDWRDc5        { alias ErrNeg_WDWRD[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+! define ErrNeg_WDWRDc6        { alias ErrNeg_WDWRD[monthlyweighted]  kind 'cycle6out' units 'cfs'}
+! define ErrNeg_WDWRDc7        { alias ErrNeg_WDWRD[wqbound]          kind 'cycle7out' units 'cfs']
+
+
+define S_SLUISc1             { alias S_SLUIS[sjrbase]          kind 'cycle1taf' units 'taf'}
+define S_SLUISc2             { alias S_SLUIS[sjr_wq1]          kind 'cycle2taf' units 'taf'}
+define S_SLUISc3             { alias S_SLUIS[sjr_pulse]        kind 'cycle3taf' units 'taf'}
+define S_SLUISc4             { alias S_SLUIS[sjr_wq2]          kind 'cycle4taf' units 'taf'}
+define S_SLUISc5             { alias S_SLUIS[vamp_and_do]      kind 'cycle5taf' units 'taf'}
+
+define C_CAA067c1             { alias C_CAA067[sjrbase]          kind 'cycle1out' units 'cfs'}
+define C_CAA067c2             { alias C_CAA067[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define C_CAA067c3             { alias C_CAA067[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define C_CAA067c4             { alias C_CAA067[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define C_CAA067c5             { alias C_CAA067[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define C_DMC064c1             { alias C_DMC064[sjrbase]          kind 'cycle1out' units 'cfs'}
+define C_DMC064c2             { alias C_DMC064[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define C_DMC064c3             { alias C_DMC064[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define C_DMC064c4             { alias C_DMC064[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define C_DMC064c5             { alias C_DMC064[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define C_DMC070c1             { alias C_DMC070[sjrbase]          kind 'cycle1out' units 'cfs'}
+define C_DMC070c2             { alias C_DMC070[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define C_DMC070c3             { alias C_DMC070[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define C_DMC070c4             { alias C_DMC070[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define C_DMC070c5             { alias C_DMC070[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define C_CAA069c1             { alias C_CAA069[sjrbase]          kind 'cycle1out' units 'cfs'}
+define C_CAA069c2             { alias C_CAA069[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define C_CAA069c3             { alias C_CAA069[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define C_CAA069c4             { alias C_CAA069[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define C_CAA069c5             { alias C_CAA069[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define C_MDOTAc1             { alias C_MDOTA[sjrbase]          kind 'cycle1out' units 'cfs'}
+define C_MDOTAc2             { alias C_MDOTA[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define C_MDOTAc3             { alias C_MDOTA[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define C_MDOTAc4             { alias C_MDOTA[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define C_MDOTAc5             { alias C_MDOTA[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define D_MDOTA_91_PAc1             { alias D_MDOTA_91_PA[sjrbase]          kind 'cycle1out' units 'cfs'}
+define D_MDOTA_91_PAc2             { alias D_MDOTA_91_PA[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define D_MDOTA_91_PAc3             { alias D_MDOTA_91_PA[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define D_MDOTA_91_PAc4             { alias D_MDOTA_91_PA[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define D_MDOTA_91_PAc5             { alias D_MDOTA_91_PA[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define D_MDOTA_91_PRc1             { alias D_MDOTA_91_PR[sjrbase]          kind 'cycle1out' units 'cfs'}
+define D_MDOTA_91_PRc2             { alias D_MDOTA_91_PR[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define D_MDOTA_91_PRc3             { alias D_MDOTA_91_PR[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define D_MDOTA_91_PRc4             { alias D_MDOTA_91_PR[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define D_MDOTA_91_PRc5             { alias D_MDOTA_91_PR[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define D_MDOTA_90_PA1c1             { alias D_MDOTA_90_PA1[sjrbase]          kind 'cycle1out' units 'cfs'}
+define D_MDOTA_90_PA1c2             { alias D_MDOTA_90_PA1[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define D_MDOTA_90_PA1c3             { alias D_MDOTA_90_PA1[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define D_MDOTA_90_PA1c4             { alias D_MDOTA_90_PA1[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define D_MDOTA_90_PA1c5             { alias D_MDOTA_90_PA1[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define D_MDOTA_XCC010c1             { alias D_MDOTA_XCC010[sjrbase]          kind 'cycle1out' units 'cfs'}
+define D_MDOTA_XCC010c2             { alias D_MDOTA_XCC010[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define D_MDOTA_XCC010c3             { alias D_MDOTA_XCC010[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define D_MDOTA_XCC010c4             { alias D_MDOTA_XCC010[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define D_MDOTA_XCC010c5             { alias D_MDOTA_XCC010[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define D_MDOTA_64_XAc1             { alias D_MDOTA_64_XA[sjrbase]          kind 'cycle1out' units 'cfs'}
+define D_MDOTA_64_XAc2             { alias D_MDOTA_64_XA[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define D_MDOTA_64_XAc3             { alias D_MDOTA_64_XA[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define D_MDOTA_64_XAc4             { alias D_MDOTA_64_XA[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define D_MDOTA_64_XAc5             { alias D_MDOTA_64_XA[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define D_MDOTA_73_XAc1             { alias D_MDOTA_73_XA[sjrbase]          kind 'cycle1out' units 'cfs'}
+define D_MDOTA_73_XAc2             { alias D_MDOTA_73_XA[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define D_MDOTA_73_XAc3             { alias D_MDOTA_73_XA[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define D_MDOTA_73_XAc4             { alias D_MDOTA_73_XA[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define D_MDOTA_73_XAc5             { alias D_MDOTA_73_XA[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+define D_SJR180ARY010c1             { alias D_SJR180_ARY010[sjrbase]          kind 'cycle1out' units 'cfs'}
+define D_SJR180ARY010c2             { alias D_SJR180_ARY010[sjr_wq1]          kind 'cycle2out' units 'cfs'}
+define D_SJR180ARY010c3             { alias D_SJR180_ARY010[sjr_pulse]        kind 'cycle3out' units 'cfs'}
+define D_SJR180ARY010c4             { alias D_SJR180_ARY010[sjr_wq2]          kind 'cycle4out' units 'cfs'}
+define D_SJR180ARY010c5             { alias D_SJR180_ARY010[vamp_and_do]      kind 'cycle5out' units 'cfs'}
+
+
+  
+
+

@@ -1,0 +1,17 @@
+!Define cross valley canals connecting the California Aqueduct and the Friant-Kern Canal
+include 'system\CA\Channel-table.wresl'
+
+!Retrieve integrated operations transfers from the California Aqueduct from the CONV step.
+
+define C848_TVC__Z4 {timeseries kind 'flow-channel' units 'cfs'}
+define C851_SW__Z4 {timeseries kind 'flow-channel' units 'cfs'}
+define C855_CVC__Z4 {timeseries kind 'flow-channel' units 'cfs'}
+define C861_AEI__Z4 {timeseries kind 'flow-channel' units 'cfs'}
+
+
+!Maintain transfers in the TXFR step.
+
+goal set_C848_TVC {C848_TVC = C848_TVC__Z4}
+goal set_C851_SW {C851_SW = C851_SW__Z4}
+goal set_C855_CVC {C855_CVC = C855_CVC__Z4}
+goal set_C861_AEI {C861_AEI = C861_AEI__Z4}

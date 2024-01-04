@@ -1,0 +1,40 @@
+
+initial {
+	const option_A { 1 }  
+}
+
+sequence CYCLE1 {
+    model   first
+    order   1
+}
+	
+model first { 
+
+	
+	if int(option_A)==1 {
+		
+		define X { std kind 'FLOW-CHANNEL' units 'CFS'}
+		! you can use dvar instead of define
+		dvar Y { std kind 'FLOW-CHANNEL' units 'CFS'} 
+		goal G_XY { X + Y < 100 }
+		
+		objective OBJ_XY {
+			[X, 10]
+			[Y, 10]		
+		}
+		
+	} 
+	else {
+	
+		define A { std kind 'FLOW-CHANNEL' units 'CFS'}
+		define B { std kind 'FLOW-CHANNEL' units 'CFS'}
+		goal G_AB { A + B < 9 } 
+		
+		objective OBJ_AB {
+			[A, 5]
+			[B, 5]		
+		}
+		
+	}
+  
+}

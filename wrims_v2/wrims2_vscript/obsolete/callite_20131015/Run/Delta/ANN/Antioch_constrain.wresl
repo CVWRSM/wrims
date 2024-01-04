@@ -1,0 +1,31 @@
+/*************************************
+Antioch_constrain.wresl
+
+D-1485 Regulation
+Switch to turn off D1485 constraint at Antioch.
+Holly Canada, DWR (05/02/2012)
+**************************/
+
+goal meetAN {
+  lhs D_ExpTD - exp_ann_relax
+  case D1485Off{
+                   condition AN_DLTSW == 0
+                   rhs ExportCapacity
+                   lhs<rhs penalty 0}     
+  case NoSalinityControlPossible{
+    condition abs(AN_m_sv) <= 0.001 .and. int(AN_b_sv) == 0  
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case NegSlope{
+    condition AN_m_sv <= 0.0  
+    rhs 999999.
+    lhs<rhs penalty 0}
+  case HighCost{
+    condition AN_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap
+    lhs<rhs penalty 0}
+  case Normal {
+    condition always
+    rhs AN_m_sv*C_Hood_ANN + AN_m_sv*C_YoloBP + AN_b_sv
+    lhs<rhs penalty 0}
+}

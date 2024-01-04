@@ -1,0 +1,9 @@
+! ==========================================================================
+!
+define RdMin {select RedMin
+              from   Redbluff_base
+              where  month=month, ShastaIndx=wyt_SHASTA_cvp
+}
+goal meet_RedBlfQ {C_RedBlf_MIF < RdMin}
+
+! ==========================================================================

@@ -1,0 +1,137 @@
+/*  File determines whether B2 actions are triggered.
+
+ 1 = Action ON
+ 0 = Action OFF
+
+Action  Description
+1       Minimum Instream Flow Requirement Augmentation on Sacramento River, Clear Creek & American River
+2       Dec-Jan Export cuts
+3       VAMP Export cuts
+4       VAMP Extension - May
+5       JUNE Export Ramping
+6       VAMP Extension - Apr
+7       Feb-Mar Export cuts
+
+Fenolio & Hilts modifications to best represent May 03 DOI (b)(2) Decision for Planning Simulation Purposes Only.
+*/
+
+!**** Trigger to Specify When Action is ON/OFF ****************
+define B2Action1ShaOn {
+  case OctJan {
+    condition month >= OCT .and. month <= JAN .and. S4(-1)+S44(-1)+S4mod > 1900.
+    value     1.0 }
+  case FebSep {
+    condition month >= FEB .and. month <= SEP .and. B2Acct > max(CostWqcpEst,0.) .and. S4(-1)+S44(-1)+S4mod > 1900.
+    value     1.0 }
+  case other {
+    condition always
+    value     0.0 }
+}
+
+define B2Action1WhiOn {
+  case OctJan {
+    condition month >= OCT .and. month <= JAN .and. S1(-1)+S1mod > 600.
+    value     1.0 }
+  case FebSep {
+    condition month >= FEB .and. month <= SEP .and. S1(-1)+S1mod > 600.
+    value     1.0 }
+  case other {
+    condition always
+    value     0.0 }
+}
+
+define B2Action1FolOn {
+  case OctJan {
+    condition month >= OCT .and. month <= JAN .and. S8(-1)+S8mod > 300.
+    value     1.0 }
+  case FebSep {
+    condition month >= FEB .and. month <= SEP .and. B2Acct > max(CostWqcpEst,0.) .and. S8(-1)+S8mod > 300.
+    value     1.0 }
+  case other {
+    condition always
+    value     0.0 }
+}
+
+goal setB2Action1ShaOn {B2Action1ShaOndv = B2Action1ShaOn}
+goal setB2Action1WhiOn {B2Action1WhiOndv = B2Action1WhiOn}
+goal setB2Action1FolOn {B2Action1FolOndv = B2Action1FolOn}
+
+!**** Trigger to Specify When Action is ON/OFF ****************    Dec 50 export reduction
+define B2Action2On {
+/*   case Dec {
+          condition month==DEC .and. B2Acct > CostWqcpEst + ResAction2 + ResAction3 + ResAction4 + ResAction5
+          value     1.0 }
+     case Jan {
+          condition month==JAN .and. B2Acct > CostWqcpEst + ResAction2/2. + ResAction3 + ResAction4 + ResAction5
+          value     1.0 } */
+  case other {
+    condition always
+    value     0.0 }
+}
+
+goal setB2Action2On {B2Action2Ondv = B2Action2On}
+
+!**** Trigger to Specify When Action is ON/OFF ****************
+define B2Action3On {
+  case AprMay {
+    condition month>=APR .and. month<=MAY  !.and. B2Acct > CostWqcpEst - B2recovery*cfs_taf + ResAction3 .and. B2Exp < maxB2cutFebAug
+    value     1.0 }
+  case other {
+    condition always
+    value     0.0 }
+}
+
+goal setB2Action3On {B2Action3Ondv = B2Action3On}
+
+
+!**** Trigger to Specify When Action is ON/OFF ****************
+define B2Action4On {
+  case May {
+    condition month==MAY .and.  B2Acct >= max(0.,CostWqcpEst - max(0.,CostWqcpAnn - 500.)) + 25.
+    value     1.0 }
+  case other {
+    condition always
+    value     0.0 }
+}
+
+goal setB2Action4On {B2Action4Ondv = B2Action4On}
+
+!**** Trigger to Specify When Action is ON/OFF ****************
+define B2Action5On {
+  case Jun {
+    condition month==JUN .and. B2Acct >= max(0.,CostWqcpEst - max(0.,CostWqcpAnn - 500.)) + 20.
+    value     1.0 }
+  case other {
+    condition always
+    value     0.0 }
+}
+
+goal setB2Action5On {B2Action5Ondv = B2Action5On}
+
+!**** Trigger to Specify When Action is ON/OFF ****************
+define B2Action6On {
+/*  case Apr {
+    condition month==APR .and. B2Acct > CostWqcpEst + ResAction3 + ResAction4 + ResAction5 + ResAction6 !.and. B2Exp < maxB2cutFebAug
+    value     1.0 } */
+    case other {
+    condition always
+    value     0.0 }
+}
+
+goal setB2Action6On {B2Action6Ondv = B2Action6On}
+
+!**** Trigger to Specify When Action is ON/OFF ****************
+define B2Action7On {
+/*  case Feb {
+    condition month==FEB .and. B2Acct > CostWqcpEst + ResAction3 + ResAction4 + ResAction5 + ResAction6 + ResAction7 !.and. B2Exp < maxB2cutFebAug
+    value     1.0 }
+    case Mar {
+    condition month==MAR .and. B2Acct > CostWqcpEst + ResAction3 + ResAction4 + ResAction5 + ResAction6 + ResAction7/2. !.and. B2Exp < maxB2cutFebAug
+    value     1.0 } */
+    case other {
+    condition always
+    value     0.0 }
+}
+
+goal setB2Action7On {B2Action7Ondv = B2Action7On}
+

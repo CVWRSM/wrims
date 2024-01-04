@@ -1,0 +1,39 @@
+! Read in CCC dynamic standard from base study and set to current study
+define CCCCLstddv_s2 {timeseries kind 'ANN-PARAMETER' units 'NONE'}
+define CCCCLstd {value CCCCLstddv_s2}
+
+! Read all ANN Sac minflows from base study
+define JPminflow_s2 {timeseries kind 'FLOW' units 'CFS'}
+define CCCminflow225_s2 {timeseries kind 'FLOW' units 'CFS'}
+define CCCminflow_s2 {timeseries kind 'FLOW' units 'CFS'}
+define EMminflow_s2 {timeseries kind 'FLOW' units 'CFS'}
+define COminflow_s2 {timeseries kind 'FLOW' units 'CFS'}
+!define ANminflow_s2 {timeseries kind 'FLOW' units 'CFS'}
+!define CHminflow_s2 {timeseries kind 'FLOW' units 'CFS'}
+
+! Fix current ANN Sac minflow to that in base
+define JPqsacmin {value JPminflow_s2}
+define CCCsacmin225 {value CCCminflow225_s2}
+define CCCsacmin {value CCCminflow_s2}
+define EMqsacmin {value EMminflow_s2}
+define COqsacmin {value COminflow_s2}
+!define ANqsacmin {value ANminflow_s2}
+!define CHqsacmin {value CHminflow_s2}
+
+! Define output variables for ANN Sac minflows
+define JPminflow {std kind 'FLOW' units 'CFS'}
+define CCCminflow225 {std kind 'FLOW' units 'CFS'}
+define CCCminflow {std kind 'FLOW' units 'CFS'}
+define EMminflow {std kind 'FLOW' units 'CFS'}
+define COminflow {std kind 'FLOW' units 'CFS'}
+!define ANminflow {std kind 'FLOW' units 'CFS'}
+!define CHminflow {std kind 'FLOW' units 'CFS'}
+
+! Set output variables equal to ANN Sac minflows
+goal setJPminflow {JPminflow = JPqsacmin}
+goal setCCCminflow225 {CCCminflow225 = CCCsacmin225}
+goal setCCCminflow {CCCminflow = CCCsacmin}
+goal setEMminflow {EMminflow = EMqsacmin}
+goal setCOminflow {COminflow = COqsacmin}
+!goal setANminflow {ANminflow = ANqsacmin}
+!goal setCHminflow {CHminflow = CHqsacmin}

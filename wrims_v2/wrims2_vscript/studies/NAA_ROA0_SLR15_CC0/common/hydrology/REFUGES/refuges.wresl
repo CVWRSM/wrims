@@ -1,0 +1,96 @@
+! refuges,wresl
+! This file calculates the monthly refuge demands for North of Delta
+!    Refuges.  Return flows are based on non recoverable losses and
+!    basin efficiencies.
+!
+! Read in refuge demands from DSS
+! for Sacramento, Delevan and Colusa see demands_CB_Refuges.wresl
+define dem_c136b_prf  {timeseries kind 'demand-rf' units 'taf'} !Sutter
+define dem_c216b_prf  {timeseries kind 'demand-rf' units 'taf'} !Gray
+!
+!(DJE) Change demand to C221.
+define dem_c221_prf  {timeseries kind 'demand-rf' units 'taf'} !Butte
+!
+! Define annual conveyance loss percent - only used to calculate return flow coefficients
+! for Sacramento, Delevan and Colusa see demands_CB_Refuges.wresl
+define sutter_lp {SELECT sutter FROM refuge WHERE type=2 }
+define gray_lp   {SELECT gray FROM refuge WHERE type=2 }
+define butte_lp {SELECT butte FROM refuge WHERE type=2 }
+
+/*
+! add up OCT - JAN flow in Butte Creek (Forecast)
+define sum_buttedv {std kind 'demand-annual' units 'taf'}
+
+define sum_butte {
+
+       CASE      october  {
+       CONDITION MONTH == OCT
+       sum(i=0,3,1) i217(i)*cfs_taf }  ! add up annual flow in TAF
+
+       CASE      other  {
+       CONDITION always
+       value     sum_buttedv(-1) }
+       }
+
+goal save_sum_butte {sum_buttedv = sum_butte}
+
+! define monthly Western Canal demands for Butte Sink Duck Clubs (units = TAF)
+! These values were taken from the DWRSIM hydrology based on Butte Creek OCT - JAN  flows.
+define dem_butte {
+
+       CASE      normal_1 {
+       CONDITION sum_butte >= 30.0 .and. sum_butte <= 130.0 .and. MONTH >= NOV .and. MONTH <= DEC
+       value     12.0 }  ! TAF
+
+       CASE      normal_2 {
+       CONDITION sum_butte >= 30.0 .and. sum_butte <= 130.0 .and. MONTH == JAN
+       value     2.0 }  ! TAF
+
+       CASE      normal_3 {
+       CONDITION sum_butte >= 30.0 .and. sum_butte <= 130.0
+       value     0.0 }  ! TAF
+
+       CASE      dry_1 {
+       CONDITION sum_butte < 30.0 .and. MONTH == OCT
+       value     6.0 }  ! TAF
+
+       CASE      dry_2 {
+       CONDITION sum_butte < 30.0 .and. MONTH >= NOV .and. MONTH <= DEC
+       value     12.0 }  ! TAF
+
+       CASE      dry_3 {
+       CONDITION sum_butte < 30.0 .and. MONTH == JAN
+       value     10.0 }  ! TAF
+
+       CASE      dry_4 {
+       CONDITION sum_butte < 30.0
+       value     0.0 }  ! TAF
+
+       CASE      wet_1 {
+       CONDITION sum_butte >130.0 .and. MONTH == NOV
+       value     12.0 }  ! TAF
+
+       CASE      wet_2 {
+       CONDITION always ! actually the condition by default is: sum_butte >130.0
+       value     0.0 }  ! TAF
+       }
+*/
+
+! set diversion requirement for refuges
+! for Sacramento, Delevan and Colusa see demands_CB_Refuges.wresl
+goal set_c136b {c136b < dem_c136b_prf*taf_cfs }       ! Sutter Refuge
+goal set_c216b {c216b < dem_c216b_prf*taf_cfs }       ! Gray Lodge
+goal set_c221  {c221 < dem_c221_prf*taf_cfs }         !Will be met first by Butte Creek (C217b) and supplemented by Western Canal (D7a_prf)
+
+! define refuge return flow factors
+! for Sacramento, Delevan and Colusa see demands_CB_Refuges.wresl
+define rf_sut  {VALUE 1 - (1+sutter_lp)*eff_69 }
+define rf_gray {VALUE 1 - (1+gray_lp)*eff_69 }
+define rf_butte {VALUE 1 - (1+butte_lp)*eff_69  }
+
+! Refuge Return Flows
+! for Sacramento, Delevan and Colusa see demands_CB_Refuges.wresl
+GOAL set_r137  {r137  = rf_sut*C136B  }   ! Sutter Refuge
+GOAL set_r135a {r135a = rf_gray*C216B }   ! Gray Lodge Refuge
+GOAL set_r135B {r135B = rf_butte*C221 }   ! Butte Sink Duck Clubs
+

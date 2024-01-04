@@ -1,0 +1,30 @@
+Bug:
+
+(1) misleading error message when table not found in lookup table directory 
+
+
+
+Inputs from Satya:
+
+(1) Be able to use the studies in CalliteGUI for position analysis runs.
+(2) Be able to start run from arbitrary month
+(3) Be able to use his own hydrology forecast
+
+
+Works needed to address the above 3 items:
+(1) Need to modify studies in CalLiteGUI to be more general. 
+    Better to have a centralized version control for CalLite wresl codes so the changes won't be lost.
+(2) Need to look into CalLite study to figure why October is hardwired and if those hardwired codes can be removed.
+(3) This one is difficult. Need to figure out all those SVAR used in CalLite study.
+	
+
+
+test
+
+
+
+
+1. prepare 2012 data for AnnualReqDel_swp
+2. automatic water year type generation for combination of observed data and simulated data
+3. cleanup code for d1485
+4. prepare tutorial powerpoint

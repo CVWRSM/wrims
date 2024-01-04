@@ -1,0 +1,125 @@
+! This file contains the groundwater flow equations for DSA 70
+
+! define storage term (units =  thousand-acres)
+define beta_70 {VALUE area_70*sy_70/1000.0 }
+define beta_70s {VALUE area_70s*sy_70s/1000.0 }
+
+! define maximum groundwater storage (units = TAF)
+define maxg_70 {VALUE beta_70*gse_70 - beta_70*b_70 }
+
+! define current month groundwater storage (units = TAF)
+goal storage_70 { g_70 = beta_70*h_70 - beta_70*b_70}
+goal storage_70s { g_70s = beta_70s*h_70s - beta_70s*b_70s}
+
+!define previous month groundwater storage (units = TAF)
+! Note:  this is done to avoid using conditional statement for first month
+define g_70_previous {VALUE beta_70*h_70(-1) - beta_70*b_70 }
+define g_70s_previous {VALUE beta_70s*h_70s(-1) - beta_70s*b_70s }
+
+! restrict groundwater storage to maximum
+!goal maxstore_70 {g_70 < maxg_70 }
+
+! restrict head of stream recharge to stream bed elevation
+define hmax_70s_last {
+
+       case      less_than {
+       condition h_70s(-1) < rbot_70
+       value     rbot_70 }
+
+       case      otherwise {
+       condition always
+       value     h_70s(-1) }
+       }
+
+! Define stream - groundwater interaction
+
+! first determine stream depth of the previous timestep
+define depth_70_last {SELECT   depth
+                      FROM     stream_elev
+                      GIVEN    flow=c301(-1)
+                      USE      linear
+                      WHERE    DSA=70 }
+
+
+! now determine the total stream elevation of the previous timestep
+define hstream_70_last {value rbot_70 + depth_70_last }
+define hstream_70_old {alias hstream_70_last kind 'elevation-stream' units 'feet'}
+
+! last define stream - groundwater interaction
+define gs66_taf {VALUE lamda_70*hstream_70_last - lamda_70*hmax_70s_last }   ! groundwater model is TAF
+goal set_gs66 { gs66 < gs66_taf*taf_cfs }                                 ! streamflow is CFS
+
+! groundwater pumping
+goal set_gp66 {gp66 = gp66_taf*taf_cfs}   ! streamflow is CFS
+
+! Last define the basin recharge
+!goal set_gr66AWprj {gr66AWprj = gr66AW_taf*perc_dr70*taf_cfs }
+!goal set_gr66AWprj {gr66AWprj = dpaw_70*c306_prj - dpaw_70*(R169_prj - rf_70*D168C_excess_omi)  }!ejc
+!goal set_gr66AWnp {gr66AWnp = gr66AW_taf*(1-perc_dr70)*taf_cfs }
+
+
+goal set_gr66AWprj {
+    lhs gr66AWprj
+        rhs gr66AW_taf*perc_dr70*taf_cfs
+        lhs>rhs        penalty 5000
+        lhs<rhs        penalty 5000 }
+
+goal set_gr66AWnp {
+    lhs gr66AWnp
+        rhs gr66AW_taf*(1-perc_dr70)*taf_cfs
+        lhs>rhs        penalty 5000
+        lhs<rhs        penalty 5000 }
+
+define gr66error {alias gr66AWprj + gr66AWnp - gr66aw_taf*taf_cfs kind 'flow' units 'cfs' }
+
+
+!goal set_gr66AWnp {gr66AWnp = dpaw_70*c306_np - dpaw_70*(R169_np - rf_70_mi*D168C_excess_imi) }!ejc
+goal set_gr66AW {gr66AW = gr66AWprj + gr66AWnp }
+!goal set_gr66AW_taf {gr66AW_taf = gr66AW*cfs_taf}   ! groundwater model is TAF, streamflow is CFS
+
+! Define interaction between groundwater basins (units = TAF)
+! see file parameters.wresl for other parameter values
+
+goal set_basin_strip70 { basin_strip70 = alpha70_70s*phi70_70s*h_70 -
+                                         alpha70_70s*phi70_70s*h_70s }
+
+goal set_interbasin69_70 { interbasin69_70 = alpha69_70*phi69_70*h_69 -
+                                             alpha69_70*phi69_70*h_70 }
+
+goal set_interbasin65_70 { interbasin65_70 = alpha70_65*phi70_65*h_65 -
+                                             alpha70_65*phi70_65*h_70 }
+
+goal set_interbasin59_70 { interbasin59_70 = alpha70_59*phi70_59*h_59 -
+                                             alpha70_59*phi70_59*h_70 }
+
+goal set_interbasin55_70 { interbasin55_70 = - alpha70_55*phi70_55*h_70 }
+
+
+goal set_interstrip69_70 { interstrip69_70 = alpha69s_70s*phi69s_70s*h_69s -
+                                             alpha69s_70s*phi69s_70s*h_70s }
+
+goal set_interstrip15_70 { interstrip15_70 = alpha15s_70s*phi15s_70s*h_15s -
+                                             alpha15s_70s*phi15s_70s*h_70s }
+
+goal set_interstrip55_70 { interstrip55_70 = - alpha70s_55s*phi70s_55s*h_70s }
+
+
+goal set_gi66_taf { gi66_taf = basin_strip70 }
+
+goal set_gw66_taf { gw66_taf = interbasin69_70
+                             + interbasin65_70
+                             + interbasin59_70
+                             + interbasin55_70 }
+
+
+goal set_gw66s_taf { gw66s_taf = interstrip69_70
+                               + interstrip15_70
+                               + interstrip55_70 }
+
+
+! define groundwater continuity for DSA70
+goal continuity_70  {gw66_taf  - 0.60*gp66_taf + 1.*gr66_taf + 1.*gr66AW_taf + bnd_70   - gi66_taf - gf_66  = g_70 - g_70_previous }
+goal continuity_70s {gw66s_taf - 0.40*gp66_taf + 0.*gr66_taf + 0.*gr66AW_taf + gs66_taf + gi66_taf - gf_66s = g_70s - g_70s_previous }
+
+
+

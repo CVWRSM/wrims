@@ -1,0 +1,35 @@
+sequence CYCLE1 {
+    model   First
+    order   1
+    }
+
+	
+model First { 
+
+  define X { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define Y { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define Z { std kind 'FLOW-CHANNEL' units 'CFS' }
+  
+  define A { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define B { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define C { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define D { std kind 'FLOW-CHANNEL' units 'CFS' }
+  define E { std kind 'FLOW-CHANNEL' units 'CFS' }
+  
+  goal G1 {  ( X+Y+Z ) + ( A+B+C+D+E ) < 80 }
+  
+  objective NewObj {
+	weight 5
+	DeviationPenalty 1
+	variable X 
+			 Y 
+			 Z
+			 group2 {
+				DeviationPenalty 0
+				variable A B C D E
+			 }
+  }
+  
+}
+
+

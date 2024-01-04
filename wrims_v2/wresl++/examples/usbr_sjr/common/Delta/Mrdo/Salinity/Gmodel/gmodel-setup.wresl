@@ -1,0 +1,20 @@
+! Armin Munevar 11/21/98
+
+! THIS DOCUMENT CONTAINS THE SETUP INFORMATION FOR THE G-MODELS 
+
+! Define external function which performs the Newton Raphson procedure to get the
+! delta outflow (cfs) required to meet a particular EC standard given the G-model parameters
+! and Go for this station.
+
+!define GET_REQ_DO {EXTERNAL } ! GET_REQ_DO.OBJ must be present in the run/external
+!                              ! directory.
+!                              ! Syntax and arguments for use are as follows:
+!                              ! GET_REQ_DO(Go,ECstd,So,Sb,alpha,beta,n)
+
+! The time step for monthly model in years
+define g_delT {value 0.08333}      ! 1month*1year/12months
+
+! Set max delta outflow requirement for salinity constraints
+define flowcap_salt {value 25000.}   ! flow cap (cfs) for salinity requirements
+
+

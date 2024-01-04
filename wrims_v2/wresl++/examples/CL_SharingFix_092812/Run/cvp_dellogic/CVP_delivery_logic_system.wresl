@@ -1,0 +1,23 @@
+/*************************************
+CVP_delivery_logic_system.wresl
+ 
+Tom FitzHugh BOR 5/20/2010
+
+This is the top level include file for CVP system delivery logic. 
+*************************************/
+
+INCLUDE '\CVP_delivery_logic_south\cvp_demands_south.wresl'  ! sets upper bounds on CVP SOD demands, but need to include here
+                                                               ! prior to JamesBypass code
+INCLUDE '\CVP_delivery_logic_system\JamesBypass_BanksCVPcapacity.wresl' ! sets James bypass flow and also dedicated 
+                                                                        ! CVP capacity at Banks
+INCLUDE '\CVP_delivery_logic_system\sum_cvp_demands_system.wresl'  ! reads in timeseries for annual demands
+INCLUDE '\CVP_delivery_logic_system\WSIandDI_CVP_system.wresl'  ! defines WSI and DI
+INCLUDE '\CVP_delivery_logic_system\Delivery_carryover_split_CVP_system.wresl' ! splits DI into delivery target  
+                                                                               ! and carryover target
+INCLUDE '\CVP_delivery_logic_system\CVPcut_system.wresl' ! Develops system wide cutback numbers, and Cuts back NOD deliveries based on difference between 
+                                                        ! delivery target defined above and minimum of annual 
+                                                        ! contract demands and annual diversion requirements
+!INCLUDE '\CVP_delivery_logic_system\sum_cvp_reduced_demands.wresl'  ! computes reduced demands for use in the 
+                                                                ! WSI-DI curve generation code only
+                                                                ! commented out for now until we decide how handle WSI-DI curve generation
+                                                                

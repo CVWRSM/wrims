@@ -1,0 +1,199 @@
+/*
+CALSIM III SYSTEM FILE
+ARCS-CHANNELS.WRESL
+
+    NAMING TAKES THE FOLLOWING FORMS:
+    C_{FLOW'S ORIGIN NODE}
+
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mendota Pool    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MDOTA      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!MENDOTA POOL
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Joaquin River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/*
+East side stuff...here for west-side-only model...
+define C_SJR205     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!Outflow to Mendota Pool Bypass
+define C_SJR201     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!INFLOW FROM MENDOTA POOL BYPASS
+define C_SJR200     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!DWR #MEN, SAN JOAQUIN RIVER NEAR MENDOTA
+define C_SJR198     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR195     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR192     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR185     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SJR180     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!SACK DAM, DELIVERY TO SAN LUIS CANAL CO/CENTRAL CA ID (S)
+*/
+
+/*  Westside System  */
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! California Aqueduct !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_CAA000     {lower 0 upper 10300. kind 'CHANNEL' units 'CFS'}!BEGINNING OF CALIFORNIA AQUEDUCT
+define CAA000_cvp   {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! Total CVP wheeling at Banks
+define CAA000_CVC   {std kind 'FLOW-DELIVERY' UNITS 'CFS'} ! Cross Valley CVP wheeling at Banks
+define C_CAA002     {lower 0 upper 10300. kind 'CHANNEL' units 'CFS'}!DELIVERY TO BYRON-BETHANY ID
+define C_CAA003     {lower 0 upper 10300. kind 'CHANNEL' units 'CFS'}!BANKS PUMPING PLANT
+define C_CAA005     {lower 0 upper 10300. kind 'CHANNEL' units 'CFS'}!SOUTH BAY AQUEDUCT DIVERSION, CHECK 1, END OF REPAYMENT REACH 1
+define C_CAA006     {lower 0 upper 10000. kind 'CHANNEL' units 'CFS'}!
+define C_CAA009     {lower 0 upper 10000. kind 'CHANNEL' units 'CFS'}!CA-DMC INTERTIE
+define C_CAA012     {lower 0 upper 10000. kind 'CHANNEL' units 'CFS'}!DELIVERY TO MUSCO OLIVE PRODUCTS
+define C_CAA024     {lower 0 upper 10000. kind 'CHANNEL' units 'CFS'}!DELIVERY TO CITY OF TRACY
+define C_CAA046     {lower 0 upper 10000. kind 'CHANNEL' units 'CFS'}!DELIVERY TO OAKFLAT WD
+define C_CAA051     {lower 0 upper 10000. kind 'CHANNEL' units 'CFS'}!CHECK/SIPHON, END OF REPAYMENT REACH 2A
+define C_CAA066     {lower 0 upper 10000. kind 'CHANNEL' units 'CFS'}!DELIVERY TO VA CEMETARY
+define C_CAA067     {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!CHECK 12, END OF REPAYMENT REACH 2B
+define C_CAA067_CVP {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!CHECK 12, END OF REPAYMENT REACH 2B
+define C_CAA067_SWP {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!CHECK 12, END OF REPAYMENT REACH 2B
+define C_CAA069     {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!NODE CONNECTS DMC TO CA TO SAN LUIS.(O'NEILL FOREBAY)
+define C_CAA069_CVP {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!CHECK 12, END OF REPAYMENT REACH 2B
+define C_CAA069_SWP {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!CHECK 12, END OF REPAYMENT REACH 2B
+define C_CAA071     {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!DELIVERY TO SAN LUIS WD (N).  CHECK 13, END OF REPAYMENT REACH 3
+define C_CAA087     {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}!DOS AMIGOS PP.  DELIVERY TO SAN LUIS WD (S)/PACHECO WD/PANOCHE WD
+define C_CAA095     {lower 0 upper 13100. kind 'CHANNEL' units 'CFS'}
+define C_CAA109     {lower 0 upper 11800. kind 'CHANNEL' units 'CFS'}!CHECK 15, END OF REPAYMENT REACH 4
+define C_CAA143     {lower 0 upper 9350. kind 'CHANNEL' units 'CFS'}!CHECK 18, END OF REPAYMENT REACH 5.  DELIVERY TO WESTLANDS WD, AVENAL COALINGA HURON
+define C_CAA155     {lower 0 upper 8350. kind 'CHANNEL' units 'CFS'}!CHECK 19, END OF REPAYMENT REACH 6.  DELIVERY TO WESTLANDS WD DD#2
+define C_CAA156     {lower 0 upper 8350. kind 'CHANNEL' units 'CFS'}!DELIVERY TO AVENAL COALINGA HURON
+define C_CAA165     {lower 0 upper 8350. kind 'CHANNEL' units 'CFS'}!DELIVERY TO AVENAL COALINGA HURON
+define C_CAA172     {lower 0 upper 8100. kind 'CHANNEL' units 'CFS'}!CHECK 21, END OF REPAYMENT REACH 7
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Del Puerto Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_DPC008         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Delta Mendota Canal !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_DMC003         {lower 0 upper 4600. kind 'CHANNEL' units 'CFS'}!JONES PUMPING PLANT
+define C_DMC007         {lower 0 upper 4600. kind 'CHANNEL' units 'CFS'}!CA-DMC INTERTIE
+define C_DMC011         {lower 0 upper 4600. kind 'CHANNEL' units 'CFS'}!
+define C_DMC016         {lower 0 upper 4500. kind 'CHANNEL' units 'CFS'}!DELIVERY TO CITY OF TRACY
+define C_DMC021         {lower 0 upper 4400. kind 'CHANNEL' units 'CFS'}!DELIVERY TO BANTA CARBONA ID, WESTSIDE ID
+define C_DMC024         {lower 0 upper 4400. kind 'CHANNEL' units 'CFS'}!
+define C_DMC030         {lower 0 upper 4400. kind 'CHANNEL' units 'CFS'}!DELIVERY TO HOSPITAL WD
+define C_DMC034         {lower 0 upper 4300. kind 'CHANNEL' units 'CFS'}!DELIVERY TO W STANISLAUS ID, KERN CANON WD, SAN JOAQUIN RIVER
+define C_DMC039         {lower 0 upper 4300. kind 'CHANNEL' units 'CFS'}!
+define C_DMC044         {lower 0 upper 4300. kind 'CHANNEL' units 'CFS'}!
+define C_DMC049         {lower 0 upper 4300. kind 'CHANNEL' units 'CFS'}!
+define C_DMC054         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!DELIVERY TO DEL PUERTO WD/SALADO WD, PATTERSON WD, SUNFLOWER WD, NMW
+define C_DMC058         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!
+define C_DMC064         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!
+define C_DMC070         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!NODE CONNECTS DMC TO CA TO SAN LUIS.(O'NEILL FOREBAY), DELIVERY TO SAN LUIS WD
+define C_DMC074         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!Check 14
+define C_DMC076         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!DELIVERY TO XCC
+define C_DMC080         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!
+define C_DMC085         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!
+define C_DMC091         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!DELIVERY TO SAN LUIS WD/PACHECO WD/PANOCHE WD, XXC
+define C_DMC097         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!
+define C_DMC105         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!
+define C_DMC111         {lower 0 upper 4200. kind 'CHANNEL' units 'CFS'}!DELIVERY TO EAGLE FIELD WD/MERCY SPRINGS WD/ORO LOMA WD, FIREBAUGH CANAL CO, FBW
+define C_DMC116         {lower 0 upper 3500. kind 'CHANNEL' units 'CFS'}!TO MENDOTA POOL
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Delta Mendota Canal Wasteways !!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_WWW001         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_NMW004         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_VLW008         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FBW001         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Fresno Slough   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_FSL012     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_FSL005     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_JBP006     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Garzas Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_GRZ012     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Hospital & Ingram Creeks    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_ING008     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Little Panoche Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_LPC007     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Los Banos Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_BANOS      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!RELEASE FROM LOS BANOS RESERVOIR
+define C_LBN025         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+! NEVER USED -- define C_LBN020         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_LBN012         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_LBN008         {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH GARZAS CREEK
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Main Canal (CCID)   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_XCC053     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_XCC043     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_XCC033     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_XCC025     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_XCC010     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mud Slough (North)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MSN009     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH LOS BANOS CREEK
+define C_MSN005     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH SAN JOAQUIN RIVER
+define C_MSN004     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH SAN JOAQUIN RIVER
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Mud Slough (South)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_MSS014     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH SALT SLOUGH
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Orestimba Creek     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_ORT014     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_ORT009     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}
+define C_ORT001     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!UPSTREAM OF CONFLUENCE WITH SAN JOAQUIN RIVER
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Quinto Creek    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_QNT005     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Salido Creek !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_SLO007     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}! 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Salt Slough     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_SAL017     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH MUD SLOUGH (SOUTH)
+define C_SAL006     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!CONFLUENCE WITH SAN JOAQUIN RIVER
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Luis Drain  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_SLD027     {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Luis Reservoir  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define C_SLUIS      {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SLUIS_CVP  {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+define C_SLUIS_SWP  {lower 0 upper 99999 kind 'CHANNEL' units 'CFS'}!
+
+

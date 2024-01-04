@@ -1,0 +1,11 @@
+/*************************************
+TrinityDamPower.wresl
+
+Tom FitzHugh BOR 4/7/2010
+
+Computes water used for power at Trinity.
+*************************************/
+
+define C_Trnty_POW {lower 0 upper 3900 kind 'FLOW-POWER' units 'CFS'}  !3900 is capacity of Trinity powerplant
+define C_Trnty_EXC {std kind 'FLOW-SPILL-POWER' units 'CFS'}
+goal C_Trnty_total {C_Trnty=C_Trnty_POW+C_Trnty_EXC}

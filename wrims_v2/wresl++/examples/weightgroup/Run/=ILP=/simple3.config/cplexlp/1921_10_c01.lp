@@ -1,0 +1,44 @@
+\ Date: 1921.10
+\ Cycle: 01
+\ Solver: LpSolve
+
+\ objective function 
+Maximize
++ 1.0 d3
++ 1.0 d4
++ 1.0 m5
++ 1.0 m6
++ 1.0 m7
+-0.1 wg__ttt__d_group__d3__slack
+-0.1 wg__ttt__d_group__d3__surplus
+-0.1 wg__ttt__d_group__d4__slack
+-0.1 wg__ttt__d_group__d4__surplus
+-0.1 wg__ttt__d_group__slack
+-0.1 wg__ttt__d_group__surplus
+-0.1 wg__ttt__m_group__slack
+-0.1 wg__ttt__m_group__surplus
+
+\ constraint
+Subject To
+g1:  + d3 + d4 + m5 + m6 + m7 = 5.0
+wg__ttt__d_group__d3__ss:  + d3 - d_group + wg__ttt__d_group__d3__slack - wg__ttt__d_group__d3__surplus = 0
+wg__ttt__d_group__d4__ss:  + d4 - d_group + wg__ttt__d_group__d4__slack - wg__ttt__d_group__d4__surplus = 0
+wg__ttt__d_group__mean:  - d3 - d4 + 2.0 d_group = 0
+wg__ttt__d_group__ss:  + d_group - mean__ttt + wg__ttt__d_group__slack - wg__ttt__d_group__surplus = 0
+wg__ttt__m_group__mean:  - m5 - m6 - m7 + 3.0 m_group = 0
+wg__ttt__m_group__ss:  + m_group - mean__ttt + wg__ttt__m_group__slack - wg__ttt__m_group__surplus = 0
+wg__ttt__mean:  - d_group - m_group + 2.0 mean__ttt = 0
+
+\ dvar
+Bounds
+d3 >= -3.0 
+ -inf <= d_group 
+ -inf <= m_group 
+ -inf <= mean__ttt 
+
+End
+
+
+
+
+\ objective value:   5.0

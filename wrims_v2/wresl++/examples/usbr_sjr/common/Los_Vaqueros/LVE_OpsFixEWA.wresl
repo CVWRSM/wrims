@@ -1,0 +1,68 @@
+! LVE_OpsFixEWA.wresl
+! A. Draper & L. Brekke
+! 12/27/2005
+! Revised Becky Fedak February 2007 MWH
+
+/*
+This file gets used in the EWA step after solving for CVP JPOD use, but
+before solving for EWA wheeling.
+
+It now introduces:
+-- LVE operational decisions from step 4, including...
+         CCWD contract supply, delta surplus, and NOD wheeling diversions at
+         RS, OR, and MR
+         LVE "Other" releases to SBA Reliability and EWA demand
+-- In Step 4, the LVE "Other" releases are removed from LVE but not routed
+   (i.e. sent through D426_LV)
+-- In Step 5, D426_LV is set to zero and D426 is activated (D426_EWA + D426_REL),
+   allowing the Step 4 release to be routed.
+
+-- This file is included only in step 5
+
+*/
+
+! Define state variables that contain results from JPOD
+define  D408_CS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_DS__z5      {timeseries kind 'FLOW' units 'CFS'}
+define  D408_whlNOD__z5  {timeseries kind 'FLOW' units 'CFS'}
+define  D426_REL__z5     {timeseries kind 'FLOW' units 'CFS'}
+!define  D426_EWA__z5     {timeseries kind 'FLOW' units 'CFS'} ! now defined in AnnualPurchases.wresl
+define  D426_EWAlveStep  {std kind 'FLOW' units 'CFS'}
+goal rptD426_EWA {D426_EWAlveStep = D426_EWA__z5}
+
+! Define EWA and reliability sub-arcs of D426 and set constraints
+! for D426_REL.  D426_EWA is constrained in LVE_Exchange.wresl
+define D426_EWA    {lower 0 upper 9999 kind 'FLOW-DELIVERY'  units 'CFS'} ! LVE release to EWA via Exchange
+define D426_REL    {lower 0 upper 9999 kind 'FLOW-DELIVERY'  units 'CFS'} ! LVE release to SBA Reliability
+goal setD426_Total {D426      = D426_REL + D426_EWA  }
+goal setD426_REL   {
+    lhs D426_REL
+    rhs D426_REL__z5
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+}
+
+! Fix Delta diversions conditions to JPOD results
+! distinguish between CCWD diversion of CVP water and Delta surplus
+define D408_CS {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D408_DS {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D408_whlNOD {std kind 'FLOW-DELIVERY' units 'CFS'}
+goal D408_total    { D408 = D408_CS + D408_DS + D408_whlNOD}
+goal setD408_DS {
+    lhs D408_DS
+    rhs D408_DS__z5
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+    }
+goal setD408_CS {
+    lhs D408_CS
+    rhs D408_CS__z5
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+    }
+goal setD408_whlNOD {
+    lhs D408_whlNOD
+    rhs D408_whlNOD__z5
+    lhs>rhs penalty 99999
+    lhs<rhs penalty 99999
+    }

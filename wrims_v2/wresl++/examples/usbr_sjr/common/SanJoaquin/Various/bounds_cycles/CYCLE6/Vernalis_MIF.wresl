@@ -1,0 +1,53 @@
+! Vernalis_MIF.wresl
+! Nancy Parker
+! 11/02
+! USBR
+! This file saves values of variables that affect Vernalis minimum flow and constraints to write to DSS file for output purposes
+! Revised by C. Hsu, 3/10/03, USBR, for review and documentation project
+!#######################################################################################################
+/*
+X2 based minimum flow
+*/
+! Define Vernalis minimum flow requirement decision variable
+define VernMin_reqdv {std kind 'flow-requirement' units 'cfs'}
+! Set Vernalis minimum flow requirement equal to decision variable
+goal setVernMin_reqdv { VernMin_reqdv = VernMin_req }
+! Vernalis minimum flow deficiency decision variable
+define VernMin_defdv {std kind 'flow-requirement' units 'cfs'}
+! Set Vernalis minimum flow deficiency equal to decision variable
+goal setVernMin_defdv {VernMin_defdv = VernMin_def}
+! Gets value if there is not enough left in the water supply reserved for this requirement
+define VernCapShort {value max(0.,VernMin_def-VernMinCapRem)}
+! Define Vernalis flow cap shortage decision variable
+define VernCapShort_dv {std kind 'flow-requirement' units 'cfs'}
+! Set Vernalis flow cap shortage equal to decision variable
+goal setVernCapShort_dv {VernCapShort_dv = VernCapShort}
+! Gets value if there is not enough capacity at Goodwin to pass the req't
+define VernGoodShort {value max(0.,min(VernMin_def,VernMinCapRem)-VernMinRemGoodRipon)}
+! Define Vernalis Goodwin shortage decision variable
+define VernGoodShort_dv {std kind 'flow-requirement' units 'cfs'}
+! Set Vernalis Goodwin shortage equal to decision variable
+goal setVernGoodShort_dv {VernGoodShort_dv = VernGoodShort}
+
+
+/*
+Vernalis minimum instream flow February - June period.
+*/
+define Vernalis_MIF {
+     case FebMarJun {
+          condition month == feb .or. month == mar .or. month == jun
+          value     VernMin_req - max(VernCapShort,VernGoodShort) }
+     case April {
+          condition month == apr
+          value     (VernMin_req - max(VernCapShort,VernGoodShort))*14./30.
+                    + max(VernMin_req-max(VernCapShort,VernGoodShort),VAMP_reqdv[VAMP_AND_DO])*16./30 }
+     case MayOnly {
+          condition month == may
+          value     (VernMin_req - max(VernCapShort,VernGoodShort))*16./31.
+                    + max(VernMin_req-max(VernCapShort,VernGoodShort),VAMP_reqdv[VAMP_AND_DO])*15./31 }
+     case otherwise {
+          condition always
+          value       0. }
+          }
+! Define Vernalis instream flow output
+define Vernalis_MIFdv {alias Vernalis_MIF kind 'flow-requirement' units 'cfs'}

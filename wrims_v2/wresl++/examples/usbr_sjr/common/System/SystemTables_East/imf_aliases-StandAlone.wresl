@@ -1,0 +1,87 @@
+! IMF @@@
+! Aliases for debugging
+
+
+! (storage terms -- as CFS)
+define S_MLRTN_A        {alias S_MLRTN*taf_cfs     kind 'STORAGE' units 'CFS' }
+define S_HNSLY_A        {alias S_HNSLY*taf_cfs     kind 'STORAGE' units 'CFS' }
+define S_ESTMN_A        {alias S_ESTMN*taf_cfs     kind 'STORAGE' units 'CFS' }
+define S_MCLRE_A        {alias S_MCLRE*taf_cfs     kind 'STORAGE' units 'CFS' }
+define S_PEDRO_A        {alias S_PEDRO*taf_cfs     kind 'STORAGE' units 'CFS' }
+define S_MELON_A        {alias S_MELON*taf_cfs     kind 'STORAGE' units 'CFS' }
+define S_NHGAN_A        {alias S_NHGAN*taf_cfs     kind 'STORAGE' units 'CFS' }
+define S_PARDE_A        {alias S_PARDE*taf_cfs     kind 'STORAGE' units 'CFS' }
+
+! (AW)
+define AW_60S_PA1_A     {alias AW_60S_PA1          kind 'APPLIED-WATER' units 'CFS' }
+define AW_60S_PA2_A     {alias AW_60S_PA2          kind 'APPLIED-WATER' units 'CFS' }
+define AW_60S_NA1_A     {alias AW_60S_NA1          kind 'APPLIED-WATER' units 'CFS' }
+define AW_60S_NA2_A     {alias AW_60S_NA2          kind 'APPLIED-WATER' units 'CFS' }
+
+define AW_61_NA1_A      {alias AW_61_NA1           kind 'APPLIED-WATER' units 'CFS' }
+define AW_61_NA2_A      {alias AW_61_NA2           kind 'APPLIED-WATER' units 'CFS' }
+define AW_61_NA3_A      {alias AW_61_NA3           kind 'APPLIED-WATER' units 'CFS' }
+define AW_61_NA4_A      {alias AW_61_NA4           kind 'APPLIED-WATER' units 'CFS' }
+define AW_61_NA5_A      {alias AW_61_NA5           kind 'APPLIED-WATER' units 'CFS' }
+define AW_61_NA6_A      {alias AW_61_NA6           kind 'APPLIED-WATER' units 'CFS' }
+define AW_61_PA1_A      {alias AW_61_PA1           kind 'APPLIED-WATER' units 'CFS' }
+define AW_61_PA2_A      {alias AW_61_PA2           kind 'APPLIED-WATER' units 'CFS' }
+define UD_61_NU1_A      {alias UD_61_NU1           kind 'URBAN-DEMAND'  units 'CFS' }
+define UD_61_NU2_A      {alias UD_61_NU2           kind 'URBAN-DEMAND'  units 'CFS' }
+define UD_61_NU3_A      {alias UD_61_NU3           kind 'URBAN-DEMAND'  units 'CFS' }
+
+define AW_62_NA1_A      {alias AW_62_NA1           kind 'APPLIED-WATER' units 'CFS' }
+define AW_62_NA2_A      {alias AW_62_NA2           kind 'APPLIED-WATER' units 'CFS' }
+define AW_62_NA3_A      {alias AW_62_NA3           kind 'APPLIED-WATER' units 'CFS' }
+define AW_62_NA4_A      {alias AW_62_NA4           kind 'APPLIED-WATER' units 'CFS' }
+define AW_62_NA5_A      {alias AW_62_NA5           kind 'APPLIED-WATER' units 'CFS' }
+define AW_62_NA6_A      {alias AW_62_NA6           kind 'APPLIED-WATER' units 'CFS' }
+define UD_62_NU_A       {alias UD_62_NU            kind 'URBAN-DEMAND'  units 'CFS' }
+
+define AW_63_NA1_A      {alias AW_63_NA1           kind 'APPLIED-WATER' units 'CFS' }
+define AW_63_NA2_A      {alias AW_63_NA2           kind 'APPLIED-WATER' units 'CFS' }
+define AW_63_NA3_A      {alias AW_63_NA3           kind 'APPLIED-WATER' units 'CFS' }
+define AW_63_NA4_A      {alias AW_63_NA4           kind 'APPLIED-WATER' units 'CFS' }
+define AW_63_PR1_A      {alias AW_63_PR1           kind 'APPLIED-WATER' units 'CFS' }
+define AW_63_PR2_A      {alias AW_63_PR2           kind 'APPLIED-WATER' units 'CFS' }
+define AW_63_PR3_A      {alias AW_63_PR3           kind 'APPLIED-WATER' units 'CFS' }
+define UD_63_NU_A       {alias UD_63_NU            kind 'URBAN-DEMAND'  units 'CFS' }
+
+define AW_64_NA1_A      {alias AW_64_NA1           kind 'APPLIED-WATER' units 'CFS' }
+define AW_64_NA2_A      {alias AW_64_NA2           kind 'APPLIED-WATER' units 'CFS' }
+define AW_64_PA1_A      {alias AW_64_PA1           kind 'APPLIED-WATER' units 'CFS' }
+define AW_64_PA2_A      {alias AW_64_PA2           kind 'APPLIED-WATER' units 'CFS' }
+define AW_64_PA3_A      {alias AW_64_PA3           kind 'APPLIED-WATER' units 'CFS' }
+define AW_64_XA_A       {alias AW_64_XA            kind 'APPLIED-WATER' units 'CFS' }
+define UD_64_NU_A       {alias UD_64_NU            kind 'URBAN-DEMAND'  units 'CFS' }
+
+
+! (All WB vars for 63_NA3, 62_NA6)
+! define OS_63_NA3_alias      { alias OS_63_NA3_sv        kind 'ALIAS' units 'cfs'}
+! define AW_63_NA3_dist_alias { alias AW_63_NA3_dist      kind 'ALIAS' units 'none'}
+! define AW_63_NA3_A          { alias AW_63_NA3           kind 'ALIAS' units 'cfs'}
+! define DL_63_NA3_taf        { alias DL_63_NA3*cfs_taf   kind 'ALIAS' units 'taf'}
+! define GPmin_63_NA3_taf     { alias GPmin_63_NA3_D*taf_cfs+GPmin_63_NA3_P*taf_cfs kind 'ALIAS' units 'cfs'}
+
+! define OS_62_NA6_alias      { alias OS_62_NA6_sv        kind 'ALIAS' units 'cfs'}
+! define AW_62_NA6_dist_alias { alias AW_62_NA6_dist      kind 'ALIAS' units 'none'}
+! define AW_62_NA6_A          { alias AW_62_NA6           kind 'ALIAS' units 'cfs'}
+! define DL_62_NA6_taf        { alias DL_62_NA6*cfs_taf   kind 'ALIAS' units 'taf'}
+! define GPmin_62_NA6_taf     { alias GPmin_62_NA6_D*taf_cfs+GPmin_62_NA6_P*taf_cfs kind 'ALIAS' units 'cfs'}
+
+
+
+! (For debugging upper SJR/FRS deliveries)
+! define limit1_to_64PA2        { alias chow_max_surf*taf_cfs kind 'TESTING' units 'CFS' }
+! define limit2_to_64PA2        { alias D_MLRTN_MDC006*0.4-D_MDC006_MDCLOS*0.4+max(0.,S_ESTMNAvail)*chow_ag_dist/100.*taf_cfs kind 'TESTING' units 'CFS'}
+! define limit_CHW017_64PA2     { alias max(0.,S_ESTMNAvail)*chow_ag_dist/100.*taf_cfs kind 'TESTING' units 'CFS' }
+! define chow_ag_distA          { alias chow_ag_dist/100.0 kind 'TESTING' units 'CFS'}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+! R.Wilbur 3/24/04 and Shengjun 4/28/2005
+
+!****************************************************************************************
+
+! maximum export given the sacramento river flow
+
+define CH_MaxExport {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setCHMax {
+  lhs CH_MaxExport
+  case NoSalinityControlPossible{
+    condition abs(CH_m_sv) <= 0.001 .and. int(CH_b_sv) == 0
+    rhs ExportCap}
+  case NegSlope{
+    condition CH_m_sv <= 0.0
+    rhs 999999.}
+  case HighCost{
+    condition CH_Sac_ZeroExp_sv2 >= ANNcap
+    rhs ExportCap}
+  /*case NegCarriage{
+    condition abs(CH_m_sv) >= 1.0
+    rhs 999999.}*/
+  case Normal {
+    condition always
+    rhs CH_m_sv*C_SAC041_ANN + CH_b_sv}
+}
+
+
+
+!****************************************************************************************
+
+! required delta outflow given exports
+
+define CH_MRDO {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+goal setCHmrdo {
+  lhs CH_MRDO
+  case NoSalinityControlPossible{
+    condition abs(CH_m_sv) <= 0.001 .and. int(CH_b_sv) == 0
+    rhs 0.}
+  case NegSlope{
+    condition CH_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition CH_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  case Normal {
+    condition always
+    rhs ((1-CH_m_sv)/CH_m_sv)*SOD_EXP - CH_b_sv/CH_m_sv + C_SJR038 + C_MOK019 + C_YBP002 + SR_25_CSL005 + I_MSH015 - D_RSL004_CCC004 - C_CSL005B - net_delta_cu}
+}
+
+!****************************************************************************************
+
+! required sac flow given exports
+
+define CH_ReqSac {lower unbounded upper unbounded kind 'FLOW' units 'cfs'}
+goal set_CH_ReqSac {
+  lhs CH_ReqSac
+  case NoSalinityControlPossible{
+    condition abs(CH_m_sv) <= 0.001 .and. int(CH_b_sv) == 0
+    rhs 0.}
+  case NegSlope{
+    condition CH_m_sv <= 0.0
+    rhs 0.}
+  case HighCost{
+    condition CH_Sac_ZeroExp_sv2 >= ANNcap
+    rhs 0.}
+  case Normal {
+    condition always
+    rhs SOD_EXP/CH_m_sv - CH_b_sv/CH_m_sv}
+}
+

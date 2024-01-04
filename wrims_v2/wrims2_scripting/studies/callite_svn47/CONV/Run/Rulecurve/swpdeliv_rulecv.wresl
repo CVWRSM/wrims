@@ -1,0 +1,29 @@
+/*************************************
+swpdeliv_rulecv.wresl
+ 
+Hao Xie DWR 5/24/2010
+
+WRESL for distributing deliveries for use with SWP Rule Curve determination 
+
+1/26/11 Added code for user-defined demands Tom FitzHugh BOR
+**************************************/
+
+define swpdem_may_orig {select demand from swp_3pattern_SLRule given percent=swp_demprofile use linear where month=MAY}
+define swpdem_may {value swpdem_may_orig * SWP_tot_ratio}
+define swpdemfinal_may {value swp_perdel * swpdem_may}
+
+define swpdem_jun_orig {select demand from swp_3pattern_SLRule given percent=swp_demprofile use linear where month=jun}
+define swpdem_jun {value swpdem_jun_orig * SWP_tot_ratio}
+define swpdemfinal_jun {value swp_perdel * swpdem_jun}
+
+define swpdem_jul_orig {select demand from swp_3pattern_SLRule given percent=swp_demprofile use linear where month=jul}
+define swpdem_jul {value swpdem_jul_orig * SWP_tot_ratio}
+define swpdemfinal_jul {value swp_perdel * swpdem_jul}
+
+define swpdem_aug_orig {select demand from swp_3pattern_SLRule given percent=swp_demprofile use linear where month=aug}
+define swpdem_aug {value swpdem_aug_orig * SWP_tot_ratio}
+define swpdemfinal_aug {value swp_perdel * swpdem_aug}
+
+define swpdem_sep_orig {select demand from swp_3pattern_SLRule given percent=swp_demprofile use linear where month=sep}
+define swpdem_sep {value swpdem_sep_orig * SWP_tot_ratio}
+define swpdemfinal_sep {value swp_perdel * swpdem_sep}

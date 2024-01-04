@@ -1,0 +1,378 @@
+! Code by E.Reyes as of 3/8/01
+! Modified by D. Easton 12/04/00
+
+!!! Special Feather River Fish Criteria for Oct 15 - Nov 30 @ CP203
+
+/*
+Criteria being modeled:
+
+If during the period of October 15 thru November 30, the flow in the Feather River at C.P. 203 is greater than
+2500 cfs (except for flood release purposes), then the flow at C.P. 203 may not be less than 500 cfs below the
+existing flow until after March 30.
+
+
+How the Criteria is modeled:
+
+The criteria only applies to a part of the month of October, so the trigger flow of 2500 cfs is flow weighted for
+the entire month.  To compensate for the other half of the month that has no trigger, the trigger applied to the
+entire month of October may be greater than 2500 cfs.  The triggers for October and November can be set in
+'feather_fish_203.table'.
+
+When the trigger is exceeded, a "price" must be paid (a minflow thru March as opposed to no minflow if the trigger
+is not exceeded).  To avoid paying this price, releases for exports should be reduced to get below the trigger.
+Releases to meet in-basin uses however, should never be reduced to get below the trigger.
+
+If releases for flood control are made then no minimum flow is applied.
+*/
+
+
+
+
+!      In October and November, try to keep flow at CP203 < trigger otherwise pay the price
+!      of a minflow(=OCT flow or NOV flow - 500cfs) through March.  Do this by reducing releases for exports if necessary.
+!      If trigger is exceeded because of flood spills then no minflow is applied.
+
+
+!Example:       month   C203 flow scenario        minflow
+!       OCT     BELOW TRIGGER                     0 CFS =>  CHECK TO SEE WHAT HAPPENS NOVEMBER
+!       OCT     ABOVE TRIGGER DUE TO FLOOD        0 CFS =>  CHECK TO SEE WHAT HAPPENS NOVEMBER
+!       OCT     ABOVE TRIGGER                     C203 FLOW - 500 CFS  (NOV - MARCH)
+!       NOV     BELOW TRIGGER                     0 CFS
+!       NOV     ABOVE TRIGGER DUE TO FLOOD        0 CFS
+!       NOV     ABOVE TRIGGER                     C203 FLOW - 500 CFS  (DEC - MARCH)
+
+
+define oct_trigger_cfs {
+        select    target
+        from      feather_fish_203
+        where   month = OCT}
+
+define nov_trigger_cfs {
+        select    target
+        from      feather_fish_203
+        where   month = NOV}
+
+define minflow_C203 {
+  case October {
+    condition month == OCT
+    value   0
+  }
+  case November1 {
+    condition   month == NOV .AND.
+        int(C203(prevOCT)) <= oct_trigger_cfs
+    value   0
+  }
+  case November2 {
+    condition month == NOV .AND.
+        S6(prevOCT)+S6_mod_dv(prevOCT)+1. >= s6level5(prevOCT)
+    value   0
+  }
+  case November3 {
+    condition month == NOV
+    value   C203(prevOCT) - 500
+  }
+  case DecemberToMarch1 {
+    condition month >= DEC .AND. month <= MAR .AND.
+        int(C203(prevOCT)) > oct_trigger_cfs .AND.
+        S6(prevOCT)+S6_mod_dv(prevOCT)+1. < s6level5(prevOCT) .AND.
+        int(C203(prevNOV)) > nov_trigger_cfs .AND.
+        S6(prevNOV)+S6_mod_dv(prevNOV)+1. < s6level5(prevNOV)
+    value   max(C203(prevOCT) - 500, C203(prevNOV) - 500)
+  }
+  case DecemberToMarch2 {
+    condition month >= DEC .AND. month <= MAR .AND.
+        int(C203(prevOCT)) > oct_trigger_cfs .AND.
+        S6(prevOCT)+S6_mod_dv(prevOCT)+1. < s6level5(prevOCT)
+    value   C203(prevOCT) - 500
+  }
+  case DecemberToMarch3 {
+    condition month >= DEC .AND. month <= MAR .AND.
+        int(C203(prevNOV)) > nov_trigger_cfs .AND.
+        S6(prevNOV)+S6_mod_dv(prevNOV)+1. < s6level5(prevNOV)
+    value   C203(prevNOV) - 500
+  }
+  case otherwise {
+    condition always
+    value   0
+  }
+}
+
+goal avoidTrigger {
+  lhs C203
+  case October {
+    condition month == OCT
+    rhs   oct_trigger_cfs
+    lhs>rhs   penalty 4600
+    lhs<rhs   penalty 0
+  }
+  case November {
+    condition month == NOV
+    rhs   max(nov_trigger_cfs, minflow_C203 + 500)
+    lhs>rhs   penalty 4600
+    lhs<rhs   penalty 0
+  }
+}
+
+!DWR and DFG have an agreement to maintain ~1700 cfs minflow from the thermalito complex to the mouth (Just above Verona).
+!The data for the timeseries minflow is defined in "minflow_C223", the Feather River flow above Verona.
+!The actual minflow for C203, just below the Thermalito complex, is then the max of the minflow_C203 and minflow_C223.
+
+!define minflow_C223 {timeseries kind 'FLOW-MIN-REQUIRED' units 'CFS'}
+
+! Hongbing Yin added the following dynamic process to determine the Oroville minimum flows in order to be consistent with CAM which mimics the actual OCO practice. Details can be found in emails between John Leahigh and hongbing Yin on June 29, 2004
+! feather river minimum flow:
+/*
+Here are the minFlow rule revisions based on what I sent you this morning:
+(1) Low flow triggers are imposed on Jan, Feb, and Mar minFlows
+(2) 50 cfs for local Ag are added to Oct-Mar minFlows for all 73 years
+(3) 300 cfs for local Ag are added to Apr-Sep minFlows for all 73 years
+Please review and let me know if there is still any problem. Thanks.
+-Hongbing
+
+Jan Model Run:
+If IApr-Jul(-1)<55%*1.942, or
+   IApr-Jul(-1)<60%*1.942  and  IApr-Jul(-2)<60%*1.942
+                        Qmin,Jan = 1200 + 50 cfs
+                        Qmin,Feb = 1200 + 50 cfs
+                        Qmin,Mar = 1000 + 50 cfs
+            Else
+                        Qmin,Jan = 1700 + 50 cfs
+                        Qmin,Feb = 1700 + 50 cfs
+                        Qmin,Mar = 1700 + 50 cfs
+            End
+            Qmin,Apr = 1000 + 300 cfs
+            Qmin,May = 1000 + 300 cfs
+            Qmin,Jun = 1000 + 300 cfs
+            Qmin,Jul = 1000 + 300 cfs
+            Qmin,Aug = 1000 + 300 cfs
+            Qmin,Sep = 1000 + 300 cfs
+If IApr-Jul<55%*1.942, or
+   IApr-Jul<60%*1.942  and  IApr-Jul(-1)<60%*1.942
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1200 + 50]
+                        Qmin,Nov = 1200 + 50 cfs
+                        Qmin,Dec = 1200 + 50 cfs
+Else
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1700 + 50]
+                        Qmin,Nov = 1700 + 50 cfs
+                        Qmin,Dec = 1700 + 50 cfs
+            End
+
+Feb Model Run:
+If IApr-Jul(-1)<55%*1.942, or
+   IApr-Jul(-1)<60%*1.942  and  IApr-Jul(-2)<60%*1.942
+                        Qmin,Feb = 1200 + 50 cfs
+                        Qmin,Mar = 1000 + 50 cfs
+            Else
+                        Qmin,Feb = 1700 + 50 cfs
+                        Qmin,Mar = 1700 + 50 cfs
+            End
+            Qmin,Apr = 1000 + 300 cfs
+            Qmin,May = 1000 + 300 cfs
+            Qmin,Jun = 1000 + 300 cfs
+            Qmin,Jul = 1000 + 300 cfs
+            Qmin,Aug = 1000 + 300 cfs
+            Qmin,Sep = 1000 + 300 cfs
+If IApr-Jul<55%*1.942, or
+   IApr-Jul<60%*1.942  and  IApr-Jul(-1)<60%*1.942
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1200 + 50]
+                        Qmin,Nov = 1200 + 50 cfs
+                        Qmin,Dec = 1200 + 50 cfs
+Else
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1700 + 50]
+                        Qmin,Nov = 1700 + 50 cfs
+                        Qmin,Dec = 1700 + 50 cfs
+            End
+
+ Mar Model Run:
+If IApr-Jul(-1)<55%*1.942, or
+   IApr-Jul(-1)<60%*1.942  and  IApr-Jul(-2)<60%*1.942
+                        Qmin,Mar = 1000 + 50 cfs
+            Else
+                        Qmin,Mar = 1700 + 50 cfs
+            End
+            Qmin,Apr = 1000 + 300 cfs
+            Qmin,May = 1000 + 300 cfs
+            Qmin,Jun = 1000 + 300 cfs
+            Qmin,Jul = 1000 + 300 cfs
+            Qmin,Aug = 1000 + 300 cfs
+            Qmin,Sep = 1000 + 300 cfs
+If IApr-Jul<55%*1.942, or
+   IApr-Jul<60%*1.942  and  IApr-Jul(-1)<60%*1.942
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1200 + 50]
+                        Qmin,Nov = 1200 + 50 cfs
+                        Qmin,Dec = 1200 + 50 cfs
+Else
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1700 + 50]
+                        Qmin,Nov = 1700 + 50 cfs
+                        Qmin,Dec = 1700 + 50  cfs
+            End
+
+Apr Model Run:
+            Qmin,Apr = 1000 + 300 cfs
+            Qmin,May = 1000 + 300 cfs
+            Qmin,Jun = 1000 + 300 cfs
+            Qmin,Jul = 1000 + 300 cfs
+            Qmin,Aug = 1000 + 300 cfs
+            Qmin,Sep = 1000 + 300 cfs
+If IApr-Jul<55%*1.942, or
+   IApr-Jul<60%*1.942  and  IApr-Jul(-1)<60%*1.942
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1200 + 50]
+                        Qmin,Nov = 1200 + 50 cfs
+                        Qmin,Dec = 1200 + 50 cfs
+Else
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1700 + 50]
+                        Qmin,Nov = 1700 + 50 cfs
+                        Qmin,Dec = 1700 + 50 cfs
+            End
+
+May Model Run:
+If Sapr < 1.5 maf
+                        Qmin,May = 750 + 300 cfs
+                        Qmin,Jun = 750 + 300 cfs
+                        Qmin,Jul = 750 + 300 cfs
+                        Qmin,Aug = 750 + 300 cfs
+                        Qmin,Sep = 750 + 300 cfs
+Else
+                        Qmin,May = 1000 + 300 cfs
+                        Qmin,Jun = 1000 + 300 cfs
+                        Qmin,Jul = 1000 + 300 cfs
+                        Qmin,Aug = 1000 + 300 cfs
+                        Qmin,Sep = 1000 + 300 cfs
+End
+If IApr-Jul<55%*1.942, or
+   IApr-Jul<60%*1.942  and  IApr-Jul(-1)<60%*1.942
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1200 + 50]
+                        Qmin,Nov = 1200 + 50 cfs
+                        Qmin,Dec = 1200 + 50 cfs
+Else
+                        Qmin,Oct = 0.5*[0.5*(QSep+Qmin,Nov)+1700 + 50]
+                        Qmin,Nov = 1700 + 50 cfs
+                        Qmin,Dec = 1700 + 50 cfs
+End
+*/
+! Units in CAM_Oro_Apr_Jul are TAF, minflow_C223 is in cfs
+define I6_Apr_Jul_0 {select I6_Apr_Jul from CAM_Oro_Apr_Jul where wateryear=wateryear}
+define I6_Apr_Jul_1 {select I6_Apr_Jul from CAM_Oro_Apr_Jul where wateryear=wateryear-1}
+define I6_Apr_Jul_2 {select I6_Apr_Jul from CAM_Oro_Apr_Jul where wateryear=wateryear-2}
+
+define minflow_C223 {case Jan1{condition month == Jan .AND. I6_Apr_Jul_1<=0.55*1942. value 1250.}
+                     case Jan2{condition month == Jan .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2<=0.60*1942. value 1250.}
+                     case Jan3{condition month == Jan .AND. I6_Apr_Jul_1>=0.55*1942. .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Jan4{condition month == Jan .AND. I6_Apr_Jul_1>=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Jan5{condition month == Jan .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Jan6{condition month == Jan .AND. I6_Apr_Jul_1>=0.60*1942. .AND. I6_Apr_Jul_2<=0.60*1942. value 1750.}
+                     case Feb1{condition month == Feb .AND. I6_Apr_Jul_1<=0.55*1942. value 1250.}
+                     case Feb2{condition month == Feb .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2<=0.60*1942. value 1250.}
+                     case Feb3{condition month == Feb .AND. I6_Apr_Jul_1>=0.55*1942. .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Feb4{condition month == Feb .AND. I6_Apr_Jul_1>=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Feb5{condition month == Feb .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Feb6{condition month == Feb .AND. I6_Apr_Jul_1>=0.60*1942. .AND. I6_Apr_Jul_2<=0.60*1942. value 1750.}
+                     case Mar1{condition month == Mar .AND. I6_Apr_Jul_1<=0.55*1942. value 1050.}
+                     case Mar2{condition month == Mar .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2<=0.60*1942. value 1050.}
+                     case Mar3{condition month == Mar .AND. I6_Apr_Jul_1>=0.55*1942. .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Mar4{condition month == Mar .AND. I6_Apr_Jul_1>=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Mar5{condition month == Mar .AND. I6_Apr_Jul_1<=0.60*1942. .AND. I6_Apr_Jul_2>=0.60*1942. value 1750.}
+                     case Mar6{condition month == Mar .AND. I6_Apr_Jul_1>=0.60*1942. .AND. I6_Apr_Jul_2<=0.60*1942. value 1750.}
+                     case Apr1{condition month == Apr value 1300.}
+                     case MaySep1{condition month >= May .AND. month <= Sep .AND. S6(prevAPR)<= 1500. value 1050.}
+                     case MaySep2{condition month >= May .AND. month <= Sep .AND. S6(prevAPR)>= 1500. value 1300.}
+                     case Oct1{condition month == Oct .AND. I6_Apr_Jul_0<=0.55*1942. value MAX(1250., 0.25*C223(prevSep)+0.75*1250.)}
+                     case Oct2{condition month == Oct .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1<=0.60*1942. value MAX(1250., 0.25*C223(prevSep)+0.75*1250.)}
+                     case Oct3{condition month == Oct .AND. I6_Apr_Jul_0>=0.55*1942. .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value MAX(1750., 0.25*C223(prevSep)+0.75*1750.)}
+                     case Oct4{condition month == Oct .AND. I6_Apr_Jul_0>=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value MAX(1750., 0.25*C223(prevSep)+0.75*1750.)}
+                     case Oct5{condition month == Oct .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value MAX(1750., 0.25*C223(prevSep)+0.75*1750.)}
+                     case Oct6{condition month == Oct .AND. I6_Apr_Jul_0>=0.60*1942. .AND. I6_Apr_Jul_1<=0.60*1942. value MAX(1750., 0.25*C223(prevSep)+0.75*1750.)}
+                     case Nov1{condition month == Nov .AND. I6_Apr_Jul_0<=0.55*1942. value 1250.}
+                     case Nov2{condition month == Nov .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1<=0.60*1942. value 1250.}
+                     case Nov3{condition month == Nov .AND. I6_Apr_Jul_0>=0.55*1942. .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value 1750.}
+                     case Nov4{condition month == Nov .AND. I6_Apr_Jul_0>=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value 1750.}
+                     case Nov5{condition month == Nov .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value 1750.}
+                     case Nov6{condition month == Nov .AND. I6_Apr_Jul_0>=0.60*1942. .AND. I6_Apr_Jul_1<=0.60*1942. value 1750.}
+                     case Dec1{condition month == Dec .AND. I6_Apr_Jul_0<=0.55*1942. value 1250.}
+                     case Dec2{condition month == Dec .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1<=0.60*1942. value 1250.}
+                     case Dec3{condition month == Dec .AND. I6_Apr_Jul_0>=0.55*1942. .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value 1750.}
+                     case Dec4{condition month == Dec .AND. I6_Apr_Jul_0>=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value 1750.}
+                     case Dec5{condition month == Dec .AND. I6_Apr_Jul_0<=0.60*1942. .AND. I6_Apr_Jul_1>=0.60*1942. value 1750.}
+                     case Dec6{condition month == Dec .AND. I6_Apr_Jul_0>=0.60*1942. .AND. I6_Apr_Jul_1<=0.60*1942. value 1750.}
+                     case otherwise{condition always value 0.}
+                     }
+
+
+
+
+
+goal meetC203Minflow {C203_MIF < max(minflow_C203, minflow_c223)}
+define C203min {alias minflow_C203 kind 'CHANNEL-MINFLOW' units 'CFS'}
+
+!Limit Oroville release to be limited to 10,000 cfs Jul-Sep for the protection of Orchards downstream.
+goal OroRelJulSep {
+        lhs C203
+    case JulSep {
+      condition month>=JUL .and. month<=SEP
+      rhs               10000.
+                        lhs>rhs   penalty 9990
+      lhs<rhs   penalty 0 }
+}
+
+
+!DWR maintains flow at the "Mouth of Feather River" based on requirements of diversion pumping facilities.
+!Their flow target depends on upstream Yuba and Oroville inflow, the DWR/DFG agreed flow target above Verona,
+!and a 2800 cfs flow rate related to pumping facility requirements.
+define frsa_alloc {
+  case Drought {
+    condition     wyt_FEATHER == 1
+    value         0.50*(dem_D7A_PAG + dem_D7B_PAG + dem_D206A_PAG + dem_D206B_PAG)*taf_cfs}
+  case Normal {
+    condition    always
+    value        1.00*(dem_D7A_PAG + dem_D7B_PAG + dem_D206A_PAG + dem_D206B_PAG)*taf_cfs}
+}
+
+
+define minflowFeaMouth {
+    case DiversionSeason {
+        condition month>=APR .and. month<=SEP
+        value     max(min(2800.,I230-dem_D230_MI+I6-frsa_alloc),minflow_C223) }
+    case other {
+        condition always
+        value     minflow_C223 }
+}
+
+goal MouthMinFlow {C223_MIF < minflowFeaMouth}
+
+
+! Oroville would be operated only to satify minimum instream and delta conditions if less than 1.0 MAF - Aaron Miller 5/21/08
+goal oro_releases {
+    lhs C6
+    case low_storage {
+        condition S6(-1) < 1000. + DrainTar_buffer
+                rhs minflow_C203
+                lhs>rhs penalty 3000.
+                lhs<rhs penalty 0 }
+    case norm_storage {
+        condition always
+                rhs minflow_C203
+                lhs>rhs penalty 0
+                lhs<rhs penalty 0 }
+}
+
+! Oroville would have physical contraints when reaching lower elevations - Aaron Miller 5/21/08
+! oro<1250 TAF units 2,4,6 are lost
+! oro<850 TAF units 1,3,5 are lost
+goal river_valve_flow {
+    lhs C6
+    case river_valve_only {
+        condition S6(-1) < 850. ! lose units 1,3,5 at 850 TAF only river valve can move water @ 1500 cfs (safe capacity)
+            rhs 1500.
+            lhs>rhs penalty 1000000
+            lhs<rhs penalty 0 }
+    case units_1_3_5_rv {       ! lose units 2,4,6 at 1250 TAF at this elevation.  Units 1,3,5 + river valve = 8700 max
+        condition S6(-1) < 1250.
+            rhs 8700.
+            lhs>rhs constrain
+            lhs<rhs penalty 0 }
+    case full_hyatt_available {
+        condition always
+            rhs 17000.
+            lhs>rhs penalty 0
+            lhs<rhs penalty 0 }
+}

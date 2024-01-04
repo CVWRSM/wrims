@@ -1,0 +1,85 @@
+! See demands_70.wresl for Water Forum and American River Basin shortage/delivery reporting logic
+
+! AG Demands     Reduce demands from maximum to reflect cut back
+define short_D104_pag  {alias target_D104_pag - D104_pag kind 'delivery-shortage' units 'cfs'}
+define short_D171_pag {alias target_D171_pag - D171_pag kind 'delivery-shortage' units 'cfs'} !Corning
+define short_D172_pag {alias target_D172_pag - D172_pag kind 'delivery-shortage' units 'cfs'} !WBA4 along Tehama-Colusa Canal
+define short_D174_pag {alias target_D174_pag - D174_pag kind 'delivery-shortage' units 'cfs'} !WBA7N
+define short_D178_pag {alias target_D178_pag - D178_pag kind 'delivery-shortage' units 'cfs'} !WBA7S
+! NODOS TCCA Reliability
+define short_D171_nds {alias target_D171_nds - D171_nds kind 'delivery-shortage' units 'cfs'} !Corning
+define short_D172_nds {alias target_D172_nds - D172_nds kind 'delivery-shortage' units 'cfs'} !WBA4 along Tehama-Colusa Canal
+define short_D174_nds {alias target_D174_nds - D174_nds kind 'delivery-shortage' units 'cfs'} !WBA7N
+define short_D178_nds {alias target_D178_nds - D178_nds kind 'delivery-shortage' units 'cfs'} !WBA7S
+
+define short_cvp_pag_n {alias short_D104_pag + short_D171_pag + short_D172_pag + short_D174_pag + short_D178_pag kind 'delivery-shortage-cvp' units 'cfs'}
+
+define del_cvp_pag_n {alias D104_pag + D171_pag + D172_pag + D174_pag + D178_pag kind 'delivery-cvp' units 'cfs'}
+
+!MI demands    Reduce demands from maximum to reflect cut back
+define short_D104_pmi  {alias target_D104_pmi - D104_pmi kind 'delivery-shortage' units 'cfs'}
+
+!Settlement Demands   Reduce demands from maximum to reflect cut back
+define short_D104_psc  {alias target_D104_psc - D104_psc kind 'delivery-shortage' units 'cfs'}
+define short_14301_psc {alias target_14301_psc - D143A_psc - D122A_psc - D180_psc
+                        - frac_GC_N_DSA12*WTS_DSA12 - frac_SC_N_DSA12*WTS_DSA12
+                        - EWA_DW12_GCCnDV - EWA_CI12_GCCnDV - EWA_GW12_GCCnDV
+                        - EWA_DW12_122aDV - EWA_CI12_122aDV - EWA_GW12_122aDV  kind 'delivery-shortage' units 'cfs'} ! need to modify, can't deal with GCID at one node WB
+define short_14501_psc {alias target_14501_psc - D145A_psc - D122B_psc
+                        - frac_GC_S_DSA12*WTS_DSA12 - frac_SC_S_DSA12*WTS_DSA12
+                        - EWA_DW12_GCCsDV - EWA_CI12_GCCsDV - EWA_GW12_GCCsDV
+                        - EWA_DW12_122bDV - EWA_CI12_122bDV - EWA_GW12_122bDV  kind 'delivery-shortage' units 'cfs'}
+define short_18301_psc {alias target_18301_psc - D183_psc - D129A_psc  kind 'delivery-shortage' units 'cfs'}
+define short_D131_psc  {alias target_D128 - D128_psc
+                              - EWA_GW15dv - EWA_CI15dv - EWA_DWCI15dv   kind 'delivery-shortage' units 'cfs'}
+define short_D163_psc  {alias target_D163_psc - D163_psc kind 'delivery-shortage' units 'cfs'}
+define short_D165_psc  {alias target_D165_psc - D165_psc kind 'delivery-shortage' units 'cfs'}
+!define short_D162_psc  {alias perdel_cvpsc_sys*(alloc_D162a_psc + alloc_D162b_psc + alloc_D162c_psc) - extra_D162_psc - D162_psc kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_psc_n {alias short_D104_psc + short_14301_psc + short_14501_psc + short_18301_psc +
+                             short_D131_psc + short_D163_psc + short_D165_psc + short_D162_psc
+                       kind  'delivery-shortage-cvp'
+                       units 'cfs'}
+
+define del_cvp_psc_n {alias D104_psc + D143A_psc + D122A_psc + D145A_psc + D122B_psc + D183_psc + D129A_psc  +
+                           D128_psc + D163_psc + D165_psc + D162_psc
+                     kind  'delivery-cvp'
+                     units 'cfs'}
+
+!Refuge Demands   Reduce demands from maximum to reflect cut back
+define short_D14302_prf {alias target_14302_prf - D143B_prf kind 'delivery-shortage' units 'cfs'}
+define short_D18201_prf {alias target_18201_prf - D145B_prf - D182B_prf kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_prf_n {alias short_D14302_prf + short_D18201_prf kind 'delivery-shortage-cvp' units 'cfs'}
+
+define del_cvp_prf_n {alias D143B_prf - L143B + D145B_prf + D182B_prf - L145B kind 'delivery-cvp' units 'cfs'}
+
+!CVP M&I shortage
+define short_cvp_pmi_n {alias short_D104_pmi +
+                              short_d305 +
+                              short_d300_pmi +
+                              short_d8b_pmi + short_d8e_pmi + short_d8f_pmi + short_d8g_pmi + short_d8h_pmi + short_d8i_pmi +
+                              short_d9a_pmi + short_d9b_pmi
+                        kind 'delivery-shortage-cvp' units 'cfs'}
+
+!CVP total M&I delivery
+define del_cvp_pmi_n {alias D104_pmi + D167b + D168c + d300_pmi + d8_pmi + d9_pmi kind 'delivery-cvp' units 'cfs'}
+
+! TOTAL
+define short_cvp_tot_n {alias short_cvp_pag_n + short_cvp_pmi_n + short_cvp_psc_n + short_cvp_prf_n kind 'delivery-shortage-cvp' units 'cfs'}
+define del_cvp_total_n {alias del_cvp_pag_n + del_cvp_pmi_n + del_cvp_psc_n + del_cvp_prf_n kind 'delivery-cvp' units 'cfs'}
+
+! THIS IS INCORRECT AND NEEDS TO BE CORRECTED BEFORE USED
+!define dem_dr_cvp {alias prj_dr58 + prj_drCB + prj_dr65 + dem_totcvpn_prf -
+!                         minpump_58_prj - minpump_65_prj +
+!                         dem_D162a_psc*cfs_taf + dem_D162b_psc*cfs_taf + dem_D162c_psc*cfs_taf +
+!                         dem_D167b_pmi_a*perdem_70scwa
+!                   kind  'demand-dr-cvp' units 'taf'}
+
+! THIS IS INCORRECT AND NEEDS TO BE CORRECTED BEFORE USED
+!define dem_dr2_cvp {alias prj_dr58 + prj_drCB + prj_dr65 + dem_totcvpn_prf -
+!                          minpump_58_prj - minpump_65_prj +
+!                          dem_D162a_psc*cfs_taf + dem_D162b_psc*cfs_taf + dem_D162c_psc*cfs_taf +
+!                          dem_D167b_pmi_a*perdem_70scwa -
+!                          extra_D162a_psc + extra_D162b_psc + extra_D162c_psc - extra_D167b_pmi
+!                   kind  'demand-dr-cvp' units 'taf'}

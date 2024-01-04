@@ -1,0 +1,1579 @@
+!WRESL code for Vernalis Water Quality
+!VERNALIS_WQMIN
+! Edward Chang
+! 5/01/2000
+! Modified by Ken Yokoyama,USBR, April 15,2003 for Link-Node method
+! Adapted by Nancy Parker, USBR, May 2009 for CalSimIII network
+!
+!The following code calculates the required flows below Goodwin Dam to meet the Vernalis
+!water quality requirement
+!*****************************************************************************************
+!The Vernalis water quality requirement is an Electrical Conductivity (EC) requirement of
+!700 and 1000 micromhos/cm for the irrigation (Apr-Aug) and non-irragation (Sep-Mar) seasons,
+!respectively.  This is different from the irrigation and non-irrigation season used to define
+!the salinities of Goodwin, Accretions, main-stem, and west-side return flows (which use an
+!irrigation season of March thru September.  The EC of the flows without Goodwin Dam flows
+!are calculated by combining the flows and salinity from the Stanislaus river accretions and
+!returns, main-stem flows of the San Joaquin river before confluence with the Stanislaus river,
+!and the west-side return flows.  Based on these flows and salinities, and a known salinity for
+!Goodwin flows, a flow requirement is calculated at Goodwin to ensure that the water quality
+!requirement at Vernalis is met.
+!
+!******************************************************************************************
+! Cycle 2 (Water Quality for non-pulse period)
+!******************************************************************************************
+!
+! This is the link-node salinity algorithm covering the San Joaquin River from Lander Ave. 
+! to Vernalis.  The link-node algorithm consists of a series of EC mass balance equations 
+! Gravelly Ford to Vernalis.  The computed EC from an upstream node is used as the input EC 
+! of a downstream node.  Flow-EC regressions are used for the San Joaquin River at Lander 
+! Ave., Merced River near Stevinson and the Tuolumne River near Modesto. Mud and Salt Slough, 
+! return Flow and accretion EC use monthly average values.  
+
+/*Tributary Boundary Conditions to the link-node domain
+EC[microS/cm] = f(flow[cfs]), subject to max/min constraints
+(i.e. Regression Equations defining EC as a function of flow for the following tribs:
+-- Merced River near Stevinson
+-- Tuolumne River near Modesto)
+Equation parameters developed by D. Steiner - 7/29/04, reflecting ~WY2000-2004 observations
+Max/min constraints on EC at each boundary were proposed by D. Steiner based on the same
+recent observations.
+*/
+define Mer_WQparam_1 {value -100.52}
+define Mer_WQparam_2 {value 729.58}
+define Tuo_WQparam_1 {value -57.018}
+define Tuo_WQparam_2 {value 500.75}
+
+define EC_MCD002 {value min(500., max(85., Mer_WQparam_1*log(max(1.,C_MCD002[SJRBASE])) + Mer_WQparam_2))}! Merced at Stevinson
+define EC_TUO003 {value min(275., max(85., Tuo_WQparam_1*log(max(1.,C_TUO003[SJRBASE])) + Tuo_WQparam_2))}!Tuolumne at Modesto
+
+! Start of the link-node method.
+
+! ************************************************************************
+! SAN LUIS VACINITY ---
+                       
+! ASSUME WHEELING GOES TO SLUIS FIRST, THEN DMC
+! NOTE: NEED TO ASSUME EC FOR D_DMC070_CAA069 *OR* D_CAA069_DMC070 BECAUSE CAN'T COMPUTE SIMULTANEOUSLY
+!       THIS SETUP ASSUMES EC FOR D_DMC070_CAA069 IS EC_TRACY 
+!       (i.e., assumes diversion to CAA069 before mixing at node DMC070)
+!       (this is accounted for in DMC070 balance by setting inflow from DMC as C_DMC064-D_DMC070_CAA069)
+
+define EC_SLUIS_DV  {std kind 'salinity' units 'mS/cm'}                             
+
+define EC_CAA009    {value ( C_CAA006[SJRBASE]               * EC_Banks
+                           + D_DMC007_CAA009[SJRBASE]        * EC_Tracy )
+                           / ( C_CAA009[SJRBASE] ) }
+
+define EC_CAA067    {value EC_CAA009}
+
+define EC_CAA069    {value ( C_CAA067[SJRBASE]               * EC_CAA067
+                           + D_DMC070_CAA069[SJRBASE]        * EC_Tracy            
+                           + C_SLUIS[SJRBASE]                * EC_SLUIS_dv(-1) )   ! necessary to assume EC_SLUIS @ previous time...
+                           / (C_CAA069[SJRBASE] + D_CAA069_DMC070[SJRBASE] + D_CAA069_SLUIS[SJRBASE] ) }
+
+define EC_DMC070    {value ( (C_DMC064[SJRBASE] - D_DMC070_CAA069[SJRBASE]) * EC_Tracy  
+                           + D_CAA069_DMC070[SJRBASE]        * EC_CAA069
+                           + max(0.0,SG_DMC070_758[SJRBASE]) * EC_SG_DMC070        ! seepage gains
+                           + max(0.0,SG_DMC070_763[SJRBASE]) * EC_SG_DMC070 )      ! seepage gains
+                           / ( D_DMC070_CAA069[SJRBASE] + D_DMC070_VLW008[SJRBASE] 
+                             + D_DMC070_73_PA1[SJRBASE] + C_DMC070[SJRBASE]
+                             - min(0.0,SG_DMC070_758[SJRBASE])                     ! seepage losses
+                             - min(0.0,SG_DMC070_763[SJRBASE]) ) }                 ! seepage losses
+
+define EC_SLUIS     {value ( S_SLUIS(-1)*taf_cfs             * EC_SLUIS_dv(-1)
+                           + D_CAA069_SLUIS[SJRBASE]         * EC_CAA069
+                           + I_SLUIS                         * EC_ISLUIS
+                           - C_SLUIS[SJRBASE]                * EC_SLUIS_dv(-1)
+                           - D_SLUIS_SFLPE[SJRBASE]          * EC_SLUIS_dv(-1) )
+                           / ( S_SLUIS[SJRBASE]*taf_cfs ) }
+goal setEC_SLUIS_dv {EC_SLUIS_dv = EC_SLUIS}
+    
+                           
+! ************************************************************************
+! MENDOTA POOL VACINITY ---
+
+define EC_MDOTA_DV  {std kind 'salinity' units 'mS/cm'}                             
+
+define EC_R_91_PA {
+    case nearZero {
+        condition R_91_PA_FSL012[SJRBASE]<0.1 .or. AW_91_PA[SJRBASE]<0.1  
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MDOTA_91_PA[SJRBASE] * EC_MDOTA_DV(-1) * (1.0 + EVF_MDOTA_91_PR_a[SJRBASE]) ! (EV_MDOTA_91_PA[SJRBASE]/D_MDOTA_91_PA[SJRBASE]))
+                  + GP_91_PA[SJRBASE]       * EC_GP_91 ) 
+                  / ( DN_MDOTA_91_PA[SJRBASE] + GP_91_PA[SJRBASE] )
+                  + pow( dEC_91_PA, (1.0 + (RU_91_PA[SJRBASE]/AW_91_PA[SJRBASE])) ) }          
+}
+
+define EC_R_91_PR {
+    case nearZero {
+        condition R_91_PR_FSL005[SJRBASE]<0.1 .or. AW_91_PR[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MDOTA_91_PR[SJRBASE] * EC_MDOTA_DV(-1) * (1.0 + EVF_MDOTA_91_PR_a[SJRBASE]) ! (EV_MDOTA_91_PR[SJRBASE]/D_MDOTA_91_PR[SJRBASE]))
+                  + GP_91_PR[SJRBASE]       * EC_GP_91 ) 
+                  / ( DN_MDOTA_91_PR[SJRBASE] + GP_91_PR[SJRBASE] )
+                  + pow( dEC_91_PR, (1.0 + (RU_91_PR[SJRBASE]/AW_91_PR[SJRBASE])) ) }
+}
+
+define EC_FSL005 {
+    case NearZero {
+        condition C_FSL005[SJRBASE] - min(0.,SG_FSL005_886[SJRBASE]) < .1
+        value 0.0}
+    case otherwise {
+        condition always
+        value ( I_FSL012 * EC_FSL012
+              + I_JBP006 * EC_JBP006
+              + min(0.,SG_FSL012_892[SJRBASE]) * EC_FSL012
+              + max(0.,SG_FSL012_892[SJRBASE]) * EC_SG_FSL012
+              + max(0.,SG_FSL005_886[SJRBASE]) * EC_SG_FSL005
+              + R_91_PR_FSL005[SJRBASE]        * EC_R_91_PR   ! EC_MP_RF_Return 
+              + R_91_PA_FSL012[SJRBASE]        * EC_R_91_PA ) ! EC_MP_Ag_Return)
+              / ( C_FSL005[SJRBASE] - min(0.,SG_FSL005_886[SJRBASE]) ) }
+}
+
+define EC_MDOTA {  ! Mendota Pool
+    case NearZero {
+        condition C_MDOTA[SJRBASE]          + D_MDOTA_91_PA[SJRBASE] + D_MDOTA_91_PR[SJRBASE]
+                  + D_MDOTA_90_PA1[SJRBASE] + D_MDOTA_73_XA[SJRBASE] + D_MDOTA_XCC010[SJRBASE]
+                  + D_MDOTA_64_XA[SJRBASE]  - min(0.,SG_MDOTA_872[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR205[SJRBASE]             * EC_SJR205
+                  + C_FSL005[SJRBASE]             * EC_FSL005
+                  + C_DMC116[SJRBASE]             * EC_DMC070
+                  + max(0.,SG_MDOTA_872[SJRBASE]) * EC_SG_MDOTA )
+                  / ( C_MDOTA[SJRBASE]        + D_MDOTA_91_PA[SJRBASE] + D_MDOTA_91_PR[SJRBASE]
+                    + D_MDOTA_90_PA1[SJRBASE] + D_MDOTA_73_XA[SJRBASE] + D_MDOTA_XCC010[SJRBASE]
+                    + D_MDOTA_64_XA[SJRBASE]  - min(0.,SG_MDOTA_872[SJRBASE]) ) }
+}
+goal setEC_MDOTA_DV {EC_MDOTA_DV = EC_MDOTA}
+
+define EC_R_64_XA {
+    case nearZero {
+        condition R_64_XA_SJR185[SJRBASE]<0.1 .or. AW_64_XA[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MDOTA_64_XA[SJRBASE] * EC_MDOTA * (1.0 + EVF_MDOTA_64_XA_a[SJRBASE]) ! (EV_MDOTA_64_XA[SJRBASE]/D_MDOTA_64_XA[SJRBASE]))
+                  + GP_64_XA[SJRBASE]       * EC_GP_64 ) 
+                  / ( DN_MDOTA_64_XA[SJRBASE] + GP_64_XA[SJRBASE] )
+                  + pow( dEC_64_XA, (1.0 + (RU_64_XA[SJRBASE]/AW_64_XA[SJRBASE])) ) }
+}
+
+
+
+! ************************************************************************
+! SJR FROM MENDOTA POOL TO SAND SLOUGH
+define EC_SJR201  { ! confluence with Mendota Bypass (Restoration) Channel
+    case nearZero {
+        condition C_SJR201[SJRBASE] < .1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( C_MDOTA[SJRBASE] * EC_MDOTA
+                  + D_SJR205_SJR201[SJRBASE] * EC_SJR205)
+                  / ( C_SJR201[SJRBASE] ) }
+}
+
+define EC_SJR195  { ! SJR at Firebaugh Slough
+    case nearZero {
+        condition C_SJR195[SJRBASE] < .1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( C_SJR201[SJRBASE] * EC_SJR201
+                  + C_FBW001[SJRBASE] * EC_DMC070
+                  + min(0.,SG_SJR198_858[SJRBASE]) * EC_SJR201
+                  + max(0.,SG_SJR198_858[SJRBASE]) * EC_SG_SJR198)
+                  / ( C_SJR195[SJRBASE] ) }
+}
+
+define EC_SJR185  { 
+    case nearZero {
+        condition C_SJR185[SJRBASE] - min(0.,SG_SJR185_829[SJRBASE]) < .1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( C_SJR195[SJRBASE]              * EC_SJR195
+                  + min(0.,SG_SJR192_843[SJRBASE]) * EC_SJR195
+                  + max(0.,SG_SJR192_843[SJRBASE]) * EC_SG_SJR192
+                  + R_64_XA_SJR185[SJRBASE]        * EC_R_64_XA 
+                  + max(0.,SG_SJR185_829[SJRBASE]) * EC_SG_SJR185)
+                  / ( C_SJR185[SJRBASE] - min(0.,SG_SJR185_829[SJRBASE] ) ) }
+}
+
+define EC_SJR180  {  ! Sack Dam
+    case NearZero {
+        condition C_SJR180[SJRBASE] + D_SJR180_ARY010[SJRBASE] - min(0.,SG_SJR180_818[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR185[SJRBASE]              * EC_SJR185
+                  + SR_64_SJR180                   * EC_SR_64_SJR180
+                  + max(0.,SG_SJR180_818[SJRBASE]) * EC_SG_SJR180)
+                  / ( C_SJR180[SJRBASE] + D_SJR180_ARY010[SJRBASE] - min(0.,SG_SJR180_818[SJRBASE] ) ) }
+}
+
+define EC_SJR166  {  ! Sand Slough
+    case NearZero {
+        condition C_SJR166[SJRBASE] + D_SJR166_EBP032[SJRBASE] - min(0.,SG_SJR166_784[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR180[SJRBASE]              * EC_SJR180
+                  + min(0.,SG_SJR173_798[SJRBASE]) * EC_SJR180
+                  + max(0.,SG_SJR173_798[SJRBASE]) * EC_SG_SJR173
+                  + max(0.,SG_SJR166_784[SJRBASE]) * EC_SG_SJR166)
+                  / ( C_SJR166[SJRBASE] + D_SJR166_EBP032[SJRBASE] - min(0.,SG_SJR166_784[SJRBASE] ) ) }
+}
+
+
+
+! ************************************************************************
+! EAST SIDE RETURNS TO EASTSIDE BYPASS
+define EC_R_64_PA1 {
+    case nearZero {
+        condition R_64_PA1_EBP016[SJRBASE]<0.1 .or. AW_64_PA1[SJRBASE]<0.1
+        value 0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DBC014_64_PA1[SJRBASE] * EC_IDBC024 * (1.0 + EVF_DBC014_64_PA1_a[SJRBASE]) 
+                  + DN_FRS036_64_PA1[SJRBASE] * EC_FRS046  * (1.0 + EVF_FRS036_64_PA1_a[SJRBASE])
+                  + DN_MDC006_64_PA1[SJRBASE] * EC_MLRTN   * (1.0 + EVF_MDC006_64_PA1_a[SJRBASE])
+                  + DN_MDC032_64_PA1[SJRBASE] * EC_MLRTN   * (1.0 + EVF_MDC032_64_PA1_a[SJRBASE])
+                  + GP_64_PA1[SJRBASE]        * EC_GP_64 ) 
+                  / ( DN_DBC014_64_PA1[SJRBASE] 
+                    + DN_FRS036_64_PA1[SJRBASE]
+                    + DN_MDC006_64_PA1[SJRBASE]
+                    + DN_MDC032_64_PA1[SJRBASE]
+                    + GP_64_PA1[SJRBASE] )
+                  + pow( dEC_64_PA1, (1.0 + (RU_64_PA1[SJRBASE]/AW_64_PA1[SJRBASE])) ) }
+}
+
+define EC_R_64_PA3 {
+    case nearZero  {
+        condition R_64_PA3_EBP016[SJRBASE]<0.1 .or. AW_64_PA3[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR227_64_PA3[SJRBASE] * EC_SJR221  * (1.0 + EVF_SJR227_64_PA3_a[SJRBASE]) 
+                  + DN_MDC006_64_PA3[SJRBASE] * EC_MLRTN   * (1.0 + EVF_MDC006_64_PA3_a[SJRBASE])
+                  + GP_64_PA3[SJRBASE]        * EC_GP_64 ) 
+                  / ( DN_SJR227_64_PA3[SJRBASE] 
+                    + DN_MDC006_64_PA3[SJRBASE]
+                    + GP_64_PA3[SJRBASE] )
+                  + pow( dEC_64_PA3, (1.0 + (RU_64_PA3[SJRBASE]/AW_64_PA3[SJRBASE])) ) }
+}
+
+define EC_EBP016  {  ! Eastside bypass and Fresno River
+    case NearZero {
+        condition C_EBP016[SJRBASE] + D_EBP016_64_NA2[SJRBASE] - min(0.,SG_EBP016_819[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( D_SJR214_EBP001[SJRBASE]       * EC_SJR214
+                  + C_COT033[SJRBASE]              * EC_CDMOBB
+                  + SR_64_EBP005                   * EC_SR_64_EBP005
+                  + max(0.,SG_EBP016_819[SJRBASE]) * EC_SG_EBP016
+                  + C_FRS016[SJRBASE]              * EC_FRS046
+                  + R_64_PA1_EBP016[SJRBASE]       * EC_R_64_PA1
+                  + R_64_PA3_EBP016[SJRBASE]       * EC_R_64_PA3)
+                  / ( C_EBP016[SJRBASE] + D_EBP016_64_NA2[SJRBASE] - min(0.,SG_EBP016_819[SJRBASE] ) ) }
+}
+
+define EC_R_64_PA2 {
+    case nearZero {
+        condition R_64_PA2_RFS64[SJRBASE]<0.1 .or. AW_64_PA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_CHW017_64_PA2[SJRBASE] * EC_CHW028  * (1.0 + EVF_CHW017_64_PA2_a[SJRBASE]) 
+                  + DN_ASL013_64_PA2[SJRBASE] * EC_CHW028  * (1.0 + EVF_ASL013_64_PA2_a[SJRBASE])
+                  + DN_BRS018_64_PA2[SJRBASE] * EC_CHW028  * (1.0 + EVF_BRS018_64_PA2_a[SJRBASE])
+                  + GP_64_PA2[SJRBASE]        * EC_GP_64 ) 
+                  / ( DN_CHW017_64_PA2[SJRBASE] 
+                    + DN_ASL013_64_PA2[SJRBASE]
+                    + DN_BRS018_64_PA2[SJRBASE]
+                    + GP_64_PA2[SJRBASE] )
+                  + pow( dEC_64_PA2, (1.0 + (RU_64_PA2[SJRBASE]/AW_64_PA2[SJRBASE])) ) }
+}
+
+define EC_R_64_NA2  {  
+    case nearZero {
+        condition R_64_NA2_EBP030[SJRBASE]<0.1 .or. AW_64_NA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_EBP016_64_NA2[SJRBASE] * EC_EBP016   * (1.0 + EVF_EBP016_64_NA2_a[SJRBASE]) 
+                  + DN_RFS64_64_NA2[SJRBASE]  * EC_R_64_PA2 * (1.0 + EVF_RFS64_64_NA2_a[SJRBASE])
+                  + GP_64_NA2[SJRBASE]        * EC_GP_64 ) 
+                  / ( DN_EBP016_64_NA2[SJRBASE] 
+                    + DN_RFS64_64_NA2[SJRBASE]
+                    + GP_64_NA2[SJRBASE] )
+                  + pow( dEC_64_NA2, (1.0 + (RU_64_NA2[SJRBASE]/AW_64_NA2[SJRBASE])) ) }        
+}
+
+define EC_EBP030 { ! Eastside Bypass and Chowchilla River
+    case NearZero {
+        condition C_EBP030[SJRBASE] - min(0.,SG_EBP030_785[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_EBP016[SJRBASE]              * EC_EBP016
+                  + SR_64_EBP019                   * EC_SR_64_EBP019
+                  + C_BRS018[SJRBASE]              * EC_CDMOBB
+                  + C_ASL013[SJRBASE]              * EC_CDMOBB
+                  + R_RFS64_EBP022[SJRBASE]        * EC_R_64_PA2
+                  + R_64_NA2_EBP030[SJRBASE]       * EC_R_64_NA2
+                  + SR_63_EBP030                   * EC_SR_63_EBP030
+                  + SR_64_EBP030                   * EC_SR_64_EBP030
+                  + C_CHW006[SJRBASE]              * EC_CHW028
+                  + max(0.,SG_EBP030_785[SJRBASE]) * EC_SG_EBP030)
+                  / ( C_EBP030[SJRBASE] - min(0.,SG_EBP030_785[SJRBASE]) ) }
+}
+
+define EC_R_63_PR2  {  
+    case nearZero {
+        condition R_63_PR2_EBP041[SJRBASE]<0.1 .or. AW_63_PR2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DED010_63_PR2[SJRBASE] * EC_CDMOBB   * (1.0 + EVF_DED010_63_PR2_a[SJRBASE]) 
+                  + GP_63_PR2[SJRBASE]        * EC_GP_63 ) 
+                  / ( DN_DED010_63_PR2[SJRBASE] 
+                    + GP_63_PR2[SJRBASE] )
+                  + pow( dEC_63_PR2, (1.0 + (RU_63_PR2[SJRBASE]/AW_63_PR2[SJRBASE])) ) }          
+}
+
+define EC_EBP041  { !blw Mariposa Bypass
+    case NearZero {
+        condition C_EBP041[SJRBASE] + SP_EBP041_SJR145[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_EBP030[SJRBASE]        * EC_EBP030
+                  + SR_63_EBP032             * EC_SR_63_EBP032
+                  + SR_64_EBP032             * EC_SR_64_EBP032
+                  + D_SJR166_EBP032[SJRBASE] * EC_SJR166
+                  + R_63_PR2_EBP041[SJRBASE] * EC_R_63_PR2)
+                  / ( C_EBP041[SJRBASE] + SP_EBP041_SJR145[SJRBASE] ) }
+}
+
+define EC_OWN011  { 
+    case NearZero {
+        condition C_OWN011[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( R_MDWWTP_OWN011[SJRBASE] * EC_MDWWTP
+                  + C_OWN040[SJRBASE]        * EC_CDMOBB )
+                  / ( C_OWN011[SJRBASE] ) }
+}                  
+
+define EC_ESC000_dv   {std kind 'salinity' units 'mS/cm'}
+define EC_R_63_PR1_dv {std kind 'salinity' units 'mS/cm'}
+
+define EC_ESC000  {
+    case NearZero {
+        condition C_ESC000[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( D_BCK006_ESC000[SJRBASE] * EC_CDMOBB
+                  + R_AWWWTP_ESC000[SJRBASE] * EC_AWWWTP
+                  + R_63_PR1_ESC000[SJRBASE] * EC_R_63_PR1_DV(-1) )
+                  / ( D_ESC000_63_PR1[SJRBASE] + C_ESC000[SJRBASE] ) }
+}    
+goal setEC_ESC000_dv  {EC_ESC000_DV = EC_ESC000}
+
+define EC_R_63_PR1 {
+    case NearZero {
+        condition R_63_PR1_ESC000[SJRBASE]<0.1 .or. AW_63_PR1[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_ESC000_63_PR1[SJRBASE] * EC_ESC000   * (1.0 + EVF_ESC000_63_PR1_a[SJRBASE]) 
+                  + GP_63_PR1[SJRBASE]        * EC_GP_63 ) 
+                  / ( DN_ESC000_63_PR1[SJRBASE] 
+                    + GP_63_PR1[SJRBASE] )
+                  + pow( dEC_63_PR1, (1.0 + (RU_63_PR1[SJRBASE]/AW_63_PR1[SJRBASE])) ) }
+}
+goal setEC_R_63_PR1_dv{EC_R_63_PR1_dv = EC_R_63_PR1}
+
+define EC_EBP048 {
+    case NearZero {
+        condition C_EBP048[SJRBASE] + D_EBP048_63_PR3[SJRBASE] - min(0.,SG_EBP048_729[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_EBP041[SJRBASE] * EC_EBP041
+                  + C_DED003[SJRBASE] * EC_CDMOBB
+                  + C_ESC000[SJRBASE] * EC_ESC000
+                  + C_OWN011[SJRBASE] * EC_OWN011
+                  + C_BCK006[SJRBASE] * EC_CDMOBB
+                  + max(0.,SG_EBP048_729[SJRBASE]) * EC_SG_EBP048)
+                  / ( C_EBP048[SJRBASE] + D_EBP048_63_PR3[SJRBASE] - min(0.,SG_EBP048_729[SJRBASE]) ) }
+}
+
+define EC_EBP050 {
+    case NearZero {
+        condition C_EBP050[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_EBP048[SJRBASE] * EC_EBP048
+                  + SR_64_EBP050 * EC_SR_64_EBP050
+                  + SR_63_EBP050 * EC_SR_63_EBP050 ) 
+                  / ( C_EBP050[SJRBASE] ) }
+}
+
+
+
+! ************************************************************************
+! SJR FROM MARIPOSA BYPASS TO STEVINSON (OUTLET OF EASTSIDE BYPASS)
+define EC_SJR145  {  ! SJR blw Mariposa Bypass
+    case NearZero {
+        condition C_SJR145[SJRBASE] - min(0.,SG_SJR145_749[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR166[SJRBASE]              * EC_SJR166
+                  + min(0.,SG_SJR157_769[SJRBASE]) * EC_SJR166
+                  + max(0.,SG_SJR157_769[SJRBASE]) * EC_SG_SJR157
+                  + min(0.,SG_SJR152_768[SJRBASE]) * EC_SJR166       !assume SG at 152 has same sign as at 157
+                  + max(0.,SG_SJR152_768[SJRBASE]) * EC_SG_SJR152
+                  + max(0.,SG_SJR145_749[SJRBASE]) * EC_SG_SJR145
+                  + SP_EBP041_SJR145[SJRBASE]      * EC_EBP041 ) 
+                  / ( C_SJR145[SJRBASE] - min(0.,SG_SJR145_749[SJRBASE]) ) }
+            }  
+
+define EC_R_63_PR3  {  
+    case nearZero {
+        condition R_63_PR3_SJR134[SJRBASE]<0.1 .or. AW_63_PR3[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_EBP048_63_PR3[SJRBASE] * EC_EBP048   * (1.0 + EVF_EBP048_63_PR3_a[SJRBASE]) 
+                  + GP_63_PR3[SJRBASE]        * EC_GP_63 ) 
+                  / ( DN_EBP048_63_PR3[SJRBASE] 
+                    + GP_63_PR3[SJRBASE] )
+                  + pow( dEC_63_PR3, (1.0 + (RU_63_PR3[SJRBASE]/AW_63_PR3[SJRBASE])) ) }        
+}
+
+define EC_SJR134 {  ! SJR nr Stevinson
+    case NearZero {
+        condition C_SJR134[SJRBASE] - min(0.,SG_SJR134_715[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR145[SJRBASE]              * EC_SJR145
+                  + min(0.,SG_SJR141_728[SJRBASE]) * EC_SJR145
+                  + max(0.,SG_SJR141_728[SJRBASE]) * EC_SG_SJR141
+                  + max(0.,SG_SJR134_715[SJRBASE]) * EC_SG_SJR134
+                  + SR_63_SJR134                   * EC_SR_63_SJR134
+                  + C_EBP050[SJRBASE]              * EC_EBP050
+                  + R_63_PR3_SJR134[SJRBASE]       * EC_R_63_PR3) 
+                  / ( C_SJR134[SJRBASE] - min(0.,SG_SJR134_715[SJRBASE]) ) }
+}  
+
+
+
+! ************************************************************************
+! WEST SIDE RETURNS TO SALT SLOUGH (SAL006) and MUD SLOUGH (MSN004)
+define EC_R_73_XA {
+    case nearZero {
+        condition R_73_XA_SLD027[SJRBASE]<0.1 .or. AW_73_XA[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC111_73_XA[SJRBASE]  * EC_DMC070   * (1.0 + EVF_DMC111_73_XA_a[SJRBASE]) 
+                  + DN_MDOTA_73_XA[SJRBASE]   * EC_MDOTA    * (1.0 + EVF_MDOTA_73_XA_a[SJRBASE])
+                  + GP_73_XA[SJRBASE]         * EC_GP_73 ) 
+                  / ( DN_DMC111_73_XA[SJRBASE] 
+                    + DN_MDOTA_73_XA[SJRBASE]
+                    + GP_73_XA[SJRBASE] )
+                  + pow( dEC_73_XA, (1.0 + (RU_73_XA[SJRBASE]/AW_73_XA[SJRBASE])) ) }          
+}
+
+define EC_R_73_PA1 {
+    case nearZero {
+        condition R_73_PA1_LBN025[SJRBASE]<0.1 .or. AW_73_PA1[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_CAA087_73_PA1[SJRBASE] * EC_CAA069   * (1.0 + EVF_CAA087_73_PA1_a[SJRBASE]) 
+                  + DN_DMC070_73_PA1[SJRBASE] * EC_DMC070   * (1.0 + EVF_DMC070_73_PA1_a[SJRBASE])
+                  + GP_73_PA1[SJRBASE]        * EC_GP_73 ) 
+                  / ( DN_CAA087_73_PA1[SJRBASE] 
+                    + DN_DMC070_73_PA1[SJRBASE]
+                    + GP_73_PA1[SJRBASE] )
+                  + pow( dEC_73_PA1, (1.0 + (RU_73_PA1[SJRBASE]/AW_73_PA1[SJRBASE])) ) }               
+}
+
+define EC_R_73_PA2 {
+    case nearZero {
+        condition R_73_PA2_SLD027[SJRBASE]<0.1 .or. AW_73_PA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC105_73_PA2[SJRBASE] * EC_DMC070   * (1.0 + EVF_DMC105_73_PA2_a[SJRBASE]) 
+                  + GP_73_PA2[SJRBASE]        * EC_GP_73 ) 
+                  / ( DN_DMC105_73_PA2[SJRBASE] 
+                    + GP_73_PA2[SJRBASE] )
+                  + pow( dEC_73_PA2, (1.0 + (RU_73_PA2[SJRBASE]/AW_73_PA2[SJRBASE])) ) }            
+}
+
+define EC_R_73_PA3 {
+    case nearZero {
+        condition R_73_PA3_SLD027[SJRBASE]<0.1 .or.AW_73_PA3[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC091_73_PA3[SJRBASE] * EC_DMC070   * (1.0 + EVF_DMC091_73_PA3_a[SJRBASE]) 
+                  + DN_CAA109_73_PA3[SJRBASE] * EC_CAA069   * (1.0 + EVF_CAA109_73_PA3_a[SJRBASE])
+                  + GP_73_PA3[SJRBASE]        * EC_GP_73 ) 
+                  / ( DN_DMC091_73_PA3[SJRBASE] 
+                    + DN_CAA109_73_PA3[SJRBASE]
+                    + GP_73_PA3[SJRBASE] )
+                  + pow( dEC_73_PA3, (1.0 + (RU_73_PA3[SJRBASE]/AW_73_PA3[SJRBASE])) ) }           
+}
+
+define EC_R_72_PR1 {
+    case nearZero {
+        condition R_72_PR1_LBN012[SJRBASE]<0.1 .or. AW_72_PR1[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_VLW008_72_PR1[SJRBASE] * EC_DMC070   * (1.0 + EVF_VLW008_72_PR1_a[SJRBASE]) 
+                  + GP_72_PR1[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_VLW008_72_PR1[SJRBASE] 
+                    + GP_72_PR1[SJRBASE] )
+                  + pow( dEC_72_PR1, (1.0 + (RU_72_PR1[SJRBASE]/AW_72_PR1[SJRBASE])) ) }           
+}
+             
+define EC_LBN025 {
+    case nearZero {
+        condition C_LBN025[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_BANOS[SJRBASE]         * EC_BANOS
+                  + R_73_PA1_LBN025[SJRBASE] * EC_R_73_PA1)
+                  / ( C_LBN025[SJRBASE] ) }
+}
+
+define EC_LBN012 {
+    case nearZero {
+        condition C_LBN012[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_LBN025[SJRBASE]        * EC_LBN025
+                  + C_VLW008[SJRBASE]        * EC_DMC070
+                  + R_72_PR1_LBN012[SJRBASE] * EC_R_72_PR1)
+                  / ( C_LBN012[SJRBASE] ) }
+}
+
+define EC_R_72_PR6 {
+    case nearZero {
+        condition R_72_PR6_RFS72A[SJRBASE]<0.1 .or. AW_72_PR6[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_ARY010_72_PR6[SJRBASE] * EC_SJR180   * (1.0 + EVF_ARY010_72_PR6_a[SJRBASE])
+                  + DN_XCC025_72_PR6[SJRBASE] * EC_MDOTA    * (1.0 + EVF_XCC025_72_PR6_a[SJRBASE])
+                  + GP_72_PR6[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_ARY010_72_PR6[SJRBASE] 
+                    + DN_XCC025_72_PR6[SJRBASE]
+                    + GP_72_PR6[SJRBASE] )
+                  + pow( dEC_72_PR6, (1.0 + (RU_72_PR6[SJRBASE]/AW_72_PR6[SJRBASE])) ) }          
+}
+
+define EC_R_71_PA6 {
+    case nearZero {
+        condition R_71_PA6_RFS71C[SJRBASE]<0.1 .or. AW_71_PA6[SJRBASE]<0.1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( DN_DMC064_71_PA6[SJRBASE] * EC_Tracy    * (1.0 + EVF_DMC064_71_PA6_a[SJRBASE]) 
+                  + GP_71_PA6[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_DMC064_71_PA6[SJRBASE] 
+                    + GP_71_PA6[SJRBASE] )
+                  + pow( dEC_71_PA6, (1.0 + (RU_71_PA6[SJRBASE]/AW_71_PA6[SJRBASE])) ) }         
+}
+
+define EC_XCC054 {
+    case nearZero {
+        condition D_XCC054_72_XA3[SJRBASE] + D_XCC054_72_PR5[SJRBASE] + D_XCC054_LBN008[SJRBASE] < .1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_XCC033[SJRBASE]        * EC_MDOTA
+                  + D_DMC076_XCC043[SJRBASE] * EC_DMC070
+                  + C_QNT005[SJRBASE]        * EC_QNT005
+                  + C_GRZ012[SJRBASE]        * EC_GRZ012
+                  + R_RFS71C_XCC054[SJRBASE] * EC_R_71_PA6)
+                  / ( D_XCC054_72_XA3[SJRBASE] + D_XCC054_72_PR5[SJRBASE] + D_XCC054_LBN008[SJRBASE] ) }
+}
+
+define EC_R_72_PR5 {
+    case nearZero {
+        condition R_72_PR5_MSN009[SJRBASE]<0.1 .or. AW_72_PR5[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC054_72_PR5[SJRBASE] * EC_XCC054   * (1.0 + EVF_XCC054_72_PR5_a[SJRBASE])
+                  + DN_LBN012_72_PR5[SJRBASE] * EC_LBN012   * (1.0 + EVF_LBN012_72_PR5_a[SJRBASE])
+                  + DN_RFS72A_72_PR5[SJRBASE] * EC_R_72_PR6 * (1.0 + EVF_RFS72A_72_PR5_a[SJRBASE])
+                  + GP_72_PR5[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_XCC054_72_PR5[SJRBASE] 
+                    + DN_LBN012_72_PR5[SJRBASE]
+                    + DN_RFS72A_72_PR5[SJRBASE]
+                    + GP_72_PR5[SJRBASE] )
+                  + pow( dEC_72_PR5, (1.0 + (RU_72_PR5[SJRBASE]/AW_72_PR5[SJRBASE])) ) }          
+}
+
+define EC_R_72_PR4 {
+    case nearZero {
+        condition R_72_PR4_SAL006[SJRBASE]<0.1 .or. AW_72_PR4[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC033_72_PR4[SJRBASE] * EC_MDOTA    * (1.0 + EVF_XCC033_72_PR4_a[SJRBASE])
+                  + DN_ARY010_72_PR4[SJRBASE] * EC_SJR180   * (1.0 + EVF_ARY010_72_PR4_a[SJRBASE])
+                  + GP_72_PR4[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_XCC033_72_PR4[SJRBASE] 
+                    + DN_ARY010_72_PR4[SJRBASE]
+                    + GP_72_PR4[SJRBASE] )
+                  + pow( dEC_72_PR4, (1.0 + (RU_72_PR4[SJRBASE]/AW_72_PR4[SJRBASE])) ) }            
+}
+
+define EC_R_72_PR3 {
+    case nearZero {
+        condition R_72_PR3_SAL006[SJRBASE]<0.1 .or. AW_72_PR3[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_ARY010_72_PR3[SJRBASE] * EC_SJR180   * (1.0 + EVF_ARY010_72_PR3_a[SJRBASE])
+                  + GP_72_PR3[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_ARY010_72_PR3[SJRBASE] 
+                    + GP_72_PR3[SJRBASE] )
+                  + pow( dEC_72_PR3, (1.0 + (RU_72_PR3[SJRBASE]/AW_72_PR3[SJRBASE])) ) }           
+}
+
+define EC_R_72_PR2 {
+    case nearZero {
+        condition R_72_PR2_MSN004[SJRBASE]<0.1 .or. AW_72_PR2[SJRBASE]<0.1
+        value 0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC033_72_PR2[SJRBASE] * EC_MDOTA    * (1.0 + EVF_XCC033_72_PR2_a[SJRBASE])
+                  + GP_72_PR2[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_XCC033_72_PR2[SJRBASE] 
+                    + GP_72_PR2[SJRBASE] )
+                  + pow( dEC_72_PR2, (1.0 + (RU_72_PR2[SJRBASE]/AW_72_PR2[SJRBASE])) ) }          
+}
+
+define EC_R_72_PA {
+    case nearZero {
+        condition R_72_PA_MSS014[SJRBASE]<0.1 .or. AW_72_PA[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC025_72_PA[SJRBASE]  * EC_MDOTA    * (1.0 + EVF_XCC025_72_PA_a[SJRBASE])
+                  + GP_72_PA[SJRBASE]         * EC_GP_72 ) 
+                  / ( DN_XCC025_72_PA[SJRBASE] 
+                    + GP_72_PA[SJRBASE] )
+                  + pow( dEC_72_PA, (1.0 + (RU_72_PA[SJRBASE]/AW_72_PA[SJRBASE])) ) }                 
+}
+
+define EC_R_72_XA1 {
+    case nearZero {
+        condition R_72_XA1_SAL017[SJRBASE]<0.1 .or. AW_72_XA1[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_ARY010_72_XA1[SJRBASE] * EC_SJR180   * (1.0 + EVF_ARY010_72_XA1_a[SJRBASE])
+                  + GP_72_XA1[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_ARY010_72_XA1[SJRBASE] 
+                    + GP_72_XA1[SJRBASE] )
+                  + pow( dEC_72_XA1, (1.0 + (RU_72_XA1[SJRBASE]/AW_72_XA1[SJRBASE])) ) }          
+}
+
+define EC_R_72_XA2 {
+    case nearZero {
+        condition R_72_XA2_SAL017[SJRBASE]<0.1 .or. AW_72_XA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC010_72_XA2[SJRBASE] * EC_MDOTA    * (1.0 + EVF_XCC010_72_XA2_a[SJRBASE])
+                  + GP_72_XA2[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_XCC010_72_XA2[SJRBASE] 
+                    + GP_72_XA2[SJRBASE] )
+                  + pow( dEC_72_XA2, (1.0 + (RU_72_XA2[SJRBASE]/AW_72_XA2[SJRBASE])) ) }           
+}
+
+define EC_R_72_XA3 {
+    case nearZero {
+        condition R_72_XA3_RFS72B[SJRBASE]<0.1 .or. AW_72_XA3[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_XCC054_72_XA3[SJRBASE] * EC_XCC054   * (1.0 + EVF_XCC054_72_XA3_a[SJRBASE])
+                  + GP_72_XA3[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_XCC054_72_XA3[SJRBASE] 
+                    + GP_72_XA3[SJRBASE] )
+                  + pow( dEC_72_XA3, (1.0 + (RU_72_XA3[SJRBASE]/AW_72_XA3[SJRBASE])) ) }          
+}
+
+define EC_SAL006 {
+    case nearZero {
+        condition C_SAL006[SJRBASE] < .1
+        value 0.0}
+    case otherwise {
+        condition always 
+        value (R_72_PR3_SAL006[SJRBASE] * EC_R_72_PR3
+             + R_72_PR4_SAL006[SJRBASE] * EC_R_72_PR4
+             + R_72_XA1_SAL017[SJRBASE] * EC_R_72_XA1
+             + R_72_XA2_SAL017[SJRBASE] * EC_R_72_XA2
+             + R_72_PA_MSS014[SJRBASE]  * EC_R_72_PA
+             + R_RFS72A_MSS014[SJRBASE] * EC_R_72_PR6
+             + SR_72_SAL006             * EC_SR_72_SAL006)
+             / ( C_SAL006[SJRBASE] ) }
+}
+
+define EC_MSN004 {
+    case nearZero {
+        condition C_MSN004[SJRBASE] < .1
+        value     0.0}
+    case otherwise {
+        condition always 
+        value     ( R_RFS72B_MSN004[SJRBASE] * EC_R_72_XA3
+                  + R_72_PR2_MSN004[SJRBASE] * EC_R_72_PR2
+                  + R_72_PR5_MSN009[SJRBASE] * EC_R_72_PR5
+                  + R_73_PA2_SLD027[SJRBASE] * EC_R_73_PA2
+                  + R_73_PA3_SLD027[SJRBASE] * EC_R_73_PA3
+                  + R_73_XA_SLD027[SJRBASE]  * EC_R_73_XA
+                  + C_LBN012[SJRBASE]        * EC_LBN012
+                  + D_XCC054_LBN008[SJRBASE] * EC_XCC054
+                  + SR_71_MSN004             * EC_SR_71_MSN004
+                  + SR_72_MSN004             * EC_SR_72_MSN004
+                  + SR_73_MSN004             * EC_SR_73_MSN004
+                  + SR_73_SLD027             * EC_SR_73_SLD027 )
+                  / ( C_MSN004[SJRBASE] ) }
+}
+
+
+
+! ************************************************************************
+! SJR CONFLUENCE WITH SALT SLOUGH + MUD SLOUGH
+define EC_SJR127 {  ! Salt Slough Confluence
+    case NearZero {
+        condition C_SJR127[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR134[SJRBASE] * EC_SJR134
+                  + C_SAL006[SJRBASE] * EC_SAL006) 
+                  / ( C_SJR127[SJRBASE] ) }
+} 
+
+define EC_SJR119 {  ! Mud Slough North
+    case NearZero {
+        condition C_SJR119[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR127[SJRBASE]              * EC_SJR127
+                  + min(0.,SG_SJR123_702[SJRBASE]) * EC_SJR127
+                  + max(0.,SG_SJR123_702[SJRBASE]) * EC_SG_SJR123
+                  + C_MSN004[SJRBASE]              * EC_MSN004) 
+                  / ( C_SJR119[SJRBASE] ) }
+} 
+
+
+
+! ************************************************************************
+! NEWMAN WASTEWAY AND EAST SIDE RETURN TO SJR117
+define EC_NMW004 { ! Newman Wasteway
+    case nearZero {
+        condition C_NMW004[SJRBASE] < .1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( D_DMC054_NMW004[SJRBASE] * EC_Tracy
+                  + R_RFS71C_NMW004[SJRBASE] * EC_R_71_PA6)
+                  / ( C_NMW004[SJRBASE] ) }
+}
+
+define EC_R_63_NA4  {
+    case nearZero {
+        condition R_63_NA4_SJR117[SJRBASE]<0.1 .or. AW_63_NA4[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MCD002_63_NA4[SJRBASE] * EC_MCD002   * (1.0 + EVF_MCD002_63_NA4_a[SJRBASE])
+                  + DN_MCD021_63_NA4[SJRBASE] * EC_MCD002   * (1.0 + EVF_MCD021_63_NA4_a[SJRBASE])
+                  + DN_MID021_63_NA4[SJRBASE] * EC_MCD002   * (1.0 + EVF_MID021_63_NA4_a[SJRBASE])
+                  + GP_63_NA4[SJRBASE]        * EC_GP_63 ) 
+                  / ( DN_MCD002_63_NA4[SJRBASE] 
+                    + DN_MCD021_63_NA4[SJRBASE] 
+                    + DN_MID021_63_NA4[SJRBASE] 
+                    + GP_63_NA4[SJRBASE] )
+                  + pow( dEC_63_NA4, (1.0 + (RU_63_NA4[SJRBASE]/AW_63_NA4[SJRBASE])) ) }            
+}
+
+
+
+! ************************************************************************
+! SJR FROM MERCED RIVER TO BELOW NEWMAN GAGE
+define EC_SJR116 {  ! Merced Confluence
+    case NearZero {
+        condition C_SJR116[SJRBASE] + D_SJR116_72_NA1[SJRBASE] - min(0.,SG_SJR116_693[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR119[SJRBASE]        * EC_SJR119
+                  + SR_63_SJR117             * EC_SR_63_SJR117
+                  + SR_71_SJR117             * EC_SR_71_SJR117
+                  + SR_72_SJR117             * EC_SR_72_SJR117
+                  + C_NMW004[SJRBASE]        * EC_NMW004
+                  + R_63_NA4_SJR117[SJRBASE] * EC_R_63_NA4
+                  + C_MCD002[SJRBASE]        * EC_MCD002
+                  + max(0.,SG_SJR116_693[SJRBASE]) * EC_SG_SJR116 )
+                  / ( C_SJR116[SJRBASE] + D_SJR116_72_NA1[SJRBASE] - min(0.,SG_SJR116_693[SJRBASE]) ) }
+}
+
+define EC_SJR114 {  ! Below Newman Gage
+    case NearZero {
+        condition C_SJR114[SJRBASE] + D_SJR114_62_NA5[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR116[SJRBASE] * EC_SJR116
+                  + C_MRS000[SJRBASE] * EC_MCD002)
+                  / ( C_SJR114[SJRBASE] + D_SJR114_62_NA5[SJRBASE] ) }
+}
+
+
+
+! ************************************************************************
+! WEST SIDE RETURN TO SJR106             
+define EC_R_72_NA1 {
+    case nearZero {
+        condition R_72_NA1_SJR106[SJRBASE]<0.1 .or. AW_72_NA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR116_72_NA1[SJRBASE] * EC_SJR116   * (1.0 + EVF_SJR116_72_NA1_a[SJRBASE])
+                  + GP_72_NA1[SJRBASE]        * EC_GP_72 ) 
+                  / ( DN_SJR116_72_NA1[SJRBASE] 
+                    + GP_72_NA1[SJRBASE] )
+                  + pow( dEC_72_NA1, (1.0 + (RU_72_NA1[SJRBASE]/AW_72_NA1[SJRBASE])) ) }          
+}
+
+define EC_R_71_PA5 {
+    case nearZero {
+        condition R_71_PA5_RFS71B[SJRBASE]<0.1 .or. AW_71_PA5[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC044_71_PA5[SJRBASE] * EC_Tracy    * (1.0 + EVF_DMC044_71_PA5_a[SJRBASE])
+                  + GP_71_PA5[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_DMC044_71_PA5[SJRBASE] 
+                    + GP_71_PA5[SJRBASE] )
+                  + pow( dEC_71_PA5, (1.0 + (RU_71_PA5[SJRBASE]/AW_71_PA5[SJRBASE])) ) }           
+}
+
+
+
+! ************************************************************************
+! SJR ORESTIMBA CREEEK TO PATTERSON
+define EC_SJR106 {  ! Orestimba Ck Confluence
+    case NearZero {
+        condition C_SJR106[SJRBASE] - min(0.,SG_SJR106_671[SJRBASE]) < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR114[SJRBASE]              * EC_SJR114
+                  + SR_71_SJR106                   * EC_SR_71_SJR106
+                  + SR_72_SJR106                   * EC_SR_72_SJR106
+                  + min(0.,SG_SJR111_683[SJRBASE]) * EC_SJR114
+                  + max(0.,SG_SJR111_683[SJRBASE]) * EC_SG_SJR111
+                  + max(0.,SG_SJR106_671[SJRBASE]) * EC_SG_SJR106
+                  + C_ORT009[SJRBASE]              * EC_ORT009
+                  + R_RFS72B_SJR106[SJRBASE]       * EC_R_72_XA3
+                  + R_72_NA1_SJR106[SJRBASE]       * EC_R_72_NA1
+                  + R_RFS71B_SJR106[SJRBASE]       * EC_R_71_PA5)
+                  / ( C_SJR106[SJRBASE] - min(0.,SG_SJR106_671[SJRBASE]) ) }
+}
+
+define EC_SJR096 {
+    case nearZero {
+        condition C_SJR096[SJRBASE] + D_SJR096_71_PA4[SJRBASE] - min(0.,SG_SJR096_660[SJRBASE]) < .1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR105[SJRBASE]        * EC_SJR106
+                  + R_TKWWTP_SJR101[SJRBASE] * EC_TKWWTP
+                  + max(0.,SG_SJR096_660[SJRBASE]) * EC_SG_SJR096)
+                  / ( C_SJR096[SJRBASE] + D_SJR096_71_PA4[SJRBASE] - min(0.,SG_SJR096_660[SJRBASE]) ) }
+}
+
+
+
+! ************************************************************************
+! WEST SIDE RETURN TO SJR091
+define EC_R_71_PA4 {
+    case nearZero {
+        condition R_71_PA4_SJR091[SJRBASE]<0.1 .or. AW_71_PA4[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC044_71_PA4[SJRBASE] * EC_Tracy    * (1.0 + EVF_DMC044_71_PA4_a[SJRBASE])
+                  + DN_SJR096_71_PA4[SJRBASE] * EC_SJR096   * (1.0 + EVF_SJR096_71_PA4_a[SJRBASE])
+                  + GP_71_PA4[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_DMC044_71_PA4[SJRBASE] 
+                    + DN_SJR096_71_PA4[SJRBASE]
+                    + GP_71_PA4[SJRBASE] )
+                  + pow( dEC_71_PA4, (1.0 + (RU_71_PA4[SJRBASE]/AW_71_PA4[SJRBASE])) ) }           
+}
+
+define EC_R_71_NA1 {
+    case nearZero {
+        condition R_71_NA1_SJR091[SJRBASE]<0.1 .or. AW_71_NA1[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR105_71_NA1[SJRBASE] * EC_SJR106   * (1.0 + EVF_SJR105_71_NA1_a[SJRBASE])
+                  + GP_71_NA1[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_SJR105_71_NA1[SJRBASE] 
+                    + GP_71_NA1[SJRBASE] )
+                  + pow( dEC_71_NA1, (1.0 + (RU_71_NA1[SJRBASE]/AW_71_NA1[SJRBASE])) ) }           
+}
+
+
+
+! ************************************************************************
+! SJR DEL PUERTO CREEK  
+define EC_R_71_PA7 {
+    case NearZero {
+        condition R_71_PA7_SJR091[SJRBASE]<0.1 .or. AW_71_PA7[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_CAA046_71_PA7[SJRBASE] * EC_CAA009   * (1.0 + EVF_CAA046_71_PA7_a[SJRBASE])
+                  + GP_71_PA7[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_CAA046_71_PA7[SJRBASE] 
+                    + GP_71_PA7[SJRBASE] )
+                  + pow( dEC_71_PA7, (1.0 + (RU_71_PA7[SJRBASE]/AW_71_PA7[SJRBASE])) ) }         
+}                  
+
+define EC_SJR091 {  ! Del Puerto Creek Confluence
+    case NearZero {
+        condition C_SJR091[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR096[SJRBASE]        * EC_SJR096  ! EC unaffected
+                  + SR_71_SJR091             * EC_SR_71_SJR091
+                  + SR_72_SJR091             * EC_SR_72_SJR091
+                  + R_71_NA1_SJR091[SJRBASE] * EC_R_71_NA1
+                  + R_71_PA4_SJR091[SJRBASE] * EC_R_71_PA4 
+                  + R_71_PA7_SJR091[SJRBASE] * EC_R_71_PA7
+                  + R_RFS71B_SJR091[SJRBASE] * EC_R_71_PA5
+                  + C_DPC008[SJRBASE]        * EC_DPC008)
+                  / ( C_SJR091[SJRBASE] ) }
+}
+
+
+
+! ************************************************************************
+! WEST & EAST SIDE RETURN TO SJR082 (ABOVE TUOLUMNE)
+define EC_R_71_PA3 {
+    case nearZero {
+        condition R_71_PA3_WWW001[SJRBASE]<0.1 .or. AW_71_PA3[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC034_71_PA3[SJRBASE] * EC_Tracy    * (1.0 + EVF_DMC034_71_PA3_a[SJRBASE])
+                  + GP_71_PA3[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_DMC034_71_PA3[SJRBASE] 
+                    + GP_71_PA3[SJRBASE] )
+                  + pow( dEC_71_PA3, (1.0 + (RU_71_PA3[SJRBASE]/AW_71_PA3[SJRBASE])) ) }            
+}
+
+define EC_WWW001 {
+    case nearZero {
+        condition C_WWW001[SJRBASE] < .1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( D_DMC034_WWW001[SJRBASE] * EC_Tracy
+                  + R_71_PA3_WWW001[SJRBASE] * EC_R_71_PA3)
+                  / ( C_WWW001[SJRBASE] ) }
+}
+
+define EC_R_62_NA3 { ! Turlock ID RF EC
+    case nearZero {
+        condition R_62_NA3_RFS62[SJRBASE]<0.1 .or. AW_62_NA3[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_TRLCH_62_NA3[SJRBASE]  * EC_TRLCH    * (1.0 + EVF_TRLCH_62_NA3_a[SJRBASE])
+                  + GP_62_NA3[SJRBASE]        * EC_GP_62 ) 
+                  / ( DN_TRLCH_62_NA3[SJRBASE] 
+                    + GP_62_NA3[SJRBASE] )
+                  + pow( dEC_62_NA3, (1.0 + (RU_62_NA3[SJRBASE]/AW_62_NA3[SJRBASE])) ) }           
+}
+
+define EC_R_62_NA5 {
+    case nearZero {
+        condition R_62_NA5_SJR082[SJRBASE]<0.1 .or. AW_62_NA5[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR114_62_NA5[SJRBASE] * EC_SJR114   * (1.0 + EVF_SJR114_62_NA5_a[SJRBASE])
+                  + GP_62_NA5[SJRBASE]        * EC_GP_62 ) 
+                  / ( DN_SJR114_62_NA5[SJRBASE] 
+                    + GP_62_NA5[SJRBASE] )
+                  + pow( dEC_62_NA5, (1.0 + (RU_62_NA5[SJRBASE]/AW_62_NA5[SJRBASE])) ) }        
+}
+
+
+
+! ************************************************************************
+! SJR FROM ABOVE TUOLUMNE TO TUOLUMNE CONFLUENCE
+define EC_SJR082 { ! above Tuolumne 
+    case NearZero {
+        condition C_SJR082[SJRBASE] + D_SJR082_71_PA2[SJRBASE] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR091[SJRBASE]              * EC_SJR091
+                  - D_SJR090_71_NA2[SJRBASE]       * EC_SJR091
+                  + min(0.,SG_SJR090_649[SJRBASE]) * EC_SJR091
+                  + max(0.,SG_SJR090_649[SJRBASE]) * EC_SG_SJR090
+                  + C_WWW001[SJRBASE]              * EC_WWW001
+                  + R_62_NA5_SJR082[SJRBASE]       * EC_R_62_NA5
+                  + R_RFS62_SJR082[SJRBASE]        * EC_R_62_NA3)
+                  / ( C_SJR082[SJRBASE] + D_SJR082_71_PA2[SJRBASE] ) }
+}
+
+define EC_SJR081 { ! Tuolumne Confluence
+    case NearZero {
+        condition C_SJR081[SJRBASE] + D_SJR081_61_NA5[SJRBASE] - min(0.,SG_SJR081_633[SJRBASE]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR082[SJRBASE]              * EC_SJR082
+                  + SR_62_SJR081                   * EC_SR_62_SJR081
+                  + C_TUO003[SJRBASE]              * EC_TUO003
+                  + max(0.,SG_SJR081_633[SJRBASE]) * EC_SG_SJR081)
+                  / ( C_SJR081[SJRBASE] + D_SJR081_61_NA5[SJRBASE] - min(0.,SG_SJR081_633[SJRBASE]) ) }
+}
+
+
+
+! ************************************************************************
+! WEST SIDE RETURN TO SJR090 
+define EC_R_71_PA1 {
+    case nearZero {
+        condition R_71_PA1_SJR075[SJRBASE]<0.1 .or. AW_71_PA1[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_DMC030_71_PA1[SJRBASE] * EC_Tracy    * (1.0 + EVF_DMC030_71_PA1_a[SJRBASE])
+                  + GP_71_PA1[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_DMC030_71_PA1[SJRBASE] 
+                    + GP_71_PA1[SJRBASE] )
+                  + pow( dEC_71_PA1, (1.0 + (RU_71_PA1[SJRBASE]/AW_71_PA1[SJRBASE])) ) }                
+}
+
+define EC_R_71_PA2 {
+    case nearZero {
+        condition R_71_PA2_SJR075[SJRBASE]<0.1 .or. AW_71_PA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR082_71_PA2[SJRBASE] * EC_SJR082   * (1.0 + EVF_SJR082_71_PA2_a[SJRBASE])
+                  + DN_DMC034_71_PA2[SJRBASE] * EC_Tracy    * (1.0 + EVF_DMC034_71_PA2_a[SJRBASE])
+                  + GP_71_PA2[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_SJR082_71_PA2[SJRBASE] 
+                    + DN_DMC034_71_PA2[SJRBASE] 
+                    + GP_71_PA2[SJRBASE] )
+                  + pow( dEC_71_PA2, (1.0 + (RU_71_PA2[SJRBASE]/AW_71_PA2[SJRBASE])) ) }             
+}
+
+
+
+! ************************************************************************
+! SJR090
+! Already computed EC_SJR082...why backtracking to compute SJR090??
+/*
+define EC_SJR090 {
+    case nearZero {
+        condition C_SJR090[SJRBASE] + D_SJR090_71_NA2[SJRBASE] - min(0.,SG_SJR090_649[SJRBASE]) < .1
+        value     0.0 }
+    case otherwise {
+        condition always 
+        value (C_SJR091[SJRBASE] * EC_SJR091
+             + max(0.,SG_SJR090_649[SJRBASE]) * EC_SG_SJR090)
+             / (C_SJR090[SJRBASE] + D_SJR090_71_NA2[SJRBASE] - min(0.,SG_SJR090_649[SJRBASE]))}
+} 
+*/
+
+
+! ************************************************************************
+! WEST & EAST SIDE RETURN TO SJR075 (MAZE)
+define EC_R_71_NA2 {
+    case nearZero {
+        condition R_71_NA2_SJR070[SJRBASE]<0.1 .or. AW_71_NA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR090_71_NA2[SJRBASE] * EC_SJR091   * (1.0 + EVF_SJR090_71_NA2_a[SJRBASE])
+                  + GP_71_NA2[SJRBASE]        * EC_GP_71 ) 
+                  / ( DN_SJR090_71_NA2[SJRBASE] 
+                    + GP_71_NA2[SJRBASE] )
+                  + pow( dEC_71_NA2, (1.0 + (RU_71_NA2[SJRBASE]/AW_71_NA2[SJRBASE])) ) }             
+}
+
+define EC_R_61_PA1 { 
+    case nearZero {
+        condition R_61_PA1_RFS61C[SJRBASE]<0.1 .or. AW_61_PA1[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_WDWRD_61_PA1[SJRBASE]  * EC_Goodwin  * (1.0 + EVF_WDWRD_61_PA1_a[SJRBASE])
+                  + GP_61_PA1[SJRBASE]        * EC_GP_61 ) 
+                  / ( DN_WDWRD_61_PA1[SJRBASE] 
+                    + GP_61_PA1[SJRBASE] )
+                  + pow( dEC_61_PA1, (1.0 + (RU_61_PA1[SJRBASE]/AW_61_PA1[SJRBASE])) ) }         
+}
+
+define EC_R_61_PA2 {
+    case nearZero {
+        condition R_61_PA2_RFS61B[SJRBASE]<0.1 .or.AW_61_PA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_OAK020_61_PA2[SJRBASE] * EC_Goodwin  * (1.0 + EVF_OAK020_61_PA2_a[SJRBASE])
+                  + GP_61_PA2[SJRBASE]        * EC_GP_61 ) 
+                  / ( DN_OAK020_61_PA2[SJRBASE] 
+                    + GP_61_PA2[SJRBASE] )
+                  + pow( dEC_61_PA2, (1.0 + (RU_61_PA2[SJRBASE]/AW_61_PA2[SJRBASE])) ) }            
+}
+
+define EC_R_61_NA2 {
+    case nearZero {
+        condition R_61_NA2_RFS61D[SJRBASE]<0.1 .or. AW_61_NA2[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_MDSTO_61_NA2[SJRBASE]  * EC_MDSTO    * (1.0 + EVF_MDSTO_61_NA2_a[SJRBASE])
+                  + DN_OAK020_61_NA2[SJRBASE] * EC_Goodwin  * (1.0 + EVF_OAK020_61_NA2_a[SJRBASE])
+                  + DN_RFS61B_61_NA2[SJRBASE] * EC_R_61_PA2 * (1.0 + EVF_RFS61B_61_NA2_a[SJRBASE])
+                  + GP_61_NA2[SJRBASE]        * EC_GP_61 ) 
+                  / ( DN_MDSTO_61_NA2[SJRBASE] 
+                    + DN_OAK020_61_NA2[SJRBASE] 
+                    + DN_RFS61B_61_NA2[SJRBASE] 
+                    + GP_61_PA1[SJRBASE] )
+                  + pow( dEC_61_NA2, (1.0 + (RU_61_NA2[SJRBASE]/AW_61_NA2[SJRBASE])) ) }            
+}
+
+define EC_R_61_NA5 {
+    case nearZero {
+        condition R_61_NA5_RFS61A[SJRBASE]<0.1 .or. AW_61_NA5[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_SJR081_61_NA5[SJRBASE] * EC_SJR081   * (1.0 + EVF_SJR081_61_NA5_a[SJRBASE])
+                  + DN_RFS61D_61_NA5[SJRBASE] * EC_R_61_NA2 * (1.0 + EVF_RFS61D_61_NA5_a[SJRBASE])
+                  + GP_61_NA5[SJRBASE]        * EC_GP_61 ) 
+                  / ( DN_SJR081_61_NA5[SJRBASE] 
+                    + DN_RFS61D_61_NA5[SJRBASE] 
+                    + GP_61_NA5[SJRBASE] )
+                  + pow( dEC_61_NA5, (1.0 + (RU_61_NA5[SJRBASE]/AW_61_NA5[SJRBASE])) ) }   
+}
+
+define EC_R_RFS61A {
+    case nearZero {
+        condition R_RFS61A_SJR075[SJRBASE] + R_RFS61A_SJR072[SJRBASE] < 0.1
+        value     0.0}
+    case otherwise {    
+        condition always
+        value     ( R_61_NA5_RFS61A[SJRBASE] * EC_R_61_NA5
+                  + R_RFS61D_RFS61A[SJRBASE] * EC_R_61_NA2)
+                  / ( R_RFS61A_SJR075[SJRBASE] + R_RFS61A_SJR072[SJRBASE] ) }
+}
+
+
+
+! ************************************************************************
+! SJR AT MAZE
+define EC_SJR075 { ! Maze Gage
+    case NearZero {
+        condition C_SJR075[SJRBASE] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR081[SJRBASE]        * EC_SJR081
+                  + C_ING008[SJRBASE]        * EC_ING008
+                  + SR_71_SJR075             * EC_SR_71_SJR075
+                  + SR_61_SJR075             * EC_SR_61_SJR075
+                  + R_71_PA2_SJR075[SJRBASE] * EC_R_71_PA2
+                  + R_71_PA1_SJR075[SJRBASE] * EC_R_71_PA1
+                  + R_RFS61A_SJR075[SJRBASE] * EC_R_RFS61A)
+                  / ( C_SJR075[SJRBASE] ) }
+}
+
+
+
+! ************************************************************************
+! STANISLAUS
+define EC_STS036 { !Stanislaus at Ripon
+    case nearZero {
+        condition C_STS036[SJRBASE] - min(0.,SG_STS036_619[SJRBASE]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_STS059[SJRBASE]              * EC_Goodwin
+                  + min(0.,SG_STS058_623[SJRBASE]) * EC_Goodwin
+                  + max(0.,SG_STS058_623[SJRBASE]) * EC_SG_STS058
+                  + min(0.,SG_STS053_622[SJRBASE]) * EC_Goodwin
+                  + max(0.,SG_STS053_622[SJRBASE]) * EC_SG_STS053
+                  + min(0.,SG_STS050_621[SJRBASE]) * EC_Goodwin
+                  + max(0.,SG_STS050_621[SJRBASE]) * EC_SG_STS050
+                  + min(0.,SG_STS043_620[SJRBASE]) * EC_Goodwin
+                  + max(0.,SG_STS043_620[SJRBASE]) * EC_SG_STS043
+                  + max(0.,SG_STS036_619[SJRBASE]) * EC_SG_STS036
+                  + R_RFS61B_STS036[SJRBASE]       * EC_R_61_PA2 )
+                  / ( C_STS036[SJRBASE] - min(0.,SG_STS036_619[SJRBASE]) ) }
+}
+
+define EC_STS030 {
+    case nearZero {
+        condition C_STS030[SJRBASE] + D_STS030_61_NA4[SJRBASE] - min(0.,SG_STS030_618[SJRBASE]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_STS036[SJRBASE]              * EC_STS036 
+                  + R_RFS61C_STS030[SJRBASE]       * EC_R_61_PA1
+                  + R_RFS61D_STS030[SJRBASE]       * EC_R_61_NA2
+                  + max(0.,SG_STS030_618[SJRBASE]) * EC_SG_STS030)
+                  / ( C_STS030[SJRBASE] + D_STS030_61_NA4[SJRBASE] - min(0.,SG_STS030_618[SJRBASE]) ) }
+}
+
+define EC_STS017 {
+    case nearZero {
+        condition C_STS017[SJRBASE] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_STS030[SJRBASE]              * EC_STS030
+                  + min(0.,SG_STS020_617[SJRBASE]) * EC_STS030
+                  + max(0.,SG_STS020_617[SJRBASE]) * EC_SG_STS020
+                  + SR_61_STS017                   * EC_SR_61_STS017 )
+                  ! IMF -- MOVED TO EC_STS030 CALC... + R_RFS61D_STS030[SJRBASE] * EC_R_61_NA2)
+                  / ( C_STS017[SJRBASE] ) }
+}
+
+define EC_R_61_NA4 {
+    case nearZero {
+        condition R_61_NA4_SJR072[SJRBASE]<0.1 .or. AW_61_NA4[SJRBASE]<0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( DN_STS030_61_NA4[SJRBASE] * EC_STS030   * (1.0 + EVF_STS030_61_NA4_a[SJRBASE])
+                  + GP_61_NA4[SJRBASE]        * EC_GP_61 ) 
+                  / ( DN_STS030_61_NA4[SJRBASE] 
+                    + GP_61_NA4[SJRBASE] )
+                  + pow( dEC_61_NA4, (1.0 + (RU_61_NA4[SJRBASE]/AW_61_NA4[SJRBASE])) ) }           
+        !value     ( D_STS030_61_NA4[SJRBASE]  * EC_STS030)
+        !          ! + GP_61_NA4[SJRBASE]        * EC_GP_62)
+        !          / ( R_61_NA4_SJR072[SJRBASE] ) }
+}
+
+
+
+! ************************************************************************
+! SJR FROM STANISLAUS CONFLUENCE TO VERNALIS
+define EC_SJR072 { ! Stanislaus Confluence
+    case NearZero {
+        condition C_SJR072[SJRBASE] - min(0.,SG_SJR072_615[SJRBASE]) < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR075[SJRBASE]              * EC_SJR075
+                  + max(0.,SG_SJR072_615[SJRBASE]) * EC_SG_SJR072
+                  + R_61_NA4_SJR072[SJRBASE]       * EC_R_61_NA4
+                  + R_RFS61A_SJR072[SJRBASE]       * EC_R_RFS61A
+                  + C_STS017[SJRBASE]              * EC_STS017
+                  + min(0.,sg_sts011_616[SJRBASE]) * EC_STS017
+                  + max(0.,sg_sts011_616[SJRBASE]) * EC_SG_STS011)
+                  / ( C_SJR072[SJRBASE] - min(0.,SG_SJR072_615[SJRBASE]) ) }
+}
+
+define EC_SJR070 { ! Vernalis
+    case NearZero {
+        condition C_SJR070[SJRBASE] + D_SJR070_61_NA6[SJRBASE] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_SJR072[SJRBASE]        * EC_SJR072
+                  + SR_71_SJR070             * EC_SR_71_SJR070
+                  + SR_61_SJR070             * EC_SR_61_SJR070
+                  + R_71_NA2_SJR070[SJRBASE] * EC_R_71_NA2)
+                  / ( C_SJR070[SJRBASE] + D_SJR070_61_NA6[SJRBASE] ) }
+}
+
+
+
+! ************************************************************************
+! TUOLUMNE
+define EC_TUO022 {
+    case nearZero {
+        condition C_TUO022[SJRBASE] < 0.1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( C_TUO030[SJRBASE]              * EC_TUO054
+                  + min(0.,SG_TUO022_652[SJRBASE]) * EC_TUO054
+                  + max(0.,SG_TUO022_652[SJRBASE]) * EC_SG_TUO022
+                  + R_RFS62_TUO022[SJRBASE]        * EC_R_62_NA3)
+                  / ( C_TUO022[SJRBASE] ) }
+}
+
+define EC_TUO017 {
+    case nearZero {
+        condition C_TUO017[SJRBASE] + D_TUO017_61_NA3[SJRBASE] + D_TUO017_62_NA4[SJRBASE] < 0.1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( C_TUO022[SJRBASE]        * EC_TUO022
+                  + SR_61_TUO017             * EC_SR_61_TUO017
+                  + SR_62_TUO017             * EC_SR_62_TUO017
+                  + R_RFS61B_TUO017[SJRBASE] * EC_R_61_PA2
+                  + R_RFS61D_TUO017[SJRBASE] * EC_R_61_NA2)
+                  / ( C_TUO017[SJRBASE] + D_TUO017_61_NA3[SJRBASE] + D_TUO017_62_NA4[SJRBASE])}
+}
+
+define EC_TUO010 {
+    case NearZero {
+        condition C_TUO010[SJRBASE] < 0.1
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_TUO017[SJRBASE]               * EC_TUO017
+                  + min(0.0,SG_TUO015_651[SJRBASE]) * EC_TUO017
+                  + max(0.0,SG_TUO015_651[SJRBASE]) * EC_SG_TUO015
+                  + max(0.0,SG_TUO010_650[SJRBASE]) * EC_SG_TUO010
+                  + R_MOWWTP_TUO010[SJRBASE]        * EC_MOWWTP)
+                  / ( C_TUO010[SJRBASE] + min(0.0,SG_TUO010_650[SJRBASE]) ) }
+}
+
+define EC_R_61_NA3 {
+    case nearZero {
+        condition R_61_NA3_TUO003[SJRBASE]<0.1 .or. AW_61_NA3[SJRBASE]<0.1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( DN_TUO017_61_NA3[SJRBASE] * EC_TUO017   * (1.0 + EVF_TUO017_61_NA3_a[SJRBASE])
+                  + GP_61_NA3[SJRBASE]        * EC_GP_61 ) 
+                  / ( DN_TUO017_61_NA3[SJRBASE] 
+                    + GP_61_NA3[SJRBASE] )
+                  + pow( dEC_61_NA3, (1.0 + (RU_61_NA3[SJRBASE]/AW_61_NA3[SJRBASE])) ) }         
+        !value     ( D_TUO017_61_NA3[SJRBASE] * EC_TUO017)
+        !          ! + GP_61_NA3[SJRBASE]       * EC_GP_61)
+        !          / ( R_61_NA3_TUO003[SJRBASE] ) }
+}
+
+define EC_R_62_NA4 {
+    case nearZero {
+        condition R_62_NA4_TUO003[SJRBASE]<0.1 .or. AW_62_NA4[SJRBASE]<0.1
+        value     0.0}
+    case otherwise {
+        condition always
+        value     ( DN_TUO017_62_NA4[SJRBASE] * EC_TUO017   * (1.0 + EVF_TUO017_62_NA4_a[SJRBASE])
+                  + GP_62_NA4[SJRBASE]        * EC_GP_62 ) 
+                  / ( DN_TUO017_62_NA4[SJRBASE] 
+                    + GP_62_NA4[SJRBASE] )
+                  + pow( dEC_62_NA4, (1.0 + (RU_62_NA4[SJRBASE]/AW_62_NA4[SJRBASE])) ) }          
+        !value     ( D_TUO017_62_NA4[SJRBASE] * EC_TUO017)
+        !          ! + GP_62_NA4[SJRBASE] * EC_GP_62)
+        !          / ( R_62_NA4_TUO003[SJRBASE] ) }
+}
+
+define EC_TUO003calc {
+    case NearZero {
+        condition C_TUO003[SJRBASE] < 0.001
+        value     0.0 }
+    case otherwise {
+        condition always
+        value     ( C_TUO010[SJRBASE]        * EC_TUO010
+                  + R_61_NA3_TUO003[SJRBASE] * EC_R_61_NA3
+                  + R_62_NA4_TUO003[SJRBASE] * EC_R_62_NA4)
+                  / ( C_TUO003[SJRBASE] ) }
+} 
+
+
+
+! ************************************************************************
+! COMPUTE GOODWIN FLOW REQUIREMENTS TO MEET STANDARD
+define Goodwin_Req_min1 { value R_RFS61B_STS036[SJRBASE]*(VernWQstd - EC_R_61_PA2)/(EC_Goodwin - VernWQstd)
+                              + R_RFS61C_STS030[SJRBASE]*(VernWQstd - EC_R_61_PA2)/(EC_Goodwin - VernWQstd)
+                              - D_STS030_61_NA4[SJRBASE]*(VernWQstd - EC_STS030)/(EC_Goodwin - VernWQstd)
+                              + R_RFS61D_STS030[SJRBASE]*(VernWQstd - EC_R_61_NA2)/(EC_Goodwin - VernWQstd)
+                              + SR_61_STS017*(VernWQstd - EC_SR_61_STS017)/(EC_Goodwin - VernWQstd)
+                              }
+
+define Goodwin_Req_min2 { value C_SJR075[SJRBASE]*(VernWQstd - EC_SJR075)/(EC_Goodwin - VernWQstd)
+                              + R_71_NA2_SJR070[SJRBASE]*(VernWQstd - EC_R_71_NA2)/(EC_Goodwin - VernWQstd)
+                              + R_RFS61A_SJR072[SJRBASE]*(VernWQstd - EC_R_RFS61A)/(EC_Goodwin - VernWQstd)
+                              + R_61_NA4_SJR072[SJRBASE]*(VernWQstd - EC_R_61_NA4)/(EC_Goodwin - VernWQstd)
+                              + SR_71_SJR070*(VernWQstd - EC_SR_71_SJR070)/(EC_Goodwin - VernWQstd)
+                              + SR_61_SJR070*(VernWQstd - EC_SR_61_SJR070)/(EC_Goodwin - VernWQstd)
+                              }
+
+define Goodwin_Req_min {value Goodwin_Req_min1 + Goodwin_Req_min2}
+
+define WQ_min_def { value   max(0.,Goodwin_Req_min-C_STS059[SJRBASE]) }
+
+define WQ_reduced_min_def {
+    case March {
+        condition   month == mar
+        value       max(0.,min ( WQRelCap * TAF_cfs, WQ_min_def )) }
+    case april {                                                                          !WB
+        condition   month == apr                                                          !WB
+        value       max(0.,min ( remWQrelCap(-1)*30./14. * TAF_cfs, WQ_min_def )) }       !WB
+    case may {                                                                            !WB
+        condition   month == may                                                          !WB
+        value       max(0.,min ( remWQrelCap(-1)*31./15. * TAF_cfs, WQ_min_def )) }       !WB
+    case otherwise {
+        condition   always
+        value       max(0.,min ( remWQrelCap(-1) * TAF_cfs, WQ_min_def )) }
+        }
+
+goal capC_MELONwqcycle2 {C_MELONWQ < WQ_reduced_min_def }
+!goal maintainC_MELONm1cycle2 { C_MELONm > max(0.,C_MELONm[SJRBASE]) }
+goal maintainC_MELONm2cycle2 { C_MELONm = C_MELONm[SJRBASE]  }
+
+
+! **************************************************************************
+! Aliases for output...
+
+! Fixed values 
+define EC_TracyDV       {alias EC_Tracy        kind 'salinity' units 'mS/cm'}
+define EC_BanksDV       {alias EC_Banks        kind 'salinity' units 'mS/cm'}
+define EC_MCD002dv      {alias EC_MCD002       kind 'salinity' units 'mS/cm'}
+define EC_TUO003dv      {alias EC_TUO003       kind 'salinity' units 'mS/cm'}
+! define EC_MP_Ag_ReturnDV{alias EC_MP_Ag_Return kind 'salinity' units 'mS/cm' }
+! define EC_MP_RF_ReturnDV{alias EC_MP_RF_Return kind 'salinity' units 'mS/cm' }
+
+! Computed values
+define 	EC_R_91_PAdv 	{alias 	EC_R_91_PA     	kind 	'salinity' 	units 	'mS/cm'}
+define 	EC_R_91_PRdv  	{alias 	EC_R_91_PR     	kind 	'salinity' 	units 	'mS/cm'}
+define	EC_CAA009dv	{alias	EC_CAA009	kind	'salinity'	units	'mS/cm'}
+define	EC_CAA067dv	{alias	EC_CAA067	kind	'salinity'	units	'mS/cm'}
+define	EC_CAA069dv	{alias	EC_CAA069	kind	'salinity'	units	'mS/cm'}
+define	EC_DMC070dv	{alias	EC_DMC070	kind	'salinity'	units	'mS/cm'}
+define	EC_EBP016dv	{alias	EC_EBP016	kind	'salinity'	units	'mS/cm'}
+define	EC_EBP030dv	{alias	EC_EBP030	kind	'salinity'	units	'mS/cm'}
+define	EC_EBP041dv	{alias	EC_EBP041	kind	'salinity'	units	'mS/cm'}
+define	EC_EBP048dv	{alias	EC_EBP048	kind	'salinity'	units	'mS/cm'}
+define	EC_EBP050dv	{alias	EC_EBP050	kind	'salinity'	units	'mS/cm'}
+define	EC_ESC000dv	{alias	EC_ESC000	kind	'salinity'	units	'mS/cm'}
+define	EC_FSL005dv	{alias	EC_FSL005	kind	'salinity'	units	'mS/cm'}
+define	EC_LBN012dv	{alias	EC_LBN012	kind	'salinity'	units	'mS/cm'}
+define	EC_LBN025dv	{alias	EC_LBN025	kind	'salinity'	units	'mS/cm'}
+define	EC_MDOTAdv	{alias	EC_MDOTA	kind	'salinity'	units	'mS/cm'}
+define	EC_MSN004dv	{alias	EC_MSN004	kind	'salinity'	units	'mS/cm'}
+define	EC_NMW004dv	{alias	EC_NMW004	kind	'salinity'	units	'mS/cm'}
+define	EC_OWN011dv	{alias	EC_OWN011	kind	'salinity'	units	'mS/cm'}
+define	EC_R_61_NA2dv	{alias	EC_R_61_NA2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_61_NA3dv	{alias	EC_R_61_NA3	kind	'salinity'	units	'mS/cm'}
+define	EC_R_61_NA4dv	{alias	EC_R_61_NA4	kind	'salinity'	units	'mS/cm'}
+define	EC_R_61_NA5dv	{alias	EC_R_61_NA5	kind	'salinity'	units	'mS/cm'}
+define	EC_R_61_PA1dv	{alias	EC_R_61_PA1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_61_PA2dv	{alias	EC_R_61_PA2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_62_NA3dv	{alias	EC_R_62_NA3	kind	'salinity'	units	'mS/cm'}
+define	EC_R_62_NA4dv	{alias	EC_R_62_NA4	kind	'salinity'	units	'mS/cm'}
+define	EC_R_62_NA5dv	{alias	EC_R_62_NA5	kind	'salinity'	units	'mS/cm'}
+define	EC_R_63_NA4dv	{alias	EC_R_63_NA4	kind	'salinity'	units	'mS/cm'}
+define	EC_R_63_PR1dv	{alias	EC_R_63_PR1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_63_PR2dv	{alias	EC_R_63_PR2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_63_PR3dv	{alias	EC_R_63_PR3	kind	'salinity'	units	'mS/cm'}
+define	EC_R_64_NA2dv	{alias	EC_R_64_NA2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_64_PA1dv	{alias	EC_R_64_PA1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_64_PA2dv	{alias	EC_R_64_PA2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_64_PA3dv	{alias	EC_R_64_PA3	kind	'salinity'	units	'mS/cm'}
+define	EC_R_64_XAdv	{alias	EC_R_64_XA	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_NA1dv	{alias	EC_R_71_NA1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_NA2dv	{alias	EC_R_71_NA2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_PA1dv	{alias	EC_R_71_PA1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_PA2dv	{alias	EC_R_71_PA2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_PA3dv	{alias	EC_R_71_PA3	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_PA4dv	{alias	EC_R_71_PA4	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_PA5dv	{alias	EC_R_71_PA5	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_PA6dv	{alias	EC_R_71_PA6	kind	'salinity'	units	'mS/cm'}
+define	EC_R_71_PA7dv	{alias	EC_R_71_PA7	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_NA1dv	{alias	EC_R_72_NA1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_PAdv	{alias	EC_R_72_PA	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_PR1dv	{alias	EC_R_72_PR1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_PR2dv	{alias	EC_R_72_PR2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_PR3dv	{alias	EC_R_72_PR3	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_PR4dv	{alias	EC_R_72_PR4	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_PR5dv	{alias	EC_R_72_PR5	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_PR6dv	{alias	EC_R_72_PR6	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_XA1dv	{alias	EC_R_72_XA1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_XA2dv	{alias	EC_R_72_XA2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_72_XA3dv	{alias	EC_R_72_XA3	kind	'salinity'	units	'mS/cm'}
+define	EC_R_73_PA1dv	{alias	EC_R_73_PA1	kind	'salinity'	units	'mS/cm'}
+define	EC_R_73_PA2dv	{alias	EC_R_73_PA2	kind	'salinity'	units	'mS/cm'}
+define	EC_R_73_PA3dv	{alias	EC_R_73_PA3	kind	'salinity'	units	'mS/cm'}
+define	EC_R_73_XAdv	{alias	EC_R_73_XA	kind	'salinity'	units	'mS/cm'}
+define	EC_R_RFS61Adv	{alias	EC_R_RFS61A	kind	'salinity'	units	'mS/cm'}
+define	EC_SAL006dv	{alias	EC_SAL006	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR070dv	{alias	EC_SJR070	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR072dv	{alias	EC_SJR072	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR075dv	{alias	EC_SJR075	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR081dv	{alias	EC_SJR081	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR082dv	{alias	EC_SJR082	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR091dv	{alias	EC_SJR091	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR096dv	{alias	EC_SJR096	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR106dv	{alias	EC_SJR106	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR114dv	{alias	EC_SJR114	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR116dv	{alias	EC_SJR116	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR119dv	{alias	EC_SJR119	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR127dv	{alias	EC_SJR127	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR134dv	{alias	EC_SJR134	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR145dv	{alias	EC_SJR145	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR166dv	{alias	EC_SJR166	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR180dv	{alias	EC_SJR180	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR185dv	{alias	EC_SJR185	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR195dv	{alias	EC_SJR195	kind	'salinity'	units	'mS/cm'}
+define	EC_SJR201dv	{alias	EC_SJR201	kind	'salinity'	units	'mS/cm'}
+define	EC_SLUISdv	{alias	EC_SLUIS	kind	'salinity'	units	'mS/cm'}
+define	EC_STS017dv	{alias	EC_STS017	kind	'salinity'	units	'mS/cm'}
+define	EC_STS030dv	{alias	EC_STS030	kind	'salinity'	units	'mS/cm'}
+define	EC_STS036dv	{alias	EC_STS036	kind	'salinity'	units	'mS/cm'}
+define	EC_TUO003calcdv	{alias	EC_TUO003calc	kind	'salinity'	units	'mS/cm'}
+define	EC_TUO010dv	{alias	EC_TUO010	kind	'salinity'	units	'mS/cm'}
+define	EC_TUO017dv	{alias	EC_TUO017	kind	'salinity'	units	'mS/cm'}
+define	EC_TUO022dv	{alias	EC_TUO022	kind	'salinity'	units	'mS/cm'}
+define	EC_WWW001dv	{alias	EC_WWW001	kind	'salinity'	units	'mS/cm'}
+define	EC_XCC054dv	{alias	EC_XCC054	kind	'salinity'	units	'mS/cm'}
+
+
+! Regulation-related values
+define WQ_min_defdv          {alias WQ_min_def         kind 'flow-deficiency' units 'cfs' }
+define WQ_reduced_min_defdv  {alias WQ_reduced_min_def kind 'flow-deficiency' units 'cfs' }
+define Goodwin_Req_min1dv    {alias Goodwin_Req_min1   kind 'flow-required'   units 'cfs' }
+define Goodwin_Req_min2dv    {alias Goodwin_Req_min2   kind 'flow-required'   units 'cfs' }
+define Goodwin_Req_mindv     {alias Goodwin_Req_min    kind 'flow-required'   units 'cfs' }
+

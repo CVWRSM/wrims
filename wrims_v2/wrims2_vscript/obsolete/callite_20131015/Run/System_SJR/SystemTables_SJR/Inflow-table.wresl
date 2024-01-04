@@ -1,0 +1,25 @@
+define I_MELON {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !New Melones
+define I_MLRTN {timeseries kind 'FLOW-INFLOW' units 'CFS'} !Millerton 
+define I_MCLRE {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !McClure
+define I_HNSLY {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Hensley
+define I501 {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Cosumnes River
+define I_Calav {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Calaveras River
+define I512 {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !CSJID local inflow 
+define I_STANGDWN {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Goodwin
+define I_STANRIPN {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Ripon
+define I_ESTMN {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Eastman
+define I_TUOL {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Accr Lagrange to Modesto, I545
+define I_MERCED1C {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Exchequer to Crocker-Huffman Accr, I561
+define I_MERCED1B {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Crocker-Huffman to Cressey Accr, I562
+define I_MERCED2 {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Cressy to Stevenson Accr, I566
+define I_MDOTA {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !James Bypass
+define I_SJRMSA {timeseries kind 'FLOW-INFLOW' units 'CFS'} !Mud and Salt Slu Base flow
+define I_SJRMSx {timeseries 'I_SJRMS'kind 'FLOW-INFLOW' units 'CFS'} !Mud and Salt Slu Base flow
+define I_SJRMS{std kind 'FLOW-INFLOW' units 'CFS'} !SLDR
+goal setI_SJRMS {I_SJRMS = I_SJRMSx}
+
+define I_SJRMAZE {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Accretions above Maze
+define I_SJRSTAN {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !Stanislaus blw Ripon
+define I_PEDRO {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !New Don Pedro
+define I_Nhgan {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !New Hogan
+define I_EASTBYP {timeseries kind 'FLOW-INFLOW' units 'TAF' convert 'CFS'} !SJR accretion upstream from Newman

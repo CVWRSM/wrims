@@ -1,0 +1,41 @@
+/*
+B2 Action 7: CVP Export Reductions (Feb1-Mar31)
+
+A. Munevar 10/19/2001.
+*/
+
+!**** CVP Export Reductions (35 taf) (Feb1-Mar31) ****************
+
+! Monthly export reduction for CVP
+goal b2action7_1 {
+  lhs C_DMC003 + CAA000_CVP
+  case Feb {
+    condition month==FEB .and. int(B2Action7On)==1
+    rhs       max(800.,DMC003CVP_B2Base + CAA000CVP_B2Base - (ResAction7/2.)*taf_cfs)
+    lhs<rhs   penalty 0 }
+  case Mar {
+    condition month==MAR .and. int(B2Action7On)==1
+    rhs       max(800.,DMC003CVP_B2Base + CAA000CVP_B2Base - (ResAction7/2.)*taf_cfs)
+    lhs<rhs   penalty 0 }
+}
+
+!for output only:
+define b2_7_1cap {std kind 'OUTPUT' units 'CFS'}
+goal setb2_7_1 {
+  lhs b2_7_1cap
+  case Feb {
+    condition  month==FEB .and. int(B2Action7On)==1
+    rhs        max(800.,DMC003CVP_B2Base + CAA000CVP_B2Base - (ResAction7/2.)*taf_cfs)
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+  case Mar {
+    condition  month==MAR .and. int(B2Action7On)==1
+    rhs        max(800.,DMC003CVP_B2Base + CAA000CVP_B2Base - (ResAction7/2.)*taf_cfs)
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+  case other {
+    condition  always
+    rhs        20000.
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+}

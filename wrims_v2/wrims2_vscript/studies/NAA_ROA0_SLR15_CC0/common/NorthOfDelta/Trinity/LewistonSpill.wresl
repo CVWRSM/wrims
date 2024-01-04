@@ -1,0 +1,5 @@
+define C100_EXC1 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+define C100_EXC2 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+goal C100_exctotal {C100_EXC=C100_EXC1+C100_EXC2}
+
+goal boundC100_EXC1 {C100_EXC1 < int_cweir * 9999999.}

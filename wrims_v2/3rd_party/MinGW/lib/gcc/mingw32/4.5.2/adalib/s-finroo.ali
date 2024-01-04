@@ -1,0 +1,80 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnvnnnnnnnnnvnnnnvnnnnnnnnnnnnnnvnnvnnnnnnnnnvnnnnnnnnvnnnnnnnnnnnnnnnn
+
+U system.finalization_root%b  s-finroo.adb	6d0998e1 NE OL PK
+W system%s		system.ads		system.ali
+
+U system.finalization_root%s  s-finroo.ads	c9af995e EE OL PR PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.streams%s		a-stream.ads		a-stream.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W ada.unchecked_conversion%s
+W system%s		system.ads		system.ali
+W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-finroo.ads		20090409150020 1408f9d1
+D s-finroo.adb		20090409150020 79016130
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-traent.ads		20090417130712 a66ef260
+X 1 ada.ads
+16K9*Ada 19e8 8|34r6 35r6 45r10 48r10 73r35 77r35
+X 3 a-stream.ads
+36K13*Streams 69e16 8|34w10 73r39 77r39
+39H9*Root_Stream_Type 67e64 8|73r47 77r47
+X 5 a-unccon.ads
+20v14*Unchecked_Conversion 8|35w10 45r14 48r14
+X 6 system.ads
+37K9*System 197e11 8|37r9 85r5 9|32r14 63r5
+64M9*Address 8|45r36 48r53
+X 8 s-finroo.ads
+37K16*Finalization_Root 6|37k9 8|85l12 85e29 9|32b21 63l12 63t29
+40R9*Root_Controlled 42r39 53c9 56r27 58r42 59r42 60r42 74r19 78r23 82r8
+. 83r8 9|40r38 49r40 58r42
+42P9*Finalizable_Ptr(53R9) 45r45 48r36 54r20
+44V13*To_Finalizable_Ptr[5|20]{42P9}
+47V13*To_Addr[5|20]{6|64M9}
+50H9*Empty_Root_Controlled 50e61 53r32
+53R9*Root_Controlled<50R9> 55e14 58p14 59p14 60p14
+54p7*Prev{42P9}
+54p13*Next{42P9}
+56C12*Finalizable<53R9>
+58U14*Initialize 58=26 9|58b14 61l8 61t18
+58r26 Object{53R9} 9|58b26
+59U14*Finalize 59=26 9|49b14 52l8 52t16
+59r26 Object{53R9} 9|49b24
+60U14*Adjust 60=26 9|40b14 43l8 43t14
+60r26 Object{53R9} 9|40b22
+70K12*Stream_Attributes 80l8 80e25 82r33 83r34
+72U17*Write 73^10 74>10 83r52
+73p10 Stream(3|39R9)
+74r10 Item{53R9}
+76U17*Read 77^10 78<10 82r51
+77p10 Stream(3|39R9)
+78r10 Item{53R9}
+

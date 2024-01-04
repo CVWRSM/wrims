@@ -1,0 +1,12 @@
+! Delta Operations and Constraints
+! This is the main file which 'includes' all Delta Operations and Constraints code
+! R. Wilbur 9/20/00
+
+! The net delta outflow variable is defined here (CFS) for use in all Delta modules
+!define NDO {alias D407 + C407 KIND 'FLOW-NDO' UNITS 'CFS'}  ! total of mrdo and surplus  !Already defined
+
+INCLUDE 'vallejo\vallejo.wresl'
+INCLUDE 'xchannel\xc-gates.wresl'
+INCLUDE 'riovista\riovista.wresl'
+INCLUDE 'mrdo\mrdo_Gmodel.wresl'
+

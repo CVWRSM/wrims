@@ -1,0 +1,37 @@
+/*************************************
+ShaRuleCurv.wresl
+ 
+Tom FitzHugh BOR 4/7/2010
+
+Sets Shasta rule curve.  From May through September Level 3 value is adjusted based 
+on supply estimate through September.
+**************************************/
+
+define S_ShstaLevel3 {value 2500.}
+
+define ShaInf {value (I_Shsta)*cfs_taf }
+define ShaInfEst {sum(i=0,SEP-month,1) (I_Shsta(i))*cfs_taf(i) }
+
+define ShaSupEst {value max(0.0,ShaInfEst + S_Shsta(-1) - S_ShstaLevel3)}  
+
+define ShaSupEstdv {alias ShaSupEst kind 'FORECAST' units 'TAF'}
+
+define ShaFlowTarg {value (ShaSupEst/cfs_taf)/(Sep-month+1.) }
+
+define ShaRuleCalc {
+    case MaythruSep {
+        condition month >= may .and. month <= sep
+        value     ShaInf + S_Shsta(-1) - ShaFlowTarg*cfs_taf }
+    case Other {
+        condition always
+        value     S_ShstaLevel3}}
+define ShaRuleCalcdv {alias ShaRuleCalc kind 'RULE' units 'TAF'}
+
+define S_ShstaLevel3adj {value min(max(ShaRuleCalc,S_ShstaLevel2),S_ShstaLevel4)}
+define S_ShstaLevel3dv {alias S_ShstaLevel3adj kind 'STORAGE-LEVEL' units 'TAF'}
+
+goal S_ShstaZone3 {S_Shsta_3 < max(S_ShstaLevel3adj - S_ShstaLevel2,0.)}
+goal S_ShstaZone4 {S_Shsta_4 < max(S_ShstaLevel4 - S_ShstaLevel3adj,0.)}
+goal S_ShstaZone5 {S_Shsta_5 < max(S_ShstaLevel5 - S_ShstaLevel4,0.)}
+goal S_ShstaZone6 {S_Shsta_6 < max(S_ShstaLevel6 - S_ShstaLevel5,0.)}
+

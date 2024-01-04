@@ -1,0 +1,427 @@
+! VAMP_ALLOC
+
+! Edward Chang
+! 05/01/2000
+! Distributing the VAMP pulse flow deficiencies among the SJRGA.
+
+/*
+ This code meets the VAMP requirement
+ *****************************************************************************************
+ The VAMP pulse flow deficiencies are distributed among the San Joaquin River Group Authority
+ members per 1998 San Joaquin River Agreement as a reservoir release requirement, or a
+ reduction in demands.  Reservoir releases are made from:
+    1)  McClure for the Merced ID release requirement,
+    2)  New Melones for the Oakdale ID release requirement, and
+    3)  Don Pedro for the Modesto and Turlock ID requirement.
+
+ In addition, demands are reduced from the Mendota Pool Exchange contractors so DMC water can
+ contribute to the VAMP requirement.
+
+ Oakdale ID releases are diverted through Modesto ID if the releases will exceed
+ the maximum permissible flow at Goodwin.
+
+ The VAMP deficiency is to be met by alternating releases from each source based on
+ several different steps (i.e. the first 25 TAF is shared between the four contractors
+ according to a step function, with one contractor releasing first, then the next 11.5
+ TAF is distributed among the contractors, etc...)  The table used is the equivalent
+ to that formula.
+
+ Allocates VAMP deficiencies among four sources (per 1998 SJRA)
+ In Apr, calculates split for Apr; in May calculates for sum of two months
+ MercedID = Merced; OID = Stanislaus; Exchange = Mendota Pool; MID/TID = Tuolumne
+ VAMP_alloc
+ deficiency  MercedID    OID      Exchange    MIDTID
+ 0.          0           0           0           0
+ 25.         25          0           0           0
+ 35.         25          10          0           0
+ 40.         25          10          5           0
+ 50.         25          10          5           10
+ 61.5        36.5        10          5           10
+ 66.1        36.5        14.6        5           10
+ 68.4        36.5        14.6        7.3         10
+ 73.         36.5        14.6        7.3         14.6
+ 81.5        45          14.6        7.3         14.6
+ 84.9        45          18          7.3         14.6
+ 86.6        45          18          9           14.6
+ 90.         45          18          9           18
+ 100.        55          18          9           18
+ 104.        55          22          9           18
+ 106.        55          22          11          18
+ 110.        55          22          11          22
+ 9999.       55          22          11          22
+
+ Need to monthly average the releases and reallocations in cycle 6
+*/
+
+/*
+ Revised by: R. Field, USBR, 03/13/2003
+ Purpose: Review and comment file.
+*/
+
+!####################################################################################################
+
+/*
+ Merced ID (McClure release) VAMP contribution to make up for deficiencies.
+ Selects the contribution in May given the total deficiency and prior month's contribution.
+*/
+define MercedIDadd2month {
+    case FutureMayOnly {
+        condition month == may .and. LOD_Future == 1 
+            select MercedID from VAMP_alloc_Fut
+            given deficiency=15.*VAMP_deficiency*cfs_TAF/31. + VAMP_release(-1)*cfs_TAF(-1)
+            use linear }
+    case ExistingMayOnly {
+        condition month == may .and. LOD_Future == 0 
+            select MercedID from VAMP_alloc_Ext
+            given deficiency=15.*VAMP_deficiency*cfs_TAF/31. + VAMP_release(-1)*cfs_TAF(-1)
+            use linear }    
+    case otherwise {
+              condition always
+                  value     0. }
+    }
+/*
+ Oakdale ID (New Melones release) VAMP contribution to make up for deficiencies.
+ Selects the contribution in May given the total deficiency and prior month's contribution.
+*/
+define OIDadd2month {
+    case FutureMayOnly {
+        condition month == may .and. LOD_Future == 1 
+            select OID from VAMP_alloc_Fut
+            given deficiency=15.*VAMP_deficiency*cfs_TAF/31. + VAMP_release(-1)*cfs_TAF(-1)
+            use linear }
+    case ExistingMayOnly {
+        condition month == may .and. LOD_Future == 0 
+            select OID from VAMP_alloc_Ext
+            given deficiency=15.*VAMP_deficiency*cfs_TAF/31. + VAMP_release(-1)*cfs_TAF(-1)
+            use linear }
+    case otherwise {
+              condition always
+                  value     0. }
+    }
+/*
+ Exchange Contractors VAMP contribution to make up for deficiencies.
+ Selects the contribution in May given the total deficiency and prior month's contribution.
+*/
+define Exchangeadd2month {
+    case FutureMayOnly {
+        condition month == may .and. LOD_Future == 1 
+            select Exchange from VAMP_alloc_Fut
+            given deficiency=15.*VAMP_deficiency*cfs_TAF/31. + VAMP_release(-1)*cfs_TAF(-1)
+            use linear }
+    case ExistingMayOnly {
+        condition month == may .and. LOD_Future == 0 
+            select Exchange from VAMP_alloc_Ext
+            given deficiency=15.*VAMP_deficiency*cfs_TAF/31. + VAMP_release(-1)*cfs_TAF(-1)
+            use linear }
+    case otherwise {
+              condition always
+                  value     0. }
+    }
+/*
+ Modesto and Turlock ID (New Don Pedro release) VAMP contribution to make up for deficiencies.
+ Selects the contribution in May given the total deficiency and prior month's contribution.
+*/
+define MIDTIDadd2month {
+    case FutureMayOnly {
+        condition month == may .and. LOD_Future == 1 
+            select MIDTID from VAMP_alloc_Fut
+            given deficiency=15.*VAMP_deficiency*cfs_TAF/31. + VAMP_release(-1)*cfs_TAF(-1)
+            use linear }
+    case ExistingMayOnly {
+            condition month == may .and. LOD_Future == 0 
+                select MIDTID from VAMP_alloc_Ext
+                given deficiency=15.*VAMP_deficiency*cfs_TAF/31. + VAMP_release(-1)*cfs_TAF(-1)
+            use linear }
+    case otherwise {
+              condition always
+                  value     0. }
+    }
+
+
+/*
+ VAMP release requirement in April and May
+ The May release requirement is a two month requirement minus April's release
+*/
+! Merced VAMP required release for April and May from McClure in TAF for the half month.
+define MercedIDadd {
+    case FutureApril {
+        condition month == apr .and. LOD_Future == 1
+            select MercedID from VAMP_alloc_Fut given deficiency=16.*VAMP_deficiency*cfs_TAF/30. use linear }
+    case ExistingApril {
+            condition month == apr .and. LOD_Future == 0
+            select MercedID from VAMP_alloc_Ext given deficiency=16.*VAMP_deficiency*cfs_TAF/30. use linear }
+    case MayOnly {
+        condition month == may
+            value max(0., MercedIDadd2month - MercedIDaddApr(-1)) }
+    case otherwise {
+              condition always
+                  value     0. }
+          }
+! Set Merced ID required VAMP release for April.
+goal setMercedIDaddApr {
+     lhs  MercedIDaddApr
+     case April {
+          condition month == apr
+          rhs  MercedIDadd }
+     case otherwise {
+          condition always
+          rhs  0. }
+          }
+! Oakdale VAMP required release for April and May from New Melones in TAF for the half month.
+define OIDadd {
+    case FutureApril {
+        condition month == apr .and. LOD_Future == 1
+        select OID from VAMP_alloc_Fut given deficiency=16.*VAMP_deficiency*cfs_TAF/30. use linear }
+    case ExistingApril {
+        condition month == apr .and. LOD_Future == 0
+        select OID from VAMP_alloc_Ext given deficiency=16.*VAMP_deficiency*cfs_TAF/30. use linear }
+    case MayOnly {
+        condition month == may
+        value max(0., OIDadd2month - OIDaddApr(-1)) }
+    case otherwise {
+              condition always
+              value     0. }
+              }
+! Set Oakdale ID required VAMP release for April.
+goal setOIDaddApr {
+     lhs  OIDaddApr
+     case April {
+           condition month == apr
+          rhs  OIDadd }
+     case otherwise {
+          condition always
+          rhs  0. }
+          }
+
+! Exchange VAMP required release for April and May from DMC in TAF for the half month.
+define Exchangeadd {
+    case FutureApril {
+        condition month == apr .and. LOD_Future == 1
+        select Exchange from VAMP_alloc_Fut given deficiency=16.*VAMP_deficiency*cfs_TAF/30. use linear }
+    case ExistingApril {
+        condition month == apr .and. LOD_Future == 0
+        select Exchange from VAMP_alloc_Ext given deficiency=16.*VAMP_deficiency*cfs_TAF/30. use linear }
+    case MayOnly {
+        condition month == may
+        value max(0., Exchangeadd2month - ExchangeaddApr(-1)) }
+    case otherwise {
+          condition always
+          value     0. }
+          }
+! Set Exchange requrired VAMP release for April.
+goal setExchangeaddApr {
+     lhs  ExchangeaddApr
+     case April {
+          condition month == apr
+          rhs  Exchangeadd }
+     case otherwise {
+          condition always
+          rhs  0. }
+          }
+
+! Modesto and Turlock VAMP required release for April and May from Don Pedro in TAF for the half month.
+define MIDTIDadd {
+    case FutureApril {
+        condition month == apr .and. LOD_Future == 1
+        select MIDTID from VAMP_alloc_Fut given deficiency=16.*VAMP_deficiency*cfs_TAF/30. use linear }
+    case ExistingApril {
+            condition month == apr .and. LOD_Future == 0
+        select MIDTID from VAMP_alloc_Ext given deficiency=16.*VAMP_deficiency*cfs_TAF/30. use linear }
+    case MayOnly {
+        condition month == may
+        value max(0., MIDTIDadd2month - MIDTIDaddApr(-1)) }
+    case otherwise {
+          condition always
+          value     0. }
+          }
+! Set Modesto and Turlock required VAMP release for April.
+goal setMIDTIDaddApr {
+     lhs  MIDTIDaddApr
+     case April {
+          condition month == apr
+          rhs  MIDTIDadd }
+     case otherwise {
+          condition always
+          rhs  0. }
+          }
+
+
+/*
+ Imposing VAMP release requirement on MercedID (McClure).
+*/
+/*
+ Set C20 McClure release flow (cfs); for the previously calculated
+ volume to be released in a half month; not monthly weighted.
+*/
+goal setC_MCLREVAMPcycle5 {
+     lhs  C_MCLREVAMP
+     case April {
+      condition month == apr
+      rhs 30.*MercedIDadd*TAF_cfs/16.
+      lhs<rhs    penalty 0 }
+     case MayOnly {
+      condition month == may
+      rhs 31.*MercedIDadd*TAF_cfs/15.
+      lhs<rhs    penalty 0 }
+     case otherwise {
+          condition always
+          rhs 0.
+          lhs<rhs penalty 0 }
+          }
+/*
+ Set C_MCLREm McClure release flow (cfs).  April and May use cycle 4
+ (SJR_WQ2) flows and all other months use cycle 2 (SJR_WQ1).
+ Sets lower bound.
+*/
+goal setC_MCLREm1cycle5 {
+     lhs  C_MCLREm
+     case AprMay {
+          condition month >= apr .and. month <= may
+          rhs       max(0., C_MCLREm[SJR_WQ2] - 0.001)
+          lhs>rhs   penalty 0 }
+     case otherwise {
+          condition always
+          rhs       max(0., C_MCLREm[SJR_WQ1] - 0.001)
+          lhs>rhs   penalty 0 }
+          }
+/*
+ Set C20m McClure release flow (cfs).  April and May use cycle 4
+ (SJR_WQ2) flows and all other months use cycle 2 (SJR_WQ1).
+ Sets upper bound.
+*/
+goal setC_MCLREm2cycle5 {
+     lhs  C_MCLREm
+     case AprMay {
+          condition month >= apr .and. month <= may
+          rhs       C_MCLREm[SJR_WQ2] + 0.001
+          lhs<rhs   penalty 0 }
+     case otherwise {
+          condition always
+          rhs       C_MCLREm[SJR_WQ1] + 0.001
+          lhs<rhs   penalty 0 }
+          }
+
+
+/*
+ Imposing VAMP release requirement on MIDTID (New Don Pedro).
+*/
+/*
+ Set C_PEDRO New Don Pedro release (cfs); for the previously calculated
+ volume to be released in a half month; not monthly weighted
+*/
+goal setC_PEDROVAMPcycle5 {
+    lhs    C_PEDROVAMP
+    case April {
+        condition    month == apr
+        rhs        30.*MIDTIDadd*TAF_cfs/16.
+        lhs<rhs    penalty 0 }
+    case MayOnly {
+        condition    month == may
+        rhs        31.*MIDTIDadd*TAF_cfs/15.
+        lhs<rhs    penalty 0 }
+     case otherwise {
+          condition always
+          rhs            0.
+          lhs<rhs        penalty 0 }
+      }
+/*
+ Set C_PEDROm New Don Pedro release flow (cfs).  April and May use cycle 4
+ (SJR_WQ2) flows and all other months use cycle 2 (SJR_WQ1).
+ Sets lower bound.
+*/
+goal setC_PEDROm1cycle5 {
+     lhs  C_PEDROm
+     case AprMay {
+          condition month >= apr .and. month <= may
+          rhs       max(0., C_PEDROm[SJR_WQ2] - 0.001)
+          lhs>rhs   penalty 0 }
+     case otherwise {
+          condition always
+          rhs       max(0., C_PEDROm[SJR_WQ1] - 0.001)
+          lhs>rhs   penalty 0 }
+          }
+/*
+ Set C_PEDROm New Don Pedro release flow (cfs).  April and May use cycle 4
+ (SJR_WQ2) flows and all other months use cycle 2 (SJR_WQ1).
+ Sets upper bound.
+*/
+goal setC_PEDROm2cycle5 {
+     lhs  C_PEDROm
+     case AprMay {
+          condition month >= apr .and. month <= may
+          rhs       C_PEDROm[SJR_WQ2] + 0.001
+          lhs<rhs   penalty 0 }
+     case otherwise {
+          condition always
+          rhs       C_PEDROm[SJR_WQ1] + 0.001
+          lhs<rhs   penalty 0 }
+          }
+
+
+/*
+ Imposing VAMP release requirement on OID (New Melones)
+*/
+/*
+ Set C_MELON New Melones release (cfs); for the previously calculated
+ volume to be released in a half month; not monthly weighted.
+*/
+goal setC_MELONVAMPcycle5 {
+    lhs C_MELONVAMP_M + C_PEDRO_STAN_VAMP
+        case April {
+            condition   month == apr
+            rhs     30.*OIDadd*TAF_cfs/16.
+            lhs<rhs penalty 0 }
+        case MayOnly {
+            condition   month == may
+            rhs     31.*OIDadd*TAF_cfs/15.
+            lhs<rhs penalty 0 }
+         case otherwise {
+              condition always
+              rhs            0.
+              lhs<rhs        penalty 0 }
+        }
+/*
+ Exchange of VAMP release if Goodwin or Ripon limit of 1500 cfs is controlling.
+ C_MELONVAMP won't necessarily be the entire New Melones VAMP requirement.  If Goodwin/Ripon
+ can't pass the entire amount, the (req't-1500) difference is released from New Don Pedro.
+ The running debt is handled in cycle 6 via VAMP_transfer.wresl.  New Melones supplies surface water
+ to Modesto up to 50 cfs in each month until the debt is repaid.
+*/
+define VAMPallowGoodwin { value  max(0., maxGoodwin - C_STANGDWN[SJR_WQ2] + C_STANGDWNF[SJR_WQ2])} !cfs
+! Set New Melones VAMP releases less than or equal to what is allowed through Goodwin
+goal boundC_MELONVAMP_M { C_MELONVAMP_M < VAMPallowGoodwin }
+!Water that can't be passed through Goodwin must be released from New Don Pedro
+goal boundC_PEDRO_STAN_VAMP {
+    lhs C_PEDRO_STAN_VAMP
+    case April {
+        condition   month == apr
+        rhs      30.*OIDadd*TAF_cfs/16. - min(VAMPallowGoodwin, 30.*OIDadd*TAF_cfs/16.)
+        lhs<rhs     penalty 0 }
+    case MayOnly {
+        condition   month == may
+        rhs      31.*OIDadd*TAF_cfs/15. - min(VAMPallowGoodwin, 31.*OIDadd*TAF_cfs/15.)
+        lhs<rhs     penalty 0 }
+    case otherwise {
+        condition always
+        rhs         0. }
+        }
+
+/*Imposing VAMP release requirement on Exchange (DMC)
+ (cfs); for the above volume to be released in a half month; not monthly weighted
+*/
+goal C_MDOTAbvampcycle5 {
+    lhs C_MDOTABVAMP
+    case April {
+        condition   month == apr
+        rhs     30.*Exchangeadd*TAF_cfs/16.
+        lhs<rhs penalty 0 }
+    case MayOnly {
+        condition   month == may
+        rhs     31.*Exchangeadd*TAF_cfs/15.
+        lhs<rhs penalty 0 }
+     case otherwise {
+          condition always
+          rhs            0.
+          lhs<rhs        penalty 0 }
+        }
+

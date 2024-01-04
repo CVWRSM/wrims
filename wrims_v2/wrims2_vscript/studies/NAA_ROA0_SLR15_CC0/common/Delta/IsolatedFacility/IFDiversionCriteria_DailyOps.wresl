@@ -1,0 +1,265 @@
+!CH2M HILL 01/2010 IFDiversion Criteria per BDCP Draft Proposed
+
+/*
+If SAC river flow is between minrangeN and maxrangeN the bypass requirement is:
+minbypN + coefN * the amount over the maxrangeN
+
+where N is one of the 4 flow ranges specified in the Draft Proposed Long Term BDCP
+
+The criteria is implemented through and input table that summarizes the above criteria.
+
+*******************************************************************************
+NOTES:
+
+- Daily flows are estimated based on daily patterns previously defined as volume fraction
+timeseries based on 1955 to 2003 historical Sacramento River flows at Freeport. See
+common\hydrology\WEIRS\weir_steps_dailyops.wresl file
+
+- For year 1921 to 1954, a daily pattern of a year (from 1955 to 2003) with similar
+total unimpaired Delta Inflow volume was selected
+*******************************************************************************
+*/
+
+!Sacramento River flow daily estimation in CFS upstream North Delta diversion intakes
+define qsac169_1 {value (Qsac169nospill)*daysin*day1-frespill_1-sacspill_1}
+define qsac169_2 {value (Qsac169nospill)*daysin*day2-frespill_2-sacspill_2}
+define qsac169_3 {value (Qsac169nospill)*daysin*day3-frespill_3-sacspill_3}
+define qsac169_4 {value (Qsac169nospill)*daysin*day4-frespill_4-sacspill_4}
+define qsac169_5 {value (Qsac169nospill)*daysin*day5-frespill_5-sacspill_5}
+define qsac169_6 {value (Qsac169nospill)*daysin*day6-frespill_6-sacspill_6}
+define qsac169_7 {value (Qsac169nospill)*daysin*day7-frespill_7-sacspill_7}
+define qsac169_8 {value (Qsac169nospill)*daysin*day8-frespill_8-sacspill_8}
+define qsac169_9 {value (Qsac169nospill)*daysin*day9-frespill_9-sacspill_9}
+define qsac169_10 {value (Qsac169nospill)*daysin*day10-frespill_10-sacspill_10}
+define qsac169_11 {value (Qsac169nospill)*daysin*day11-frespill_11-sacspill_11}
+define qsac169_12 {value (Qsac169nospill)*daysin*day12-frespill_12-sacspill_12}
+define qsac169_13 {value (Qsac169nospill)*daysin*day13-frespill_13-sacspill_13}
+define qsac169_14 {value (Qsac169nospill)*daysin*day14-frespill_14-sacspill_14}
+define qsac169_15 {value (Qsac169nospill)*daysin*day15-frespill_15-sacspill_15}
+define qsac169_16 {value (Qsac169nospill)*daysin*day16-frespill_16-sacspill_16}
+define qsac169_17 {value (Qsac169nospill)*daysin*day17-frespill_17-sacspill_17}
+define qsac169_18 {value (Qsac169nospill)*daysin*day18-frespill_18-sacspill_18}
+define qsac169_19 {value (Qsac169nospill)*daysin*day19-frespill_19-sacspill_19}
+define qsac169_20 {value (Qsac169nospill)*daysin*day20-frespill_20-sacspill_20}
+define qsac169_21 {value (Qsac169nospill)*daysin*day21-frespill_21-sacspill_21}
+define qsac169_22 {value (Qsac169nospill)*daysin*day22-frespill_22-sacspill_22}
+define qsac169_23 {value (Qsac169nospill)*daysin*day23-frespill_23-sacspill_23}
+define qsac169_24 {value (Qsac169nospill)*daysin*day24-frespill_24-sacspill_24}
+define qsac169_25 {value (Qsac169nospill)*daysin*day25-frespill_25-sacspill_25}
+define qsac169_26 {value (Qsac169nospill)*daysin*day26-frespill_26-sacspill_26}
+define qsac169_27 {value (Qsac169nospill)*daysin*day27-frespill_27-sacspill_27}
+define qsac169_28 {value (Qsac169nospill)*daysin*day28-frespill_28-sacspill_28}
+define qsac169_29 {value (Qsac169nospill)*daysin*day29-frespill_29-sacspill_29}
+define qsac169_30 {value (Qsac169nospill)*daysin*day30-frespill_30-sacspill_30}
+define qsac169_31 {value (Qsac169nospill)*daysin*day31-frespill_31-sacspill_31}
+
+define qsac169_1dv {alias qsac169_1 kind 'flow-channel' units 'cfs'}
+define qsac169_2dv {alias qsac169_2 kind 'flow-channel' units 'cfs'}
+define qsac169_3dv {alias qsac169_3 kind 'flow-channel' units 'cfs'}
+define qsac169_4dv {alias qsac169_4 kind 'flow-channel' units 'cfs'}
+define qsac169_5dv {alias qsac169_5 kind 'flow-channel' units 'cfs'}
+define qsac169_6dv {alias qsac169_6 kind 'flow-channel' units 'cfs'}
+define qsac169_7dv {alias qsac169_7 kind 'flow-channel' units 'cfs'}
+define qsac169_8dv {alias qsac169_8 kind 'flow-channel' units 'cfs'}
+define qsac169_9dv {alias qsac169_9 kind 'flow-channel' units 'cfs'}
+define qsac169_10dv {alias qsac169_10 kind 'flow-channel' units 'cfs'}
+define qsac169_11dv {alias qsac169_11 kind 'flow-channel' units 'cfs'}
+define qsac169_12dv {alias qsac169_12 kind 'flow-channel' units 'cfs'}
+define qsac169_13dv {alias qsac169_13 kind 'flow-channel' units 'cfs'}
+define qsac169_14dv {alias qsac169_14 kind 'flow-channel' units 'cfs'}
+define qsac169_15dv {alias qsac169_15 kind 'flow-channel' units 'cfs'}
+define qsac169_16dv {alias qsac169_16 kind 'flow-channel' units 'cfs'}
+define qsac169_17dv {alias qsac169_17 kind 'flow-channel' units 'cfs'}
+define qsac169_18dv {alias qsac169_18 kind 'flow-channel' units 'cfs'}
+define qsac169_19dv {alias qsac169_19 kind 'flow-channel' units 'cfs'}
+define qsac169_20dv {alias qsac169_20 kind 'flow-channel' units 'cfs'}
+define qsac169_21dv {alias qsac169_21 kind 'flow-channel' units 'cfs'}
+define qsac169_22dv {alias qsac169_22 kind 'flow-channel' units 'cfs'}
+define qsac169_23dv {alias qsac169_23 kind 'flow-channel' units 'cfs'}
+define qsac169_24dv {alias qsac169_24 kind 'flow-channel' units 'cfs'}
+define qsac169_25dv {alias qsac169_25 kind 'flow-channel' units 'cfs'}
+define qsac169_26dv {alias qsac169_26 kind 'flow-channel' units 'cfs'}
+define qsac169_27dv {alias qsac169_27 kind 'flow-channel' units 'cfs'}
+define qsac169_28dv {alias qsac169_28 kind 'flow-channel' units 'cfs'}
+define qsac169_29dv {alias qsac169_29 kind 'flow-channel' units 'cfs'}
+define qsac169_30dv {alias qsac169_30 kind 'flow-channel' units 'cfs'}
+define qsac169_31dv {alias qsac169_31 kind 'flow-channel' units 'cfs'}
+
+!Estimation of monthly Qsac169 flow for QA purposes
+define Qsac169corr { value (qsac169_1 + qsac169_2 + qsac169_3 + qsac169_4 + qsac169_5 + qsac169_6 + qsac169_7 + qsac169_8 + qsac169_9 + qsac169_10 +
+	      qsac169_11 + qsac169_12 + qsac169_13 + qsac169_14 + qsac169_15 + qsac169_16 + qsac169_17 + qsac169_18 + qsac169_19 + qsac169_20 +
+	      qsac169_21 + qsac169_22 + qsac169_23 + qsac169_24 + qsac169_25 + qsac169_26 + qsac169_27 + qsac169_28 + qsac169_29 + qsac169_30 + qsac169_31)/daysin }
+
+define Qsac169corrdv {alias Qsac169corr kind 'debug' units 'cfs'}
+
+!Estimation of minimum bypass flow
+define bypass_1 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_1 use linear where month=month}
+define bypass_2 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_2 use linear where month=month}
+define bypass_3 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_3 use linear where month=month}
+define bypass_4 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_4 use linear where month=month}
+define bypass_5 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_5 use linear where month=month}
+define bypass_6 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_6 use linear where month=month}
+define bypass_7 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_7 use linear where month=month}
+define bypass_8 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_8 use linear where month=month}
+define bypass_9 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_9 use linear where month=month}
+define bypass_10 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_10 use linear where month=month}
+define bypass_11 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_11 use linear where month=month}
+define bypass_12 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_12 use linear where month=month}
+define bypass_13 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_13 use linear where month=month}
+define bypass_14 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_14 use linear where month=month}
+define bypass_15 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_15 use linear where month=month}
+define bypass_16 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_16 use linear where month=month}
+define bypass_17 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_17 use linear where month=month}
+define bypass_18 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_18 use linear where month=month}
+define bypass_19 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_19 use linear where month=month}
+define bypass_20 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_20 use linear where month=month}
+define bypass_21 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_21 use linear where month=month}
+define bypass_22 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_22 use linear where month=month}
+define bypass_23 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_23 use linear where month=month}
+define bypass_24 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_24 use linear where month=month}
+define bypass_25 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_25 use linear where month=month}
+define bypass_26 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_26 use linear where month=month}
+define bypass_27 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_27 use linear where month=month}
+define bypass_28 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_28 use linear where month=month}
+define bypass_29 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_29 use linear where month=month}
+define bypass_30 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_30 use linear where month=month}
+define bypass_31 {select Bypass from IFBypassFlows_vs_SAC given Sac_Flow=qsac169_31 use linear where month=month}
+
+define bypass_1dv {alias bypass_1 kind 'flow-channel' units 'cfs'}
+define bypass_2dv {alias bypass_2 kind 'flow-channel' units 'cfs'}
+define bypass_3dv {alias bypass_3 kind 'flow-channel' units 'cfs'}
+define bypass_4dv {alias bypass_4 kind 'flow-channel' units 'cfs'}
+define bypass_5dv {alias bypass_5 kind 'flow-channel' units 'cfs'}
+define bypass_6dv {alias bypass_6 kind 'flow-channel' units 'cfs'}
+define bypass_7dv {alias bypass_7 kind 'flow-channel' units 'cfs'}
+define bypass_8dv {alias bypass_8 kind 'flow-channel' units 'cfs'}
+define bypass_9dv {alias bypass_9 kind 'flow-channel' units 'cfs'}
+define bypass_10dv {alias bypass_10 kind 'flow-channel' units 'cfs'}
+define bypass_11dv {alias bypass_11 kind 'flow-channel' units 'cfs'}
+define bypass_12dv {alias bypass_12 kind 'flow-channel' units 'cfs'}
+define bypass_13dv {alias bypass_13 kind 'flow-channel' units 'cfs'}
+define bypass_14dv {alias bypass_14 kind 'flow-channel' units 'cfs'}
+define bypass_15dv {alias bypass_15 kind 'flow-channel' units 'cfs'}
+define bypass_16dv {alias bypass_16 kind 'flow-channel' units 'cfs'}
+define bypass_17dv {alias bypass_17 kind 'flow-channel' units 'cfs'}
+define bypass_18dv {alias bypass_18 kind 'flow-channel' units 'cfs'}
+define bypass_19dv {alias bypass_19 kind 'flow-channel' units 'cfs'}
+define bypass_20dv {alias bypass_20 kind 'flow-channel' units 'cfs'}
+define bypass_21dv {alias bypass_21 kind 'flow-channel' units 'cfs'}
+define bypass_22dv {alias bypass_22 kind 'flow-channel' units 'cfs'}
+define bypass_23dv {alias bypass_23 kind 'flow-channel' units 'cfs'}
+define bypass_24dv {alias bypass_24 kind 'flow-channel' units 'cfs'}
+define bypass_25dv {alias bypass_25 kind 'flow-channel' units 'cfs'}
+define bypass_26dv {alias bypass_26 kind 'flow-channel' units 'cfs'}
+define bypass_27dv {alias bypass_27 kind 'flow-channel' units 'cfs'}
+define bypass_28dv {alias bypass_28 kind 'flow-channel' units 'cfs'}
+define bypass_29dv {alias bypass_29 kind 'flow-channel' units 'cfs'}
+define bypass_30dv {alias bypass_30 kind 'flow-channel' units 'cfs'}
+define bypass_31dv {alias bypass_31 kind 'flow-channel' units 'cfs'}
+
+define bypass { value (bypass_1 + bypass_2 + bypass_3 + bypass_4 + bypass_5 + bypass_6 + bypass_7 + bypass_8 + bypass_9 + bypass_10 +
+	      bypass_11 + bypass_12 + bypass_13 + bypass_14 + bypass_15 + bypass_16 + bypass_17 + bypass_18 + bypass_19 + bypass_20 +
+	      bypass_21 + bypass_22 + bypass_23 + bypass_24 + bypass_25 + bypass_26 + bypass_27 + bypass_28 + bypass_29 + bypass_30 + bypass_31)/daysin }
+
+define bypassdv {alias bypass kind 'FLOW-DELIVERY' units 'cfs'}
+
+goal setbypass { C169_IFMIN = bypass}
+
+!switch for IF
+define IF_OnOff {value max(0.,JonesIFSwitch,BanksIFSwitch,CCWDIFSwitch)}
+
+!define maximum pumping capacity
+define max_pumptotal {value BanksCapPhys*BanksIFSwitch + TracyCapPhys*JonesIFSwitch + 270*CCWDIFSwitch}!Maximum CCWD demand is 264.75 cfs
+
+!Estimation of daily North Delta Diversion
+define ndd_1 {value min(max_IF_cap, max_pumptotal, qsac169_1-bypass_1)*IF_OnOff}
+define ndd_2 {value min(max_IF_cap, max_pumptotal, qsac169_2-bypass_2)*IF_OnOff}
+define ndd_3 {value min(max_IF_cap, max_pumptotal, qsac169_3-bypass_3)*IF_OnOff}
+define ndd_4 {value min(max_IF_cap, max_pumptotal, qsac169_4-bypass_4)*IF_OnOff}
+define ndd_5 {value min(max_IF_cap, max_pumptotal, qsac169_5-bypass_5)*IF_OnOff}
+define ndd_6 {value min(max_IF_cap, max_pumptotal, qsac169_6-bypass_6)*IF_OnOff}
+define ndd_7 {value min(max_IF_cap, max_pumptotal, qsac169_7-bypass_7)*IF_OnOff}
+define ndd_8 {value min(max_IF_cap, max_pumptotal, qsac169_8-bypass_8)*IF_OnOff}
+define ndd_9 {value min(max_IF_cap, max_pumptotal, qsac169_9-bypass_9)*IF_OnOff}
+define ndd_10 {value min(max_IF_cap, max_pumptotal, qsac169_10-bypass_10)*IF_OnOff}
+define ndd_11 {value min(max_IF_cap, max_pumptotal, qsac169_11-bypass_11)*IF_OnOff}
+define ndd_12 {value min(max_IF_cap, max_pumptotal, qsac169_12-bypass_12)*IF_OnOff}
+define ndd_13 {value min(max_IF_cap, max_pumptotal, qsac169_13-bypass_13)*IF_OnOff}
+define ndd_14 {value min(max_IF_cap, max_pumptotal, qsac169_14-bypass_14)*IF_OnOff}
+define ndd_15 {value min(max_IF_cap, max_pumptotal, qsac169_15-bypass_15)*IF_OnOff}
+define ndd_16 {value min(max_IF_cap, max_pumptotal, qsac169_16-bypass_16)*IF_OnOff}
+define ndd_17 {value min(max_IF_cap, max_pumptotal, qsac169_17-bypass_17)*IF_OnOff}
+define ndd_18 {value min(max_IF_cap, max_pumptotal, qsac169_18-bypass_18)*IF_OnOff}
+define ndd_19 {value min(max_IF_cap, max_pumptotal, qsac169_19-bypass_19)*IF_OnOff}
+define ndd_20 {value min(max_IF_cap, max_pumptotal, qsac169_20-bypass_20)*IF_OnOff}
+define ndd_21 {value min(max_IF_cap, max_pumptotal, qsac169_21-bypass_21)*IF_OnOff}
+define ndd_22 {value min(max_IF_cap, max_pumptotal, qsac169_22-bypass_22)*IF_OnOff}
+define ndd_23 {value min(max_IF_cap, max_pumptotal, qsac169_23-bypass_23)*IF_OnOff}
+define ndd_24 {value min(max_IF_cap, max_pumptotal, qsac169_24-bypass_24)*IF_OnOff}
+define ndd_25 {value min(max_IF_cap, max_pumptotal, qsac169_25-bypass_25)*IF_OnOff}
+define ndd_26 {value min(max_IF_cap, max_pumptotal, qsac169_26-bypass_26)*IF_OnOff}
+define ndd_27 {value min(max_IF_cap, max_pumptotal, qsac169_27-bypass_27)*IF_OnOff}
+define ndd_28 {value min(max_IF_cap, max_pumptotal, qsac169_28-bypass_28)*IF_OnOff}
+define ndd_29 {value min(max_IF_cap, max_pumptotal, qsac169_29-bypass_29)*IF_OnOff}
+define ndd_30 {value min(max_IF_cap, max_pumptotal, qsac169_30-bypass_30)*IF_OnOff}
+define ndd_31 {value min(max_IF_cap, max_pumptotal, qsac169_31-bypass_31)*IF_OnOff}
+
+!Daily North Delta Diversion outputs
+define ndd_1dv {alias ndd_1 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_2dv {alias ndd_2 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_3dv {alias ndd_3 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_4dv {alias ndd_4 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_5dv {alias ndd_5 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_6dv {alias ndd_6 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_7dv {alias ndd_7 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_8dv {alias ndd_8 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_9dv {alias ndd_9 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_10dv {alias ndd_10 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_11dv {alias ndd_11 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_12dv {alias ndd_12 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_13dv {alias ndd_13 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_14dv {alias ndd_14 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_15dv {alias ndd_15 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_16dv {alias ndd_16 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_17dv {alias ndd_17 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_18dv {alias ndd_18 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_19dv {alias ndd_19 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_20dv {alias ndd_20 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_21dv {alias ndd_21 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_22dv {alias ndd_22 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_23dv {alias ndd_23 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_24dv {alias ndd_24 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_25dv {alias ndd_25 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_26dv {alias ndd_26 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_27dv {alias ndd_27 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_28dv {alias ndd_28 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_29dv {alias ndd_29 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_30dv {alias ndd_30 kind 'FLOW-DELIVERY' units 'CFS'}
+define ndd_31dv {alias ndd_31 kind 'FLOW-DELIVERY' units 'CFS'}
+
+define ndd { value (ndd_1 + ndd_2 + ndd_3 + ndd_4 + ndd_5 + ndd_6 + ndd_7 + ndd_8 + ndd_9 + ndd_10 +
+	      ndd_11 + ndd_12 + ndd_13 + ndd_14 + ndd_15 + ndd_16 + ndd_17 + ndd_18 + ndd_19 + ndd_20 +
+	      ndd_21 + ndd_22 + ndd_23 + ndd_24 + ndd_25 + ndd_26 + ndd_27 + ndd_28 + ndd_29 + ndd_30 + ndd_31)/daysin }
+
+define ndddv {alias ndd kind 'FLOW-DELIVERY' units 'cfs'}
+
+goal setndd { C169_IF400 = ndd}
+
+
+!Cap IF diversion
+goal setD400_169 {
+	lhs D400
+	case other {
+	condition always
+	rhs C169_IF400 lhs<rhs penalty 0.}
+}
+
+!****************************END***************************************
+
+
+
+
+
+
+
+

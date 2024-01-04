@@ -1,0 +1,63 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>look-up</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+<FONT face="Times">
+<B><U><FONT SIZE=4><P>State Variable Look-up Table Value Assignments</P>
+</B></U></FONT><P>This form retrieves a value from a relational database table. The facility is quite powerful and flexible.</P>
+</FONT>
+<pre>
+<b>define</b> <i>identifier</i> {
+       <b>select</b>   result
+       <b>from</b>     tablename
+       [<b>given</b>   field=<i>valueExpr</i>
+       <b>use linear</b> | <b>max</b> | <b>min</b>]
+       [<b>where</b>   field=<i>valueExpr1</i> [,field=<i>valueExpr2</i>]...]
+}
+</pre>
+<FONT face="Times">
+<P>Specify the <B>use</B> clause when and only when you specify the <B>given</B> clause. You can specify either or both of the <B>where</B> clause or the <B>given/use</B> clauses. This statement form will be translated into a function call that retrieves data from a relational database table.</P>
+<P><B><u>Example:</u></B></P></FONT>
+<pre>
+define del_first_cvp_sys {               ! Delivery targets are picked 
+    case MarToMay {                      ! from the delivery-carryover 
+            condition month &ge MAR .and. month &le MAY    ! curve in March through May.
+                select  del
+                from    delcar_cvp_sys
+                given   di=di_cvp_sys
+                use     linear }
+
+    case otherwise {
+                condition always
+                value     0 }
+</pre>
+<P><FONT face="Times">The following is the table from which the preceding statement retrieves data:</FONT></P>
+<pre>
+! DI = Demand Index (taf); represents delivery + carryover capability of project
+! DEL = Delivery target (taf) for corresponding DI
+! CAR = Carryover target (taf) for corresponding DI (not used in delivery allocation process)
+DELCAR_CVP_SYS
+di     del      car
+0       0       0
+500     0       500
+2500    1500    1000
+3200    1700    1500
+4000    2000    2000
+5700    3000    2700
+6700    3700    3000
+9483    5983    3500
+9983    5983    4000
+10083   5983    4100
+10233   5983    4250
+10383   5983    4400
+10500   5983    4517
+11000   5983    5017
+11500   5983    5517
+12000   5983    6017
+</pre>
+</BODY>
+</HTML>

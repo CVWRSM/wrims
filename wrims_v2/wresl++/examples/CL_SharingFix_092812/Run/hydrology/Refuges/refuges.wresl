@@ -1,0 +1,29 @@
+/*************************************
+refuges.wresl
+ 
+Tom FitzHugh BOR 6/22/2010
+
+Handles delivery logic for North of Delta Wildlife Refuges.
+**************************************/
+
+define D143B_prf {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D145B_prf {std kind 'FLOW-DELIVERY' units 'CFS'}
+!define D182B_prf {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+goal splitD143B  {D143B = D143B_prf}
+goal splitD145B  {D145B = D145B_prf}
+define D182B_prf  {value D182B}
+
+! These targets include water to meet losses - so that the refuges receive firm L2 and L4 supply quantities 
+define target_14302_prf {value min(perdel_cvprf_sys * con_D14302_prf, dem_D14302_prf * taf_cfs)}!Sac Ref
+
+! These diversions from the canal or river include diversions for losses in conveying supplies to the refuges
+goal limit_con14302 {D143B_prf < target_14302_prf}
+
+! These targets include water to meet losses - so that the refuges receive firm L2 and L4 supply quantities 
+define target_18201_prf {value min(perdel_cvprf_sys*(con_D18201A_prf + con_D18201B_prf),
+                                   (dem_D18201A_prf + dem_D18201B_prf)* taf_cfs) }  !Delev and Colusa Ref
+
+! These diversions from the canal or river include diversions for losses in conveying supplies to the refuges
+goal limit_con145B_prf {D145B_prf < max(0.,target_18201_prf - D182B_prf)}
+

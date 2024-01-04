@@ -1,0 +1,22 @@
+/**
+BaseStudyResults.wresl
+
+Nazrul Islam, DWR, 10/13/2010
+
+These time series is taken from CalSim B2 study. 
+**/
+
+! STUDY 3 RESULTS
+! Minimum Required flows
+define C_Wkytn_MIF_b2 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Kswck_MIF_b2 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+define C_Nimbus_mif_b2 {timeseries kind 'FLOW-MIN-INSTREAM' units 'CFS'}
+
+! B2 action triggers
+define B2Action2On {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action3On {timeseries kind 'TRIGGER' units 'NONE'}
+! B2Action4On is defined in the cvp delivery logic for the b2 run
+!define B2Action4On {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action5On {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action6On {timeseries kind 'TRIGGER' units 'NONE'}
+define B2Action7On {timeseries kind 'TRIGGER' units 'NONE'}

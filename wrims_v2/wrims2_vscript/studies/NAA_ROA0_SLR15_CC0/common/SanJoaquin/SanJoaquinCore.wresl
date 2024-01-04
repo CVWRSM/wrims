@@ -1,0 +1,40 @@
+/*
+Core San Joaquin River Model Code for use for dynamic operations (Global Resolution)
+
+*/
+!    INCLUDE 'Various\definitions\SJR_GWPumpingSplits.wresl'
+!    INCLUDE '..\System\System_SJR.wresl'
+
+!    INCLUDE 'Various\definitions\SJR_ChannelSplits.wresl'
+
+    INCLUDE 'Various\definitions\SJR_aggreg.wresl'
+    INCLUDE 'Various\definitions\previous_wyt_SJR.wresl'
+    INCLUDE 'Various\definitions\SJR_DeliverySplits.wresl'
+
+    INCLUDE 'Friant\friant.wresl'
+    INCLUDE 'Various\definitions\SJR_restrict.wresl'
+    INCLUDE 'SouthernSJR\SouthernSJR_dems.wresl'
+!    INCLUDE 'SouthernSJR\BypassLoss.wresl'
+    INCLUDE 'Merced\Merced_Dems.wresl'
+    INCLUDE 'Tuolumne\Tuolumne_Dems.wresl'
+    INCLUDE 'Stanislaus\NewMelonesForecast.wresl'
+    INCLUDE 'Stanislaus\Stan_defs.wresl'
+    INCLUDE 'Stanislaus\Stanislaus_Dems.wresl'
+!    INCLUDE 'Mainstem\MainstemSJR_Dems.wresl'
+
+    INCLUDE 'Delta\COSMA_dmd.wresl'
+!    INCLUDE 'Mokulumne\deliver_mok.wresl'
+
+    INCLUDE 'ReturnFlows\WestSide_RF_Defs.wresl' ! define annual contract amounts to use in breaking out return flow locations
+    INCLUDE 'ReturnFlows\WestSideReturns.wresl' ! returns to node 620
+    INCLUDE 'WaterQuality\wq_defs_Disag.wresl'
+    INCLUDE 'WaterQuality\disaggregation\Disag_Def.wresl'
+
+!    INCLUDE 'Calaveras\Calaveras_Dems.wresl'                !Use if DWSP not included
+    INCLUDE 'Calaveras\Calaveras_Dems_StocktonDWSP.wresl'   !Use only if DWSP is included
+
+    INCLUDE 'Delta\DWSP_arc_split.wresl'
+!    INCLUDE 'Delta\COSMA_zeroset.wresl'                     !Use if DWSP not included
+    INCLUDE 'Delta\COSMA_restrict.wresl'                    !Use only if DWSP is included
+
+!    INCLUDE '..\System\SystemTables_SJR\weight-table.wresl'

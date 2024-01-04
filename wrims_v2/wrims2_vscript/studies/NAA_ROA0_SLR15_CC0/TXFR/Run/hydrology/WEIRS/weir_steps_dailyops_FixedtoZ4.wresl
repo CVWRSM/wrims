@@ -1,0 +1,22 @@
+!Definition of daily fraction to map daily pattern
+include '..\..\..\..\common\hydrology\WEIRS\read_dailypattern_SacRFreeport.wresl'
+
+define D160_A {std kind 'FLOW-DELIVERY' units 'CFS'} !Freemont Weir Spills to Yolo Bypass
+define D160_B {std kind 'FLOW-DELIVERY' units 'CFS'} !Freemont Notch Spills to Yolo Bypass
+goal setd160split { D160 = D160_A + D160_B }
+
+! flows from previous cycle
+define QsacFth__Z4   {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define QsacFth_prv {value QsacFth__Z4}
+
+define Qsac166__Z4   {timeseries kind 'FLOW-CHANNEL' units 'CFS'}
+define Qsac166_prv {value Qsac166__Z4}
+
+!Daily upstream flow estimation from a previous cycle corrected monthly flow and using the daily fractions.
+!Previous cycle monthly upstream flow is corrected with the difference of previous and current estimated Fremont weir spills
+
+define D160__Z4   {timeseries kind 'FLOW-DELIVERY' units 'CFS'}
+define Qsac166nospill{value Qsac166__Z4+ D160__Z4}
+define Qsac166nospilldv {alias Qsac166nospill kind 'debug' units 'cfs'}
+
+include '..\..\..\..\common\hydrology\WEIRS\weir_steps_dailyops.wresl'

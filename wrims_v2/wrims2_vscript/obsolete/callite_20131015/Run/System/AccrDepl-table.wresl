@@ -1,0 +1,383 @@
+!Sacramento River
+define AD_Kswck {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_Kswck_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_Kswck_Actual1{
+	lhs AD_Kswck_Actual
+	case positive{
+		condition AD_Kswck>=0
+		rhs AD_Kswck
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_Kswck<0
+		rhs AD_Kswck
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_Kswck_Actual2{
+	lhs AD_Kswck_Actual
+	case positive{
+		condition AD_Kswck>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_Kswck<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_kswck {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADKswck {short_AD_Kswck=AD_Kswck_Actual-AD_Kswck}
+
+
+define AD_RedBlf {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_RedBlf_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_RedBlf_Actual1{
+	lhs AD_RedBlf_Actual
+	case positive{
+		condition AD_RedBlf>=0
+		rhs AD_RedBlf
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_RedBlf<0
+		rhs AD_RedBlf
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_RedBlf_Actual2{
+	lhs AD_RedBlf_Actual
+	case positive{
+		condition AD_RedBlf>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_RedBlf<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_RedBlf {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADRedBlf {short_AD_RedBlf=AD_RedBlf_Actual-AD_RedBlf}
+
+define AD_Wilkns {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_Wilkns_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_Wilkns_Actual1{
+	lhs AD_Wilkns_Actual
+	case positive{
+		condition AD_Wilkns>=0
+		rhs AD_Wilkns
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_Wilkns<0
+		rhs AD_Wilkns
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_Wilkns_Actual2{
+	lhs AD_Wilkns_Actual
+	case positive{
+		condition AD_Wilkns>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_Wilkns<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_Wilkns {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADWilkns {short_AD_Wilkns=AD_Wilkns_Actual-AD_Wilkns}
+
+define AD_SacFea {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_SacFea_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_SacFea_Actual1{
+	lhs AD_SacFea_Actual
+	case positive{
+		condition AD_SacFea>=0
+		rhs AD_SacFea
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_SacFea<0
+		rhs AD_SacFea
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_SacFea_Actual2{
+	lhs AD_SacFea_Actual
+	case positive{
+		condition AD_SacFea>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_SacFea<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_SacFea {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADSacFea {short_AD_SacFea=AD_SacFea_Actual-AD_SacFea}
+
+define AD_SacAme {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_SacAme_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_SacAme_Actual1{
+	lhs AD_SacAme_Actual
+	case positive{
+		condition AD_SacAme>=0
+		rhs AD_SacAme
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_SacAme<0
+		rhs AD_SacAme
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_SacAme_Actual2{
+	lhs AD_SacAme_Actual
+	case positive{
+		condition AD_SacAme>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_SacAme<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_SacAme {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADSacAme {short_AD_SacAme=AD_SacAme_Actual-AD_SacAme}
+
+define AD_YoloBP {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_YoloBP_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_YoloBP_Actual1{
+	lhs AD_YoloBP_Actual
+	case positive{
+		condition AD_YoloBP>=0
+		rhs AD_YoloBP
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_YoloBP<0
+		rhs AD_YoloBP
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_YoloBP_Actual2{
+	lhs AD_YoloBP_Actual
+	case positive{
+		condition AD_YoloBP>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_YoloBP<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_YoloBP {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADYoloBP {short_AD_YoloBP=AD_YoloBP_Actual-AD_YoloBP}
+
+
+!Feather River
+define AD_Therm {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_Therm_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_Therm_Actual1{
+	lhs AD_Therm_Actual
+	case positive{
+		condition AD_Therm>=0
+		rhs AD_Therm
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_Therm<0
+		rhs AD_Therm
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_Therm_Actual2{
+	lhs AD_Therm_Actual
+	case positive{
+		condition AD_Therm>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_Therm<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_Therm {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADTherm {short_AD_Therm=AD_Therm_Actual-AD_Therm}
+
+define AD_YubFea {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_YubFea_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_YubFea_Actual1{
+	lhs AD_YubFea_Actual
+	case positive{
+		condition AD_YubFea>=0
+		rhs AD_YubFea
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_YubFea<0
+		rhs AD_YubFea
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_YubFea_Actual2{
+	lhs AD_YubFea_Actual
+	case positive{
+		condition AD_YubFea>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_YubFea<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_YubFea {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADYubFea {short_AD_YubFea=AD_YubFea_Actual-AD_YubFea}
+
+!American River
+define AD_Nimbus {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_Nimbus_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_Nimbus_Actual1{
+	lhs AD_Nimbus_Actual
+	case positive{
+		condition AD_Nimbus>=0
+		rhs AD_Nimbus
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_Nimbus<0
+		rhs AD_Nimbus
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_Nimbus_Actual2{
+	lhs AD_Nimbus_Actual
+	case positive{
+		condition AD_Nimbus>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_Nimbus<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_Nimbus {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADNimbus {short_AD_Nimbus=AD_Nimbus_Actual-AD_Nimbus}
+
+define AD_HSt {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+define AD_HSt_Actual {lower unbounded upper unbounded kind 'FLOW-ACCRDEPL' units 'CFS'}
+goal setAD_HSt_Actual1{
+	lhs AD_HSt_Actual
+	case positive{
+		condition AD_HSt>=0
+		rhs AD_HSt
+		lhs>rhs constrain
+		lhs<rhs penalty 10000
+	}
+	case negative{
+		condition AD_HSt<0
+		rhs AD_HSt
+		lhs>rhs penalty 10000
+		lhs<rhs constrain
+	}
+	
+}
+goal setAD_HSt_Actual2{
+	lhs AD_HSt_Actual
+	case positive{
+		condition AD_HSt>=0
+		rhs 0
+		lhs>rhs penalty 0
+		lhs<rhs constrain
+	}
+	case negative{
+		condition AD_HSt<0
+		rhs 0
+		lhs>rhs constrain
+		lhs<rhs penalty 0
+	}
+	
+}
+define short_AD_Hst {lower unbounded upper unbounded kind 'Shortage-Flow' units 'cfs'}
+goal short_ADHst {short_AD_Hst=AD_Hst_Actual-AD_Hst}
+
+!Delta
+define AD_Mokelumne {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+
+!South of Delta
+if int(Dynamic_SJR)==0 {define AD_JamesBP {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}} !James Bypass flows into the Mendota Pool
+!define AD_Castaic {timeseries kind 'FLOW-ACCRDEPL' units 'CFS'}
+
+

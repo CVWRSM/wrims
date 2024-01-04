@@ -1,0 +1,79 @@
+/*************************************
+Jones_pump_allow.wresl
+ 
+Nazrul Islam DWR (04/27/2010)
+
+There is no regulation for Jones at this time. However, we just mimic Banks PP. 
+Defines Standard allowable & Max allowable pumping at Jones.  Jones can increase pumping
+up to 1/3 of San Joaquin River flow at Vernalis if flow at Vernalis is greater than 1000 cfs.
+    If SJR flow @ Vernalis > 1000 cfs then,
+    Jones_max_allow = Jones_standard_allow + 1/3*(SJR @ Vernalis)
+    But only upto physical capacity.
+**************************************/
+
+
+
+! Number of days in which the Jones limit *IS* increased by 1/3 of SJR flow
+define JonesDaysIncr {
+       select   DaysIncr
+       from     JonesLimits
+       where    month=month
+}
+
+! Number of days in which the Jones limit *IS NOT* increased by 1/3 of SJR flow
+define JonesDaysNoIncr { value daysin - JonesDaysIncr}
+
+! Finds the Max Pump Capacity with the allowable increase
+define JonesMax1 {
+/*      case Increase {
+        condition   AD_SJR[-1] > 1000.0   ! Change back to cycle stuff
+        value   min(JonesCapPermit + AD_SJR[-1]/3.0, JonesCapPhys) }   ! Change back to cycle stuff
+*/
+       case NoIncrease {
+            condition always
+            value     JonesCapPermit }
+}
+
+! Limit Pumping to allowable, weight for days in which increase is allowed
+define JonesMaxAllow {value JonesMax1*JonesDaysIncr/daysin + JonesCapPermit*JonesDaysNoIncr/daysin }
+
+! Limit Pumping to Allowable and Physical Capacity, whichever is less
+! goal JonesLessThanAllow { C_Jones_TD < JonesMaxAllow} /** need to review for IF implementation **/
+goal JonesLessThanAllow { D_Jones < JonesMaxAllow}
+goal JonesLessThanPhys  { D_Jones < JonesCapPhys}
+
+! Output Allowable Pumping Cap for Checking Only
+define JonesAllowOut {alias JonesMaxAllow kind 'EXPORT-CTRL-JONES' UNITS 'CFS' }
+
+! Jones PP Minimum Cap
+define Jonesminpump {
+    case Joneslowshasta {
+        condition S_Shsta(-1) < 1500.
+        value 600. }
+    case Joneslowshastafolsom {
+        condition S_Folsm(-1) < 400. .and. S_Shsta(-1) < 2000. !Better reflection of actual operations by trying to keep
+        value 800. }                                           !water from being released for SL storage during low storage
+    case Joneshighshasta   {                                   !conditions in the NOD.
+        condition always
+        value 800. }
+}
+define JonesMinPumpDV {alias JonesMinPump kind 'EXPORT-CTRL-JONES' units 'cfs'}
+
+goal setJonesminpump {
+    lhs D_Jones_cvp
+    case Joneslowshasta {
+        condition S_Shsta(-1) < 1500.
+    rhs Jonesminpump
+        lhs>rhs penalty 65*taf_cfs + 1
+        lhs<rhs penalty 2700 }
+    case Joneslowshastafolsom {
+        condition S_Folsm(-1) < 400. .and. S_Shsta(-1) < 2000. !Better reflection of actual operations by trying to keep
+        rhs Jonesminpump                                                       !water from being released for SL storage during low storage
+        lhs>rhs penalty 65*taf_cfs + 1                                         !conditions in the NOD.
+        lhs<rhs penalty 2700 }
+    case Joneshighshasta   {
+        condition always
+        rhs Jonesminpump
+        lhs>rhs penalty 0
+        lhs<rhs penalty 2700 }
+}

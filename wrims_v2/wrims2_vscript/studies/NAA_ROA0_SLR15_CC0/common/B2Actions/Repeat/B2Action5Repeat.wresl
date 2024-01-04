@@ -1,0 +1,106 @@
+/*
+B2 Action 5: CVP Export Ramping (Jun 1-30)
+
+A. Munevar 10/19/2001.
+*/
+
+!**** CVP Export Ramping (Jun1-30) ****************
+/*
+define minpump { value min(D418_CVP_TD[UPSTREAM] + D419_CVP_TD[UPSTREAM], 3000.)  }
+
+define JuneAcctRest {
+   case Jun {
+     condition month==JUN
+     value     max(0.0,minpump - MaxExportRes*taf_cfs) }
+   case other {
+     condition always
+     value 0.0 }
+}
+
+define JuneAcctRestdv {alias JuneAcctRest kind 'Export-Restriction' units 'cfs'}
+
+define JuneExport {
+   case VernHi {
+     condition month==JUN .and. C639[SJR_WQ2] >= 8600.0
+     value min(C639[SJR_WQ2]*0.5,3000.0) }
+   case VernLo {
+     condition month == JUN
+     value PulseExpResdv(-1) }
+   case other {
+     condition always
+     value 0.0 }
+}
+
+define JuneExportdv { alias JuneExport kind 'June-Export-Restrict' units 'cfs'}
+
+!1/2 month June to Pulse Exp Reduction
+define JunePulseExt {
+   case Jun {
+     condition month==JUN
+     value     3000.0*23.0/30.0 + JuneExport*0.5*7.0/30.0 }
+   case other {
+     condition always
+     value 0.0 }
+}
+
+define JunePulseExtdv {alias JunePulseExt kind 'June-Pulse-Ext' units 'cfs'}
+
+define JunePumpRest {
+   case Jun {
+     condition   month==JUN
+     value max(JunePulseExt,JuneAcctRest,D418_CVP_TD(-1)+D419_CVP_TD(-1)) }
+   case other {
+     condition always
+     value 0.0 }
+}
+*/
+define JunePumpRestdv {alias JunePumpRest__z3 kind 'Jun-Export-Restrict' units 'cfs'}
+
+! Monthly export restriction for CVP (Ramp from May Export to June EI limit)
+goal b2action5_1 {
+  lhs D418_TD + D419_CVP_TD
+  case Jun {
+    condition   month==JUN .and. int(B2Action5On)==1
+    rhs     JunePumpRest__z3
+!    rhs         D418_CVP_TD(-1)*0.5 + D419_CVP_TD(-1)*0.5 + ExpRatio*Inflow*0.5*0.5
+    lhs<rhs     penalty 0 }
+}
+
+goal b2action5_2 {
+  lhs D418_TD + D419_CVP_TD
+  case Jun {
+    condition   month==JUN .and. int(B2Action5On)==1
+    rhs         3000.
+    lhs<rhs     penalty 0 }
+}
+
+!for output only:
+define b2_5_1cap {std kind 'OUTPUT' units 'CFS'}
+goal setb2_5_1 {
+  lhs b2_5_1cap
+  case Jun {
+    condition  month==JUN .and. int(B2Action5On)==1
+    rhs JunePumpRest__z3
+    !    rhs        D418_CVP_TD(-1)*0.5 + D419_CVP_TD(-1)*0.5 + ExpRatio*Inflow*0.5*0.5
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+  case other {
+    condition  always
+    rhs        20000.
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+}
+define b2_5_2cap {std kind 'OUTPUT' units 'CFS'}
+goal setb2_5_2 {
+  lhs b2_5_2cap
+  case Jun {
+    condition  month==JUN .and. int(B2Action5On)==1
+    rhs        3000.
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+  case other {
+    condition  always
+    rhs        20000.
+    lhs>rhs    constrain
+    lhs<rhs    constrain}
+}

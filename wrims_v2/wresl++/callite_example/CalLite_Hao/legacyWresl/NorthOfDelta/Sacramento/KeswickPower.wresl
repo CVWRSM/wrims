@@ -1,0 +1,27 @@
+define C_Kswck_EXC1 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+define C_Kswck_EXC2 {std kind 'FLOW-SPILL-POWER' units 'CFS'}
+goal C_Kswck_EXC_total {C_Kswck_EXC=C_Kswck_EXC1+C_Kswck_EXC2}
+
+!define FolInfEst {sum(i=0,SEP-month,1) (I_Folsm(i)+I_Nimbus(i)+I300(i))*cfs_taf(i) } !placed in FolRuleCurv.wresl
+goal set_c_Kswck_exc2_penalty {
+     lhs C_Kswck_EXC2
+    case FolsomJulNotOK {
+        condition month == jul .and. s_Folsm(-1) + FolInfEst < 600.
+        rhs 0.
+        lhs>rhs penalty 1266 }
+    case FolsomAugNotOK {
+        condition month == aug .and. s_Folsm(-1) + FolInfEst < 450.
+        rhs 0.
+        lhs>rhs penalty 1266 }
+    case FolsomSepNotOK {
+        condition month == sep .and. s_Folsm(-1) + FolInfEst < 350.
+        rhs 0.
+        lhs>rhs penalty 1266 }
+    case FolsomOK {
+        condition always
+        rhs 0.
+        lhs>rhs penalty 1266 }
+}
+
+define C_Kswck_POW {lower 0 upper 15000 kind 'FLOW-POWER' units 'CFS'}
+goal C_Kswck_POW_total {C_Kswck_POW=C_Kswck_MIF+C_Kswck_EXC1}

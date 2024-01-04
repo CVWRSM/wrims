@@ -1,0 +1,890 @@
+! LVE_OpsMaxDiversion.wresl
+! R. Field
+! 04/14/2004
+! Reclamation
+! Revised Becky Fedak February 2007 MWH
+! Los Vaqueros Reservoir Operations given Maximized Diversion
+
+/*
+ This file sets
+ 1.  storage zones,
+ 2.  monthly pumping and filling constraints (before considering blending)
+ 3.  monthly pumping preferences (before considering blending),
+ 4.  and CCWD Source-of-Supply Accounting (and rules)
+
+ The general theme with these constraints is that water is delivered
+ without concern for water quality targets.  However, choice of diversion point
+ is driven by at-diversion water quality.  Diversions are maximized in this sense,
+ but will be adjusted in subsequent cycles.
+*/
+
+
+/*
+1. Storage Zones
+*/
+
+!Minimum emergency storage
+define S422level1 {
+    select LVE_Estor
+    from LVE_Estorage
+        where wytype = wyt_SAC_LVE
+}
+define S422level1dv {alias S422level1 kind 'STORAGE' units 'TAF'}
+
+! Storage Zones (NOTE: only zones 1 and 4 play a role in the model)
+goal S422Zone1 {S422_1 < S422level1 }
+goal S422Zone2 {S422_2 < S422level2-S422level1}
+goal S422Zone3 {S422_3 < S422level3-S422level2}
+goal S422Zone4 {S422_4 < S422level4-S422level3}
+goal S422Cap   {s422   < S422_Cap }
+
+
+/*
+2. Monthly pumping and filling restrictions related to Biological Opinion
+*/
+
+! The Existing BO specifies:
+! A 30-day no pumping period (April) if reservoir is above emergency storage;
+! instead release up to 12,500 AF from LV to meet CCWD demands.
+! A 75-day no fill period (15 March - May 31), unless reservoir is at emergency storage
+! NOTE: The following contraints are only approximations.  To model the BO constraints
+! exactly would require using a half month timestep in March and May.
+! Potential New BO: 30-day no diversion period (April).  No X2 restriction
+goal restrict_D408_BO {
+    lhs D408
+    case WithProject {
+        condition LVESwitch > 1.5
+            rhs 9999
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case april_no_storage {
+        condition month == apr .and. S422(-1) <= S422level1
+        rhs CCWD_tot_dem*taf_cfs
+    }
+    case april_storage {
+        condition month == apr
+        rhs max(0., (CCWD_tot_dem-(S422(-1)-S422level1))*taf_cfs)
+        }
+}
+goal restrict_C431_BO {
+    lhs C431
+/*  case WithProject_apr {
+        condition LVESwitch > 1.5 .and. month == apr
+            rhs 0.0
+    }*/
+    case WithProject {
+        condition LVESwitch > 1.5
+            rhs 9999
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case nofill_mar {
+        condition month == mar .and. S422(-1) > S422level1
+            rhs 0.5*C430A_Cap
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case fill_mar {
+        condition month == mar
+            rhs 0.5*C430A_Cap + max(0.,(S422level1-S422(-1))*taf_cfs - 0.5*C430A_Cap)
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case nofill_aprmay {
+    condition month == apr
+         .or. month == may .and. S422(-1) > S422level1
+            rhs 0.0
+    }
+    case fill_may {
+        condition month == may
+            rhs (S422level1-S422(-1))*taf_cfs
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+}
+
+! Read in X2-Position trigger to determine if pumping is restricted
+! Restrictions based on X2 occur January through August, if reservoir above
+! emergency storage.  If below emergency storage, can fill reservoir to emergency
+! storage level, but still cannot make direct deliveries to SBA/Bethany.
+goal X2_restrict {
+    lhs C430A
+    case x2_trigger_fill {
+        condition LVX2REQ == 0. .and. S422(-1) <= S422level1
+        rhs (S422level1-S422(-1))*taf_cfs
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+    case x2_trigger {
+        condition always
+        rhs LVX2REQ * 999999.
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+}
+goal X2_restrict2 {
+    lhs C430B
+    case x2_trigger {
+        condition LVX2REQ == 0.
+        rhs 0.0
+    }
+}
+
+
+/*
+3. Monthly pumping preferences
+*/
+
+! The next three goals establish preferred diversion between the three diversion locations
+! based on water quality.  Diversion at the worst WQ location gets assigned a penalty of 60,
+! diversion at the next worst WQ location gets assigned a penalty of 30, and diversion at
+! the best location is penalty-free.
+
+! Rock Slough penalty setting...
+goal prioritize_D408_RS {
+    lhs D408_RS
+        case RS_best_wq {
+        condition  WQ408_RS <= WQ408_OR .and. WQ408_RS <= WQ408_AIP
+        rhs 0.0
+        lhs>rhs penalty 0
+        lhs<rhs penalty 0
+    }
+        case RS_worst_wq {
+        condition  WQ408_OR <= WQ408_RS .and. WQ408_AIP <= WQ408_RS
+        rhs 0.0
+        lhs>rhs penalty 60
+        lhs<rhs penalty 0
+    }
+        case otherwise {
+        condition always
+        rhs 0.0
+        lhs>rhs penalty 30
+        lhs<rhs penalty 0
+    }
+}
+
+!Old River penalty setting...
+goal prioritize_D408_OR_pump {
+    lhs D408_OR
+    case OR_best_wq {
+        condition WQ408_OR <= WQ408_RS .and. WQ408_OR <= WQ408_AIP
+        rhs 0.0
+        lhs>rhs penalty 0
+        lhs<rhs penalty 0
+    }
+        case OR_worst_wq {
+        condition  WQ408_RS <= WQ408_OR .and. WQ408_AIP <= WQ408_OR
+        rhs 0.0
+        lhs>rhs penalty 60
+        lhs<rhs penalty 0
+    }
+    case otherwise {
+        condition always
+        rhs 0.0
+        lhs>rhs penalty 30
+        lhs<rhs penalty 0
+    }
+}
+goal prioritize_OR_CCWD {
+    lhs C434A
+    case OR_best_wq {
+        condition WQ408_OR <= WQ408_AIP
+        rhs 0.0
+        lhs>rhs penalty 0
+        lhs<rhs penalty 0
+    }
+        case OR_worst_wq {
+        condition always
+        rhs 0.0
+        lhs>rhs penalty 5
+        lhs<rhs penalty 0
+    }
+}
+
+!AIP penalty setting...
+goal prioritize_D408_AIP_pump {
+    lhs D408_AIP
+    case AIP_best_wq {
+        condition WQ408_AIP <= WQ408_RS .and. WQ408_AIP <= WQ408_OR
+        rhs 0.0
+        lhs>rhs penalty 0
+        lhs<rhs penalty 0
+    }
+    case AIP_worst_wq {
+        condition  WQ408_RS <= WQ408_AIP .and. WQ408_OR <= WQ408_AIP
+        rhs 0.0
+        lhs>rhs penalty 60
+        lhs<rhs penalty 0
+    }
+    case otherwise {
+        condition always
+        rhs 0.0
+        lhs>rhs penalty 30
+        lhs<rhs penalty 0
+    }
+}
+goal prioritize_AIP_CCWD {
+    lhs C433A
+    case AIP_best_wq {
+        condition WQ408_AIP <= WQ408_OR
+        rhs 0.0
+        lhs>rhs penalty 0
+        lhs<rhs penalty 0
+    }
+        case AIP_worst_wq {
+        condition always
+        rhs 0.0
+        lhs>rhs penalty 5
+        lhs<rhs penalty 0
+    }
+}
+
+
+/*
+4. CCWD Source of Supply Accounting
+*/
+
+! Create sub-arcs to distinguish between Contract Supply (CS) and Delta Surplus (DS)
+define D408_RS_CS   { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_RS_DS   { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR1_CS  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR1_DS  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR1_whlNOD  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR2_CS  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR2_DS  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR2_whlNOD  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR_CS   { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR_DS   { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_OR_whlNOD   { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_AIP_CS  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_AIP_DS  { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D408_AIP_whlNOD  { std kind 'FLOW-DELIVERY' units 'cfs' }
+
+goal D408_total1    { D408 = D408_RS + D408_AIP + D408_OR }
+goal D408_total2    { D408 = D408_CS + D408_DS + D408_whlNOD}
+goal D408_CS_total  { D408_CS = D408_RS_CS + D408_AIP_CS + D408_OR_CS}
+goal D408_DS_total  { D408_DS = D408_RS_DS + D408_AIP_DS + D408_OR_DS}
+goal D408_whlNOD_total  { D408_whlNOD = D408_AIP_whlNOD + D408_OR_whlNOD}
+
+goal D408_RS_total  { D408_RS = D408_RS_CS + D408_RS_DS }
+goal D408_OR1_total { D408_OR1 = D408_OR1_CS + D408_OR1_DS + D408_OR1_whlNOD }
+goal D408_OR2_total { D408_OR2 = D408_OR2_CS + D408_OR2_DS + D408_OR2_whlNOD }
+goal D408_OR_total  { D408_OR = D408_OR1 + D408_OR2 }
+goal D408_OR_total2 { D408_OR = D408_OR_CS + D408_OR_DS + D408_OR_whlNOD }
+goal set_D408_OR_CS { D408_OR_CS = D408_OR1_CS + D408_OR2_CS }
+goal set_D408_OR_DS { D408_OR_DS = D408_OR1_DS + D408_OR2_DS }
+goal set_D408_OR_whlNOD { D408_OR_whlNOD = D408_OR1_whlNOD + D408_OR2_whlNOD }
+goal D408_AIP_total { D408_AIP = D408_AIP_CS + D408_AIP_DS + D408_AIP_whlNOD }
+
+define C433A_CS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C433A_DS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C433B_CS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C433B_DS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C433B_whlNOD { std kind 'FLOW-CHANNEL' units 'cfs' }
+goal C433A_total    { C433A = C433A_CS + C433A_DS }
+goal C433B_total    { C433B = C433B_CS + C433B_DS + C433B_whlNOD }
+goal set_D408_AIP_CS    { D408_AIP_CS = C433A_CS + C433B_CS }
+goal set_D408_AIP_DS    { D408_AIP_DS = C433A_DS + C433B_DS }
+goal set_D408_AIP_whlNOD{ D408_AIP_whlNOD = C433B_whlNOD }
+
+define C434A_CS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C434A_DS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C434B_CS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C434B_DS     { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C434B_whlNOD { std kind 'FLOW-CHANNEL' units 'cfs' }
+goal C434A_total    { C434A = C434A_CS + C434A_DS }
+goal C434B_total    { C434B = C434B_CS + C434B_DS + C434B_whlNOD }
+goal set_D408_OR1_CS    { D408_OR1_CS = C434A_CS + C434B_CS }
+goal set_D408_OR1_DS    { D408_OR1_DS = C434A_DS + C434B_DS }
+goal set_D408_OR1_whlNOD{ D408_OR1_whlNOD = C434B_whlNOD }
+
+define C432_CS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C432_DS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+goal C432_total   { C432 = C432_CS + C432_DS }
+goal set_C432_CS  { C432_CS = C433A_CS + C434A_CS }
+goal set_C432_DS  { C432_DS = C433A_DS + C434A_DS }
+
+define C431_CS      { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C431_DS      { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C431_whlNOD  { std kind 'FLOW-CHANNEL' units 'cfs' }
+goal C431_total     { C431 = C431_CS + C431_DS + C431_whlNOD }
+goal set_C431_CS    { C431_CS = C433B_CS + C434B_CS + D408_OR2_CS }
+goal set_C431_DS    { C431_DS = C433B_DS + C434B_DS + D408_OR2_DS }
+goal set_C431_whlNOD    { C431_whlNOD = C433B_whlNOD + C434B_whlNOD + D408_OR2_whlNOD }
+
+define C430A_CS      { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C430A_DS      { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C430B_DS      { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C430B_whlNOD  { std kind 'FLOW-CHANNEL' units 'cfs' }
+goal C430A_total     { C430A = C430A_CS + C430A_DS }
+goal C430B_total     { C430B = C430B_DS + C430B_whlNOD }
+goal set_C430A_CS    { C430A_CS = C431_CS }
+goal set_C430A_DS    { C430A_DS = C431_DS - C430B_DS }
+goal set_C430B_whlNOD{ C430B_whlNOD = C431_whlNOD }
+
+define C421_CS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C421_DS    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C421_LV    { std kind 'FLOW-CHANNEL' units 'cfs' }
+define C421_MOK   { std kind 'FLOW-CHANNEL' units 'cfs' }
+goal C421_total   { C421 = C421_CS + C421_DS + C421_LV + C421_MOK }
+goal set_C421_CS  { C421_CS = C432_CS }
+goal set_C421_DS  { C421_DS = C432_DS }
+goal set_C421_LV  { C421_LV = D425_TS }
+goal set_C421_MOK { C421_MOK = C428A }
+
+define D420_CS    { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D420_DS    { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D420_LV    { std kind 'FLOW-DELIVERY' units 'cfs' }
+define D420_MOK   { std kind 'FLOW-DELIVERY' units 'cfs' }
+goal D420_total   { D420 = D420_CS + D420_DS + D420_LV + D420_MOK }
+goal set_D420_CS  { D420_CS = D408_RS_CS + C421_CS }
+goal set_D420_DS  { D420_DS = D408_RS_DS + C421_DS }
+goal set_D420_LV  { D420_LV = C421_LV }
+goal set_D420_MOK { D420_MOK = C421_MOK }
+
+goal restrict_D408_AIP  { D408_AIP < AIP_Cap }
+goal restrict_D408_OR   { D408_OR  < ORPP_Cap }
+goal restrict_D408_OR1  { D408_OR1 < ORPP1_Cap }
+goal restrict_D408_OR2  { D408_OR2 < ORPP2_Cap }
+
+! Ensure reservoir releases to CCWD are less than release capacity
+goal restrict_D425_TS {D425_TS < D425_TS_Cap}
+
+! Ensure reservoir releases to SBA/Bethany are less than release capacity
+goal restrict_D425_Other {D425_Other < D425_Other_Cap}
+
+! Ensure total reservoir releases are less than release capacity
+goal restrict_C422 {C422 < C422_Cap}
+
+! Restrict OR and AIP diversions to OR Pipeline capacity
+goal restrict_D408 { D408_AIP + D408_OR < min(OR_PL_Cap+OR_PL_Cap2,AIP_Cap+ORPP_Cap) }
+
+! Ensure reservoir filling is less than Transfer-LV capacity
+! (addition of Mokelumne supplies does not increase deliveries over capacity)
+goal restrict_C430A {C430A < C430A_Cap}
+
+! Define direct delivery capacity
+goal restrict_C430B {C430B < C430B_Cap}
+
+
+/*
+    A. CVP Accounting
+*/
+
+! Define volume of CCWD allocation from annual contract amount
+! and CVP MI allocation percentage
+define CCWD_CVPAllocdv { std kind 'ALLOCATION' units 'TAF'}
+define CCWD_CVPAlloc {
+    case firstmonth {
+        condition month == Oct .and. wateryear == 1922
+        value CCWD_CVP*PERDV_CVPMI_SYS[WHEELJPOD]
+    }
+    case mar_may {
+        condition month >= mar .and. month <= may
+        value CCWD_CVP*PERDV_CVPMI_SYS[WHEELJPOD]
+    }
+    case otherwise {
+        condition always
+        value CCWD_CVPAllocdv(-1)
+    }
+}
+goal update_ccwd_alloc {CCWD_CVPAllocdv = CCWD_CVPAlloc}
+
+! CVP Contract Supply accounting tools.
+! CCWD can receive maximum of CCWD demand and CVP monthly allocation
+! based on the following assumptions:
+!   -- If more demand than CVP allocation, will purchase additional water.
+!   -- If surplus allocation will divert to storage.
+define BOM_CVP_acctdv { std kind 'ACCOUNT' units 'TAF' }
+define BOM_CVP_acct  {
+    case firstmonth {
+        condition month == oct .and. wateryear == 1922
+            value max(CCWD_ann_tot_dem,CCWD_CVPAlloc)
+        }
+    case march {
+        condition month == mar
+        value max(CCWD_ann_tot_dem,CCWD_CVPAlloc)
+    }
+    case demand_limiting {
+        condition CCWD_ann_tot_dem > CCWD_CVPAlloc
+        value max(0., BOM_CVP_acctdv(-1)- D408_RS_CS(-1)*cfs_taf(-1)
+                                        - D408_OR_CS(-1)*cfs_taf(-1)
+                                        - D408_AIP_CS(-1)*cfs_taf(-1)
+                                        - I428(-1)*cfs_taf(-1))
+    }
+    case CVP_limiting {
+        condition always
+        value max(0., BOM_CVP_acctdv(-1)- D408_RS_CS(-1)*cfs_taf(-1)
+                                        - D408_OR_CS(-1)*cfs_taf(-1)
+                                        - D408_AIP_CS(-1)*cfs_taf(-1)
+                                        - I428(-1)*cfs_taf(-1))
+              + (CCWD_CVPAlloc - max(CCWD_CVPAllocdv(-1),CCWD_ann_tot_dem))
+    }
+}
+goal update_cvp_acct {BOM_cvp_acctdv = BOM_cvp_acct}
+
+! Restrict Contract Supply diversions according to monthly contract allocation
+goal restrict_cvp_supply {
+    lhs D408_RS_CS + D408_OR_CS + D408_AIP_CS + I428
+    rhs max(0., BOM_CVP_acct*taf_cfs)
+    lhs>rhs penalty 999999
+    lhs<rhs penalty 0
+    }
+
+! Restrict Contract Supply diversions according to CCWD demand + reservoir filling
+goal set_D408_CS    {D408_RS_CS + D408_OR_CS + D408_AIP_CS < CCWD_tot_dem*taf_cfs + C430A_CS }
+
+! Define accounting tool to track reservoir filling with Contract Supply
+define BOM_LV_acctdv { std kind 'ACCOUNT' units 'TAF' }
+define BOM_LV_acct  {
+    case firstmonth {
+        condition month == oct .and. wateryear == 1922
+            value 0.0
+        }
+    case march {
+        condition month == mar
+        value 0.0
+    }
+    case otherwise {
+        condition always
+        value min(BOM_LV_acctdv(-1) + C430A_CS(-1)*cfs_taf(-1),LVE_CS_Limit)
+    }
+}
+goal update_LV_acct {BOM_LV_acctdv = BOM_LV_acct}
+
+! Limit filling of LV with Contract Supply to ensure CS not used up in beginning of year, forcing reservoir
+! releases later in year to meet demand (inefficient operation).
+! This does not include Mokelumne Intertie deliveries to storage
+goal Limit_LV_acct  {BOM_LV_acct + C430A_CS*cfs_taf < LVE_CS_Limit}
+
+
+/*
+    B. Delta Surplus Accounting
+*/
+
+! Delta Surplus account:
+! Existing & FNA: Can divert up to 95.85 TAF of excess Delta flow to LVR for storage (Decision No. 1629)
+! With Project: unlimited diversions
+define BOM_DS_acctdv { std kind 'ACCOUNT' units 'TAF' }
+define BOM_DS_acct {
+    case firstmonth {
+        condition month == oct .and. wateryear == 1922
+            value DS_Cap
+    }
+    case march {
+        condition month == mar
+        value DS_Cap
+    }
+    case otherwise {
+        condition always
+        value max(0., BOM_DS_acctdv(-1) - D408_RS_DS(-1)*cfs_taf(-1)
+                    - D408_OR_DS(-1)*cfs_taf(-1) - D408_AIP_DS(-1)*cfs_taf(-1))
+    }
+}
+goal update_DS_acct {BOM_DS_acctdv = BOM_DS_acct}
+
+! Restrict use of Delta Surplus to amount available in the given contract year
+goal restrict_DS_supply {D408_RS_DS + D408_OR_DS + D408_AIP_DS < max(0. , BOM_DS_acct*taf_cfs)}
+
+! Restrict Delta Surplus diversion according to supply availability
+goal set_D408_DS    {D408_RS_DS + D408_OR_DS + D408_AIP_DS < DeltaSurpAvail }
+
+! No Delta Surplus is delivered directly
+! (water right permit requires Delta Surplus diversions to remain in reservoir for 1 month before delivered to CCWD).
+goal set_C432_DS2    {
+    lhs C432_DS
+    rhs 0.0
+}
+goal set_D408_RS_DS {
+    lhs D408_RS_DS
+    rhs 0.0
+}
+
+! For existing and FNA, Delta Surplus delivered to LV November through June
+goal set_C431_DS2 {
+    lhs C431_DS
+    case set_no_deliv {
+        condition month == Oct .and. LVESwitch < 1.5 .or. month >= Jul .and. LVESwitch < 1.5
+        rhs 0.0
+    }
+    case DS_LV {
+        condition LVESwitch < 1.5
+        rhs (ORPP_Cap + AIP_Cap)
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+    }
+}
+
+
+/*
+    C. EWA Accounting - With Project condition only
+*/
+
+! EWA purchase accounting tools.
+! EWA deliveries are limited to estimated purchase potential.
+! Assume portion of total deliveries allocated to Reliability Demand and in each
+! month this reliability demand is totally fulfilled before EWA deliveries are made.
+define BOM_EWA_acctdv { std kind 'ACCOUNT' units 'TAF' }
+define BOM_EWA_acct  {
+    case firstmonth {
+        condition month == oct .and. wateryear == 1922
+            value 167
+        }
+    case january {
+        condition month == jan
+        value AnnLVEEWADEM
+    }
+    case otherwise {
+        condition always
+        value max(0., BOM_EWA_acctdv(-1)- max(0.,(D426_LV(-1)-ALT_DEMAND_RELdv(-1))*cfs_taf(-1)))
+    }
+}
+goal update_EWA_acct {BOM_EWA_acctdv = BOM_EWA_acct}
+
+define BOM_SOD_acctdv { std kind 'ACCOUNT' units 'TAF' }
+define BOM_SOD_acct  {
+    case firstmonth {
+        condition month == oct .and. wateryear == 1922
+            value 167
+        }
+    case january {
+        condition month == jan
+        value EwaSODPurchEst
+    }
+    case otherwise {
+        condition always
+        value max(0., BOM_SOD_acctdv(-1)- max(0.,(D426_LV(-1)-ALT_DEMAND_RELdv(-1))*cfs_taf(-1)))
+    }
+}
+goal update_SOD_acct {BOM_SOD_acctdv = BOM_SOD_acct}
+
+! Restrict EWA deliveries to total purchase amount available
+! (based on year to date accounting from above).
+goal restrict_EWA_supply {D426_LV < max(0. , BOM_EWA_acct*taf_cfs) + ALT_DEMAND_REL }
+! Use additional wheeled NOD purchases to replace SOD purchases only
+goal restrict_WHL_supply {C430B_whlNOD < max(0. , BOM_SOD_acct*taf_cfs) }
+
+! Direct delivery of wheeled NOD water can only be made if Banks is at capacity.
+! If Banks is not at capacity, there is surely some other reason for the limited
+! export.  If Banks is full, then let Old River or AIP pull for direct delivery.
+goal banks_whlNOD {
+    lhs C430B_whlNOD
+    case banks_capacity1 {
+        condition d419[wheeljpod] < BanksCapPermit
+        rhs 0.0
+    }
+}
+
+!EWA_ALLOW_EI is defined as the amount of NOD wheeling that can occur while
+!maintaining the required E/I ratio.  See EWA Exports_(date).xls for more
+!discussion on these calculations.
+define EWA_ALLOW_EI { value ((EXPRATIO_[WHEELJPOD]*INFLOW[WHEELJPOD])
+                              - (D418[WHEELJPOD]+D419[WHEELJPOD]))
+                              /(1-EXPRATIO_[WHEELJPOD]*(1/EI_CWC)) }
+goal EI_whlNOD   { C430B_whlNOD < max(0., EWA_ALLOW_EI + 0.001) }
+
+!Wheeling of NOD water restricted to June-November
+!(prevent risk of San Luis Reservoir spilling)
+goal SLR_whlNOD {
+    lhs C430B_whlNOD
+    case SLR_full {
+        condition month > nov .and. month < jun
+        rhs 0.0
+    }
+}
+
+!If not wheeling NOD water through the LV project facilities
+!include the following goal statement
+!goal no_NODpurch { C430B_whlNOD < 0.001 }
+
+! Restrict SBA/Bethany direct deliveries and reservoir releases
+! (the total of these two sources equal the delivered reliability
+! supply and replacement of EWA purchases)
+! -- From April - November, if there is space (San Luis is below its capacity)
+!    deliveries are not restricted. This is presumably an over estimate;
+!    it is not dependant on the level of storage available in San Luis.
+! -- Assume the EWA debt is paid off by the end of November, therefore,
+!    from December - March deliveries are dependent on the amount of storage
+!    available in San Luis at the beginning of the month.
+! NOTE: San Luis Reservoir storage capacity is 2039 TAF
+! NOTE: the SLR_mar lookup table must be updated with input timeseries updates
+! (from CalSim II output)
+define S_SLR   { value S_SLUIS_CVP[wheeljpod]+S_SLUIS_SWP[wheeljpod]+s13[wheeljpod] }
+goal stop_SBA_deliv {
+    lhs D426_LV
+    case firstmonth {
+        condition month == oct .and. wateryear == 1922
+        rhs BOM_EWA_acct*taf_cfs + ALT_DEMAND_REL
+        lhs>rhs penalty 999999
+        lhs<rhs penalty 0
+        }
+    case Apr_Nov {
+        condition month > mar .or. month < dec .and. S_SLR == 2039.
+        rhs ALT_DEMAND_REL
+        }
+    case Dec {
+        condition month == dec
+        rhs max(0., (2039. - S_SLR)*taf_cfs)
+        lhs<rhs penalty 0
+        }
+    case Jan {
+        condition month == jan
+        rhs max(0., (2039. - S_SLR)*taf_cfs
+            - max(0.,D426_LV(-1)-ALT_DEMAND_RELdv(-1))) + ALT_DEMAND_REL
+        lhs<rhs penalty 0
+    }
+    case Feb {
+        condition month == feb
+        rhs max(0., (2039. - S_SLR)*taf_cfs
+            - max(0.,D426_LV(-2)-ALT_DEMAND_RELdv(-2))
+            - max(0.,D426_LV(-1)-ALT_DEMAND_RELdv(-1))) + ALT_DEMAND_REL
+        lhs<rhs penalty 0
+    }
+    case Mar {
+        condition month == mar
+        rhs max(0., (2039. - S_SLR)*taf_cfs
+            - max(0.,D426_LV(-3)-ALT_DEMAND_RELdv(-3))
+            - max(0.,D426_LV(-2)-ALT_DEMAND_RELdv(-2))
+            - max(0.,D426_LV(-1)-ALT_DEMAND_RELdv(-1))) + ALT_DEMAND_REL
+        lhs<rhs penalty 0
+    }
+}
+
+/*  in nov-may (filling months), discourage LV delivs above the reliability demands
+    This will limit EWA delivs, which we might not want to do depending on how EWA
+    is being represented...
+goal stop_SBA_deliv2 {
+    lhs D426_LV
+    case SLRfill {
+    condition month > oct .and. month < may
+    rhs ALT_DEMAND_REL
+    lhs>rhs penalty 17500
+    lhs<rhs penalty 0
+    }
+}
+*/
+
+! Use persuasion penalty to encourage delivery of Delta Surplus and reservoir
+! releases rather than wheeled NOD water to SBA/Bethany
+! The weight is high to overcome the weight on storage (levels 2 and 3, set
+! equal to D425_Other_PPt level)and ensure reservoir releases are given
+! priority when storage is above levels 2 and 3.
+goal stop_whlNOD {
+    lhs C430B_whlNOD
+    rhs 0.0
+    lhs>rhs penalty 400.
+    lhs<rhs penalty 0.
+    }
+
+
+! Use persuasion penalty to encourage use of Delta Surplus rather than contract
+! supply for filling LV.
+goal use_DS_LV {
+    lhs C430A_CS
+    rhs 0.0
+    lhs>rhs penalty 10.
+    lhs<rhs penalty 0.
+    }
+
+
+! With Project: use persuasion penalty to encourage delivery of contract supply
+! to CCWD unless no CS available.  Existing & FNA: only CS available for delivery
+! to CCWD so no persuasion penalties needed for DS deliveries
+goal use_CS_RS {
+    lhs D408_RS_DS
+    case Exist_FNA {
+    condition LVESwitch > 1.5
+    rhs 0.0
+    lhs>rhs penalty 10.
+    lhs<rhs penalty 0.
+    }
+}
+goal use_CS_432 {
+    lhs C432_DS
+    case Exist_FNA {
+    condition LVESwitch > 1.5
+    rhs 0.0
+    lhs>rhs penalty 10.
+    lhs<rhs penalty 0.
+    }
+}
+goal stop_ResRel {
+    lhs D425_TS
+    rhs 0.0
+    lhs>rhs penalty 20.
+    lhs<rhs penalty 0.
+}
+
+
+/*
+! Use persuasion penalty to encourage use of contract supply at Old River rather than AIP
+! This does not change operations but ensures unique solution.
+goal use_OR {
+    lhs D408_AIP_CS
+        rhs 0.0
+        lhs>rhs penalty 1.
+        lhs<rhs penalty 0.
+    }
+
+
+! Use persuasion penalty to encourage reservoir releases instead of direct
+! delivery from the Delta to SBA/Bethany
+goal stop_SBA_direct {
+    lhs C430B
+        rhs 0.0
+    lhs>rhs penalty 600.
+    lhs<rhs penalty 0.
+    }
+*/
+
+! Prevent simulataneous LV filling and release to SBA/Bethany
+! For existing, FNA, and Plan D; single pipeline so must restrict all reservoir releases
+! For Plans A-C; no restriction as separate pipes are used for filling and releasing
+
+! Based on the engineering, it is not possible to deliver water to CCWD through the LV Pipeline (C421) while also
+! delivering Mokelumne water to the reservoir (C428B) as a single pipeline is used.  However, instead of making
+! this a constraint in the model, because the Mokelumne delivery amount is so small, it is assumed that adjustments
+! could be made to delivery operations (increase flow for shorter timeframe) to allow both actions to occur.
+
+define IntFill  {integer std kind 'Integer' units 'NONE' }
+define LargeNo {value 999999.}
+
+! If C430A>0, IntFill is forced to be 1.
+! C422 and C425_Other are then constrained depending on study condition and plan #.
+
+goal set_fill_rel1 { C430A < IntFill * LargeNo }
+goal set_fill_rel2 { C428B < IntFill * LargeNo }
+goal set_fill_rel3 {
+    lhs C422
+    case Exist_FNA_PlanD {
+    condition LVESwitch < 1.5 .or. LVEPlan > 3.99
+    rhs LargeNo - IntFill * LargeNo
+    lhs<rhs penalty 0
+    }
+}
+goal set_fill_rel4 {
+    lhs D425_Other
+    case PlanB_C {
+    condition LVEPlan > 1.99
+    rhs LargeNo - IntFill * LargeNo
+    lhs<rhs penalty 0
+    }
+}
+
+
+/*
+! Water Quality Rules
+! Operating Rule created to preserve water quality in the Delta (from DSM2 analysis)
+! Comment out the following rules if simulating general 5% allowable salinity increase
+
+!NDO of PreCCWD (from DSM2BoundaryConditions_041807.xls) was used in water quality rule development.
+define NDO_PreCCWD   { timeseries kind 'FLOW-NDO' units 'cfs' }
+
+! NDO in the previous month
+define NDO_Pre1{
+  case firstmonth {
+    condition month==oct .and. wateryear == 1922
+    value   9999 }
+  case Excess {
+    condition   DeltaSurpAvail(-1) > 1.0
+    value       NDO_PreCCWD(-1)-D408(-1) }
+  case other  {
+    condition   always
+    value       NDO_PreCCWD(-1)+0.25*D408(-1) }
+}
+define NDO_Pre1_out {alias NDO_Pre1 units 'cfs'}
+
+! NDO two months before
+define NDO_Pre2{
+  case firstmonth {
+    condition month==oct .and. wateryear == 1922
+    value   9999 }
+  case secondmonth {
+      condition month==nov .and. wateryear == 1922
+    value   9999 }
+  case Excess {
+    condition   DeltaSurpAvail(-2) > 1.0
+    value       NDO_PreCCWD(-2)-D408(-2) }
+  case other  {
+    condition   always
+    value       NDO_PreCCWD(-2)+0.25*D408(-2) }
+}
+
+define D408_BlwRule {std kind 'diversion' units 'cfs'}
+define D408_AbvRule {std kind 'diversion' units 'cfs'}
+
+
+define WQDivLimit1 {
+  case Limit1 {
+    condition   DeltaSurpAvail > 1.0 .and. month == oct .and. NDO_Pre1 < 9000 .and. NDO_Pre2 < 6000
+    value       200 }
+  case Limit2 {
+    condition   DeltaSurpAvail > 1.0 .and. month == dec .and. NDO_Pre2 < 6000 .and. wyt_SAC > 3.9
+    value       275 }
+  case Limit3 {
+    condition   DeltaSurpAvail > 1.0 .and. month == dec .and. NDO_Pre1 < 6500 .and. NDO_PreCCWD < 16000 .and. wyt_SAC < 3.1
+    value       250 }
+  case Limit4 {
+    condition   DeltaSurpAvail > 1.0 .and. month == dec .and. NDO_Pre2 < 6500 .and. NDO_PreCCWD < 16000 .and. wyt_SAC < 3.1
+    value       300 }
+  case Limit5 {
+    condition   DeltaSurpAvail > 1.0 .and. month == dec .and. NDO_Pre2 < 10000 .and. NDO_Pre1 < 10000 .and. wyt_SAC > 2.9
+    value       100 }
+  case Limit6 {
+    condition   DeltaSurpAvail > 1.0 .and. month == jan .and. NDO_Pre1 < 10000 .and. NDO_Pre2 < 10000 .and. wyt_SAC > 2.9
+    value       220 }
+  case Limit7 {
+    condition   DeltaSurpAvail > 1.0 .and. month == jan .and. NDO_PreCCWD < 15000  .and. wyt_SAC > 3.9
+    value       200 }
+  case Limit8 {
+    condition   DeltaSurpAvail > 1.0 .and. month == jan .and. NDO_Pre2 < 11000 .and. NDO_Pre1 < 16000 .and. wyt_SAC < 3.1
+    value       350 }
+  case Limit9 {
+    condition   DeltaSurpAvail > 1.0 .and. month == sep .and. NDO_Pre1 < 5000 .and. 6000 <= NDO_PreCCWD
+    value       550 }
+  case Limit10 {
+    condition   DeltaSurpAvail > 1.0 .and. month == sep .and. NDO_Pre1 < 5000 .and. NDO_PreCCWD < 6000
+    value       450 }
+  case Limit11 {
+     condition   DeltaSurpAvail > 1.0 .and. month == nov .and. NDO_PreCCWD < 12000
+    value       200 }
+  case Limit12 {
+     condition   DeltaSurpAvail > 1.0 .and. month == feb .and. NDO_Pre1 < 10000
+    value       700 }
+  case Limit13 {
+     condition   DeltaSurpAvail > 1.0 .and. month == apr .and. NDO_PreCCWD < 21000 .and. wyt_SAC < 2.1
+    value       500 }
+  case Limit14 {
+     condition   DeltaSurpAvail > 1.0 .and. month == apr .and. NDO_PreCCWD < 18000 .and. wyt_SAC > 2.9
+    value       300 }
+  case Limit15 {
+     condition   DeltaSurpAvail > 1.0 .and. month == may .and. NDO_PreCCWD < 12000
+    value       300 }
+  case Limit16 {
+     condition   DeltaSurpAvail > 1.0 .and. month == may .and. 12000 <= NDO_PreCCWD .and. NDO_PreCCWD < 23000
+    value       425 }
+  case Limit17 {
+     condition   DeltaSurpAvail > 1.0 .and. month == jun .and. NDO_PreCCWD < 20000
+    value       750 }
+  case other  {
+    condition   always
+    value       99999 }
+}
+define WQDivLimit{
+  case WithProject {
+    condition Exist_FNA_WP > 1.9
+    value   WQDivLimit1 }
+  case other {
+    condition   always
+    value       99999 }
+}
+
+goal SumD408 {D408 = D408_BlwRule + D408_AbvRule}
+goal LimitD408_BlwRule {D408_BlwRule < WQDivLimit}
+
+Objective obj = {
+[D408_AbvRule,-17500] ! set value so that direct delivery to CCWD and filling of reservoir when storage below 100TAF unaffected
+}
+*/
+

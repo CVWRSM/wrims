@@ -1,0 +1,49 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P
+R nnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnnn
+
+U ada.assertions%b	a-assert.adb		69ae1141 NE OL PK
+W ada%s			ada.ads			ada.ali
+W ada.exceptions%s	a-except.adb		a-except.ali
+
+U ada.assertions%s	a-assert.ads		b57a34ec NE OL PU PK
+W ada%s			ada.ads			ada.ali
+W system%s		system.ads		system.ali
+W system.assertions%s	s-assert.adb		s-assert.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-assert.ads		20080408065740 658ac1a7
+D a-assert.adb		20090409150020 0c24d0e6
+D a-except.ads		20090727140100 34786013
+D a-unccon.ads		20070406091342 51e09df2
+D system.ads		20090410155748 b8eb58c3
+D s-assert.ads		20090417131548 4c8d26a1
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-parame.ads		20091130110856 6cdeed25
+D s-stalib.ads		20090422095704 9cbc334a
+D s-traent.ads		20090417130712 a66ef260
+X 1 ada.ads
+16K9*Ada 19e8 2|24r9 36r5 3|32r14 41r16 48r16 52r5
+X 2 a-assert.ads
+24K13*Assertions 1|16k9 2|25r17 36l9 36e19 3|32b18 41r20 48r20 52l9 52t19
+27X4*Assertion_Error 3|41r31 48r31
+32U14*Assert 32>22 3|38b14 43l8 43t14
+32b22 Check{boolean} 3|38b22 40r10
+34U14*Assert 34>22 34>39 3|45b14 50l8 50t14
+34b22 Check{boolean} 3|45b22 47r10
+34s39 Message{string} 3|45b39 48r52
+X 6 system.ads
+37K9*System 2|21r6 27r40 6|197e11
+X 7 s-assert.ads
+39K16*Assertions 2|21w13 27r47 7|48e22
+41X4*Assert_Failure 2|27r58
+

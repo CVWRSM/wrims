@@ -1,0 +1,332 @@
+! THIS IS THE MAIN WRESL FILE FOR CALSIM III D1641 Study
+! (SJW Stand-Alone)
+! Nancy Parker (05/02/2011)
+! Ian Ferguson (05/05/2011)
+
+
+
+SEQUENCE CYCLE1 {  
+    model   SJRBASE
+    order   1
+}
+! SEQUENCE CYCLE2 {
+    ! model   SJR_WQ1
+    ! order   2
+! }
+! SEQUENCE CYCLE3 {
+    ! model   SJR_PULSE
+     ! condition month==APR .or. month==MAY
+    ! order   3
+! }
+! SEQUENCE CYCLE4 {
+    ! model   SJR_WQ2
+     ! condition month==APR .or. month==MAY
+    ! order   4
+! }
+! SEQUENCE CYCLE5 {
+    ! model   VAMP_AND_DO
+     ! condition month>=APR .and. month<=SEP
+    ! order   5
+! }
+! SEQUENCE CYCLE6 {
+    ! model   WQBOUND
+    ! order   6
+! }
+    
+    
+! CYCLE 1 -------------------------------------------------------------------------------------    
+MODEL SJRBASE {         !CYCLE 1
+
+
+    define err_pos     { std kind 'error' units 'cfs'}
+    define err_neg     { std kind 'error' units 'cfs'}
+    goal   limitErrPos { err_pos < .001 }
+    goal   limitErrNeg { err_neg < .001 }
+
+    ! Conversion factors
+    define daysindv    { alias daysin    kind 'DAYS'          units 'days'}
+    define taf_cfs_A   { alias taf_cfs   kind 'CONVERSION'    units 'none'}
+    define cfs_taf_A   { alias cfs_taf   kind 'CONVERSION'    units 'none'}
+    define cfs_cfm_A   { alias (daysin*86400.0)       kind 'CONVERSION' units 'none'}
+    define cfm_cfs_A   { alias (1.0/(daysin*86400.0)) kind 'CONVERSION' units 'none'}
+
+    ! System inputs (Eastside SJW, Westside SJW, Mokelumne)
+    INCLUDE        '..\..\common\WYtypes\WYtypes.wresl'                                  
+    INCLUDE        '..\..\common\System\System_SJW.wresl'
+    INCLUDE        '..\..\common\System\System_MOK.wresl'
+     
+    ! Wheeling
+    INCLUDE[local] '..\..\common\ReOperations\Wheeling\WheelingZeroOps_Cyc1thru5.wresl'      
+
+    ! Groundwater
+    INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-Seepage.wresl' 
+    INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-Seepage.wresl' 
+    
+    ! Eastside operations
+    INCLUDE        '..\..\common\SanJoaquin\Various\definitions\SJR_ChannelSplits.wresl' 
+    INCLUDE        '..\..\common\SanJoaquin\SanJoaquinCore.wresl'
+    INCLUDE[local] '..\..\common\SanJoaquin\various\definitions\SJR_restrict_cycle1.wresl'
+    INCLUDE[local] '..\..\common\SanJoaquin\PurchasedWater\InstreamFromOID.wresl' 
+    INCLUDE[local] '..\..\common\SanJoaquin\Stanislaus\stan_FW_min.wresl'
+    INCLUDE[local] '..\..\common\SanJoaquin\Tuolumne\tuol_FERC_min.wresl'
+    INCLUDE[local] '..\..\common\SanJoaquin\various\bounds_cycles\bounds_cycle1.wresl'
+    INCLUDE        '..\..\common\SanJoaquin\Mokulumne\MokelumneOps.wresl'
+    INCLUDE        '..\..\common\SanJoaquin\EastsideOpsMimick_CII.wresl'
+    
+    ! Weights
+    INCLUDE        '..\..\common\System\SystemTables_West\Weight-table.wresl'
+    INCLUDE        '..\..\common\System\SystemTables_East\Weight-table.wresl'
+    INCLUDE        '..\..\common\System\SystemTables_Mok\Weight-table.wresl'
+    
+    ! Aliases for debugging
+    INCLUDE        '..\..\common\System\SystemTables_West\imf_aliases-StandAlone.wresl'
+    INCLUDE        '..\..\common\System\SystemTables_East\imf_aliases-StandAlone.wresl'
+    INCLUDE        '..\..\common\System\SystemTables_MOK\imf_aliases-StandAlone.wresl'
+
+}
+
+! /*
+! ! CYCLE 2 --------------------------------------------------------------------------------------    
+! MODEL SJRBASE_GW1 {         !CYCLE 2 -- SRJBASE+GW[Iter1]
+! 
+!     ! NOTES:
+!     ! Cycle includes identical SW operations logic as SJRBASE, but adds groundwater linkage.
+!     ! Global includes from SJRBASE not needed here, but re-including local includes 
+!     ! GW linkage added by swapping sjrbase_GW_init files for sjrbase_GW1 files. 
+!   
+!     ! Wheeling
+!     INCLUDE[local] '..\..\common\ReOperations\Wheeling\WheelingZeroOps_Cyc1thru5.wresl'      
+! 
+!     ! Groundwater
+!     INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-Seepage_sjrbase_GW1.wresl' 
+!     INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-Seepage_sjrbase_GW1.wresl' 
+!     
+!     ! Eastside operations
+!     INCLUDE[local] '..\..\common\SanJoaquin\various\definitions\SJR_restrict_cycle1.wresl'
+!     INCLUDE[local] '..\..\common\SanJoaquin\PurchasedWater\InstreamFromOID.wresl' 
+!     INCLUDE[local] '..\..\common\SanJoaquin\Stanislaus\stan_FW_min.wresl'
+!     INCLUDE[local] '..\..\common\SanJoaquin\Tuolumne\tuol_FERC_min.wresl'
+!     INCLUDE[local] '..\..\common\SanJoaquin\various\bounds_cycles\bounds_cycle1.wresl'
+! 
+! }*/
+
+
+! CYCLE 2 --------------------------------------------------------------------------------------    
+MODEL SJR_WQ1 {         
+    INCLUDE[local] '..\..\common\sanjoaquin\various\definitions\SJR_restrict_cycle2on.wresl'
+    INCLUDE[local] '..\..\common\ReOperations\Wheeling\WheelingZeroOps_Cyc1thru5.wresl'      
+    INCLUDE[local] '..\..\common\sanjoaquin\WaterQuality\Vernalis_WQmin_WtAvg.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_cycle2.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_westside.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_MOK\constraints-fixSeepage.wresl' 
+}
+
+
+! CYCLE 3 --------------------------------------------------------------------------------------    
+MODEL SJR_PULSE {       
+    INCLUDE[local] '..\..\common\sanjoaquin\various\definitions\SJR_restrict_cycle2on.wresl'
+    INCLUDE[local] '..\..\common\ReOperations\Wheeling\WheelingZeroOps_Cyc1thru5.wresl'      
+    INCLUDE[local] '..\..\common\sanjoaquin\Stanislaus\stan_FW_pulse.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\Tuolumne\tuol_FERC_pulse.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_cycle3.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_westside.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_MOK\constraints-fixSeepage.wresl' 
+}
+
+
+! CYCLE 4 --------------------------------------------------------------------------------------    
+MODEL SJR_WQ2 {         
+    INCLUDE[local] '..\..\common\sanjoaquin\various\definitions\SJR_restrict_cycle2on.wresl'
+    INCLUDE[local] '..\..\common\ReOperations\Wheeling\WheelingZeroOps_Cyc1thru5.wresl'      
+    INCLUDE[local] '..\..\common\sanjoaquin\WaterQuality\Vernalis_WQpulse_WtAvg.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_cycle4.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_westside.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_MOK\constraints-fixSeepage.wresl' 
+}
+
+
+! CYCLE 5 --------------------------------------------------------------------------------------    
+MODEL VAMP_AND_DO {           
+    INCLUDE[local] '..\..\common\sanjoaquin\various\definitions\SJR_restrict_cycle2on.wresl'
+    INCLUDE[local] '..\..\common\ReOperations\Wheeling\WheelingZeroOps_Cyc1thru5.wresl'      
+    INCLUDE[local] '..\..\common\SanJoaquin\VAMP\VAMP_REQ.wresl'
+    INCLUDE[local] '..\..\common\SanJoaquin\VAMP\VAMP_ALLOC.wresl'
+    INCLUDE[local] '..\..\common\SanJoaquin\Stanislaus\DO.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\Groundwater\SJRGW_restrict.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_cycle5.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_westside.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_MOK\constraints-fixSeepage.wresl' 
+}
+
+
+! CYCLE 6 --------------------------------------------------------------------------------------    
+! MODEL MONTHLYWEIGHTED {      
+!     INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-fixSeepage.wresl'
+!     INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-fixSeepage.wresl'
+!     INCLUDE[local] '..\..\common\System\SystemTables_MOK\constraints-fixSeepage.wresl' 
+!     INCLUDE[local] '..\..\common\sanjoaquin\various\definitions\SJR_restrict_cycle2on.wresl'
+! 
+!     define daysX2_roe {
+!          case FebtoJun {
+!               condition      month >= FEB .and. month <= JUN
+!               select         roe_days
+!               from           x2days
+!               where          wateryear=wateryear,month=month    }
+!          case StandardOff {
+!               condition      always
+!               value          0    }    }
+! 
+!     define daysX2_chs {
+!          case FebtoJun { 
+!               condition      month >= FEB .and. month <= JUN
+!               select         chs_days
+!               from           x2days
+!               where          wateryear=wateryear,month=month    }
+!          case StandardOff {
+!               condition      always
+!               value          0    }    }
+! 
+!     define daysX2_cnf {
+!          case FebtoJun {
+!               condition      month >= FEB .and. month <= JUN
+!               select         cnf_days
+!               from           x2days
+!               where          wateryear=wateryear,month=month    }
+!          case StandardOff {
+!               condition      always
+!               value          0    }    }
+!  
+! !     ! IMF @ Added SLUIS rule curves 
+! !     INCLUDE        '..\..\common\PreEWAStorageMod.wresl'   
+! !     INCLUDE        '..\..\common\rulecurve\rulecv_SJW_StandAlone.wresl'
+! }
+
+
+! CYCLE 6 --------------------------------------------------------------------------------------    
+! IMF @ debug...reference to [monthlyweighted] -- can't reference current cycle, so split to separate cycle.
+MODEL WQBOUND {
+
+    define daysX2_roe {
+         case FebtoJun {
+              condition      month >= FEB .and. month <= JUN
+              select         roe_days
+              from           x2days
+              where          wateryear=wateryear,month=month    }
+         case StandardOff {
+              condition      always
+              value          0    }    }
+
+    define daysX2_chs {
+         case FebtoJun {
+              condition      month >= FEB .and. month <= JUN
+              select         chs_days
+              from           x2days
+              where          wateryear=wateryear,month=month    }
+         case StandardOff {
+              condition      always
+              value          0    }    }
+
+    define daysX2_cnf {
+         case FebtoJun {
+              condition      month >= FEB .and. month <= JUN
+              select         cnf_days
+              from           x2days
+              where          wateryear=wateryear,month=month    }
+         case StandardOff {
+              condition      always
+              value          0    }    }
+
+    ! FIXING INFLOW TO WDWRD TO BE SAME AS CYCLE1 ELIMINATES WDWRD ERRORS...
+    ! Keep for now, but we shouldn't need this...
+    ! Not sure what the problem is...things look more or less OK until the last cycle, then C_SSJ001 jumps and we get ErrPos_WDWRD > 0.0
+    goal fixWDWRD_InFlow  { C_SSJ001 = C_SSJ001[SJRBASE] }   
+    
+    INCLUDE[local] '..\..\common\System\SystemTables_East\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_West\constraints-fixSeepage.wresl'
+    INCLUDE[local] '..\..\common\System\SystemTables_MOK\constraints-fixSeepage.wresl' 
+    INCLUDE[local] '..\..\common\sanjoaquin\various\definitions\SJR_restrict_cycle2on.wresl'
+    
+    INCLUDE[local] '..\..\common\sanjoaquin\SanJoaquinAddCyc6.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\bounds_westside.wresl'
+    INCLUDE[local] '..\..\common\sanjoaquin\various\bounds_cycles\cycle6\wq_bound_SJR-StandAlone_WtAvg.wresl'
+    
+    ! IMF @ Added SLUIS rule curves 
+    INCLUDE        '..\..\common\PreEWAStorageMod.wresl'   
+    INCLUDE        '..\..\common\rulecurve\rulecv_SJW_StandAlone.wresl'    
+
+
+    ! Aliases for debugging exchange contribution to VAMP    
+    ! define ExchangeAddX       {std kind 'testing' units 'cfs'} !                 { alias ExchangeAdd_A[vamp_and_do] kind 'alias' units 'cfs'}
+    ! define ExchangeAddAprX    {std kind 'testing' units 'cfs'} !                 { alias ExchangeAddApr_A[vamp_and_do] kind 'alias' units 'cfs'}
+    ! define ExchangeAdd2MonthX {std kind 'testing' units 'cfs'} !                 { alias ExchangeAdd2Month_A[vamp_and_do] kind 'alias' units 'cfs'}
+    ! define D_XCC054_VAMPX     {std kind 'testing' units 'cfs'} !                 { alias D_XCC054_VAMP[vamp_and_do] kind 'alias' units 'cfs'}
+    ! define D_XCC054_LBNAX     {std kind 'testing' units 'cfs'} !                 { alias D_XCC054_LBN008a[vamp_and_do] kind 'alias' units 'cfs'}
+    ! define D_XCC054_LBNX      {std kind 'testing' units 'cfs'} !                 { alias D_XCC054_LBN008[vamp_and_do] kind 'alias' units 'cfs'}
+    ! goal   setExchangeAddX    {
+    !        lhs  ExchangeAddX
+    !        case vamp {
+    !             condition month==APR .or. month==MAY
+    !             rhs       ExchangeAdd_A[vamp_and_do]}
+    !        case otherwise {
+    !             condition always
+    !             rhs       0.0}
+    ! }
+    ! goal   setExchangeAddAprX    {
+    !        lhs  ExchangeAddAprX
+    !        case vamp {
+    !             condition month==APR .or. month==MAY
+    !             rhs       ExchangeAddApr_A[vamp_and_do]}
+    !        case otherwise {
+    !             condition always
+    !             rhs       0.0}
+    ! }
+    ! goal   setExchangeAdd2MonthX    {
+    !        lhs  ExchangeAdd2MonthX
+    !        case vamp {
+    !             condition month==APR .or. month==MAY
+    !             rhs       ExchangeAdd2Month_A[vamp_and_do]}
+    !        case otherwise {
+    !             condition always
+    !             rhs       0.0}
+    ! }
+    !     goal   setXCC054_VAMPX {
+    !            lhs  D_XCC054_VAMPX
+    !            case vamp {
+    !                 condition month==APR .or. month==MAY
+    !                 rhs       D_XCC054_VAMP[vamp_and_do]}
+    !            case otherwise {
+    !                 condition always
+    !                 rhs       D_XCC054_VAMP}
+    ! }
+    !     goal   setXCC054_LBNAX {
+    !            lhs  D_XCC054_LBNAX
+    !            case vamp {
+    !                 condition month==APR .or. month==MAY
+    !                 rhs       D_XCC054_LBN008a[vamp_and_do]}
+    !            case otherwise {
+    !                 condition always
+    !                 rhs       D_XCC054_LBN008a}
+    ! }    
+    !     goal   setXCC054_LBNX {
+    !            lhs  D_XCC054_LBNX
+    !            case vamp {
+    !                 condition month==APR .or. month==MAY
+    !                 rhs       D_XCC054_LBN008[vamp_and_do]}
+    !            case otherwise {
+    !                 condition always
+    !                 rhs       D_XCC054_LBN008}
+    ! }        
+
+
+}     

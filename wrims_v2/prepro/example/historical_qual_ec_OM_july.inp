@@ -1,0 +1,77 @@
+
+CONFIGURATION
+configuration_historical_OM_july.inp
+END
+
+
+
+SCALAR
+NAME           VALUE             
+checkdata      false              
+cont_bad       false              
+cont_missing   false              
+cont_question  false              
+cont_unchecked true               
+dispersion     true               
+display_intvl  1day                             
+init_conc      0.0                  
+printlevel     1                  
+qual_time_step 15min              
+warn_missing   false              
+warn_question  false              
+warn_unchecked false              
+run_start_date ${QUAL_START_DATE} 
+run_end_date   ${END_DATE}        
+run_start_time ${START_TIME}      
+run_end_time   ${END_TIME}        
+temp_dir       ${TEMPDIR}
+binary_output  false
+dss_direct     true
+flush_output   20day         
+END
+
+IO_FILE
+MODEL      TYPE     IO               INTERVAL FILE                            
+qual       restart  out              1day     ${QUALRSTFILE}                   #Initial condition a restart is required
+qual       output   out              none     ${QUALOUTFILE}                   #Echoed run status                      
+qual       echo     out              none     ${DSM2OUTPUTDIR}/qual_ec_echo_${DSM2MODIFIER}.inp #Echoed input                           
+END
+                
+TIDEFILE           
+START_DATE END_DATE FILE                     
+runtime    length   ${HYDROTIDEFILE}         
+END
+
+GROUPS
+${DSM2INPUTDIR}/group_sourcetracking_20090715.inp
+END
+
+NODE_CONCENTRATION
+NAME      NODE_NO VARIABLE FILLIN FILE          PATH                                            
+calaveras      21 ec       last   constant      125                                              
+cosumnes      446 ec       last   constant      125                                              
+moke          447 ec       last   constant      125                                              
+mtz           361 ec       last   ${QUALBNDINP} /FILL+CHAN/RSAC054/EC//1HOUR/${HISTQUALVERSION}/ 
+sac           330 ec       last   ${QUALBNDINP} /FILL+CHAN/RSAC139/EC//1DAY/${HISTQUALVERSION}/  
+vernalis       17 ec       last   ${QUALBNDINP} /FILL+CHAN/RSAN112/EC//1DAY/${HISTQUALVERSION}/  
+yolo          317 ec       last   ${QUALBNDINP} /FILL+CHAN/RSAC139/EC//1DAY/${HISTQUALVERSION}/  
+jones_out         118 ec       last   ${EVENTSINPUT} /HIST+CHAN/JONES/EC//1DAY/DWR-DMS/  
+jones_pumpout     121 ec       last   ${EVENTSINPUT} /HIST+CHAN/JONES/EC//1DAY/DWR-DMS/  
+END
+
+RESERVOIR_CONCENTRATION
+NAME            RES_NAME      VARIABLE FILLIN FILE            PATH                                        
+dicu_drain_bbid clifton_court ec       last   ${DICUFILE_ECE} /DICU-HIST+RSVR/BBID/DRAIN-EC//1MON/DWR-BDO/ 
+END
+
+QUAL_TIME_SERIES
+${DSM2INPUTDIR}/node_concentration_dicu_ec_20090715.inp
+END
+
+OUTPUT_TIME_SERIES
+${DSM2INPUTDIR}/output_channel_std_qual_rki_20090715.inp
+${DSM2INPUTDIR}/output_channel_std_qual_named_20090715.inp
+${DSM2INPUTDIR}/output_channel_std_qual_rki_addmore_20121214.inp
+${DSM2INPUTDIR}/output_reservoir_std_qual_named_20090715.inp
+END
+

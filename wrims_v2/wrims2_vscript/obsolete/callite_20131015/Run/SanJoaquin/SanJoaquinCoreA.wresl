@@ -1,0 +1,34 @@
+/*
+Core San Joaquin River Model Code for use for dynamic operations (Global Resolution)
+
+*/
+
+
+
+!    INCLUDE 'Various\definitions\SJR_GWPumpingSplits.wresl'
+!    INCLUDE '..\System\System_SJR.wresl'
+
+!    INCLUDE 'Various\definitions\SJR_ChannelSplits.wresl'
+
+    INCLUDE 'Various\definitions\SJR_aggreg.wresl'
+    INCLUDE 'Various\definitions\previous_wyt_SJR.wresl'
+    INCLUDE 'Various\definitions\SJR_DeliverySplits.wresl'
+
+    INCLUDE 'Friant\friant.wresl'
+    INCLUDE 'Various\definitions\SJR_restrict.wresl'
+    INCLUDE 'SouthernSJR\SouthernSJR_dems.wresl'
+!    INCLUDE 'SouthernSJR\BypassLoss.wresl'
+
+
+    INCLUDE 'Merced\Merced_Dems.wresl'	
+
+    INCLUDE 'Tuolumne\Tuolumne_Dems.wresl'
+    INCLUDE 'Stanislaus\NewMelonesForecast.wresl'
+    INCLUDE 'Stanislaus\Stan_defs.wresl'
+    INCLUDE 'Stanislaus\Stanislaus_Dems.wresl'
+!    INCLUDE 'Mainstem\MainstemSJR_Dems.wresl'
+
+
+
+
+!    INCLUDE 'Delta\COSMA_dmd.wresl'

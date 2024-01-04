@@ -1,0 +1,95 @@
+/*************************************
+ExportEstimate1.wresl
+ 
+Nazrul Islam DWR (06/27/2010)
+This file defines export levels for each project (SWP,CVP).
+Estimates are based on current month delivery and San Luis rule-curve.
+
+1/5/2011: Added ratios to adjust for user-defined demands -Tom FitzHugh BOR
+*/
+
+!*********************************************************************************************
+! SWP exports:
+
+! export for south-of-delta SWP: demand
+define EstSWPSodDem {value swp_total_demand - I_Kern } !Ryan 8/9/2005
+define exp_est_SWPDem {alias EstSWPSodDem kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta SWP: rulecurve
+define EstSWPSodRC {value SWPRULEcalc1*taf_cfs - S_SLSWP(-1)*taf_cfs}
+define exp_est_SWPRC {alias EstSWPSodRC kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta SWP: demand + rulecurve
+!define EstSWPSodExp {value min(BanksMaxAllow, max(300.0, EstSWPSodDem + EstSWPSodRC), max(300.,0.75*(S_Orovl(-1) - 1000. - DrainTar_buffer)*taf_cfs))}
+
+define est_oro_release{
+	case verylow {condition s_orovl[upstream] <= 1250.0 
+	value 300.0}
+	case low {condition s_orovl[upstream]>1250.0 .and. s_orovl[upstream] <= 1800.0 
+	value  0.25*(S_Orovl(-1) - 1000. - DrainTar_buffer)*taf_cfs}
+	case high {condition s_orovl[upstream]>1800.0 .and. s_orovl[upstream] <= 2200.0 
+	value 0.50*(S_Orovl(-1) - 1000. - DrainTar_buffer)*taf_cfs}
+	case veryhigh { condition always 
+	value 0.75*(S_Orovl(-1) - 1000. - DrainTar_buffer)*taf_cfs}
+}
+
+define EstSWPSodExp {value min(BanksMaxAllow, max(300.0, EstSWPSodDem + EstSWPSodRC), max(300., est_oro_release))}
+
+define exp_est_SWP {alias EstSWPSodExp kind 'EXPORT-ESTIMATE' units 'CFS'}
+define exp_estSWPlim3  {alias max(300.,est_oro_release) kind 'debug' units 'cfs'}
+
+!*********************************************************************************************
+! CVP exports:
+
+! export for south-of-delta CVP: demand
+
+define EstCVPSodDem {value
+  CVP_pag_ratio_s*(dem_totcvps_pag*taf_cfs*perdel_cvpag_s - dem_d607a_pag*taf_cfs*perdel_cvpag_s) +
+  dem_totcvps_pls*taf_cfs - dem_d607d_pls*taf_cfs +
+  CVP_pmi_ratio_s*dem_totcvps_pmi*taf_cfs*perdel_cvpmi_s  +
+  dem_totcvps_pex*taf_cfs*perdel_cvpex_s - dem_d607b_pex*taf_cfs*perdel_cvpex_s - dem_d608b_pex*taf_cfs*perdel_cvpex_s  +
+  CVP_prf_ratio_s*(dem_totcvps_prf*taf_cfs*perdel_cvprf_s - dem_d607c_prf*taf_cfs*perdel_cvprf_s - dem_d608c_prf*taf_cfs*perdel_cvprf_s)  +
+  max(0.0, CVP_pag_ratio_s*dem_d607a_pag*taf_cfs*perdel_cvpag_s + dem_d607d_pls*taf_cfs + dem_d607b_pex*taf_cfs*perdel_cvpex_s +
+  CVP_prf_ratio_s*dem_d607c_prf*taf_cfs*perdel_cvprf_s + dem_d608b_pex*taf_cfs*perdel_cvpex_s + CVP_prf_ratio_s*dem_d608c_prf*taf_cfs*perdel_cvprf_s - I_JamesBP)}
+
+define exp_est_CVPDem {alias EstCVPSodDem kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! export for south-of-delta CVP: rulecurve
+define EstCVPSodRC {value CvpRuleCalc1*taf_cfs - S_SLCVP(-1)*taf_cfs}
+define exp_est_CVPRC {alias EstCVPSodRC kind 'EXPORT-ESTIMATE' units 'CFS'}
+
+! minimum Jones pumping
+define JonesMinPumpLevel {
+        case JonesShastaLow {
+                condition S_Shsta(-1) < 1500.0
+                value 600.0 }
+        case Joneslowshastafolsom {
+                condition S_Folsm(-1) < 400. .and. S_Shsta(-1) < 2000. !Better reflection of actual operations by trying to keep
+                value 800.  }                                                           !water from being released for SL storage during low storage
+        case JonesShastaHigh {
+                condition always
+                value 800.0 }
+}
+! export for south-of-delta CVP: demand + rulecurve
+define maxJonescalc1 {value min(JonesMaxAllow,
+                     4400+perdel_cvpag_s*CVP_pag_ratio_s*dem_D700_pag*taf_cfs,
+                     4200+perdel_cvpag_s*CVP_pag_ratio_s*dem_D700_pag*taf_cfs+perdel_cvpag_s*CVP_pag_ratio_s*dem_D701_pag*taf_cfs+dem_D702_pls*taf_cfs) }
+
+define maxJonescalc {value min(maxJonescalc1 + Intertie_Cap, JonesMaxAllow)}
+
+define CVPexportcap {value maxJonescalc + CVPDedBanksSwitch*BanksMaxAllowCVP}
+
+define June_B2_Corr {
+    case NotJuneOrOMRBOON {
+        condition   month <= MAY .or. month >= JUL .or. int(OMRBOON) == 1
+        value       999999.
+    }
+    case otherwise {
+        condition   always
+        value       3000.
+    }
+}
+
+define EstCVPSodExp {value min(CVPexportcap, max(JonesMinPumpLevel, EstCVPSodDem + EstCVPSodRC),June_B2_Corr)}
+
+define exp_est_CVP {alias EstCVPSodExp kind 'EXPORT-ESTIMATE' units 'CFS'}

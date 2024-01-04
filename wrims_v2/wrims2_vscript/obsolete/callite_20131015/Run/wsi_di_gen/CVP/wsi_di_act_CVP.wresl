@@ -1,0 +1,60 @@
+/*************************************
+wsi_di_act_CVP.wresl
+Hao Xie DWR (1/5/2012) 
+
+This file generates the values that will be used in the WSI-DI curve generation
+
+**************************************/
+
+! Define variables to be used in WSI-DI curve generation
+define DI_act_CVP_s    {std kind 'DEMAND-INDEX' units 'TAF'}
+define DI_act_CVP_sys  {std kind 'DEMAND-INDEX' units 'TAF'}
+define WSI_act_CVP_s   {std kind 'WATER-SUPPLY-INDEX' units 'TAF'}
+define WSI_act_CVP_sys {std kind 'WATER-SUPPLY-INDEX' units 'TAF'}
+
+!  =============================== Set DI values ===================================
+!  The demand index for the southern portion of the system is comprised of all southern
+!  deliveries and carryover storage for Trinity, Shasta, Folsom, and CVP San Luis.
+
+goal set_DI_CVP_s {
+     lhs  DI_act_CVP_s
+     case MAR {
+          condition      month == MAR
+          rhs            tot_del_cvp_s + S_TRNTY(prevSEP) + S_SHSTA(prevSEP) + S_FOLSM(prevSEP) + S_SLCVP(prevSEP) }
+
+     case other {
+          condition      always
+          rhs            0.0 }
+}
+
+! The demand index for the entire system is comprised of all northern + southern
+! deliveries and carryover storage for Trinity, Shasta, Folsom, and CVP San Luis.
+goal set_DI_CVP_sys {
+     lhs  DI_act_CVP_sys
+     case MAR {
+          condition      month == MAR
+          rhs            tot_del_cvp_n + tot_del_cvp_s + S_TRNTY(prevSEP) + S_SHSTA(prevSEP) + S_FOLSM(prevSEP) + S_SLCVP(prevSEP) }
+
+     case other {
+          condition      always
+          rhs            0.0 }
+}
+
+! =============================== Set WSI values ===================================
+! The WSI values for the south and entire system are defined in the CVP_dellogic files.
+! We use March and April because of the conservative forecasts, 90% and 75% respectively.
+! May has a 50% exceedence level forecast so we don't use it for the curve generation.
+
+goal set_WSI_CVP_sys {
+     lhs  WSI_act_CVP_sys
+     case APR_MAY {
+          condition      month == APR .or. month == MAY
+          rhs            WSI_CVP_sys }
+     case other {
+          condition      always
+          rhs            0.0 }
+}
+
+!define erik_n {alias tot_del_cvp_n kind 'test' units 'taf'}
+!define erik_s {alias tot_del_cvp_s kind 'test' units 'taf'}
+!define erik_sdem {alias tot_dem_cvp_s kind 'test' units 'taf'}

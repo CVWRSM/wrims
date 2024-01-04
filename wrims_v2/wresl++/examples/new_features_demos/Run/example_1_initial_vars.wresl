@@ -1,0 +1,49 @@
+
+initial {
+	const A { 100 }
+	svar  B { value A - 5 }
+	svar C { select Option from options where Index=2 }
+}
+
+sequence CYCLE1 {
+    model   first
+    order   1
+}
+
+sequence CYCLE2 {
+    model   second
+    order   2
+}
+	
+model first { 
+
+  define x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define z { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  goal g1 { x + y + z < A  }
+  goal g2 { x = B  }
+  goal g3 { y = C  }
+  
+  objective obj2 {
+	weight 6
+	variable x y z 
+  }
+  
+}
+
+model second { 
+
+  define x { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define y { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define z { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  goal g1 { x + y + z < A*2  }
+  goal g2 { x = B*2  }
+  
+  objective obj2 {
+	weight 6
+	variable x y z 
+  }
+  
+}

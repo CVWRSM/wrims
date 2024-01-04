@@ -1,0 +1,82 @@
+! Connectivity goals for the SJR system
+
+! Millerton Lake connectivity is in SanJoaquin\IntegratedOperations\system\USJRS\Connectivity-table.wresl
+
+goal continuity603 {C_MLRTN-D_GRAVF-C_GRAVF-L_GRAVF=0} !
+goal continuity605 {C_GRAVF-C_SJRCB-C_Chowbyp1-C_SJRREST-L_SJRcb=0} !Chowchilla Bifurcation  
+goal continuity607 {C_SJRCB+I_MDOTA+C_CVPDMC+AD_MDOTA-C_MDOTA-D_MDOTAA-C_MDOTABC-D_MDOTAD=0} !Mendota Pool  
+goal continuity607_1 {C_MDOTABC-D_MDOTAB-D_MDOTAC=0} !
+goal continuitySJRSACK {C_MDOTA+C_SJRREST-C_SJRSACK-L_SJRREST-C_SJRSACKBC=0} !Sack Dam   CalSim 608
+goal continuity608_1 {C_SJRSACKBC-D608B-D608C=0}
+goal continuitySJRSAND {C_SJRSACK-C_SANDSL-C_SJRSAND-L_SJRSAND=0} ! continuity609 in calSim, Sand Slu    Calsim 609
+goal continuitySJRMPBYP {C_SJRSAND+C_MPBYP-C_SJRMPBYP-L_SJRMPBYP=0} ! continuity610 in calSim, Sand Slu 
+goal continuity589 {C587+I_EASTBYP-C_EASTBYP=0} 
+goal continuity587 {C_CHOWR+C_Chowbyp2+R_CHOWR2A+R_CHOWR2B+C_SANDSL-C_MPBYP-C587-L_CHOWR2=0} 
+
+goal continuitySJRLNDR {C_EASTBYP+C_SJRMPBYP-C_SJRLNDR-L_SJRLNDR=0} ! continuity611 in calSim
+goal continuitySJRMS {I_SJRMS+AD_SJRMS+C_SJRLNDR+C_MDOTABVAMP-C_SJRMS=0} ! San Joaquin River at Mud and Salt Slough Node Mass Balance, calSim 614
+goal continuitySJRMER {C_SJRMS+C_MERCED2+AD_SJRMER-C_SJRMER-D_SJRMER=0} !continuity620 in calSim
+goal continuitySJRTUOL {C_TUOL+C_SJRMER-C_SJRTUOL-D_SJRTUOL+AD_SJRTUOL=0} ! continuity630 in calSim
+goal continuitySJRMAZE {C_SJRTUOL+AD_SJRMAZE+I_SJRMAZE-C_SJRMAZE=0} ! continuity636 in calSim
+goal continuitySJRSTAN {C_SJRMAZE+C_STANRIPN+I_SJRSTAN+AD_SJRSTAN-C_SJRSTAN-D_SJRSTAN=0} ! continuity637 in calSim
+goal continuitySJRVER {C_SJRSTAN+AD_SJRVER-C_SJRVER-D_SJRVER=0} !Vernalis, continuity639 in calSim
+
+goal continuity501 {I501-C501=0} !Cosumnes River
+goal continuityNHGAN {I_Nhgan-C_Nhgan-F_Nhgan-E_Nhgan=S_Nhgan*taf_cfs-S_Nhgan(-1)*taf_cfs} !New Hogan Reservoir,continuity92 in calSim
+goal continuityCALAV {I_CALAV+C_NHGAN-C_CALAV-D_CALAV+AD_CALAV=0.} !Calaveras River Node Mass Balance, Calsim nodes 506, 507, 508 combined
+goal continuity505 {D_CALAVA+GP505+D_CALAVD-C505=0} !
+goal continuity509 {D_CALAVB+D_STANGDWNA1+D_STANGDWNA-C509-D509-L509-L509A =0}
+goal continuity510 {C509+D_SJRCALB+C513A+GP509-D510-R_CALAV-R_SJRCALB=0} !
+goal continuity511 {C505-D511-R_SJRCALA=0} !
+goal continuity512 {D509+DI512+GP512-D512=0} !
+goal continuity513 {D_SJRCALA-C513A=0} ! City of Stockton diversion
+
+goal continuity10 {I_MELON-C_MELON-F10-E_MELON=S_MELON*taf_cfs-S_MELON(-1)*taf_cfs} !New Melones Reservoir
+goal continuity520 {C_MELON-C_STANGDWN+AD_STANGDWN+I_STANGDWN-D_STANGDWNA-D_STANGDWNB-D_STANGDWNC-D_STANGDWNA1=0} !Calsim nodes 76 and 520 combined
+goal continuity75 {D_STANGDWNB-c75-D75_SEEP-F75-E75=S75*taf_cfs-S75(-1)*taf_cfs} !Woodward
+goal continuity521 {c75-d521=0} !
+goal continuity522 {GP522+D521-C522=0} !
+goal continuity523 {C522-R_STANRIPNB-D523-R526=0} !
+goal continuity528 {C_STANGDWN+I_STANRIPN+R_STANRIPNA+R_STANRIPNB+R_STANRIPNC-C_STANRIPN-D_STANRIPN=0} !Rippon
+goal continuity528A {D_STANRIPN-D_STANRIPNA_riv-R_SJRSTANC=0} !Stanislaus Riparian Diversions
+goal continuity530 {GP530+D_STANGDWNC-C530-D530_VAMP=0} !Oakdale South and DAU 207 Non-Dist Supply
+goal continuity531 {C530-D531-R_TUOLB-R532-R534B-R_STANRIPNA=0} !Delivery to Oakdale South
+goal continuity81 {I_PEDRO-C_PEDRO-F81-E_PEDRO=S_PEDRO*taf_cfs-S_PEDRO(-1)*taf_cfs} !New Don Pedro Reservoir
+goal continuityTUOL {C_PEDRO-C_TUOL-D_TUOLA-D_TUOLB+AD_TUOL+I_TUOL-D_TUOLC=0} !Calsim nodes 540 and 545 combined
+goal continuity545A {D_TUOLC-D_TUOLC_A_riv-R_SJRTUOLJ=0} !
+goal continuity78 {D_TUOLA-D78-D78_SEEP-D78_MI-F78-E78=S78*taf_cfs-S78(-1)*taf_cfs} !Modesto Lake
+goal continuity78A {D78_MI+GP78A-D78A-R550A=0} !
+goal continuity79 {D_TUOLB-D79-D79_SEEP-F79-E79=S79*taf_cfs-S79(-1)*taf_cfs} !Turlock Lake
+goal continuity532 {R532+D78+GP532+D530_VAMP-C532-R_SJRMAZEC=0} !Modesto ID Supply
+goal continuity533 {C532-D533-R_TUOLC-R534A-R_SJRMAZEA-R_SJRSTANA-R_STANRIPNC-R550B=0} !Modesto ID Delivery
+goal continuity534 {R534A+R534B+D_SJRTUOLA+GP534-C534=0} !Supply to Lands West of Modesto
+goal continuity535 {C534-D535-R_SJRSTANB-R_SJRMAZEB=0} !Delivs to Lands West of Modesto
+goal continuity548 {D79+GP548-C548=0} !Turlock Supply
+goal continuity549 {C548-R_MERCED2C-R_TUOLA-R_SJRTUOLL-D549=0} !Turlock Delivery
+goal continuity550 {R550A+R550B+D_SJRMERA+GP550-C550=0} !Supply to Lands West of Turlock
+goal continuity551 {C550-D551-R_SJRTUOLK=0} !Delivs to Lands West of Turlock
+goal continuity20 {I_MCLRE-C_MCLRE-F20-E_MCLRE=S_MCLRE*taf_cfs-S_MCLRE(-1)*taf_cfs} !Lake McClure
+
+goal continuityMERCED1 {I_MERCED1C+I_MERCED1B+C_MCLRE-D_MERCED1C-D_MERCED1B-C_MERCED1=0} !Merced River Calsim nodes 561 and 562 combined
+goal continuity562A {D_MERCED1B-D_MERCED1A_riv-R_MERCED2A=0} !
+goal continuityMERCED2 {I_MERCED2+C_MERCED1-C_MERCED2-D_MERCED2+AD_MERCED2=0.} !Merced River Calsim nodes 564 and 566 combined
+
+goal continuity570 {GP570+D_MERCED1C-D570-C570=0} !Merced ID Supply
+goal continuity571 {D570-R_MERCED2B-D571-R573=0} !Merced ID Diversion
+goal continuity572 {C570-D572=0} !Bear Ck Refuge
+goal continuity573 {R573+D_SJRMERC+GP573+D_MERCED2-C573=0} !Stevenson
+goal continuity574 {C573-D574-R_SJRMER=0} !Stevenson
+goal continuity53 {I_ESTMN-C_ESTMN-F53-E_ESTMN=S_ESTMN*taf_cfs-S_ESTMN(-1)*taf_cfs} !Eastman Lake
+goal continuityCHOWR { C_ESTMN+C_Mdrcnl+C_MdrcnlF+C_Mdrcnl_16B -C_CHOWR-D_CHOWR1-D_CHOWR1_16B-L_CHOWR1=0} !
+goal continuity583 {GP583+D_CHOWR1-C583=0} !ChowID Diversion Req't
+goal continuity584 {C583-D584-R585-R_CHOWR2A=0} !ChowID Diversion
+goal continuity585 {R585+D_Chowbyp+D_GRAVF+GP585-C585=0} !DAU 215 Supply
+goal continuity586 {C585-D586-R_CHOWR2B=0} !DAU 215
+goal continuity52 {I_HNSLY-C_HNSLY-F52-E_HNSLY=S_HNSLY*taf_cfs-S_HNSLY(-1)*taf_cfs} !Hensley Lake
+goal continuity588 {C_HNSLY+D590F-C_FRSNO-D_FRSNO-L_FRSNO=0} !Fresno River at Madera Diversion
+goal continuity595 {C_FRSNO+C_Chowbyp1+R_Chowbyp-C_Chowbyp2-D_Chowbyp-L_Chowbyp=0} !Chowchilla Bypass  WB
+goal continuity590 {D_MDRCNL-D590-D590_16B-C_Mdrcnl-L590-D590F-C_MdrcnlF-C_Mdrcnl_16B=0} !Madera Canal Turnout to Madera ID
+goal continuity591 {D590+D_FRSNO+GP591-C591=0} !Madera ID Supply
+goal continuity592 {C591-D592-R_Chowbyp=0} !Madera ID Delivery
+
+goal Reach3BRest {C_MDOTA-C607X-C607Y=0}

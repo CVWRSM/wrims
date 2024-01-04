@@ -1,0 +1,149 @@
+!WRESL statements for ERPP operations
+!NODERPPDEFIC
+!Edward Chang
+!7/20/99	8:30am
+!
+!This code determines the NOD ERPP deficiency for the various ERPP locations using binary Integers
+!******************************************************************************************
+define ERPPmax { value 999999. }   !The deficiencies are bounded to a maximum value
+
+!Binary integers to determine if the existing flows are above or below the ERPP requirement
+define IntERPP151 {INTEGER std}    !Sacramento - Knights Landing
+define IntERPP152 {INTEGER std}    !Yuba - Marysville
+define IntERPP153 {INTEGER std}    !Feather - Gridley
+define IntERPP154 {INTEGER std}    !Sacramento - Freeport
+define IntERPP157 {INTEGER std}    !American - Nimbus Dam
+define IntERPP158 {INTEGER std}    !Sacramento - San Joaquin Delta Outflow
+
+!deficiency or surplus at each ERPP location
+define DeficERPP151 {std kind 'flow-channel' units 'cfs'}
+define SurplERPP151 {std kind 'flow-channel' units 'cfs'}
+
+define DeficERPP152 {std kind 'flow-channel' units 'cfs'}
+define SurplERPP152 {std kind 'flow-channel' units 'cfs'}
+
+define DeficERPP153 {std kind 'flow-channel' units 'cfs'}
+define SurplERPP153 {std kind 'flow-channel' units 'cfs'}
+
+define DeficERPP154 {std kind 'flow-channel' units 'cfs'}
+define SurplERPP154 {std kind 'flow-channel' units 'cfs'}
+
+define DeficERPP157 {std kind 'flow-channel' units 'cfs'}
+define SurplERPP157 {std kind 'flow-channel' units 'cfs'}
+
+define DeficERPP158 {std kind 'flow-channel' units 'cfs'}
+define SurplERPP158 {std kind 'flow-channel' units 'cfs'}
+
+!******************************************************************************************
+!Binary Integer goals for mixed integer programming
+!Integer  = 1: Defic > 0, Surpl = 0
+!         = 0: Defic = 0, Surpl > 0
+
+!Sacramento - Knights Landing
+goal FindDefic151 { ERPP151 - C151_main = DeficERPP151 - SurplERPP151 }
+goal forceDefic151 {
+     lhs  DeficERPP151 
+     case ERPPREQ {
+          condition ERPP151 > 0.1      
+          rhs       IntERPP151 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+goal forceSurpl151 {
+     lhs  SurplERPP151 
+     case ERPPREQ {
+          condition ERPP151 > 0.1      
+          rhs       ERPPmax - IntERPP151 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+
+!Yuba - Marysville
+goal FindDefic152 { ERPP152 - C152_main = DeficERPP152 - SurplERPP152 }
+goal forceDefic152 {
+     lhs  DeficERPP152 
+     case ERPPREQ {
+          condition ERPP152 > 0.1      
+          rhs       IntERPP152 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+goal forceSurpl152 {
+     lhs  SurplERPP152 
+     case ERPPREQ {
+          condition ERPP152 > 0.1      
+          rhs       ERPPmax - IntERPP152 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+
+!Feather - Gridley
+goal FindDefic153 { ERPP153 - C153_main = DeficERPP153 - SurplERPP153 }
+goal forceDefic153 {
+     lhs  DeficERPP153 
+     case ERPPREQ {
+          condition ERPP153 > 0.1      
+          rhs       IntERPP153 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+goal forceSurpl153 {
+     lhs  SurplERPP153 
+     case ERPPREQ {
+          condition ERPP153 > 0.1      
+          rhs       ERPPmax - IntERPP153 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+
+!Sacramento - Freeport
+goal FindDefic154 { ERPP154 - C154_main = DeficERPP154 - SurplERPP154 }
+goal forceDefic154 {
+     lhs  DeficERPP154 
+     case ERPPREQ {
+          condition ERPP154 > 0.1      
+          rhs       IntERPP154 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+goal forceSurpl154 {
+     lhs  SurplERPP154 
+     case ERPPREQ {
+          condition ERPP154 > 0.1      
+          rhs       ERPPmax - IntERPP154 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+
+
+!American - Nimbus Dam
+goal FindDefiC_YBP002 { ERPP157 - C_YBP002_main = DeficERPP157 - SurplERPP157 }
+goal forceDefiC_YBP002 {
+     lhs  DeficERPP157 
+     case ERPPREQ {
+          condition ERPP157 > 0.1      
+          rhs       IntERPP157 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+goal forceSurpl157 {
+     lhs  SurplERPP157 
+     case ERPPREQ {
+          condition ERPP157 > 0.1      
+          rhs       ERPPmax - IntERPP157 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+
+!Sacramento - San Joaquin Delta Outflow
+goal abovebelowERPP158 { 
+          ERPP158 
+     -    D541 - C541 
+     -    C151_erpp*21./10. - C152_erpp*21./10. - C153_erpp*21./10. - C_YBP002_erpp*21./10.   !Adjusted upstream
+     +    I150                                                                            !flow for 158 req
+     -    I155*21./10. - I156*21./10. - I651*21./10.                                      !SJR side         
+     =    DeficERPP158 - SurplERPP158 }
+goal forceDefic158 {
+     lhs  DeficERPP158
+     case ERPPREQ {
+          condition ERPP158 > 0.1      
+          rhs       IntERPP158 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }
+goal forceSurpl158 {
+     lhs  SurplERPP158 
+     case ERPPREQ {
+          condition ERPP158 > 0.1      
+          rhs       ERPPmax - IntERPP158 * ERPPmax
+          lhs<rhs   penalty 0. }
+          }

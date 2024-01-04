@@ -1,0 +1,21 @@
+!For dynamic model C_SJRVer computed dynamically
+define C_SJRVER {lower 0 upper 99999 kind 'FLOW-CHANNEL' units 'CFS'} !SJR below Vernalis
+
+!For dynamic model AD_SJRCalALL = C_Calav + AD_SJRCal - D_Calav (which are computed dynamically) this code is in SJR system
+define AD_SJRCalALL {std kind 'FLOW-ACCRDEPL' units 'CFS'}
+
+define AD_SJR_VAMP {value C_SJRVER[VAMP_AND_DO]} 
+define AD_SJR_PULSE {value C_SJRVER[SJR_WQ2]}
+
+define VernQ {
+     case April {
+          condition month == apr
+          value     C_SJRVER[SJR_WQ1]*14./daysin + C_SJRVER[VAMP_AND_DO]*(daysin-14.)/daysin }
+     case MayOnly {
+          condition month == may
+          value     C_SJRVER[VAMP_AND_DO]*15./daysin + C_SJRVER[SJR_WQ1]*(daysin-15.)/daysin }
+     case otherwise {
+          condition always
+          value     C_SJRVER[VAMP_AND_DO]}
+}
+

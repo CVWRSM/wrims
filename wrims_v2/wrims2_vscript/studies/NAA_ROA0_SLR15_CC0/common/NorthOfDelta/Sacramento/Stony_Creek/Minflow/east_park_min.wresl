@@ -1,0 +1,10 @@
+!!!  East Park Reservoir minimum flows
+
+define east_park_min {select flow
+                  from   east_park_min
+                  where  month=month}
+
+
+define minflow_C40 {alias east_park_min kind 'flow-min-required' units 'cfs'}
+
+goal meet_eastpkmin {C40_mif < minflow_C40}

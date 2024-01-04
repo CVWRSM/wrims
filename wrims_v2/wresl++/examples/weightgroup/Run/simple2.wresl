@@ -1,0 +1,32 @@
+SEQUENCE CYCLE1 {
+    model   first
+    order   1
+    }
+
+	
+MODEL first { 
+
+  !include 'moreWreslFiles\weight-table.wresl' 
+  define[local] A1 { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define[local] A2 { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define[local] D3 { std kind 'FLOW-CHANNEL' units 'CFS'}
+  define[local] D4 { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+  goal[local] g1 { A1 + A2 + D3 + D4 = 8 }
+  goal[local] g2 { A1 + A2 = 6 }
+  
+  Objective wg1 {
+	weight 1
+	DeviationPenalty 0.1
+	variable A1 A2
+  }
+
+  Objective wg2 {
+	weight 1
+	DeviationPenalty 0.1
+	variable D3 D4
+  }
+  
+}
+
+

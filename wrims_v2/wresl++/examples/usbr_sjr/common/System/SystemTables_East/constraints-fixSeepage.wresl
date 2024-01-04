@@ -1,0 +1,191 @@
+/*
+SEEPAGE ARCS
+
+The sign of GetSeep is with respect to groundwater; i.e.
+
+  positive seepage (GetSeep) = loosing stream
+  negative seepage (GetSeep) = gaining stream
+
+When multiplied by -1, it reflects stream's perspective.  
+
+Original formulation _ AJD, jtpayne July 2006
+updated _ Can Dogrul June 2007
+*/
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Bear Creek      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+
+
+goal setBCK040_741 { SG_BCK040_741 = SG_BCK040_741[sjrbase] }
+goal setBCK035_740 { SG_BCK035_740 = SG_BCK035_740[sjrbase] }
+goal setBCK031_739 { SG_BCK031_739 = SG_BCK031_739[sjrbase] }
+goal setBCK024_738 { SG_BCK024_738 = SG_BCK024_738[sjrbase] }
+goal setBCK017_737 { SG_BCK017_737 = SG_BCK017_737[sjrbase] }
+goal setBCK010_736 { SG_BCK010_736 = SG_BCK010_736[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Calaveras River     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+goal setCLV035_564 { SG_CLV035_564 = SG_CLV035_564[sjrbase] }
+goal setCLV028_563 { SG_CLV028_563 = SG_CLV028_563[sjrbase] }
+goal setCLV023_562 { SG_CLV023_562 = SG_CLV023_562[sjrbase] }
+goal setCLV016_561 { SG_CLV016_561 = SG_CLV016_561[sjrbase] }
+goal setCLV010_560 { SG_CLV010_560 = SG_CLV010_560[sjrbase] }
+goal setCLV004_559 { SG_CLV004_559 = SG_CLV004_559[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla Bypass/Eastside Bypass   !!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+goal setEBP016_819 { SG_EBP016_819 = SG_EBP016_819[sjrbase] }
+goal setEBP030_785 { SG_EBP030_785 = SG_EBP030_785[sjrbase] }
+goal setEBP042_750 { SG_EBP042_750 = SG_EBP042_750[sjrbase] }
+goal setEBP048_729 { SG_EBP048_729 = SG_EBP048_729[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Chowchilla River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setCHW031_792 { SG_CHW031_792 = SG_CHW031_792[sjrbase] }
+goal setCHW028_791 { SG_CHW028_791 = SG_CHW028_791[sjrbase] }
+goal setCHW024_790 { SG_CHW024_790 = SG_CHW024_790[sjrbase] }
+goal setCHW021_789 { SG_CHW021_789 = SG_CHW021_789[sjrbase] }
+goal setCHW017_788 { SG_CHW017_788 = SG_CHW017_788[sjrbase] }
+goal setCHW011_787 { SG_CHW011_787 = SG_CHW011_787[sjrbase] }
+goal setCHW006_786 { SG_CHW006_786 = SG_CHW006_786[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Deadman Creek   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setDED044_757 { SG_DED044_757 = SG_DED044_757[sjrbase] }
+goal setDED038_756 { SG_DED038_756 = SG_DED038_756[sjrbase] }
+goal setDED035_755 { SG_DED035_755 = SG_DED035_755[sjrbase] }
+goal setDED032_754 { SG_DED032_754 = SG_DED032_754[sjrbase] }
+goal setDED025_753 { SG_DED025_753 = SG_DED025_753[sjrbase] }
+goal setDED019_752 { SG_DED019_752 = SG_DED019_752[sjrbase] }
+goal setDED010_751 { SG_DED010_751 = SG_DED010_751[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Fresno River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+goal setFRS045_826 { SG_FRS045_826 = SG_FRS045_826[sjrbase] }
+goal setFRS039_825 { SG_FRS039_825 = SG_FRS039_825[sjrbase] }
+goal setFRS036_824 { SG_FRS036_824 = SG_FRS036_824[sjrbase] }
+goal setFRS032_823 { SG_FRS032_823 = SG_FRS032_823[sjrbase] }
+goal setFRS025_822 { SG_FRS025_822 = SG_FRS025_822[sjrbase] }
+goal setFRS020_821 { SG_FRS020_821 = SG_FRS020_821[sjrbase] }
+goal setFRS016_820 { SG_FRS016_820 = SG_FRS016_820[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Merced River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setMCD052_701 { SG_MCD052_701 = SG_MCD052_701[sjrbase] }
+goal setMCD048_700 { SG_MCD048_700 = SG_MCD048_700[sjrbase] }
+goal setMCD042_699 { SG_MCD042_699 = SG_MCD042_699[sjrbase] }
+goal setMCD036_698 { SG_MCD036_698 = SG_MCD036_698[sjrbase] }
+goal setMCD028_697 { SG_MCD028_697 = SG_MCD028_697[sjrbase] }
+goal setMCD021_696 { SG_MCD021_696 = SG_MCD021_696[sjrbase] }
+goal setMCD014_695 { SG_MCD014_695 = SG_MCD014_695[sjrbase] }
+goal setMCD009_694 { SG_MCD009_694 = SG_MCD009_694[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! San Joaquin River   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setSJR263_880 { SG_SJR263_880 = SG_SJR263_880[sjrbase] }
+goal setSJR256_879 { SG_SJR256_879 = SG_SJR256_879[sjrbase] }
+goal setSJR249_878 { SG_SJR249_878 = SG_SJR249_878[sjrbase] }
+goal setSJR242_877 { SG_SJR242_877 = SG_SJR242_877[sjrbase] }
+goal setSJR235_876 { SG_SJR235_876 = SG_SJR235_876[sjrbase] }
+goal setSJR227_875 { SG_SJR227_875 = SG_SJR227_875[sjrbase] }
+goal setSJR221_874 { SG_SJR221_874 = SG_SJR221_874[sjrbase] }
+goal setSJR214_873 { SG_SJR214_873 = SG_SJR214_873[sjrbase] }
+goal setMDOTA_872  { SG_MDOTA_872  = SG_MDOTA_872[sjrbase] }
+goal setSJR198_858 { SG_SJR198_858 = SG_SJR198_858[sjrbase] }
+goal setSJR192_843 { SG_SJR192_843 = SG_SJR192_843[sjrbase] }
+goal setSJR185_829 { SG_SJR185_829 = SG_SJR185_829[sjrbase] }
+goal setSJR180_818 { SG_SJR180_818 = SG_SJR180_818[sjrbase] }
+goal setSJR173_798 { SG_SJR173_798 = SG_SJR173_798[sjrbase] }
+goal setSJR166_784 { SG_SJR166_784 = SG_SJR166_784[sjrbase] }
+goal setSJR157_769 { SG_SJR157_769 = SG_SJR157_769[sjrbase] }
+goal setSJR152_768 { SG_SJR152_768 = SG_SJR152_768[sjrbase] }
+goal setSJR145_749 { SG_SJR145_749 = SG_SJR145_749[sjrbase] }
+goal setSJR141_728 { SG_SJR141_728 = SG_SJR141_728[sjrbase] }
+goal setSJR134_715 { SG_SJR134_715 = SG_SJR134_715[sjrbase] }
+goal setSJR123_702 { SG_SJR123_702 = SG_SJR123_702[sjrbase] }
+goal setSJR116_693 { SG_SJR116_693 = SG_SJR116_693[sjrbase] }
+goal setSJR111_683 { SG_SJR111_683 = SG_SJR111_683[sjrbase] }
+goal setSJR106_671 { SG_SJR106_671 = SG_SJR106_671[sjrbase] }
+goal setSJR096_660 { SG_SJR096_660 = SG_SJR096_660[sjrbase] }
+goal setSJR090_649 { SG_SJR090_649 = SG_SJR090_649[sjrbase] }
+goal setSJR081_633 { SG_SJR081_633 = SG_SJR081_633[sjrbase] }
+goal setSJR072_615 { SG_SJR072_615 = SG_SJR072_615[sjrbase] }
+goal setSJR062_605 { SG_SJR062_605 = SG_SJR062_605[sjrbase] }
+goal setSJR056_592 { SG_SJR056_592 = SG_SJR056_592[sjrbase] }
+goal setSJR048_576 { SG_SJR048_576 = SG_SJR048_576[sjrbase] }
+goal setSJR042_567 { SG_SJR042_567 = SG_SJR042_567[sjrbase] }
+goal setSJR038_558 { SG_SJR038_558 = SG_SJR038_558[sjrbase] }
+goal setSJR033_553 { SG_SJR033_553 = SG_SJR033_553[sjrbase] }
+goal setSJR028_543 { SG_SJR028_543 = SG_SJR028_543[sjrbase] }
+goal setSJR023_540 { SG_SJR023_540 = SG_SJR023_540[sjrbase] }
+goal setSJR022_520 { SG_SJR022_520 = SG_SJR022_520[sjrbase] }
+goal setSJR013_534 { SG_SJR013_534 = SG_SJR013_534[sjrbase] }
+goal setSJR009_533 { SG_SJR009_533 = SG_SJR009_533[sjrbase] }
+goal setSJR006_532 { SG_SJR006_532 = SG_SJR006_532[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Stanislaus River    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+goal setSTS058_623 { SG_STS058_623 = SG_STS058_623[sjrbase] }
+goal setSTS053_622 { SG_STS053_622 = SG_STS053_622[sjrbase] }
+goal setSTS050_621 { SG_STS050_621 = SG_STS050_621[sjrbase] }
+goal setSTS043_620 { SG_STS043_620 = SG_STS043_620[sjrbase] }
+goal setSTS036_619 { SG_STS036_619 = SG_STS036_619[sjrbase] }
+goal setSTS030_618 { SG_STS030_618 = SG_STS030_618[sjrbase] }
+goal setSTS020_617 { SG_STS020_617 = SG_STS020_617[sjrbase] }
+goal setSTS011_616 { SG_STS011_616 = SG_STS011_616[sjrbase] }
+goal set_SG_WDWRD   {SG_WDWRD = SG_WDWRD[sjrbase] }
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Tuolumne River  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+goal setTUO053_657 { SG_TUO053_657 = SG_TUO053_657[sjrbase] }
+goal setTUO047_656 { SG_TUO047_656 = SG_TUO047_656[sjrbase] }
+goal setTUO043_655 { SG_TUO043_655 = SG_TUO043_655[sjrbase] }
+goal setTUO036_654 { SG_TUO036_654 = SG_TUO036_654[sjrbase] }
+goal setTUO030_653 { SG_TUO030_653 = SG_TUO030_653[sjrbase] }
+goal setTUO022_652 { SG_TUO022_652 = SG_TUO022_652[sjrbase] }
+goal setTUO015_651 { SG_TUO015_651 = SG_TUO015_651[sjrbase] }
+goal setTUO010_650 { SG_TUO010_650 = SG_TUO010_650[sjrbase] }
+
+
+
+! test code to limit error terms to the mass balance issues with delayed seepage
+/*
+goal limitDED044errs { ErrNeg_DED044 < GetSeep(93)  /  cfs_cfm }
+goal limitDED038errs { ErrNeg_DED038 < GetSeep(94)  /  cfs_cfm }
+goal limitDED035errs { ErrNeg_DED035 < GetSeep(95)  /  cfs_cfm }
+goal limitDED032errs { ErrNeg_DED032 < GetSeep(96)  /  cfs_cfm }
+goal limitDED025errs { ErrNeg_DED025 < GetSeep(97)  /  cfs_cfm }
+goal limitDED019errs { ErrNeg_DED019 < GetSeep(98)  /  cfs_cfm }
+goal limitDED010errs { ErrNeg_DED010 < GetSeep(99)  /  cfs_cfm }
+goal zeroDED044errs { ErrPos_DED044 = 0. }
+goal zeroDED038errs { ErrPos_DED038 = 0. }
+goal zeroDED035errs { ErrPos_DED035 = 0. }
+goal zeroDED032errs { ErrPos_DED032 = 0. }
+goal zeroDED025errs { ErrPos_DED025 = 0. }
+goal zeroDED019errs { ErrPos_DED019 = 0. }
+goal zeroDED010errs { ErrPos_DED010 = 0. }
+
+goal limitBCK040errs { ErrNeg_BCK040 < GetSeep(105)  /  cfs_cfm }
+goal limitBCK035errs { ErrNeg_BCK035 < GetSeep(106)  /  cfs_cfm }
+goal limitBCK031errs { ErrNeg_BCK031 < GetSeep(107)  /  cfs_cfm }
+goal limitBCK024errs { ErrNeg_BCK024 < GetSeep(108)  /  cfs_cfm }
+goal limitBCK017errs { ErrNeg_BCK017 < GetSeep(109)  /  cfs_cfm }
+goal limitBCK010errs { ErrNeg_BCK010 < GetSeep(110)  /  cfs_cfm }
+goal zeroBCK040errs { ErrPos_BCK040 = 0.  }
+goal zeroBCK035errs { ErrPos_BCK035 = 0.  }
+goal zeroBCK031errs { ErrPos_BCK031 = 0.  }
+goal zeroBCK024errs { ErrPos_BCK024 = 0.  }
+goal zeroBCK017errs { ErrPos_BCK017 = 0.  }
+goal zeroBCK010errs { ErrPos_BCK010 = 0.  }
+*/

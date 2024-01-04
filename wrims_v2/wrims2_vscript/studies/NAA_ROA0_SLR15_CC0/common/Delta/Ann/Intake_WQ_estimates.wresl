@@ -1,0 +1,75 @@
+! Intake_WQ_estimates.wresl
+! Estimates EC and CL- conditions at selected Delta Urban Intakes using ANN's and previous cycle flow results
+
+! The following are the index values for calling AnnEC function
+!      2 = Rock Slough
+!      7 = Los Vaqueros Intake (Old River)
+!      9 = Victoria Canal
+
+!*******************************************************
+! estimate Rock Slough salinity conditions based on previous cycle flow results
+define RS_estEC {
+    value AnnEC(C400(-4),C400(-3),C400(-2),C400(-1),pr_cyc_C400,
+           D409(-4),D409(-3),D409(-2),D409(-1),pr_cyc_D409,
+           C639(-4),C639(-3),C639(-2),C639(-1),pr_cyc_C639,
+           DXC(-4),DXC(-3),DXC(-2),DXC(-1),pr_cyc_DXC,
+           net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),pr_cyc_net_DICU,
+           sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),pr_cyc_sac_oth,
+           exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),pr_cyc_exp_oth,
+           VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),pr_cyc_VernWQ,
+           int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),daysin,
+           int(2),int(monthly_ave),month,wateryear)}  ! 2 is for RS
+
+! This is CCWD's first approximation (Matt Moses, July 2006)
+! Use Maximum of the following two equations:
+!   Cl = 0.285*EC - 50    (this is the 'seawater' line)
+!   Cl = 0.15*EC - 12      (this is the 'ag. drainage' line)
+! These two equations intercept at Cl=30.222... and EC=281.481481481...
+define RS_estCL {value max(0.285*RS_estEC - 50.,0.150*RS_estEC - 12.)}
+!define RS_estCLdv {alias RS_estCL kind 'SALINITY' units 'MG/L'} !debug purposes
+
+!*******************************************************
+! estimate Old River salinity conditions based on previous cycle flow results
+define LV_estEC {
+    value AnnEC(C400(-4),C400(-3),C400(-2),C400(-1),pr_cyc_C400,
+           D409(-4),D409(-3),D409(-2),D409(-1),pr_cyc_D409,
+           C639(-4),C639(-3),C639(-2),C639(-1),pr_cyc_C639,
+           DXC(-4),DXC(-3),DXC(-2),DXC(-1),pr_cyc_DXC,
+           net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),pr_cyc_net_DICU,
+           sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),pr_cyc_sac_oth,
+           exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),pr_cyc_exp_oth,
+           VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),pr_cyc_VernWQ,
+           int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),daysin,
+           int(7),int(monthly_ave),month,wateryear)}  ! 7 is for LV
+
+! This is CCWD's first approximation (Matt Moses, July 2006)
+! Use Maximum of the following two equations:
+!   Cl = 0.285*EC - 50    (this is the 'seawater' line)
+!   Cl = 0.15*EC - 12      (this is the 'ag. drainage' line)
+! These two equations intercept at Cl=30.222... and EC=281.481481481...
+define LV_estCL {value max(0.285*LV_estEC - 50.,0.150*LV_estEC - 12.)}
+!define LV_estCLdv {alias LV_estCL kind 'SALINITY' units 'MG/L'} !debug purposes
+
+!*******************************************************
+! estimate Victoria Canal salinity conditions based on previous cycle flow results
+define VI_estEC {
+    value AnnEC(C400(-4),C400(-3),C400(-2),C400(-1),pr_cyc_C400,
+           D409(-4),D409(-3),D409(-2),D409(-1),pr_cyc_D409,
+           C639(-4),C639(-3),C639(-2),C639(-1),pr_cyc_C639,
+           DXC(-4),DXC(-3),DXC(-2),DXC(-1),pr_cyc_DXC,
+           net_DICU(-4),net_DICU(-3),net_DICU(-2),net_DICU(-1),pr_cyc_net_DICU,
+           sac_oth(-4),sac_oth(-3),sac_oth(-2),sac_oth(-1),pr_cyc_sac_oth,
+           exp_oth(-4),exp_oth(-3),exp_oth(-2),exp_oth(-1),pr_cyc_exp_oth,
+           VERNWQFINAL(-4),VERNWQFINAL(-3),VERNWQFINAL(-2),VERNWQFINAL(-1),pr_cyc_VernWQ,
+           int(daysindv(-4)),int(daysindv(-3)),int(daysindv(-2)),int(daysindv(-1)),daysin,
+           int(9),int(monthly_ave),month,wateryear)}  ! 9 is for VI
+
+! This is CCWD's first approximation (Matt Moses, July 2006)
+! Use Maximum of the following two equations:
+!   Cl = 0.285*EC - 50    (this is the 'seawater' line)
+!   Cl = 0.15*EC - 12      (this is the 'ag. drainage' line)
+! These two equations intercept at Cl=30.222... and EC=281.481481481...
+define VI_estCL {value max(0.285*VI_estEC - 50.,0.150*VI_estEC - 12.)}
+!define VI_estCLdv {alias VI_estCL kind 'SALINITY' units 'MG/L'} !debug purposes
+
+!*******************************************************

@@ -1,0 +1,31 @@
+
+! THIS FILE CONTAINS THE NAMES OF ALL INCLUDE FILES FOR THE SYSTEM DESCRIPTION
+
+
+
+/*
+These files are for the Consumnes-Mokelume Region/Sub-Model
+*/
+!*******ARCS*******
+
+INCLUDE 'SystemTables_Mok\arcs-Inflows.wresl'                   
+INCLUDE 'SystemTables_Mok\arcs-Channels.wresl'
+INCLUDE 'SystemTables_Mok\arcs-Deliveries.wresl'
+INCLUDE 'SystemTables_Mok\arcs-Diversions.wresl'
+INCLUDE 'SystemTables_Mok\arcs-Returns.wresl'
+INCLUDE 'SystemTables_Mok\arcs-Seepage.wresl'
+INCLUDE 'SystemTables_Mok\arcs-OperationalSpills.wresl'
+INCLUDE 'SystemTables_Mok\arcs-DivLosses.wresl'
+
+!****CONSTRAINTS****
+
+INCLUDE 'SystemTables_Mok\constraints-Reservoirs.wresl'
+INCLUDE 'SystemTables_Mok\constraints-DivLosses.wresl'
+INCLUDE 'SystemTables_Mok\constraints-Deliveries.wresl'
+INCLUDE 'SystemTables_Mok\constraints-Returns.wresl'
+INCLUDE 'SystemTables_Mok\constraints-Seepage-Zero.wresl'                
+INCLUDE 'SystemTables_Mok\constraints-OperationalSpills.wresl'          
+INCLUDE 'SystemTables_Mok\constraints-Connectivity.wresl'
+INCLUDE 'SystemTables_Mok\constraints-MinFlows.wresl'
+
+

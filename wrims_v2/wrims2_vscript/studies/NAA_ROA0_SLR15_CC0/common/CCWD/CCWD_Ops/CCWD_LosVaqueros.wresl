@@ -1,0 +1,131 @@
+/*
+Separate Los Vaqueros Reservoir into emergency pool and water quality pool.  Do not allow encroachment into emergency pool except for evaportation.
+*/
+
+!Separate emergency pool (S422_1) from WQ pool (S422_2)
+
+define S422level1 {
+	case DryCritical {
+                condition       wyt_SAC_LV > 3.5
+		value		44.
+	}
+	case otherwise {
+		condition	always
+		value		70.
+	}
+}
+
+goal S422Zone1 {S422_1 < S422level1}
+goal S422Zone2 {S422_2 < S422level2 - S422level1}
+
+define S422level1_ {alias S422level1 kind 'storage-level' units 'taf'}
+define S422level2_ {alias S422level2 kind 'storage-level' units 'taf'}
+
+!Release Kellogg Creek inflow above 5 cfs to stream channel.
+goal lim_KC_release {C422_KC < min(5., I422)}
+
+
+!Estimate LV evap for use in WQ operations calculations
+define E422_est {value (evap_S422/24)*A422last*af_cfs}
+
+!Read in Los Vaqueros Reservoir (LVR) local preciptation and convert to cfs for use in continuity, wq ops, and wq calcs.
+define I422_ppt { timeseries kind 'PRECIP-RATE' units 'IN' }     !inches of precip
+define I422_ppt_cfs  {value I422_ppt/12000. * A422last * taf_cfs }
+define I422_ppt_cfs_ {alias I422_ppt_cfs kind 'flow-inflow' units 'cfs'}
+
+!Save Kellogg Creek inflow
+define I422_ {alias I422 kind 'FLOW-INFLOW' units 'cfs'}
+
+!Define maximum Los Vaqueros WQ and April release.  Purpose of parameter is to prevent release of emergency pool
+!for water quality purposes of April deliveries.
+define S422_maxWQrel {value max(0.,(S422(-1) - S422level1)*taf_cfs + max(0.,I422 - 5.) + I422_ppt_cfs - E422_est)}
+
+!Limit LV release to protect emergency storage pool.
+goal save_emergency_pool {C422_REL < S422_maxWQrel}
+
+!No fill period specified in UserInput.wresl
+
+define BO_nofill_frac {value real(BO_nofill_days)/real(daysinmonth)}
+
+define lim_NoFill {value max(0., 1. - BO_nofill_frac)*C422_FILL_max}
+define lim_NoFill_ {alias lim_NoFill kind 'fill-constraint' units 'cfs'}
+
+goal set_lim_NoFill {C422_FILL < lim_NoFill}
+
+!Apply the AIP DFG permit February no fill limit.
+
+define feb_nofill_frac {
+	case Feb {
+		condition	month == feb
+		value 		real(feb_nofill_days)/real(daysinmonth)
+	}
+	case otherwise {
+		condition	always
+		value		0.
+	}
+}
+
+define lim_FebNoFill {value max(0.,1. - feb_nofill_frac)*C422_FILL_max}
+define lim_FebNoFill_ {alias lim_FebNoFill kind 'fill-constraint' units 'cfs'}
+
+goal set_lim_FebNoFill {C422_FILL < lim_FebNoFill}
+
+!Must meet X2 requirements from January to June
+/*
+define Delta_Outflow {timeseries kind 'flow' units 'cfs'} !net Delta outflow from CalSim baseline
+define X2 {timeseries kind 'x2-position' units 'km'}  !X2 at end of current time step processed from CalSim baseline results.
+
+define lim_fill_X2 {
+	case FebToMay {
+		condition	range(month,feb,may) .and. X2 > 75 .and. Delta_Outflow < 11400
+		value		0.
+	}
+	case JanorJun {
+		condition	range(month,jan,jun) .and. X2 > 81 .and. Delta_Outflow < 7100
+		value		0.
+	}
+	case otherwise {
+		condition	always
+		value		99999.
+	}
+}
+
+*/
+
+define lim_fill_X2 {
+	case NoLimit {
+		condition	range(month,jan,jun) .and. X2_last < km_chs - 1 .or. range(month,jul,dec)
+		value		99999.
+	}
+	case JanNoLimit {
+		condition	month == jan .and. X2_last < km_cnf - 1
+		value		99999.
+	}
+	case JunNoLimit {
+		condition	month == jun .and. X2_last < km_cnf - 1
+		value		99999.
+	}
+	case FebToMay {
+		condition	range(month,feb,may)
+		value		real(daysX2_chs)/real(daysinmonth)*C422_FILL_max
+	}
+	case June {
+		condition	month == jun
+		value		real(daysX2_cnf)/real(daysinmonth)*C422_FILL_max
+	}
+	case January {
+		condition	always
+		value		0.
+	}
+}
+
+!define lim_fill_X2 {value 99999.}
+
+
+define lim_fill_X2_ {alias lim_fill_X2 kind 'fill-constraint' units 'cfs'}
+
+goal set_lim_fill_X2 {C422_FILL < lim_fill_X2}
+
+!Define Los Vaqueros fill demand.  Depends on available storage capacity, expected inflows, evaporation, conveyance capacity, and fill regulations.
+define S422_demand {value max(0.,min((S422level2 - S422(-1))*taf_cfs - max(0.,I422 - 5.) - I422_ppt_cfs + E422_est, lim_NoFill, lim_FebNoFill, lim_fill_X2, C422_FILL_max))}
+

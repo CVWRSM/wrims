@@ -1,0 +1,61 @@
+initial {
+
+	const option_A { 4 }
+
+}
+
+sequence CYCLE1 {
+    model   fiRst
+    order   1
+
+}
+
+	
+model first { 
+
+	define X { std kind 'FLOW-CHANNEL' units 'CFS'}
+	define Y { std kind 'FLOW-CHANNEL' units 'CFS'}
+
+	goal g0 { x + y < 100 }
+  
+	if int(option_A)==1 {
+		
+		include 'goalX1.wresl' 
+		svar k { value 1 }
+		svar m { value 11 }
+		include 'goalY1.wresl' 	
+	} 
+	elseif int(option_A)==2 {
+	
+		include 'goalX2.wresl'
+		svar k { value 2 }
+		svar m { value 22 }
+		include 'goalY2.wresl' 	
+	}
+	elseif int(option_A)==3 {
+	
+		include 'goalX3.wresl'
+		svar k { value 3 }
+		svar m { value 33 }
+		include 'goalY3.wresl' 
+	}
+	elseif int(option_A)==4 {	
+	
+		include 'goalX4.wresl'
+		svar k { value 4 }
+		svar m { value 44 }
+		include 'goalY4.wresl'  	
+	}
+	else {
+	
+		svar k { value 5 }
+		svar m { value 55 }		
+		
+	}
+  
+	objective obj {
+		[x, 5] 
+		[y, 5] 
+	}
+  
+}

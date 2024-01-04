@@ -1,0 +1,79 @@
+/*************************************
+sum_cvp_demands_system.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+This file reads in timeseries for annual contract demands by type.  In Calsim, there 
+was a lot of code here to sum the monthly contract demands into annual demands, but now
+in CalLite these are input timeseries.
+
+Also reads in a timeseries for total diversion requirement for entire system
+
+1/5/2011: Added code to read in demand switches and user-defined demands, and do additional computations
+*************************************/
+
+
+
+! Annual contract demands
+define acvpdem_pag_s {timeseries kind 'DEM-CVPS-AG-TOTAL' units 'TAF'}
+define acvpdem_pmi_s {timeseries kind 'DEM-CVPS-MI-TOTAL' units 'TAF'}
+define acvpdem_pex_s {timeseries kind 'DEM-CVPS-EX-TOTAL' units 'TAF'}
+define acvpdem_prf_s {timeseries kind 'DEM-CVPS-RF-TOTAL' units 'TAF'}
+define acvpdem_pls_s {timeseries kind 'DEM-CVPS-LS-TOTAL' units 'TAF'}
+
+define acvpdem_total_s {timeseries kind 'DEM-CVPS-TOTAL' units 'TAF'}
+
+define acvpdem_pag_sys {timeseries kind 'DEM-CVPSYS-AG-TOTAL' units 'TAF'}
+define acvpdem_pmi_sys {timeseries kind 'DEM-CVPSYS-MI-TOTAL' units 'TAF'}
+define acvpdem_pex_sys {timeseries kind 'DEM-CVPSYS-EX-TOTAL' units 'TAF'}
+define acvpdem_psc_sys {timeseries kind 'DEM-CVPSYS-SC-TOTAL' units 'TAF'}
+define acvpdem_prf_sys {timeseries kind 'DEM-CVPSYS-RF-TOTAL' units 'TAF'}
+define acvpdem_pls_sys {timeseries kind 'DEM-CVPSYS-LS-TOTAL' units 'TAF'}
+
+define acvpdem_tot_sys {timeseries kind 'DEM-CVPSYS-TOTAL' units 'TAF'}
+
+! Annual diversion requirement
+define acvpdem_dr_sys {timeseries kind 'demand-annual' units 'taf'}
+
+!******************* CUMULATIVE MONTHLY DEMANDS  ****************************
+define dem_totcvps_pag {timeseries kind 'demand-cvp-ag' units 'taf'}
+define dem_totcvps_pmi {timeseries kind 'demand-cvp-mi' units 'taf'}
+define dem_totcvps_pex {timeseries kind 'demand-cvp-ex' units 'taf'}
+define dem_totcvps_prf {timeseries kind 'demand-cvp-rf' units 'taf'}
+define dem_totcvps_pls {timeseries kind 'demand-cvp-ls' units 'taf'}
+
+! ratios are 1 if demands not user-defined, <=1 if demands user-defined
+define CVP_pag_ratio_s {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_pag_udef_s / acvpdem_pag_s} 
+                        case full_contract {condition always value 1.}}
+define CVP_pmi_ratio_s {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_pmi_udef_s / acvpdem_pmi_s} 
+                        case full_contract {condition always value 1.}}
+define CVP_prf_ratio_s {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_prf_udef_s / acvpdem_prf_s} 
+                        case full_contract {condition always value 1.}}
+
+! Calculate total south and system demands using user-defined amounts, and system ag, mi, and rf demands 
+! that include user-defined amounts, and ratios to full amounts for all of these.
+define acvpdem_tot_udef_s {value acvpdem_pag_udef_s + acvpdem_pmi_udef_s + acvpdem_prf_udef_s + acvpdem_pex_s + acvpdem_pls_s}
+
+define CVP_tot_ratio_s {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_tot_udef_s / acvpdem_total_s}
+                        case full_contract {condition always value 1.}}
+
+define acvpdem_tot_s_red {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_total_s - acvpdem_tot_udef_s}
+                          case full_contract {condition always value 0.}}
+
+define acvpdem_pag_udef_sys {value acvpdem_pag_sys - (acvpdem_pag_s - acvpdem_pag_udef_s)}
+define acvpdem_pmi_udef_sys {value acvpdem_pmi_sys - (acvpdem_pmi_s - acvpdem_pmi_udef_s)}
+define acvpdem_prf_udef_sys {value acvpdem_prf_sys - (acvpdem_prf_s - acvpdem_prf_udef_s)}
+
+define CVP_pag_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_pag_udef_sys / acvpdem_pag_sys}
+                          case full_contract {condition always value 1.}}
+define CVP_pmi_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_pmi_udef_sys / acvpdem_pmi_sys}
+                          case full_contract {condition always value 1.}}
+define CVP_prf_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_prf_udef_sys / acvpdem_prf_sys}
+                          case full_contract {condition always value 1.}}
+
+define acvpdem_tot_udef_sys {value acvpdem_pag_udef_sys + acvpdem_pmi_udef_sys + acvpdem_prf_udef_sys + acvpdem_pex_sys + acvpdem_psc_sys + acvpdem_pls_sys}
+
+define CVP_tot_ratio_sys {case user_defined  {condition CVPdemandswitch == 2 value acvpdem_tot_udef_sys / acvpdem_tot_sys}
+                          case full_contract {condition always value 1.}}
+
+

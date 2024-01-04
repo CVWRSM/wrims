@@ -1,0 +1,64 @@
+system Orovl 
+
+float I_Orovl;
+
+
+network {
+
+	I_Orovl -> S_Orovl -> C_Orovl -> ? ;
+	           S_Orovl -> D_Orovl ;			  
+
+}
+
+
+channel C_Orovl ( ) {
+
+	upstream ;
+	downstream ;
+	
+	
+
+
+} 
+
+
+channel C_Orovl ( ) {
+
+
+
+} 
+
+
+#LAKE OROVILLE
+# [ ] is used for array
+reservoir S_Orovl ( ) { 
+	
+	link out_1;
+	link in_1;
+	
+	
+	# I_Orovl = timeseries ( kind='FLOW-INFLOW' units='CFS' );  
+	
+	var evaporation_rate;
+	
+	loss  E_Orovl = area * evaporation_rate; #timeseries ( kind='EVAPORATION-RATE' units='IN' );
+	
+	
+	
+	rating {
+
+		[ elevation = 340, area = 0,     storage = 0,       discharge = 50000  ];
+		[ elevation = 340, area = 594,   storage = 29638,   discharge = 50000  ];
+		[ elevation = 440, area = 1553,  storage = 120000,  discharge = 50000  ];
+		[ elevation = 570, area = 3950,  storage = 480000,  discharge = 50000  ];
+		[ elevation = 639, area = 5810,  storage = 846367,  discharge = 50000  ];
+		[ elevation = 640, area = 5838,  storage = 852192,  discharge = 50000  ];
+		[ elevation = 668, area = 6550,  storage = 1008000, discharge = 207000 ];
+		[ elevation = 750, area = 9340,  storage = 1680000, discharge = 210000 ];
+		[ elevation = 819, area = 11851, storage = 2352000, discharge = 214000 ];
+		[ elevation = 901, area = 15855, storage = 3553405, discharge = 280000 ];
+		[ elevation = 920, area = 16899, storage = 3864497, discharge = 750000 ];	
+	}	
+			
+}
+

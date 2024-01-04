@@ -1,0 +1,485 @@
+
+# ====================== Files used in simulation ========================
+
+# Entry file (top priority):  historical_qual_ec_om_july.inp
+# Other files, increasing priority: 
+# 1    configuration_historical_om_july.inp
+# 2    ../../common_input/group_sourcetracking_20090715.inp
+# 3    ../../common_input/node_concentration_dicu_ec_20090715.inp
+# 4    ../../common_input/output_channel_std_qual_rki_20090715.inp
+# 5    ../../common_input/output_channel_std_qual_named_20090715.inp
+# 6    ../../common_input/output_channel_std_qual_rki_addmore_20121214.inp
+# 7    ../../common_input/output_reservoir_std_qual_named_20090715.inp
+
+
+
+#===================      Simulation input data    =====================
+
+ENVVAR
+NAME  VALUE  
+BNDRYINPUT                          ./201407_Historical_Files/hist_19902014_extract.dss    
+DICUFILE                            ./201407_Historical_Files/dicu_201407.dss    
+DICUFILE_ECE                        ./201407_Historical_Files/dicuwq_3vals_extended.dss    
+DSM2AGENCY                          dwr    
+DSM2INPUTDIR                        ../../common_input    
+DSM2MODIFIER                        historical_OM_july    
+DSM2OUTPUTDIR                       ./output    
+END_DATE                            30JUL2014    
+END_TIME                            0000    
+EVENTSINPUT                         ./201407_Historical_Files/events.dss    
+FINE_OUT                            15MIN    
+FINE_OUT_DAY                        1DAY    
+FLOWPATTERN                         ./output/FLOWPATTERN.dss    
+GATEFILE                            ./201407_Historical_Files/gates-201407.dss    
+GATEOUTPUTFILE                      ./output/historical_OM_july.dss    
+HISTFLOWVERSION                     DWR-DMS-201407    
+HISTQUALVERSION                     DWR-DMS-201407    
+HISTSTAGEVERSION                    DWR-DMS-201407    
+HYDROOUTDSSFILE                     z:/historical_OM_july.dss    
+HYDROOUTFILE                        ./output/historical_OM_july.hof    
+HYDRORSTFILE                        ./output/historical_OM_july.hrf    
+HYDROTIDEFILE                       z:/historical_OM_july.h5    
+OUTPUTFILE                          historical_OM_july.dss    
+QUALBNDINP                          ./201407_Historical_Files/hist_19902014_extract.dss    
+QUALOUTDSSFILE                      z:/historical_OM_july.dss    
+QUALOUTFILE                         ./output/historical_OM_july.qof    
+QUALRSTFILE                         z:/historical_OM_july.qrf    
+QUALTIDEFILE                        ./output/historical_OM_july_ec.h5    
+QUAL_START_DATE                     05JAN2014    
+START_DATE                          02NOV2013    
+START_TIME                          0000    
+STOCKTON_EFF_FLOW                   0.0    
+STOCKTON_FLOW_FILE                  constant    
+STUDYDIR                            .    
+TEMPDIR                             z:/temp    
+TSINPUTDIR                          ./201407_Historical_Files    
+VERSIONDATE                         201407    
+END
+
+SCALAR
+NAME  VALUE  
+binary_output                       false    
+checkdata                           false    
+cont_bad                            false    
+cont_missing                        false    
+cont_question                       false    
+cont_unchecked                      true    
+dispersion                          true    
+display_intvl                       1day    
+dss_direct                          true    
+flush_output                        20day    
+init_conc                           0.0    
+printlevel                          1    
+qual_time_step                      15min    
+run_end_date                        30JUL2014    
+run_end_time                        0000    
+run_start_date                      05JAN2014    
+run_start_time                      0000    
+temp_dir                            z:/temp    
+warn_missing                        false    
+warn_question                       false    
+warn_unchecked                      false    
+END
+
+IO_FILE
+MODEL  TYPE  IO  INTERVAL  FILE  
+qual        echo        out         none          ./output/qual_ec_echo_historical_OM_july.inp    
+qual        output      out         none          ./output/historical_OM_july.qof    
+qual        restart     out         1day          z:/historical_OM_july.qrf    
+END
+
+TIDEFILE
+START_DATE  END_DATE  FILE  
+runtime             length              z:/historical_OM_july.h5    
+END
+
+NODE_CONCENTRATION
+NAME  NODE_NO  VARIABLE  FILLIN  FILE  PATH  
+calaveras           21       ec                  last            constant    125                                                   
+cosumnes            446      ec                  last            constant    125                                                   
+dicu_drain_1        1        ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/1/DRAIN-EC//1MON/DWR-BDO/             
+dicu_drain_10       10       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/10/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_100      100      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/100/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_104      104      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/104/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_105      105      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/105/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_106      106      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/106/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_107      107      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/107/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_108      108      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/108/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_109      109      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/109/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_11       11       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/11/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_110      110      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/110/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_111      111      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/111/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_112      112      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/112/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_113      113      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/113/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_114      114      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/114/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_115      115      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/115/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_116      116      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/116/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_117      117      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/117/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_118      118      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/118/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_119      119      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/119/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_12       12       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/12/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_121      121      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/121/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_122      122      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/122/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_124      124      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/124/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_125      125      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/125/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_126      126      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/126/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_127      127      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/127/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_128      128      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/128/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_13       13       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/13/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_130      130      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/130/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_133      133      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/133/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_135      135      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/135/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_136      136      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/136/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_137      137      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/137/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_138      138      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/138/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_139      139      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/139/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_14       14       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/14/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_140      140      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/140/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_141      141      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/141/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_142      142      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/142/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_143      143      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/143/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_144      144      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/144/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_145      145      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/145/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_146      146      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/146/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_147      147      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/147/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_148      148      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/148/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_149      149      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/149/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_15       15       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/15/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_150      150      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/150/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_151      151      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/151/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_152      152      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/152/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_153      153      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/153/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_155      155      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/155/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_156      156      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/156/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_158      158      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/158/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_159      159      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/159/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_16       16       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/16/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_162      162      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/162/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_163      163      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/163/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_164      164      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/164/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_165      165      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/165/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_167      167      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/167/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_168      168      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/168/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_169      169      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/169/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_170      170      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/170/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_171      171      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/171/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_172      172      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/172/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_173      173      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/173/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_174      174      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/174/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_175      175      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/175/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_176      176      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/176/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_177      177      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/177/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_178      178      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/178/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_179      179      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/179/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_18       18       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/18/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_182      182      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/182/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_183      183      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/183/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_187      187      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/187/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_188      188      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/188/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_189      189      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/189/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_19       19       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/19/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_190      190      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/190/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_191      191      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/191/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_192      192      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/192/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_194      194      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/194/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_195      195      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/195/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_196      196      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/196/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_197      197      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/197/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_198      198      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/198/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_199      199      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/199/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_20       20       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/20/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_200      200      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/200/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_201      201      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/201/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_202      202      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/202/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_203      203      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/203/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_204      204      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/204/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_205      205      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/205/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_206      206      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/206/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_209      209      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/209/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_21       21       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/21/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_210      210      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/210/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_211      211      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/211/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_212      212      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/212/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_213      213      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/213/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_215      215      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/215/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_216      216      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/216/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_219      219      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/219/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_22       22       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/22/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_222      222      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/222/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_223      223      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/223/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_224      224      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/224/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_226      226      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/226/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_23       23       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/23/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_232      232      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/232/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_24       24       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/24/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_240      240      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/240/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_241      241      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/241/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_242      242      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/242/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_243      243      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/243/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_245      245      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/245/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_246      246      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/246/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_247      247      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/247/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_25       25       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/25/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_250      250      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/250/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_251      251      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/251/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_253      253      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/253/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_255      255      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/255/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_256      256      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/256/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_257      257      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/257/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_26       26       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/26/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_260      260      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/260/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_262      262      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/262/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_264      264      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/264/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_266      266      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/266/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_268      268      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/268/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_269      269      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/269/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_271      271      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/271/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_274      274      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/274/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_276      276      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/276/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_278      278      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/278/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_280      280      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/280/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_282      282      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/282/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_284      284      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/284/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_286      286      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/286/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_288      288      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/288/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_29       29       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/29/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_290      290      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/290/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_292      292      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/292/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_294      294      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/294/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_296      296      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/296/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_297      297      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/297/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_298      298      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/298/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_299      299      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/299/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_3        3        ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/3/DRAIN-EC//1MON/DWR-BDO/             
+dicu_drain_30       30       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/30/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_301      301      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/301/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_302      302      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/302/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_303      303      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/303/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_304      304      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/304/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_305      305      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/305/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_306      306      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/306/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_307      307      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/307/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_308      308      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/308/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_310      310      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/310/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_311      311      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/311/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_312      312      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/312/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_314      314      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/314/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_315      315      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/315/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_316      316      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/316/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_317      317      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/317/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_318      318      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/318/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_319      319      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/319/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_32       32       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/32/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_320      320      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/320/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_321      321      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/321/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_326      326      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/326/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_330      330      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/330/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_331      331      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/331/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_332      332      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/332/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_333      333      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/333/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_334      334      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/334/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_335      335      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/335/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_336      336      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/336/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_337      337      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/337/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_338      338      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/338/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_339      339      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/339/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_340      340      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/340/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_341      341      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/341/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_342      342      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/342/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_343      343      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/343/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_344      344      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/344/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_346      346      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/346/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_347      347      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/347/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_348      348      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/348/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_35       35       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/35/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_350      350      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/350/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_351      351      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/351/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_352      352      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/352/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_353      353      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/353/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_354      354      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/354/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_355      355      ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/355/DRAIN-EC//1MON/DWR-BDO/           
+dicu_drain_38       38       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/38/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_39       39       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/39/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_40       40       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/40/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_41       41       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/41/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_42       42       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/42/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_43       43       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/43/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_44       44       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/44/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_45       45       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/45/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_46       46       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/46/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_47       47       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/47/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_48       48       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/48/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_49       49       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/49/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_5        5        ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/5/DRAIN-EC//1MON/DWR-BDO/             
+dicu_drain_50       50       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/50/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_51       51       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/51/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_52       52       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/52/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_53       53       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/53/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_54       54       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/54/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_55       55       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/55/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_56       56       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/56/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_58       58       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/58/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_59       59       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/59/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_6        6        ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/6/DRAIN-EC//1MON/DWR-BDO/             
+dicu_drain_60       60       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/60/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_61       61       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/61/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_62       62       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/62/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_63       63       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/63/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_64       64       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/64/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_65       65       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/65/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_66       66       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/66/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_67       67       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/67/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_68       68       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/68/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_69       69       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/69/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_7        7        ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/7/DRAIN-EC//1MON/DWR-BDO/             
+dicu_drain_70       70       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/70/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_71       71       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/71/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_72       72       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/72/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_73       73       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/73/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_74       74       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/74/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_75       75       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/75/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_77       77       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/77/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_78       78       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/78/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_79       79       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/79/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_8        8        ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/8/DRAIN-EC//1MON/DWR-BDO/             
+dicu_drain_80       80       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/80/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_81       81       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/81/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_82       82       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/82/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_84       84       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/84/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_85       85       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/85/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_86       86       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/86/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_89       89       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/89/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_9        9        ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/9/DRAIN-EC//1MON/DWR-BDO/             
+dicu_drain_91       91       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/91/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_92       92       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/92/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_93       93       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/93/DRAIN-EC//1MON/DWR-BDO/            
+dicu_drain_98       98       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+NODE/98/DRAIN-EC//1MON/DWR-BDO/            
+jones_out           118      ec                  last            ./201407_Historical_Files/events.dss    /HIST+CHAN/JONES/EC//1DAY/DWR-DMS/                    
+jones_pumpout       121      ec                  last            ./201407_Historical_Files/events.dss    /HIST+CHAN/JONES/EC//1DAY/DWR-DMS/                    
+moke                447      ec                  last            constant    125                                                   
+mtz                 361      ec                  last            ./201407_Historical_Files/hist_19902014_extract.dss    /FILL+CHAN/RSAC054/EC//1HOUR/DWR-DMS-201407/          
+sac                 330      ec                  last            ./201407_Historical_Files/hist_19902014_extract.dss    /FILL+CHAN/RSAC139/EC//1DAY/DWR-DMS-201407/           
+vernalis            17       ec                  last            ./201407_Historical_Files/hist_19902014_extract.dss    /FILL+CHAN/RSAN112/EC//1DAY/DWR-DMS-201407/           
+yolo                317      ec                  last            ./201407_Historical_Files/hist_19902014_extract.dss    /FILL+CHAN/RSAC139/EC//1DAY/DWR-DMS-201407/           
+END
+
+RESERVOIR_CONCENTRATION
+NAME  RES_NAME  VARIABLE  FILLIN  FILE  PATH  
+dicu_drain_bbid     clifton_court       ec                  last            ./201407_Historical_Files/dicuwq_3vals_extended.dss    /DICU-HIST+RSVR/BBID/DRAIN-EC//1MON/DWR-BDO/          
+END
+
+INPUT_CLIMATE
+NAME  VARIABLE  FILLIN  FILE  PATH  
+END
+
+GROUP
+NAME  
+ag    
+east    
+jones    
+mtz    
+sac    
+sjr    
+END
+
+GROUP_MEMBER
+GROUP_NAME  MEMBER_TYPE  PATTERN  
+ag                  source_sink         dicu_.*    
+east                flow_boundary       (moke|calaveras|cosumnes)    
+jones               flow_boundary       (jones_out|jones_pumpout)    
+mtz                 stage               mtz    
+sac                 flow_boundary       (sac|yolo)    
+sjr                 flow_boundary       vernalis    
+END
+
+RATE_COEFFICIENT
+GROUP_NAME  CONSTITUENT  VARIABLE  VALUE  
+END
+
+OUTPUT_CHANNEL
+NAME  CHAN_NO  DISTANCE  VARIABLE  INTERVAL  PERIOD_OP  FILE  
+14ml_sl             312      11385           ec              15MIN         inst          z:/historical_OM_july.dss    
+3mile_sl            309      7593            ec              15MIN         inst          z:/historical_OM_july.dss    
+CHSWP003            82       length          ec              15MIN         inst          z:/historical_OM_july.dss    
+SLPPR003            269      8333            ec              15MIN         inst          z:/historical_OM_july.dss    
+cftrn000            172      727             ec              15MIN         inst          z:/historical_OM_july.dss    
+chccc006            247      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+chdmc004            216      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+chdmc006            216      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+chgrl009            207      36              ec              15MIN         inst          z:/historical_OM_july.dss    
+chipps_s_442        442      10700           ec              15MIN         inst          z:/historical_OM_july.dss    
+chvct000            229      1328            ec              15MIN         inst          z:/historical_OM_july.dss    
+chwst000            232      3084            ec              15MIN         inst          z:/historical_OM_july.dss    
+dcc                 365      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+disappointment_sl    314      8130            ec              15MIN         inst          z:/historical_OM_july.dss    
+emptract_sl         37       0               ec              15MIN         inst          z:/historical_OM_july.dss    
+false_r             279      8937            ec              15MIN         inst          z:/historical_OM_july.dss    
+fish_cut            280      11364           ec              15MIN         inst          z:/historical_OM_july.dss    
+georgiana_sl        366      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+midr_sjr            161      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+mtzma_sl_us_scg_    512      6038            ec              15MIN         inst          z:/historical_OM_july.dss    
+oldr_midr           59       0               ec              15MIN         inst          z:/historical_OM_july.dss    
+oldr_mouth          124      7062            ec              15MIN         inst          z:/historical_OM_july.dss    
+potato_sl           328      7158            ec              15MIN         inst          z:/historical_OM_july.dss    
+rmid005             156      140             ec              15MIN         inst          z:/historical_OM_july.dss    
+rmid015             144      838             ec              15MIN         inst          z:/historical_OM_july.dss    
+rmid023             135      719             ec              15MIN         inst          z:/historical_OM_july.dss    
+rmid027             133      3641            ec              15MIN         inst          z:/historical_OM_july.dss    
+rmid040             126      3951            ec              15MIN         inst          z:/historical_OM_july.dss    
+rock_sl_pp1         247      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+rold014             117      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+rold024             106      2718            ec              15MIN         inst          z:/historical_OM_july.dss    
+rold034             90       3021            ec              15MIN         inst          z:/historical_OM_july.dss    
+rold040             82       2609            ec              15MIN         inst          z:/historical_OM_july.dss    
+rold046             80       1431            ec              15MIN         inst          z:/historical_OM_july.dss    
+rold047             79       2766            ec              15MIN         inst          z:/historical_OM_july.dss    
+rold059             71       3116            ec              15MIN         inst          z:/historical_OM_july.dss    
+rold074             54       0               ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac054             441      length          ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac064             452      190             ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac075             437      11108           ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac077             437      1870            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac081             436      5733            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac092             433      12134           ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac101             430      9684            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac123             423      1358            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac128             421      8585            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac139             418      4814            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsac155             414      11921           ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan007             52       366             ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan018             83       4213            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan032             349      9672            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan037             42       286             ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan043             319      8571            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan046             31       5628            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan052             24       2643            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan058             20       2520            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan063             14       3281            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan072             10       9400            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan087             6        3930            ec              15MIN         inst          z:/historical_OM_july.dss    
+rsan112             17       4744            ec              15MIN         inst          z:/historical_OM_july.dss    
+sac_emmaton         433      12134           ec              15MIN         inst          z:/historical_OM_july.dss    
+sjr_san_andreas     45       12421           ec              15MIN         inst          z:/historical_OM_july.dss    
+slbar002            406      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+sldut007            274      7351            ec              15MIN         inst          z:/historical_OM_july.dss    
+sldut009            273      4026            ec              15MIN         inst          z:/historical_OM_july.dss    
+slmzu011            517      0               ec              15MIN         inst          z:/historical_OM_july.dss    
+slmzu025            513      13883           ec              15MIN         inst          z:/historical_OM_july.dss    
+sltrm004            310      540             ec              15MIN         inst          z:/historical_OM_july.dss    
+steamboat_sl        383      12528           ec              15MIN         inst          z:/historical_OM_july.dss    
+sutter_sl           379      3300            ec              15MIN         inst          z:/historical_OM_july.dss    
+END
+
+OUTPUT_RESERVOIR
+NAME  RES_NAME  NODE  VARIABLE  INTERVAL  PERIOD_OP  FILE  
+clifton_court       clifton_court       none        ec              15MIN         inst          z:/historical_OM_july.dss    
+END
+
+OUTPUT_CHANNEL_SOURCE_TRACK
+NAME  CHAN_NO  DISTANCE  VARIABLE  SOURCE_GROUP  INTERVAL  PERIOD_OP  FILE  
+END
+
+OUTPUT_RESERVOIR_SOURCE_TRACK
+NAME  RES_NAME  VARIABLE  SOURCE_GROUP  INTERVAL  PERIOD_OP  FILE  
+END
+

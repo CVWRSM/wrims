@@ -1,0 +1,71 @@
+/*************************************
+Export_index_delivery_CVP.wresl
+ 
+Tom FitzHugh BOR 5/7/2010
+
+The Delta Index for the CVP SOD is the sum of Jan - May Eight River Index values.  The
+Export Index is determined based upon the value of the Delta Index, using the lookup table, 
+dltidx_expidx_cvp_s.  The Export Index is the Mar-Aug estimated export capability of the CVP.
+
+Using the Export Based rule for CVP SOD Delivery, Maximum Delivery is computed from the
+Export Index.  The Export Index (Mar-Aug) is increased by the EOFeb CVP SL over low point 
+target, and also any inflow through James Bypass and dedicated capacity for CVP at Banks.
+
+11/9/2010: added switch for preBO vs BO allocation procedures.
+*************************************/
+
+!whether implement export estimates for BO actions: no: value=0; yes: value=1
+!currently on only when OMR RPA is on
+define BOExportEst_switch {value OMRBOON}
+
+! Determination of Delta Index
+define Delta_Index_CVP_south {
+    case MartoMay {
+           condition  month >= MAR .and. month <= MAY
+           select     Dlt_Idx
+           from       Delta_Index
+           where      wateryear=wateryear}
+
+    case JuntoFeb {
+           condition  always
+           value      0 }
+              }
+
+define Dlt_Idx_CVP_sdv {alias Delta_Index_CVP_south kind 'delta-index' units 'taf'}
+
+! Determination of Export Index  
+/*** NOTE: For pre-BO runs, pull value from the table dltidx_expidx_cvp_s. For BO runs just set the value = 9999,  
+this replicates how it was set in the Apr BO Calsim study (though there it was read from a table), so effectively 
+there is no limit from this Index for BO conditions (though a different limit is still set in delcar_cvp_south_B2BO.wresl).  */
+
+define Export_Index_CVP_south {
+    case MartoMaypreBO {
+           condition  month >= MAR .and. month <= MAY .and. int(BOExportEst_switch) == 0
+           select     Exp_Idx
+           from       dltidx_expidx_cvp_s
+           given      Dlt_Idx=Delta_Index_CVP_south
+           use        linear }
+    case MartoMayBO {
+           condition  month >= MAR .and. month <= MAY .and. int(BOExportEst_switch) == 1
+           value 9999 }
+    case JuntoFeb {
+           condition  always
+           value      0 }
+              }
+
+define Exp_Idx_CVP_sdv {alias Export_Index_CVP_south kind 'export-index' units 'taf'}
+
+define init_CVPRuleDrainTar {value 90.}  ! EOFeb CVP SL low point target
+
+! Determination of Maximum SOD CVP Delivery
+define Export_Index_CVP_adj {
+    case MartoMay {
+            condition month >= MAR .and. month <= MAY
+            value Export_Index_CVP_south + S_SLCVP(PrevFEB) - init_CVPRuleDrainTar + jbypass_del + AnnualBanksCVP}
+
+    case JuntoFeb {
+           condition  always
+           value      0 }
+                       }
+                       
+define expidx_cvp_adj {alias Export_Index_CVP_adj kind 'temp' units 'taf'}

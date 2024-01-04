@@ -1,0 +1,24 @@
+! LVE_OpsFixEWApreLVAdj.wresl
+! L. Brekke
+! 12/22/2005
+! Reclamation
+
+/*
+This file enables consistent treatment of CCWD diversion in the cycle-to-cyle 
+structure of the EWA step relative to the TXFR step.  Use this file in EWA 
+step cycles up through JPOD wheeling. 
+*/
+
+define D408_CS {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D408_DS {std kind 'FLOW-DELIVERY' units 'CFS'}
+define D408_whlNOD {std kind 'FLOW-DELIVERY' units 'CFS'}
+
+INCLUDE[local] 'LVE_OpsFixPreJPOD.wresl'
+
+define D426_EWA  {lower 0 upper 9999 kind 'FLOW-DELIVERY'  units 'CFS'}
+goal zeroD426_EWA {D426_EWA = 0.}
+
+define D426_REL  {lower 0 upper 9999 kind 'FLOW-DELIVERY'  units 'CFS'}
+goal zeroD426_REL {D426_REL = 0.}
+
+goal setD426_Total {D426 = D426_REL + D426_EWA  }

@@ -1,0 +1,77 @@
+!! Code by E.Reyes     as of  3/22/99
+!! Revised by SRS      as of 12/21/99
+!! Further revised by Nancy Parker 4/6/01
+!!!  Code for CVP(PROSIM) type lookup tables for minflow on the American below Nimbus.
+!!!  Code for American River Operations based on "modified D-1400"
+!!!  Minflow below Nimbus(CP 41) is set according to a CVP Lookup Table that looks at
+!!!  combinations Folsom storage and forecasted inflows and demands (see table below for trigger description).
+!!!  The minflow must also meet Stability criteria.  The November - March minflows must be at least 80% of the
+!!!  preceding month's flow.  If the preceding month's flow exceeds a stability limit, then the stability
+!!!  criteria is ignored.
+
+
+! How Trigger is determined.
+!*******************************************************************************************************************
+!                   Trigger Type = 0:       Trigger Type = 1:
+!       Month:       Equation:               Equation:
+!     OCT     1        +s08                    +w08                  w = previous 1-Oct carryover storage
+!     NOV     2        +s08                    +w08                  s = beginning of month storage
+!     DEC     3        +s08                    +w08                  f = forecast of remaining inflow until 1-Oct
+!     JAN     4        +s08                    +s08                        (includes this month)
+!     FEB     5        +s08                    +s08                        (f08 = sum of I8, I300 and - demand_D300
+!     MAR     6        +s08+f08                +s08+f08                           for the remainder of the year)
+!     APR     7        +s08+f08                +s08+f08
+!     MAY     8        +s08+f08                +s08+f08
+!     JUN     9        +s08+f08                +s08+f08
+!     JUL    10        +s08+f08                +s08+f08
+!     AUG    11        +s08+f08                +s08+f08
+!     SEP    12        +s08+f08                +s08+f08
+!*******************************************************************************************************************
+
+
+define nimbus_trig_type {value
+           ! Select either a 0 or 1 to set the trigger type.
+           ! The trigger type can be set here and is:
+           0 }
+
+
+define nimbus_trigger {
+       case oct_dec_type0 {
+               condition    nimbus_trig_type == 0 .and. month >= OCT .and. month <= DEC
+	       value        S_Folsm(-1)}
+       case oct_dec_type1 {
+               condition    nimbus_trig_type == 1 .and. month >= OCT .and. month <= DEC
+               value        S_Folsm(prevSEP)}
+       case jan_feb {
+               condition    month >= JAN .and. month <= FEB
+	       value        S_Folsm(-1)}
+       case mar_sep {
+               condition    always
+               value        S_Folsm(-1) + frcst_amr } !Trigger = BOM Storage + Forecasted Inflow - Forecasted Delivery to PCWA
+       }
+
+define HMin {select HStMin
+             from   HSt_base
+             where  month=month, AmerD893=wyt_AMERd893_cvp
+}
+
+define nimbus_hist_std {
+    case fol_stor_ok {
+	condition S_Folsm(-1) > 200.
+        select minflow
+                from   nimbus_hist
+                given  trigger=nimbus_trigger
+                use    linear                               ! 11/2/03 chgd from "maximum" by Hilts
+                where  month=month}
+    case fol_stor_not {
+        condition always
+                value HMin}
+}
+
+
+
+!goal meet_min_C_Nimbus { C_Nimbus_mif < max(nimbus_hist_std,minflowFMPAmer) } ! This goal is set in "setnodminflows.wresl" file in D1641 and D1485 studies and in "b2action1.wresl" file in (b)(2) study.
+
+define stand_Nimbus   {ALIAS nimbus_hist_std units 'cfs'}
+define nimbus   {ALIAS nimbus_trigger units 'taf'}
+

@@ -1,0 +1,26 @@
+! Tuol_FERC_min.wresl
+
+! Edward Chang
+! USBR Contractor
+! 12/02/1999
+! This code calculates the FERC minimum flows on the Tuolumne River
+
+
+/*
+The FERC minimum flows are read as timeseries inputs based on pre-processed
+hydrology. According to documentation, to ensure a minimum through
+throughout the Tuolumne River, it is necessary to impose this requirement on
+reaches C_TUO054, C542, and C544. However, in this code the requirement is not
+imposed on C542 and C544.  Why?????????????
+*/
+
+/*
+Revised by: T. Crawford, USBR, 03/07/03
+Purpose: Review and comment code
+*/
+
+!############################################################################
+!Cycle 1 (FERC Minimum flows)
+
+! Tuolumne River minimum channel flow (for reach C_TUO050)
+goal setC_TUO054cycle1 { C_TUO054_mif < FERCBASE }

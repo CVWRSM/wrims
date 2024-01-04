@@ -1,0 +1,30 @@
+!Coded by Andy Draper June 2004.
+
+!The variable 'allocation' is set in March cycle 2.
+!It is the annual allocation decision for YCWA based on
+!a multi-period optimization for the period April-September
+
+!The state variable D230_alloc is used to impose this allocation
+!on the monthly deliveries.
+
+!The decision variable D230_alloc_dv provides access to the
+!allocation decision in following months.
+
+
+!define Alloc_YCWAMU {std kind 'FRACTION' units 'NONE'}
+define YCWA_Alloc {
+    case first6months {
+        condition month < APR .and. wateryear == 1922
+        value 1. }
+    case AprAlloc {
+        condition month == APR
+        value Alloc_YCWAMU[SJRBASE] }
+    case otherwise {
+        condition always
+        value YCWA_Alloc_dv(-1) }
+    }
+    
+goal set_alloc {YCWA_Alloc_dv = YCWA_Alloc }
+
+!goal limit_D230 { D230 < D230_Alloc * DEMAND_D230 }
+

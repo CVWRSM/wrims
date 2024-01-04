@@ -1,0 +1,260 @@
+/*
+ STORAGE CONTINUITY
+ 
+ 
+ 
+Original formulation: C. Olson (MWH) April 2007
+*/
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! New Melones Reservoir    !!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_MELONlevel1 {value 1}
+define S_MELON_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MELONlevel2 {select target from res_level where res_num=10,level=2,month=month}
+define S_MELON_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MELONlevel3 {select target from res_level where res_num=10,level=3,month=month}
+define S_MELON_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MELONlevel4 {select target from res_level where res_num=10,level=4,month=month}
+define S_MELON_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MELONlevel5 {value 2420}
+define S_MELON_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MELON {std kind 'STORAGE' units 'TAF'} !New Melones Reservoir
+define E_MELON {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_MELON {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_MELON {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_MELONlast {select area from res_info given storage=1000*S_MELON(-1) use linear where res_num=10}
+define A_MELONforward {select area from res_info given storage=1050*S_MELON(-1) use linear where res_num=10}
+define A_MELONback {select area from res_info given storage=950*S_MELON(-1) use linear where res_num=10}
+define coefev_MELON {value (A_MELONforward - A_MELONback)/(100*max(0.01,S_MELON(-1)))}
+define relcap_MELON {select discharge from res_info given storage=1000*S_MELON(-1) use linear where res_num=10}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Millerton Lake, Friant Dam !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_MLRTNlevel1 {value 135}
+define S_MLRTN_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MLRTNlevel2 {value 200}
+define S_MLRTN_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MLRTNlevel3 {value 225}
+define S_MLRTN_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MLRTN_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MLRTN_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MLRTN {std kind 'STORAGE' units 'TAF'} !Millerton Lake
+define E_MLRTN {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_MLRTN {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_MLRTN {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_MLRTNlast {select area from res_info given storage=1000*S_MLRTN(-1) use linear where res_num=18}
+define A_MLRTNforward {select area from res_info given storage=1050*S_MLRTN(-1) use linear where res_num=18}
+define A_MLRTNback {select area from res_info given storage=950*S_MLRTN(-1) use linear where res_num=18}
+define coefev_MLRTN {value (A_MLRTNforward - A_MLRTNback)/(100*max(0.01,S_MLRTN(-1)))}
+define relcap_MLRTN {select discharge from res_info given storage=1000*S_MLRTN(-1) use linear where res_num=18}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Lake McClure, Exchequer Dam!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_MCLRElevel1 {value 3}
+define S_MCLRE_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MCLRElevel2 {value 115}
+define S_MCLRE_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MCLRElevel3 {value 300}
+define S_MCLRE_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MCLRElevel4 {select target from res_level where res_num=20,level=4,month=month}
+define S_MCLRE_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MCLRElevel5 {value 1024}
+define S_MCLRE_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MCLRE {std kind 'STORAGE' units 'TAF'} !Lake McClure
+define E_MCLRE {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_MCLRE {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_MCLRE {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_MCLRElast {select area from res_info given storage=1000*S_MCLRE(-1) use linear where res_num=20}
+define A_MCLREforward {select area from res_info given storage=1050*S_MCLRE(-1) use linear where res_num=20}
+define A_MCLREback {select area from res_info given storage=950*S_MCLRE(-1) use linear where res_num=20}
+define coefev_MCLRE {value (A_MCLREforward - A_MCLREback)/(100*max(0.01,S_MCLRE(-1)))}
+define relcap_MCLRE {select discharge from res_info given storage=1000*S_MCLRE(-1) use linear where res_num=20}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Hensley Lake                 !!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_HNSLYlevel1 {value 5}
+define S_HNSLY_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_HNSLYlevel2 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S_HNSLY_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_HNSLYlevel3 {value 25}
+define S_HNSLY_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_HNSLYlevel4 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S_HNSLY_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_HNSLYlevel5 {value 90}
+define S_HNSLY_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_HNSLY {std kind 'STORAGE' units 'TAF'} !Hensley Lake
+define E_HNSLY {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_HNSLY {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_HNSLY {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_HNSLYlast {select area from res_info given storage=1000*S_HNSLY(-1) use linear where res_num=52}
+define A_HNSLYforward {select area from res_info given storage=1050*S_HNSLY(-1) use linear where res_num=52}
+define A_HNSLYback {select area from res_info given storage=950*S_HNSLY(-1) use linear where res_num=52}
+define coefev_HNSLY {value (A_HNSLYforward - A_HNSLYback)/(100*max(0.01,S_HNSLY(-1)))}
+define relcap_HNSLY {select discharge from res_info given storage=1000*S_HNSLY(-1) use linear where res_num=52}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Eastman Lake,                !!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_ESTMNlevel1 {value 10}
+define S_ESTMN_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_ESTMNlevel2 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S_ESTMN_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_ESTMNlevel3 {value 105}
+define S_ESTMN_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_ESTMNlevel4 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S_ESTMN_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_ESTMNlevel5 {value 150}
+define S_ESTMN_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_ESTMN {std kind 'STORAGE' units 'TAF'} !Eastman Lake
+define E_ESTMN {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_ESTMN {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_ESTMN {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_ESTMNlast {select area from res_info given storage=1000*S_ESTMN(-1) use linear where res_num=53}
+define A_ESTMNforward {select area from res_info given storage=1050*S_ESTMN(-1) use linear where res_num=53}
+define A_ESTMNback {select area from res_info given storage=950*S_ESTMN(-1) use linear where res_num=53}
+define coefev_ESTMN {value (A_ESTMNforward - A_ESTMNback)/(100*max(0.01,S_ESTMN(-1)))}
+define relcap_ESTMN {select discharge from res_info given storage=1000*S_ESTMN(-1) use linear where res_num=53}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Woodward Reservoir !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_WDWRDlevel1 {value 2}
+define S_WDWRD_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_WDWRDlevel2 {value 21.1}
+define S_WDWRD_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_WDWRDlevel3 {select target from res_level where res_num=75,level=3,month=month}
+define S_WDWRD_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_WDWRDlevel4 {value 34}
+define S_WDWRD_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_WDWRD {std kind 'STORAGE' units 'TAF'} !Woodward Reservoir
+define E_WDWRD {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_WDWRD {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_WDWRD {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_WDWRDlast {select area from res_info given storage=1000*S_WDWRD(-1) use linear where res_num=75}
+define A_WDWRDforward {select area from res_info given storage=1050*S_WDWRD(-1) use linear where res_num=75}
+define A_WDWRDback {select area from res_info given storage=950*S_WDWRD(-1) use linear where res_num=75}
+define coefev_WDWRD {value (A_WDWRDforward - A_WDWRDback)/(100*max(0.01,S_WDWRD(-1)))}
+define relcap_WDWRD {select discharge from res_info given storage=1000*S_WDWRD(-1) use linear where res_num=75}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Tulloch Reservoir !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_TULOClevel1 {value 11}
+define S_TULOC_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TULOClevel2 {value 20}
+define S_TULOC_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TULOClevel3 {select target from res_level where res_num=76,level=3,month=month}
+define S_TULOC_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TULOClevel4 {select target from res_level where res_num=76,level=4,month=month}
+define S_TULOC_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TULOClevel5 {value 70}
+define S_TULOC_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TULOC {std kind 'STORAGE' units 'TAF'} !Tulloch Reservoir
+define E_TULOC {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_TULOC {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_TULOC {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_TULOClast {select area from res_info given storage=1000*S_TULOC(-1) use linear where res_num=76}
+define A_TULOCforward {select area from res_info given storage=1050*S_TULOC(-1) use linear where res_num=76}
+define A_TULOCback {select area from res_info given storage=950*S_TULOC(-1) use linear where res_num=76}
+define coefev_TULOC {value (A_TULOCforward - A_TULOCback)/(100*max(0.01,S_TULOC(-1)))}
+define relcap_TULOC {select discharge from res_info given storage=1000*S_TULOC(-1) use linear where res_num=76}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Modesto Lake        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_MDSTOlevel1 {value 2}
+define S_MDSTO_1 {std kind 'STORAGE-ZONE' units 'TAF'}  
+define S_MDSTOlevel2 {value 15}
+define S_MDSTO_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MDSTOlevel3 {select target from res_level where res_num=78,level=3,month=month}
+define S_MDSTO_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MDSTOlevel4 {value 30}
+define S_MDSTO_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_MDSTO {std kind 'STORAGE' units 'TAF'} !Modesto Lake
+define E_MDSTO {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_MDSTO {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_MDSTO {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_MDSTOlast {select area from res_info given storage=1000*S_MDSTO(-1) use linear where res_num=78}
+define A_MDSTOforward {select area from res_info given storage=1050*S_MDSTO(-1) use linear where res_num=78}
+define A_MDSTOback {select area from res_info given storage=950*S_MDSTO(-1) use linear where res_num=78}
+define coefev_MDSTO {value (A_MDSTOforward - A_MDSTOback)/(100*max(0.01,S_MDSTO(-1)))}
+define relcap_MDSTO {select discharge from res_info given storage=1000*S_MDSTO(-1) use linear where res_num=78}
+
+! Estimate volume of seepage from Modesto Reservoir using lookup table
+define SG_MDSTO_seep { select seep_78 from seep_rates where month=month}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! Turloch Lake        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_TRLCHlevel1 {value 2}
+define S_TRLCH_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TRLCHlevel2 {value 11}
+define S_TRLCH_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TRLCHlevel3 {select target from res_level where res_num=79,level=3,month=month}
+define S_TRLCH_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TRLCHlevel4 {value 50}
+define S_TRLCH_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_TRLCH {std kind 'STORAGE' units 'TAF'} !Turlock Lake
+define E_TRLCH {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_TRLCH {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_TRLCH {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_TRLCHlast {select area from res_info given storage=1000*S_TRLCH(-1) use linear where res_num=79}
+define A_TRLCHforward {select area from res_info given storage=1050*S_TRLCH(-1) use linear where res_num=79}
+define A_TRLCHback {select area from res_info given storage=950*S_TRLCH(-1) use linear where res_num=79}
+define coefev_TRLCH {value (A_TRLCHforward - A_TRLCHback)/(100*max(0.01,S_TRLCH(-1)))}
+define relcap_TRLCH {select discharge from res_info given storage=1000*S_TRLCH(-1) use linear where res_num=79}
+
+! Estimate volume of seepage from Turlock Reservoir using lookup table
+define SG_TRLCH_seep { select seep_79 from seep_rates where month=month}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! New Don Pedro Reservoir      !!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_PEDROlevel1 {value 100}
+define S_PEDRO_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_PEDROlevel2 {value 309}
+define S_PEDRO_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_PEDROlevel3 {select target from res_level where res_num=81,level=3,month=month}
+define S_PEDRO_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_PEDROlevel4 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S_PEDRO_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_PEDROlevel5 {value 2030}
+define S_PEDRO_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_PEDRO {std kind 'STORAGE' units 'TAF'} !New Don Pedro Reservoir
+define E_PEDRO {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_PEDRO {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_PEDRO {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_PEDROlast {select area from res_info given storage=1000*S_PEDRO(-1) use linear where res_num=81}
+define A_PEDROforward {select area from res_info given storage=1050*S_PEDRO(-1) use linear where res_num=81}
+define A_PEDROback {select area from res_info given storage=950*S_PEDRO(-1) use linear where res_num=81}
+define coefev_PEDRO {value (A_PEDROforward - A_PEDROback)/(100*max(0.01,S_PEDRO(-1)))}
+define relcap_PEDRO {select discharge from res_info given storage=1000*S_PEDRO(-1) use linear where res_num=81}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!! New Hogan Reservoir      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+define S_NHGANlevel1 {value 17.5}
+define S_NHGAN_1 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NHGANlevel2 {select target from res_level where res_num=92,level=2,month=month}
+define S_NHGAN_2 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NHGANlevel3 {value 150}
+define S_NHGAN_3 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NHGANlevel4 {timeseries kind 'STORAGE-LEVEL' units 'TAF'}
+define S_NHGAN_4 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NHGANlevel5 {value 325}
+define S_NHGAN_5 {std kind 'STORAGE-ZONE' units 'TAF'}
+define S_NHGAN {std kind 'STORAGE' units 'TAF'} !New Hogan Reservoir
+define E_NHGAN {lower unbounded kind 'EVAPORATION' units 'CFS'}
+define A_NHGAN {std kind 'SURFACE-AREA' units 'ACRES'}
+define EvapRate_NHGAN {timeseries kind 'EVAPORATION-RATE' units 'IN'}
+define A_NHGANlast {select area from res_info given storage=1000*S_NHGAN(-1) use linear where res_num=92}
+define A_NHGANforward {select area from res_info given storage=1050*S_NHGAN(-1) use linear where res_num=92}
+define A_NHGANback {select area from res_info given storage=950*S_NHGAN(-1) use linear where res_num=92}
+define coefev_NHGAN {value (A_NHGANforward - A_NHGANback)/(100*max(0.01,S_NHGAN(-1)))}
+define relcap_NHGAN {select discharge from res_info given storage=1000*S_NHGAN(-1) use linear where res_num=92}
+
+

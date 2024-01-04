@@ -1,0 +1,102 @@
+/*
+This file links re-aggregated surface operations over
+groundwater cells 61, 62 and 63 (respectively).  Groundwater
+pumping and return flows are estimated as being directly
+proportional to the surface area overlaying the groundwater cells.
+
+06 December 2005 - JTPayne
+*/
+
+! Topology of re-aggregation (by land area percentages)
+! pct_ag_WBAoverDSA  represents the % of the Water Budget Area overlaying the DSA groundwater cell
+
+! legacy DSA10 linked with groundwater cell 61
+define pct_ag_4over61     {VALUE  1.0000 }
+define pct_ag_5over61     {VALUE  1.0000 }
+define pct_ag_6over61     {VALUE  1.0000 }
+define pct_ag_7Nover61     {VALUE  0.0839 }
+define pct_ag_8NNover61 {VALUE  0.0565 }
+
+! legacy DSA12 linked with groundwater cell 62
+define pct_ag_7Nover62     {VALUE  0.9161 }
+define pct_ag_7Sover62     {VALUE  1.0000 }
+define pct_ag_8NNover62 {VALUE  0.8079 }
+define pct_ag_8NSover62 {VALUE  0.6429 }
+
+! legacy DSA15 linked with groundwater cell 63
+define pct_ag_8NNover63 {VALUE  0.1356 }
+define pct_ag_8NSover63 {VALUE  0.3571 }
+define pct_ag_8Sover63     {VALUE  1.0000 }
+define pct_ag_E15over63    {VALUE  1.0000 } ! East Side of legacy DSA 15, current WBAs 9,18 & 19
+
+
+
+
+! Re-Aggregated Groundwater Pumping from Water Balance Areas for DSA groundwater cells
+! Pumping defined in \common\hydrology\demands\demands_CB.wresl for WBA 4-9,18,19
+
+
+goal set_GP_DSA10 { GP_DSA10 =     GP17101 +    !Corning
+                pct_ag_4over61   * GP17201 +    !WBA4
+                pct_ag_4over61   * GP11302 +    !WBA4
+                pct_ag_5over61   * GP11306 +    !WBA5
+                pct_ag_6over61   * GP17302 +    !WBA6
+                pct_ag_7Nover61  * GP17401 +    !WBA7n
+                pct_ag_8NNover61 * GP14301      !WBA8nn
+}
+
+goal set_GP_DSA12 { GP_DSA12 =
+                pct_ag_7Nover62  * GP17401 +    !WBA7n
+                pct_ag_7Sover62  * GP17801 +    !WBA7s
+                pct_ag_8NNover62 * GP14301 +    !WBA8nn
+                                   GP14302 +    !WBA8nn
+                pct_ag_8NSover62 * GP14501 +    !WBA8ns
+                                   GP18201      !WBA8ns
+}
+
+goal set_GP_DSA15 { GP_DSA15 =
+                pct_ag_8NNover63 * GP14301 +    !WBA8nn
+                pct_ag_8NSover63 * GP14501 +    !WBA8ns
+                pct_ag_8Sover63  * GP18301 +    !WBA8s
+                pct_ag_E15over63 * GP131        !WBAs 9, 18 & 19
+          }
+
+! Re-Aggregated Agricultural Recharge from Water Balance Areas for DSA groundwater cells
+! Pumping defined in \common\hydrology\demands\demands_CB.wresl for WBA 4-9,18,19
+
+goal set_DP_DSA10 { DP_DSA10 =
+                pct_ag_4over61     * dperc_17201 + pct_ag_4over61     * dperc_11302     +    !WBA4
+                pct_ag_5over61     * dperc_11306        +    !WBA5
+                pct_ag_6over61     * dperc_17302        +    !WBA6
+                pct_ag_7Nover61     * dperc_17401        +    !WBA7n
+                pct_ag_8NNover61 * dperc_14301        +    !WBA8nn
+                dperc_17101
+          }
+
+goal set_DP_DSA12 { DP_DSA12 =
+                pct_ag_7Nover62     * dperc_17401        +    !WBA7n
+                pct_ag_7Sover62     * dperc_17801        +    !WBA7s
+                pct_ag_8NNover62 * dperc_14301        +    !WBA8nn
+                pct_ag_8NSover62 * dperc_14501            !WBA8ns
+                }
+
+goal set_DP_DSA15 { DP_DSA15 =
+                pct_ag_8NNover63 * dperc_14301        +    !WBA8nn
+                pct_ag_8NSover63 * dperc_14501        +    !WBA8ns
+                pct_ag_8Sover63     * dperc_18301        +    !WBA8s
+                pct_ag_E15over63 * dperc_131            !WBAs 9, 18 & 19
+          }
+
+
+
+! groundwater pumping
+goal set2_gp61 {gp61 = GP_DSA10}   ! streamflow is CFS
+goal set2_gp62 {gp62 = GP_DSA12}   ! streamflow is CFS
+goal set2_gp63 {gp63 = GP_DSA15}   ! streamflow is CFS
+
+
+! recharge from irrigation
+goal set2_gr61AW {gr61AW = DP_DSA10}   ! streamflow is CFS
+goal set2_gr62AW {gr62AW = DP_DSA12}   ! streamflow is CFS
+goal set2_gr63AW {gr63AW = DP_DSA15}   ! streamflow is CFS
+

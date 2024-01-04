@@ -1,0 +1,104 @@
+!This file subdivides cross valley conveyance facilities for accounting purposes.
+
+!Split Trans Valley Canal diversions
+define C848_TVC_F {std kind 'flow-channel' units 'cfs'} !Forward flow
+define C848_TVC_R {std kind 'flow-channel' units 'cfs'}  !Reverse flow
+define C848_TVC_DC {std kind 'flow-channel' units 'cfs'}  !Direct diversion
+define C848_TVC_DS {std kind 'flow-channel' units 'cfs'}  !Diversion to storage
+define C848_TVC_GWR {std kind 'flow-channel' units 'cfs'} !Ground water recharge
+define C848_TVC_FR {std kind 'flow-channel' units 'cfs'} !Return of Friant water from MWD incremental storage
+goal splitC848_TVC {C848_TVC = C848_TVC_F - C848_TVC_R}
+goal splitC848_TVC_F {C848_TVC_F = C848_TVC_DC + C848_TVC_DS + C848_TVC_GWR + C848_TVC_FR}
+
+!Split C848_TVC_R
+DEFINE C848_TVC_R_DFS {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Diversion from storage
+DEFINE C848_TVC_R_DFG {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Diversion from groundwater
+DEFINE C848_TVC_R_DD_S {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Drawdown
+DEFINE C848_TVC_R_SC_S {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Spill capture to storage
+GOAL splitC848_TVC_R {C848_TVC_R = C848_TVC_R_DFS + C848_TVC_R_DFG + C848_TVC_R_DD_S + C848_TVC_R_SC_S}
+
+!Split TVC - FK connection
+DEFINE C931_TVC_F {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+DEFINE C931_TVC_R {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C931_TVC_DS {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C931_TVC_DFG {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C931_TVC_FR {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+GOAL SPLIT_C931_TVC {C931_TVC = C931_TVC_F  - C931_TVC_R}
+!goal splitC931_TVC_F {C931_TVC_F = C931_TVC_DS + C931_TVC_DFG + C931_TVC_FR}
+
+!Split Shafter-Wasco diversions
+define C851_SW_F {std kind 'flow-channel' units 'cfs'}  !Forward flow
+define C851_SW_R {std kind 'flow-channel' units 'cfs'}  !Reverse flow
+define C851_SW_DC {std kind 'flow-channel' units 'cfs'}  !Direct diversion
+define C851_SW_DS {std kind 'flow-channel' units 'cfs'}  !Diversion to storage
+define C851_SW_GWR {std kind 'flow-channel' units 'cfs'} !Ground water recharge
+define C851_SW_FR {std kind 'flow-channel' units 'cfs'} !Drawback
+goal splitC851_SW {C851_SW = C851_SW_F - C851_SW_R}
+goal splitC851_SW_F {C851_SW_F = C851_SW_DC + C851_SW_DS + C851_SW_GWR + C851_SW_FR}
+
+!Split C851_SW_R
+DEFINE C851_SW_R_DFS {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Diversion from storage
+DEFINE C851_SW_R_DFG {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Diversion from groundwater
+DEFINE C851_SW_R_DD_S {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Drawdown
+DEFINE C851_SW_R_DC {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Direct circulation
+DEFINE C851_SW_R_SC_S {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Spill capture to storage
+GOAL SPLIT_C851_SW_R {C851_SW_R = C851_SW_R_DFS + C851_SW_R_DFG + C851_SW_R_DD_S + C851_SW_R_DC + C851_SW_R_SC_S}
+
+!Split SW - FK connection
+DEFINE C936_SW_F {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+DEFINE C936_SW_R {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C936_SW_DS {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C936_SW_DFG {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C936_SW_FR {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+GOAL SPLIT_C936_SW {C936_SW = C936_SW_F  - C936_SW_R}
+!goal splitC936_SW_F {C936_SW_F = C936_SW_DS + C936_SW_DFG + C936_SW_FR}
+
+!Split Cross Valley Canal diversions
+define C855_CVC_F {std kind 'flow-channel' units 'cfs'}  !Forward flow
+define C855_CVC_R {std kind 'flow-channel' units 'cfs'}  !Reverse flow
+define C855_CVC_DS {std kind 'flow-channel' units 'cfs'}  !Diversion to storage
+define C855_CVC_FR {std kind 'flow-channel' units 'cfs'} !Drawback
+define C855_CVC_DC {std kind 'flow-channel' units 'cfs'} !Direct circulation
+goal splitC855_CVC {C855_CVC = C855_CVC_F - C855_CVC_R}
+goal splitC855_CVC_F {C855_CVC_F = C855_CVC_DS + C855_CVC_FR + C855_CVC_DC}
+
+!Split C855_CVC_R
+DEFINE C855_CVC_R_DFS {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Diversion from storage
+DEFINE C855_CVC_R_DFG {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Diversion from groundwater
+DEFINE C855_CVC_R_DD_S {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Drawdown
+DEFINE C855_CVC_R_DC {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Direct circulation
+DEFINE C855_CVC_R_SC_S {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Spill capture to storage
+GOAL SPLIT_C855_CVC_R {C855_CVC_R = C855_CVC_R_DFS + C855_CVC_R_DFG + C855_CVC_R_DD_S + C855_CVC_R_DC + C855_CVC_R_SC_S}
+
+!Split CVC - FK connections
+DEFINE C941A_CVC_F {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+DEFINE C941A_CVC_R {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C941A_CVC_DS {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C941A_CVC_FR {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+GOAL SPLIT_C941A_CVC {C941A_CVC = C941A_CVC_F  - C941A_CVC_R}
+!goal splitC941A_CVC_F {C941A_CVC_F = C941A_CVC_DS + C941A_CVC_FR}
+
+DEFINE C941B_CVC_F {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+DEFINE C941B_CVC_R {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C941B_CVC_DS {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+!DEFINE C941B_CVC_FR {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'}
+GOAL SPLIT_C941B_CVC {C941B_CVC = C941B_CVC_F  - C941B_CVC_R}
+!goal splitC941B_CVC_F {C941B_CVC_F = C941B_CVC_DS + C941B_CVC_FR}
+
+!Split Arvin-Edison diversions
+define C861_AEI_F {std kind 'flow-channel' units 'cfs'}  !Forward flow
+define C861_AEI_R {std kind 'flow-channel' units 'cfs'}  !Reverse flow
+define C861_AEI_DS {std kind 'flow-channel' units 'cfs'}  !Diversion to storage
+define C861_AEI_GWR {std kind 'flow-channel' units 'cfs'} !Ground water recharge
+define C861_AEI_FR {std kind 'flow-channel' units 'cfs'} !Drawback
+goal splitC861_AEI {C861_AEI = C861_AEI_F - C861_AEI_R}
+goal splitC861_AEI_F {C861_AEI_F = C861_AEI_DS + C861_AEI_GWR + C861_AEI_FR}
+
+!Split C861_AEI_R
+DEFINE C861_AEI_R_DFS {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Diversion from storage
+DEFINE C861_AEI_R_DFG {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Diversion from groundwater
+DEFINE C861_AEI_R_DC {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Direct circulation
+DEFINE C861_AEI_R_DD_S {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Drawdown
+DEFINE C861_AEI_R_SC_S {STD KIND 'FLOW-CHANNEL' UNITS 'CFS'} !Spill capture to storage
+GOAL SPLIT_C861_AEI_R {C861_AEI_R = C861_AEI_R_DFS + C861_AEI_R_DC + C861_AEI_R_DFG + C861_AEI_R_DD_S + C861_AEI_R_SC_S}
+

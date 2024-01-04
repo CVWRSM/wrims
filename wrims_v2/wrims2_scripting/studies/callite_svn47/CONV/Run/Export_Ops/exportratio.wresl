@@ -1,0 +1,91 @@
+/*************************************
+exportratio.wresl
+ 
+Nazrul Islam DWR (04/27/2010)
+
+Export-Inflow Ratio restriction on exports
+
+Z.Q. Richard Chen, DWR 02/07/2011 
+Set EI_DLTSW switch to control the ExpRatio which changes with month.
+Hao Xie, DWR 09/11/2011
+Modify Inflow by considering Hood dicu
+**************************************/
+
+! Delta Export defined as in DWRSIM Algorithm Description for Export Ratio
+define ExportActual {alias  D_Jones+D_Banks KIND 'EXPORT-PRJ' units 'CFS'  }
+
+! Delta Inflow defined as in DWRSIM Algorithm Description for Export Ratio
+define Inflow {alias C_Hood_ANN+D_Hood_NP-I_HOOD+AD_Mokelumne+C_YoloBP+AD_SJR+AD_Calaveras+I_MarshCr kind 'INFLOW-DELTA' UNITS 'CFS'   }
+
+! EI allowable export variable - MAXIMUM ALLOWABLE EXPORT due to EXPORT RATIO
+define EiExpCtrl {std kind 'EXPORT-CTRL-EI' units 'CFS'}
+
+! EI Ratio dependent on month
+define ExpRatio {     !EI_DLTSW switch added 10/04/2010 by Z.Q. Richard Chen, DWR
+    case NOREGULATION {
+      condition EI_DLTSW == 0
+      value 1}
+    case USERDEF {  
+      condition EI_DLTSW == 2
+        select ratio
+        from gui_EiRatio 
+        where month=month }
+    case feb    {       !.and. EI_DLTSW== 1
+        condition month == FEB 
+          select  ratio
+          from    febeiratio
+          where   wateryear=wateryear}
+    case rest   {       !.and. EI_DLTSW== 1
+        condition always
+          select    ratio
+          from      eiratio
+          where     month=month}
+}
+
+! Write out EI ratio
+define ExpRatio_ {alias ExpRatio KIND 'EI-RATIO-STD' UNITS 'NONE'}
+
+! Compute exports allowable by the EI ratio
+goal find_max_export {EiExpCtrl = ExpRatio*Inflow}
+
+! Restrict exports to be less than that allowable by EI ratio
+goal export_comply { ExportActual < EiExpCtrl }
+
+!Export-San Joaquin River Inflow Ratio    added by Richard Chen 4/11/2011
+define esjrir_o    { 
+    case EISJR_UDEF 
+      {condition EISJR_DLTSW == 2 
+       select offset from gui_eisjr where wyT_Sac=wyT_Sac,month=month }
+    case NO_ESJRIR
+      {condition always
+       value 999999 }
+    }
+    
+define esjrir_m    { 
+    case EISJR_UDEF 
+      {condition EISJR_DLTSW == 2
+       select multiplier from gui_eisjr where wyT_Sac=wyT_Sac,month=month }
+    case NO_ESJRIR
+      {condition always
+       value 0.0 }
+    }
+    
+
+    
+!Max South Delta Exports <= "offset" + "multiplier" * SJR Inflow at Vernalis
+!goal export_SJRIR_comply { ExportActual   <  esjrir_o + esjrir_m*AD_SJR }  
+
+goal export_SJRIR_comply { lhs ExportActual 
+        case EISJR_UDEF 
+             {condition EISJR_DLTSW == 2
+             rhs esjrir_o + esjrir_m*AD_SJR 
+             lhs<rhs penalty 0
+             lhs>rhs penalty 999999 
+             }
+             }
+
+
+
+                            
+                           
+

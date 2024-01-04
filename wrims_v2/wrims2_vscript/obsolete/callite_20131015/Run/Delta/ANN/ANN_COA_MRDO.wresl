@@ -1,0 +1,85 @@
+/*************************************
+ANN_COA_MRDO.wresl
+
+Nazrul Islam; DWR; (06/27/2010)
+
+ANN required outflow in excess of D407 needs to be removed from COA project accounting.
+**********************************************/
+
+!determine excess required outflow (can be negative due to ANN_MRDO calcs)
+define RS_Z_1 {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define RS_Z_2 {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define RS_Z_3 {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define EM_Z   {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define JP_Z   {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+define CO_Z   {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}
+if int(AN_DLTSW)==3 {define AN_Z   {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}}
+if int(CH_DLTSW)==3 {define CH_Z   {lower unbounded upper unbounded kind 'FLOW' units 'CFS'}}
+
+goal aRSZ1 {RS_Z_1  = RS_MRDO_1 - D_DeltaReqd}
+goal aRSZ2 {RS_Z_2  = RS_MRDO_2 - D_DeltaReqd}
+goal aRSZ3 {RS_Z_3  = RS_MRDO_3 - D_DeltaReqd}
+goal aEMZ  {EM_Z    = EM_MRDO   - D_DeltaReqd}
+goal aJPZ  {JP_Z    = JP_MRDO   - D_DeltaReqd}
+goal aCOZ  {CO_Z    = CO_MRDO   - D_DeltaReqd}
+if int(AN_DLTSW)==3 {goal aANZ  {AN_Z    = AN_MRDO   - D_DeltaReqd}}
+if int(CH_DLTSW)==3 {goal aCHZ  {CH_Z    = CH_MRDO   - D_DeltaReqd}}
+
+!use slack/surplus type variables to get to positive values:
+define RS_X_1 {std kind 'FLOW' units 'CFS'}
+define RS_X_2 {std kind 'FLOW' units 'CFS'}
+define RS_X_3 {std kind 'FLOW' units 'CFS'}
+define EM_X   {std kind 'FLOW' units 'CFS'}
+define JP_X   {std kind 'FLOW' units 'CFS'}
+define CO_X   {std kind 'FLOW' units 'CFS'}
+if int(AN_DLTSW)==3 {define AN_X   {std kind 'FLOW' units 'CFS'}}
+if int(CH_DLTSW)==3 {define CH_X   {std kind 'FLOW' units 'CFS'}}
+
+define RS_Y_1 {std kind 'FLOW' units 'CFS'}
+define RS_Y_2 {std kind 'FLOW' units 'CFS'}
+define RS_Y_3 {std kind 'FLOW' units 'CFS'}
+define EM_Y   {std kind 'FLOW' units 'CFS'}
+define JP_Y   {std kind 'FLOW' units 'CFS'}
+define CO_Y   {std kind 'FLOW' units 'CFS'}
+if int(AN_DLTSW)==3 {define AN_Y   {std kind 'FLOW' units 'CFS'}}
+if int(CH_DLTSW)==3 {define CH_Y   {std kind 'FLOW' units 'CFS'}}
+
+goal bRSZ1 {RS_Z_1 + RS_X_1 - RS_Y_1 = 0}
+goal bRSZ2 {RS_Z_2 + RS_X_2 - RS_Y_2 = 0}
+goal bRSZ3 {RS_Z_3 + RS_X_3 - RS_Y_3 = 0}
+goal bEMZ  {EM_Z   + EM_X   - EM_Y   = 0}
+goal bJPZ  {JP_Z   + JP_X   - JP_Y   = 0}
+goal bCOZ  {CO_Z   + CO_X   - CO_Y   = 0}
+if int(AN_DLTSW)==3 {goal bANZ  {AN_Z   + AN_X   - AN_Y   = 0}}
+if int(CH_DLTSW)==3 {goal bCHZ  {CH_Z   + CH_X   - CH_Y   = 0}}
+
+define RS_Q_1 {std kind 'FLOW' units 'CFS'}
+define RS_Q_2 {std kind 'FLOW' units 'CFS'}
+define RS_Q_3 {std kind 'FLOW' units 'CFS'}
+define EM_Q   {std kind 'FLOW' units 'CFS'}
+define JP_Q   {std kind 'FLOW' units 'CFS'}
+define CO_Q   {std kind 'FLOW' units 'CFS'}
+if int(AN_DLTSW)==3 {define AN_Q   {std kind 'FLOW' units 'CFS'}}
+if int(CH_DLTSW)==3 {define CH_Q   {std kind 'FLOW' units 'CFS'}}
+
+!final calc for getting excess required outflow:
+goal cRSZ1 {RS_Q_1 = RS_Z_1 + RS_X_1}
+goal cRSZ2 {RS_Q_2 = RS_Z_2 + RS_X_2}
+goal cRSZ3 {RS_Q_3 = RS_Z_3 + RS_X_3}
+goal cEMZ  {EM_Q   = EM_Z   + EM_X  }
+goal cJPZ  {JP_Q   = JP_Z   + JP_X  }
+goal cCOZ  {CO_Q   = CO_Z   + CO_X  }
+if int(AN_DLTSW)==3 {goal cANZ  {AN_Q   = AN_Z   + AN_X  }}
+if int(CH_DLTSW)==3 {goal cCHZ  {CH_Q   = CH_Z   + CH_X  }}
+
+!link ann outflow to coa outflow:
+define mrdo_ann_relax {std kind 'soft-constraint' units 'cfs'}
+goal coa_RS1 {C_Delta_ANN  > RS_Q_1 - mrdo_ann_relax}
+goal coa_RS2 {C_Delta_ANN  > RS_Q_2 - mrdo_ann_relax}
+goal coa_RS3 {C_Delta_ANN  > RS_Q_3 - mrdo_ann_relax}
+goal coa_EM  {C_Delta_ANN  > EM_Q - mrdo_ann_relax  }
+goal coa_JP  {C_Delta_ANN  > JP_Q - mrdo_ann_relax }
+goal coa_CO  {C_Delta_ANN  > CO_Q - mrdo_ann_relax  }
+if int(AN_DLTSW)==3 {goal coa_AN  {C_Delta_ANN > AN_Q - mrdo_ann_relax  }}
+if int(CH_DLTSW)==3 {goal coa_CH  {C_Delta_ANN > CH_Q - mrdo_ann_relax  }}
+

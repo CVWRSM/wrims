@@ -1,0 +1,113 @@
+! This file contains the groundwater flow equations for DSA 58
+
+! define stream-aquifer interaction term (units = thousand acres/month)
+!define lamda_58 {VALUE (kmstream_58*lstream_58*wstream_58)/(43560.0*1000.0) }
+
+! define storage term (units =  thousand-acres)
+
+define beta_58 {VALUE area_58*sy_58/1000.0 }
+define beta_58s {VALUE area_58s*sy_58s/1000.0 }
+
+!define previous month groundwater storage (units = TAF)
+! Note:  this is done to avoid using conditional statement for first month
+
+define g_58_previous { value beta_58*h_58(-1) - beta_58*b_58 }
+define g_58s_previous { value beta_58s*h_58s(-1) - beta_58s*b_58s }
+
+! define maximum groundwater storage (units = TAF)
+
+define maxg_58 {VALUE beta_58*gse_58 - beta_58*b_58 }
+
+! define current month groundwater storage (units = TAF)
+
+goal storage_58 { g_58 = beta_58*h_58 - beta_58*b_58}
+goal storage_58s { g_58s = beta_58s*h_58s - beta_58s*b_58s}
+
+! restrict groundwater storage to maximum
+
+!goal maxstore_58 {g_58 < maxg_58 }
+
+! restrict head of stream recharge to stream bed elevation
+
+define hmax_58s_last {
+
+       case      less_than {
+       condition h_58s(-1) < rbot_58
+       value     rbot_58 }
+
+       case      otherwise {
+       condition always
+       value     h_58s(-1) }
+       }
+
+! Define stream - groundwater interaction
+
+! first determine stream depth of the previous timestep
+define depth_58_last {SELECT   depth
+                      FROM     stream_elev
+                      GIVEN    flow=c110(-1)
+                      USE      linear
+                      WHERE    DSA=58 }
+
+
+! now determine the total stream elevation of the previous timestep
+define hstream_58_last {value rbot_58 + depth_58_last }
+define hstream_58_old {alias hstream_58_last kind 'elevation-stream' units 'feet'}
+
+! last define stream - groundwater interaction
+!define gs60_taf {LOWER -100000.0 UPPER 100000.0 kind 'flow' units 'taf'}   ! groundwater model is TAF
+
+define gs60_taf {value lamda_58*hstream_58_last - lamda_58*hmax_58s_last }   ! groundwater model is TAF
+goal set_gs60 { gs60 < gs60_taf*taf_cfs }                                 ! streamflow is CFS
+
+
+! groundwater pumping
+goal set_gp60 {gp60 = gp60_taf*taf_cfs}   ! streamflow is CFS
+
+! define the basin recharge
+! define return flow components
+!goal set_gr60AWprj {gr60AWprj = gr60AW_taf*perc_dr58*taf_cfs }
+!goal set_gr60AWnp {gr60AWnp = gr60AW_taf*(1-perc_dr58)*taf_cfs }
+
+goal set_gr60AWprj {
+    lhs gr60AWprj
+        rhs gr60AW_taf*perc_dr58*taf_cfs
+        lhs>rhs        penalty 5000
+        lhs<rhs        penalty 5000 }
+
+goal set_gr60AWnp {
+    lhs gr60AWnp
+        rhs gr60AW_taf*(1-perc_dr58)*taf_cfs
+        lhs>rhs        penalty 5000
+        lhs<rhs        penalty 5000 }
+
+define gr58error {alias gr60AWprj + gr60AWnp - gr60aw_taf*taf_cfs kind 'flow' units 'cfs' }
+
+
+goal set_gr60AW {gr60AW = gr60AWprj + gr60AWnp }
+!goal set_gr60AW_taf {gr60AW_taf = gr60AW*cfs_taf}   ! groundwater model is TAF, streamflow is CFS
+
+! Define interaction between groundwater basins (units = TAF)
+! see file parameters.wresl for other parameter values
+
+goal set_basin_strip58 { basin_strip58 = alpha58_58s*phi58_58s*h_58 -
+                                         alpha58_58s*phi58_58s*h_58s }
+
+goal set_interbasin10_58 { interbasin10_58 = alpha58_10*phi58_10*h_10 -
+                                             alpha58_10*phi58_10*h_58 }
+
+goal set_interstrip10_58 { interstrip10_58 = alpha58s_10s*phi58s_10s*h_10s -
+                                             alpha58s_10s*phi58s_10s*h_58s }
+
+
+goal set_gi60_taf { gi60_taf = basin_strip58 }
+
+goal set_gw60_taf { gw60_taf = interbasin10_58 }
+
+goal set_gw60s_taf { gw60s_taf = interstrip10_58 }
+
+
+! define groundwater continuity for DSA58 (units = TAF)
+goal continuity_58  {gw60_taf  - 1.*gp60_taf + 1.*gr60_taf + 1.*gr60AW_taf + bnd_58   - gi60_taf - gf_60  = g_58 - g_58_previous }
+goal continuity_58s {gw60s_taf - 0.*gp60_taf + 0.*gr60_taf + 0.*gr60AW_taf + gs60_taf + gi60_taf - gf_60s = g_58s - g_58s_previous }
+

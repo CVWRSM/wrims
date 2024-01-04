@@ -1,0 +1,16 @@
+! R.Wilbur 01/11/02
+
+!required sac flow for estimated exports considering all ann stations:
+define AnnSacReq {value min(max(0.0,RSReqSac,JPReqSac,EMReqSac,COReqSac),EstTotExp/0.65+6000.)}
+define AnnSacReqdv {alias AnnSacReq kind 'FLOW' units 'CFS'}
+
+!corresponding required delta outflow for estimated exports:
+define AnnDOReq {
+  case zero {
+    condition AnnSacReq <= 1.0
+    value 0.0}
+  case other {
+    condition always
+    value max(0.0,AnnSacReq + SJR_ann_est + sac_oth_est - EstTotExp - exp_oth_est)}
+}
+define AnnDOReqdv {alias AnnDOReq kind 'FLOW' units 'CFS'}

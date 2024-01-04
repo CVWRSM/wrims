@@ -1,0 +1,72 @@
+
+define R526 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_STANRIPNA {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_STANRIPNB {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_STANRIPNC {std kind 'FLOW-RETURN' units 'CFS'} !
+define R532 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R534A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R534B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_TUOLA {std kind 'FLOW-RETURN' units 'CFS'} ! R545A
+define R_TUOLB {std kind 'FLOW-RETURN' units 'CFS'} ! R545B
+define R_TUOLC {std kind 'FLOW-RETURN' units 'CFS'} ! R545C
+define R550A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R550B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_MERCED2A {std kind 'FLOW-RETURN' units 'CFS'} ! R564A 
+define R_MERCED2B {std kind 'FLOW-RETURN' units 'CFS'} ! R564B
+define R_MERCED2C {std kind 'FLOW-RETURN' units 'CFS'} ! R566
+define R573 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R585 {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_CHOWR2A {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_CHOWR2B {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_Chowbyp {std kind 'FLOW-RETURN' units 'CFS'} !
+
+define R_SJR644 {timeseries kind 'FLOW-RETURN' units 'CFS'}         !CalSim2 R644West - INPUT AS SV, TV 4.11.11
+define R_SJRVERWest_W  {timeseries kind 'FLOW-RETURN' units 'CFS'}  !CalSim2 R639West - INPUT AS SV, TV 4.8.11
+define R_SJRTUOLWest_W {timeseries kind 'FLOW-RETURN' units 'CFS'}  !CalSim2 R630West - INPUT AS SV, TV 4.8.11
+define C619Fix {timeseries kind 'FLOW-CHANNEL' units 'CFS'}  !INPUT AS SV, TV 4.8.11
+define R_SJRMS_W {timeseries kind 'FLOW-RETURN' units 'CFS'}        !CalSim2 R614West - INPUT AS SV, TV 4.8.11
+define R_MDOTA_W {timeseries kind 'FLOW-RETURN' units 'CFS'}        !CalSim2 R607West - INPUT AS SV, TV 4.8.11
+
+define R_SJROldRWest {std kind 'FLOW-RETURN' units 'CFS'}
+define R_SJRVERWest {std kind 'FLOW-RETURN' units 'CFS'} 
+define R_SJRTUOLWest {std kind 'FLOW-RETURN' units 'CFS'} 
+define C619 {std kind 'FLOW-CHANNEL' units 'CFS'} !Westside Return Flows to SJR at Merced
+define R_SJRMS {std kind 'FLOW-RETURN' units 'CFS'}  
+define R_MDOTA {std kind 'FLOW-RETURN' units 'CFS'} 
+
+goal setR_SJROldRWest {R_SJROldRWest = R_SJR644}
+goal setR_SJRVERWest  {R_SJRVERWest = R_SJRVERWest_W}
+goal setR_SJRTUOLWest {R_SJRTUOLWest = R_SJRTUOLWest_W}
+goal setC619 {C619=C619fix}
+goal setR_SJRMS {R_SJRMS = R_SJRMS_W}
+goal setR_MDOTA {R_MDOTA = R_MDOTA_W}
+
+define R_SJRMER {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRTUOLJ {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRTUOLK {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRTUOLL {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRTUOLM {std kind 'FLOW-RETURN' units 'CFS'} !
+define rfactor_R_SJRTUOLM {value 0.3}
+goal returnflowR_SJRTUOLM {R_SJRTUOLM=rfactor_R_SJRTUOLM*D_SJRMERB}
+
+define R_SJRMAZEA {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRMAZEB {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRMAZEC {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRSTANA {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRSTANB {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRSTANC {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRSTAND {std kind 'FLOW-RETURN' units 'CFS'} !
+define rfactor_R_SJRSTAND {value 0.3}
+goal returnflowR_SJRSTAND {R_SJRSTAND=rfactor_R_SJRSTAND*D_SJRTUOLB}
+define R_SJRVERA {std kind 'FLOW-RETURN' units 'CFS'} !
+define rfactor_R_SJRVERA {value 0.3}
+goal returnflowR_SJRVERA {R_SJRVERA=rfactor_R_SJRVERA*D_SJRSTAN}
+
+define R_SJRVERB {std kind 'FLOW-RETURN' units 'CFS'} !
+
+define R_CALAV {std kind 'FLOW-RETURN' units 'CFS'} !SJR @ Calaveras Return Flow C (CalSimII R508) Set as 0.0 in Calaveras_dems.wresl, TV 4.11.11
+
+define R_SJRCAL {std kind 'FLOW-RETURN' units 'CFS'}
+define R_SJRCALA {std kind 'FLOW-RETURN' units 'CFS'} !
+define R_SJRCALB {std kind 'FLOW-RETURN' units 'CFS'}
+goal setR_SJRCAL { R_SJRCAL = R_SJRCALA + R_SJRCALB }

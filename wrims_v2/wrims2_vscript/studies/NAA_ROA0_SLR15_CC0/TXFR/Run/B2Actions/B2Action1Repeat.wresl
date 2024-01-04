@@ -1,0 +1,48 @@
+! This file imposes all the (b)(2) upstream actions that are taken in the (b)(2) run
+
+! NMFS BO Action I.1.1 Clear Creek - Spring Attraction Flows
+! Repeat flow determined in CONV step
+define ClrCk_NMFS_target {
+    case May {
+        condition month == MAY
+        value C3_NMFSFlow}
+    case otherwise {
+        condition always
+        value 0. }
+}
+
+! B2 Action 1: Upstream AFRP Actions
+goal b2action1Whi_1 {
+  lhs C3_MIF
+    rhs       max(ClrCk_NMFS_target, C3MIF__z3, clear_min, C3_NMFSFlow)
+    lhs>rhs   constrain
+    lhs<rhs   penalty 0 }
+
+define minflow_C5adj {
+	case OctDec {
+		condition month < 4
+			value C5_NMFSFlow
+	}
+	case otherwise {
+		condition always
+			value max(C5MIF__z3,effective_C5min, ERP_C5MIF)
+	}
+}
+
+goal b2action1Sha_2 {
+  lhs C5_MIF
+    rhs       minflow_C5adj
+    lhs>rhs   constrain
+    lhs<rhs   penalty 0 }
+
+! NODOS ERA related constraints
+goal set_C114_NCP {C114_MIF < ERP_C114MIF}
+goal set_C169_MIF {C169_MIF < ERP_C169MIF}
+
+! B2 Action 1: Upstream AFRP Actions continued
+goal b2action1Fol_3 {
+  lhs C9_MIF
+    rhs       max(C9MIF__z3, /*nimbus_hist_std,*/ minflowFMPAmer)
+    lhs>rhs   constrain
+    lhs<rhs   penalty 0 }
+

@@ -1,0 +1,17 @@
+// Additional settings for debugging memory leaks
+{
+        "http://www.oracle.com/jrockit/jvm/" : {
+
+                // Statistics for contiguous blocks of heap memory (used, free, dark matter) and per class
+		"vm/gc/heap_statistics/*" : {
+		     "enable" : true,
+                     "period" : 10000ms
+		},
+
+                // Snapshot of virtual memory footprint
+                "vm/prof/memory_usage" : {
+		    "enable" : true,
+                    "period" : 10000ms
+		}
+	}
+}

@@ -1,0 +1,15 @@
+! WATER YEAR TYPE DEFININITIONS
+
+! the 40-30-30 index for Sacramento Basin
+define wyt_SAC {
+    select index 
+    from wytypeSAC 
+    where wateryear=wateryear
+}
+
+! the following year type names can be used to represent the numbers found in the tables
+define Wet          {value 1.}
+define AboveNormal  {value 2.}
+define BelowNormal  {value 3.}
+define Dry          {value 4.}
+define Critical     {value 5.}

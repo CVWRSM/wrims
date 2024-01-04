@@ -1,0 +1,580 @@
+! Ag shortage
+define  X_WKYTN_2_PA  {alias CLM_WKYTN_2_PA * taf_cfs*perdv_cvpag_sys - D_WKYTN_2_PA kind 'delivery-shortage' units 'cfs'}
+define  X_SAC294_3_PA  {alias CLM_SAC294_3_PA * taf_cfs*perdv_cvpag_sys - D_SAC294_3_PA kind 'delivery-shortage' units 'cfs'}
+define  X_CCL005_4_PA1  {alias CLM_CCL005_4_PA1 * taf_cfs*perdv_cvpag_sys - D_CCL005_4_PA1 kind 'delivery-shortage' units 'cfs'}
+define  X_TCC022_4_PA2  {alias CLM_TCC022_4_PA2 * taf_cfs*perdv_cvpag_sys - D_TCC022_4_PA2 kind 'delivery-shortage' units 'cfs'}
+define  X_TCC036_7N_PA  {alias CLM_TCC036_7N_PA * taf_cfs*perdv_cvpag_sys - D_TCC036_7N_PA kind 'delivery-shortage' units 'cfs'}
+define  X_TCC081_7S_PA  {alias CLM_TCC081_7S_PA * taf_cfs*perdv_cvpag_sys - D_TCC081_7S_PA kind 'delivery-shortage' units 'cfs'}
+define  X_TCC111_7S_PA  {alias CLM_TCC111_7S_PA * taf_cfs*perdv_cvpag_sys - D_TCC111_7S_PA kind 'delivery-shortage' units 'cfs'}
+define  X_FTR021_16_PA  {alias CLM_FTR021_16_PA * taf_cfs*perdv_cvpag_sys - D_FTR021_16_PA kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_pag_n {alias  X_WKYTN_2_PA +  X_SAC294_3_PA +  X_CCL005_4_PA1 +  X_TCC022_4_PA2 +  X_TCC036_7N_PA +  X_TCC081_7S_PA +  X_TCC111_7S_PA +  X_FTR021_16_PA kind 'delivery-shortage-cvp' units 'cfs'}
+
+define del_cvp_pag_n {alias D_WKYTN_2_PA + D_SAC294_3_PA + D_CCL005_4_PA1 + D_TCC022_4_PA2 + D_TCC036_7N_PA + D_TCC081_7S_PA + D_FTR021_16_PA kind 'delivery-cvp' units 'cfs'}
+
+
+! M&I shortage
+define  X_WTPBUK_3_PU3  {alias CLM_WTPBUK_3_PU3 * taf_cfs*perdv_cvpmi_sys - D_WTPBUK_3_PU3 kind 'delivery-shortage' units 'cfs'}
+define  X_WTPCSD_2_PU  {alias CLM_WTPCSD_2_PU * taf_cfs*perdv_cvpmi_sys - D_WTPCSD_2_PU kind 'delivery-shortage' units 'cfs'}
+define  X_WKYTN_2_PU  {alias CLM_WKYTN_2_PU * taf_cfs*perdv_cvpmi_sys - D_WKYTN_2_PU kind 'delivery-shortage' units 'cfs'}
+define  X_SHSTA_3_PU1  {alias CLM_SHSTA_3_PU1 * taf_cfs*perdv_cvpmi_sys - D_WTPJMS_3_PU1 kind 'delivery-shortage' units 'cfs'}
+define  X_SAC294_3_PU2  {alias CLM_SAC294_3_PU2 * taf_cfs*perdv_cvpmi_sys - D_SAC294_3_PU2 kind 'delivery-shortage' units 'cfs'}
+! Placeholders for nine CVP MI contractors with mixed diversion of CVP and Water Forum water - CVP shortage assumed to be zero. 
+define  X_CL2_FOLSM  {alias CL2_FOLSM - CL2_FOLSM kind 'delivery-shortage' units 'cfs'}
+define  X_CL2_SJWD_S  {alias CL2_SJWD_S - CL2_SJWD_S kind 'delivery-shortage' units 'cfs'}
+define  X_CL2_ELDOR  {alias CL2_ELDOR - CL2_ELDOR kind 'delivery-shortage' units 'cfs'}
+define  X_CL2_ROSEV  {alias CL2_ROSEV - CL2_ROSEV kind 'delivery-shortage' units 'cfs'}
+define  X_CL2_CAREC  {alias CL2_CAREC - CL2_CAREC kind 'delivery-shortage' units 'cfs'}
+define  X_CL2_SMUD  {alias CL2_SMUD - CL2_SMUD kind 'delivery-shortage' units 'cfs'}
+define  X_CL2_PCWA_S  {alias CL2_PCWA_S - CL2_PCWA_S kind 'delivery-shortage' units 'cfs'}
+define  X_CL2_SCWA  {alias CL2_SCWA - CL2_SCWA kind 'delivery-shortage' units 'cfs'}
+define  X_CL2_PCWA_A  {alias CL2_PCWA_A - CL2_PCWA_A kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_pmi_n {alias  X_WTPBUK_3_PU3 +  X_WTPCSD_2_PU +  X_WKYTN_2_PU +  X_SHSTA_3_PU1 +  X_SAC294_3_PU2  +  X_CL2_FOLSM +  X_CL2_SJWD_S +  X_CL2_ELDOR +  X_CL2_ROSEV +  X_CL2_CAREC +  X_CL2_SMUD +  X_CL2_PCWA_S +  X_CL2_SCWA +  X_CL2_PCWA_A kind 'delivery-shortage-cvp' units 'cfs'}
+
+! Include placeholders for nine CVP MI contractors with mixed diversion of CVP and Water Forum water - CVP delivery assumes zero shortage
+define del_cvp_pmi_n {alias D_WKYTN_WTPBUK + D_WKYTN_WTPCSD /*+ D_SAC296_WTPCSD*/ + D_SHSTA_WTPJMS + D_SAC294_3_PU2 + CL2_FOLSM + CL2_SJWD_S + CL2_ELDOR + CL2_ROSEV + CL2_CAREC + CL2_SMUD + CL2_PCWA_S + CL2_SCWA + CL2_PCWA_A kind 'delivery-cvp' units 'cfs'}
+
+
+! Settlement contractor deliveries occur in April-October and non-project water right diversions occur at same diversion arc in November-March
+define  X_SAC296_2_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC296_2_SA  {
+	lhs  X_SAC296_2_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC296_2_SA * taf_cfs*perdv_cvpag_sys - D_SAC296_2_SA } ! constraints-Contracts.wresl has ag allocation
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_WTPFTH_3_SU {std kind 'delivery-shortage' units 'cfs'}
+goal short_WTPFTH_3_SU  {
+	lhs  X_WTPFTH_3_SU
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_WTPFTH_3_SU * taf_cfs*perdv_cvpsc_sys - D_WTPFTH_3_SU }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+	
+define  X_WTPFTH_2_SU {std kind 'delivery-shortage' units 'cfs'}
+goal short_WTPFTH_2_SU  {
+	lhs  X_WTPFTH_2_SU
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_WTPFTH_2_SU * taf_cfs*perdv_cvpsc_sys - D_WTPFTH_2_SU }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}	
+
+define  X_SAC289_3_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC289_3_SA  {
+	lhs  X_SAC289_3_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC289_3_SA * taf_cfs*perdv_cvpsc_sys - D_SAC289_3_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC178_8N_SA1 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC178_8N_SA1  {
+	lhs  X_SAC178_8N_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC178_8N_SA1 * taf_cfs*perdv_cvpsc_sys - D_SAC178_8N_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+	
+define  X_SAC159_8N_SA1 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC159_8N_SA1  {
+	lhs  X_SAC159_8N_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC159_8N_SA1 * taf_cfs*perdv_cvpsc_sys - D_SAC159_8N_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}	
+	
+
+define  X_GCC027_8N_SA2 {std kind 'delivery-shortage' units 'cfs'}
+goal short_GCC027_8N_SA2  {
+	lhs  X_GCC027_8N_SA2
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_GCC027_8N_SA2 * taf_cfs*perdv_cvpsc_sys - D_GCC027_8N_SA2 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC159_8S_SA1 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC159_8S_SA1  {
+	lhs  X_SAC159_8S_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC159_8S_SA1 * taf_cfs*perdv_cvpsc_sys - D_SAC159_8S_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_GCC046_8S_SA2 {std kind 'delivery-shortage' units 'cfs'}
+goal short_GCC046_8S_SA2  {
+	lhs  X_GCC046_8S_SA2
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_GCC046_8S_SA2 * taf_cfs*perdv_cvpsc_sys - D_GCC046_8S_SA2 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC121_8S_SA3 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC121_8S_SA3  {
+	lhs  X_SAC121_8S_SA3
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC121_8S_SA3 * taf_cfs*perdv_cvpsc_sys - D_SAC121_8S_SA3 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+	
+define  X_SAC109_8S_SA3 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC109_8S_SA3  {
+	lhs  X_SAC109_8S_SA3
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC109_8S_SA3 * taf_cfs*perdv_cvpsc_sys - D_SAC109_8S_SA3 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC196_9_SA1 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC196_9_SA1  {
+	lhs  X_SAC196_9_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC196_9_SA1 * taf_cfs*perdv_cvpsc_sys - D_SAC196_9_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC162_9_SA2 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC162_9_SA2  {
+	lhs  X_SAC162_9_SA2
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC162_9_SA2 * taf_cfs*perdv_cvpsc_sys - D_SAC162_9_SA2 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC141_18_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC141_18_SA  {
+	lhs  X_SAC141_18_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC141_18_SA * taf_cfs*perdv_cvpsc_sys - D_SAC141_18_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC122_19_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC122_19_SA  {
+	lhs  X_SAC122_19_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC122_19_SA * taf_cfs*perdv_cvpsc_sys - D_SAC122_19_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC115_19_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC115_19_SA  {
+	lhs  X_SAC115_19_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC115_19_SA * taf_cfs*perdv_cvpsc_sys - D_SAC115_19_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+	
+define  X_SAC099_19_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC099_19_SA  {
+	lhs  X_SAC099_19_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC099_19_SA * taf_cfs*perdv_cvpsc_sys - D_SAC099_19_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+	
+define  X_SAC091_19_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC091_19_SA  {
+	lhs  X_SAC091_19_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC091_19_SA * taf_cfs*perdv_cvpsc_sys - D_SAC091_19_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}	
+
+define  X_SAC083_21_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC083_21_SA  {
+	lhs  X_SAC083_21_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC083_21_SA * taf_cfs*perdv_cvpsc_sys - D_SAC083_21_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC074_21_SA {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC074_21_SA  {
+	lhs  X_SAC074_21_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC074_21_SA * taf_cfs*perdv_cvpsc_sys - D_SAC074_21_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC082_22_SA1 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC082_22_SA1  {
+	lhs  X_SAC082_22_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC082_22_SA1 * taf_cfs*perdv_cvpsc_sys - D_SAC082_22_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define  X_SAC078_22_SA1 {std kind 'delivery-shortage' units 'cfs'}
+goal short_SAC078_22_SA1  {
+	lhs  X_SAC078_22_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs CLM_SAC078_22_SA1 * taf_cfs*perdv_cvpsc_sys - D_SAC078_22_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define short_cvp_psc_n {alias  X_SAC296_2_SA +  X_WTPFTH_3_SU +  X_WTPFTH_2_SU +  X_SAC289_3_SA +  X_SAC178_8N_SA1 +  X_GCC027_8N_SA2 +  X_SAC159_8S_SA1 +  X_GCC046_8S_SA2 +  X_SAC121_8S_SA3 +  X_SAC109_8S_SA3 +  X_SAC196_9_SA1 +  X_SAC162_9_SA2 +  X_SAC141_18_SA +  X_SAC122_19_SA +  X_SAC115_19_SA + X_SAC099_19_SA + X_SAC091_19_SA +  X_SAC083_21_SA +  X_SAC074_21_SA +  X_SAC082_22_SA1 +  X_SAC078_22_SA1 kind 'delivery-shortage-cvp' units 'cfs'}
+
+
+! Settlement contractor deliveries occur in April-October and non-project water right diversions occur at same diversion arc in November-March
+define dy_SAC296_2_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC296_2_SA  {
+	lhs dy_SAC296_2_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC296_2_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_WTPFTH_3_SU {std kind 'delivery-cvp' units 'cfs'}
+goal del_WTPFTH_3_SU  {
+	lhs dy_WTPFTH_3_SU
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_WTPFTH_3_SU }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+	
+define dy_WTPFTH_2_SU {std kind 'delivery-cvp' units 'cfs'}
+goal del_WTPFTH_2_SU  {
+	lhs dy_WTPFTH_2_SU
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_WTPFTH_2_SU }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}	
+
+define dy_SAC289_3_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC289_3_SA  {
+	lhs dy_SAC289_3_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC289_3_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC178_8N_SA1 {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC178_8N_SA1  {
+	lhs dy_SAC178_8N_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC178_8N_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_GCC027_8N_SA2 {std kind 'delivery-cvp' units 'cfs'}
+goal del_GCC027_8N_SA2  {
+	lhs dy_GCC027_8N_SA2
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_GCC027_8N_SA2 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC159_8S_SA1 {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC159_8S_SA1  {
+	lhs dy_SAC159_8S_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC159_8S_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_GCC046_8S_SA2 {std kind 'delivery-cvp' units 'cfs'}
+goal del_GCC046_8S_SA2  {
+	lhs dy_GCC046_8S_SA2
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_GCC046_8S_SA2 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC121_8S_SA3 {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC121_8S_SA3  {
+	lhs dy_SAC121_8S_SA3
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC121_8S_SA3 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC109_8S_SA3 {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC109_8S_SA3  {
+	lhs dy_SAC109_8S_SA3
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC109_8S_SA3 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC196_9_SA1 {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC196_9_SA1  {
+	lhs dy_SAC196_9_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC196_9_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC162_9_SA2 {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC162_9_SA2  {
+	lhs dy_SAC162_9_SA2
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC162_9_SA2 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC141_18_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC141_18_SA  {
+	lhs dy_SAC141_18_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC141_18_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC122_19_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC122_19_SA  {
+	lhs dy_SAC122_19_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC122_19_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC115_19_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC115_19_SA  {
+	lhs dy_SAC115_19_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC115_19_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+	
+define dy_SAC099_19_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC099_19_SA  {
+	lhs dy_SAC099_19_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC099_19_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC091_19_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC091_19_SA  {
+	lhs dy_SAC091_19_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC091_19_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC083_21_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC083_21_SA  {
+	lhs dy_SAC083_21_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC083_21_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC074_21_SA {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC074_21_SA  {
+	lhs dy_SAC074_21_SA
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC074_21_SA }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC082_22_SA1 {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC082_22_SA1  {
+	lhs dy_SAC082_22_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC082_22_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define dy_SAC078_22_SA1 {std kind 'delivery-cvp' units 'cfs'}
+goal del_SAC078_22_SA1  {
+	lhs dy_SAC078_22_SA1
+	case APR_OCT {
+	condition month == OCT .or. month >= APR .and. month <= SEP
+	rhs D_SAC078_22_SA1 }
+	
+	case otherwise {
+	condition always
+	rhs 0. }
+	}
+
+define del_cvp_psc_n {alias dy_SAC296_2_SA + dy_WTPFTH_3_SU + dy_WTPFTH_2_SU + dy_SAC289_3_SA + dy_SAC178_8N_SA1 + dy_GCC027_8N_SA2 + dy_SAC159_8S_SA1 + dy_GCC046_8S_SA2 + dy_SAC121_8S_SA3 + dy_SAC109_8S_SA3 + dy_SAC196_9_SA1 + dy_SAC162_9_SA2 + dy_SAC141_18_SA + dy_SAC122_19_SA + dy_SAC115_19_SA + dy_SAC099_19_SA + dy_SAC091_19_SA + dy_SAC083_21_SA + dy_SAC074_21_SA + dy_SAC082_22_SA1 + dy_SAC078_22_SA1 kind 'delivery-cvp' units 'cfs'}
+
+
+! Refuge
+define  X_GCC027_8N_PR1  {alias CLM_GCC027_8N_PR1 * taf_cfs*perdv_cvprf_sys - D_GCC027_8N_PR1 kind 'delivery-shortage' units 'cfs'}
+define  X_GCC039_8N_PR2  {alias CLM_GCC039_8N_PR2 * taf_cfs*perdv_cvprf_sys - D_GCC039_8N_PR2 kind 'delivery-shortage' units 'cfs'}
+define  X_GCC046_8S_PR  {alias CLM_GCC046_8S_PR * taf_cfs*perdv_cvprf_sys - D_GCC046_8S_PR kind 'delivery-shortage' units 'cfs'}
+define  X_CBD037_8S_PR  {alias CLM_CBD037_8S_PR * taf_cfs*perdv_cvprf_sys - D_CBD037_8S_PR kind 'delivery-shortage' units 'cfs'}
+define  X_WEC000_11_PR  {alias CLM_WEC000_11_PR * taf_cfs*perdv_cvprf_sys - D_WEC000_11_PR kind 'delivery-shortage' units 'cfs'}
+define  X_RVC005_11_PR  {alias CLM_RVC005_11_PR * taf_cfs*perdv_cvprf_sys - D_RVC005_11_PR kind 'delivery-shortage' units 'cfs'}
+define  X_SAC196_9_PR   {alias CLM_SAC196_9_PR * taf_cfs*perdv_cvprf_sys - D_SAC196_9_PR kind 'delivery-shortage' units 'cfs'}
+
+define short_cvp_prf_n {alias  X_GCC027_8N_PR1 +  X_GCC039_8N_PR2 +  X_GCC046_8S_PR +  X_CBD037_8S_PR + X_WEC000_11_PR + X_RVC005_11_PR +  X_SAC196_9_PR kind 'delivery-shortage-cvp' units 'cfs'}
+
+define del_cvp_prf_n {alias D_GCC027_8N_PR1 + D_GCC039_8N_PR2 + D_GCC046_8S_PR + D_CBD037_8S_PR + D_WEC000_11_PR + D_RVC005_11_PR + D_SAC196_9_PR kind 'delivery-cvp' units 'cfs'}
+
+
+! TOTAL CVP North (non-Water Forum)
+ define short_cvp_tot_n {alias short_cvp_pag_n + short_cvp_pmi_n + short_cvp_psc_n + short_cvp_prf_n kind 'delivery-shortage-cvp' units 'cfs'}
+ define del_cvp_total_n {alias del_cvp_pag_n + del_cvp_pmi_n + del_cvp_psc_n + del_cvp_prf_n kind 'delivery-cvp' units 'cfs'}

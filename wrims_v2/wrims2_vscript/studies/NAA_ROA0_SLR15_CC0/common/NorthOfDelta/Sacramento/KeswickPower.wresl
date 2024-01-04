@@ -1,0 +1,27 @@
+define C5_EXC1 {std kind 'FLOW-EXCESS-INSTREAM' units 'CFS'}
+define C5_EXC2 {std kind 'FLOW-SPILL-POWER' units 'CFS'}
+goal C5_EXC_total {C5_EXC=C5_EXC1+C5_EXC2}
+
+!define FolInfEst {sum(i=0,SEP-month,1) (I8(i)+I9(i)+I300(i))*cfs_taf(i) } !placed in FolRuleCurv.wresl
+goal set_c5_exc2_penalty {
+     lhs C5_EXC2
+    case FolsomJulNotOK {
+        condition month == jul .and. s8(-1)+S8mod + FolInfEst < 600.
+        rhs 0.
+        lhs>rhs penalty 1266 }
+    case FolsomAugNotOK {
+        condition month == aug .and. s8(-1)+S8mod + FolInfEst < 450.
+        rhs 0.
+        lhs>rhs penalty 1266 }
+    case FolsomSepNotOK {
+        condition month == sep .and. s8(-1)+S8mod + FolInfEst < 350.
+        rhs 0.
+        lhs>rhs penalty 1266 }
+    case FolsomOK {
+        condition always
+        rhs 0.
+        lhs>rhs penalty 1266 }
+}
+
+define C5_POW {lower 0 upper 15000 kind 'FLOW-POWER' units 'CFS'}
+goal C5_POW_total {C5_POW=C5_MIF+C5_EXC1}

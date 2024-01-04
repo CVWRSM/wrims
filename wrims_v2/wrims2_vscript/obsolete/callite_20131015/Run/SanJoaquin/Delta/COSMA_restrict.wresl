@@ -1,0 +1,134 @@
+
+/***********DWSP diversion*************/
+!source of 1485 water
+define Ann_WWTP_dv { std kind 'COSMA-WWTP' units 'taf' }
+
+define Ann_WWTP {!annaul WWTP release = 41% * annual M&I demand (TAF)
+     case October {
+          condition month == oct
+          sum(i=0,11,1) COSMA_MIDmd(i)*0.41 }
+     case otherwise {
+          condition always
+        value Ann_WWTP_dv(-1) }
+    }
+    goal set_Ann_WWTP { Ann_WWTP_dv = Ann_WWTP }
+
+define COSMA_WWTP_PerMonth  !monthly WWTP release
+        { select Mon_Per from COSMA_WWTP_PerMonth where month = month }
+    goal setR_SJRCALB   { R_SJRCALB = Ann_WWTP * taf_cfs * COSMA_WWTP_PerMonth }
+    goal setD_SJRCALa_1{ D_SJRCALa_1 < R_SJRCALB } !section 1484 diversion = WWTP effulent
+
+!no Area-of-origin water (different than the DWSP s12)
+goal setD_SJRCALa_2 {D_SJRCALa_2 = 0.0}
+
+define DWSP_WTP_MGD { value 30.0*1.547 } ! infrastructure change
+
+goal set_DWSP_WTP { D_SJRCALa < DWSP_WTP_MGD }
+
+/***********SEWD WTP*************/
+!SEWD WTP capacity, 50 MGD
+define SEWD_cap {value 9999} !50*1.547}
+
+!goal setC509 {C509 < SEWD_cap }  !commented out to allow full 155 for SEWD
+
+/***********COSMA demand*************/
+
+goal setGP509_nd { GP509_nd = 0.0 }
+
+goal set_GP509_pag {GP509_pag = 0.0 }
+
+! in order to represent a full sewd demand of 75 taf/yr to enable diversions of 155 taf/yr from
+! the stanislaus, define the demand_d510_mi variable below and take the max of it and COSMA_MIdmd
+! in setting up operating goals for D510
+define demand_D510_MI {select dem510_MI from urban_demand3 where month = month}
+	
+goal set_GP509_mi {GP509_mi < max(COSMA_MIdmd*taf_cfs, demand_D510_MI*taf_cfs*0.95)+R_SJRCALB - C509 - C513A}
+
+goal setD_SJRCALB { D_SJRCALB = 0.0 }
+
+goal setD510_mi {
+    lhs D510_mi
+    rhs max(COSMA_MIdmd*taf_cfs,demand_D510_MI*taf_cfs*0.95)
+    lhs>rhs penalty 999999
+    lhs<rhs penalty 999999 }
+
+
+goal setD510_ag  { D510_ag = D_SJRCALb }
+goal setD510_gwr { D510_gwr = 0.0 }
+
+
+/***********Delivery priority*************/
+
+goal setSWED_dmd {C509 < max(COSMA_MIdmd*taf_cfs,demand_D510_MI*taf_cfs*0.95)}
+
+goal setDWSP_dmd {C513a < COSMA_MIdmd*taf_cfs}
+
+
+/*********** unused code *************/
+!priority through weight
+!SEWD water allocation priority
+!goal setSWED_s     { C509_s < COSMA_dmd_s }
+!goal setSWED_c_dmd { C509_c < COSMA_dmd_c }
+!goal setSWED_n_dmd { C509_n < COSMA_dmd_n }
+
+!Groundwater pumping restriction: not overpumping
+!goal setCOSMA_gw_n { GP509_mi_n = COSMA_dmd_n - C513a_n - C509_n }
+!goal setCOSMA_gw_c { GP509_mi_c = COSMA_dmd_c - C513a_c - C509_c }
+!goal setCOSMA_gw_s { GP509_mi_s = COSMA_dmd_s - C513a_s - C509_s }
+
+
+!DWSP water allocation priority
+!goal setDWSP_n_dmd { C513a_n < COSMA_dmd_n }
+!goal setDWSP_c_dmd { C513a_c < COSMA_dmd_c }
+!goal setDWSP_s_dmd { C513a_s < COSMA_dmd_s }
+
+!goal setD510_ag  { D510_ag < D_SJRCALb }
+!goal setD510_gwr { D510_gwr < Recharge_cap }
+
+!goal setGP509_nd {lhs GP509_nd
+!         rhs COSMA_AG_gw
+!           lhs>rhs penalty 999999
+!           lhs<rhs penalty 999999 }
+!goal set_GP509_pag {GP509_pag = COSMA_AG_gw}
+!goal setD_SJRCALb    {D_SJRCALb < COSMA_AGdmd - COSMA_AG_gw }!COSMA ag riparian diversion
+!goal setD510_ag1 {D510_ag = GP509_nd + D_SJRCALb }
+
+!goal setD510_mi { D510_mi = COSMA_MIdmd*taf_cfs }
+
+/***********DWSP diversion*************/
+! Limit Jan-Dec diversion to 125.9 TAF as per water rights application
+! (different than the DWSP s12)
+
+!define RemainWRDV { std kind 'water-supply' units 'taf' }
+
+!define RemainWR { !annual sale from lookup table
+!   case firstmonth {
+!       condition month == oct .and. wateryear==beginWY
+!              value 30.}
+!   case January {
+!       condition month == jan
+!              value  125.9}
+!   case otherwise {
+!       condition always
+!              value max(0.0,RemainWRDV(-1) - D_SJRCALA(-1)*cfs_taf(-1)) } ! does this apply to both _1 and _2?
+!          }
+
+!goal set_RemainWR { RemainWRDV = RemainWR}
+
+!goal set_D_SJRCALALimit { RemainWRDV - D_SJRCALA*cfs_taf > 0.0}
+
+!goal set_D_SJRCALaLimit { D_SJRCALA < RemainWR*taf_cfs }
+
+!define DWSP_WTP_MGD { value 160*1.547 }
+
+/***********GW basin*************/
+!GW basin: Calaveras County Water District (beneath SEWD service but outside COSMA)
+!goal setGS49B { !GW pumping of basin GS49B through GP509
+!   GS49B * taf_cfs = GS49B(-1) * taf_cfs + I49B * taf_cfs + R49B * taf_cfs - GP509 }
+
+!GW basin: beneath COSMA
+!define Recharge_cap { value 20*1.547 }   !20 MGD Groundwater recharge
+
+!goal setGS513 { GS513 * taf_cfs = GS513(-1) * taf_cfs + C514B *0.9 - GP513}  !Assume only 90% of recharged water is recoverable
+
+

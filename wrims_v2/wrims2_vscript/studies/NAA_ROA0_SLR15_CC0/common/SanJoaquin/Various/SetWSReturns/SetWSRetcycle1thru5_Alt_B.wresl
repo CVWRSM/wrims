@@ -1,0 +1,58 @@
+! SetWSRetcycle1thru5.wresl
+! EDWARD CHANG
+! 6/28/2000
+! This file defines CVP deliveries whose return flows enter the San Joaquin System (Used for Cycle 2 through 5)
+! Revised by C. Hsu, 3/5/03, USBR, for review and documentation project
+!##################################################################################################################
+/*
+Fix CVP deliveries to 100 % of adjusted delivery decision, which will fix the return flows
+into the San Joaquin system, which is an accurate full system approximation for the returns
+before the full system is integrated.  The approximation is needed because the returns affect
+main-stem flows which dictate Water Quality and VAMP releases.
+*/
+
+/* Ag deliveries
+This file sets the CVP deliveries for cycle 2 through 5.
+Return flow arc table and demand_arc table in all cycles for
+D700, D607A, D607B, D607C, D706, D707, D833, D835
+and need the following goals to accurately constrain them in absence of full system continuity
+*/
+! CVP upper DMC    Ag (Ag full percent of deliveries for the south times demands)
+goal setD700cycle2 { D700 = perdel_cvpag_s*dem_D700_pag*taf_cfs }
+! CVP upper DMC    Ag (Ag full percent of deliveries for the south times demands)
+goal setD701cycle2 { D701 + D630C = perdel_cvpag_s*dem_D701_pag*taf_cfs }
+! CVP lower DMC Volta Ag (Ag full percent of deliveries for the south times demands)
+goal setD706cycle2 { D706 = perdel_cvpag_s*dem_D706_pag*taf_cfs }
+! CVP project Ag San Luis WD (Ag full percent of deliveries for the south times demands)
+goal setD833cycle2 { D833 = perdel_cvpag_s*dem_D833_pag*taf_cfs }
+! CVP Dos Amigos pumping plant (Ag full percent of deliveries for the south times demands)
+goal setD835cycle2 { D835 = perdel_cvpag_s*dem_D835_pag*taf_cfs }
+! Mendota Pool project Ag (Ag full percent of deliveries for the south times demands)
+goal setD607Acycle2 { D607A < perdel_cvpag_s*dem_D607A_pag*taf_cfs }
+
+
+/*
+Exchange Contractors deliveries
+*/
+! CVP lower DMC Volta Exchange Contractors deliveries (Exchange full percent deliveries for the south times demands)
+goal setD707cycle2 { D707 = perdel_cvpex_s*dem_D707_pex*taf_cfs }
+! Set limits on Mendota Pool Exchange Contractors deliveries
+goal setD607Bcycle2 { D607B < perdel_cvpex_s*dem_D607B_pex*taf_cfs }
+goal setD608Bcycle2 { D608B < perdel_cvpex_s*dem_D608B_pex*taf_cfs }
+
+
+/*
+Refuge deliveries
+*/
+! Set limits on Mendota Pool refuge deliveries
+goal setD607Ccycle2 { D607C_prf < perdel_cvprf_s*dem_D607C_prf*taf_cfs }
+goal setD608Ccycle2 { D608C_prf < perdel_cvprf_s*dem_D608C_prf*taf_cfs }
+! CVP lower DMC Volta Refuge
+goal setD708cycle2 { D708 < perdel_cvprf_s*dem_D708_prf*taf_cfs }
+
+
+/*
+Project Losses
+*/
+! Set limits on Mendota Pool project losses
+goal setD607Dcycle2 { D607D < dem_D607D_pls*taf_cfs }

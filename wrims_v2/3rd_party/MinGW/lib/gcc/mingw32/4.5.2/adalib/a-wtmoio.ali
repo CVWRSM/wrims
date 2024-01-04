@@ -1,0 +1,129 @@
+V "GNAT Lib v4.5"
+A -gnatwa
+A -O2
+A -W
+A -Wall
+A -g
+A -gnatp
+A -gnatg
+A -mtune=i386
+A -march=i386
+P SS
+R nnnnnnnnnnnnnnnvnnvnnnvnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+
+U ada.wide_text_io.modular_io%b  a-wtmoio.adb	8626d253 NE OL PK GE
+W ada%s			ada.ads			ada.ali
+W ada.wide_text_io%s	a-witeio.adb		a-witeio.ali
+W ada.wide_text_io.modular_aux%s  a-wtmoau.adb	a-wtmoau.ali
+W system%s		system.ads		system.ali
+W system.unsigned_types%s  s-unstyp.ads		s-unstyp.ali
+W system.wch_con%s	s-wchcon.adb		s-wchcon.ali
+W system.wch_wts%s	s-wchwts.adb		s-wchwts.ali
+
+U ada.wide_text_io.modular_io%s  a-wtmoio.ads	767b636b BN NE OL PK GE
+W ada.wide_text_io%s	a-witeio.adb		a-witeio.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-except.ads		20090727140100 34786013
+D a-finali.ads		20090409150020 bfd2ca79
+D a-filico.ads		20090409150020 4ff02a40
+D a-ioexce.ads		20091130110856 2504b9d2
+D a-stream.ads		20090409150020 34aca5be
+D a-tags.ads		20090409150020 bfa07446
+D a-unccon.ads		20070406091342 51e09df2
+D a-witeio.ads		20091028133152 e90583d1
+D a-wtmoau.ads		20090409150020 6852c4d8
+D a-wtmoio.ads		20090409150020 9f7ee0ba
+D a-wtmoio.adb		20090409150020 84be82e1
+D interfac.ads		20090409150020 a69cad5c
+D i-cstrea.ads		20090409150020 e1e064a9
+D system.ads		20090410155748 b8eb58c3
+D s-crtl.ads		20091130102048 bf835650
+D s-exctab.ads		20090417131548 4b7fd51d
+D s-ficobl.ads		20090409150020 8bb681e5
+D s-finimp.ads		20090409150020 90fd9896
+D s-finroo.ads		20090409150020 1408f9d1
+D s-parame.ads		20091130110856 6cdeed25
+D s-secsta.ads		20090707124244 d2c357fb
+D s-soflin.ads		20090729085154 61e5c9e8
+D s-stache.ads		20090417130712 481f9e9d
+D s-stalib.ads		20090422095704 9cbc334a
+D s-stoele.ads		20090417130712 a4d57c26
+D s-stoele.adb		20090417130712 49ef69d7
+D s-stratt.ads		20090409150020 fef7c1da
+D s-traent.ads		20090417130712 a66ef260
+D s-unstyp.ads		20090409150020 c0f9fae5
+D s-wchcon.ads		20090417130712 30c48dc1
+D s-wchwts.ads		20090409150020 058903f4
+X 1 ada.ads
+16K9*Ada 19e8 11|45r9 80r5 12|32r6 38r14 40r19 43r24 141r5
+X 9 a-witeio.ads
+52K13*Wide_Text_IO 1|16k9 9|496e21 11|45r13 80r9 12|32r10 38r18 40r23 43r28
+. 141r9
+54P9*File_Type(373R9) 11|51r15 60r15 12|40r36 50r15 100r15
+76I12*Field{integer} 11|47r20 53r15 57r15 62r15 67r15 12|52r15 67r15 102r15
+. 115r15
+81I12*Number_Base{integer} 11|48r20 63r15 68r15 78r14 12|103r15 116r15 125r14
+124V13*Current_Input{54P9} 12|70r12
+125V13*Current_Output{54P9} 12|119r12
+301X4*Data_Error 12|62r38 92r38
+X 10 a-wtmoau.ads
+41K34*Modular_Aux 87e33 12|32w23 43r41
+45U14*Get_Uns 12|58r14
+50U14*Get_LLU 12|56r14
+55U14*Gets_Uns 12|88r14
+60U14*Gets_LLU 12|86r14
+65U14*Put_Uns 12|109r14
+71U14*Put_LLU 12|107r14
+77U14*Puts_Uns 12|133r14
+82U14*Puts_LLU 12|131r14
+X 11 a-wtmoio.ads
+43M9 Num 47r29 52r19 56r19 61r15 66r15 72r18 77r14 12|51r19 55r10 66r19 75r18
+. 85r10 101r15 106r10 114r15 124r14 130r10
+45k26*Modular_IO 9|52k13 11|43z9 80l22 80e32 12|38b31 141l22 141t32
+47i4*Default_Width{9|76I12} 62r24 67r24 12|102r24 115r24
+48i4*Default_Base{9|81I12} 63r30 68r30 78r29 12|103r30 116r30 125r29
+50U14*Get 51>7 52<7 53>7 12|49b14 63l8 63t11 70r7
+51p7 File{9|54P9} 12|50b7 56r28 58r28
+52*7 Item{43M9} 12|51b7 56m55 58m45
+53i7 Width{9|76I12} 12|52b7 56r62 58r52
+55U14*Get 56<7 57>7 12|65b14 71l8 71t11
+56*7 Item{43M9} 12|66b7 70m27
+57i7 Width{9|76I12} 12|67b7 70r33
+59U14*Put 60>7 61>7 62>7 63>7 12|99b14 111l8 111t11 119r7
+60p7 File{9|54P9} 12|100b7 107r28 109r28
+61*7 Item{43M9} 12|101b7 107r55 109r45
+62i7 Width{9|76I12} 12|102b7 107r62 109r52
+63i7 Base{9|81I12} 12|103b7 107r69 109r59
+65U14*Put 66>7 67>7 68>7 12|113b14 120l8 120t11
+66*7 Item{43M9} 12|114b7 119r28
+67i7 Width{9|76I12} 12|115b7 119r34
+68i7 Base{9|81I12} 12|116b7 119r41
+70U14*Get 71>7 72<7 73<7 12|73b14 93l8 93t11
+71s7 From{wide_string} 12|74b7 78r53
+72*7 Item{43M9} 12|75b7 86m47 88m37
+73i7 Last{positive} 12|76b7 86m54 88m44
+75U14*Put 76<7 77>7 78>7 12|122b14 139l8 139t11
+76s7 To{wide_string} 12|123b7 127r19 127r31 137m10
+77*7 Item{43M9} 12|124b7 131r47 133r37
+78i7 Base{9|81I12} 12|125b7 131r54 133r44
+X 12 a-wtmoio.adb
+40P12 TFT{9|54P9} 56r23 58r23 107r23 109r23
+43K12 Aux=43:41 56r10 58r10 86r10 88r10 107r10 109r10 131r10 133r10
+78a7 S{string} 86r24 88r24
+127a7 S{string} 131m24 133m24 136r16 137r55
+136i11 J{integer} 137r14 137r58
+X 15 system.ads
+37K9*System 12|34r6 34r33 35r6 35r33 36r6 36r33 15|197e11
+X 30 s-unstyp.ads
+42K16*Unsigned_Types 12|34w13 34r40 30|210e26
+47M9*Unsigned 12|55r21 58r35 85r21 88r27 106r21 109r35 130r21 133r27
+49M9*Long_Long_Unsigned 12|56r35 86r27 107r35 131r27
+X 31 s-wchcon.ads
+41K16*WCh_Con 12|35w13 35r40 31|220e19
+94I9*WC_Encoding_Method<short_short_integer>
+108i4*WCEM_Upper{94I9} 12|78r59
+X 32 s-wchwts.ads
+39K16*WCh_WtS 12|36w13 36r40 32|63e19
+42V13*Wide_String_To_String{string} 12|78r30
+

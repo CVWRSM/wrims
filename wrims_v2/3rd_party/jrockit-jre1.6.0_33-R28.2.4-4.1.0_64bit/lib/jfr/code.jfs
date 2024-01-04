@@ -1,0 +1,40 @@
+// Additional settings for enabling more verbose codegen logging
+{
+        "http://www.oracle.com/jrockit/jvm/" : {
+
+                // Phase during JIT compilation of a method
+		// Only log codegen events if they take to long (expensive to log events during codegen)
+		"vm/compiler/phases/jit_phase_level_*" : {
+		     "enable" : true,
+		     "threshold" : 100ms
+		},
+
+                // Phase during optimization of a method
+		"vm/compiler/phases/opt_phase_level_*" : {
+		     "enable" : true,
+		     "threshold" : 500ms
+		},
+
+                // Tracing phase during compilation of a method
+		// These is very verbose events (not costly per event but a lot of events)
+		"vm/compiler/phases/*phase_trace_level_*" : {
+		     "enable" : true,
+		     "threshold" : 500ms
+		},
+
+		// Performance warnings for generated code
+                "vm/compiler/performance_log" : {
+		     "enable" : true
+		},
+
+		// Aborted code generation due to exceptional condition
+                "vm/compiler/fail" : {
+		     "enable" : true
+		},
+
+		// Code generation (JIT and opt)
+                "vm/compiler/*compile" : {
+		     "enable" : true
+		}
+	}
+}

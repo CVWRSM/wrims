@@ -1,0 +1,11 @@
+/************************************
+!Vallejo.wresl
+
+Hao Xie DWR 5/16/2010
+
+defines the demand for Vallejo in the delta.
+/************************************/
+
+define demand_d_Vallejo {select demand from demand where D_arc=403.1,month=month}
+
+goal SetDivVallejo {D_Vallejo < demand_d_Vallejo*taf_cfs}
