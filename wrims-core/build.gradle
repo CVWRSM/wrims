@@ -1,0 +1,97 @@
+
+plugins{
+    id 'antlr'
+    id 'library.deps-conventions'
+    id 'library.java-conventions'
+}
+
+sourceSets {
+    src {
+        antlr{
+            srcDir "src/main/antlr/"
+        }
+        java{
+            srcDir "src/main/java/"
+        }
+    }
+}
+
+dependencies {
+    antlr libs.antlr
+
+    implementation libs.hec.monolith
+    implementation libs.hec.nucleus.metadata
+    implementation libs.guava
+    implementation libs.commons.io
+    implementation libs.xstream
+    implementation libs.javatuples
+    implementation libs.java.object.diff
+    implementation libs.kryo
+    implementation libs.jep
+    implementation libs.libtensorflow
+
+    // dependency ont testng exists in main as well as in test
+    implementation libs.testng
+
+    // It's not obvious which version of hdf-java is needed.
+    // The packages in the local jars are
+    // ncsa.hdf.hdf5lib
+    // ncsa.hdf.object
+    // ncsa.hdf.object.h5
+    // implementation 'org.hdfgroup:hdf-java:2.6' from 2010 is present
+    // at
+    implementation files('dep-local/jarhdf5-2.11.0.jar')
+    implementation files('dep-local/jarhdfobj.jar')
+    implementation files('dep-local/jarh5obj.jar')
+
+    // The oldest implementation of Google's linearsolver in mavencentral appears to be
+    // implementation 'com.google.ortools:ortools-java:8.2.9004'
+    // from 20 April 2021.
+    // The local jar file contents are from 2013, so we'll use the local jar
+    // until we verify that a newer version will work.
+    implementation files('dep-local/com.google.ortools.linearsolver.jar')
+
+    // The oldest implementation of gurobi in a maven repository appears to be
+    // from 2014. We'll use the local jar (2012) until we verify that a newer version
+    // will work.
+    implementation files('dep-local/gurobi.jar')
+
+    implementation files('dep-local/coinor.jar')
+    implementation files('dep-local/lpsolve55j.jar')
+    implementation files('dep-local/XAOptimizer.jar')
+
+}
+
+configurations.all {
+    exclude group: "javax.media", module: "jai_core"
+    exclude group: "javax.media", module: "jai_codec"
+    exclude group: "com.sun.media", module: "jai_imageio"
+}
+
+// This moves .tokens files into the same generated-src files with the .java files
+tasks.withType(AntlrTask) {
+    println ("task name: " + name)
+    if (name.startsWith('generate')) {
+        doLast {
+            println("// Copying .tokens files to corresponding java folders")
+            copy {
+                from "${buildDir}/generated-src/antlr/main"
+                include '*Evaluator*.tokens'
+                into "${buildDir}/generated-src/antlr/main/wrimsv2/evaluator/"
+            }
+            copy {
+                from "${buildDir}/generated-src/antlr/main"
+                include 'WreslTree*.tokens'
+                into "${buildDir}/generated-src/antlr/main/wrimsv2/wreslparser/grammar/"
+            }
+            copy{
+                from "${buildDir}/generated-src/antlr/main"
+                include 'IncFileFinder.tokens'
+                include 'WreslPlus.tokens'
+                into "${buildDir}/generated-src/antlr/main/wrimsv2/wreslplus/grammar/"
+            }
+            delete "${buildDir}/generated-src/antlr/main/*.tokens"
+        }
+    }
+}
+

@@ -1,0 +1,28 @@
+[versions]
+hec-monolith = "3.3.22"
+hec-nucleus-metadata = "2.0.1"
+guava = "11.0.2"
+commons-io = "2.1"
+xstream = "1.4.3"
+javatuples = "1.2"
+java-object-diff = "0.95"
+kryo = "2.24.0"
+jep = "3.8.2"
+libtensorflow = "1.14.0"
+testng = "6.3"
+
+[libraries]
+hec-monolith = { module = "mil.army.usace.hec:hec-monolith", version.ref = "hec-monolith" }
+hec-nucleus-metadata = { module = "mil.army.usace.hec:hec-nucleus-metadata", version.ref = "hec-nucleus-metadata" }
+antlr = "org.antlr:antlr:3.5.2"
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
+xstream = { module = "com.thoughtworks.xstream:xstream", version.ref = "xstream" }
+javatuples = { module = "org.javatuples:javatuples", version.ref = "javatuples" }
+java-object-diff = { module = "de.danielbechler:java-object-diff", version.ref = "java-object-diff" }
+kryo = { module = "com.esotericsoftware.kryo:kryo", version.ref = "kryo" }
+jep = { module = "black.ninia:jep", version.ref = "jep" }
+libtensorflow = { module = "org.tensorflow:libtensorflow", version.ref = "libtensorflow" }
+testng = { module = "org.testng:testng", version.ref = "testng" }
+
+[bundles]
