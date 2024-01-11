@@ -1,0 +1,16 @@
+name: Java CI
+
+on:
+  push:
+    branches: [ Feature/wrims-core ]
+
+jobs:
+  build:
+
+    runs-on: adoptopenjdk:8-jre-hotspot
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build with Gradle
+      run: ./gradlew build
