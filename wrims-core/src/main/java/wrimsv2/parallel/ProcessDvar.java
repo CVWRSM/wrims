@@ -11,9 +11,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.antlr.runtime.RecognitionException;
 
-// import com.sun.java.util.collections.Collection;
-// import com.sun.java.util.collections.Collections;
-
 import wrimsv2.commondata.solverdata.SolverData;
 import wrimsv2.commondata.wresldata.Dvar;
 import wrimsv2.commondata.wresldata.ModelDataSet;
