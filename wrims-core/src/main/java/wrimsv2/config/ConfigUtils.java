@@ -1034,7 +1034,7 @@ public class ConfigUtils {
 		ControlData.numberRestartFiles = Integer.parseInt(configMap.get("numberrestartfiles"));
 		System.out.println("NumberRestartFiles:    " + ControlData.numberRestartFiles);
 		
-		ControlData.vHecLib = Integer.parseInt(configMap.get("vheclib"));
+		ControlData.vHecLib = Integer.parseInt(configMap.get("versionhecdssoutput"));
 		System.out.println("VersionHecDssOutput:    " + ControlData.vHecLib);
 		
 		ControlData.databaseURL = configMap.get("databaseurl");

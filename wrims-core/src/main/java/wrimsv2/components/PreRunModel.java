@@ -71,8 +71,8 @@ public class PreRunModel {
 		*/
 		
 		try {
-			ControlData.dvDss = HecDss.open(FilePaths.fullDvarDssPath);
 			Heclib.zset("ALLV", "", ControlData.vHecLib);
+			ControlData.dvDss = HecDss.open(FilePaths.fullDvarDssPath);
 		} catch (Exception e) {
 			Error.addEngineError("Could not open dv file. "+e);
 			ControlData.dvDss.close();
