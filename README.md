@@ -11,3 +11,8 @@ Directories here:
 The remaining files at this level are set up to support a mult-project gradle build as described at https://docs.gradle.org/current/userguide/intro_multi_project_builds.html
 
 Files were moved (rather than copied) from wrims_v2/wrims_v2/src to new locations in wrims-core/src so that their git histories would be preserved. Source files for non-java program components were left in their original folders, and will be moved as the project goes forward. A [README file in wrims_v2/wrims_v2/src](./wrims_v2/wrims_v2/src/README.md) lists the groups of files that were moved and left behind.
+
+The jar that's built from this branch (wrims-core) of the project does not contain the 
+antler classes. To run wrims using this jar, you'll need to include the antler runtime (v 3.5.2) 
+in addition to the wrims-core jar to replace the old WRIMSv2.jar.
+
