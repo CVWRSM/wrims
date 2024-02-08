@@ -1,0 +1,107 @@
+@startuml
+
+package wrimsv2_plugin <<folder>> #green {
+package wrimsv2_plugin.batchrun
+package wrimsv2_plugin.calsimhydro
+package wrimsv2_plugin.debugger{
+package breakpoint
+package commanditem
+package console
+package core
+package dialog
+package exception
+package launcher
+package listener
+package menuitem
+package model
+package msr
+package pa
+package sourcelookup
+package toolbaritem
+package ui
+package view
+}
+package wrimsv2_plugin.editor
+package wrimsv2_plugin.perspective
+package wrimsv2_plugin.presentation
+package wrimsv2_plugin.reporttool
+package wrimsv2_plugin.sensitivity
+package wrimsv2_plugin.tools
+}
+package gov.ca.dwr.hecdssvue <<folder>> #green {
+package hecdssvue.menus
+package hecdssvue.components
+package hecdssvue.monthly
+package hecdssvue.panel
+package hecdssvue.views
+}
+package gov.ca.dwr.jdiagram <<folder>> #green {
+}
+package calsimgui <<folder>> #yellow {
+package calsim.gui
+package calsim.app
+}
+package wrimsv2 <<folder>> #green {
+package wrimsv2.ilp
+package wrimsv2.launch
+package wrimsv2.parallel
+package wrimsv2.solver
+package wrimsv2.sql
+package wrimsv2.tf
+package wrimsv2.tools
+package wrimsv2.wreslplus
+package wrimsv2.wreslparser
+package wrimsv2.wreslplus
+}
+package dsm2_input_model <<folder>> #yellow {
+}
+package vista <<folder>> #yellow {
+package vista.report
+package vista.set
+package vista.time
+package vista.db.dss
+}
+package hec-monolith <<folder>> #yellow {
+package hec.gfx2d
+package hec.heclib.dss
+package hec.heclib.util
+package hec.hecmath
+package hec.io
+package hec.dataTable
+package rma
+}
+gov.ca.dwr.jdiagram +-- wrimsv2_plugin
+gov.ca.dwr.jdiagram +-- gov.ca.dwr.hecdssvue
+gov.ca.dwr.hecdssvue +-- wrimsv2_plugin
+hecdssvue.components +-- hec.dataTable
+hecdssvue.views +-- hec.dataTable
+hecdssvue.menus +-- hec.dataTable
+hecdssvue.monthly +-- hec.gfx2d
+hecdssvue.panel +-- hec.gfx2d
+hecdssvue.views +-- hec.gfx2d
+hecdssvue.components +-- hec.heclib.dss
+hecdssvue.views +-- hec.heclib.dss
+hecdssvue.menus +-- hec.heclib.dss
+hecdssvue.components +-- hec.heclib.util
+hecdssvue.monthly +-- hec.heclib.util
+hecdssvue.views +-- hec.heclib.util
+hecdssvue.components +-- hec.hecmath
+hecdssvue.components +-- hec.io
+hecdssvue.monthly +-- hec.io
+hecdssvue.panel +-- hec.io
+hecdssvue.views +-- hec.io
+hecdssvue.components +-- rma
+hecdssvue.monthly +-- rma
+hecdssvue.panel +-- rma
+hecdssvue.components +-- calsim.app
+hecdssvue.panel +-- calsim.app
+hecdssvue.views +-- calsim.gui
+hecdssvue.components +-- vista.set
+core +-- hec.heclib.dss
+wrimsv2_plugin.batchrun +-- vista.db.dss
+wrimsv2_plugin +-- wrims_v2
+wrimsv2_plugin +-- hec.heclib.dss
+wrimsv2_plugin +-- dsm2_input_model
+wrimsv2 +-- vista
+
+@enduml
