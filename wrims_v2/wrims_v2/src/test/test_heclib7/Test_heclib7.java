@@ -3,6 +3,7 @@ package test.test_heclib7;
 import hec.heclib.dss.HecDss;
 import hec.heclib.util.HecTime;
 import hec.heclib.util.Heclib;
+import hec.io.DataContainer;
 import hec.io.TimeSeriesContainer;
 
 import java.io.IOException;
@@ -22,20 +23,33 @@ import junit.framework.TestCase;
 
 public class Test_heclib7 extends TestCase {
 	
-	private int vHecFormat=6;
-	private String dvPath6="C:\\testHeclib7\\test_6.dss";
-	private String dvPath7="C:\\testHeclib7\\test_7.dss";
+	private String dvPath6="test\\data\\test_6.dss";
+	private String dvPath7="test\\data\\test_7.dss";
 	
 	public void testHecLib7Output6Format() throws RecognitionException, IOException{
 		initializeData();
-		Heclib.zset("ALLV", "",vHecFormat);
-		if (vHecFormat==6){
-			writeData(dvPath6);
-		}else{
-			writeData(dvPath7);
-		}
+		Heclib.zset("ALLV", "", 6);
+		String outPath = writeData(dvPath6);
+		TimeSeriesContainer tsc = readData(dvPath6, outPath);
+		assertEquals(12, tsc.numberValues);
+		assertEquals(11484000, tsc.startTime);//31 Oct 1921 2400
+		assertEquals(11484000, tsc.getMinutes()[0]);//31 Oct 1921 2400
+		assertEquals(11527200, tsc.getMinutes()[1]);//30 Nov 1921 2400
+		assertEquals(11656800, tsc.getMinutes()[3]);//28 Feb 1922 2400
+
 	}
 	
+	public void testHecLib7Output7Format() throws RecognitionException, IOException{
+		initializeData();
+		Heclib.zset("ALLV", "", 7);
+		String outPath = writeData(dvPath7);
+		TimeSeriesContainer tsc = readData(dvPath7, outPath);
+		assertEquals(12, tsc.numberValues);
+		assertEquals(11484000, tsc.startTime);//31 Oct 1921 2400
+		assertEquals(11484000, tsc.getMinutes()[0]);//31 Oct 1921 2400
+		assertEquals(11527200, tsc.getMinutes()[1]);//30 Nov 1921 2400
+		assertEquals(11656800, tsc.getMinutes()[3]);//28 Feb 1922 2400
+	}	
 	private void initializeData(){
 		DssDataSetFixLength dds=new DssDataSetFixLength();
 		double[] data=new double[12];
@@ -53,14 +67,18 @@ public class Test_heclib7 extends TestCase {
 		data[11]=12.0;
 		dds.setData(data);
 		dds.setTimeStep("1MON");
-		Date startDate = new Date(1921-1900, 10-1, 31);
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(1921, 10-1, 31, 24, 0);
+		Date startDate = calendar.getTime();
+//		Date startDate = new Date(1921-1900, 10-1, 31);
 		dds.setStartTime(startDate);
 		dds.setUnits("Test");
 		dds.setKind("None");
 		DataTimeSeries.dvAliasTS.put("Test",dds);
 	}
 	
-	public void writeData(String dvPath){
+	public String writeData(String dvPath){
+		String outPath = "";
 		try {
 			HecDss dvDss = HecDss.open(dvPath);
 		
@@ -79,13 +97,17 @@ public class Test_heclib7 extends TestCase {
 				dc.units=ddsfl.getUnits().toUpperCase();
 				dc.values = values;
 				//boolean storeFlags = false;
-				dc.setName("/test/"+DssOperation.getTSName(dvAliasName)+"/"+ddsfl.getKind()+"//"+ddsfl.getTimeStep()+"/test/");
+				outPath = "/test/"+DssOperation.getTSName(dvAliasName)+
+						"/"+ddsfl.getKind()+"//"+ddsfl.getTimeStep()+"/test/";
+				dc.setName(outPath);
 				Calendar startCalendar=Calendar.getInstance();
 				startCalendar.setTime(ddsfl.getStartTime());
-				dc.setStartTime(new HecTime(startCalendar));
+				HecTime startHecTime = new HecTime(startCalendar);
+				dc.setStartTime(startHecTime);
 				dc.setStoreAsDoubles(true);
 				try {
 					dvDss.put(dc);
+					dvDss.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -95,9 +117,25 @@ public class Test_heclib7 extends TestCase {
 			}
 		}catch (Exception e) {
 			System.out.println("Could not open dv file. "+e);
-			return;
+			return null;
 		}
+		return outPath;
 	}
 	
+	public TimeSeriesContainer readData(String dvPath, String fullName){
+		HecDss dvDss;
+		DataContainer tsc;
+		try{
+			dvDss = HecDss.open(dvPath);
+			tsc = dvDss.get(fullName);
+			dvDss.close();
+			assert (tsc instanceof TimeSeriesContainer) ;
+			return (TimeSeriesContainer)tsc;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 }
