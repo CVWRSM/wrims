@@ -52,4 +52,20 @@ public class Test_readdss extends TestCase {
 		}
 	}
 
+	
+	public void test_readdss1(){
+		String dvPath="C:\\testHecLib7\\CS3L2020SV_SJWadj_LYRA.dss";
+		String path="/CALSIM/YUBA_TRANS/FLOW-INFLOW//1MON/L2020A/";
+		HecDss dvDss;
+		TimeSeriesContainer tsc;
+		try{
+			dvDss = HecDss.open(dvPath);
+			tsc = (TimeSeriesContainer)dvDss.get(path, true);
+			System.out.println("YUBA_TRANS number of values from method 2 reading: " + tsc.numberValues);
+			dvDss.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
