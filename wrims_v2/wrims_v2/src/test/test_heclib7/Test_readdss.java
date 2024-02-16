@@ -44,6 +44,7 @@ public class Test_readdss extends TestCase {
 	    		doubleArrayContainer values=new doubleArrayContainer();
 	    		ts.getData(values);
 	    		System.out.println("YUBA_TRANS number of values: " + ts.numberValues());
+	    		System.out.println("YUBA_TRANS number of values: " + values.length);
 	    	}
 		}
 		catch (Exception e) {
