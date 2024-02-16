@@ -121,7 +121,7 @@ public class CsvOperation {
 					String kindName=formKindName(origKindName);
 					ArrayList<Double> data = dds.getData();
 					if (timestep.equals("1DAY")){
-						date=TimeOperation.backOneDay(date);
+						//date=TimeOperation.backOneDay(date);
 						for (int i=0; i<data.size(); i++){
 							double value = data.get(i);
 							if (value != -901.0 && value !=-902.0){
@@ -131,7 +131,7 @@ public class CsvOperation {
 							date=TimeOperation.addOneDay(date);
 						}
 					}else{
-						date=TimeOperation.backOneMonth(date);
+						//date=TimeOperation.backOneMonth(date);
 						for (int i=0; i<data.size(); i++){
 							double value = data.get(i);
 							if (value != -901.0 && value !=-902.0){
