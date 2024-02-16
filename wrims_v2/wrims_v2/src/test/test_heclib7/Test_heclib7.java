@@ -6,6 +6,7 @@ import hec.heclib.util.Heclib;
 import hec.io.DataContainer;
 import hec.io.TimeSeriesContainer;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,32 +24,46 @@ import junit.framework.TestCase;
 
 public class Test_heclib7 extends TestCase {
 	
-	private String dvPath6="test\\data\\test_6.dss";
-	private String dvPath7="test\\data\\test_7.dss";
-	
-	public void testHecLib7Output6Format() throws RecognitionException, IOException{
+	public void testHecLib7Output6Format() throws RecognitionException, IOException, Exception{
 		initializeData();
 		Heclib.zset("ALLV", "", 6);
-		String outPath = writeData(dvPath6);
-		TimeSeriesContainer tsc = readData(dvPath6, outPath);
-		assertEquals(12, tsc.numberValues);
-		assertEquals(11484000, tsc.startTime);//31 Oct 1921 2400
-		assertEquals(11484000, tsc.getMinutes()[0]);//31 Oct 1921 2400
-		assertEquals(11527200, tsc.getMinutes()[1]);//30 Nov 1921 2400
-		assertEquals(11656800, tsc.getMinutes()[3]);//28 Feb 1922 2400
-
+		Date now = new Date();
+		String dvPath6= "build\\test_data\\test_6_" + String.valueOf(now.getTime()) + ".dss";
+		try{
+			String outPath = writeData(dvPath6);
+			DataContainer dc = readData(dvPath6, outPath);
+			assertTrue (dc instanceof TimeSeriesContainer) ;
+			TimeSeriesContainer tsc = (TimeSeriesContainer) dc;
+			assertEquals(12, tsc.numberValues);
+			assertEquals(11484000, tsc.startTime);//31 Oct 1921 2400
+			assertEquals(11484000, tsc.getMinutes()[0]);//31 Oct 1921 2400
+			assertEquals(11527200, tsc.getMinutes()[1]);//30 Nov 1921 2400
+			assertEquals(11656800, tsc.getMinutes()[4]);//28 Feb 1922 2400
+		} finally {
+			File dvFile = new File(dvPath6); 
+			dvFile.delete();
+		}
 	}
 	
-	public void testHecLib7Output7Format() throws RecognitionException, IOException{
+	public void testHecLib7Output7Format() throws RecognitionException, IOException, Exception{
 		initializeData();
 		Heclib.zset("ALLV", "", 7);
-		String outPath = writeData(dvPath7);
-		TimeSeriesContainer tsc = readData(dvPath7, outPath);
-		assertEquals(12, tsc.numberValues);
-		assertEquals(11484000, tsc.startTime);//31 Oct 1921 2400
-		assertEquals(11484000, tsc.getMinutes()[0]);//31 Oct 1921 2400
-		assertEquals(11527200, tsc.getMinutes()[1]);//30 Nov 1921 2400
-		assertEquals(11656800, tsc.getMinutes()[3]);//28 Feb 1922 2400
+		Date now = new Date();
+		String dvPath7= "build\\test_data\\test_7_" + String.valueOf(now.getTime()) + ".dss";
+		try{
+			String outPath = writeData(dvPath7);
+			DataContainer dc  = readData(dvPath7, outPath);
+			assertTrue (dc instanceof TimeSeriesContainer) ;
+			TimeSeriesContainer tsc = (TimeSeriesContainer) dc;
+			assertEquals(12, tsc.numberValues);
+			assertEquals(11484000, tsc.startTime);//31 Oct 1921 2400
+			assertEquals(11484000, tsc.getMinutes()[0]);//31 Oct 1921 2400
+			assertEquals(11527200, tsc.getMinutes()[1]);//30 Nov 1921 2400
+			assertEquals(11656800, tsc.getMinutes()[4]);//28 Feb 1922 2400
+		}finally {
+			File dvFile = new File(dvPath7); 
+			dvFile.delete();
+		}
 	}	
 	private void initializeData(){
 		DssDataSetFixLength dds=new DssDataSetFixLength();
@@ -77,10 +92,11 @@ public class Test_heclib7 extends TestCase {
 		DataTimeSeries.dvAliasTS.put("Test",dds);
 	}
 	
-	public String writeData(String dvPath){
+	public String writeData(String dvPath) throws Exception{
 		String outPath = "";
+		HecDss dvDss = null;
 		try {
-			HecDss dvDss = HecDss.open(dvPath);
+			dvDss = HecDss.open(dvPath);
 		
 			Set dvAliasSet=DataTimeSeries.dvAliasTS.keySet();
 			Iterator iterator = dvAliasSet.iterator();
@@ -105,36 +121,27 @@ public class Test_heclib7 extends TestCase {
 				HecTime startHecTime = new HecTime(startCalendar);
 				dc.setStartTime(startHecTime);
 				dc.setStoreAsDoubles(true);
-				try {
-					dvDss.put(dc);
-					dvDss.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				dvDss.put(dc);
 				dc.values=null;
 				dc=null;
 				values=null;
-			}
-		}catch (Exception e) {
-			System.out.println("Could not open dv file. "+e);
-			return null;
-		}
+			}					
+		} finally{
+				dvDss.close();
+	}
 		return outPath;
 	}
 	
-	public TimeSeriesContainer readData(String dvPath, String fullName){
-		HecDss dvDss;
+	public DataContainer readData(String dvPath, String fullName) throws Exception{
+		HecDss dvDss = null;
 		DataContainer tsc;
 		try{
 			dvDss = HecDss.open(dvPath);
-			tsc = dvDss.get(fullName);
-			dvDss.close();
-			assert (tsc instanceof TimeSeriesContainer) ;
+			boolean retrieve_all_values = true;
+			tsc = dvDss.get(fullName, retrieve_all_values);
 			return (TimeSeriesContainer)tsc;
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
+		}finally{
+			dvDss.close();
 		}
 	}
 	
