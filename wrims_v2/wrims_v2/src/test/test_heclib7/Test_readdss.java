@@ -62,6 +62,7 @@ public class Test_readdss extends TestCase {
 			dvDss = HecDss.open(dvPath);
 			tsc = (TimeSeriesContainer)dvDss.get(path, true);
 			System.out.println("YUBA_TRANS number of values from method 2 reading: " + tsc.numberValues);
+			System.out.println("YUBA_TRANS number of values from method 2 reading: " + tsc.values.length);
 			dvDss.close();
 		}
 		catch (Exception e) {
