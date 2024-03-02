@@ -19,32 +19,19 @@ public class Test_readdss extends TestCase {
 	public void test_readdss(){
 		String dvPath="C:\\testHecLib7\\CS3L2020SV_SJWadj_LYRA.dss";
 		String path="/CALSIM/YUBA_TRANS/FLOW-INFLOW//1MON/L2020A/";
-		HecDss dvDss;
 		try{
-			dvDss = HecDss.open(dvPath);
-			HecDssCatalog catalog = new HecDssCatalog(dvPath);
 	        CondensedReferenceCache cacheSvar = CondensedReferenceCacheAndRead.createCondensedCache(dvPath, "*");
-			HecTimeSeries ts = new HecTimeSeries();
-	    	DSSPathname dssPathname;
-	    	dssPathname = cacheSvar.getNominalPathname(path);
-	    	if (dssPathname==null){
+			TimeSeriesContainer tsc = cache.readFullRecord(path);
+	    	if (tsc==null){
 	    		System.err.println("no data exisits");
 	    	}else{
-	    		TimeSeriesContainer tsc = new TimeSeriesContainer();
-	            tsc.fileName = dvPath;
-	            tsc.fullName = dssPathname.pathname();
-	            boolean removeMissing = false;
-	            ts.read(tsc, removeMissing);
-	            ts.setUnits(tsc.units);
-	            HecTime startTime=ts.startTime();
+	            HecTime startTime=tsc.getStartTime();
 	    		int year=startTime.year();
 	    		int month=startTime.month();
 	    		int day = startTime.day();
 	    		System.out.println("YUBA_TRANS start date: " + year+"/"+month+"/"+day);
-	    		doubleArrayContainer values=new doubleArrayContainer();
-	    		ts.getData(values);
-	    		System.out.println("YUBA_TRANS number of values: " + ts.numberValues());
-	    		System.out.println("YUBA_TRANS number of values: " + values.length);
+	    		System.out.println("YUBA_TRANS number of values: " + tsc.getNumberValues());
+	    		System.out.println("YUBA_TRANS number of values: " + tsc.getValues().length);
 	    	}
 		}
 		catch (Exception e) {
