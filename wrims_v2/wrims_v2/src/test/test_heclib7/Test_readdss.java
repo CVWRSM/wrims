@@ -21,7 +21,7 @@ public class Test_readdss extends TestCase {
 		String path="/CALSIM/YUBA_TRANS/FLOW-INFLOW//1MON/L2020A/";
 		try{
 	        CondensedReferenceCache cacheSvar = CondensedReferenceCacheAndRead.createCondensedCache(dvPath, "*");
-			TimeSeriesContainer tsc = cache.readFullRecord(path);
+			TimeSeriesContainer tsc = cacheSvar.readFullRecord(path);
 	    	if (tsc==null){
 	    		System.err.println("no data exisits");
 	    	}else{
