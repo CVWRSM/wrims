@@ -18,9 +18,10 @@ import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYStepRenderer;
-import org.jfree.chart.util.RectangleInsets;
+import org.jfree.ui.RectangleInsets;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -328,7 +329,8 @@ public class ReportPDFWriter implements Writer {
 			dataset.addSeries(seriesName[i], seriesData);
 		}
 
-		final JFreeChart xyLineChart = ChartFactory.createXYLineChart(title, xAxisLabel, yAxisLabel, dataset, true);
+		PlotOrientation orientation=PlotOrientation.HORIZONTAL;
+		final JFreeChart xyLineChart = ChartFactory.createXYLineChart(title, xAxisLabel, yAxisLabel, dataset, orientation, true, true, true);
 		XYPlot xyPlot = xyLineChart.getXYPlot();
 		ValueAxis domainAxis = xyPlot.getDomainAxis();
 		domainAxis.setInverted(true);
@@ -355,7 +357,7 @@ public class ReportPDFWriter implements Writer {
 				datasets.getSeries(i).add(m, dataArray[seriesName.length-i], false);
 			}
 		}
-		final JFreeChart tsChart = ChartFactory.createTimeSeriesChart(title, xAxisLabel, yAxisLabel, datasets, true);
+		final JFreeChart tsChart = ChartFactory.createTimeSeriesChart(title, xAxisLabel, yAxisLabel, datasets, true, true, true);
 		XYPlot xyPlot = tsChart.getXYPlot();
 		xyPlot.setRenderer(new XYStepRenderer());
 		xyPlot.setBackgroundPaint(null);
