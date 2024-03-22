@@ -418,22 +418,26 @@ public class Report {
 			for (TimeWindow tw : timewindows) {
 				double avgBase = 0, avgAlt = 0;
 				if (tscAlt != null) {
-					if (pathMap.units.equalsIgnoreCase("CFS")|| pathMap.units.equalsIgnoreCase("TAF2CFS")){
+					if (pathMap.units.equalsIgnoreCase("TAF2CFS")){
 						avgAlt = Utils.avg(Utils.taf2cfs(tscAlt), tw)/12.0;
-					}else{
+					}else if (pathMap.units.equalsIgnoreCase("CFS2TAF")){
 						avgAlt = Utils.avg(Utils.cfs2taf(tscAlt), tw);
+					}else{
+						avgAlt = Utils.avg(tscAlt, tw);
 					}
 					rowData.add(formatDoubleValue(avgAlt));
 				} else {
 					rowData.add("");
 				}
 				if (tscBase != null) {
-					if (pathMap.units.equalsIgnoreCase("CFS")|| pathMap.units.equalsIgnoreCase("TAF2CFS")){
+					if (pathMap.units.equalsIgnoreCase("TAF2CFS")){
 						avgBase = Utils
 								.avg(Utils.taf2cfs(tscBase), tw)/12.0;
-					}else{
+					}else if(pathMap.units.equalsIgnoreCase("CFS2TAF")){
 						avgBase = Utils
 							.avg(Utils.cfs2taf(tscBase), tw);
+					}else{
+						avgBase = Utils.avg(tscBase, tw);
 					}
 					rowData.add(formatDoubleValue(avgBase));
 				} else {

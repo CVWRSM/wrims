@@ -238,7 +238,7 @@ public class Utils {
 			while (i2 < times2.length && times1[i2] < indexTime.value()) i2++;
 		}
 		while (i1 < times1.length && i2 < times2.length) {
-			if (times1[i1] == times1[i1]){
+			if (times1[i1] == times2[i2]){
 				indexTime.set(times1[i1]);
 				Date date = indexTime.getJavaDate(TimeZone.getDefault().getRawOffset()/60000);
 				dlist.add(new double[] { date.getTime(), values1[i1], values2[i2]});
