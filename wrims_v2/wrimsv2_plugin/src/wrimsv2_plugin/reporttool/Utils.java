@@ -342,10 +342,20 @@ public class Utils {
 		catch (ComputationException e){return null;}
 		catch (HecMathException e) {return null;}
 	}
-	
+
 	public static TimeSeriesContainer taf2cfs(TimeSeriesContainer data) {
-		//To Do
-		return data;
+		HecTime indexTime = new HecTime();
+		TimeSeriesContainer tsc_cfs = (TimeSeriesContainer) data.clone();
+		for (int i = 0; i < data.numberValues; i++) {
+			indexTime.set(data.times[i]);
+			tsc_cfs.values[i] = data.values[i] * (504.1666667 / indexTime.day());
+		}
+		DSSPathname path_cfs = new DSSPathname(data.fullName);
+		path_cfs.setCPart("FLOW");
+		tsc_cfs.fullName = path_cfs.pathname();
+		tsc_cfs.setUnits("CFS");
+		tsc_cfs.parameter = "FLOW";
+		return tsc_cfs;
 	}
 
 	public static double avg(TimeSeriesContainer tsc, TimeWindow tw) {
