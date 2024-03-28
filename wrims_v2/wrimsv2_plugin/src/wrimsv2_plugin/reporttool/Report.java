@@ -291,7 +291,7 @@ public class Report {
 			if (pathMap.units.equalsIgnoreCase("CFS2TAF")) {
 				tscBase=Utils.cfs2taf(tscBase);
 				tscAlt=Utils.cfs2taf(tscAlt);
-			} else if (pathMap.units.equalsIgnoreCase("TAF2CFS") || pathMap.units.equalsIgnoreCase("CFS")) {
+			} else if (pathMap.units.equalsIgnoreCase("TAF2CFS")) {
 				tscBase=Utils.taf2cfs(tscBase);
 				tscAlt=Utils.taf2cfs(tscAlt);
 			}
@@ -422,8 +422,10 @@ public class Report {
 						avgAlt = Utils.avg(Utils.taf2cfs(tscAlt), tw)/12.0;
 					}else if (pathMap.units.equalsIgnoreCase("CFS2TAF")){
 						avgAlt = Utils.avg(Utils.cfs2taf(tscAlt), tw);
-					}else{
+					}else if (tscAlt.units.equalsIgnoreCase("TAF")){
 						avgAlt = Utils.avg(tscAlt, tw);
+					}else{
+						avgAlt = Utils.avg(tscAlt, tw)/12.0;
 					}
 					rowData.add(formatDoubleValue(avgAlt));
 				} else {
@@ -436,8 +438,10 @@ public class Report {
 					}else if(pathMap.units.equalsIgnoreCase("CFS2TAF")){
 						avgBase = Utils
 							.avg(Utils.cfs2taf(tscBase), tw);
-					}else{
+					}else if (tscBase.units.equalsIgnoreCase("TAF")){
 						avgBase = Utils.avg(tscBase, tw);
+					}else{
+						avgBase = Utils.avg(tscBase, tw)/12.0;
 					}
 					rowData.add(formatDoubleValue(avgBase));
 				} else {
