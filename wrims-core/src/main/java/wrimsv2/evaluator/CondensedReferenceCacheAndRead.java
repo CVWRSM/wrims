@@ -72,18 +72,22 @@ public class CondensedReferenceCacheAndRead {
 
         public TimeSeriesContainer readFullRecord(String pathname) {
             CondensedReference condensedReference = getCondensedReference(pathname);
-            HecTimeSeries ts = new HecTimeSeries(this.fileName);
-            condensedReference.generatePathnameList(ts, false);
-            TimeSeriesContainer tsc = new TimeSeriesContainer();
-            tsc.fileName = this.fileName;
-            tsc.fullName = condensedReference.getNominalPathname();
-            HecTime start = new HecTime();
-            HecTime end = new HecTime();
-            condensedReference.getPathnameTimes(new CombinedDataManager(false), start, end);
-            ts.setTimeWindow(start, end);
-            boolean removeMissing = false;
-            ts.read(tsc, removeMissing);
-            return tsc;
+            if (condensedReference==null) {
+            	return null;
+            }else {
+            	HecTimeSeries ts = new HecTimeSeries(this.fileName);
+            	condensedReference.generatePathnameList(ts, false);
+            	TimeSeriesContainer tsc = new TimeSeriesContainer();
+            	tsc.fileName = this.fileName;
+            	tsc.fullName = condensedReference.getNominalPathname();
+            	HecTime start = new HecTime();
+            	HecTime end = new HecTime();
+            	condensedReference.getPathnameTimes(new CombinedDataManager(false), start, end);
+            	ts.setTimeWindow(start, end);
+            	boolean removeMissing = false;
+            	ts.read(tsc, removeMissing);
+            	return tsc;
+            }
         }
     }
 }
