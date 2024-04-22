@@ -1,0 +1,32 @@
+plugins{
+    id 'maven-publish'
+    id 'distribution'
+}
+
+tasks.register('zip', Zip) {
+    from project.findProperty('sourceDir') ?: 'none'
+    archiveFileName = project.findProperty('zipName') ?: 'Watershed'
+}
+
+publishing {
+    publications {
+        study (MavenPublication) {
+            groupId 'gov.ca.dwr'
+            artifactId project.findProperty('zipName') ?: 'Watershed'
+            version = project.findProperty('postVersion') ?: "1.0.0"
+
+            artifact zip
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/CentralValleyModeling/wrims")
+            credentials {
+                username = project.findProperty('cvmUserId') ?: System.getenv('PKG_USERNAME')
+                password = project.findProperty('cvmPassword') ?: System.getenv('PKG_TOKEN')
+            }
+
+        }
+    }
+}
