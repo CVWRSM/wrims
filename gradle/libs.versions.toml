@@ -10,6 +10,7 @@ kryo = "2.24.0"
 jep = "3.8.2"
 libtensorflow = "1.14.0"
 testng = "6.3"
+junit_5 = "5.10.2"
 
 [libraries]
 hec-monolith = { module = "mil.army.usace.hec:hec-monolith", version.ref = "hec-monolith" }
@@ -24,5 +25,9 @@ kryo = { module = "com.esotericsoftware.kryo:kryo", version.ref = "kryo" }
 jep = { module = "black.ninia:jep", version.ref = "jep" }
 libtensorflow = { module = "org.tensorflow:libtensorflow", version.ref = "libtensorflow" }
 testng = { module = "org.testng:testng", version.ref = "testng" }
+junit-5-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit_5" }
+junit-5-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit_5" }
+junit-5-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit_5" }
 
 [bundles]
+junit5 = [ "junit-5-engine", "junit-5-api", "junit-5-params" ]
