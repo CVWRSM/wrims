@@ -42,9 +42,6 @@ import wrimsv2_plugin.tools.TimeOperation;
 
 import java.lang.Runtime;
 
-import javax.jws.WebParam.Mode;
-
-
 public class BatchRunProcess {
 	private String externalPath;
 	private String gwDataFolder;
