@@ -1,0 +1,9 @@
+Bundle-Name: Wrimsv2_plugin
+Bundle-SymbolicName: wrimsv2_plugin;singleton:=true
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Include-Resource: \
+ icons=Icons, \
+ plugin.xml
+Export-Package: wrimsv2_plugin.debugger,wrimsv2_plugin.debugger.breakpoint,wrimsv2_plugin.debugger.commanditem,wrimsv2_plugin.debugger.core,wrimsv2_plugin.debugger.exception,wrimsv2_plugin.debugger.launcher,wrimsv2_plugin.debugger.menuitem,wrimsv2_plugin.debugger.model,wrimsv2_plugin.debugger.sourcelookup, wrimsv2_plugin.debugger.toolbaritem, wrimsv2_plugin.debugger.ui, wrimsv2_plugin.debugger.view, wrimsv2_plugin.presentation, wrimsv2_plugin.tools
+Bundle-Activator: wrimsv2_plugin.debugger.core.DebugCorePlugin
+Bundle-ActivationPolicy: lazy

@@ -11,11 +11,15 @@ jep = "3.8.2"
 libtensorflow = "1.14.0"
 testng = "6.3"
 junit_5 = "5.10.2"
+antlr = "3.5.2"
+jcommon = "1.0.17"
+itext = "2.1.5"
+jfreechart = "1.0.14"
+eclipse = "3.31.0"
 
 [libraries]
 hec-monolith = { module = "mil.army.usace.hec:hec-monolith", version.ref = "hec-monolith" }
 hec-nucleus-metadata = { module = "mil.army.usace.hec:hec-nucleus-metadata", version.ref = "hec-nucleus-metadata" }
-antlr = "org.antlr:antlr:3.5.2"
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
 xstream = { module = "com.thoughtworks.xstream:xstream", version.ref = "xstream" }
@@ -28,6 +32,13 @@ testng = { module = "org.testng:testng", version.ref = "testng" }
 junit-5-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit_5" }
 junit-5-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit_5" }
 junit-5-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit_5" }
+antlr = { module = "org.antlr:antlr", version.ref = "antlr" }
+jcommon = { module = "org.jfree:jcommon", version.ref = "jcommon" }
+itext = { module = "com.lowagie:itext", version.ref = "itext" }
+jfreechart = { module = "org.jfree:jfreechart", version.ref = "jfreechart" }
+
+#eclipse libraries
+eclipse-core-runtime = { module = "org.eclipse.platform:org.eclipse.core.runtime", version.ref = "eclipse"}
 
 [bundles]
 junit5 = [ "junit-5-engine", "junit-5-api", "junit-5-params" ]

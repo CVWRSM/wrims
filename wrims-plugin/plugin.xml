@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension point="org.eclipse.ui.startup">
+   <startup class="wrimsv2_plugin.debugger.core.DebuggerStartUp"/>
+</extension>
+<extension point="org.eclipse.ui.views">
+        <category 
+           id="wpp.category.wrims2"
+           name="WRIMS2">
+        </category>
+        <view id="wpp.variableview"
+             name="Variables"
+             category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.WPPVariableView"/>
+</extension>
+<extension point="org.eclipse.ui.views">
+        <category 
+           id="wpp.category.wrims2"
+           name="WRIMS2">
+        </category>
+        <view id="wpp.watchview"
+             name="Watch"
+             category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.WPPWatchView"/>
+</extension>
+<extension point="org.eclipse.ui.views">
+        <category 
+           id="wpp.category.wrims2"
+           name="WRIMS2">
+        </category>
+        <view id="wpp.allvariableview"
+             name="All Variables"
+             category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.WPPAllVariableView"/>
+</extension>
+<extension point="org.eclipse.ui.views">
+        <category 
+           id="wpp.category.wrims2"
+           name="WRIMS2">
+        </category>
+        <view id="wpp.goalview"
+             name="Goals"
+             category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.WPPGoalView"/>
+</extension>
+<extension point="org.eclipse.ui.views">
+        <category 
+           id="wpp.category.wrims2"
+           name="WRIMS2">
+        </category>
+        <view id="wpp.allgoalview"
+             name="All Goals"
+             category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.WPPAllGoalView"/>
+</extension>
+<extension point="org.eclipse.ui.views">
+        <category 
+           id="wpp.category.wrims2"
+           name="WRIMS2">
+        </category>
+        <view id="wpp.calsimhydroview"
+             name="CalSimHydro"
+             category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.CalSimHydroView"/>
+</extension>
+<extension point="org.eclipse.ui.viewActions"> 
+  <viewContribution 
+      id="org.eclipse.ui.articles.action.contribution.view" 
+   targetID="wpp.variableview">
+   <action
+         id="wpp.varsearch" 
+         label="Search" 
+         tooltip="search"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.VarGoalSearch"
+         enablesFor="*">
+      </action> 
+   </viewContribution> 
+</extension>
+<extension point="org.eclipse.ui.viewActions"> 
+  <viewContribution 
+      id="org.eclipse.ui.articles.action.contribution.view" 
+   targetID="wpp.allvariableview">
+   <action
+         id="wpp.varsearch" 
+         label="Search" 
+         tooltip="search"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.VarGoalSearch"
+         enablesFor="*">
+      </action> 
+      <action
+         id="wpp.allweight" 
+         label="Weight"
+         icon="icons\weight_icon.png" 
+         tooltip="weighted variables"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.WeightedVariables"
+         enablesFor="*">
+      </action>  
+      <action
+         id="wpp.alldssvaraibles" 
+         label="All Variables from DSS"
+         icon="icons\DSS_icon.png" 
+         tooltip="all variables from DSS"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.AllDssVariables"
+         enablesFor="*">
+      </action>
+   </viewContribution> 
+</extension>
+<extension point="org.eclipse.ui.viewActions"> 
+  <viewContribution 
+      id="org.eclipse.ui.articles.action.contribution.view" 
+   targetID="wpp.goalview">
+   <action
+         id="wpp.varsearch" 
+         label="Search" 
+         tooltip="search"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.VarGoalSearch"
+         enablesFor="*">
+      </action>  
+      <action
+         id="wpp.filtergoals" 
+         label="Filter Goal"
+         icon="icons\filtergoal_icon.png" 
+         tooltip="filter goals"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.FilterGoals"
+         enablesFor="*">
+      </action> 
+   </viewContribution> 
+</extension>
+<extension point="org.eclipse.ui.viewActions"> 
+  <viewContribution 
+      id="org.eclipse.ui.articles.action.contribution.view" 
+   targetID="wpp.allgoalview">
+   <action
+         id="wpp.varsearch" 
+         label="Search" 
+         tooltip="search"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.VarGoalSearch"
+         enablesFor="*">
+      </action>
+      <action
+         id="wpp.filtergoals" 
+         label="Filter Goal"
+         icon="icons\filtergoal_icon.png" 
+         tooltip="filter goals"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.FilterGoals"
+         enablesFor="*">
+      </action> 
+      <action
+         id="wpp.allcontrolgoals" 
+         label="Control"
+         icon="icons\control_icon.png" 
+         tooltip="control goals"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.AllControlGoals"
+         enablesFor="*">
+      </action>  
+   </viewContribution> 
+</extension>
+<extension point="org.eclipse.ui.viewActions"> 
+  <viewContribution 
+      id="org.eclipse.ui.articles.action.contribution.view" 
+   targetID="wpp.watchview">
+   	  <action
+         id="wpp.exportwatch" 
+         label="Export Watch Variables"
+         icon="icons\export_icon.png" 
+         tooltip="Export Watch Variables"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.ExportWatch"
+         enablesFor="*">
+      </action> 
+      <action
+         id="wpp.importwatch" 
+         label="Import Watch Variables"
+         icon="icons\import_icon.png" 
+         tooltip="Import Watch Variables"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.ImportWatch"
+         enablesFor="*">
+      </action>
+      <action
+         id="wpp.deleteallwatch" 
+         label="Delete All Watch"
+         icon="icons\deleteall_icon.png" 
+         tooltip="delete all watch"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.DeleteAllWatch"
+         enablesFor="*">
+      </action>  
+      <action
+         id="wpp.deletewatch" 
+         label="Delete Watch"
+         icon="icons\delete_icon.png" 
+         tooltip="delete watch"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.DeleteWatch"
+         enablesFor="*">
+      </action> 
+      <action
+         id="wpp.addwatch" 
+         label="Add Watch"
+         icon="icons\add_icon.png" 
+         tooltip="add watch"
+         toolbarPath="group1"
+         class="wrimsv2_plugin.debugger.toolbaritem.AddWatch"
+         enablesFor="*">
+      </action> 
+   </viewContribution> 
+</extension>
+<extension point="org.eclipse.ui.viewActions"> 
+  <viewContribution 
+      id="org.eclipse.ui.articles.action.contribution.view" 
+   targetID="org.eclipse.ui.console.ConsoleView"> 
+      <action
+         id="wpp.nexttimestepbutton" 
+         label="Next Timestep"
+         icon="icons\next_timestep.png" 
+         tooltip="next timestep"
+         toolbarPath="launchGroup"
+         class="wrimsv2_plugin.debugger.toolbaritem.NextTimestep"
+         enablesFor="1">
+      </action> 
+      <action
+         id="wpp.nextcyclebutton" 
+         label="Next Cycle"
+         icon="icons\next_cycle.png" 
+         tooltip="next cycle"
+         toolbarPath="launchGroup"
+         class="wrimsv2_plugin.debugger.toolbaritem.NextCycle"
+         enablesFor="1">
+      </action> 
+      <action
+         id="wpp.pauseresumebutton" 
+         label="Pause/Resume"
+         icon="icons\pause.png" 
+         tooltip="pause/resume"
+         toolbarPath="launchGroup"
+         class="wrimsv2_plugin.debugger.toolbaritem.PauseResume"
+         enablesFor="1">
+      </action> 
+   </viewContribution>
+</extension>
+<extension point="org.eclipse.ui.views">
+        <category 
+           id="wpp.category.wrims2"
+           name="WRIMS2">
+        </category>
+        <view id="wpp.exceptionview"
+             name="Exception"
+             category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.WPPExceptionView"/>
+</extension>
+<extension point="org.eclipse.ui.views">
+	<category 
+         id="wpp.category.wrims2"
+         name="WRIMS2">
+    </category>
+	<view name="Variable Detail"
+	      category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.WPPVarDetailView"
+          id="wpp.vardetailview">
+    </view>
+</extension>
+<extension point="org.eclipse.ui.views">
+    <category 
+          id="wpp.category.wrims2"
+          name="WRIMS2">
+    </category>	
+	<view name="Variable Monitor"
+          class="wrimsv2_plugin.debugger.view.WPPVarMonitorView"
+          category="wpp.category.wrims2"
+          id="wpp.varmonitorview">
+    </view>
+</extension>
+<extension point="org.eclipse.ui.views">
+        <category 
+           id="wpp.category.wrims2"
+           name="WRIMS2">
+        </category>
+        <view id="wpp.fileincexploreview"
+             name="WRESL Included"
+             category="wpp.category.wrims2"
+          class="wrimsv2_plugin.debugger.view.WPPFileIncExploreView"/>
+</extension>
+<extension
+	point="org.eclipse.ui.commands">
+	<command
+		description="List included WRESL in a study"
+		id="wpp.studywresl"
+		defaultHandler="wrimsv2_plugin.debugger.commanditem.StudyWresl"
+		name="Study WRESL">
+	</command>
+</extension>
+<extension
+	point="org.eclipse.ui.commands">
+	<command
+		description="List included WRESL in a cycle"
+		id="wpp.cyclewresl"
+		defaultHandler="wrimsv2_plugin.debugger.commanditem.CycleWresl"
+		name="Cycle WRESL">
+	</command>
+</extension>
+<extension
+	point="org.eclipse.ui.commands">
+	<command
+		description="Export Study"
+		id="wpp.exportstudy"
+		defaultHandler="wrimsv2_plugin.debugger.commanditem.StudyExport"
+		name="Export Study">
+	</command>
+</extension>
+<extension
+	point="org.eclipse.ui.commands">
+	<command
+		description="DSS HDF5 Conversion"
+		id="wpp.dsshdf5conversion"
+		defaultHandler="wrimsv2_plugin.debugger.commanditem.DSSHDF5Conversion"
+		name="DSS HDF5 Conversion">
+	</command>
+</extension>
+<extension point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         	<command 
+         	commandId="wpp.dsshdf5conversion"
+            style="push">
+            <visibleWhen checkEnabled="false">
+              <with variable="selection">
+                 <iterate ifEmpty="false" operator="or">
+                    <adapt type="org.eclipse.core.resources.IResource">
+                       <or>
+                          <test property="org.eclipse.core.resources.extension"
+                                value="config">
+                          </test>
+                          <test property="org.eclipse.core.resources.extension"
+                                value="launch">
+                          </test>
+                       </or>
+                    </adapt>
+                 </iterate>
+              </with>
+           </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         	<command 
+         	commandId="wpp.exportstudy"
+            style="push">
+            <visibleWhen checkEnabled="false">
+              <with variable="selection">
+                 <iterate ifEmpty="false" operator="or">
+                    <adapt type="org.eclipse.core.resources.IResource">
+                       <or>
+                          <test property="org.eclipse.core.resources.extension"
+                                value="wresl">
+                          </test>
+                          <test property="org.eclipse.core.resources.extension"
+                                value="launch">
+                          </test>
+                       </or>
+                    </adapt>
+                 </iterate>
+              </with>
+           </visibleWhen>
+         </command>
+      </menuContribution>
+	  <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         	<command 
+         	commandId="wpp.cyclewresl"
+            style="push">
+            <visibleWhen checkEnabled="false">
+              <with variable="selection">
+                 <iterate ifEmpty="false" operator="or">
+                    <adapt type="org.eclipse.core.resources.IResource">
+                       <or>
+                          <test property="org.eclipse.core.resources.extension"
+                                value="wresl">
+                          </test>
+                       </or>
+                    </adapt>
+                 </iterate>
+              </with>
+           </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         	<command 
+         	commandId="wpp.studywresl"
+            style="push">
+            <visibleWhen checkEnabled="false">
+              <with variable="selection">
+                 <iterate ifEmpty="false" operator="or">
+                    <adapt type="org.eclipse.core.resources.IResource">
+                       <or>
+                          <test property="org.eclipse.core.resources.extension"
+                                value="wresl">
+                          </test>
+                       </or>
+                    </adapt>
+                 </iterate>
+              </with>
+           </visibleWhen>
+         </command>
+      </menuContribution>
+</extension>
+<extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="wpp.launchType"
+            class="wrimsv2_plugin.debugger.launcher.WPPTabGroup"
+            id="wpp.tabGroup"/>
+   </extension>
+ <extension point = "org.eclipse.debug.core.launchConfigurationTypes">
+   <launchConfigurationType
+	   name="WRESL/WRIMS2 Application"
+	   delegate="wrimsv2_plugin.debugger.launcher.WPPLaunchDelegate"
+	   modes= "run, debug"
+	   id="wpp.launchType"
+	   sourceLocatorId="wpp.sourceLocator"
+       sourcePathComputerId="wpp.sourcePathComputer">
+   </launchConfigurationType>
+</extension>
+ <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+  <launchConfigurationTypeImage
+     id="wpp.launchTypeImage"
+     configTypeID="wpp.launchType"
+     icon="icons/wpp_icon.png">
+  </launchConfigurationTypeImage>
+ </extension>
+<extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            class="wrimsv2_plugin.debugger.sourcelookup.WPPSourceLookupDirector"
+            name="WPP Source Locator"
+            id="wpp.sourceLocator"/>
+</extension>
+<extension
+         point="org.eclipse.debug.core.sourcePathComputers">
+      <sourcePathComputer
+            class="wrimsv2_plugin.debugger.sourcelookup.WPPSourcePathComputerDelegate"
+            id="wpp.sourcePathComputer"/>
+</extension>
+<extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="WRESL/WRIMS Application"
+            class="wrimsv2_plugin.debugger.launcher.WPPLaunchShortcut"
+            modes="run, debug"
+            id="WPP.launchShortcut">
+         <contextualLaunch>
+            <enablement>
+               <with variable="selection">
+                  <count value="1"/>
+                  <iterate>
+                     <instanceof value="org.eclipse.core.resources.IFile"/>
+                     <test
+                           value="*.wpp, *.wresl"
+                           property="org.eclipse.debug.ui.matchesPattern"/>
+                  </iterate>
+               </with>
+            </enablement>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="wrimsv2_plugin.presentation.WPPModelPresentation"
+            id="wpp.debugModel"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            filenames="*.wpp"
+            class="wrimsv2_plugin.editor.WPPEditor"
+            default="true"
+            name="WPP Editor"
+            id="wpp.editor"
+            extensions="wpp"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="wpp.editor"
+            id="wpp.rulerActions">
+         <action
+               label="Not Used"
+               class="wrimsv2_plugin.editor.RulerToggleBreakpointAction"
+               style="push"
+               actionID="RulerDoubleClick"
+               id="wpp.doubleClickBreakpointAction"/>
+      </editorContribution>
+   </extension>
+     <extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
+            class="wrimsv2_plugin.debugger.breakpoint.WPPLineBreakpoint"
+            name="WPP Line Breakpoints"
+            markerType="wpp.markerType.lineBreakpoint"
+            id="wpp.lineBreakpoint"/>
+      <breakpoint
+            class="wrimsv2_plugin.debugger.breakpoint.WPPWatchpoint"
+            name="WPP Watchpoints"
+            markerType="wpp.markerType.watchpoint"
+            id="wpp.watchpoint"/>
+   </extension>
+   <extension
+         id="wpp.markerType.lineBreakpoint"
+         name="WPP Line Breakpoint Marker"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.debug.core.lineBreakpointMarker"/>
+      <persistent value="true"/>
+   </extension>
+   <extension
+         id="wpp.markerType.watchpoint"
+         name="WPP Watchpoint Marker"
+         point="org.eclipse.core.resources.markers">
+      <super type="wpp.markerType.lineBreakpoint"/>
+      <persistent value="true"/>
+   </extension>
+<extension point="org.eclipse.ui.menus">
+   <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar">
+     <toolbar
+           id="wpp.toolbar"
+           label="WRIMS2Debug">
+       <control
+            class="wrimsv2_plugin.debugger.toolbaritem.DebugSet"
+            id="wpp.debugset">
+       </control>  
+     </toolbar>
+   </menuContribution>
+ </extension>
+ <extension
+	point="org.eclipse.ui.actionSets">
+	<actionSet
+		label="WRIMS2Debug"
+		visible="true"
+		id="wpp.debugcontrol">
+		<action
+			label="Batch Run"
+			class="wrimsv2_plugin.debugger.menuitem.BatchRunMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.batchrun">
+		</action>
+		<action
+			label="Clear Conditional Breakpoint"
+			class="wrimsv2_plugin.debugger.menuitem.ClearConditionalBreakpointMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.clearconditionalbreakpoint">
+		</action>
+		<action
+			label="Conditional Breakpoint"
+			class="wrimsv2_plugin.debugger.menuitem.ConditionalBreakpointMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.conditionalbreakpoint">
+		</action>
+		<action
+			label="Re-Simulate"
+			class="wrimsv2_plugin.debugger.menuitem.ReSimMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.resim">
+		</action>
+		<action
+			label="Suspend"
+			class="wrimsv2_plugin.debugger.menuitem.SuspendMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.suspend">
+		</action>
+		<action
+			label="Pause"
+			class="wrimsv2_plugin.debugger.menuitem.PauseMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.pause">
+		</action>
+		<action
+			label="Terminate"
+			class="wrimsv2_plugin.debugger.menuitem.TerminateMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.terminate">
+		</action>
+		<action
+			label="Next time step"
+			class="wrimsv2_plugin.debugger.menuitem.NextTimeStepMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.nexttimestep">
+		</action>
+		<action
+			label="Next cycle"
+			class="wrimsv2_plugin.debugger.menuitem.NextCycleMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.nextcycle">
+		</action>
+		<action
+			label="Resume"
+			class="wrimsv2_plugin.debugger.menuitem.ResumeMenu"
+			menubarPath="org.eclipse.ui.run/debug"
+			id="wpp.resume">
+		</action>
+	</actionSet>
+</extension>
+ <extension
+	point="org.eclipse.ui.actionSets">
+	<actionSet
+		label="WRIMS"
+		visible="true"
+		id="wpp.wrims">
+		<action
+			label="Option"
+			class="wrimsv2_plugin.debugger.menuitem.SolverOptionMenu"
+			menubarPath="org.eclipse.ui.run/other"
+			id="wpp.solveroption">
+		</action>
+		<action
+			label="Load Zip File"
+			class="wrimsv2_plugin.debugger.menuitem.LoadZipFileMenu"
+			menubarPath="File/other"
+			id="wpp.loadzipfile">
+		</action>
+	</actionSet>
+</extension>
+ <extension
+       point="org.eclipse.ui.actionSets">
+    <actionSet
+          id="wpp.data"
+          label="Data"
+          visible="true">
+       <menu
+             id="wpp.data"
+             label="Data"
+             path="additions">
+          <groupMarker
+                name="operation">
+          </groupMarker>
+          <separator
+                name="additions">
+          </separator>
+       </menu>
+       <action
+             class="wrimsv2_plugin.debugger.menuitem.DSSHDF5ConversionMenu"
+             id="wpp.dsshdf5conversion"
+             label="DSS HDF5 Conversion"
+             menubarPath="wpp.data/operation"
+             style="push">
+       </action>
+       <action
+             class="wrimsv2_plugin.debugger.menuitem.ReportToolMenu"
+             id="wpp.reporttool"
+             label="Report Tool"
+             menubarPath="wpp.data/operation"
+             style="push">
+       </action>
+       <action
+             class="wrimsv2_plugin.debugger.menuitem.SaveInitFileMenu"
+             id="wpp.saveinitfile"
+             label="Save To Initial File"
+             menubarPath="wpp.data/operation"
+             style="push">
+       </action>
+       <action
+             class="wrimsv2_plugin.debugger.menuitem.SaveDVFileMenu"
+             id="wpp.savedvfile"
+             label="Save To DV File"
+             menubarPath="wpp.data/operation"
+             style="push">
+       </action>
+       <action
+             class="wrimsv2_plugin.debugger.menuitem.SaveSVFileMenu"
+             id="wpp.savesvfile"
+             label="Save To SV File"
+             menubarPath="wpp.data/operation"
+             style="push">
+       </action>
+       <action
+             class="wrimsv2_plugin.debugger.menuitem.LoadStudiesDSS"
+             id="wpp.loadstudiesdss"
+             label="Load DSS/Studies"
+             menubarPath="wpp.data/operation"
+             style="push">
+       </action>
+    </actionSet>
+ </extension>
+ <extension point="org.eclipse.ui.console.consolePatternMatchListeners">
+  <consolePatternMatchListener
+    class="wrimsv2_plugin.debugger.console.WPPConsoleLogPatternMatcher"
+    id="wpp.consolelogpatternmatcher"
+    regex="\([a-zA-Z]:.*\.wresl:[0-9]*\)">
+    <enablement>
+    </enablement>
+  </consolePatternMatchListener>
+</extension>
+ <extension
+       point="org.eclipse.ui.console.consolePageParticipants">
+    <consolePageParticipant
+          class="wrimsv2_plugin.debugger.console.WPPConsolePageParticipant"
+          id="wpp.consolepageparticipant">
+       <enablement>
+          <instanceof
+                value="org.eclipse.ui.console.IConsole">
+          </instanceof></enablement>
+    </consolePageParticipant>
+ </extension>
+ <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="wrimsv2_plugin.perspective.IDEPerspectiveFactory"
+            id="wpp.ideperspective"
+            name="IDE"/>
+ </extension>
+</plugin>
