@@ -1,9 +1,95 @@
-Bundle-Name: Wrimsv2_plugin
-Bundle-SymbolicName: wrimsv2_plugin;singleton:=true
+Bundle-SymbolicName: wrims-plugin;singleton:=true
+Bundle-Name: wrims-plugin
+Bundle-Version: 1.0.0.0
+Bundle-ManifestVersion: 2
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Include-Resource: \
- icons=Icons, \
- plugin.xml
-Export-Package: wrimsv2_plugin.debugger,wrimsv2_plugin.debugger.breakpoint,wrimsv2_plugin.debugger.commanditem,wrimsv2_plugin.debugger.core,wrimsv2_plugin.debugger.exception,wrimsv2_plugin.debugger.launcher,wrimsv2_plugin.debugger.menuitem,wrimsv2_plugin.debugger.model,wrimsv2_plugin.debugger.sourcelookup, wrimsv2_plugin.debugger.toolbaritem, wrimsv2_plugin.debugger.ui, wrimsv2_plugin.debugger.view, wrimsv2_plugin.presentation, wrimsv2_plugin.tools
-Bundle-Activator: wrimsv2_plugin.debugger.core.DebugCorePlugin
 Bundle-ActivationPolicy: lazy
+Bundle-Activator: wrimsv2_plugin.debugger.core.DebugCorePlugin
+
+Require-Bundle: \
+    org.eclipse.ui,\
+    org.eclipse.core.resources,\
+    org.eclipse.ui.workbench.texteditor,\
+    org.eclipse.jface.text,\
+    org.eclipse.ui.editors,\
+    org.eclipse.ui.views.properties.tabbed,\
+    org.eclipse.draw2d,\
+    org.eclipse.datatools.connectivity,\
+    hec-dependencies;bundle-version="1.0.0"
+
+Import-Package: \
+    org.eclipse.core.runtime;version="3.4.0",\
+    org.eclipse.core.runtime.jobs,\
+    org.eclipse.core.runtime.preferences;version="3.3.0",\
+    org.eclipse.debug.core,\
+    org.eclipse.debug.core.model,\
+    org.eclipse.debug.core.sourcelookup,\
+    org.eclipse.debug.core.sourcelookup.containers,\
+    org.eclipse.debug.internal.ui.views.variables,\
+    org.eclipse.debug.ui,\
+    org.eclipse.debug.ui.actions,\
+    org.eclipse.debug.ui.console,\
+    org.eclipse.debug.ui.sourcelookup,\
+    org.eclipse.jdt.core,\
+    org.eclipse.jface.text,\
+    org.eclipse.ui,\
+    org.eclipse.ui.console,\
+    org.eclipse.ui.dialogs,\
+    org.eclipse.ui.ide,\
+    org.eclipse.ui.part,\
+    org.eclipse.ui.texteditor,\
+    org.osgi.framework
+
+Export-Package: \
+    wrimsv2_plugin.debugger,\
+    wrimsv2_plugin.debugger.breakpoint,\
+    wrimsv2_plugin.debugger.commanditem,\
+    wrimsv2_plugin.debugger.core,\
+    wrimsv2_plugin.debugger.exception,\
+    wrimsv2_plugin.debugger.launcher,\
+    wrimsv2_plugin.debugger.menuitem,\
+    wrimsv2_plugin.debugger.model,\
+    wrimsv2_plugin.debugger.sourcelookup,\
+    wrimsv2_plugin.debugger.toolbaritem,\
+    wrimsv2_plugin.debugger.ui,\
+    wrimsv2_plugin.debugger.view,\
+    wrimsv2_plugin.presentation,\
+    wrimsv2_plugin.tools
+
+-includeresource: \
+  plugin.xml = plugin.xml,\
+  icons = icons,\
+  lib_x64/commons-io-2.1.jar=libs_copy/commons-io-2.1.jar,\
+  lib_x64/wrims-core-devops-wrims-plugin-SNAPSHOT.jar=libs_copy/wrims-core-devops-wrims-plugin-SNAPSHOT.jar,\
+  lib_x64/guava-11.0.2.jar=libs_copy/guava-11.0.2.jar,\
+  lib_x64/dsm2-input-model.jar=libs_copy/dsm2-input-model.jar,\
+  lib_x64/jfreechart.jar=libs_copy/jfreechart-1.0.19.jar,\
+  lib_x64/itext-2.1.5.jar=libs_copy/itext-2.1.5.jar,\
+  lib_x64/vista.jar=libs_copy/vista.jar,\
+  lib_x64/jpy.jar=lib_x64/jpy.jar,\
+  lib_x64/sqljdbc4-2.0.jar=lib_x64/sqljdbc4-2.0.jar,\
+  lib_x64/mysql-connector-java-5.1.42-bin.jar=lib_x64/mysql-connector-java-5.1.42-bin.jar,\
+  lib_x64/jep-3.8.2.jar=libs_copy/jep-3.8.2.jar,\
+  lib_x64/jep.dll=lib_x64/jep.dll,\
+  lib_x64/antlr-3.5.2-runtime.jar=libs_copy/antlr-3.5.2-runtime.jar,\
+  lib_x64/coinor.jar=libs_copy/antlr-3.5.2-runtime.jar,\
+  lib_x64/dom4j-1.6.1.jar=libs_copy/dom4j-1.6.1.jar,\
+  lib_x64/gurobi.jar=libs_copy/gurobi.jar,\
+
+
+Bundle-ClassPath: \
+    .,\
+    lib_x64/commons-io-2.1.jar,\
+    lib_x64/wrims-core-devops-wrims-plugin-SNAPSHOT,\
+    lib_x64/guava-11.0.2.jar,\
+    lib_x64/dsm2-input-model.jar,\
+    lib_x64/jfreechart-1.0.19.jar,\
+    lib_x64/itext-2.1.5.jar,\
+    lib_x64/vista.jar,\
+    lib_x64/jpy.jar,\
+    lib_x64/sqljdbc4-2.0.jar,\
+    lib_x64/mysql-connector-java-5.1.42-bin.jar,\
+    lib_x64/jep-3.8.2.jar
+
+Bundle-NativeCode: \
+    lib_x64/jep.dll; processor=x86_64
