@@ -2,42 +2,12 @@ plugins{
     id 'library.deps-conventions'
     id 'library.java-conventions'
 
-    // The following plugin is used to pull jars from Eclipse's p2 repositories
-    //
-//     id 'com.diffplug.p2.asmaven' version '3.36.0'
-
     // The following plugin is used to build the OSGI bundle
-//    id 'biz.aQute.bnd.builder' version '7.1.0'
     id 'biz.aQute.bnd.builder' version '6.4.0'
 }
 
-// The jars we'd like to pull from Eclipse's p2 repositories
-//def eclipseDeps = [
-//        // The dependencies we actually use
-//        'org.eclipse.jdt.core',
-//        'org.eclipse.text',
-//
-//        // Their transitives
-//        'org.eclipse.core.contenttype',
-//        'org.eclipse.core.jobs',
-//        'org.eclipse.core.runtime',
-//        'org.eclipse.core.resources',
-//        'org.eclipse.equinox.common',
-//        'org.eclipse.equinox.preferences',
-//        'org.eclipse.osgi'
-//
-// build a maven repo in our build folder containing these artifacts
-//p2AsMaven {
-//    group 'p2', {
-//        repoEclipse '4.6.0'
-//        eclipseDeps.each { p2.addIU(it) }
-//        eclipseDeps.each { p2.addIU(it + '.source') }
-//    }
-//}
-
 repositories {
     mavenLocal()
-    // other repositories you might have
 }
 
 java {
@@ -56,36 +26,18 @@ sourceSets {
 dependencies {
     implementation project(':wrims-core')
 
-    // eclipseDeps.each { implementation "p2:${it}:+" }
-    implementation fileTree(dir: 'lib_x64/eclipse', include: ['*.jar'])
     implementation libs.commons.io
-    implementation libs.itext
+    implementation libs.jfreechart
+    implementation libs.hec.monolith
+    implementation libs.hec.nucleus.metadata
 
-    // JFreeChart is used in reports and jcommon provides
-    // dependencies needed for jfreechart
-    // the jfreechart and jcommon jars in the WRIMS project don't match
-    // any of the versions in maven central. The jfreechart classes dated 2010,
-    // and the jcommon classes are dated 2009.
-    // implementation libs.jcommon
-     implementation libs.jfreechart
-    // implementation files('dep-local/jcommon.jar')
-
-//    implementation files('libs/jfreechart.jar')
-    implementation files('lib_x64/dsm2-input-model.jar')
-
-    // these should be superseded with the hec-monolith updates
-    implementation files('lib_x64/vista.jar')
-
-    // replace with:
-     implementation libs.hec.monolith
-     implementation libs.hec.nucleus.metadata
+    implementation fileTree(dir: 'libs/eclipse', include: ['*.jar'])
+    implementation fileTree(dir: 'libs/x64', include: ['*.jar'])
+    implementation fileTree(dir: 'libs/x64', include: ['*.dll'])
 
     // The following dependencies are used to build the OSGI bundle
     implementation 'org.osgi:org.osgi.core:6.0.0'
     implementation 'org.osgi:org.osgi.compendium:5.0.0'
-
-    //Eclipse dependencies
-    implementation libs.eclipse.core.runtime
 }
 
 configurations.configureEach {
@@ -95,6 +47,10 @@ configurations.configureEach {
 }
 
 tasks.register('copyDependencies', Copy) {
-    from configurations.runtimeClasspath
-    into 'libs_copy'
+    from(configurations.runtimeClasspath) {
+        exclude '**/org.eclipse.*.jar'
+    }
+    into 'build/tmp/libs'
 }
+
+compileJava.dependsOn(copyDependencies)
