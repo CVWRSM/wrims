@@ -26,9 +26,13 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build
+      env:
+        GRADLE_OPTS: -Xmx1024m
 
     - name: Upload jars
       uses: actions/upload-artifact@v4.0.0
       with:
         name: jars result
-        path: ./wrims-core/build/libs/*.jar
+        path: |
+          ./wrims-core/build/libs/*.jar          
+          ./wrims/build/libs/*.jar
