@@ -25,7 +25,9 @@ jobs:
         cache: 'gradle'
 
     - name: Build with Gradle
-      run: ./gradlew clean build
+      run: |
+        ./gradlew clean
+        ./gradlew build
 
     - name: Upload jars
       uses: actions/upload-artifact@v4.0.0
