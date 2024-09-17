@@ -25,9 +25,7 @@ jobs:
         cache: 'gradle'
 
     - name: Build with Gradle
-      env:
-        GRADLE_OPTS: "-Xms512m -Xmx2048m"
-      run: ./gradlew build
+      run: ./gradlew build -Dorg.gradle.jvmargs="-Xms512m -Xmx8g"
 
     - name: Upload jars
       uses: actions/upload-artifact@v4.0.0
