@@ -25,9 +25,7 @@ jobs:
         cache: 'gradle'
 
     - name: Build with Gradle
-      env:
-        JAVA_OPTS: "-Xms512m -Xmx8g"
-      run: ./gradlew build
+      run: ./gradlew clean build
 
     - name: Upload jars
       uses: actions/upload-artifact@v4.0.0
