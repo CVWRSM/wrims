@@ -29,21 +29,16 @@ jobs:
         ./gradlew clean
         ./gradlew build
 
-    - name: Upload jars
+    - name: Upload Core jar
       uses: actions/upload-artifact@v4.0.0
       with:
         name: jars result
         path: |
           ./wrims-core/build/libs/*.jar
 
-    - name: Find wrims plugin jar
-      id: get-jar
-      run: |
-        JAR_NAME=$(ls ./wrims/build/libs/*.jar | head -n 1)
-        echo "JAR_NAME=$JAR_NAME" >> $GITHUB_ENV
-
-    - name: Upload wrims-plugin jar
+    - name: Upload Wrims plugin jar
       uses: actions/upload-artifact@v4.0.0
       with:
-        name: wrims-plugin-1.0.0.0
-        path: ${{ env.JAR_NAME }}
+        name: jars result
+        path: |
+          ./wrims/build/libs/*.jar
