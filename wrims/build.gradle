@@ -6,21 +6,9 @@ plugins{
     id 'biz.aQute.bnd.builder' version '6.4.0'
 }
 
-repositories {
-    mavenLocal()
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-sourceSets {
-    src {
-        java {
-            srcDirs "src/main/java/"
-        }
-    }
+configurations {
+    eclipseLibs
+    implementation.extendsFrom(eclipseLibs)
 }
 
 dependencies {
@@ -30,14 +18,13 @@ dependencies {
     implementation libs.jfreechart
     implementation libs.hec.monolith
     implementation libs.hec.nucleus.metadata
+    implementation libs.osgi.core
+    implementation libs.osgi.compendium
 
-    implementation fileTree(dir: 'libs/eclipse', include: ['*.jar'])
     implementation fileTree(dir: 'libs/x64', include: ['*.jar'])
     implementation fileTree(dir: 'libs/x64', include: ['*.dll'])
 
-    // The following dependencies are used to build the OSGI bundle
-    implementation 'org.osgi:org.osgi.core:6.0.0'
-    implementation 'org.osgi:org.osgi.compendium:5.0.0'
+    eclipseLibs fileTree(dir: 'libs/eclipse', include: ['*.jar'])
 }
 
 configurations.configureEach {
@@ -47,9 +34,7 @@ configurations.configureEach {
 }
 
 tasks.register('copyDependencies', Copy) {
-    from(configurations.runtimeClasspath) {
-        exclude '**/org.eclipse.*.jar'
-    }
+    from(configurations.runtimeClasspath - configurations.eclipseLibs)
     into 'build/tmp/libs'
 }
 

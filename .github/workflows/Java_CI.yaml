@@ -32,13 +32,13 @@ jobs:
     - name: Upload Core jar
       uses: actions/upload-artifact@v4.0.0
       with:
-        name: jars result
+        name: wrims-core
         path: |
           ./wrims-core/build/libs/*.jar
 
     - name: Upload Wrims plugin jar
       uses: actions/upload-artifact@v4.0.0
       with:
-        name: jars result
+        name: wrims-plugin
         path: |
           ./wrims/build/libs/*.jar
