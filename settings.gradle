@@ -1,4 +1,4 @@
-rootProject.name = 'cvwrims'
+rootProject.name = 'wrims'
 include 'wrims-core'
 include 'wrims-comparison-test'
 include 'wrims'
@@ -11,3 +11,5 @@ if (!file('gradle.properties').exists()) {
         rename("gradle.properties.template", "gradle.properties")
     }
 }
+include 'third-party'
+
