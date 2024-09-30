@@ -42,3 +42,10 @@ jobs:
         name: wrims-plugin
         path: |
           ./wrims/build/libs/*.jar
+
+    - name: Upload third-party plugin jar
+      uses: actions/upload-artifact@v4.0.0
+      with:
+        name: third-party
+        path: |
+          ./third-party/build/libs/*.jar
