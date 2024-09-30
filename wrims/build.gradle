@@ -30,7 +30,7 @@ dependencies {
     implementation fileTree(dir: 'libs/x64', include: ['*.jar'])
     implementation fileTree(dir: 'libs/x64', include: ['*.dll'])
 
-    eclipseLibs fileTree(dir: 'libs/eclipse', include: ['*.jar'])
+    eclipseLibs fileTree(dir: '../libs/eclipse', include: ['*.jar'])
 }
 
 configurations.configureEach {

@@ -23,6 +23,7 @@ dependencies {
 
     implementation fileTree(dir: 'libs/x64', include: ['*.jar'])
     implementation fileTree(dir: 'libs/x64', include: ['*.dll'])
+    implementation fileTree(dir: 'libs/sys', include: ['*.jar'])
 
     //    implementation libs.hec.monolith
     //    implementation libs.hec.nucleus.metadata
@@ -37,6 +38,7 @@ configurations.configureEach {
 tasks.register('copyDependencies', Copy) {
     from(configurations.runtimeClasspath)
     into 'build/tmp/libs'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 jar.dependsOn(copyDependencies)
