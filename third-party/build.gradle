@@ -18,12 +18,14 @@ jar {
 dependencies {
     implementation libs.commons.io
     implementation libs.jfreechart
-    implementation libs.hec.monolith
-    implementation libs.hec.nucleus.metadata
     implementation libs.osgi.core
     implementation libs.osgi.compendium
 
     implementation fileTree(dir: 'libs/x64', include: ['*.jar'])
+    implementation fileTree(dir: 'libs/x64', include: ['*.dll'])
+
+    //    implementation libs.hec.monolith
+    //    implementation libs.hec.nucleus.metadata
 }
 
 configurations.configureEach {
@@ -39,28 +41,80 @@ tasks.register('copyDependencies', Copy) {
 
 jar.dependsOn(copyDependencies)
 
-tasks.register('updateExportContents') {
+tasks.register('prepareBndFile') {
     def bndFile = file('bnd.bnd')
+    def bndTemplateFile = file('bnd.bnd.template')
     def libsDir = file('build/tmp/libs')
     def packageSet = new LinkedHashSet<String>()
+    def includeResourceSet = new LinkedHashSet<String>()
 
     doLast {
+        println "Running prepareBndFile task..."
+
+        // Delete bnd.bnd if it exists
+        if (bndFile.exists()) {
+            bndFile.delete()
+            println "Deleted existing bnd.bnd file."
+        }
+
+        // Copy bnd.bnd.template to bnd.bnd
+        bndFile.text = bndTemplateFile.text
+        println "Copied bnd.bnd.template to bnd.bnd."
+
+        // Collect package names from JAR files
         libsDir.eachFileRecurse { file ->
             if (file.name.endsWith('.jar')) {
+                includeResourceSet.add("lib_x64/${file.name}=${file.path.replace('\\', '/')}")
                 JarFile jar = new JarFile(file)
                 jar.entries().each { entry ->
                     if (entry.name.endsWith('.class')) {
                         def packageName = entry.name.replaceAll('/[^/]+$', '').replace('/', '.')
-                        packageSet.add(packageName)
+                        if (!packageName.startsWith('Lib.')) {
+                            packageSet.add(packageName)
+                        }
                     }
                 }
             }
         }
 
+        // Add -includeresource contents to the end of bnd.bnd
+//        def includeResourceContents = includeResourceSet.collect { it + ',\\' }.join('\n    ')
+//        bndFile.append("\n-includeresource: \\\n    ${includeResourceContents}\n")
+//        println "Added -includeresource contents to bnd.bnd."
+
+        // Add Export-Package contents to the end of bnd.bnd
         def exportContents = packageSet.collect { it + ',\\' }.join('\n    ')
-        def bndContent = bndFile.text.replaceAll(/-Export-Package: .*/, "-Export-Package: \\\n    ${exportContents}")
-        bndFile.text = bndContent
+        bndFile.append("\nExport-Package: \\\n    ${exportContents}\n")
+        println "Added Export-Package contents to bnd.bnd."
     }
 }
 
-jar.dependsOn(updateExportContents)
+jar.dependsOn(prepareBndFile)
+
+//tasks.register('updateExportContents') {
+//    def bndFile = file('bnd.bnd')
+//    def libsDir = file('build/tmp/libs')
+//    def packageSet = new LinkedHashSet<String>()
+//
+//    doLast {
+//        println "Running updateExportContents task..."
+//        libsDir.eachFileRecurse { file ->
+//            if (file.name.endsWith('.jar')) {
+//                JarFile jar = new JarFile(file)
+//                jar.entries().each { entry ->
+//                    if (entry.name.endsWith('.class')) {
+//                        def packageName = entry.name.replaceAll('/[^/]+$', '').replace('/', '.')
+//                        packageSet.add(packageName)
+//                    }
+//                }
+//            }
+//        }
+//
+//        def exportContents = packageSet.collect { it + ',\\' }.join('\n    ')
+//        def bndContent = bndFile.text.replaceAll(/Export-Package:\s*[\s\S]*?(\R|$)/, "Export-Package: \\\n    ${exportContents}\n")
+//        bndFile.text = bndContent
+//        println "Updated bnd.bnd file with export contents."
+//    }
+//}
+//
+//jar.dependsOn(updateExportContents)
