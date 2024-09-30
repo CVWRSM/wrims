@@ -77,11 +77,6 @@ tasks.register('prepareBndFile') {
             }
         }
 
-        // Add -includeresource contents to the end of bnd.bnd
-//        def includeResourceContents = includeResourceSet.collect { it + ',\\' }.join('\n    ')
-//        bndFile.append("\n-includeresource: \\\n    ${includeResourceContents}\n")
-//        println "Added -includeresource contents to bnd.bnd."
-
         // Add Export-Package contents to the end of bnd.bnd
         def exportContents = packageSet.collect { it + ',\\' }.join('\n    ')
         bndFile.append("\nExport-Package: \\\n    ${exportContents}\n")
@@ -90,31 +85,3 @@ tasks.register('prepareBndFile') {
 }
 
 jar.dependsOn(prepareBndFile)
-
-//tasks.register('updateExportContents') {
-//    def bndFile = file('bnd.bnd')
-//    def libsDir = file('build/tmp/libs')
-//    def packageSet = new LinkedHashSet<String>()
-//
-//    doLast {
-//        println "Running updateExportContents task..."
-//        libsDir.eachFileRecurse { file ->
-//            if (file.name.endsWith('.jar')) {
-//                JarFile jar = new JarFile(file)
-//                jar.entries().each { entry ->
-//                    if (entry.name.endsWith('.class')) {
-//                        def packageName = entry.name.replaceAll('/[^/]+$', '').replace('/', '.')
-//                        packageSet.add(packageName)
-//                    }
-//                }
-//            }
-//        }
-//
-//        def exportContents = packageSet.collect { it + ',\\' }.join('\n    ')
-//        def bndContent = bndFile.text.replaceAll(/Export-Package:\s*[\s\S]*?(\R|$)/, "Export-Package: \\\n    ${exportContents}\n")
-//        bndFile.text = bndContent
-//        println "Updated bnd.bnd file with export contents."
-//    }
-//}
-//
-//jar.dependsOn(updateExportContents)
