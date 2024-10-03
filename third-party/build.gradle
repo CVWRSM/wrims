@@ -33,6 +33,7 @@ dependencies {
     api(":iText")
     api(":jarh5obj")
     api(":jarhdf5-2.11.0")
+    api(":jarhdfobj")
     api(":jnios")
     api(":jpy")
     api(":jpython")
@@ -91,6 +92,9 @@ tasks.register('prepareBndFile') {
             bndFile.delete()
             println "Deleted existing bnd.bnd file."
         }
+
+        // print the full path to the bndFile
+        println "bndFile: ${bndFile}"
 
         // Copy bnd.bnd.template to bnd.bnd
         bndFile.text = bndTemplateFile.text
