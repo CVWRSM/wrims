@@ -1,6 +1,5 @@
 package gov.ca.dwr.hecdssvue.monthly;
 
-import gov.ca.dwr.hecdssvue.monthly.MonthlyTableModel.SingleMonthlyTable.SingleMonthlyTableModel;
 import hec.dssgui.TableFrame;
 import hec.gfx2d.G2dDialog;
 import hec.heclib.util.HecDoubleArray;
@@ -431,7 +430,7 @@ public final class MonthlyTableModel extends AbstractTableModel { // extends
 	 * allDataString(); } } } return printString; } else return null; }
 	 */
 
-	class SingleMonthlyTable extends JTable implements TableModelListener {
+	public class SingleMonthlyTable extends JTable implements TableModelListener {
 		// private final int DEFAULT_ROW_HEIGHT = 16;
 		// private final int DEFAULT_COLUMN_HEADER_HEIGHT = 16;
 		private Object[] _tableHeaders = new Object[4];
@@ -531,7 +530,7 @@ public final class MonthlyTableModel extends AbstractTableModel { // extends
 			return _tableHeaders[0]+"\n"+_tableHeaders[1]+"\n"+_tableHeaders[2]+"\n"+_tableHeaders[3]+"\n";
 		}
 		
-		void buildHeader() {
+		public void buildHeader() {
 			ColumnGroup[] columnGroups = new ColumnGroup[_tableHeaders.length
 					+ getModel().getColumnCount()];
 			GroupableTableHeader header = (GroupableTableHeader) getTableHeader();
@@ -804,7 +803,7 @@ public final class MonthlyTableModel extends AbstractTableModel { // extends
 			/**
 			 * @param c
 			 *            TableColumn
-			 * @param v
+			 * @param g
 			 *            ColumnGroups
 			 */
 			public Vector getColumnGroups(TableColumn c, Vector g) {
@@ -1112,7 +1111,7 @@ public final class MonthlyTableModel extends AbstractTableModel { // extends
 			}
 		}
 
-		class SingleMonthlyTableModel extends AbstractTableModel {
+		public class SingleMonthlyTableModel extends AbstractTableModel {
 			final String[] months = { "OCT", "NOV", "DEC", "JAN", "FEB", "MAR",
 					"APR", "MAY", "JUN", "JUL", "AUG", "SEP" };
 			private Vector _columnNames = new Vector(); // do not need this
@@ -1505,7 +1504,7 @@ public final class MonthlyTableModel extends AbstractTableModel { // extends
 					return -1;
 			}
 
-			void setShowTotalColumn(boolean showTotalColumn) {
+			public void setShowTotalColumn(boolean showTotalColumn) {
 				setColumnVisibility(_columnNames.size() - 1, showTotalColumn);
 			}
 
