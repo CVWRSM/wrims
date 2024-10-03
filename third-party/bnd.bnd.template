@@ -8,5 +8,10 @@ Bundle-ActivationPolicy: lazy
 Import-Package: *
 
 Bundle-NativeCode: \
-    processor=x86_64
+    lib_x64/cb.dll; processor=x86_64, \
+    lib_x64/jep.dll; processor=x86_64 \
+
+-includeresource: \
+    lib_x64/jep.dll=../libs/x64/jep.dll,\
+    lib_x64/cb.dll=../libs/x64/cb.dll
 

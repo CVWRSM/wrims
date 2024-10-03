@@ -43,9 +43,16 @@ jobs:
         path: |
           ./wrims/build/libs/*.jar
 
-    - name: Upload third-party plugin jar
+    - name: Upload third-party jar
       uses: actions/upload-artifact@v4.0.0
       with:
         name: third-party
         path: |
           ./third-party/build/libs/*.jar
+
+    - name: Upload hecdssvue jar
+      uses: actions/upload-artifact@v4.0.0
+      with:
+        name: hecdssvue
+        path: |
+          ./hecdssvue/build/libs/*.jar

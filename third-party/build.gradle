@@ -16,17 +16,50 @@ jar {
 
 
 dependencies {
-    implementation libs.commons.io
-    implementation libs.jfreechart
-    implementation libs.osgi.core
-    implementation libs.osgi.compendium
+    api libs.commons.io
+    api libs.jfreechart
+    api libs.osgi.core
+    api libs.osgi.compendium
+    
+    //x64 jars
+//    api(":calsim")
+    api(":calsimgui")
+    api(":coinor")
+    api(":collections")
+    api(":com.google.ortools.linearsolver")
+    api(":COM")
+    api(":dsm2-input-model")
+    api(":gurobi")
+    api(":iText")
+    api(":jarh5obj")
+    api(":jarhdf5-2.11.0")
+    api(":jnios")
+    api(":jpy")
+    api(":jpython")
+    api(":lpsolve55j")
+    api(":misc-1.1")
+    api(":objenesis-1.2")
+    api(":parser")
+    api(":slf4j-nop-1.7.5")
+    api(":sqljdbc4-2.0")
+    api(":swixml")
+    api(":vista")
+    api(":XAOptimizer")
+    api(":xml")
 
-    implementation fileTree(dir: 'libs/x64', include: ['*.jar'])
-    implementation fileTree(dir: 'libs/x64', include: ['*.dll'])
-    implementation fileTree(dir: 'libs/sys', include: ['*.jar'])
+    //dlls
+    api fileTree(dir: '../libs/x64', include: ['cb.dll'])
+    api fileTree(dir: '../libs/x64', include: ['jep.dll'])
 
-    //    implementation libs.hec.monolith
-    //    implementation libs.hec.nucleus.metadata
+    //sys jars
+    api(":codebase")
+    api(":jai_codec")
+    api(":jai_core")
+    api(":jai_imageio")
+    api(":jdom")
+    api(":jh")
+    api(":jxl")
+    api(":jython")
 }
 
 configurations.configureEach {
@@ -87,3 +120,56 @@ tasks.register('prepareBndFile') {
 }
 
 jar.dependsOn(prepareBndFile)
+
+task findConflictingJars {
+    doLast {
+        def jarFiles = fileTree(dir: '../libs', include: '**/*.jar')
+        def conflictingJars = []
+
+        jarFiles.each { jarFile ->
+            def jar = new java.util.jar.JarFile(jarFile)
+            def entries = jar.entries()
+            while (entries.hasMoreElements()) {
+                def entry = entries.nextElement()
+                println "JAR files containing the 'com/sun/java/util/collections' package:"
+                if (entry.name.startsWith('hec/data')) {
+                    conflictingJars << jarFile
+                    break
+                }
+            }
+        }
+
+        if (conflictingJars) {
+            println "JAR files containing the 'com/sun/java/util/collections' package:"
+            conflictingJars.each { println it }
+        } else {
+            println "No conflicting JAR files found."
+        }
+    }
+}
+
+task printHecDataJars {
+    doLast {
+        def jarFiles = configurations.runtimeClasspath.files.findAll { it.name.endsWith('.jar') }
+        def hecDataJars = []
+
+        jarFiles.each { jarFile ->
+            def jar = new java.util.jar.JarFile(jarFile)
+            def entries = jar.entries()
+            while (entries.hasMoreElements()) {
+                def entry = entries.nextElement()
+                if (entry.name.startsWith('hec/data')) {
+                    hecDataJars << jarFile
+                    break
+                }
+            }
+        }
+
+        if (hecDataJars) {
+            println "JAR files containing the 'hec.data' package:"
+            hecDataJars.each { println it }
+        } else {
+            println "No JAR files containing the 'hec.data' package found."
+        }
+    }
+}
