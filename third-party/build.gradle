@@ -84,7 +84,7 @@ tasks.register('prepareBndFile') {
     def packageSet = new LinkedHashSet<String>()
     def includeResourceSet = new LinkedHashSet<String>()
 
-    doLast {
+    doFirst {
         println "Running prepareBndFile task..."
 
         // Delete bnd.bnd if it exists
