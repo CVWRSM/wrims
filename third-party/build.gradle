@@ -9,6 +9,21 @@ plugins{
 }
 
 jar {
+    doFirst {
+        def bndFile = file('bnd.bnd')
+        if (bndFile.exists()) {
+            println "Contents of bnd.bnd file:"
+            println bndFile.text
+        } else {
+            println "bnd.bnd file does not exist."
+        }
+        //print a list of the files in the files loaded into 'build/tmp/libs'
+        println "Files in build/tmp/libs:"
+        file('build/tmp/libs').eachFileRecurse { file ->
+            println file
+        }
+    }
+
     archiveBaseName.set('third-party')
     archiveVersion.set('1.0.0.0')
     archiveFileName.set("${archiveBaseName.get()}_${archiveVersion.get()}.jar")
@@ -20,7 +35,7 @@ dependencies {
     api libs.jfreechart
     api libs.osgi.core
     api libs.osgi.compendium
-    
+
     //x64 jars
 //    api(":calsim")
     api(":calsimgui")
