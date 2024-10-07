@@ -11,6 +11,11 @@ repositories {
         url 'https://www.hec.usace.army.mil/nexus/repository/maven-public'
     }
 
+    maven {
+        // Provider for the gurobi jar
+        url 'https://cogcomp.seas.upenn.edu/m2repo/'
+    }
+
     // Use Maven Central for resolving dependencies.
     // The primary public Maven repository, Maven Central where most 3rd party dependencies can be found
     mavenCentral()

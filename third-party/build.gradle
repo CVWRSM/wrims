@@ -35,33 +35,32 @@ dependencies {
     api libs.jfreechart
     api libs.osgi.core
     api libs.osgi.compendium
+    api libs.gurobi
+    api libs.jarh5obj
+    api libs.jarhdf5
+    api libs.jarhdfobj
+    api libs.obgenesis
+    api libs.slf4jnop
 
     //x64 jars
 //    api(":calsim")
-    api(":calsimgui")
-    api(":coinor")
-    api(":collections")
-    api(":com.google.ortools.linearsolver")
-    api(":COM")
-    api(":dsm2-input-model")
-    api(":gurobi")
-    api(":iText")
-    api(":jarh5obj")
-    api(":jarhdf5-2.11.0")
-    api(":jarhdfobj")
-    api(":jnios")
-    api(":jpy")
-    api(":jpython")
-    api(":lpsolve55j")
-    api(":misc-1.1")
-    api(":objenesis-1.2")
-    api(":parser")
-    api(":slf4j-nop-1.7.5")
-    api(":sqljdbc4-2.0")
-    api(":swixml")
-    api(":vista")
-    api(":XAOptimizer")
-    api(":xml")
+    api(":calsimgui") //This is version 1.1.2 of CALSIM GUI developed by DWR.
+    api(":coinor") //coinor solver jar, unavailable in maven central
+    api(":com.google.ortools.linearsolver") //linear solver jar, unavailable in maven central
+    api(":COM") //Provides ibm.netrexx.process package, unavailable in maven central
+    api(":dsm2-input-model") //dms2 input model jar, developed by DWR
+    api(":iText") //provides com.lowagie.text package, matching version unavailable in maven central
+    api(":jnios") //unavialable in maven central
+    api(":jpy") //matching jar unavilable in maven central
+    api(":jpython") //matching jar unavilable in maven central
+    api(":lpsolve55j") //matching jar unavilable in maven central
+    api(":misc-1.1") //custom collection of miscellenious packages. Developed by DWR.
+    api(":parser") //custom collection of parser packages. Developed by DWR.
+    api(":sqljdbc4-2.0") //matching jar unavilable in maven central. Newer version available
+    api(":swixml") //local jar contains additional classes compared to 1.5.144 jar on maven central
+    api(":vista") //developed by DWR. Unavailable on maven central
+    api(":XAOptimizer") //Unavailable on maven central
+    api(":xml") //custom collection of sun xml packages
 
     //dlls
     api fileTree(dir: '../libs/x64', include: ['cb.dll'])
