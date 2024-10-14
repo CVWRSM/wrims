@@ -5,18 +5,35 @@ Bundle-ManifestVersion: 2.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 
-Import-Package: *
+Import-Package: \
+    hec.*,\
+    rma.*,\
+    !*, *
+
+Require-Bundle: \
+    hec-dependencies;bundle-version="1.0.0"
 
 Bundle-NativeCode: \
     lib_x64/cb.dll; processor=x86_64, \
     lib_x64/jep.dll; processor=x86_64 \
 
 -includeresource: \
+    icons = icons,\
     lib_x64/jep.dll=../libs/x64/jep.dll,\
     lib_x64/cb.dll=../libs/x64/cb.dll
 
 
 Export-Package: \
+    org.antlr.analysis,\
+    org.antlr.codegen,\
+    org.antlr.grammar.v3,\
+    org.antlr.misc,\
+    org.antlr.tool,\
+    org.antlr,\
+    org.antlr.runtime,\
+    org.antlr.runtime.debug,\
+    org.antlr.runtime.misc,\
+    org.antlr.runtime.tree,\
     org.bouncycastle.cms,\
     org.bouncycastle.mail.smime,\
     org.bouncycastle.mail.smime.examples,\
@@ -356,9 +373,6 @@ Export-Package: \
     javax.mail.search,\
     javax.mail.internet,\
     javax.activation,\
-    org.xml.sax,\
-    org.xml.sax.helpers,\
-    org.w3c.dom,\
     com.sun.mail.util,\
     com.sun.mail.smtp,\
     com.sun.mail.iap,\
@@ -379,73 +393,12 @@ Export-Package: \
     org.objenesis.instantiator.sun,\
     org.objenesis,\
     org.objenesis.strategy,\
-    org.osgi.application,\
-    org.osgi.namespace.contract,\
-    org.osgi.namespace.extender,\
-    org.osgi.namespace.service,\
-    org.osgi.service.application,\
-    org.osgi.service.blueprint.container,\
-    org.osgi.service.blueprint.reflect,\
-    org.osgi.service.cm,\
-    org.osgi.service.component,\
-    org.osgi.service.component.annotations,\
-    org.osgi.service.coordinator,\
-    org.osgi.service.deploymentadmin,\
-    org.osgi.service.deploymentadmin.spi,\
-    org.osgi.service.device,\
-    org.osgi.service.dmt,\
-    org.osgi.service.dmt.notification,\
-    org.osgi.service.dmt.notification.spi,\
-    org.osgi.service.dmt.security,\
-    org.osgi.service.dmt.spi,\
-    org.osgi.service.event,\
-    org.osgi.service.http,\
-    org.osgi.service.io,\
-    org.osgi.service.jdbc,\
-    org.osgi.service.jndi,\
-    org.osgi.service.jpa,\
-    org.osgi.service.log,\
-    org.osgi.service.metatype,\
-    org.osgi.service.monitor,\
-    org.osgi.service.prefs,\
-    org.osgi.service.provisioning,\
-    org.osgi.service.remoteserviceadmin,\
-    org.osgi.service.repository,\
-    org.osgi.service.resolver,\
-    org.osgi.service.serviceloader,\
-    org.osgi.service.subsystem,\
-    org.osgi.service.upnp,\
-    org.osgi.service.useradmin,\
-    org.osgi.service.wireadmin,\
-    org.osgi.util.measurement,\
-    org.osgi.util.position,\
-    org.osgi.util.xml,\
-    org.osgi.dto,\
-    org.osgi.framework,\
-    org.osgi.framework.dto,\
-    org.osgi.framework.hooks.bundle,\
-    org.osgi.framework.hooks.resolver,\
-    org.osgi.framework.hooks.service,\
-    org.osgi.framework.hooks.weaving,\
-    org.osgi.framework.launch,\
-    org.osgi.framework.namespace,\
-    org.osgi.framework.startlevel,\
-    org.osgi.framework.startlevel.dto,\
-    org.osgi.framework.wiring,\
-    org.osgi.framework.wiring.dto,\
-    org.osgi.resource,\
-    org.osgi.resource.dto,\
-    org.osgi.service.condpermadmin,\
-    org.osgi.service.packageadmin,\
-    org.osgi.service.permissionadmin,\
-    org.osgi.service.startlevel,\
-    org.osgi.service.url,\
-    org.osgi.util.tracker,\
-    org.slf4j.helpers,\
-    org.slf4j,\
-    org.slf4j.spi,\
-    org.slf4j.impl,\
     com.microsoft.sqlserver.jdbc,\
+    org.stringtemplate.v4,\
+    org.stringtemplate.v4.compiler,\
+    org.stringtemplate.v4.debug,\
+    org.stringtemplate.v4.gui,\
+    org.stringtemplate.v4.misc,\
     org.swixml,\
     org.swixml.converters,\
     com.ibm.util,\
@@ -462,25 +415,4 @@ Export-Package: \
     vista.set,\
     vista.time,\
     com.sunsetsoft.xa,\
-    javax.xml,\
-    javax.xml.datatype,\
-    javax.xml.namespace,\
-    javax.xml.parsers,\
-    javax.xml.transform,\
-    javax.xml.transform.dom,\
-    javax.xml.transform.sax,\
-    javax.xml.transform.stream,\
-    javax.xml.validation,\
-    javax.xml.xpath,\
     org.apache.xmlcommons,\
-    org.w3c.dom.bootstrap,\
-    org.w3c.dom.css,\
-    org.w3c.dom.events,\
-    org.w3c.dom.html,\
-    org.w3c.dom.ls,\
-    org.w3c.dom.ranges,\
-    org.w3c.dom.stylesheets,\
-    org.w3c.dom.traversal,\
-    org.w3c.dom.views,\
-    org.w3c.dom.xpath,\
-    org.xml.sax.ext,\

@@ -12,6 +12,8 @@ compileJava {
     // when only a more recent JDK is available (for example, compile for Java 11 with Java 17 or 21).
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
+    options.debug = true
+    options.compilerArgs = ['-g']
 
     // This is the preferred method to specify the Java version. There is also the sourceCompatibility property, but
     // Gradle recommends the options.release property instead. There is also the Java Toolchains system, but that

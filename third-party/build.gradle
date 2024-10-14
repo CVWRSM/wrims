@@ -31,6 +31,8 @@ jar {
 
 
 dependencies {
+    api libs.antlr
+    api libs.antlr.runtime
     api libs.commons.io
     api libs.jfreechart
     api libs.osgi.core
@@ -43,7 +45,6 @@ dependencies {
     api libs.slf4jnop
 
     //x64 jars
-//    api(":calsim")
     api(":calsimgui") //This is version 1.1.2 of CALSIM GUI developed by DWR.
     api(":coinor") //coinor solver jar, unavailable in maven central
     api(":com.google.ortools.linearsolver") //linear solver jar, unavailable in maven central
@@ -122,7 +123,7 @@ tasks.register('prepareBndFile') {
                 jar.entries().each { entry ->
                     if (entry.name.endsWith('.class')) {
                         def packageName = entry.name.replaceAll('/[^/]+$', '').replace('/', '.')
-                        if (!packageName.startsWith('Lib.')) {
+                        if (!packageName.startsWith('Lib.') && !packageName.startsWith('org.osgi') && !packageName.startsWith('org.slf4j') && !packageName.startsWith('org.w3c.dom') && !packageName.startsWith('org.xml.sax') && !packageName.startsWith('javax.xml')) {
                             packageSet.add(packageName)
                         }
                     }
@@ -188,6 +189,33 @@ task printHecDataJars {
             hecDataJars.each { println it }
         } else {
             println "No JAR files containing the 'hec.data' package found."
+        }
+    }
+
+}
+
+task findJRockitReflectJars {
+    doLast {
+        def jarFiles = configurations.runtimeClasspath.files.findAll { it.name.endsWith('.jar') }
+        def jRockitReflectJars = []
+
+        jarFiles.each { jarFile ->
+            def jar = new java.util.jar.JarFile(jarFile)
+            def entries = jar.entries()
+            while (entries.hasMoreElements()) {
+                def entry = entries.nextElement()
+                if (entry.name.startsWith('COM/jrockit/reflect')) {
+                    jRockitReflectJars << jarFile
+                    break
+                }
+            }
+        }
+
+        if (jRockitReflectJars) {
+            println "JAR files containing the 'COM.jrockit.reflect' class:"
+            jRockitReflectJars.each { println it }
+        } else {
+            println "No JAR files containing the 'COM.jrockit.reflect' class found."
         }
     }
 }

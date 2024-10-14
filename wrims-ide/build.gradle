@@ -1,0 +1,48 @@
+plugins{
+    id 'library.deps-conventions'
+    id 'library.java-conventions'
+
+    // The following plugin is used to build the OSGI bundle
+    id 'biz.aQute.bnd.builder' version '6.4.0'
+}
+
+jar {
+    archiveBaseName.set('wrims-ide')
+    archiveVersion.set('1.0.0.0')
+    archiveFileName.set("${archiveBaseName.get()}_${archiveVersion.get()}.jar")
+}
+
+configurations {
+    eclipseLibs
+    implementation.extendsFrom(eclipseLibs)
+}
+
+dependencies {
+    implementation project(':wrims-core')
+    implementation project(':third-party')
+
+//    implementation libs.commons.io
+//    implementation libs.jfreechart
+//    implementation libs.hec.monolith
+//    implementation libs.hec.nucleus.metadata
+//    implementation libs.osgi.core
+//    implementation libs.osgi.compendium
+//
+//    implementation fileTree(dir: '../libs/x64', include: ['*.jar'])
+//    implementation fileTree(dir: '../libs/x64', include: ['*.dll'])
+
+    eclipseLibs fileTree(dir: '../libs/eclipse', include: ['*.jar'])
+}
+
+configurations.configureEach {
+    exclude group: "javax.media", module: "jai_core"
+    exclude group: "javax.media", module: "jai_codec"
+    exclude group: "com.sun.media", module: "jai_imageio"
+}
+
+//tasks.register('copyDependencies', Copy) {
+//    from(configurations.runtimeClasspath - configurations.eclipseLibs)
+//    into 'build/tmp/libs'
+//}
+
+//compileJava.dependsOn(copyDependencies)

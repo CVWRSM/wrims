@@ -5,13 +5,20 @@ Bundle-ManifestVersion: 2.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 
-Import-Package: *
+Import-Package: \
+    hec.*,\
+    rma.*,\
+    !*, *
+
+Require-Bundle: \
+    hec-dependencies;bundle-version="1.0.0"
 
 Bundle-NativeCode: \
     lib_x64/cb.dll; processor=x86_64, \
     lib_x64/jep.dll; processor=x86_64 \
 
 -includeresource: \
+    icons = icons,\
     lib_x64/jep.dll=../libs/x64/jep.dll,\
     lib_x64/cb.dll=../libs/x64/cb.dll
 

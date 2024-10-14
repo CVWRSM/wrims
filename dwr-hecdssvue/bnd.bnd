@@ -1,0 +1,62 @@
+Bundle-SymbolicName: dwr-hecdssvue;singleton:=true
+Bundle-Name: HEC-DSSVue in DWR
+Bundle-Version: 1.0.0.0
+Bundle-ManifestVersion: 2.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Activator: gov.ca.dwr.hecdssvue.Activator
+
+Require-Bundle: \
+    org.eclipse.ui,\
+    org.eclipse.core.runtime,\
+    org.eclipse.core.resources,\
+    org.eclipse.ui.navigator,\
+    org.eclipse.ui.navigator.resources,\
+    wrims-ide;bundle-version="1.0.0";visibility:=reexport,\
+    hec-dependencies;bundle-version="1.0.0"
+
+Import-Package: \
+    org.apache.commons.logging;version="1.1.1",\
+    org.eclipse.debug.core,\
+    org.eclipse.jdt.core,\
+    wrimsv2_plugin.debugger,\
+    wrimsv2_plugin.debugger.breakpoint,\
+    wrimsv2_plugin.debugger.core,\
+    wrimsv2_plugin.debugger.exception,\
+    wrimsv2_plugin.debugger.launcher,\
+    wrimsv2_plugin.debugger.menuitem,\
+    wrimsv2_plugin.debugger.model,\
+    wrimsv2_plugin.debugger.sourcelookup,\
+    wrimsv2_plugin.debugger.toolbaritem,\
+    wrimsv2_plugin.debugger.ui,\
+    wrimsv2_plugin.debugger.view,\
+    wrimsv2_plugin.presentation,\
+    wrimsv2_plugin.tools,\
+    calsim.app,\
+    calsim.debug,\
+    calsim.gui,\
+    calsim.gym,\
+    calsim.installer,\
+    calsim.msw,\
+    calsim.schematic,\
+    calsim.schematic.input,\
+    calsim.wreslcoder,\
+    calsim.wreslcoder.wresl
+
+Export-Package: \
+    gov.ca.dwr.hecdssvue,\
+    gov.ca.dwr.hecdssvue.actions,\
+    gov.ca.dwr.hecdssvue.components,\
+    gov.ca.dwr.hecdssvue.dialog,\
+    gov.ca.dwr.hecdssvue.monthly,\
+    gov.ca.dwr.hecdssvue.menus,\
+    gov.ca.dwr.hecdssvue.perspective,\
+    gov.ca.dwr.hecdssvue.panel,\
+    gov.ca.dwr.hecdssvue.views
+
+-includeresource: \
+  plugin.xml = plugin.xml,\
+  contexts.xml = contexts.xml,\
+  icons = icons
+
+Bundle-ClassPath: \
+    .;
