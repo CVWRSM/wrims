@@ -52,14 +52,21 @@ tasks.register('copyDependencies', Copy) {
 }
 
 tasks.register('prepareBndFile') {
-    def bndFile = file('bnd.bnd')
-    def bndTemplateFile = file('bnd.bnd.template')
+    dependsOn(tasks.named("copyDependencies"))
+
+    def bndFile = file('build/bnd/bnd.bnd')
+    outputs.file(bndFile)
+    def bndTemplateFile = file('src/main/bnd/bnd.bnd.template')
     def libsDir = file('build/tmp/libs')
     def packageSet = new LinkedHashSet<String>()
     def includeResourceSet = new LinkedHashSet<String>()
 
     doFirst {
         logger.debug("Running prepareBndFile task...")
+
+        if(!bndFile.parentFile.exists()) {
+            bndFile.parentFile.mkdirs();
+        }
 
         // Delete bnd.bnd if it exists
         if (bndFile.exists()) {
@@ -100,9 +107,13 @@ tasks.register('prepareBndFile') {
 }
 
 jar {
-    dependsOn tasks.named('copyDependencies'), tasks.named('prepareBndFile')
+    dependsOn tasks.named('prepareBndFile')
 
     archiveBaseName.set('third-party')
     archiveVersion.set('1.0.0.0')
     archiveFileName.set("${archiveBaseName.get()}_${archiveVersion.get()}.jar")
+
+    bundle {
+        bndfile = tasks.named('prepareBndFile').get().outputs.files.first()
+    }
 }
