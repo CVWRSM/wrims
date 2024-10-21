@@ -29,7 +29,7 @@ dependencies {
 
 
     //eclipse libs
-    eclipseLibs fileTree(dir: '../libs/eclipse', include: ['*.jar'])
+    compileOnly fileTree(dir: '../eclipse-luna-libs', include: ['*.jar'])
 }
 
 configurations.configureEach {
@@ -37,11 +37,3 @@ configurations.configureEach {
     exclude group: "javax.media", module: "jai_codec"
     exclude group: "com.sun.media", module: "jai_imageio"
 }
-
-tasks.register('copyDependencies', Copy) {
-    from(configurations.runtimeClasspath - configurations.eclipseLibs)
-    into 'build/tmp/libs'
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-compileJava.dependsOn(copyDependencies)
