@@ -3,8 +3,7 @@
 
 // Define a standard set of repositories, a specific library may need to customize this list and add or remove some items
 repositories {
-    flatDir dirs: "${rootProject.projectDir}/libs/x64"
-    flatDir dirs: "${rootProject.projectDir}/libs/sys"
+    flatDir dirs: "${rootProject.projectDir}/libs"
 
     maven {
         // The HEC Public repository where a lot of base dependencies are stored like hec-monolith

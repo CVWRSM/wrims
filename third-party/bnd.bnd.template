@@ -10,6 +10,9 @@ Import-Package: \
     rma.*,\
     !*, *
 
+Public-Package: \
+    icons,lib_x64
+
 Require-Bundle: \
     hec-dependencies;bundle-version="1.0.0"
 
@@ -19,6 +22,6 @@ Bundle-NativeCode: \
 
 -includeresource: \
     icons = icons,\
-    lib_x64/jep.dll=../libs/x64/jep.dll,\
-    lib_x64/cb.dll=../libs/x64/cb.dll
+    lib_x64/jep.dll=../libs/win-x64/jep.dll,\
+    lib_x64/cb.dll=../libs/win-x64/cb.dll
 

@@ -8,28 +8,6 @@ plugins{
     id 'biz.aQute.bnd.builder' version '6.4.0'
 }
 
-jar {
-    doFirst {
-        def bndFile = file('bnd.bnd')
-        if (bndFile.exists()) {
-            println "Contents of bnd.bnd file:"
-            println bndFile.text
-        } else {
-            println "bnd.bnd file does not exist."
-        }
-        //print a list of the files in the files loaded into 'build/tmp/libs'
-        println "Files in build/tmp/libs:"
-        file('build/tmp/libs').eachFileRecurse { file ->
-            println file
-        }
-    }
-
-    archiveBaseName.set('third-party')
-    archiveVersion.set('1.0.0.0')
-    archiveFileName.set("${archiveBaseName.get()}_${archiveVersion.get()}.jar")
-}
-
-
 dependencies {
     api libs.antlr
     api libs.antlr.runtime
@@ -54,34 +32,17 @@ dependencies {
     api(":jnios") //unavialable in maven central
     api(":jpy") //matching jar unavilable in maven central
     api(":jpython") //matching jar unavilable in maven central
-    api(":lpsolve55j") //matching jar unavilable in maven central
     api(":misc-1.1") //custom collection of miscellenious packages. Developed by DWR.
     api(":parser") //custom collection of parser packages. Developed by DWR.
     api(":sqljdbc4-2.0") //matching jar unavilable in maven central. Newer version available
     api(":swixml") //local jar contains additional classes compared to 1.5.144 jar on maven central
     api(":vista") //developed by DWR. Unavailable on maven central
-    api(":XAOptimizer") //Unavailable on maven central
     api(":xml") //custom collection of sun xml packages
 
     //dlls
     api fileTree(dir: '../libs/x64', include: ['cb.dll'])
     api fileTree(dir: '../libs/x64', include: ['jep.dll'])
 
-    //sys jars
-    api(":codebase")
-    api(":jai_codec")
-    api(":jai_core")
-    api(":jai_imageio")
-    api(":jdom")
-    api(":jh")
-    api(":jxl")
-    api(":jython")
-}
-
-configurations.configureEach {
-    exclude group: "javax.media", module: "jai_core"
-    exclude group: "javax.media", module: "jai_codec"
-    exclude group: "com.sun.media", module: "jai_imageio"
 }
 
 tasks.register('copyDependencies', Copy) {
@@ -89,8 +50,6 @@ tasks.register('copyDependencies', Copy) {
     into 'build/tmp/libs'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
-jar.dependsOn(copyDependencies)
 
 tasks.register('prepareBndFile') {
     def bndFile = file('bnd.bnd')
@@ -100,20 +59,22 @@ tasks.register('prepareBndFile') {
     def includeResourceSet = new LinkedHashSet<String>()
 
     doFirst {
-        println "Running prepareBndFile task..."
+        logger.debug("Running prepareBndFile task...")
 
         // Delete bnd.bnd if it exists
         if (bndFile.exists()) {
             bndFile.delete()
-            println "Deleted existing bnd.bnd file."
+            logger.debug("Deleted existing bnd.bnd file.")
         }
-
-        // print the full path to the bndFile
-        println "bndFile: ${bndFile}"
+        else {
+            // Create the bnd.bnd file if it does not exist
+            logger.debug("Creating empty bnd.bnd file.")
+            bndFile.createNewFile()
+        }
 
         // Copy bnd.bnd.template to bnd.bnd
         bndFile.text = bndTemplateFile.text
-        println "Copied bnd.bnd.template to bnd.bnd."
+        logger.debug("Copied bnd.bnd.template to bnd.bnd.")
 
         // Collect package names from JAR files
         libsDir.eachFileRecurse { file ->
@@ -134,88 +95,14 @@ tasks.register('prepareBndFile') {
         // Add Export-Package contents to the end of bnd.bnd
         def exportContents = packageSet.collect { it + ',\\' }.join('\n    ')
         bndFile.append("\nExport-Package: \\\n    ${exportContents}\n")
-        println "Added Export-Package contents to bnd.bnd."
+        logger.debug("Added Export-Package contents to bnd.bnd.")
     }
 }
 
-jar.dependsOn(prepareBndFile)
+jar {
+    dependsOn tasks.named('copyDependencies'), tasks.named('prepareBndFile')
 
-task findConflictingJars {
-    doLast {
-        def jarFiles = fileTree(dir: '../libs', include: '**/*.jar')
-        def conflictingJars = []
-
-        jarFiles.each { jarFile ->
-            def jar = new java.util.jar.JarFile(jarFile)
-            def entries = jar.entries()
-            while (entries.hasMoreElements()) {
-                def entry = entries.nextElement()
-                println "JAR files containing the 'com/sun/java/util/collections' package:"
-                if (entry.name.startsWith('hec/data')) {
-                    conflictingJars << jarFile
-                    break
-                }
-            }
-        }
-
-        if (conflictingJars) {
-            println "JAR files containing the 'com/sun/java/util/collections' package:"
-            conflictingJars.each { println it }
-        } else {
-            println "No conflicting JAR files found."
-        }
-    }
-}
-
-task printHecDataJars {
-    doLast {
-        def jarFiles = configurations.runtimeClasspath.files.findAll { it.name.endsWith('.jar') }
-        def hecDataJars = []
-
-        jarFiles.each { jarFile ->
-            def jar = new java.util.jar.JarFile(jarFile)
-            def entries = jar.entries()
-            while (entries.hasMoreElements()) {
-                def entry = entries.nextElement()
-                if (entry.name.startsWith('hec/data')) {
-                    hecDataJars << jarFile
-                    break
-                }
-            }
-        }
-
-        if (hecDataJars) {
-            println "JAR files containing the 'hec.data' package:"
-            hecDataJars.each { println it }
-        } else {
-            println "No JAR files containing the 'hec.data' package found."
-        }
-    }
-
-}
-
-task findJRockitReflectJars {
-    doLast {
-        def jarFiles = configurations.runtimeClasspath.files.findAll { it.name.endsWith('.jar') }
-        def jRockitReflectJars = []
-
-        jarFiles.each { jarFile ->
-            def jar = new java.util.jar.JarFile(jarFile)
-            def entries = jar.entries()
-            while (entries.hasMoreElements()) {
-                def entry = entries.nextElement()
-                if (entry.name.startsWith('COM/jrockit/reflect')) {
-                    jRockitReflectJars << jarFile
-                    break
-                }
-            }
-        }
-
-        if (jRockitReflectJars) {
-            println "JAR files containing the 'COM.jrockit.reflect' class:"
-            jRockitReflectJars.each { println it }
-        } else {
-            println "No JAR files containing the 'COM.jrockit.reflect' class found."
-        }
-    }
+    archiveBaseName.set('third-party')
+    archiveVersion.set('1.0.0.0')
+    archiveFileName.set("${archiveBaseName.get()}_${archiveVersion.get()}.jar")
 }
