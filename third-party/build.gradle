@@ -86,7 +86,7 @@ tasks.register('prepareBndFile') {
         // Collect package names from JAR files
         libsDir.eachFileRecurse { file ->
             if (file.name.endsWith('.jar')) {
-                includeResourceSet.add("lib_x64/${file.name}=${file.path.replace('\\', '/')}")
+                includeResourceSet.add("lib_x64/${file.name}=${file.path.replace('\\', '/')};lib:=true")
                 JarFile jar = new JarFile(file)
                 jar.entries().each { entry ->
                     if (entry.name.endsWith('.class')) {
@@ -99,9 +99,14 @@ tasks.register('prepareBndFile') {
             }
         }
 
+        // Add Include-Resource contents to the end of bnd.bnd
+        def includeResourceContents = includeResourceSet.collect { it + ',\\' }.join('\n    ')
+        bndFile.append("\nInclude-Resource: \\\n    ${includeResourceContents}\n")
+        logger.debug("Added Include-Resource contents to bnd.bnd.")
+
         // Add Export-Package contents to the end of bnd.bnd
         def exportContents = packageSet.collect { it + ',\\' }.join('\n    ')
-        bndFile.append("\nExport-Package: \\\n    ${exportContents}\n")
+        bndFile.append("\n-exportcontents: \\\n    ${exportContents}\n")
         logger.debug("Added Export-Package contents to bnd.bnd.")
     }
 }
