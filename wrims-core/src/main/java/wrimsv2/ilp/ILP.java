@@ -70,6 +70,7 @@ public class ILP {
 	public static PrintWriter _noteFile_cbc_int;
 	public static PrintWriter _noteFile_cbc_int_log;
 	public static PrintWriter _noteFile_memory;
+	public static PrintWriter _noteFile_timeusage;
 	public static PrintWriter _watchFile_xa;
 	public static PrintWriter _watchFile_cbc;
 	private static Set<String> dvar_effective;
@@ -171,6 +172,8 @@ public class ILP {
 			//new File(_ilpDir.getAbsolutePath()+"\\Note_memory.log").createNewFile();
 			_noteFile_memory = Tools.openFile(_ilpDir.getAbsolutePath(), "Note_memory.log");
 			
+			_noteFile_timeusage = Tools.openFile(_ilpDir.getAbsolutePath(), "Note_timeusage.log");
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

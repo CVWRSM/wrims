@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.File;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import wrimsv2.components.TimeUsage;
 
 public class GenerateCompileFiles {
 	public static HashMap<String, String[]> dllFunctions=new HashMap<String, String[]>();
@@ -81,10 +84,12 @@ public class GenerateCompileFiles {
 			out.println();
 			out.println("import java.util.*;");
 			out.println();
-			out.println("import wrimsv2.components.ControlData;");
+			out.println("import wrimsv2.components.TimeUsage;");
 			out.println();
 			out.println("public class Function"+functionName+" extends ExternalFunction{");
 			out.println("	private final boolean DEBUG = false;");
+			out.println("	private static int cpuTime=0;");
+			out.println("	private static int nCalls=0;");
 			out.println();
 			for (int i=0; i<variableNames.length; i++){
 				if (variableTypes[i].equals("int*")){
@@ -101,7 +106,9 @@ public class GenerateCompileFiles {
 			out.println("	}");
 			out.println();
 			out.println("	public void execute(Stack stack) {");
-			out.println();	
+			out.println();
+			out.println("		long t1 = Calendar.getInstance().getTimeInMillis();");
+			out.println();
 			out.println("		//values in reverse order:");
 			for (int i=variableNames.length; i>0; i--){
 				out.println("		Object param"+i+" = stack.pop();");
@@ -211,6 +218,12 @@ public class GenerateCompileFiles {
 			}else{
 				out.println("		stack.push(result);");
 			}
+			out.println();
+			out.println("		long t2 = Calendar.getInstance().getTimeInMillis();");
+			out.println("		cpuTime=cpuTime+(int) (t2-t1);");
+			out.println("		nCalls++;");
+			out.println("		TimeUsage.cpuTimeMap.put(\""+functionName+"\", cpuTime);");
+			out.println("		TimeUsage.nCallsMap.put(\""+functionName+"\", nCalls);");
 			out.println();
 			out.println("	}");
 			out.println();

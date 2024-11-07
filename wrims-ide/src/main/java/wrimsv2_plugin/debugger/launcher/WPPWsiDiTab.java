@@ -386,6 +386,7 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 		out.println();
 		out.println("set path=" + externalPath + ";"+"lib;%path%");
 		out.println("set temp_wrims2=jre\\bin");
+		out.println("set TF_CPP_MIN_LOG_LEVEL=2");
 		out.println();
 		/*
 		String xmx="1280m";
@@ -415,6 +416,8 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 	            	  writer.write("        lookupName=r\""+lookupPath+"\"\n");
 	              }else if (count==30){
 	            	  writer.write("        launchName=r\""+launchConfig.getFile().getLocation().toFile().getAbsolutePath()+"\"\n");
+	         	  }else if (count==31){
+	         		  writer.write("        offset="+offsetText.getText()+"\n");
 	         	  }else{
 	                  writer.append(line+"\n");
 	              }

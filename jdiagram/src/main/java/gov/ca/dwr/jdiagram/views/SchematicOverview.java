@@ -70,6 +70,7 @@ public class SchematicOverview extends ViewPart {
 			if (sview != null) {
 				SchematicView schematicView = (SchematicView) sview;
 				overview.setDiagramView(schematicView.getDiagramView());
+				overview.setBounds(schematicView.getDiagramView().getBounds());
 				overview.setIgnoreRepaint(true);
 				overview.setFitAll(true);
 				overview.setDoubleBuffered(true);
@@ -88,6 +89,8 @@ public class SchematicOverview extends ViewPart {
 
 	public void setDiagramView(DiagramView diagramView) {
 		overview.setDiagramView(diagramView);
+		overview.repaint();
+		overview.setBounds(diagramView.getBounds());
 		overview.setFitAll(true);
 	}
 }

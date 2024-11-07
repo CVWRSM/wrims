@@ -1011,7 +1011,7 @@ public class Evaluation {
 		Date st=dds.getStartTime();
 		long sTime=st.getTime();
 		int sYear=st.getYear()+1900;
-		int sMonth=st.getMonth()+1; //HEC DSS7 uses getMonth()+1. However, Vista/HecDSS6 uses getMonth() because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
+		int sMonth=st.getMonth()+1; //HEC DSS7 uses getMonth()+1. However, Vista/HecDSS6 uses getMonth() because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921
 		Date dataDate=new Date(prvs.dataYear-1900, prvs.dataMonth-1, prvs.dataDay);
 		int index;
 		if (dds.getTimeStep().equals("1MON")){
@@ -1032,7 +1032,7 @@ public class Evaluation {
 		Date st=dds.getStartTime();
 		long sTime=st.getTime();
 		int sYear=st.getYear()+1900;
-		int sMonth=st.getMonth()+1; //HEC DSS7 uses getMonth()+1. However, Vista/HecDSS6 uses getMonth() because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
+		int sMonth=st.getMonth()+1; //HEC DSS7 uses getMonth()+1. However, Vista/HecDSS6 uses getMonth() because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921
 		Date dataDate=new Date(prvs.dataYear-1900, prvs.dataMonth-1, prvs.dataDay);
 		int index;
 		if (dds.getTimeStep().equals("1MON")){
@@ -1345,22 +1345,29 @@ public class Evaluation {
 		int ei=end.getData().intValue();
 		
 		if (si>ei){
-			Error.addEvaluationError("The starting index of trunk data for variable " + ident + " is larger than the ending index");
-			EvalExpression ee=new EvalExpression(new IntDouble(1.0, false));
-			eeArray.add(ee);
-			return eeArray;
-		}
-	
-		for (int i=si; i<=ei; i++){
-			ArrayList<IntDouble> indexArray1=new ArrayList<IntDouble> ();
-			IntDouble index = new IntDouble(i, true);
-			indexArray1.add(index);
-			ArrayList<ArrayList<IntDouble>> indexArray=new ArrayList<ArrayList<IntDouble>> ();
-			indexArray.add(indexArray1);
-			IntDouble id=ValueEvaluation.argFunction(ident, indexArray);
-			id.setIndex(i);
-			id.setName(ident);
-			eeArray.add(new EvalExpression(id));
+			for (int i=si; i>=ei; i--){
+				ArrayList<IntDouble> indexArray1=new ArrayList<IntDouble> ();
+				IntDouble index = new IntDouble(i, true);
+				indexArray1.add(index);
+				ArrayList<ArrayList<IntDouble>> indexArray=new ArrayList<ArrayList<IntDouble>> ();
+				indexArray.add(indexArray1);
+				IntDouble id=ValueEvaluation.argFunction(ident, indexArray);
+				id.setIndex(i);
+				id.setName(ident);
+				eeArray.add(new EvalExpression(id));
+			}
+		}else{
+			for (int i=si; i<=ei; i++){
+				ArrayList<IntDouble> indexArray1=new ArrayList<IntDouble> ();
+				IntDouble index = new IntDouble(i, true);
+				indexArray1.add(index);
+				ArrayList<ArrayList<IntDouble>> indexArray=new ArrayList<ArrayList<IntDouble>> ();
+				indexArray.add(indexArray1);
+				IntDouble id=ValueEvaluation.argFunction(ident, indexArray);
+				id.setIndex(i);
+				id.setName(ident);
+				eeArray.add(new EvalExpression(id));
+			}
 		}
 		return eeArray;
 	}

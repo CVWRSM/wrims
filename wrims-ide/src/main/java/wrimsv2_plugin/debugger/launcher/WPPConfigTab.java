@@ -43,7 +43,7 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 	private Text yearSectionText;
 	private Button bvHecLib6;
 	private Button bvHecLib7;
-	
+
 	@Override
 	public void createControl(Composite parent) {
 		Font font = parent.getFont();
@@ -153,6 +153,7 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 					out.println();
 					out.println("set path=lib;%path%");
 					out.println("set temp_wrims2=jre\\bin");
+					out.println("set TF_CPP_MIN_LOG_LEVEL=2");
 					out.println();
 					out.println("jre\\bin\\java -Xmx4096m -Xss1024K -XX:+CreateMinidumpOnCrash -Duser.timezone=Etc/GMT+8 -Djava.library.path=\"lib\" -cp \"lib\\external;lib\\*\" wrimsv2.hdf5.DSSHDF5Converter -launch="+launchFileName);
 					out.close();
@@ -370,14 +371,14 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 		memMonSectionOutputLabel.setLayoutData(gd);
 		memMonSectionOutputLabel.setFont(font);
 		memMonSectionOutputLabel.setText("Months");
-		
+
 		Label lvHecLib = new Label(comp, SWT.NONE);
 		lvHecLib.setText("&Hec Lib version for output dss file:");
 		gd = new GridData(GridData.BEGINNING);
 		gd.horizontalSpan=2;
 		lvHecLib.setLayoutData(gd);
 		lvHecLib.setFont(font);
-		
+
 		bvHecLib6 = new Button(comp, SWT.RADIO);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan =2;
@@ -398,11 +399,11 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				bvHecLib6.setSelection(true);
 				bvHecLib7.setSelection(false);
-				updateLaunchConfigurationDialog();				
+				updateLaunchConfigurationDialog();
 			}
-			
+
 		});
-		
+
 		bvHecLib7 = new Button(comp, SWT.RADIO);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan =2;
@@ -423,9 +424,9 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 			public void widgetDefaultSelected(SelectionEvent e) {
 				bvHecLib7.setSelection(true);
 				bvHecLib6.setSelection(false);
-				updateLaunchConfigurationDialog();				
+				updateLaunchConfigurationDialog();
 			}
-			
+
 		});
 	}
 
@@ -543,7 +544,7 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			WPPException.handleException(e);
 		}
-		
+
 		String vHecLib  = null;
 		try {
 			vHecLib = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");
@@ -619,7 +620,7 @@ public class WPPConfigTab extends AbstractLaunchConfigurationTab {
 		
 		String monMemSection  = memSectionText.getText();
 		configuration.setAttribute(DebugCorePlugin.ATTR_WPP_MONMEMSECTION, monMemSection);
-		
+
 		boolean isBVHecLib6Sel=bvHecLib6.getSelection();
 		if (isBVHecLib6Sel){
 			configuration.setAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");

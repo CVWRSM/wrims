@@ -11,6 +11,17 @@ public class DssDataSetFixLength {
 	private Date startTime;
 	private boolean fromDssFile=false;
 	
+	public DssDataSetFixLength(){
+
+	}
+
+	public DssDataSetFixLength(int size){
+		data=new double[size];
+		for (int i=0; i<size; i++){
+			data[i]=-901.0;
+		}
+	}
+
 	public void setData(double[] data){
 		this.data=data;
 	}

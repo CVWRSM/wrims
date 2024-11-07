@@ -67,6 +67,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -166,6 +167,8 @@ public abstract class SchematicBase extends ViewPart {
 	private int baseIndex = 0;
 
 	private SearchText searchText;
+
+	private SchematicOverview overview;
 	
 	private static String DECIMAL_PLACES = "decimalPlaces";
 	
@@ -327,20 +330,18 @@ public abstract class SchematicBase extends ViewPart {
 
 		});
 		contentPane.add(new JScrollPane(diagramView));
-		Overview overview = new Overview();
-		overview.setDiagramView(diagramView);
+		//Overview overview = new Overview();
+		//overview.setDiagramView(diagramView);
 		//layeredPane.add(overview,1);
 		IWorkbenchPage activePage = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
-		/*
 		if (activePage != null) {
 			IViewPart sview = activePage.findView(SchematicOverview.ID);
 			if (sview != null) {
-				SchematicOverview overview = (SchematicOverview) sview;
+				overview = (SchematicOverview) sview;
 				overview.setDiagramView(diagramView);
 			}
 		}
-		*/
 		// Create the help context id for the viewer's control
 		PlatformUI.getWorkbench().getHelpSystem()
 				.setHelp(swingContainer, "gov.ca.dwr.calsim.jdiagram.viewer");
@@ -438,6 +439,7 @@ public abstract class SchematicBase extends ViewPart {
 			public void run() {
 				_zoomFactor = 100;
 				diagramView.zoomToFit(); 
+				overview.setDiagramView(diagramView);
 			};
 		};
 		zoomInAction = new Action("Zoom In",
@@ -449,6 +451,7 @@ public abstract class SchematicBase extends ViewPart {
 				Rectangle2D.Float rect = diagramView.deviceToDoc(diagramView.getVisibleRect());
 				rect.setRect(rect.x+rect.width/4, rect.y+rect.height/4, rect.width/2, rect.height/2);
 				diagramView.zoomToFit(rect);
+				overview.setDiagramView(diagramView);
 			};
 		};
 		zoomOutAction = new Action("Zoom Out",
@@ -459,6 +462,7 @@ public abstract class SchematicBase extends ViewPart {
 				Rectangle2D.Float rect = diagramView.deviceToDoc(diagramView.getVisibleRect());
 				rect.setRect(rect.x-rect.width/2, rect.y-rect.height/2, rect.width*2, rect.height*2);
 				diagramView.zoomToFit(rect);
+				overview.setDiagramView(diagramView);
 			};
 		};
 		
@@ -471,7 +475,7 @@ public abstract class SchematicBase extends ViewPart {
 				if (SchematicPluginCore.zoomToRect) {
 					behavior = diagramView.getBehavior();
 					diagramView.setCustomBehavior(new RectangleZoomBehavior(
-							diagramView));
+							diagramView, overview));
 				} else {
 					diagramView.setBehavior(Behavior.SelectOnly);
 					diagramView.setBehavior(behavior);

@@ -192,7 +192,7 @@ public class TimeOperation {
 		Calendar c2=Calendar.getInstance();
 		c2.setTime(dateB);
 		int diff = (int)Duration.between(c1.toInstant(), c2.toInstant()).toDays();
-		if (diff<=0) diff=0;
+		//if (diff<=0) diff=0;
 		return diff;
 	}
 	

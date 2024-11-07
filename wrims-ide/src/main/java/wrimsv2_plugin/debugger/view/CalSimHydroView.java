@@ -153,7 +153,7 @@ public class CalSimHydroView extends ViewPart implements ISelectionListener{
 			WPPException.handleException(e);
 		}
 	}
-
+	
 	@Override
 	public void setFocus() {
 		// TODO: DWR Review Change

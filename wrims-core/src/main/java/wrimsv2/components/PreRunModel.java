@@ -8,9 +8,12 @@ import hec.heclib.util.Heclib;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import wrimsv2.commondata.wresldata.External;
 import wrimsv2.commondata.wresldata.ModelDataSet;
 import wrimsv2.commondata.wresldata.StudyDataSet;
@@ -34,10 +38,15 @@ import wrimsv2.evaluator.CondensedReferenceCacheAndRead.CondensedReferenceCache;
 import wrimsv2.external.LoadAllDll;
 import wrimsv2.hdf5.HDF5Reader;
 import wrimsv2.hdf5.HDF5Writer;
+import wrimsv2.wreslparser.elements.StudyUtils;
 
 public class PreRunModel {
 	public PreRunModel(StudyDataSet sds){
+		setGenTableDir();
 		setSelectedOutputCycles();
+		if (ControlData.ovOption != 0){
+			procOVFile();
+		}
 
 		ControlData.currStudyDataSet=sds;
 		VariableTimeStep.procCycleTimeStep(sds);
@@ -109,6 +118,8 @@ public class PreRunModel {
 			ControlData.currCycleIndex=i;
 			processExternal();
 		}
+		new LoadAllDll(ControlData.allDll);
+		System.out.println("Loading dlls done");
 
 		if (ControlData.outputType==1){
 			System.out.println("Create HDF5 output data structure.");
@@ -171,13 +182,12 @@ public class PreRunModel {
 				ControlData.currEvalName=exName;
 				External external=exMap.get(exName);
 				ControlData.allExternalFunction.put(exName, external.type);
-				if (external.type.endsWith(".dll") && !ControlData.allDll.contains(exName)){
+				if (external.type.endsWith(".dll") && !ControlData.allDll.contains(external.type)){
 					ControlData.allDll.add(external.type);
 				}
 			}
 		}
-		new LoadAllDll(ControlData.allDll);
-		System.out.println("Load dlls for Cycle "+(ControlData.currCycleIndex+1)+" done");
+		//System.out.println("Load dlls for Cycle "+(ControlData.currCycleIndex+1)+" done");
 	}
 
 	public void setSelectedOutputCycles(){
@@ -209,15 +219,15 @@ public class PreRunModel {
             String line;
             int lineCount=1;
 			while ((line = br.readLine()) != null) {
-                if (line.toUpperCase().contains("11: INITIAL CONDITIONS DATA FILE")){
+                if (line.toUpperCase().contains("INITIAL CONDITIONS DATA FILE")){
                 	if (ControlData.startMonth==1){
                 		String initMonth="DEC";
                 		int initYear=ControlData.startYear-1;
-                		line="Restart\\CVInitial_Restart_"+initMonth+initYear+".dat                /11: INITIAL CONDITIONS DATA FILE (INPUT, REQUIRED)";
+                		line="Restart\\CVInitial_Restart_"+initMonth+initYear+".dat                /6: INITIAL CONDITIONS DATA FILE (INPUT, REQUIRED)";
                 	}else{
                 		String initMonth=TimeOperation.monthName(ControlData.startMonth-1);
                 		int initYear=ControlData.startYear;
-                		line="Restart\\CVInitial_Restart_"+initMonth+initYear+".dat                /11: INITIAL CONDITIONS DATA FILE (INPUT, REQUIRED)";
+                		line="Restart\\CVInitial_Restart_"+initMonth+initYear+".dat                /6: INITIAL CONDITIONS DATA FILE (INPUT, REQUIRED)";
                 	}
 				}
                 bw.write(line+"\n");
@@ -231,5 +241,60 @@ public class PreRunModel {
         catch (Exception e) {
         	e.printStackTrace();
         }
+	}
+
+	public void setGenTableDir(){
+		String configFileName=new File(StudyUtils.configFilePath).getName();
+		FilePaths.genTableDir=FilePaths.mainDirectory+"lookup"+File.separator+"gen"+File.separator+configFileName+File.separator;
+
+		File folder = new File(FilePaths.genTableDir);
+		if (folder.exists()){
+			/*
+			try {
+				FileUtils.cleanDirectory(folder);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			*/
+		}else{
+			folder.mkdirs();
+		}
+
+	}
+
+	public void procOVFile(){
+		ControlData.ovPartBC=new HashMap<String, String>();
+		File ovFile = new File (ControlData.ovFile);
+		if (!ovFile.exists()){
+			System.out.println("Output variable file doesn't exist. All the timeseries will be written to the csv file.");
+			ControlData.ovOption=0;
+			return;
+		}
+		try {
+			FileInputStream fs = new FileInputStream(ovFile.getAbsolutePath());
+			BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+		    String line=br.readLine();
+		    if (br == null) {
+		    	System.out.println("Output variable file doesn't contain data. All the timeseries will be written to the csv file.");
+		    };
+			while((line=br.readLine()) !=null){
+		    	line=line.replace(" ", "").replace("\t",  "").toUpperCase();
+		    	if (line.equals("")) return;
+		    	String[] parts = line.split(",");
+		    	if (parts.length>=2){
+		    		ControlData.ovPartBC.put(parts[0], parts[1]);
+		    	}
+		    }
+		    br.close();
+		    fs.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Output variable file doesn't exist. All the timeseries will be written to the csv file.");
+			ControlData.ovOption=0;
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("Output variable file has errors. All the timeseries will be written to the csv file.");
+			ControlData.ovOption=0;
+		}
 	}
 }

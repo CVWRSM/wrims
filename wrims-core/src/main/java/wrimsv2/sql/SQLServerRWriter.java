@@ -168,7 +168,7 @@ public class SQLServerRWriter{
 		System.out.println("Creating table in given database...");
 		try {
 			stmt = conn.createStatement();
-			String sql = "IF (object_id('"+tableName+"', 'U') IS NULL) CREATE TABLE " + tableName + " (ID int, Timestep VarChar(8), Units VarChar(20), Date_Time smalldatetime, Variable VarChar(40), Kind VarChar(30), Value Float(8))";
+			String sql = "IF (object_id('"+tableName+"', 'U') IS NULL) CREATE TABLE " + tableName + " (ID int, PartA VarChar(40), PartF VarChar(40), Timestep VarChar(8), Units VarChar(20), Date_Time smalldatetime, Variable VarChar(40), Kind VarChar(30), Value Float(8))";
 			stmt.executeUpdate(sql);
 			sql = "IF EXISTS (SELECT * FROM sys.indexes WHERE name = 'Variable_Index' AND object_id = OBJECT_ID('"+tableName+"')) DROP INDEX Variable_Index ON "+tableName;
 			stmt.executeUpdate(sql);

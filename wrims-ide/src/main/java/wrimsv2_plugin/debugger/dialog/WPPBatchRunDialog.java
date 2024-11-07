@@ -85,6 +85,7 @@ public class WPPBatchRunDialog extends Dialog {
 	private String lookupNamesLine="";
 	private String engineNamesLine="";
 	private String launchNamesLine="";
+	private String offsetsLine="";
 	private String[] dvDssList;
 	private int dssCombineEndYear=1921;
 	private int dssCombineEndMonth=10;
@@ -693,6 +694,8 @@ public class WPPBatchRunDialog extends Dialog {
 	            	  writer.write(engineNamesLine);
 	              }else if (count==32){
 	            	  writer.write(launchNamesLine);
+	              }else if (count==33){
+	            	  writer.write(offsetsLine);
 	              }else{
 	                  writer.append(line+"\n");
 	              }
@@ -735,6 +738,8 @@ public class WPPBatchRunDialog extends Dialog {
 	            	  writer.write(engineNamesLine);
 	              }else if (count==32){
 	            	  writer.write(launchNamesLine);
+	              }else if (count==33){
+	            	  writer.write(offsetsLine);
 	              }else{
 	                  writer.append(line+"\n");
 	              }
@@ -761,7 +766,8 @@ public class WPPBatchRunDialog extends Dialog {
 		lookupNamesLine="        lookupNames=[";
 		engineNamesLine="        engineNames=[";
 		launchNamesLine="        launchNames=[";
-		
+		offsetsLine =   "        offsets=[";
+
 		for (int i=0; i<launchPathList.size(); i++){
 			String lfp=launchPathList.get(i);
 			if (configMap.containsKey(lfp) && brpMap.containsKey(lfp)){
@@ -773,11 +779,13 @@ public class WPPBatchRunDialog extends Dialog {
 					lookupNamesLine=lookupNamesLine+"r\""+brp.lookupFullPath+"\"";
 					engineNamesLine=engineNamesLine+"r\""+brp.engineFileFullPath+"\"";
 					launchNamesLine=launchNamesLine+"r\""+lfp+"\""; 
+					offsetsLine=offsetsLine+brp.wsidiOffset;
 				}else{
 					dvNamesLine=dvNamesLine+",r\""+brp.dvFileFullPath+"\"";
 					lookupNamesLine=lookupNamesLine+",r\""+brp.lookupFullPath+"\"";
 					engineNamesLine=engineNamesLine+",r\""+brp.engineFileFullPath+"\"";
 					launchNamesLine=launchNamesLine+",r\""+lfp+"\"";
+					offsetsLine=offsetsLine+","+brp.wsidiOffset;
 				}
 			}
 		}
@@ -785,6 +793,7 @@ public class WPPBatchRunDialog extends Dialog {
 		lookupNamesLine=lookupNamesLine+"]\n";
 		engineNamesLine=engineNamesLine+"]\n";
 		launchNamesLine=launchNamesLine+"]\n";
+		offsetsLine=offsetsLine+"]\n";
 	}
 	
 	public void procBatchRunFileNames(String fn){
@@ -883,11 +892,22 @@ public class WPPBatchRunDialog extends Dialog {
 		int lSize = dvDssList.length;
 		for (int j=0; j<lSize; j++){
 			String dvPath=dvDssList[j];
+			Vector paPathList=new Vector();
 			try {
 				dvDss=HecDss.open(dvPath);
-				Vector paPathList = dvDss.getCatalogedPathnames();
-				int size = paPathList.size();
-				for (int i=0; i<size; i++){
+				paPathList = dvDss.getCatalogedPathnames();
+			} catch (Exception e) {
+				WPPException.handleException(e);
+				dvDss=null;
+			}
+
+			int size=0;
+			if (paPathList!=null){
+				size = paPathList.size();
+			}
+
+			for (int i=0; i<size; i++){
+				try {
 					String path = (String) paPathList.get(i);
 					String[] parts=path.split("/");
 					if (!dvPathList.contains(path)){
@@ -1002,10 +1022,10 @@ public class WPPBatchRunDialog extends Dialog {
 						dvDss.close();
 						return;
 					}
+				}catch (Exception e){
+					WPPException.handleException(e);
 				}
 				dvDss.close();
-			} catch (Exception e) {
-				WPPException.handleException(e);
 			}
 			setCombineDvPB(j+1);
 		}

@@ -49,4 +49,5 @@ public class WPPExceptionView extends ViewPart implements ISelectionListener{
 			e.printStackTrace();
 		}
 	}
+
 }

@@ -33,9 +33,9 @@ public class DataTimeSeries {
 	
 	public static void saveDataToTimeSeries(String entryNameTS, double value, Dvar dvar, int offset){
 		if (!dvAliasTS.containsKey(entryNameTS)){
-			DssDataSetFixLength dds=new DssDataSetFixLength();
-			double[] data=new double[ControlData.totalTimeStep.get(ControlData.currCycleIndex)];
-			dds.setData(data);
+			DssDataSetFixLength dds=new DssDataSetFixLength(ControlData.totalTimeStep.get(ControlData.currCycleIndex));
+			//double[] data=new double[ControlData.totalTimeStep.get(ControlData.currCycleIndex)];
+			//dds.setData(data);
 			dds.setTimeStep(ControlData.partE);
 			dds.setStartTime(ControlData.memStartDate);
 			dds.setUnits(dvar.units);
@@ -54,9 +54,9 @@ public class DataTimeSeries {
 		int cycleIndex=ControlData.currCycleIndex;
 		HashMap<String, DssDataSetFixLength> dvAliasTSCycle = dvAliasTSCycles.get(cycleIndex);
 		if (!dvAliasTSCycle.containsKey(entryNameTS)){
-			DssDataSetFixLength dds1=new DssDataSetFixLength();
-			double[] data1=new double[ControlData.totalTimeStep.get(ControlData.currCycleIndex)];
-			dds1.setData(data1);
+			DssDataSetFixLength dds1=new DssDataSetFixLength(ControlData.totalTimeStep.get(ControlData.currCycleIndex));
+			//double[] data1=new double[ControlData.totalTimeStep.get(ControlData.currCycleIndex)];
+			//dds1.setData(data1);
 			dds1.setTimeStep(ControlData.partE);
 			dds1.setStartTime(ControlData.memStartDate);
 			dds1.setUnits(dvar.units);

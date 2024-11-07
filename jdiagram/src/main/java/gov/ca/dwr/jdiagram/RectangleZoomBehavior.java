@@ -1,5 +1,7 @@
 package gov.ca.dwr.jdiagram;
 
+import gov.ca.dwr.jdiagram.views.SchematicOverview;
+
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -18,11 +20,13 @@ import com.mindfusion.diagramming.InteractionState;
 
 public class RectangleZoomBehavior extends BehaviorBase {
 
+	SchematicOverview overview;
+	
 	//private Image backgroundImage;
 
-	public RectangleZoomBehavior(DiagramView flowChart) {
+	public RectangleZoomBehavior(DiagramView flowChart, SchematicOverview overview) {
 		super(flowChart);
-
+		this.overview = overview;
 	}
 
 	public InteractionState startDraw(Point2D point, MouseEvent e) {
@@ -44,7 +48,7 @@ public class RectangleZoomBehavior extends BehaviorBase {
 
 		Rectangle2D rect = getDiagramView().deviceToDoc(r);
 		getDiagramView().zoomToFit(rect);
-
+		overview.setDiagramView(getDiagramView());
 	}
 
 	public void pointerMove(Point mousePosition, MouseEvent e) {

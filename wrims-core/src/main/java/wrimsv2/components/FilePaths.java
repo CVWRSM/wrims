@@ -25,6 +25,7 @@ public class FilePaths {
 	public static String csvFolderName="";
 	public static String lookupSubDirectory="";
 	public static String sqlScenarioName="";
+	public static String genTableDir="";
 
 
 	public static void setMainFilePaths(String fullPath){
@@ -110,7 +111,8 @@ public class FilePaths {
 		fullIlpPath="";
 		ilpFile="";
 		ilpFileDirectory="";
-		csvFolderName="";		
+		csvFolderName="";
+		genTableDir="";
 	}
 
 }

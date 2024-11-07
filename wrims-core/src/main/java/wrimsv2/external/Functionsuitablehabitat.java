@@ -46,7 +46,7 @@ public class Functionsuitablehabitat extends ExternalFunction{
 			//setPythonEnv();
 			new LoadDll("jep.dll");
 			
-			String scriptPath = FilePaths.mainDirectory+File.separator+"External";
+			String scriptPath = externalDir;
 			
 			JepConfig cfg = new JepConfig();
 	        cfg.addSharedModules("numpy", "pandas");
