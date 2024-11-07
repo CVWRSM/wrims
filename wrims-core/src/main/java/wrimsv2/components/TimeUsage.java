@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import wrimsv2.external.ExternalFunction;
-import wrimsv2.external.Functionemmatonsurrogateec;
 import wrimsv2.ilp.ILP;
 
 public class TimeUsage {
