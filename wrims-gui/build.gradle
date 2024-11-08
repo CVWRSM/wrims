@@ -15,7 +15,7 @@ dependencies {
 def date = new Date()
 def formattedDate = date.format('yyyyMMdd')
 
-def wrimsGuiFolder = "wrims2_gui_x64_${formattedDate}"
+def wrimsGuiFolder = "wrims_gui_x64_2.2.0"
 def wrimsGuiDownload = "${buildDir}/download/wrims2_gui_download.zip"
 
 //download the latest WRIMS GUI installer from DWR
@@ -111,12 +111,22 @@ tasks.register('copyThirdPartyToLib', Copy) {
     into("${buildDir}/installer/${wrimsGuiFolder}/lib")
 }
 
-//task that copies the src/main/configuration/simpleconfigurator/bundles.info file into
-//bundles.info file contains the file mappings for the dropins jars.
-tasks.register('copyBundlesInfo', Copy) {
-    dependsOn copyThirdPartyToLib
-    from("src/main/configuration/simpleconfigurator/bundles.info")
-    into("${buildDir}/installer/${wrimsGuiFolder}/configuration/org.eclipse.equinox.simpleconfigurator")
+////task that copies the src/main/configuration/simpleconfigurator/bundles.info file into
+////bundles.info file contains the file mappings for the dropins jars.
+//tasks.register('copyBundlesInfo', Copy) {
+//    dependsOn copyThirdPartyToLib
+//    from("src/main/configuration/simpleconfigurator/bundles.info")
+//    into("${buildDir}/installer/${wrimsGuiFolder}/configuration/org.eclipse.equinox.simpleconfigurator")
+//    filter { line ->
+//        line.replace('${WRIMS_VERSION}', version)
+//    }
+//}
+
+//Copies all updated resource files into the installer
+tasks.register('copyResources', Copy) {
+//    dependsOn copyThirdPartyToLib
+    from("src/main/resources/installer")
+    into("${buildDir}/installer/${wrimsGuiFolder}")
     filter { line ->
         line.replace('${WRIMS_VERSION}', version)
     }
@@ -128,7 +138,7 @@ tasks.register('copyBundlesInfo', Copy) {
  * with the updated packages using the WRIMS2GUI_x64.exe file going forward.
  */
 tasks.register('runWrimsGui') {
-    dependsOn copyBundlesInfo
+    dependsOn copyResources
     doLast {
         def processBuilder = new ProcessBuilder('cmd', '/c', 'WRIMS2_GUI_Start.bat')
         processBuilder.directory(new File("${buildDir}/installer/${wrimsGuiFolder}"))
