@@ -111,20 +111,9 @@ tasks.register('copyThirdPartyToLib', Copy) {
     into("${buildDir}/installer/${wrimsGuiFolder}/lib")
 }
 
-////task that copies the src/main/configuration/simpleconfigurator/bundles.info file into
-////bundles.info file contains the file mappings for the dropins jars.
-//tasks.register('copyBundlesInfo', Copy) {
-//    dependsOn copyThirdPartyToLib
-//    from("src/main/configuration/simpleconfigurator/bundles.info")
-//    into("${buildDir}/installer/${wrimsGuiFolder}/configuration/org.eclipse.equinox.simpleconfigurator")
-//    filter { line ->
-//        line.replace('${WRIMS_VERSION}', version)
-//    }
-//}
-
 //Copies all updated resource files into the installer
 tasks.register('copyResources', Copy) {
-//    dependsOn copyThirdPartyToLib
+    dependsOn copyThirdPartyToLib
     from("src/main/resources/installer")
     into("${buildDir}/installer/${wrimsGuiFolder}")
     filter { line ->
