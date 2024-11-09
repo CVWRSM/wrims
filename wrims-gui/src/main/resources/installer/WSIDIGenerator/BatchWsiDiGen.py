@@ -1,9 +1,9 @@
-#     Name: WsiDiGen.py
-#   Author: Ben Tustison
-#   E-mail: tustison@mbkengineers.com
-#    Phone: 916.456.4400
+#     Name: BatchWsiDiGen.py
+#   Author: Hao Xie
+#   E-mail: hxie@water.ca.gov
+#    Phone: 916.653.1072
 # Last Rev: 2024.11.06 - zachary.roy@water.ca.gov
-#  Purpose: Mimics WsiDiGenerator class from CALSMIM
+#  Purpose: Batch WsiDiGenerator
 
 # python class imports
 from math import sqrt
@@ -95,7 +95,7 @@ class WsiDiGenCl:
        self.wsiMax_ub = wsiMax
        self.wsiMax = wsiMax   # maximum wsi variable value
        self.stdyDvName = dvName   # study DV name
-       self.lookupName = lookupName  # lookup folder name
+       self.lookupName = lookupName # lookup folder name
        self.launchName = launchName # launch file name
     
        # set path to run directory based on location of dv file
@@ -121,7 +121,7 @@ class WsiDiGenCl:
    ### FUNCTIONS
 
    # count data points above threshold
-   def countDataPoints(self, array):
+   def countDataPoints(self,array):
       return sum(1 if v >= self.threshold else 0 for v in array)
 
    # load data
@@ -137,7 +137,7 @@ class WsiDiGenCl:
          self.load_from_csv(fname)
       else:
          raise NotImplementedError("file type not supported: %s" % (suffix))
-   
+
    def load_from_csv(self, fname):
       print("loading " + self.wsiVar + " and " + self.diVar)
       variables = [self.wsiVar, self.diVar]
@@ -395,7 +395,8 @@ class WsiDiGenCl:
 
    #save puts the wsi-di curve in the user specified *.table file
    def save(self,data):
-      print("Saving WSI_DI_" + self.name)
+      print tab + "Saving WSI_DI_" + self.name
+      print ""
       sep = File.separator
       fname = self.lookupName + File.separator + "wsi_di_" + self.name + ".table"
       pw = PrintWriter(BufferedWriter(FileWriter(fname)))

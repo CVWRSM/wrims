@@ -1,9 +1,9 @@
-#     Name: WsiDiGen.py
-#   Author: Ben Tustison
-#   E-mail: tustison@mbkengineers.com
-#    Phone: 916.456.4400
+#     Name: ParallelWsiDiGen.py
+#   Author: Hao Xie
+#   E-mail: hxie@water.ca.gov
+#    Phone: 916.653.1072
 # Last Rev: 2024.11.06 - zachary.roy@water.ca.gov
-#  Purpose: Mimics WsiDiGenerator class from CALSMIM
+#  Purpose: Paraellel WsiDiGenerator
 
 # python class imports
 from math import sqrt
@@ -11,7 +11,6 @@ import os
 import csv
 
 # java class imports
-# from java.awt.Color import *
 from java.io import File, PrintWriter, BufferedWriter, FileWriter
 
 import xml.etree.ElementTree as ET
@@ -200,14 +199,15 @@ class WsiDiGenCl:
       # self.loadLaunchConfig()
 
    def load_from_dss(self, fname):
+      from Control import Control
       # The below imports are depriciated
       # from vista.app import * 
       # from vista.graph import *
       from vista.set import PathPartPredicate, Pathname, SetUtils
       from vista.db.dss import DSSUtil
 
-      print(tab + "Loading " + self.wsiVar + " and " + self.diVar)
-
+      print tab + "Loading " + self.wsiVar + " and " + self.diVar
+      
       # initilization
       wsiMax=0.0
       wsiMin=self.wsiMax_ub
@@ -219,15 +219,16 @@ class WsiDiGenCl:
       # create a group of the proper file
       g = DSSUtil.createGroup("local",fname)
       gWsi = g
-      gDi = g.clone()
-      
+      #gDi = g.clone()
+      gDi = Control.cloneOp(g)
+           
       # get data for wsi and di, check for exceptions
       gWsi.filterBy(PathPartPredicate("^"+self.wsiVar+"$",Pathname.B_PART),True)
       if (gWsi.getNumberOfDataReferences()!=1):
-         raise Exception("No WSI Variable '"+ self.wsiVar +"' in DSS File!")
+         raise Exception("No WSI Variable '"+ getWsiVariable() +"' in DSS File!")
       gDi.filterBy(PathPartPredicate("^"+self.diVar+"$",Pathname.B_PART),True)
       if (gDi.getNumberOfDataReferences()!=1):
-         raise Exception("No DI Variable '"+ self.diVar +"' in DSS File!")
+         raise Exception("No DI Variable '"+ getDiVariable() +"' in DSS File!")
       drWsi = gWsi.getDataReference(0)
       drDi = gDi.getDataReference(0)
       dsWsi = drWsi.getData()
@@ -248,21 +249,23 @@ class WsiDiGenCl:
       for i in range(0,len(wsi)):
          if(wsi[i] >= 0.0 and wcount < nd):
             tmpWSI.append(wsi[i])
-            wcount += 1
-            if(wsi[i] > wsiMax ):
+      	    wcount += 1
+   	    if(wsi[i] > wsiMax ):
                wsiMax=wsi[i]
-            if(wsi[i] < wsiMin ):
+  	    if(wsi[i] < wsiMin ):
                wsiMin=wsi[i]
-         if(di[i] >= 0.0 and dcount < nd):
+         if(di[i] >= 0.0 and dcount < nd ):
             if(dcount > 0 ):
-               tmpDI.append(di[i])
+	       tmpDI.append(di[i])
+	       dcount += 1
+	       tmpDI.append(di[i])
+	       dcount += 1
+	       if(di[i] < diMin ):
+                  diMin=di[i]
+	       if(di[i] > diMax ):
+                  diMax=di[i]
+	    else:
                dcount += 1
-            tmpDI.append(di[i])
-            dcount += 1
-            if(di[i] < diMin ):
-               diMin=di[i]
-            if(di[i] > diMax ):
-               diMax=di[i]
 
       #Correct dcount
       dcount-=1
@@ -286,9 +289,9 @@ class WsiDiGenCl:
       for i in range(0,self.ndata):
          tmpData.append((tmpWSI[i],tmpDI[i]))
       self.data = tmpData[:]
-      # UPDATE: Do not read from config, just use the values set at runtime from Main.py
-      #self.loadLaunchConfig()
-
+      
+      self.loadLaunchConfig()
+      
    # extract array of wsi values from wsi-di array
    def getInputWsi(self):
       wsi = []
@@ -395,7 +398,8 @@ class WsiDiGenCl:
 
    #save puts the wsi-di curve in the user specified *.table file
    def save(self,data):
-      print("Saving WSI_DI_" + self.name)
+      print tab + "Saving WSI_DI_" + self.name
+      print ""
       sep = File.separator
       fname = self.lookupName + File.separator + "wsi_di_" + self.name + ".table"
       pw = PrintWriter(BufferedWriter(FileWriter(fname)))

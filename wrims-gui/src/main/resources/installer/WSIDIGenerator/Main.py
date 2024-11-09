@@ -2,7 +2,7 @@
 #   Author: Ben Tustison
 #   E-mail: tustison@mbkengineers.com
 #    Phone: 916.456.4400
-# Last Rev: 2024.11.08 - zachary.roy@water.ca.gov
+# Last Rev: 06.25.2010
 #  Purpose: Mimics StudyTab class from CALSIM
 
 # python modules
@@ -25,10 +25,10 @@ from java.lang import *
 # constructor: initialize class parameters
 def main():
     try: # Dummy try block to get the indentation to work when WRIMS overwrites file.
-        studyDvName=r"WILL BE OVERWRITTEN"
-        lookupName=r"WILL BE OVERWRITTEN"
-        launchName=r"WILL BE OVERWRITTEN"
-        offset=None
+        studyDvName=r"C:\Users\zroy\Documents\_Modeling\_WRIMS\_wsidi_from_csv\study\DSS\output\DCR2023_WSIDI_9.3.0_Danube_Adj_v1.8.csv"
+        lookupName=r"C:\Users\zroy\Documents\_Modeling\_WRIMS\_wsidi_from_csv\study\Run\lookup"
+        launchName=r"C:\Users\zroy\Documents\_Modeling\_WRIMS\_wsidi_from_csv\study\CS3_Adjusted_Dev_wsidi.launch"
+        offset=1.2
     except Exception:
         pass
 
