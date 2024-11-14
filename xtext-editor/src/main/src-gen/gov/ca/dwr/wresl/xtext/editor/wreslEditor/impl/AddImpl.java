@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link AddImpl#getM1 <em>M1</em>}</li>
- *   <li>{@link AddImpl#getM2 <em>M2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.AddImpl#getM1 <em>M1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.AddImpl#getM2 <em>M2</em>}</li>
  * </ul>
  * </p>
  *

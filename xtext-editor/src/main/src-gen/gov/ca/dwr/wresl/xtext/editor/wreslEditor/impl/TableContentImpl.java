@@ -23,11 +23,11 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link TableContentImpl#getTableName <em>Table Name</em>}</li>
- *   <li>{@link TableContentImpl#getFrom <em>From</em>}</li>
- *   <li>{@link TableContentImpl#getGiven <em>Given</em>}</li>
- *   <li>{@link TableContentImpl#getUse <em>Use</em>}</li>
- *   <li>{@link TableContentImpl#getWhere <em>Where</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TableContentImpl#getTableName <em>Table Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TableContentImpl#getFrom <em>From</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TableContentImpl#getGiven <em>Given</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TableContentImpl#getUse <em>Use</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TableContentImpl#getWhere <em>Where</em>}</li>
  * </ul>
  * </p>
  *

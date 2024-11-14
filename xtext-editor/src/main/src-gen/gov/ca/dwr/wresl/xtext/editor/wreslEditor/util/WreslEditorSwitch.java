@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * until a non-null result is returned,
  * which is the result of the switch.
  * <!-- end-user-doc -->
- * @see WreslEditorPackage
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage
  * @generated
  */
 public class WreslEditorSwitch<T> extends Switch<T>
@@ -835,7 +835,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Wresl Evaluator</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseWreslEvaluator(WreslEvaluator object)
@@ -851,7 +851,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Pattern</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T casePattern(Pattern object)
@@ -867,7 +867,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Declaration</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDeclaration(Declaration object)
@@ -883,7 +883,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Variable</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseVariable(Variable object)
@@ -899,7 +899,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>State Variable</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseStateVariable(StateVariable object)
@@ -915,7 +915,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Decision Variable</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDecisionVariable(DecisionVariable object)
@@ -931,7 +931,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>If Inc Items</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseIfIncItems(IfIncItems object)
@@ -947,7 +947,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>If Term</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseIfTerm(IfTerm object)
@@ -963,7 +963,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Else If Term</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseElseIfTerm(ElseIfTerm object)
@@ -979,7 +979,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Else Term</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseElseTerm(ElseTerm object)
@@ -995,7 +995,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Time Array Size</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseTimeArraySize(TimeArraySize object)
@@ -1011,7 +1011,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Objective</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseObjective(Objective object)
@@ -1027,7 +1027,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Weight Item</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseWeightItem(WeightItem object)
@@ -1043,7 +1043,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>External Def</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseExternalDef(ExternalDef object)
@@ -1059,7 +1059,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Svar Def</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSvarDef(SvarDef object)
@@ -1075,7 +1075,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Dvar Def</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDvarDef(DvarDef object)
@@ -1091,7 +1091,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Const Def</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseConstDef(ConstDef object)
@@ -1107,7 +1107,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Alias</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseAlias(Alias object)
@@ -1123,7 +1123,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>External</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseExternal(External object)
@@ -1139,7 +1139,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>DVar</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDVar(DVar object)
@@ -1155,7 +1155,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>DVar Non Std</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDVarNonStd(DVarNonStd object)
@@ -1171,7 +1171,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>DVar Std</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDVarStd(DVarStd object)
@@ -1187,7 +1187,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>DVar Integer</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDVarInteger(DVarInteger object)
@@ -1203,7 +1203,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>DVar Integer Std</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDVarIntegerStd(DVarIntegerStd object)
@@ -1219,7 +1219,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>DVar Integer Non Std</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseDVarIntegerNonStd(DVarIntegerNonStd object)
@@ -1235,7 +1235,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>SVar</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSVar(SVar object)
@@ -1251,7 +1251,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>SVar DSS</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSVarDSS(SVarDSS object)
@@ -1267,7 +1267,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>SVar Expression</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSVarExpression(SVarExpression object)
@@ -1283,7 +1283,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>SVar Sum</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSVarSum(SVarSum object)
@@ -1299,7 +1299,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>SVar Table</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSVarTable(SVarTable object)
@@ -1315,7 +1315,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>SVar Case</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSVarCase(SVarCase object)
@@ -1331,7 +1331,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Case Content</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseCaseContent(CaseContent object)
@@ -1347,7 +1347,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Sum Content</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSumContent(SumContent object)
@@ -1363,7 +1363,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Sum Header</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSumHeader(SumHeader object)
@@ -1379,7 +1379,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Value Content</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseValueContent(ValueContent object)
@@ -1395,7 +1395,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Table Content</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseTableContent(TableContent object)
@@ -1411,7 +1411,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Where Items</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseWhereItems(WhereItems object)
@@ -1427,7 +1427,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Assignment</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseAssignment(Assignment object)
@@ -1443,7 +1443,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Term Simple</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseTermSimple(TermSimple object)
@@ -1459,7 +1459,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Lower And Or Upper</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseLowerAndOrUpper(LowerAndOrUpper object)
@@ -1475,7 +1475,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>upper Lower</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseupperLower(upperLower object)
@@ -1491,7 +1491,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>lower Upper</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caselowerUpper(lowerUpper object)
@@ -1507,7 +1507,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Upper</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseUpper(Upper object)
@@ -1523,7 +1523,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Lower</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseLower(Lower object)
@@ -1539,7 +1539,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Goal</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseGoal(Goal object)
@@ -1555,7 +1555,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Goal Case</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseGoalCase(GoalCase object)
@@ -1571,7 +1571,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Goal Case Content</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseGoalCaseContent(GoalCaseContent object)
@@ -1587,7 +1587,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Goal No Case Content</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseGoalNoCaseContent(GoalNoCaseContent object)
@@ -1603,7 +1603,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Sub Content</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSubContent(SubContent object)
@@ -1619,7 +1619,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Lhs Gt Rhs</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseLhsGtRhs(LhsGtRhs object)
@@ -1635,7 +1635,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Lhs Lt Rhs</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseLhsLtRhs(LhsLtRhs object)
@@ -1651,7 +1651,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Penalty</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T casePenalty(Penalty object)
@@ -1667,7 +1667,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Goal Simple</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseGoalSimple(GoalSimple object)
@@ -1683,7 +1683,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Constraint</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseConstraint(Constraint object)
@@ -1699,7 +1699,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Group</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseGroup(Group object)
@@ -1715,7 +1715,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Model</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseModel(Model object)
@@ -1731,7 +1731,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Initial</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseInitial(Initial object)
@@ -1747,7 +1747,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Sequence</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSequence(Sequence object)
@@ -1763,7 +1763,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Condition</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseCondition(Condition object)
@@ -1779,7 +1779,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Logical Expression</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseLogicalExpression(LogicalExpression object)
@@ -1795,7 +1795,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Conditional Unary</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseConditionalUnary(ConditionalUnary object)
@@ -1811,7 +1811,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Conditional Term</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseConditionalTerm(ConditionalTerm object)
@@ -1827,7 +1827,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Expression</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseExpression(Expression object)
@@ -1843,7 +1843,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Add</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseAdd(Add object)
@@ -1859,7 +1859,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Multiply</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseMultiply(Multiply object)
@@ -1875,7 +1875,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Unary</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseUnary(Unary object)
@@ -1891,7 +1891,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Term</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseTerm(Term object)
@@ -1907,7 +1907,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseFunction(Function object)
@@ -1923,7 +1923,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>External Function1</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseExternalFunction1(ExternalFunction1 object)
@@ -1939,7 +1939,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>External Function2</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseExternalFunction2(ExternalFunction2 object)
@@ -1955,7 +1955,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Trunk Time Array</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseTrunkTimeArray(TrunkTimeArray object)
@@ -1971,7 +1971,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Trunk Time Array Index</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseTrunkTimeArrayIndex(TrunkTimeArrayIndex object)
@@ -1987,7 +1987,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Max Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseMaxFunction(MaxFunction object)
@@ -2003,7 +2003,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Min Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseMinFunction(MinFunction object)
@@ -2019,7 +2019,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Mod Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseModFunction(ModFunction object)
@@ -2035,7 +2035,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Int Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseIntFunction(IntFunction object)
@@ -2051,7 +2051,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Abs Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseAbsFunction(AbsFunction object)
@@ -2067,7 +2067,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Round Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseRoundFunction(RoundFunction object)
@@ -2083,7 +2083,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Pow Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T casePowFunction(PowFunction object)
@@ -2099,7 +2099,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Log Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseLogFunction(LogFunction object)
@@ -2115,7 +2115,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Sin Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseSinFunction(SinFunction object)
@@ -2131,7 +2131,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Cos Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseCosFunction(CosFunction object)
@@ -2147,7 +2147,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Tan Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseTanFunction(TanFunction object)
@@ -2163,7 +2163,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Cot Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseCotFunction(CotFunction object)
@@ -2179,7 +2179,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Asin Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseAsinFunction(AsinFunction object)
@@ -2195,7 +2195,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Acos Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseAcosFunction(AcosFunction object)
@@ -2211,7 +2211,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Atan Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseAtanFunction(AtanFunction object)
@@ -2227,7 +2227,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Acot Function</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseAcotFunction(AcotFunction object)
@@ -2243,7 +2243,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Var Model</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseVarModel(VarModel object)
@@ -2259,7 +2259,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Var Model Step</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseVarModelStep(VarModelStep object)
@@ -2275,7 +2275,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Var Model Index</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseVarModelIndex(VarModelIndex object)
@@ -2291,7 +2291,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Var Model Index Step</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseVarModelIndexStep(VarModelIndexStep object)
@@ -2307,7 +2307,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Ident</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseIdent(Ident object)
@@ -2323,7 +2323,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>Include File</em>'.
-   * @see #doSwitch(EObject) doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
   public T caseIncludeFile(IncludeFile object)
@@ -2339,7 +2339,7 @@ public class WreslEditorSwitch<T> extends Switch<T>
    * <!-- end-user-doc -->
    * @param object the target of the switch.
    * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-   * @see #doSwitch(EObject)
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject)
    * @generated
    */
   @Override

@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link IntFunction#getE <em>E</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IntFunction#getE <em>E</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getIntFunction()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIntFunction()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface IntFunction extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>E</em>' containment reference.
    * @see #setE(Expression)
-   * @see WreslEditorPackage#getIntFunction_E()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIntFunction_E()
    * @model containment="true"
    * @generated
    */
   Expression getE();
 
   /**
-   * Sets the value of the '{@link IntFunction#getE <em>E</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IntFunction#getE <em>E</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>E</em>' containment reference.

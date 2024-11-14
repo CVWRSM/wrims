@@ -12,12 +12,12 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link Assignment#getTerm <em>Term</em>}</li>
- *   <li>{@link Assignment#getExpression <em>Expression</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment#getTerm <em>Term</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment#getExpression <em>Expression</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getAssignment()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getAssignment()
  * @model
  * @generated
  */
@@ -33,14 +33,14 @@ public interface Assignment extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Term</em>' containment reference.
    * @see #setTerm(TermSimple)
-   * @see WreslEditorPackage#getAssignment_Term()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getAssignment_Term()
    * @model containment="true"
    * @generated
    */
   TermSimple getTerm();
 
   /**
-   * Sets the value of the '{@link Assignment#getTerm <em>Term</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment#getTerm <em>Term</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Term</em>' containment reference.
@@ -59,14 +59,14 @@ public interface Assignment extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Expression</em>' containment reference.
    * @see #setExpression(Expression)
-   * @see WreslEditorPackage#getAssignment_Expression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getAssignment_Expression()
    * @model containment="true"
    * @generated
    */
   Expression getExpression();
 
   /**
-   * Sets the value of the '{@link Assignment#getExpression <em>Expression</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment#getExpression <em>Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Expression</em>' containment reference.

@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link ExternalDefImpl#getDefinition <em>Definition</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ExternalDefImpl#getDefinition <em>Definition</em>}</li>
  * </ul>
  * </p>
  *

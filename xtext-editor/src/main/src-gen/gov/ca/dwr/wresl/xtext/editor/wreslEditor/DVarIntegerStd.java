@@ -11,12 +11,12 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link DVarIntegerStd#getKind <em>Kind</em>}</li>
- *   <li>{@link DVarIntegerStd#getUnits <em>Units</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd#getKind <em>Kind</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd#getUnits <em>Units</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getDVarIntegerStd()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getDVarIntegerStd()
  * @model
  * @generated
  */
@@ -32,14 +32,14 @@ public interface DVarIntegerStd extends DVarInteger
    * <!-- end-user-doc -->
    * @return the value of the '<em>Kind</em>' attribute.
    * @see #setKind(String)
-   * @see WreslEditorPackage#getDVarIntegerStd_Kind()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getDVarIntegerStd_Kind()
    * @model
    * @generated
    */
   String getKind();
 
   /**
-   * Sets the value of the '{@link DVarIntegerStd#getKind <em>Kind</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd#getKind <em>Kind</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Kind</em>' attribute.
@@ -58,14 +58,14 @@ public interface DVarIntegerStd extends DVarInteger
    * <!-- end-user-doc -->
    * @return the value of the '<em>Units</em>' attribute.
    * @see #setUnits(String)
-   * @see WreslEditorPackage#getDVarIntegerStd_Units()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getDVarIntegerStd_Units()
    * @model
    * @generated
    */
   String getUnits();
 
   /**
-   * Sets the value of the '{@link DVarIntegerStd#getUnits <em>Units</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd#getUnits <em>Units</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Units</em>' attribute.

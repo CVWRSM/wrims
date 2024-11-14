@@ -12,11 +12,11 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link SVarCase#getCaseContent <em>Case Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarCase#getCaseContent <em>Case Content</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getSVarCase()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarCase()
  * @model
  * @generated
  */
@@ -24,7 +24,7 @@ public interface SVarCase extends SVar
 {
   /**
    * Returns the value of the '<em><b>Case Content</b></em>' containment reference list.
-   * The list contents are of type {@link CaseContent}.
+   * The list contents are of type {@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Case Content</em>' containment reference list isn't clear,
@@ -32,7 +32,7 @@ public interface SVarCase extends SVar
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Case Content</em>' containment reference list.
-   * @see WreslEditorPackage#getSVarCase_CaseContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarCase_CaseContent()
    * @model containment="true"
    * @generated
    */

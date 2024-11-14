@@ -3,30 +3,37 @@
  */
 package gov.ca.dwr.wresl.xtext.editor.formatting;
 
-import com.google.inject.Inject;
-import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter;
-import org.eclipse.xtext.formatting.impl.FormattingConfig;
 import gov.ca.dwr.wresl.xtext.editor.services.WreslEditorGrammarAccess;
 
+import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter;
+import org.eclipse.xtext.formatting.impl.FormattingConfig;
+
 /**
- * This class contains custom formatting declarations.
+ * This class contains custom formatting description.
  * 
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#formatting
- * on how and when to use it.
+ * see : http://www.eclipse.org/Xtext/documentation/latest/xtext.html#formatting
+ * on how and when to use it
  * 
- * Also see {@link org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
+ * Also see {@link org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an
+ * example
  */
 public class WreslEditorFormatter extends AbstractDeclarativeFormatter {
-	
-	@Inject
-	private WreslEditorGrammarAccess grammarAccess; 
-	
+
+	@Override
+	protected WreslEditorGrammarAccess getGrammarAccess() {
+		// TODO Auto-generated method stub
+		return (WreslEditorGrammarAccess) super.getGrammarAccess();
+	}
+
 	@Override
 	protected void configureFormatting(FormattingConfig c) {
-// It's usually a good idea to activate the following three statements.
-// They will add and preserve newlines around comments
-//		c.setLinewrap(0, 1, 2).before(grammarAccess.getSL_COMMENTRule());
-//		c.setLinewrap(0, 1, 2).before(grammarAccess.getML_COMMENTRule());
-//		c.setLinewrap(0, 1, 1).after(grammarAccess.getML_COMMENTRule());
+		// It's usually a good idea to activate the following three statements.
+		// They will add and preserve newlines around comments
+		c.setLinewrap(0, 1, 2).before(getGrammarAccess().getSL_COMMENTRule());
+		c.setLinewrap(0, 1, 2).before(getGrammarAccess().getML_COMMENTRule());
+		c.setLinewrap(0, 1, 1).after(getGrammarAccess().getML_COMMENTRule());
+		//
+		c.setLinewrap(0,1,2).before(getGrammarAccess().getPatternRule());
+		c.setIndentationIncrement().before(getGrammarAccess().getCaseContentRule());
 	}
 }

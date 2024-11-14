@@ -12,13 +12,13 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link Constraint#getLhs <em>Lhs</em>}</li>
- *   <li>{@link Constraint#getOperator <em>Operator</em>}</li>
- *   <li>{@link Constraint#getRhs <em>Rhs</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getLhs <em>Lhs</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getOperator <em>Operator</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getRhs <em>Rhs</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getConstraint()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getConstraint()
  * @model
  * @generated
  */
@@ -34,14 +34,14 @@ public interface Constraint extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Lhs</em>' containment reference.
    * @see #setLhs(Expression)
-   * @see WreslEditorPackage#getConstraint_Lhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getConstraint_Lhs()
    * @model containment="true"
    * @generated
    */
   Expression getLhs();
 
   /**
-   * Sets the value of the '{@link Constraint#getLhs <em>Lhs</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getLhs <em>Lhs</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Lhs</em>' containment reference.
@@ -60,14 +60,14 @@ public interface Constraint extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Operator</em>' attribute.
    * @see #setOperator(String)
-   * @see WreslEditorPackage#getConstraint_Operator()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getConstraint_Operator()
    * @model
    * @generated
    */
   String getOperator();
 
   /**
-   * Sets the value of the '{@link Constraint#getOperator <em>Operator</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getOperator <em>Operator</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Operator</em>' attribute.
@@ -86,14 +86,14 @@ public interface Constraint extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Rhs</em>' containment reference.
    * @see #setRhs(Expression)
-   * @see WreslEditorPackage#getConstraint_Rhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getConstraint_Rhs()
    * @model containment="true"
    * @generated
    */
   Expression getRhs();
 
   /**
-   * Sets the value of the '{@link Constraint#getRhs <em>Rhs</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getRhs <em>Rhs</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Rhs</em>' containment reference.

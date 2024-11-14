@@ -11,12 +11,12 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link SumContent#getHeader <em>Header</em>}</li>
- *   <li>{@link SumContent#getExpression <em>Expression</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent#getHeader <em>Header</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent#getExpression <em>Expression</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getSumContent()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSumContent()
  * @model
  * @generated
  */
@@ -32,14 +32,14 @@ public interface SumContent extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>Header</em>' containment reference.
    * @see #setHeader(SumHeader)
-   * @see WreslEditorPackage#getSumContent_Header()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSumContent_Header()
    * @model containment="true"
    * @generated
    */
   SumHeader getHeader();
 
   /**
-   * Sets the value of the '{@link SumContent#getHeader <em>Header</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent#getHeader <em>Header</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Header</em>' containment reference.
@@ -58,14 +58,14 @@ public interface SumContent extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>Expression</em>' containment reference.
    * @see #setExpression(Expression)
-   * @see WreslEditorPackage#getSumContent_Expression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSumContent_Expression()
    * @model containment="true"
    * @generated
    */
   Expression getExpression();
 
   /**
-   * Sets the value of the '{@link SumContent#getExpression <em>Expression</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent#getExpression <em>Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Expression</em>' containment reference.

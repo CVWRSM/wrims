@@ -12,13 +12,13 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link CaseContent#getCaseName <em>Case Name</em>}</li>
- *   <li>{@link CaseContent#getCondition <em>Condition</em>}</li>
- *   <li>{@link CaseContent#getContent <em>Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getCaseName <em>Case Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getCondition <em>Condition</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getContent <em>Content</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getCaseContent()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getCaseContent()
  * @model
  * @generated
  */
@@ -34,14 +34,14 @@ public interface CaseContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Case Name</em>' attribute.
    * @see #setCaseName(String)
-   * @see WreslEditorPackage#getCaseContent_CaseName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getCaseContent_CaseName()
    * @model
    * @generated
    */
   String getCaseName();
 
   /**
-   * Sets the value of the '{@link CaseContent#getCaseName <em>Case Name</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getCaseName <em>Case Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Case Name</em>' attribute.
@@ -60,14 +60,14 @@ public interface CaseContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Condition</em>' containment reference.
    * @see #setCondition(Condition)
-   * @see WreslEditorPackage#getCaseContent_Condition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getCaseContent_Condition()
    * @model containment="true"
    * @generated
    */
   Condition getCondition();
 
   /**
-   * Sets the value of the '{@link CaseContent#getCondition <em>Condition</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getCondition <em>Condition</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Condition</em>' containment reference.
@@ -86,14 +86,14 @@ public interface CaseContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Content</em>' containment reference.
    * @see #setContent(EObject)
-   * @see WreslEditorPackage#getCaseContent_Content()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getCaseContent_Content()
    * @model containment="true"
    * @generated
    */
   EObject getContent();
 
   /**
-   * Sets the value of the '{@link CaseContent#getContent <em>Content</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getContent <em>Content</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Content</em>' containment reference.

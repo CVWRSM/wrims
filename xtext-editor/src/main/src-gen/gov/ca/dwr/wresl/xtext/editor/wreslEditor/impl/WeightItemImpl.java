@@ -24,9 +24,9 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link WeightItemImpl#getRef <em>Ref</em>}</li>
- *   <li>{@link WeightItemImpl#getTa <em>Ta</em>}</li>
- *   <li>{@link WeightItemImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WeightItemImpl#getRef <em>Ref</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WeightItemImpl#getTa <em>Ta</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WeightItemImpl#getExpression <em>Expression</em>}</li>
  * </ul>
  * </p>
  *

@@ -9,7 +9,7 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <!-- end-user-doc -->
  *
  *
- * @see WreslEditorPackage#getupperLower()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getupperLower()
  * @model
  * @generated
  */

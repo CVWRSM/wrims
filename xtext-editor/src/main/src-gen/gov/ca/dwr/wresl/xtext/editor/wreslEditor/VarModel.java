@@ -11,12 +11,12 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link VarModel#getRef1 <em>Ref1</em>}</li>
- *   <li>{@link VarModel#getRef2 <em>Ref2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel#getRef1 <em>Ref1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel#getRef2 <em>Ref2</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getVarModel()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModel()
  * @model
  * @generated
  */
@@ -32,14 +32,14 @@ public interface VarModel extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref1</em>' reference.
    * @see #setRef1(Declaration)
-   * @see WreslEditorPackage#getVarModel_Ref1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModel_Ref1()
    * @model
    * @generated
    */
   Declaration getRef1();
 
   /**
-   * Sets the value of the '{@link VarModel#getRef1 <em>Ref1</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel#getRef1 <em>Ref1</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref1</em>' reference.
@@ -58,14 +58,14 @@ public interface VarModel extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref2</em>' reference.
    * @see #setRef2(Model)
-   * @see WreslEditorPackage#getVarModel_Ref2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModel_Ref2()
    * @model
    * @generated
    */
   Model getRef2();
 
   /**
-   * Sets the value of the '{@link VarModel#getRef2 <em>Ref2</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel#getRef2 <em>Ref2</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref2</em>' reference.

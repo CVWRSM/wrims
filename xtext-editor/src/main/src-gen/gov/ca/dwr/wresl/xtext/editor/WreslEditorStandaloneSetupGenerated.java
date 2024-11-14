@@ -16,7 +16,6 @@ import com.google.inject.Injector;
 @SuppressWarnings("all")
 public class WreslEditorStandaloneSetupGenerated implements ISetup {
 
-	@Override
 	public Injector createInjectorAndDoEMFRegistration() {
 		org.eclipse.xtext.common.TerminalsStandaloneSetup.doSetup();
 
@@ -26,7 +25,7 @@ public class WreslEditorStandaloneSetupGenerated implements ISetup {
 	}
 	
 	public Injector createInjector() {
-		return Guice.createInjector(new WreslEditorRuntimeModule());
+		return Guice.createInjector(new gov.ca.dwr.wresl.xtext.editor.WreslEditorRuntimeModule());
 	}
 	
 	public void register(Injector injector) {

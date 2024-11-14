@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link ElseIfTermImpl#getLogical <em>Logical</em>}</li>
- *   <li>{@link ElseIfTermImpl#getPattern <em>Pattern</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ElseIfTermImpl#getLogical <em>Logical</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ElseIfTermImpl#getPattern <em>Pattern</em>}</li>
  * </ul>
  * </p>
  *

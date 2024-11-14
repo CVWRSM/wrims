@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link DVarNonStd#getLowerUpper <em>Lower Upper</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarNonStd#getLowerUpper <em>Lower Upper</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getDVarNonStd()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getDVarNonStd()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface DVarNonStd extends DVar
    * <!-- end-user-doc -->
    * @return the value of the '<em>Lower Upper</em>' containment reference.
    * @see #setLowerUpper(LowerAndOrUpper)
-   * @see WreslEditorPackage#getDVarNonStd_LowerUpper()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getDVarNonStd_LowerUpper()
    * @model containment="true"
    * @generated
    */
   LowerAndOrUpper getLowerUpper();
 
   /**
-   * Sets the value of the '{@link DVarNonStd#getLowerUpper <em>Lower Upper</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarNonStd#getLowerUpper <em>Lower Upper</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Lower Upper</em>' containment reference.

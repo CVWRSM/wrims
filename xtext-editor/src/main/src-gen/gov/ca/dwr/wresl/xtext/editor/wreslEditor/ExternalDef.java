@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link ExternalDef#getDefinition <em>Definition</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalDef#getDefinition <em>Definition</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getExternalDef()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getExternalDef()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface ExternalDef extends Variable
    * <!-- end-user-doc -->
    * @return the value of the '<em>Definition</em>' containment reference.
    * @see #setDefinition(External)
-   * @see WreslEditorPackage#getExternalDef_Definition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getExternalDef_Definition()
    * @model containment="true"
    * @generated
    */
   External getDefinition();
 
   /**
-   * Sets the value of the '{@link ExternalDef#getDefinition <em>Definition</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalDef#getDefinition <em>Definition</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Definition</em>' containment reference.

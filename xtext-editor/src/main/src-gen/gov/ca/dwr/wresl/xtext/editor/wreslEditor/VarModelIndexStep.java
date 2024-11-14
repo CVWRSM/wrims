@@ -11,12 +11,12 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link VarModelIndexStep#getRef1 <em>Ref1</em>}</li>
- *   <li>{@link VarModelIndexStep#getE <em>E</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep#getRef1 <em>Ref1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep#getE <em>E</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getVarModelIndexStep()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelIndexStep()
  * @model
  * @generated
  */
@@ -32,14 +32,14 @@ public interface VarModelIndexStep extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref1</em>' reference.
    * @see #setRef1(Declaration)
-   * @see WreslEditorPackage#getVarModelIndexStep_Ref1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelIndexStep_Ref1()
    * @model
    * @generated
    */
   Declaration getRef1();
 
   /**
-   * Sets the value of the '{@link VarModelIndexStep#getRef1 <em>Ref1</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep#getRef1 <em>Ref1</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref1</em>' reference.
@@ -58,14 +58,14 @@ public interface VarModelIndexStep extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>E</em>' containment reference.
    * @see #setE(Expression)
-   * @see WreslEditorPackage#getVarModelIndexStep_E()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelIndexStep_E()
    * @model containment="true"
    * @generated
    */
   Expression getE();
 
   /**
-   * Sets the value of the '{@link VarModelIndexStep#getE <em>E</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep#getE <em>E</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>E</em>' containment reference.

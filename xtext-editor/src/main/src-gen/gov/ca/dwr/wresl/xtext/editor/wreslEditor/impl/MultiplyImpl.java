@@ -29,8 +29,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link MultiplyImpl#getU1 <em>U1</em>}</li>
- *   <li>{@link MultiplyImpl#getU2 <em>U2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.MultiplyImpl#getU1 <em>U1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.MultiplyImpl#getU2 <em>U2</em>}</li>
  * </ul>
  * </p>
  *

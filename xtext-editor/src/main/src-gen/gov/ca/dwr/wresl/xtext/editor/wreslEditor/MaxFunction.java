@@ -12,12 +12,12 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link MaxFunction#getE1 <em>E1</em>}</li>
- *   <li>{@link MaxFunction#getE2 <em>E2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction#getE1 <em>E1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction#getE2 <em>E2</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getMaxFunction()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getMaxFunction()
  * @model
  * @generated
  */
@@ -33,14 +33,14 @@ public interface MaxFunction extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>E1</em>' containment reference.
    * @see #setE1(Expression)
-   * @see WreslEditorPackage#getMaxFunction_E1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getMaxFunction_E1()
    * @model containment="true"
    * @generated
    */
   Expression getE1();
 
   /**
-   * Sets the value of the '{@link MaxFunction#getE1 <em>E1</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction#getE1 <em>E1</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>E1</em>' containment reference.
@@ -51,7 +51,7 @@ public interface MaxFunction extends Function
 
   /**
    * Returns the value of the '<em><b>E2</b></em>' containment reference list.
-   * The list contents are of type {@link Expression}.
+   * The list contents are of type {@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Expression}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>E2</em>' containment reference list isn't clear,
@@ -59,7 +59,7 @@ public interface MaxFunction extends Function
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>E2</em>' containment reference list.
-   * @see WreslEditorPackage#getMaxFunction_E2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getMaxFunction_E2()
    * @model containment="true"
    * @generated
    */

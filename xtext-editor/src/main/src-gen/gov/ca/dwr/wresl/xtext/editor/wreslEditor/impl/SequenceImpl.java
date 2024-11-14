@@ -23,10 +23,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link SequenceImpl#getName <em>Name</em>}</li>
- *   <li>{@link SequenceImpl#getModel <em>Model</em>}</li>
- *   <li>{@link SequenceImpl#getCondition <em>Condition</em>}</li>
- *   <li>{@link SequenceImpl#getOrder <em>Order</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SequenceImpl#getName <em>Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SequenceImpl#getModel <em>Model</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SequenceImpl#getCondition <em>Condition</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SequenceImpl#getOrder <em>Order</em>}</li>
  * </ul>
  * </p>
  *

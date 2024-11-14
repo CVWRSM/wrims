@@ -21,8 +21,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link ModFunctionImpl#getE1 <em>E1</em>}</li>
- *   <li>{@link ModFunctionImpl#getE2 <em>E2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ModFunctionImpl#getE1 <em>E1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ModFunctionImpl#getE2 <em>E2</em>}</li>
  * </ul>
  * </p>
  *

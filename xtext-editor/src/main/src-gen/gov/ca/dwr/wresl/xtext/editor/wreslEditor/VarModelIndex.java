@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link VarModelIndex#getRef1 <em>Ref1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndex#getRef1 <em>Ref1</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getVarModelIndex()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelIndex()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface VarModelIndex extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref1</em>' reference.
    * @see #setRef1(Declaration)
-   * @see WreslEditorPackage#getVarModelIndex_Ref1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelIndex_Ref1()
    * @model
    * @generated
    */
   Declaration getRef1();
 
   /**
-   * Sets the value of the '{@link VarModelIndex#getRef1 <em>Ref1</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndex#getRef1 <em>Ref1</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref1</em>' reference.

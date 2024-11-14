@@ -31,10 +31,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link IfTermImpl#getElseifterm <em>Elseifterm</em>}</li>
- *   <li>{@link IfTermImpl#getElseterm <em>Elseterm</em>}</li>
- *   <li>{@link IfTermImpl#getLogical <em>Logical</em>}</li>
- *   <li>{@link IfTermImpl#getPattern <em>Pattern</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.IfTermImpl#getElseifterm <em>Elseifterm</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.IfTermImpl#getElseterm <em>Elseterm</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.IfTermImpl#getLogical <em>Logical</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.IfTermImpl#getPattern <em>Pattern</em>}</li>
  * </ul>
  * </p>
  *

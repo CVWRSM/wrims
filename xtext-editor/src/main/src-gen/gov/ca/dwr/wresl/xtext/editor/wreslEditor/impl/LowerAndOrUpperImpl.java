@@ -22,10 +22,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link LowerAndOrUpperImpl#getKind <em>Kind</em>}</li>
- *   <li>{@link LowerAndOrUpperImpl#getUnits <em>Units</em>}</li>
- *   <li>{@link LowerAndOrUpperImpl#getUpper <em>Upper</em>}</li>
- *   <li>{@link LowerAndOrUpperImpl#getLower <em>Lower</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.LowerAndOrUpperImpl#getKind <em>Kind</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.LowerAndOrUpperImpl#getUnits <em>Units</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.LowerAndOrUpperImpl#getUpper <em>Upper</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.LowerAndOrUpperImpl#getLower <em>Lower</em>}</li>
  * </ul>
  * </p>
  *

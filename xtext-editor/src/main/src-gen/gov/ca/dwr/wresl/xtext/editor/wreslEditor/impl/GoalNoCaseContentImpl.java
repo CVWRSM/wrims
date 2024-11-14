@@ -23,8 +23,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link GoalNoCaseContentImpl#getRhs <em>Rhs</em>}</li>
- *   <li>{@link GoalNoCaseContentImpl#getSubContent <em>Sub Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalNoCaseContentImpl#getRhs <em>Rhs</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalNoCaseContentImpl#getSubContent <em>Sub Content</em>}</li>
  * </ul>
  * </p>
  *

@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link SVarTable#getTableContent <em>Table Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarTable#getTableContent <em>Table Content</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getSVarTable()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarTable()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface SVarTable extends SVar
    * <!-- end-user-doc -->
    * @return the value of the '<em>Table Content</em>' containment reference.
    * @see #setTableContent(TableContent)
-   * @see WreslEditorPackage#getSVarTable_TableContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarTable_TableContent()
    * @model containment="true"
    * @generated
    */
   TableContent getTableContent();
 
   /**
-   * Sets the value of the '{@link SVarTable#getTableContent <em>Table Content</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarTable#getTableContent <em>Table Content</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Table Content</em>' containment reference.

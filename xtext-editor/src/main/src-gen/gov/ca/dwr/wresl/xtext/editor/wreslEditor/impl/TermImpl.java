@@ -23,11 +23,11 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link TermImpl#getRef <em>Ref</em>}</li>
- *   <li>{@link TermImpl#getN <em>N</em>}</li>
- *   <li>{@link TermImpl#getF <em>F</em>}</li>
- *   <li>{@link TermImpl#getE <em>E</em>}</li>
- *   <li>{@link TermImpl#getS <em>S</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TermImpl#getRef <em>Ref</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TermImpl#getN <em>N</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TermImpl#getF <em>F</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TermImpl#getE <em>E</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.TermImpl#getS <em>S</em>}</li>
  * </ul>
  * </p>
  *

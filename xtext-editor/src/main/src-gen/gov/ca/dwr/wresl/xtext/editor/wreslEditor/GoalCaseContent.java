@@ -12,14 +12,14 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link GoalCaseContent#getCaseName <em>Case Name</em>}</li>
- *   <li>{@link GoalCaseContent#getCondition <em>Condition</em>}</li>
- *   <li>{@link GoalCaseContent#getRhs <em>Rhs</em>}</li>
- *   <li>{@link GoalCaseContent#getSubContent <em>Sub Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getCaseName <em>Case Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getCondition <em>Condition</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getRhs <em>Rhs</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getSubContent <em>Sub Content</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getGoalCaseContent()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCaseContent()
  * @model
  * @generated
  */
@@ -35,14 +35,14 @@ public interface GoalCaseContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Case Name</em>' attribute.
    * @see #setCaseName(String)
-   * @see WreslEditorPackage#getGoalCaseContent_CaseName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCaseContent_CaseName()
    * @model
    * @generated
    */
   String getCaseName();
 
   /**
-   * Sets the value of the '{@link GoalCaseContent#getCaseName <em>Case Name</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getCaseName <em>Case Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Case Name</em>' attribute.
@@ -61,14 +61,14 @@ public interface GoalCaseContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Condition</em>' containment reference.
    * @see #setCondition(Condition)
-   * @see WreslEditorPackage#getGoalCaseContent_Condition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCaseContent_Condition()
    * @model containment="true"
    * @generated
    */
   Condition getCondition();
 
   /**
-   * Sets the value of the '{@link GoalCaseContent#getCondition <em>Condition</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getCondition <em>Condition</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Condition</em>' containment reference.
@@ -87,14 +87,14 @@ public interface GoalCaseContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Rhs</em>' containment reference.
    * @see #setRhs(Expression)
-   * @see WreslEditorPackage#getGoalCaseContent_Rhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCaseContent_Rhs()
    * @model containment="true"
    * @generated
    */
   Expression getRhs();
 
   /**
-   * Sets the value of the '{@link GoalCaseContent#getRhs <em>Rhs</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getRhs <em>Rhs</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Rhs</em>' containment reference.
@@ -113,14 +113,14 @@ public interface GoalCaseContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Sub Content</em>' containment reference.
    * @see #setSubContent(SubContent)
-   * @see WreslEditorPackage#getGoalCaseContent_SubContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCaseContent_SubContent()
    * @model containment="true"
    * @generated
    */
   SubContent getSubContent();
 
   /**
-   * Sets the value of the '{@link GoalCaseContent#getSubContent <em>Sub Content</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getSubContent <em>Sub Content</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Sub Content</em>' containment reference.

@@ -11,13 +11,13 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link VarModelStep#getRef1 <em>Ref1</em>}</li>
- *   <li>{@link VarModelStep#getRef2 <em>Ref2</em>}</li>
- *   <li>{@link VarModelStep#getE <em>E</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getRef1 <em>Ref1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getRef2 <em>Ref2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getE <em>E</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getVarModelStep()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelStep()
  * @model
  * @generated
  */
@@ -33,14 +33,14 @@ public interface VarModelStep extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref1</em>' reference.
    * @see #setRef1(Declaration)
-   * @see WreslEditorPackage#getVarModelStep_Ref1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelStep_Ref1()
    * @model
    * @generated
    */
   Declaration getRef1();
 
   /**
-   * Sets the value of the '{@link VarModelStep#getRef1 <em>Ref1</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getRef1 <em>Ref1</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref1</em>' reference.
@@ -59,14 +59,14 @@ public interface VarModelStep extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref2</em>' reference.
    * @see #setRef2(Model)
-   * @see WreslEditorPackage#getVarModelStep_Ref2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelStep_Ref2()
    * @model
    * @generated
    */
   Model getRef2();
 
   /**
-   * Sets the value of the '{@link VarModelStep#getRef2 <em>Ref2</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getRef2 <em>Ref2</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref2</em>' reference.
@@ -85,14 +85,14 @@ public interface VarModelStep extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>E</em>' containment reference.
    * @see #setE(Expression)
-   * @see WreslEditorPackage#getVarModelStep_E()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVarModelStep_E()
    * @model containment="true"
    * @generated
    */
   Expression getE();
 
   /**
-   * Sets the value of the '{@link VarModelStep#getE <em>E</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getE <em>E</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>E</em>' containment reference.

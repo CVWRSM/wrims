@@ -14,13 +14,13 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link GoalCase#getLhs <em>Lhs</em>}</li>
- *   <li>{@link GoalCase#getContent <em>Content</em>}</li>
- *   <li>{@link GoalCase#getCaseContent <em>Case Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getLhs <em>Lhs</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getContent <em>Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getCaseContent <em>Case Content</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getGoalCase()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCase()
  * @model
  * @generated
  */
@@ -36,14 +36,14 @@ public interface GoalCase extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Lhs</em>' containment reference.
    * @see #setLhs(Expression)
-   * @see WreslEditorPackage#getGoalCase_Lhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCase_Lhs()
    * @model containment="true"
    * @generated
    */
   Expression getLhs();
 
   /**
-   * Sets the value of the '{@link GoalCase#getLhs <em>Lhs</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getLhs <em>Lhs</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Lhs</em>' containment reference.
@@ -62,14 +62,14 @@ public interface GoalCase extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Content</em>' containment reference.
    * @see #setContent(GoalNoCaseContent)
-   * @see WreslEditorPackage#getGoalCase_Content()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCase_Content()
    * @model containment="true"
    * @generated
    */
   GoalNoCaseContent getContent();
 
   /**
-   * Sets the value of the '{@link GoalCase#getContent <em>Content</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getContent <em>Content</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Content</em>' containment reference.
@@ -80,7 +80,7 @@ public interface GoalCase extends EObject
 
   /**
    * Returns the value of the '<em><b>Case Content</b></em>' containment reference list.
-   * The list contents are of type {@link GoalCaseContent}.
+   * The list contents are of type {@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Case Content</em>' containment reference list isn't clear,
@@ -88,7 +88,7 @@ public interface GoalCase extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Case Content</em>' containment reference list.
-   * @see WreslEditorPackage#getGoalCase_CaseContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalCase_CaseContent()
    * @model containment="true"
    * @generated
    */

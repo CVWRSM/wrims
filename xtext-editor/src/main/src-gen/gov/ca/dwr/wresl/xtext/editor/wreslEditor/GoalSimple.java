@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link GoalSimple#getConstraint <em>Constraint</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalSimple#getConstraint <em>Constraint</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getGoalSimple()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalSimple()
  * @model
  * @generated
  */
@@ -32,14 +32,14 @@ public interface GoalSimple extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Constraint</em>' containment reference.
    * @see #setConstraint(Constraint)
-   * @see WreslEditorPackage#getGoalSimple_Constraint()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getGoalSimple_Constraint()
    * @model containment="true"
    * @generated
    */
   Constraint getConstraint();
 
   /**
-   * Sets the value of the '{@link GoalSimple#getConstraint <em>Constraint</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalSimple#getConstraint <em>Constraint</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Constraint</em>' containment reference.

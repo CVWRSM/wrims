@@ -18,10 +18,10 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link SVarDSSImpl#getBPart <em>BPart</em>}</li>
- *   <li>{@link SVarDSSImpl#getKind <em>Kind</em>}</li>
- *   <li>{@link SVarDSSImpl#getUnits <em>Units</em>}</li>
- *   <li>{@link SVarDSSImpl#getConvert <em>Convert</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SVarDSSImpl#getBPart <em>BPart</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SVarDSSImpl#getKind <em>Kind</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SVarDSSImpl#getUnits <em>Units</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SVarDSSImpl#getConvert <em>Convert</em>}</li>
  * </ul>
  * </p>
  *

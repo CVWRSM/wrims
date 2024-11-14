@@ -30,9 +30,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link ModelImpl#getName <em>Name</em>}</li>
- *   <li>{@link ModelImpl#getPattern <em>Pattern</em>}</li>
- *   <li>{@link ModelImpl#getIfincitems <em>Ifincitems</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ModelImpl#getName <em>Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ModelImpl#getPattern <em>Pattern</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ModelImpl#getIfincitems <em>Ifincitems</em>}</li>
  * </ul>
  * </p>
  *

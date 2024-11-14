@@ -11,14 +11,14 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link SVarDSS#getBPart <em>BPart</em>}</li>
- *   <li>{@link SVarDSS#getKind <em>Kind</em>}</li>
- *   <li>{@link SVarDSS#getUnits <em>Units</em>}</li>
- *   <li>{@link SVarDSS#getConvert <em>Convert</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getBPart <em>BPart</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getKind <em>Kind</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getUnits <em>Units</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getConvert <em>Convert</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getSVarDSS()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarDSS()
  * @model
  * @generated
  */
@@ -34,14 +34,14 @@ public interface SVarDSS extends SVar
    * <!-- end-user-doc -->
    * @return the value of the '<em>BPart</em>' attribute.
    * @see #setBPart(String)
-   * @see WreslEditorPackage#getSVarDSS_BPart()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarDSS_BPart()
    * @model
    * @generated
    */
   String getBPart();
 
   /**
-   * Sets the value of the '{@link SVarDSS#getBPart <em>BPart</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getBPart <em>BPart</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>BPart</em>' attribute.
@@ -60,14 +60,14 @@ public interface SVarDSS extends SVar
    * <!-- end-user-doc -->
    * @return the value of the '<em>Kind</em>' attribute.
    * @see #setKind(String)
-   * @see WreslEditorPackage#getSVarDSS_Kind()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarDSS_Kind()
    * @model
    * @generated
    */
   String getKind();
 
   /**
-   * Sets the value of the '{@link SVarDSS#getKind <em>Kind</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getKind <em>Kind</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Kind</em>' attribute.
@@ -86,14 +86,14 @@ public interface SVarDSS extends SVar
    * <!-- end-user-doc -->
    * @return the value of the '<em>Units</em>' attribute.
    * @see #setUnits(String)
-   * @see WreslEditorPackage#getSVarDSS_Units()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarDSS_Units()
    * @model
    * @generated
    */
   String getUnits();
 
   /**
-   * Sets the value of the '{@link SVarDSS#getUnits <em>Units</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getUnits <em>Units</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Units</em>' attribute.
@@ -112,14 +112,14 @@ public interface SVarDSS extends SVar
    * <!-- end-user-doc -->
    * @return the value of the '<em>Convert</em>' attribute.
    * @see #setConvert(String)
-   * @see WreslEditorPackage#getSVarDSS_Convert()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarDSS_Convert()
    * @model
    * @generated
    */
   String getConvert();
 
   /**
-   * Sets the value of the '{@link SVarDSS#getConvert <em>Convert</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getConvert <em>Convert</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Convert</em>' attribute.

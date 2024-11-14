@@ -12,12 +12,12 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link Add#getM1 <em>M1</em>}</li>
- *   <li>{@link Add#getM2 <em>M2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add#getM1 <em>M1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add#getM2 <em>M2</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getAdd()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getAdd()
  * @model
  * @generated
  */
@@ -33,14 +33,14 @@ public interface Add extends Expression
    * <!-- end-user-doc -->
    * @return the value of the '<em>M1</em>' containment reference.
    * @see #setM1(Multiply)
-   * @see WreslEditorPackage#getAdd_M1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getAdd_M1()
    * @model containment="true"
    * @generated
    */
   Multiply getM1();
 
   /**
-   * Sets the value of the '{@link Add#getM1 <em>M1</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add#getM1 <em>M1</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>M1</em>' containment reference.
@@ -51,7 +51,7 @@ public interface Add extends Expression
 
   /**
    * Returns the value of the '<em><b>M2</b></em>' containment reference list.
-   * The list contents are of type {@link Multiply}.
+   * The list contents are of type {@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Multiply}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>M2</em>' containment reference list isn't clear,
@@ -59,7 +59,7 @@ public interface Add extends Expression
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>M2</em>' containment reference list.
-   * @see WreslEditorPackage#getAdd_M2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getAdd_M2()
    * @model containment="true"
    * @generated
    */
