@@ -40,23 +40,23 @@ dependencies {
     // ncsa.hdf.object.h5
     // implementation 'org.hdfgroup:hdf-java:2.6' from 2010 is present
     // at
-    implementation files('dep-local/jarhdf5-2.11.0.jar')
+    implementation(":jarhdf5-2.11.0")
 
     // The oldest implementation of Google's linearsolver in mavencentral appears to be
     // implementation 'com.google.ortools:ortools-java:8.2.9004'
     // from 20 April 2021.
     // The local jar file contents are from 2013, so we'll use the local jar
     // until we verify that a newer version will work.
-    implementation files('dep-local/com.google.ortools.linearsolver.jar')
+    implementation(':com.google.ortools.linearsolver')
 
     // The oldest implementation of gurobi in a maven repository appears to be
     // from 2014. We'll use the local jar (2012) until we verify that a newer version
     // will work.
-    implementation files('dep-local/gurobi.jar')
-
-    implementation files('dep-local/coinor.jar')
-    implementation files('dep-local/lpsolve55j.jar')
-    implementation files('dep-local/XAOptimizer.jar')
+    implementation(':gurobi')
+    implementation(':coinor')
+    implementation(':lpsolve55j')
+    implementation(':XAOptimizer')
+    implementation(':calsurrogate')
 
 }
 
