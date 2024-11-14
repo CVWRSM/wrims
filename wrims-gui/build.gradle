@@ -144,3 +144,60 @@ tasks.register('zipWrimsGui', Zip) {
     archiveFileName = "${wrimsGuiFolder}.zip"
     destinationDirectory = file("${buildDir}/installer")
 }
+
+//-------- PATCH INSTALLER BUILD TASKS---------------
+// Task to copy JARs to patch folder
+tasks.register('copyJarsToPatchDropins', Copy) {
+    dependsOn unzipThirdPartyJar
+    from(project(':third-party').tasks.named('jar').get().archiveFile)
+    from(project(':wrims-ide').tasks.named('jar').get().archiveFile)
+    from(project(':dwr-hecdssvue').tasks.named('jar').get().archiveFile)
+    from(project(':jdiagram').tasks.named('jar').get().archiveFile)
+    from(project(':xtext-editor').tasks.named('jar').get().archiveFile)
+    from(project(':xtext-editor-ui').tasks.named('jar').get().archiveFile)
+    into("${buildDir}/patch/${wrimsGuiFolder}/dropins")
+}
+
+//task to download native libraries (dlls)
+tasks.register('copyPatchLibs', Sync) { syncTask ->
+    dependsOn copyJarsToPatchDropins
+    syncTask.from configurations.windows_x64.collect { zipTree(it) }
+    syncTask.into file("${buildDir}/patch/${wrimsGuiFolder}/lib")
+}
+
+//task to copy all files from ${buildDir}/third-party/lib_x64 to ${buildDir}/installer/${wrimsGuiFolder}/lib
+tasks.register('copyDllsToPatchLib', Copy) {
+    dependsOn copyPatchLibs
+    from("${buildDir}/third-party/lib_x64")
+    from("${buildDir}/third-party/heclib")
+    into("${buildDir}/patch/${wrimsGuiFolder}/lib")
+}
+
+// Task to copy JARs to dropins folder
+tasks.register('copyWrimsCoreToPatchLib', Copy) {
+    dependsOn copyDllsToPatchLib
+    from(project(':wrims-core').tasks.named('jar').get().archiveFile)
+    into("${buildDir}/patch/${wrimsGuiFolder}/lib")
+}
+
+//Copies all updated resource files into the installer
+tasks.register('copyResourcesToPatch', Copy) {
+    dependsOn copyWrimsCoreToPatchLib
+    from("src/main/resources/installer")
+    into("${buildDir}/patch/${wrimsGuiFolder}")
+    filter { line ->
+        line.replace('${WRIMS_VERSION}', version)
+    }
+}
+
+//Zip patch files
+// Task that zips the wrims_gui_x64_${version} folder into a zip file
+tasks.register('zipWrimsPatch', Zip) {
+    dependsOn copyResourcesToPatch
+    from("${buildDir}/patch/${wrimsGuiFolder}")
+    archiveFileName = "${wrimsGuiFolder}_Patch.zip"
+    destinationDirectory = file("${buildDir}/patch")
+}
+
+
+
