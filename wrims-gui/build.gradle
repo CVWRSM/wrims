@@ -27,7 +27,7 @@ tasks.register('downloadWrimsGuiInstaller', Download) {
 
 // Task to download and unzip the ZIP file
 tasks.register('unzipWrimsGuiTemplate', Copy) {
-//    dependsOn downloadWrimsGuiInstaller
+    dependsOn downloadWrimsGuiInstaller
     from(zipTree(new File(wrimsGuiDownload)))
     into("${buildDir}/installer")
 }
