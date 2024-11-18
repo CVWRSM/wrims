@@ -75,8 +75,8 @@ public class ControlData {
 	public static Date monthlyStartTime;
 	public static Date dailyStartTime;
 	public static String simulationTimeFrame;
-	public static String partA;
-	public static String svDvPartF;
+	public static String partA="";
+	public static String svDvPartF="";
 	public static String initPartF;
 	//public static Group groupInit;
 	//public static Group groupSvar;
@@ -157,6 +157,7 @@ public class ControlData {
 	public static String sqlGroup="calsim";
 	public static int ovOption=0;
 	public static String ovFile="";
+	public static Map<String, String> ovPartBC=new HashMap<String, String>();
 	public static boolean isSimOutput = true;
 	
 	public static boolean enableProgressLog = false;

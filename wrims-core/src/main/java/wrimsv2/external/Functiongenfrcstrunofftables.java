@@ -81,7 +81,7 @@ public class Functiongenfrcstrunofftables extends ExternalFunction{
 	}
 
 	public void writeTable(String tableName, int startMonth, int endMonth, ArrayList<ArrayList<Double>> frcst_arr){
-		String fullPath=FilePaths.mainDirectory+"lookup"+File.separator+"gen"+File.separator+tableName+".table";
+		String fullPath=FilePaths.genTableDir+tableName+".table";
 
 		try{
 			File tableFile = new File(fullPath);

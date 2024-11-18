@@ -49,8 +49,9 @@ import wrimsv2.sql.SQLServerRWriter;
 import wrimsv2.tools.General;
 import wrimsv2.tools.Warmstart;
 import wrimsv2.wreslparser.elements.StudyUtils;
-import wrimsv2.wreslparser.elements.Tools;
+import wrimsv2.wreslplus.elements.ParserUtils;
 import wrimsv2.wreslplus.elements.procedures.ErrorCheck;
+import wrimsv2.wreslplus.elements.Tools;
 
 public class ControllerBatch {
 	
@@ -101,12 +102,14 @@ public class ControllerBatch {
 				ILP.setMaximumFractionDigits();
 				
 				runModel(sds);
-				if (ControlData.showTimeUsage) new TimeUsage();
+				if (ControlData.showTimeUsage) TimeUsage.showTimeUsage();
 				long endTimeInMillis = Calendar.getInstance().getTimeInMillis();
 				int runPeriod=(int) (endTimeInMillis-startTimeInMillis);
 				System.out.println("=================Run Time is "+runPeriod/60000+"min"+Math.round((runPeriod/60000.0-runPeriod/60000)*60)+"sec====");
 				ILP.writeNoteLn("Total time", "(sec): "+                        Math.round(runPeriod/1000.0));
 				ILP.writeNoteLn("Total time", "(min): "+                        Math.round(runPeriod/1000.0/60));
+				ILP.writeNoteLn("Total time", "(sec): "+                        Math.round(runPeriod/1000.0), ILP._noteFile_timeusage);
+				ILP.writeNoteLn("Total time", "(min): "+                        Math.round(runPeriod/1000.0/60), ILP._noteFile_timeusage);
 				runCompleted = true;
 			} else {
 				System.out.println("=================Run ends with errors=================");
@@ -231,6 +234,8 @@ public class ControllerBatch {
 			return null;
 			
 		} else if(StudyUtils.loadParserData) {
+			String canonicalMainFilePath = Tools.getCanonicalLowCasePath(FilePaths.fullMainPath);
+			ParserUtils.setRunDir(new File(canonicalMainFilePath).getParent());
 
 			StudyDataSet sds = StudyUtils.loadObject(StudyUtils.parserDataPath);
 			LoadParameter.process(sds);
@@ -447,7 +452,7 @@ public class ControllerBatch {
 		ControlData.xasolver.close();
 		
 		if (ControlData.yearOutputSection<0 && ControlData.writeInitToDVOutput) DssOperation.writeInitDvarAliasToDSS();
-		DssOperation.writeDVAliasToDSS();
+		if (ControlData.yearOutputSection<0) DssOperation.writeDVAliasToDSS();
 		ControlData.dvDss.close();
 		if (ControlData.outputType==1){
 			HDF5Writer.createDvarAliasLookup();
@@ -852,7 +857,7 @@ public class ControllerBatch {
 		}
 		
 		if (ControlData.yearOutputSection<0 && ControlData.writeInitToDVOutput) DssOperation.writeInitDvarAliasToDSS();
-		DssOperation.writeDVAliasToDSS();
+		if (ControlData.yearOutputSection<0) DssOperation.writeDVAliasToDSS();
 		ControlData.dvDss.close();
 		if (ControlData.outputType==1){
 			HDF5Writer.createDvarAliasLookup();
@@ -1067,7 +1072,7 @@ public class ControllerBatch {
 		GurobiSolver.dispose();
 
 		if (ControlData.yearOutputSection<0 && ControlData.writeInitToDVOutput) DssOperation.writeInitDvarAliasToDSS();
-		DssOperation.writeDVAliasToDSS();
+		if (ControlData.yearOutputSection<0) DssOperation.writeDVAliasToDSS();
 		ControlData.dvDss.close();
 		if (ControlData.outputType==1){
 			HDF5Writer.createDvarAliasLookup();
@@ -1731,7 +1736,7 @@ public class ControllerBatch {
 		CbcSolver.close(); if (ControlData.cbc_debug_routeXA || ControlData.cbc_debug_routeCbc) {ControlData.xasolver.close();}
 		
 		if (ControlData.yearOutputSection<0 && ControlData.writeInitToDVOutput) DssOperation.writeInitDvarAliasToDSS();
-		DssOperation.writeDVAliasToDSS();
+		if (ControlData.yearOutputSection<0) DssOperation.writeDVAliasToDSS();
 		ControlData.dvDss.close();
 		if (ControlData.outputType==1){
 			HDF5Writer.createDvarAliasLookup();

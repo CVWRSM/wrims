@@ -49,6 +49,10 @@ import wrimsv2.sql.SQLServerRWriter;
 import wrimsv2.tools.General;
 import wrimsv2.wreslparser.elements.StudyParser;
 import wrimsv2.wreslparser.elements.StudyUtils;
+import wrimsv2.wreslparser.elements.TempData;
+import wrimsv2.wreslparser.elements.WriteCSV;
+import wrimsv2.wreslplus.elements.ParserUtils;
+import wrimsv2.wreslplus.elements.Tools;
 import wrimsv2.wreslplus.elements.procedures.ErrorCheck;
 
 public class ControllerDebug extends Thread {
@@ -189,6 +193,9 @@ public class ControllerDebug extends Thread {
 	
 	public StudyDataSet parse()throws RecognitionException, IOException{
 		if(StudyUtils.loadParserData) {
+			String canonicalMainFilePath = Tools.getCanonicalLowCasePath(FilePaths.fullMainPath);
+			ParserUtils.setRunDir(new File(canonicalMainFilePath).getParent());
+
 			StudyDataSet sds = StudyUtils.loadObject(StudyUtils.parserDataPath);
 			LoadParameter.process(sds);
 			return sds;
@@ -209,7 +216,7 @@ public class ControllerDebug extends Thread {
 			if (ControlData.outputType!=1) ControlData.dvDss.close();
 			return;
 		}
-		if (ControlData.showTimeUsage) new TimeUsage();
+		if (ControlData.showTimeUsage) TimeUsage.showTimeUsage();
 		System.out.println("=================Run ends!================");
 	}
 	
@@ -473,7 +480,7 @@ public class ControllerDebug extends Thread {
 		new CloseCurrentSolver(ControlData.solverName);
 
 		if (ControlData.yearOutputSection<0 && ControlData.writeInitToDVOutput) DssOperation.writeInitDvarAliasToDSS();
-		DssOperation.writeDVAliasToDSS();
+		if (ControlData.yearOutputSection<0) DssOperation.writeDVAliasToDSS();
 		ControlData.dvDss.close();
 		if (ControlData.outputType==1){
 			HDF5Writer.createDvarAliasLookup();

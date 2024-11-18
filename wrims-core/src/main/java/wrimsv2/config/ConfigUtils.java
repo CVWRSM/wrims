@@ -32,6 +32,8 @@ public class ConfigUtils {
 
 	public static LinkedHashMap<String, ParamTemp> paramMap = new LinkedHashMap<String, ParamTemp>();
 	
+	public static Map<String, String> configMap = new HashMap<String, String>();
+
 	public static void loadArgs(String[] args) {
 
 		// for Error.log header
@@ -115,7 +117,7 @@ public class ConfigUtils {
 		//StudyUtils.config_errors = 0; // reset
 		String k=null;
 
-		Map<String, String> configMap = new HashMap<String, String>();
+		configMap = new HashMap<String, String>();
 
 		configMap = checkConfigFile(configFile);
 		
@@ -1385,7 +1387,7 @@ public class ConfigUtils {
 
 	}
 
-	private static void readParameter(String configFilePath) {
+	public static void readParameter(String configFilePath) {
 	
 		final File configFile = new File(configFilePath);	
 	
@@ -1482,7 +1484,7 @@ public class ConfigUtils {
 		
 	}
 	
-	private static boolean readBoolean(Map<String, String> cM, String name, boolean defaultV){
+	public static boolean readBoolean(Map<String, String> cM, String name, boolean defaultV){
 		
 		String l = name.toLowerCase();
 		if (cM.keySet().contains(l)) {		
@@ -1496,7 +1498,7 @@ public class ConfigUtils {
 		return defaultV;
 	}
 	
-	private static double readDouble(Map<String, String> cM, String name, double defaultV){
+	public static double readDouble(Map<String, String> cM, String name, double defaultV){
 		
 		double returnV = defaultV;
 		String l = name.toLowerCase();

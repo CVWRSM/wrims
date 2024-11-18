@@ -160,11 +160,28 @@ public class DssToSQLDatabase {
 		HashMap<String, DssDataSetFixLength> ddsMap=new HashMap<String, DssDataSetFixLength>();
 		File dssFile=new File (dssPath);
 		if (!dssFile.exists()) return ddsMap;
-
+		//TODO: DWR REVIEW MERGE BLOCK
+		//--------- from devops------------
         CondensedReferenceCache cache = CondensedReferenceCacheAndRead.createCondensedCache(dssPath, "*");
         Set<String> dps = cache.getAllPaths();
 		for(String dp : dps) {
 			TimeSeriesContainer tsc = cache.readFullRecord(dp);
+
+		//--------from master----------
+//		DSSUtil.generateCatalog(dssPath);
+//		Group group = DSSUtil.createGroup("local", dssPath);
+//		int size = group.getNumberOfDataReferences();
+//		if (size>0) {
+//			Pathname pathName = group.getDataReference(0).getPathname();
+//			ControlData.partA=pathName.getPart(0);
+//			ControlData.svDvPartF=pathName.getPart(5);
+//		}
+//		for (int i=0; i<size; i++){
+//			DataReference ref = group.getDataReference(i);
+//			DataSet ds = ref.getData();
+//			RegularTimeSeries rts=(RegularTimeSeries)ds;
+
+			//-----------end merge block-------------
 			DssDataSetFixLength dds= new DssDataSetFixLength();
 			HecTime startTime=tsc.getStartTime();
 			int year=startTime.year();

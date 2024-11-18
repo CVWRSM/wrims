@@ -9,18 +9,24 @@ import java.util.Set;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
+import org.eclipse.ui.IPerspectiveRegistry;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.internal.PluginActionContributionItem;
 import org.eclipse.ui.internal.Workbench;
@@ -29,6 +35,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import wrimsv2_plugin.calsimhydro.DefaultCalSimHydro;
 import wrimsv2_plugin.debugger.exception.WPPException;
+import wrimsv2_plugin.debugger.listener.WelcomeViewListener;
 import wrimsv2_plugin.debugger.menuitem.EnableMenus;
 import wrimsv2_plugin.debugger.toolbaritem.EnableButtons;
 import wrimsv2_plugin.debugger.toolbaritem.HandlePauseResumeButton;
@@ -49,6 +56,7 @@ public class DebuggerStartUp implements IStartup {
 		initialStudyData();
 		DataProcess.initialVariableValueAlt();
 		addPerspectiveChangeListener();
+		new WelcomeViewListener().addWelcomeViewListener();
 	}
 
 	public void enableRunMenu(){

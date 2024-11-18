@@ -19,7 +19,6 @@ dependencies {
     api libs.jfreechart
     api libs.osgi.core
     api libs.osgi.compendium
-    api libs.gurobi
     api libs.jarh5obj
     api libs.jarhdf5
     api libs.jarhdfobj
@@ -52,6 +51,9 @@ dependencies {
     api(":swixml") //local jar contains additional classes compared to 1.5.144 jar on maven central
     api(":vista") //developed by DWR. Unavailable on maven central
     api(":JDiagram") //custom collection of JDiagram packages. Developed by DWR.
+    api(":calsurrogate") //developed by DWR. Unavailable on maven central
+    api(":XAOptimizer")
+    api(":gurobi")
 
     //additional dependencies
     hecdll('mil.army.usace.hec:javaHeclib:7-IS-2-win-x86_64@zip')

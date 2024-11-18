@@ -101,7 +101,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 	private String unchangeInitialDss;
 	private boolean isSameInitialDss=true;
 	private String vHecLib;
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
@@ -501,7 +501,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 			yearSectionOutput = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_YEARSECTIONOUTPUT, "10");
 			monMemSection = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_MONMEMSECTION, "24");
 			vHecLib = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");
-			
+
 			databaseURL=configuration.getAttribute(DebugCorePlugin.ATTR_WPP_DATABASEURL, "none");
 			sqlGroup=configuration.getAttribute(DebugCorePlugin.ATTR_WPP_SQLGROUP, "calsim");
 			ovOption=configuration.getAttribute(DebugCorePlugin.ATTR_WPP_OVOPTION, "0");
@@ -542,6 +542,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 		out.println();
 		out.println("set path=" + externalPath + ";"+"lib;%path%");
 		out.println("set temp_wrims2=jre\\bin");
+		out.println("set TF_CPP_MIN_LOG_LEVEL=2");
 		out.println();
 		/*
 		String xmx="1280m";
@@ -559,7 +560,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 			if (wreslPlus.equalsIgnoreCase("no")){
 				out.println("jre\\bin\\java -Xmx"+DebugCorePlugin.xmx+"m -Xss1024K -XX:+CreateMinidumpOnCrash -Duser.timezone=Etc/GMT+8 -Dname="+requestPort+" -Djava.library.path=\"" + externalPath + ";lib\" -cp \""+externalPath+";"+"lib\\external;lib\\*\" wrimsv2.components.ControllerBatch "+"-mainwresl="+mainFileAbsPath);
 			}else{
-				out.println("jre\\bin\\java -Xmx"+DebugCorePlugin.xmx+"m -Xss1024K -XX:+CreateMinidumpOnCrash -Duser.timezone=Etc/GMT+8 -Dname="+requestPort+" -Djava.library.path=\"" + externalPath + ";lib\" -cp \""+externalPath+";"+"lib\\external;lib\\*\" wrimsv2.components.ControllerBatch "+"-mainwreslplus="+mainFileAbsPath);	
+				out.println("jre\\bin\\java -Xmx"+DebugCorePlugin.xmx+"m -Xss1024K -XX:+CreateMinidumpOnCrash -Duser.timezone=Etc/GMT+8 -Dname="+requestPort+" -Djava.library.path=\"" + externalPath + ";lib\" -cp \""+externalPath+";"+"lib\\external;lib\\*\" wrimsv2.components.ControllerBatch "+"-mainwreslplus="+mainFileAbsPath);
 			}
 		}
 		out.close();
@@ -630,7 +631,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 			configMap.put("AllRestartFiles".toLowerCase(), allRestartFiles);
 			configMap.put("NumberRestartFiles".toLowerCase(), numberRestartFiles);
 			configMap.put("vHecLib".toLowerCase(), vHecLib);
-			
+
 			if (!dssEndOutput.equalsIgnoreCase("yes")){
 				configMap.put("YearOutputSection".toLowerCase(), yearSectionOutput);
 				configMap.put("MonthMemSection".toLowerCase(), monMemSection);
@@ -796,7 +797,7 @@ public class WPPLaunchDelegate extends LaunchConfigurationDelegate {
 			out.println("ShowRunTimeMessage "+configMap.get("ShowRunTimeMessage".toLowerCase()));
 			out.println("PrintGWFuncCalls   "+configMap.get("PrintGWFuncCalls".toLowerCase()));
 			out.println("VersionHecDssOutput "+configMap.get("vHecLib".toLowerCase()));
-			
+
 			if (!dssEndOutput.equalsIgnoreCase("yes")){
 				out.println("YearOutputSection  "+configMap.get("YearOutputSection".toLowerCase()));
 				out.println("MonthMemorySection "+configMap.get("MonthMemSection".toLowerCase()));

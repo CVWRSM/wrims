@@ -32,6 +32,7 @@ public class WsiDiBatchRunCmd {
 	private String lookupNamesLine="";
 	private String engineNamesLine="";
 	private String launchNamesLine="";
+	private String offsetsLine="";
 	
 	public WsiDiBatchRunCmd(String[] args){
 		processArgs(args);
@@ -108,6 +109,8 @@ public class WsiDiBatchRunCmd {
 	            	  writer.write(engineNamesLine);
 	              }else if (count==32){
 	            	  writer.write(launchNamesLine);
+	              }else if (count==33){
+	            	  writer.write(offsetsLine);
 	              }else{
 	                  writer.append(line+"\n");
 	              }
@@ -150,6 +153,8 @@ public class WsiDiBatchRunCmd {
 	            	  writer.write(engineNamesLine);
 	              }else if (count==32){
 	            	  writer.write(launchNamesLine);
+	              }else if (count==33){
+	            	  writer.write(offsetsLine);
 	              }else{
 	                  writer.append(line+"\n");
 	              }
@@ -176,6 +181,7 @@ public class WsiDiBatchRunCmd {
 		lookupNamesLine="        lookupNames=[";
 		engineNamesLine="        engineNames=[";
 		launchNamesLine="        launchNames=[";
+		offsetsLine =   "        offsets=[";
 		
 		for (int i=0; i<launchPathList.size(); i++){
 			String lfp=launchPathList.get(i);
@@ -187,12 +193,14 @@ public class WsiDiBatchRunCmd {
 					dvNamesLine=dvNamesLine+"r\""+brp.dvFileFullPath+"\"";
 					lookupNamesLine=lookupNamesLine+"r\""+brp.lookupFullPath+"\"";
 					engineNamesLine=engineNamesLine+"r\""+brp.engineFileFullPath+"\"";
-					launchNamesLine=launchNamesLine+"r\""+lfp+"\""; 
+					launchNamesLine=launchNamesLine+"r\""+lfp+"\"";
+					offsetsLine=offsetsLine+brp.wsidiOffset;
 				}else{
 					dvNamesLine=dvNamesLine+",r\""+brp.dvFileFullPath+"\"";
 					lookupNamesLine=lookupNamesLine+",r\""+brp.lookupFullPath+"\"";
 					engineNamesLine=engineNamesLine+",r\""+brp.engineFileFullPath+"\"";
 					launchNamesLine=launchNamesLine+",r\""+lfp+"\"";
+					offsetsLine=offsetsLine+","+brp.wsidiOffset;
 				}
 			}
 		}
@@ -200,6 +208,7 @@ public class WsiDiBatchRunCmd {
 		lookupNamesLine=lookupNamesLine+"]\n";
 		engineNamesLine=engineNamesLine+"]\n";
 		launchNamesLine=launchNamesLine+"]\n";
+		offsetsLine=offsetsLine+"]\n";
 	}
 	
 	public void processArgs(String[] args){

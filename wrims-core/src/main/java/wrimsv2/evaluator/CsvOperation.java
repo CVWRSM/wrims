@@ -35,7 +35,7 @@ public class CsvOperation {
 			csvFile.getParentFile().mkdirs();
 			FileWriter fw = new FileWriter(csvFile);
 			BufferedWriter bw = new BufferedWriter(fw, 8192);
-			String line="id,Timestep,Units,Date_Time,Variable,Kind,Value\n";
+			String line="id,PartA,PartF,Timestep,Units,Date_Time,Variable,Kind,Value\n";
 			bw.write(line);
 			Set<String> keys = DataTimeSeries.dvAliasTS.keySet();
 			Iterator<String> it = keys.iterator();
@@ -66,11 +66,11 @@ public class CsvOperation {
 						for (int i=0; i<data.length; i++){
 							double value = data[i];
 							if (value != -901.0 && value !=-902.0){
-								line = scenarioIndex+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ value +"\n";
+								line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ value +"\n";
 								bw.write(line);
 							}else{
 								if (ControlData.isSimOutput){
-									line = scenarioIndex+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ value +"\n";
+									line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ value +"\n";
 									bw.write(line);
 								}
 							}
@@ -81,11 +81,11 @@ public class CsvOperation {
 						for (int i=0; i<data.length; i++){
 							double value = data[i];
 							if (value != -901.0 && value !=-902.0){
-								line = scenarioIndex+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ value +"\n";
+								line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ value +"\n";
 								bw.write(line);
 							}else{
 								if (ControlData.isSimOutput){
-									line = scenarioIndex+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ value +"\n";
+									line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ value +"\n";
 									bw.write(line);
 								}
 							}
@@ -125,7 +125,7 @@ public class CsvOperation {
 						for (int i=0; i<data.size(); i++){
 							double value = data.get(i);
 							if (value != -901.0 && value !=-902.0){
-								line = scenarioIndex+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ convertValue(value, units, convertToUnits, date, timestep) +"\n";
+								line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+ convertValue(value, units, convertToUnits, date, timestep) +"\n";
 								bw.write(line);
 							}
 							date=TimeOperation.addOneDay(date);
@@ -135,7 +135,7 @@ public class CsvOperation {
 						for (int i=0; i<data.size(); i++){
 							double value = data.get(i);
 							if (value != -901.0 && value !=-902.0){
-								line = scenarioIndex+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
+								line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
 								bw.write(line);
 							}
 							date=TimeOperation.addOneMonth(date);
@@ -143,58 +143,60 @@ public class CsvOperation {
 					}
 				}
 			}
-			keys = DataTimeSeries.dvAliasInit.keySet();
-			it = keys.iterator();
-			while (it.hasNext()){
-				String name=it.next();
-				if (ControlData.isSimOutput || svKeys.contains(name)){
-					String nameUp=DssOperation.getTSName(name).toUpperCase();
-					DssDataSet dds = DataTimeSeries.dvAliasInit.get(name);
-					String origKindName=dds.getKind();
-					boolean isWritten=false;
-					if (ControlData.ovOption==0){
-						isWritten=true;
-					}else{
-						if (ovPartBC.containsKey(nameUp)){
-							if (ovPartBC.get(nameUp).equals(origKindName.toUpperCase())){
-								isWritten = true;
+			if (ControlData.writeInitToDVOutput){
+				keys = DataTimeSeries.dvAliasInit.keySet();
+				it = keys.iterator();
+				while (it.hasNext()){
+					String name=it.next();
+					if (ControlData.isSimOutput || svKeys.contains(name)){
+						String nameUp=DssOperation.getTSName(name).toUpperCase();
+						DssDataSet dds = DataTimeSeries.dvAliasInit.get(name);
+						String origKindName=dds.getKind();
+						boolean isWritten=false;
+						if (ControlData.ovOption==0){
+							isWritten=true;
+						}else{
+							if (ovPartBC.containsKey(nameUp)){
+								if (ovPartBC.get(nameUp).equals(origKindName.toUpperCase())){
+									isWritten = true;
+								}
 							}
 						}
-					}
-					if (isWritten && !nameUp.startsWith(slackPrefix) && !nameUp.startsWith(surplusPrefix)){
-						String timestep=dds.getTimeStep().toUpperCase();
-						Date date = dds.getStartTime();
-						String units=dds.getUnits();
-						String unitsName=formUnitsName(units);
-						String convertToUnits=dds.getConvertToUnits();
-						String variableName=formVariableName(nameUp);
-						String kindName=formKindName(origKindName);
-						ArrayList<Double> data = dds.getData();
-						if (timestep.equals("1DAY")){
-							date=TimeOperation.backOneDay(date);
-							for (int i=0; i<data.size(); i++){
-								double value = data.get(i);
-								if (value != -901.0 && value !=-902.0){
-									line = scenarioIndex+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
-									bw.write(line);
+						if (isWritten && !nameUp.startsWith(slackPrefix) && !nameUp.startsWith(surplusPrefix)){
+							String timestep=dds.getTimeStep().toUpperCase();
+							Date date = dds.getStartTime();
+							String units=dds.getUnits();
+							String unitsName=formUnitsName(units);
+							String convertToUnits=dds.getConvertToUnits();
+							String variableName=formVariableName(nameUp);
+							String kindName=formKindName(origKindName);
+							ArrayList<Double> data = dds.getData();
+							if (timestep.equals("1DAY")){
+								date=TimeOperation.backOneDay(date);
+								for (int i=0; i<data.size(); i++){
+									double value = data.get(i);
+									if (value != -901.0 && value !=-902.0){
+										line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
+										bw.write(line);
+									}
+									date=TimeOperation.addOneDay(date);
 								}
-								date=TimeOperation.addOneDay(date);
-							}
-						}else{
-							date=TimeOperation.backOneMonth(date);
-							for (int i=0; i<data.size(); i++){
-								double value = data.get(i);
-								if (value != -901.0 && value !=-902.0){
-									line = scenarioIndex+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
-									bw.write(line);
+							}else{
+								date=TimeOperation.backOneMonth(date);
+								for (int i=0; i<data.size(); i++){
+									double value = data.get(i);
+									if (value != -901.0 && value !=-902.0){
+										line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
+										bw.write(line);
+									}
+									date=TimeOperation.addOneMonth(date);
 								}
-								date=TimeOperation.addOneMonth(date);
 							}
 						}
 					}
 				}
 			}
-			if (ControlData.isSimOutput){
+			if (ControlData.isSimOutput && ControlData.writeInitToDVOutput){
 				keys = DataTimeSeries.svInit.keySet();
 				it = keys.iterator();
 				while (it.hasNext()){
@@ -226,7 +228,7 @@ public class CsvOperation {
 							for (int i=0; i<data.size(); i++){
 								double value = data.get(i);
 								if (value != -901.0 && value !=-902.0){
-									line = scenarioIndex+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
+									line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1DAY,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
 									bw.write(line);
 								}
 								date=TimeOperation.addOneDay(date);
@@ -236,7 +238,7 @@ public class CsvOperation {
 							for (int i=0; i<data.size(); i++){
 								double value = data.get(i);
 								if (value != -901.0 && value !=-902.0){
-									line = scenarioIndex+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
+									line = scenarioIndex+","+ControlData.partA+","+ControlData.svDvPartF+",1MON,"+unitsName+","+formDateData(date)+","+variableName+","+kindName+","+convertValue(value, units, convertToUnits, date, timestep)+"\n";
 									bw.write(line);
 								}
 								date=TimeOperation.addOneMonth(date);

@@ -164,7 +164,7 @@ public class MySQLRWriter{
 		System.out.println("Creating table in given database...");
 		try {
 			stmt = conn.createStatement();
-			String sql = "CREATE TABLE IF NOT EXISTS "+tableName + " (ID int, Timestep VarChar(8), Units VarChar(20), Date_Time DATE, Variable VarChar(40), Kind VarChar(30), Value Double)";
+			String sql = "CREATE TABLE IF NOT EXISTS "+tableName + " (ID int, PartA VarChar(40), PartF VarChar(40), Timestep VarChar(8), Units VarChar(20), Date_Time DATE, Variable VarChar(40), Kind VarChar(30), Value Double)";
 			stmt.executeUpdate(sql);
 			
 			sql = "SELECT COUNT(*) as rowcount FROM INFORMATION_SCHEMA.STATISTICS WHERE table_schema = '"+database+"' AND table_name='"+tableName+"' AND index_name = 'Variable_Index'"; 

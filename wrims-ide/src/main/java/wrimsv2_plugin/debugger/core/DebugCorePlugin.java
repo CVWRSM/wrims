@@ -108,7 +108,9 @@ public class DebugCorePlugin extends AbstractUIPlugin {
 	public static int suspendedMonth=9;
 	public static int suspendedDay=30;
 	public static int suspendedCycle=99;
-	
+	public static int paInitialDssInterval;
+	public static boolean isCreateSeriesPAInit=true;
+
 	public static DebugSet debugSet;
 	
 	public static boolean isDebugging=false;
@@ -246,7 +248,7 @@ public class DebugCorePlugin extends AbstractUIPlugin {
 	public static final String ATTR_WPP_UNCHANGEGWRESTART=ID_WPP_DEBUG_MODEL + "ATTR_WPP_UNCHANGEGWRESTART";
 	public static final String ATTR_WPP_UNCHANGEINITIALDSS=ID_WPP_DEBUG_MODEL + "ATTR_WPP_UNCHANGEINITIALDSS";
 	public static final String ATTR_WPP_VHECLIB=ID_WPP_DEBUG_MODEL + "ATTR_WPP_VHECLIB";
-	
+
 	public static final String lineSep=System.getProperty("line.separator");
 	public static final String tab="\t";
 	
@@ -316,6 +318,8 @@ public class DebugCorePlugin extends AbstractUIPlugin {
 	public static boolean isRunning=false;
 	public static ILaunchConfiguration launchConfig;
 	
+	public static String[] wrimsGUIPerspectives=new String[]{"wpp.ideperspective", "wpp.dssperspective", "gov.ca.dwr.jdiagram.perspective", "gov.ca.dwr.jdiagram.schematiceditorperspective", "org.eclipse.datatools.sqltools.sqleditor.perspectives.EditorPerspective"};
+
 	/**
 	 * The constructor.
 	 */

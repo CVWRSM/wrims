@@ -121,7 +121,8 @@ public class BatchRunProcess {
 	private String unchangeInitialDss;
 	private boolean isSameInitialDss=true;
 	private String genSVCatalog="no";
-		
+	public String wsidiOffset;
+
 	public void launch(LaunchConfigInfo configuration, String launchFilePath) throws CoreException {		
 		
 		isRunning = true;
@@ -409,7 +410,7 @@ public class BatchRunProcess {
 		yearSectionOutput = configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_YEARSECTIONOUTPUT, "10");
 		monMemSection = configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_MONMEMSECTION, "24");
 		vHecLib = configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6");
-		
+
 		databaseURL=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_DATABASEURL, "none");
 		sqlGroup=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_SQLGROUP, "calsim");
 		ovOption=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_OVOPTION, "0");
@@ -417,7 +418,8 @@ public class BatchRunProcess {
 		
 		ifsIsSelFile=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_IFSISSELENTRY, "yes");
 		unchangeGWRestart=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_UNCHANGEGWRESTART, "yes");
-		
+		wsidiOffset=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_WSIDIOFFSET, "1.2");
+
 		String mainFileAbsPath;
 		if (new File(mainFile).isAbsolute()){
 			mainFileAbsPath = mainFile;
@@ -449,6 +451,7 @@ public class BatchRunProcess {
 		out.println("@echo off");
 		out.println("set path=" + externalPath + ";"+"lib;%path%");
 		out.println("set temp_wrims2=jre\\bin");
+		out.println("set TF_CPP_MIN_LOG_LEVEL=2");
 		/*
 		String xmx="1280m";
 		if (System.getProperty("os.arch").equalsIgnoreCase("amd64")){
@@ -526,7 +529,7 @@ public class BatchRunProcess {
 			configMap.put("AllRestartFiles".toLowerCase(), allRestartFiles);
 			configMap.put("NumberRestartFiles".toLowerCase(), numberRestartFiles);
 			configMap.put("vHecLib".toLowerCase(), vHecLib);
-	
+
 			if (!dssEndOutput.equalsIgnoreCase("yes")){
 				configMap.put("YearOutputSection".toLowerCase(), yearSectionOutput);
 				configMap.put("MonthMemSection".toLowerCase(), monMemSection);
@@ -683,7 +686,7 @@ public class BatchRunProcess {
 			out.println("ShowRunTimeMessage "+configMap.get("ShowRunTimeMessage".toLowerCase()));
 			out.println("PrintGWFuncCalls   "+configMap.get("PrintGWFuncCalls".toLowerCase()));
 			out.println("VersionHecDssOutput "+configMap.get("vHecLib".toLowerCase()));
-			
+
 			if (!dssEndOutput.equalsIgnoreCase("yes")){
 				out.println("YearOutputSection  "+configMap.get("YearOutputSection".toLowerCase()));
 				out.println("MonthMemorySection "+configMap.get("MonthMemSection".toLowerCase()));
