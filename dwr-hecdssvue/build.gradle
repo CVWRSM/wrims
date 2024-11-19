@@ -9,6 +9,7 @@ plugins{
 configurations {
     eclipseLibs
     implementation.extendsFrom(eclipseLibs)
+    windows_x64
 }
 
 dependencies {
@@ -16,14 +17,30 @@ dependencies {
     //module dependencies
     implementation project(':third-party')
     implementation project(':wrims-ide')
+    implementation project(':wrims-core')
 
     //eclipse libs:
-    implementation fileTree(dir: '../eclipse-luna-libs', include: ['*.jar'])
     //NOTE: These jars will get refactored into a github package zip. Tracking under issue: https://github.com/CentralValleyModeling/wrims/issues/148
+    implementation fileTree(dir: '../eclipse-luna-libs', include: ['*.jar'])
+
+    windows_x64('mil.army.usace.hec:javaHeclib:7-IU-3-win-x86_64@zip')
+    testImplementation(libs.bundles.junit5)
 }
 
 configurations.configureEach {
     exclude group: "javax.media", module: "jai_core"
     exclude group: "javax.media", module: "jai_codec"
     exclude group: "com.sun.media", module: "jai_imageio"
+}
+
+//task to download native libraries (dlls)
+tasks.register('getNatives', Sync) { syncTask ->
+    syncTask.from configurations.windows_x64.collect { zipTree(it) }
+    syncTask.into file("${layout.buildDirectory.asFile.get()}/lib")
+}
+
+test {
+    useJUnitPlatform()
+    dependsOn(getNatives)
+    systemProperty "java.library.path", "${layout.buildDirectory.asFile.get()}/lib"
 }
