@@ -31,8 +31,8 @@ public class DssOperations {
 	}
 
 	private static Set<String> findEquivalentDssIntervals(String partE) {
-        return IntervalFactory.findAny(IntervalFactory.equalsName(partE))
-            .map(c -> IntervalFactory.findAll(i -> i.getMinutes() == c.getMinutes()).stream()
+        return IntervalFactory.findAnyDss(IntervalFactory.equalsName(partE))
+            .map(c -> IntervalFactory.findAllDss(i -> i.getMinutes() == c.getMinutes()).stream()
                 .map(Interval::getInterval)
                 .collect(toSet()))
             .orElse(new HashSet<>());
