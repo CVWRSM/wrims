@@ -1,10 +1,9 @@
 package wrimsv2_plugin.debugger.msr;
 
+import hec.heclib.dss.DSSPathname;
 import hec.heclib.dss.HecDss;
 import hec.hecmath.TimeSeriesMath;
-import hec.io.DataContainer;
 import hec.io.TimeSeriesContainer;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,13 +12,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
 import wrimsv2_plugin.debugger.exception.WPPException;
-import wrimsv2_plugin.debugger.goal.FilterGoal;
 import wrimsv2_plugin.tools.DssOperations;
 import wrimsv2_plugin.tools.FileProcess;
 import wrimsv2_plugin.tools.TimeOperation;
@@ -195,8 +191,7 @@ public class MSRDataTransfer {
 		while(it.hasNext()){
 			String dvPN=it.next();
 			String initPN = dvToInitPNMap.get(dvPN);
-			String[] dvPNParts = dvPN.split("//");
-			String dvPNFull=DssOperations.matchPathName(v, dvPNParts[0], dvPNParts[1]);
+			String dvPNFull=DssOperations.matchPathName(v, new DSSPathname(dvPN));
 			if (dvPNFull !=null){
 				String initPNFull=addPathD(dvPNFull, initPN);
 				try {
@@ -218,8 +213,7 @@ public class MSRDataTransfer {
 		while(it.hasNext()){
 			String dvPN=it.next();
 			String svPN = dvToSvPNMap.get(dvPN);
-			String[] dvPNParts = dvPN.split("//");
-			String dvPNFull=DssOperations.matchPathName(v, dvPNParts[0], dvPNParts[1]);
+			String dvPNFull=DssOperations.matchPathName(v, new DSSPathname(dvPN));
 			if (dvPNFull !=null){
 				String svPNFull=addPathD(dvPNFull, svPN);
 				try {
