@@ -423,7 +423,7 @@ public class DataOps {
 			String pathname=cr.getNominalPathname();
 			DSSPathname dssPathname = new DSSPathname(pathname);
 			String partB=dssPathname.bPart();
-			pathnameMap.put(partB, pathname);
+			pathnameMap.put(partB.toLowerCase(), pathname);
 			DssPluginCore.pathnameLists[j].add(pathname);
 		}
 		return pathnameMap;
