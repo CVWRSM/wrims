@@ -15,7 +15,7 @@ dependencies {
 def date = new Date()
 def formattedDate = date.format('yyyyMMdd')
 
-def wrimsGuiFolder = "wrims2_gui_x64_${formattedDate}"
+def wrimsGuiFolder = "wrims_gui_x64_2.2.0"
 def wrimsGuiDownload = "${buildDir}/download/wrims2_gui_download.zip"
 
 //download the latest WRIMS GUI installer from DWR
@@ -111,12 +111,11 @@ tasks.register('copyThirdPartyToLib', Copy) {
     into("${buildDir}/installer/${wrimsGuiFolder}/lib")
 }
 
-//task that copies the src/main/configuration/simpleconfigurator/bundles.info file into
-//bundles.info file contains the file mappings for the dropins jars.
-tasks.register('copyBundlesInfo', Copy) {
+//Copies all updated resource files into the installer
+tasks.register('copyResources', Copy) {
     dependsOn copyThirdPartyToLib
-    from("src/main/configuration/simpleconfigurator/bundles.info")
-    into("${buildDir}/installer/${wrimsGuiFolder}/configuration/org.eclipse.equinox.simpleconfigurator")
+    from("src/main/resources/installer")
+    into("${buildDir}/installer/${wrimsGuiFolder}")
     filter { line ->
         line.replace('${WRIMS_VERSION}', version)
     }
@@ -128,7 +127,7 @@ tasks.register('copyBundlesInfo', Copy) {
  * with the updated packages using the WRIMS2GUI_x64.exe file going forward.
  */
 tasks.register('runWrimsGui') {
-    dependsOn copyBundlesInfo
+    dependsOn copyResources
     doLast {
         def processBuilder = new ProcessBuilder('cmd', '/c', 'WRIMS2_GUI_Start.bat')
         processBuilder.directory(new File("${buildDir}/installer/${wrimsGuiFolder}"))
@@ -145,3 +144,60 @@ tasks.register('zipWrimsGui', Zip) {
     archiveFileName = "${wrimsGuiFolder}.zip"
     destinationDirectory = file("${buildDir}/installer")
 }
+
+//-------- PATCH INSTALLER BUILD TASKS---------------
+// Task to copy JARs to patch folder
+tasks.register('copyJarsToPatchDropins', Copy) {
+    dependsOn unzipThirdPartyJar
+    from(project(':third-party').tasks.named('jar').get().archiveFile)
+    from(project(':wrims-ide').tasks.named('jar').get().archiveFile)
+    from(project(':dwr-hecdssvue').tasks.named('jar').get().archiveFile)
+    from(project(':jdiagram').tasks.named('jar').get().archiveFile)
+    from(project(':xtext-editor').tasks.named('jar').get().archiveFile)
+    from(project(':xtext-editor-ui').tasks.named('jar').get().archiveFile)
+    into("${buildDir}/patch/${wrimsGuiFolder}/dropins")
+}
+
+//task to download native libraries (dlls)
+tasks.register('copyPatchLibs', Sync) { syncTask ->
+    dependsOn copyJarsToPatchDropins
+    syncTask.from configurations.windows_x64.collect { zipTree(it) }
+    syncTask.into file("${buildDir}/patch/${wrimsGuiFolder}/lib")
+}
+
+//task to copy all files from ${buildDir}/third-party/lib_x64 to ${buildDir}/installer/${wrimsGuiFolder}/lib
+tasks.register('copyDllsToPatchLib', Copy) {
+    dependsOn copyPatchLibs
+    from("${buildDir}/third-party/lib_x64")
+    from("${buildDir}/third-party/heclib")
+    into("${buildDir}/patch/${wrimsGuiFolder}/lib")
+}
+
+// Task to copy JARs to dropins folder
+tasks.register('copyWrimsCoreToPatchLib', Copy) {
+    dependsOn copyDllsToPatchLib
+    from(project(':wrims-core').tasks.named('jar').get().archiveFile)
+    into("${buildDir}/patch/${wrimsGuiFolder}/lib")
+}
+
+//Copies all updated resource files into the installer
+tasks.register('copyResourcesToPatch', Copy) {
+    dependsOn copyWrimsCoreToPatchLib
+    from("src/main/resources/installer")
+    into("${buildDir}/patch/${wrimsGuiFolder}")
+    filter { line ->
+        line.replace('${WRIMS_VERSION}', version)
+    }
+}
+
+//Zip patch files
+// Task that zips the wrims_gui_x64_${version} folder into a zip file
+tasks.register('zipWrimsPatch', Zip) {
+    dependsOn copyResourcesToPatch
+    from("${buildDir}/patch/${wrimsGuiFolder}")
+    archiveFileName = "${wrimsGuiFolder}_Patch.zip"
+    destinationDirectory = file("${buildDir}/patch")
+}
+
+
+

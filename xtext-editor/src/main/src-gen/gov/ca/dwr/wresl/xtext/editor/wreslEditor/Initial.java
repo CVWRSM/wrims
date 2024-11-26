@@ -14,11 +14,11 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link Initial#getPattern <em>Pattern</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Initial#getPattern <em>Pattern</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getInitial()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getInitial()
  * @model
  * @generated
  */
@@ -26,7 +26,7 @@ public interface Initial extends EObject
 {
   /**
    * Returns the value of the '<em><b>Pattern</b></em>' containment reference list.
-   * The list contents are of type {@link Pattern}.
+   * The list contents are of type {@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Pattern}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Pattern</em>' containment reference list isn't clear,
@@ -34,7 +34,7 @@ public interface Initial extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Pattern</em>' containment reference list.
-   * @see WreslEditorPackage#getInitial_Pattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getInitial_Pattern()
    * @model containment="true"
    * @generated
    */

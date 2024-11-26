@@ -24,10 +24,10 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link GoalCaseContentImpl#getCaseName <em>Case Name</em>}</li>
- *   <li>{@link GoalCaseContentImpl#getCondition <em>Condition</em>}</li>
- *   <li>{@link GoalCaseContentImpl#getRhs <em>Rhs</em>}</li>
- *   <li>{@link GoalCaseContentImpl#getSubContent <em>Sub Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalCaseContentImpl#getCaseName <em>Case Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalCaseContentImpl#getCondition <em>Condition</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalCaseContentImpl#getRhs <em>Rhs</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalCaseContentImpl#getSubContent <em>Sub Content</em>}</li>
  * </ul>
  * </p>
  *

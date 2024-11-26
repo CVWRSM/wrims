@@ -21,9 +21,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link AliasImpl#getExpression <em>Expression</em>}</li>
- *   <li>{@link AliasImpl#getKind <em>Kind</em>}</li>
- *   <li>{@link AliasImpl#getUnits <em>Units</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.AliasImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.AliasImpl#getKind <em>Kind</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.AliasImpl#getUnits <em>Units</em>}</li>
  * </ul>
  * </p>
  *

@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link ConditionImpl#getLogical <em>Logical</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ConditionImpl#getLogical <em>Logical</em>}</li>
  * </ul>
  * </p>
  *

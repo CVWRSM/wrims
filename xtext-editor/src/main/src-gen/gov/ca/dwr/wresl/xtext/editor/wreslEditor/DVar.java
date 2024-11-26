@@ -12,12 +12,12 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link DVar#getKind <em>Kind</em>}</li>
- *   <li>{@link DVar#getUnits <em>Units</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar#getKind <em>Kind</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar#getUnits <em>Units</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getDVar()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getDVar()
  * @model
  * @generated
  */
@@ -33,14 +33,14 @@ public interface DVar extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Kind</em>' attribute.
    * @see #setKind(String)
-   * @see WreslEditorPackage#getDVar_Kind()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getDVar_Kind()
    * @model
    * @generated
    */
   String getKind();
 
   /**
-   * Sets the value of the '{@link DVar#getKind <em>Kind</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar#getKind <em>Kind</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Kind</em>' attribute.
@@ -59,14 +59,14 @@ public interface DVar extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Units</em>' attribute.
    * @see #setUnits(String)
-   * @see WreslEditorPackage#getDVar_Units()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getDVar_Units()
    * @model
    * @generated
    */
   String getUnits();
 
   /**
-   * Sets the value of the '{@link DVar#getUnits <em>Units</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar#getUnits <em>Units</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Units</em>' attribute.

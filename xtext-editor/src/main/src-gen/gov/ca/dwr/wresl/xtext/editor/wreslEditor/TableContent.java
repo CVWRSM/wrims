@@ -12,15 +12,15 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link TableContent#getTableName <em>Table Name</em>}</li>
- *   <li>{@link TableContent#getFrom <em>From</em>}</li>
- *   <li>{@link TableContent#getGiven <em>Given</em>}</li>
- *   <li>{@link TableContent#getUse <em>Use</em>}</li>
- *   <li>{@link TableContent#getWhere <em>Where</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getTableName <em>Table Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getFrom <em>From</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getGiven <em>Given</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getUse <em>Use</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getWhere <em>Where</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getTableContent()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTableContent()
  * @model
  * @generated
  */
@@ -36,14 +36,14 @@ public interface TableContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Table Name</em>' attribute.
    * @see #setTableName(String)
-   * @see WreslEditorPackage#getTableContent_TableName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTableContent_TableName()
    * @model
    * @generated
    */
   String getTableName();
 
   /**
-   * Sets the value of the '{@link TableContent#getTableName <em>Table Name</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getTableName <em>Table Name</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Table Name</em>' attribute.
@@ -62,14 +62,14 @@ public interface TableContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>From</em>' attribute.
    * @see #setFrom(String)
-   * @see WreslEditorPackage#getTableContent_From()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTableContent_From()
    * @model
    * @generated
    */
   String getFrom();
 
   /**
-   * Sets the value of the '{@link TableContent#getFrom <em>From</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getFrom <em>From</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>From</em>' attribute.
@@ -88,14 +88,14 @@ public interface TableContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Given</em>' containment reference.
    * @see #setGiven(Assignment)
-   * @see WreslEditorPackage#getTableContent_Given()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTableContent_Given()
    * @model containment="true"
    * @generated
    */
   Assignment getGiven();
 
   /**
-   * Sets the value of the '{@link TableContent#getGiven <em>Given</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getGiven <em>Given</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Given</em>' containment reference.
@@ -114,14 +114,14 @@ public interface TableContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Use</em>' attribute.
    * @see #setUse(String)
-   * @see WreslEditorPackage#getTableContent_Use()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTableContent_Use()
    * @model
    * @generated
    */
   String getUse();
 
   /**
-   * Sets the value of the '{@link TableContent#getUse <em>Use</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getUse <em>Use</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Use</em>' attribute.
@@ -140,14 +140,14 @@ public interface TableContent extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Where</em>' containment reference.
    * @see #setWhere(WhereItems)
-   * @see WreslEditorPackage#getTableContent_Where()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTableContent_Where()
    * @model containment="true"
    * @generated
    */
   WhereItems getWhere();
 
   /**
-   * Sets the value of the '{@link TableContent#getWhere <em>Where</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getWhere <em>Where</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Where</em>' containment reference.

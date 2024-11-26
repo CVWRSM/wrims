@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link LogFunction#getE <em>E</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogFunction#getE <em>E</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getLogFunction()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getLogFunction()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface LogFunction extends Function
    * <!-- end-user-doc -->
    * @return the value of the '<em>E</em>' containment reference.
    * @see #setE(Expression)
-   * @see WreslEditorPackage#getLogFunction_E()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getLogFunction_E()
    * @model containment="true"
    * @generated
    */
   Expression getE();
 
   /**
-   * Sets the value of the '{@link LogFunction#getE <em>E</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogFunction#getE <em>E</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>E</em>' containment reference.

@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link SVarCaseImpl#getCaseContent <em>Case Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SVarCaseImpl#getCaseContent <em>Case Content</em>}</li>
  * </ul>
  * </p>
  *

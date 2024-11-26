@@ -31,9 +31,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link GoalCaseImpl#getLhs <em>Lhs</em>}</li>
- *   <li>{@link GoalCaseImpl#getContent <em>Content</em>}</li>
- *   <li>{@link GoalCaseImpl#getCaseContent <em>Case Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalCaseImpl#getLhs <em>Lhs</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalCaseImpl#getContent <em>Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalCaseImpl#getCaseContent <em>Case Content</em>}</li>
  * </ul>
  * </p>
  *

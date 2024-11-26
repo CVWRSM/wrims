@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link SVarSum#getSumContent <em>Sum Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarSum#getSumContent <em>Sum Content</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getSVarSum()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarSum()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface SVarSum extends SVar
    * <!-- end-user-doc -->
    * @return the value of the '<em>Sum Content</em>' containment reference.
    * @see #setSumContent(SumContent)
-   * @see WreslEditorPackage#getSVarSum_SumContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getSVarSum_SumContent()
    * @model containment="true"
    * @generated
    */
   SumContent getSumContent();
 
   /**
-   * Sets the value of the '{@link SVarSum#getSumContent <em>Sum Content</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarSum#getSumContent <em>Sum Content</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Sum Content</em>' containment reference.

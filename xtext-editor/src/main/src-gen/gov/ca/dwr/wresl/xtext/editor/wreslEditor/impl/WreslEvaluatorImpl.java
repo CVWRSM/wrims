@@ -33,11 +33,11 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link WreslEvaluatorImpl#getPattern <em>Pattern</em>}</li>
- *   <li>{@link WreslEvaluatorImpl#getIfincitem <em>Ifincitem</em>}</li>
- *   <li>{@link WreslEvaluatorImpl#getInitial <em>Initial</em>}</li>
- *   <li>{@link WreslEvaluatorImpl#getSequence <em>Sequence</em>}</li>
- *   <li>{@link WreslEvaluatorImpl#getModel <em>Model</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WreslEvaluatorImpl#getPattern <em>Pattern</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WreslEvaluatorImpl#getIfincitem <em>Ifincitem</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WreslEvaluatorImpl#getInitial <em>Initial</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WreslEvaluatorImpl#getSequence <em>Sequence</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WreslEvaluatorImpl#getModel <em>Model</em>}</li>
  * </ul>
  * </p>
  *

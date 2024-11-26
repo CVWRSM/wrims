@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link PenaltyImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.PenaltyImpl#getExpression <em>Expression</em>}</li>
  * </ul>
  * </p>
  *

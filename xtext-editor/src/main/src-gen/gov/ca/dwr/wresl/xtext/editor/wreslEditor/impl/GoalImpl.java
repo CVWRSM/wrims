@@ -22,9 +22,9 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link GoalImpl#getTa <em>Ta</em>}</li>
- *   <li>{@link GoalImpl#getName <em>Name</em>}</li>
- *   <li>{@link GoalImpl#getDefinition <em>Definition</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalImpl#getTa <em>Ta</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalImpl#getName <em>Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalImpl#getDefinition <em>Definition</em>}</li>
  * </ul>
  * </p>
  *

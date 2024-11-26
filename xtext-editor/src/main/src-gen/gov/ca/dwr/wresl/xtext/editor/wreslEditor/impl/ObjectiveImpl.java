@@ -28,8 +28,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link ObjectiveImpl#getName <em>Name</em>}</li>
- *   <li>{@link ObjectiveImpl#getWeights <em>Weights</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ObjectiveImpl#getName <em>Name</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.ObjectiveImpl#getWeights <em>Weights</em>}</li>
  * </ul>
  * </p>
  *

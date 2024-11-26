@@ -12,12 +12,12 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link LogicalExpression#getC1 <em>C1</em>}</li>
- *   <li>{@link LogicalExpression#getC2 <em>C2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression#getC1 <em>C1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression#getC2 <em>C2</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getLogicalExpression()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getLogicalExpression()
  * @model
  * @generated
  */
@@ -33,14 +33,14 @@ public interface LogicalExpression extends ConditionalTerm
    * <!-- end-user-doc -->
    * @return the value of the '<em>C1</em>' containment reference.
    * @see #setC1(ConditionalUnary)
-   * @see WreslEditorPackage#getLogicalExpression_C1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getLogicalExpression_C1()
    * @model containment="true"
    * @generated
    */
   ConditionalUnary getC1();
 
   /**
-   * Sets the value of the '{@link LogicalExpression#getC1 <em>C1</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression#getC1 <em>C1</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>C1</em>' containment reference.
@@ -51,7 +51,7 @@ public interface LogicalExpression extends ConditionalTerm
 
   /**
    * Returns the value of the '<em><b>C2</b></em>' containment reference list.
-   * The list contents are of type {@link ConditionalUnary}.
+   * The list contents are of type {@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalUnary}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>C2</em>' containment reference list isn't clear,
@@ -59,7 +59,7 @@ public interface LogicalExpression extends ConditionalTerm
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>C2</em>' containment reference list.
-   * @see WreslEditorPackage#getLogicalExpression_C2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getLogicalExpression_C2()
    * @model containment="true"
    * @generated
    */

@@ -774,7 +774,7 @@ public class WreslEditorPackageImpl extends EPackageImpl implements WreslEditorP
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
-   * {@link Registry EPackage.Registry} by the package
+   * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
    * package URI value.
    * <p>Note: the correct way to create the package is via the static
    * factory method {@link #init init()}, which also performs
@@ -782,8 +782,8 @@ public class WreslEditorPackageImpl extends EPackageImpl implements WreslEditorP
    * if one already exists.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see Registry
-   * @see WreslEditorPackage#eNS_URI
+   * @see org.eclipse.emf.ecore.EPackage.Registry
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#eNS_URI
    * @see #init()
    * @generated
    */
@@ -813,10 +813,10 @@ public class WreslEditorPackageImpl extends EPackageImpl implements WreslEditorP
    */
   public static WreslEditorPackage init()
   {
-    if (isInited) return (WreslEditorPackage) Registry.INSTANCE.getEPackage(WreslEditorPackage.eNS_URI);
+    if (isInited) return (WreslEditorPackage)EPackage.Registry.INSTANCE.getEPackage(WreslEditorPackage.eNS_URI);
 
     // Obtain or create and register package
-    WreslEditorPackageImpl theWreslEditorPackage = (WreslEditorPackageImpl)(Registry.INSTANCE.get(eNS_URI) instanceof WreslEditorPackageImpl ? Registry.INSTANCE.get(eNS_URI) : new WreslEditorPackageImpl());
+    WreslEditorPackageImpl theWreslEditorPackage = (WreslEditorPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof WreslEditorPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new WreslEditorPackageImpl());
 
     isInited = true;
 
@@ -831,7 +831,7 @@ public class WreslEditorPackageImpl extends EPackageImpl implements WreslEditorP
 
   
     // Update the registry and return the package
-    Registry.INSTANCE.put(WreslEditorPackage.eNS_URI, theWreslEditorPackage);
+    EPackage.Registry.INSTANCE.put(WreslEditorPackage.eNS_URI, theWreslEditorPackage);
     return theWreslEditorPackage;
   }
 

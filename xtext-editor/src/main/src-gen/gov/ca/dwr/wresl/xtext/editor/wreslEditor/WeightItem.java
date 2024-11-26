@@ -12,13 +12,13 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link WeightItem#getRef <em>Ref</em>}</li>
- *   <li>{@link WeightItem#getTa <em>Ta</em>}</li>
- *   <li>{@link WeightItem#getExpression <em>Expression</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getRef <em>Ref</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getTa <em>Ta</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getExpression <em>Expression</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getWeightItem()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getWeightItem()
  * @model
  * @generated
  */
@@ -34,14 +34,14 @@ public interface WeightItem extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref</em>' reference.
    * @see #setRef(Declaration)
-   * @see WreslEditorPackage#getWeightItem_Ref()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getWeightItem_Ref()
    * @model
    * @generated
    */
   Declaration getRef();
 
   /**
-   * Sets the value of the '{@link WeightItem#getRef <em>Ref</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getRef <em>Ref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref</em>' reference.
@@ -60,14 +60,14 @@ public interface WeightItem extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ta</em>' containment reference.
    * @see #setTa(TimeArraySize)
-   * @see WreslEditorPackage#getWeightItem_Ta()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getWeightItem_Ta()
    * @model containment="true"
    * @generated
    */
   TimeArraySize getTa();
 
   /**
-   * Sets the value of the '{@link WeightItem#getTa <em>Ta</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getTa <em>Ta</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ta</em>' containment reference.
@@ -86,14 +86,14 @@ public interface WeightItem extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Expression</em>' containment reference.
    * @see #setExpression(Expression)
-   * @see WreslEditorPackage#getWeightItem_Expression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getWeightItem_Expression()
    * @model containment="true"
    * @generated
    */
   Expression getExpression();
 
   /**
-   * Sets the value of the '{@link WeightItem#getExpression <em>Expression</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getExpression <em>Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Expression</em>' containment reference.

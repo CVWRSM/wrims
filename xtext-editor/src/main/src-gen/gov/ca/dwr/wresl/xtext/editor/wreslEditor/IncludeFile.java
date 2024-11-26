@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link IncludeFile#getFile <em>File</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IncludeFile#getFile <em>File</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getIncludeFile()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIncludeFile()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface IncludeFile extends Pattern
    * <!-- end-user-doc -->
    * @return the value of the '<em>File</em>' attribute.
    * @see #setFile(String)
-   * @see WreslEditorPackage#getIncludeFile_File()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIncludeFile_File()
    * @model
    * @generated
    */
   String getFile();
 
   /**
-   * Sets the value of the '{@link IncludeFile#getFile <em>File</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IncludeFile#getFile <em>File</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>File</em>' attribute.

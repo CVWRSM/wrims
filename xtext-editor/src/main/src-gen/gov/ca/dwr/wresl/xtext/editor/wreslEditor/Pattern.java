@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link Pattern#isLocal <em>Local</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Pattern#isLocal <em>Local</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getPattern()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getPattern()
  * @model
  * @generated
  */
@@ -32,14 +32,14 @@ public interface Pattern extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Local</em>' attribute.
    * @see #setLocal(boolean)
-   * @see WreslEditorPackage#getPattern_Local()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getPattern_Local()
    * @model
    * @generated
    */
   boolean isLocal();
 
   /**
-   * Sets the value of the '{@link Pattern#isLocal <em>Local</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Pattern#isLocal <em>Local</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Local</em>' attribute.

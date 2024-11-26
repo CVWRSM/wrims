@@ -21,8 +21,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link VarModelImpl#getRef1 <em>Ref1</em>}</li>
- *   <li>{@link VarModelImpl#getRef2 <em>Ref2</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.VarModelImpl#getRef1 <em>Ref1</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.VarModelImpl#getRef2 <em>Ref2</em>}</li>
  * </ul>
  * </p>
  *

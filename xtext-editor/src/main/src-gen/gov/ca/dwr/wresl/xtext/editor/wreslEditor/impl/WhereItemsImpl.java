@@ -27,7 +27,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link WhereItemsImpl#getAssignment <em>Assignment</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.WhereItemsImpl#getAssignment <em>Assignment</em>}</li>
  * </ul>
  * </p>
  *

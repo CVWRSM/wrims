@@ -11,15 +11,15 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link Term#getRef <em>Ref</em>}</li>
- *   <li>{@link Term#getN <em>N</em>}</li>
- *   <li>{@link Term#getF <em>F</em>}</li>
- *   <li>{@link Term#getE <em>E</em>}</li>
- *   <li>{@link Term#getS <em>S</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getRef <em>Ref</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getN <em>N</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getF <em>F</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getE <em>E</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getS <em>S</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getTerm()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTerm()
  * @model
  * @generated
  */
@@ -35,14 +35,14 @@ public interface Term extends Unary
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref</em>' reference.
    * @see #setRef(Declaration)
-   * @see WreslEditorPackage#getTerm_Ref()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTerm_Ref()
    * @model
    * @generated
    */
   Declaration getRef();
 
   /**
-   * Sets the value of the '{@link Term#getRef <em>Ref</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getRef <em>Ref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref</em>' reference.
@@ -61,14 +61,14 @@ public interface Term extends Unary
    * <!-- end-user-doc -->
    * @return the value of the '<em>N</em>' attribute.
    * @see #setN(String)
-   * @see WreslEditorPackage#getTerm_N()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTerm_N()
    * @model
    * @generated
    */
   String getN();
 
   /**
-   * Sets the value of the '{@link Term#getN <em>N</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getN <em>N</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>N</em>' attribute.
@@ -87,14 +87,14 @@ public interface Term extends Unary
    * <!-- end-user-doc -->
    * @return the value of the '<em>F</em>' containment reference.
    * @see #setF(Function)
-   * @see WreslEditorPackage#getTerm_F()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTerm_F()
    * @model containment="true"
    * @generated
    */
   Function getF();
 
   /**
-   * Sets the value of the '{@link Term#getF <em>F</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getF <em>F</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>F</em>' containment reference.
@@ -113,14 +113,14 @@ public interface Term extends Unary
    * <!-- end-user-doc -->
    * @return the value of the '<em>E</em>' containment reference.
    * @see #setE(Expression)
-   * @see WreslEditorPackage#getTerm_E()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTerm_E()
    * @model containment="true"
    * @generated
    */
   Expression getE();
 
   /**
-   * Sets the value of the '{@link Term#getE <em>E</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getE <em>E</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>E</em>' containment reference.
@@ -139,14 +139,14 @@ public interface Term extends Unary
    * <!-- end-user-doc -->
    * @return the value of the '<em>S</em>' attribute.
    * @see #setS(String)
-   * @see WreslEditorPackage#getTerm_S()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getTerm_S()
    * @model
    * @generated
    */
   String getS();
 
   /**
-   * Sets the value of the '{@link Term#getS <em>S</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getS <em>S</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>S</em>' attribute.

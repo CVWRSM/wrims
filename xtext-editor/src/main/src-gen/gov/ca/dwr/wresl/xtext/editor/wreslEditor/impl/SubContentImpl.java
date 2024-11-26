@@ -23,8 +23,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link SubContentImpl#getGt <em>Gt</em>}</li>
- *   <li>{@link SubContentImpl#getLt <em>Lt</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SubContentImpl#getGt <em>Gt</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SubContentImpl#getLt <em>Lt</em>}</li>
  * </ul>
  * </p>
  *

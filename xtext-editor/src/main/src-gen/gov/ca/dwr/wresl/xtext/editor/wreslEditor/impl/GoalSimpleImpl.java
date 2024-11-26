@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link GoalSimpleImpl#getConstraint <em>Constraint</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.GoalSimpleImpl#getConstraint <em>Constraint</em>}</li>
  * </ul>
  * </p>
  *

@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link ConstDef#getDefinition <em>Definition</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConstDef#getDefinition <em>Definition</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getConstDef()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getConstDef()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface ConstDef extends StateVariable
    * <!-- end-user-doc -->
    * @return the value of the '<em>Definition</em>' attribute.
    * @see #setDefinition(String)
-   * @see WreslEditorPackage#getConstDef_Definition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getConstDef_Definition()
    * @model
    * @generated
    */
   String getDefinition();
 
   /**
-   * Sets the value of the '{@link ConstDef#getDefinition <em>Definition</em>}' attribute.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConstDef#getDefinition <em>Definition</em>}' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Definition</em>' attribute.

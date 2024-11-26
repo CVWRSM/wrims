@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link SVarTableImpl#getTableContent <em>Table Content</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SVarTableImpl#getTableContent <em>Table Content</em>}</li>
  * </ul>
  * </p>
  *

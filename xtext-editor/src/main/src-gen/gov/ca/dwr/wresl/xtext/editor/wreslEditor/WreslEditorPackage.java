@@ -18,7 +18,7 @@ import org.eclipse.emf.ecore.EReference;
  *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * @see WreslEditorFactory
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorFactory
  * @model kind="package"
  * @generated
  */
@@ -3554,2601 +3554,2601 @@ public interface WreslEditorPackage extends EPackage
 
 
   /**
-   * Returns the meta object for class '{@link WreslEvaluator <em>Wresl Evaluator</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator <em>Wresl Evaluator</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Wresl Evaluator</em>'.
-   * @see WreslEvaluator
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator
    * @generated
    */
   EClass getWreslEvaluator();
 
   /**
-   * Returns the meta object for the containment reference list '{@link WreslEvaluator#getPattern <em>Pattern</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getPattern <em>Pattern</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Pattern</em>'.
-   * @see WreslEvaluator#getPattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getPattern()
    * @see #getWreslEvaluator()
    * @generated
    */
   EReference getWreslEvaluator_Pattern();
 
   /**
-   * Returns the meta object for the containment reference list '{@link WreslEvaluator#getIfincitem <em>Ifincitem</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getIfincitem <em>Ifincitem</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Ifincitem</em>'.
-   * @see WreslEvaluator#getIfincitem()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getIfincitem()
    * @see #getWreslEvaluator()
    * @generated
    */
   EReference getWreslEvaluator_Ifincitem();
 
   /**
-   * Returns the meta object for the containment reference '{@link WreslEvaluator#getInitial <em>Initial</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getInitial <em>Initial</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Initial</em>'.
-   * @see WreslEvaluator#getInitial()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getInitial()
    * @see #getWreslEvaluator()
    * @generated
    */
   EReference getWreslEvaluator_Initial();
 
   /**
-   * Returns the meta object for the containment reference list '{@link WreslEvaluator#getSequence <em>Sequence</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getSequence <em>Sequence</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Sequence</em>'.
-   * @see WreslEvaluator#getSequence()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getSequence()
    * @see #getWreslEvaluator()
    * @generated
    */
   EReference getWreslEvaluator_Sequence();
 
   /**
-   * Returns the meta object for the containment reference list '{@link WreslEvaluator#getModel <em>Model</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getModel <em>Model</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Model</em>'.
-   * @see WreslEvaluator#getModel()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEvaluator#getModel()
    * @see #getWreslEvaluator()
    * @generated
    */
   EReference getWreslEvaluator_Model();
 
   /**
-   * Returns the meta object for class '{@link Pattern <em>Pattern</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Pattern <em>Pattern</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Pattern</em>'.
-   * @see Pattern
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Pattern
    * @generated
    */
   EClass getPattern();
 
   /**
-   * Returns the meta object for the attribute '{@link Pattern#isLocal <em>Local</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Pattern#isLocal <em>Local</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Local</em>'.
-   * @see Pattern#isLocal()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Pattern#isLocal()
    * @see #getPattern()
    * @generated
    */
   EAttribute getPattern_Local();
 
   /**
-   * Returns the meta object for class '{@link Declaration <em>Declaration</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Declaration <em>Declaration</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Declaration</em>'.
-   * @see Declaration
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Declaration
    * @generated
    */
   EClass getDeclaration();
 
   /**
-   * Returns the meta object for the attribute '{@link Declaration#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Declaration#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see Declaration#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Declaration#getName()
    * @see #getDeclaration()
    * @generated
    */
   EAttribute getDeclaration_Name();
 
   /**
-   * Returns the meta object for class '{@link Variable <em>Variable</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Variable <em>Variable</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Variable</em>'.
-   * @see Variable
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Variable
    * @generated
    */
   EClass getVariable();
 
   /**
-   * Returns the meta object for the reference '{@link Variable#getRef <em>Ref</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Variable#getRef <em>Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref</em>'.
-   * @see Variable#getRef()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Variable#getRef()
    * @see #getVariable()
    * @generated
    */
   EReference getVariable_Ref();
 
   /**
-   * Returns the meta object for class '{@link StateVariable <em>State Variable</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.StateVariable <em>State Variable</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>State Variable</em>'.
-   * @see StateVariable
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.StateVariable
    * @generated
    */
   EClass getStateVariable();
 
   /**
-   * Returns the meta object for class '{@link DecisionVariable <em>Decision Variable</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DecisionVariable <em>Decision Variable</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Decision Variable</em>'.
-   * @see DecisionVariable
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DecisionVariable
    * @generated
    */
   EClass getDecisionVariable();
 
   /**
-   * Returns the meta object for the containment reference '{@link DecisionVariable#getTa <em>Ta</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DecisionVariable#getTa <em>Ta</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Ta</em>'.
-   * @see DecisionVariable#getTa()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DecisionVariable#getTa()
    * @see #getDecisionVariable()
    * @generated
    */
   EReference getDecisionVariable_Ta();
 
   /**
-   * Returns the meta object for class '{@link IfIncItems <em>If Inc Items</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfIncItems <em>If Inc Items</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>If Inc Items</em>'.
-   * @see IfIncItems
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfIncItems
    * @generated
    */
   EClass getIfIncItems();
 
   /**
-   * Returns the meta object for class '{@link IfTerm <em>If Term</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm <em>If Term</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>If Term</em>'.
-   * @see IfTerm
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm
    * @generated
    */
   EClass getIfTerm();
 
   /**
-   * Returns the meta object for the containment reference '{@link IfTerm#getElseifterm <em>Elseifterm</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getElseifterm <em>Elseifterm</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Elseifterm</em>'.
-   * @see IfTerm#getElseifterm()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getElseifterm()
    * @see #getIfTerm()
    * @generated
    */
   EReference getIfTerm_Elseifterm();
 
   /**
-   * Returns the meta object for the containment reference '{@link IfTerm#getElseterm <em>Elseterm</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getElseterm <em>Elseterm</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Elseterm</em>'.
-   * @see IfTerm#getElseterm()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getElseterm()
    * @see #getIfTerm()
    * @generated
    */
   EReference getIfTerm_Elseterm();
 
   /**
-   * Returns the meta object for the containment reference '{@link IfTerm#getLogical <em>Logical</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getLogical <em>Logical</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Logical</em>'.
-   * @see IfTerm#getLogical()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getLogical()
    * @see #getIfTerm()
    * @generated
    */
   EReference getIfTerm_Logical();
 
   /**
-   * Returns the meta object for the containment reference list '{@link IfTerm#getPattern <em>Pattern</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getPattern <em>Pattern</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Pattern</em>'.
-   * @see IfTerm#getPattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getPattern()
    * @see #getIfTerm()
    * @generated
    */
   EReference getIfTerm_Pattern();
 
   /**
-   * Returns the meta object for class '{@link ElseIfTerm <em>Else If Term</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseIfTerm <em>Else If Term</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Else If Term</em>'.
-   * @see ElseIfTerm
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseIfTerm
    * @generated
    */
   EClass getElseIfTerm();
 
   /**
-   * Returns the meta object for the containment reference list '{@link ElseIfTerm#getLogical <em>Logical</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseIfTerm#getLogical <em>Logical</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Logical</em>'.
-   * @see ElseIfTerm#getLogical()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseIfTerm#getLogical()
    * @see #getElseIfTerm()
    * @generated
    */
   EReference getElseIfTerm_Logical();
 
   /**
-   * Returns the meta object for the containment reference list '{@link ElseIfTerm#getPattern <em>Pattern</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseIfTerm#getPattern <em>Pattern</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Pattern</em>'.
-   * @see ElseIfTerm#getPattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseIfTerm#getPattern()
    * @see #getElseIfTerm()
    * @generated
    */
   EReference getElseIfTerm_Pattern();
 
   /**
-   * Returns the meta object for class '{@link ElseTerm <em>Else Term</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseTerm <em>Else Term</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Else Term</em>'.
-   * @see ElseTerm
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseTerm
    * @generated
    */
   EClass getElseTerm();
 
   /**
-   * Returns the meta object for the containment reference list '{@link ElseTerm#getPattern <em>Pattern</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseTerm#getPattern <em>Pattern</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Pattern</em>'.
-   * @see ElseTerm#getPattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ElseTerm#getPattern()
    * @see #getElseTerm()
    * @generated
    */
   EReference getElseTerm_Pattern();
 
   /**
-   * Returns the meta object for class '{@link TimeArraySize <em>Time Array Size</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TimeArraySize <em>Time Array Size</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Time Array Size</em>'.
-   * @see TimeArraySize
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TimeArraySize
    * @generated
    */
   EClass getTimeArraySize();
 
   /**
-   * Returns the meta object for the reference '{@link TimeArraySize#getName <em>Name</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TimeArraySize#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Name</em>'.
-   * @see TimeArraySize#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TimeArraySize#getName()
    * @see #getTimeArraySize()
    * @generated
    */
   EReference getTimeArraySize_Name();
 
   /**
-   * Returns the meta object for class '{@link Objective <em>Objective</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Objective <em>Objective</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Objective</em>'.
-   * @see Objective
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Objective
    * @generated
    */
   EClass getObjective();
 
   /**
-   * Returns the meta object for the attribute '{@link Objective#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Objective#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see Objective#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Objective#getName()
    * @see #getObjective()
    * @generated
    */
   EAttribute getObjective_Name();
 
   /**
-   * Returns the meta object for the containment reference list '{@link Objective#getWeights <em>Weights</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Objective#getWeights <em>Weights</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Weights</em>'.
-   * @see Objective#getWeights()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Objective#getWeights()
    * @see #getObjective()
    * @generated
    */
   EReference getObjective_Weights();
 
   /**
-   * Returns the meta object for class '{@link WeightItem <em>Weight Item</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem <em>Weight Item</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Weight Item</em>'.
-   * @see WeightItem
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem
    * @generated
    */
   EClass getWeightItem();
 
   /**
-   * Returns the meta object for the reference '{@link WeightItem#getRef <em>Ref</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getRef <em>Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref</em>'.
-   * @see WeightItem#getRef()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getRef()
    * @see #getWeightItem()
    * @generated
    */
   EReference getWeightItem_Ref();
 
   /**
-   * Returns the meta object for the containment reference '{@link WeightItem#getTa <em>Ta</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getTa <em>Ta</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Ta</em>'.
-   * @see WeightItem#getTa()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getTa()
    * @see #getWeightItem()
    * @generated
    */
   EReference getWeightItem_Ta();
 
   /**
-   * Returns the meta object for the containment reference '{@link WeightItem#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see WeightItem#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WeightItem#getExpression()
    * @see #getWeightItem()
    * @generated
    */
   EReference getWeightItem_Expression();
 
   /**
-   * Returns the meta object for class '{@link ExternalDef <em>External Def</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalDef <em>External Def</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>External Def</em>'.
-   * @see ExternalDef
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalDef
    * @generated
    */
   EClass getExternalDef();
 
   /**
-   * Returns the meta object for the containment reference '{@link ExternalDef#getDefinition <em>Definition</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalDef#getDefinition <em>Definition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Definition</em>'.
-   * @see ExternalDef#getDefinition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalDef#getDefinition()
    * @see #getExternalDef()
    * @generated
    */
   EReference getExternalDef_Definition();
 
   /**
-   * Returns the meta object for class '{@link SvarDef <em>Svar Def</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SvarDef <em>Svar Def</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Svar Def</em>'.
-   * @see SvarDef
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SvarDef
    * @generated
    */
   EClass getSvarDef();
 
   /**
-   * Returns the meta object for the containment reference '{@link SvarDef#getTa <em>Ta</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SvarDef#getTa <em>Ta</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Ta</em>'.
-   * @see SvarDef#getTa()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SvarDef#getTa()
    * @see #getSvarDef()
    * @generated
    */
   EReference getSvarDef_Ta();
 
   /**
-   * Returns the meta object for the containment reference '{@link SvarDef#getDefinition <em>Definition</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SvarDef#getDefinition <em>Definition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Definition</em>'.
-   * @see SvarDef#getDefinition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SvarDef#getDefinition()
    * @see #getSvarDef()
    * @generated
    */
   EReference getSvarDef_Definition();
 
   /**
-   * Returns the meta object for class '{@link DvarDef <em>Dvar Def</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DvarDef <em>Dvar Def</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Dvar Def</em>'.
-   * @see DvarDef
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DvarDef
    * @generated
    */
   EClass getDvarDef();
 
   /**
-   * Returns the meta object for the containment reference '{@link DvarDef#getDefinition <em>Definition</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DvarDef#getDefinition <em>Definition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Definition</em>'.
-   * @see DvarDef#getDefinition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DvarDef#getDefinition()
    * @see #getDvarDef()
    * @generated
    */
   EReference getDvarDef_Definition();
 
   /**
-   * Returns the meta object for class '{@link ConstDef <em>Const Def</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConstDef <em>Const Def</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Const Def</em>'.
-   * @see ConstDef
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConstDef
    * @generated
    */
   EClass getConstDef();
 
   /**
-   * Returns the meta object for the attribute '{@link ConstDef#getDefinition <em>Definition</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConstDef#getDefinition <em>Definition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Definition</em>'.
-   * @see ConstDef#getDefinition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConstDef#getDefinition()
    * @see #getConstDef()
    * @generated
    */
   EAttribute getConstDef_Definition();
 
   /**
-   * Returns the meta object for class '{@link Alias <em>Alias</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Alias <em>Alias</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Alias</em>'.
-   * @see Alias
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Alias
    * @generated
    */
   EClass getAlias();
 
   /**
-   * Returns the meta object for the containment reference '{@link Alias#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Alias#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see Alias#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Alias#getExpression()
    * @see #getAlias()
    * @generated
    */
   EReference getAlias_Expression();
 
   /**
-   * Returns the meta object for the attribute '{@link Alias#getKind <em>Kind</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Alias#getKind <em>Kind</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Kind</em>'.
-   * @see Alias#getKind()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Alias#getKind()
    * @see #getAlias()
    * @generated
    */
   EAttribute getAlias_Kind();
 
   /**
-   * Returns the meta object for the attribute '{@link Alias#getUnits <em>Units</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Alias#getUnits <em>Units</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Units</em>'.
-   * @see Alias#getUnits()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Alias#getUnits()
    * @see #getAlias()
    * @generated
    */
   EAttribute getAlias_Units();
 
   /**
-   * Returns the meta object for class '{@link External <em>External</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.External <em>External</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>External</em>'.
-   * @see External
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.External
    * @generated
    */
   EClass getExternal();
 
   /**
-   * Returns the meta object for the attribute '{@link External#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.External#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see External#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.External#getName()
    * @see #getExternal()
    * @generated
    */
   EAttribute getExternal_Name();
 
   /**
-   * Returns the meta object for class '{@link DVar <em>DVar</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar <em>DVar</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>DVar</em>'.
-   * @see DVar
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar
    * @generated
    */
   EClass getDVar();
 
   /**
-   * Returns the meta object for the attribute '{@link DVar#getKind <em>Kind</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar#getKind <em>Kind</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Kind</em>'.
-   * @see DVar#getKind()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar#getKind()
    * @see #getDVar()
    * @generated
    */
   EAttribute getDVar_Kind();
 
   /**
-   * Returns the meta object for the attribute '{@link DVar#getUnits <em>Units</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar#getUnits <em>Units</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Units</em>'.
-   * @see DVar#getUnits()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVar#getUnits()
    * @see #getDVar()
    * @generated
    */
   EAttribute getDVar_Units();
 
   /**
-   * Returns the meta object for class '{@link DVarNonStd <em>DVar Non Std</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarNonStd <em>DVar Non Std</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>DVar Non Std</em>'.
-   * @see DVarNonStd
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarNonStd
    * @generated
    */
   EClass getDVarNonStd();
 
   /**
-   * Returns the meta object for the containment reference '{@link DVarNonStd#getLowerUpper <em>Lower Upper</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarNonStd#getLowerUpper <em>Lower Upper</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Lower Upper</em>'.
-   * @see DVarNonStd#getLowerUpper()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarNonStd#getLowerUpper()
    * @see #getDVarNonStd()
    * @generated
    */
   EReference getDVarNonStd_LowerUpper();
 
   /**
-   * Returns the meta object for class '{@link DVarStd <em>DVar Std</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarStd <em>DVar Std</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>DVar Std</em>'.
-   * @see DVarStd
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarStd
    * @generated
    */
   EClass getDVarStd();
 
   /**
-   * Returns the meta object for class '{@link DVarInteger <em>DVar Integer</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarInteger <em>DVar Integer</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>DVar Integer</em>'.
-   * @see DVarInteger
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarInteger
    * @generated
    */
   EClass getDVarInteger();
 
   /**
-   * Returns the meta object for class '{@link DVarIntegerStd <em>DVar Integer Std</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd <em>DVar Integer Std</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>DVar Integer Std</em>'.
-   * @see DVarIntegerStd
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd
    * @generated
    */
   EClass getDVarIntegerStd();
 
   /**
-   * Returns the meta object for the attribute '{@link DVarIntegerStd#getKind <em>Kind</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd#getKind <em>Kind</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Kind</em>'.
-   * @see DVarIntegerStd#getKind()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd#getKind()
    * @see #getDVarIntegerStd()
    * @generated
    */
   EAttribute getDVarIntegerStd_Kind();
 
   /**
-   * Returns the meta object for the attribute '{@link DVarIntegerStd#getUnits <em>Units</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd#getUnits <em>Units</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Units</em>'.
-   * @see DVarIntegerStd#getUnits()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerStd#getUnits()
    * @see #getDVarIntegerStd()
    * @generated
    */
   EAttribute getDVarIntegerStd_Units();
 
   /**
-   * Returns the meta object for class '{@link DVarIntegerNonStd <em>DVar Integer Non Std</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerNonStd <em>DVar Integer Non Std</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>DVar Integer Non Std</em>'.
-   * @see DVarIntegerNonStd
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.DVarIntegerNonStd
    * @generated
    */
   EClass getDVarIntegerNonStd();
 
   /**
-   * Returns the meta object for class '{@link SVar <em>SVar</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVar <em>SVar</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>SVar</em>'.
-   * @see SVar
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVar
    * @generated
    */
   EClass getSVar();
 
   /**
-   * Returns the meta object for class '{@link SVarDSS <em>SVar DSS</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS <em>SVar DSS</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>SVar DSS</em>'.
-   * @see SVarDSS
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS
    * @generated
    */
   EClass getSVarDSS();
 
   /**
-   * Returns the meta object for the attribute '{@link SVarDSS#getBPart <em>BPart</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getBPart <em>BPart</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>BPart</em>'.
-   * @see SVarDSS#getBPart()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getBPart()
    * @see #getSVarDSS()
    * @generated
    */
   EAttribute getSVarDSS_BPart();
 
   /**
-   * Returns the meta object for the attribute '{@link SVarDSS#getKind <em>Kind</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getKind <em>Kind</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Kind</em>'.
-   * @see SVarDSS#getKind()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getKind()
    * @see #getSVarDSS()
    * @generated
    */
   EAttribute getSVarDSS_Kind();
 
   /**
-   * Returns the meta object for the attribute '{@link SVarDSS#getUnits <em>Units</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getUnits <em>Units</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Units</em>'.
-   * @see SVarDSS#getUnits()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getUnits()
    * @see #getSVarDSS()
    * @generated
    */
   EAttribute getSVarDSS_Units();
 
   /**
-   * Returns the meta object for the attribute '{@link SVarDSS#getConvert <em>Convert</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getConvert <em>Convert</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Convert</em>'.
-   * @see SVarDSS#getConvert()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarDSS#getConvert()
    * @see #getSVarDSS()
    * @generated
    */
   EAttribute getSVarDSS_Convert();
 
   /**
-   * Returns the meta object for class '{@link SVarExpression <em>SVar Expression</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarExpression <em>SVar Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>SVar Expression</em>'.
-   * @see SVarExpression
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarExpression
    * @generated
    */
   EClass getSVarExpression();
 
   /**
-   * Returns the meta object for the containment reference '{@link SVarExpression#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarExpression#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see SVarExpression#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarExpression#getExpression()
    * @see #getSVarExpression()
    * @generated
    */
   EReference getSVarExpression_Expression();
 
   /**
-   * Returns the meta object for class '{@link SVarSum <em>SVar Sum</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarSum <em>SVar Sum</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>SVar Sum</em>'.
-   * @see SVarSum
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarSum
    * @generated
    */
   EClass getSVarSum();
 
   /**
-   * Returns the meta object for the containment reference '{@link SVarSum#getSumContent <em>Sum Content</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarSum#getSumContent <em>Sum Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Sum Content</em>'.
-   * @see SVarSum#getSumContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarSum#getSumContent()
    * @see #getSVarSum()
    * @generated
    */
   EReference getSVarSum_SumContent();
 
   /**
-   * Returns the meta object for class '{@link SVarTable <em>SVar Table</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarTable <em>SVar Table</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>SVar Table</em>'.
-   * @see SVarTable
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarTable
    * @generated
    */
   EClass getSVarTable();
 
   /**
-   * Returns the meta object for the containment reference '{@link SVarTable#getTableContent <em>Table Content</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarTable#getTableContent <em>Table Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Table Content</em>'.
-   * @see SVarTable#getTableContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarTable#getTableContent()
    * @see #getSVarTable()
    * @generated
    */
   EReference getSVarTable_TableContent();
 
   /**
-   * Returns the meta object for class '{@link SVarCase <em>SVar Case</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarCase <em>SVar Case</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>SVar Case</em>'.
-   * @see SVarCase
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarCase
    * @generated
    */
   EClass getSVarCase();
 
   /**
-   * Returns the meta object for the containment reference list '{@link SVarCase#getCaseContent <em>Case Content</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarCase#getCaseContent <em>Case Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Case Content</em>'.
-   * @see SVarCase#getCaseContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SVarCase#getCaseContent()
    * @see #getSVarCase()
    * @generated
    */
   EReference getSVarCase_CaseContent();
 
   /**
-   * Returns the meta object for class '{@link CaseContent <em>Case Content</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent <em>Case Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Case Content</em>'.
-   * @see CaseContent
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent
    * @generated
    */
   EClass getCaseContent();
 
   /**
-   * Returns the meta object for the attribute '{@link CaseContent#getCaseName <em>Case Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getCaseName <em>Case Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Case Name</em>'.
-   * @see CaseContent#getCaseName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getCaseName()
    * @see #getCaseContent()
    * @generated
    */
   EAttribute getCaseContent_CaseName();
 
   /**
-   * Returns the meta object for the containment reference '{@link CaseContent#getCondition <em>Condition</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getCondition <em>Condition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Condition</em>'.
-   * @see CaseContent#getCondition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getCondition()
    * @see #getCaseContent()
    * @generated
    */
   EReference getCaseContent_Condition();
 
   /**
-   * Returns the meta object for the containment reference '{@link CaseContent#getContent <em>Content</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getContent <em>Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Content</em>'.
-   * @see CaseContent#getContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.CaseContent#getContent()
    * @see #getCaseContent()
    * @generated
    */
   EReference getCaseContent_Content();
 
   /**
-   * Returns the meta object for class '{@link SumContent <em>Sum Content</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent <em>Sum Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Sum Content</em>'.
-   * @see SumContent
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent
    * @generated
    */
   EClass getSumContent();
 
   /**
-   * Returns the meta object for the containment reference '{@link SumContent#getHeader <em>Header</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent#getHeader <em>Header</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Header</em>'.
-   * @see SumContent#getHeader()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent#getHeader()
    * @see #getSumContent()
    * @generated
    */
   EReference getSumContent_Header();
 
   /**
-   * Returns the meta object for the containment reference '{@link SumContent#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see SumContent#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumContent#getExpression()
    * @see #getSumContent()
    * @generated
    */
   EReference getSumContent_Expression();
 
   /**
-   * Returns the meta object for class '{@link SumHeader <em>Sum Header</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumHeader <em>Sum Header</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Sum Header</em>'.
-   * @see SumHeader
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumHeader
    * @generated
    */
   EClass getSumHeader();
 
   /**
-   * Returns the meta object for the containment reference '{@link SumHeader#getExpression1 <em>Expression1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumHeader#getExpression1 <em>Expression1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression1</em>'.
-   * @see SumHeader#getExpression1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumHeader#getExpression1()
    * @see #getSumHeader()
    * @generated
    */
   EReference getSumHeader_Expression1();
 
   /**
-   * Returns the meta object for the containment reference '{@link SumHeader#getExpression2 <em>Expression2</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumHeader#getExpression2 <em>Expression2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression2</em>'.
-   * @see SumHeader#getExpression2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SumHeader#getExpression2()
    * @see #getSumHeader()
    * @generated
    */
   EReference getSumHeader_Expression2();
 
   /**
-   * Returns the meta object for class '{@link ValueContent <em>Value Content</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ValueContent <em>Value Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Value Content</em>'.
-   * @see ValueContent
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ValueContent
    * @generated
    */
   EClass getValueContent();
 
   /**
-   * Returns the meta object for the containment reference '{@link ValueContent#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ValueContent#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see ValueContent#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ValueContent#getExpression()
    * @see #getValueContent()
    * @generated
    */
   EReference getValueContent_Expression();
 
   /**
-   * Returns the meta object for class '{@link TableContent <em>Table Content</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent <em>Table Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Table Content</em>'.
-   * @see TableContent
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent
    * @generated
    */
   EClass getTableContent();
 
   /**
-   * Returns the meta object for the attribute '{@link TableContent#getTableName <em>Table Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getTableName <em>Table Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Table Name</em>'.
-   * @see TableContent#getTableName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getTableName()
    * @see #getTableContent()
    * @generated
    */
   EAttribute getTableContent_TableName();
 
   /**
-   * Returns the meta object for the attribute '{@link TableContent#getFrom <em>From</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getFrom <em>From</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>From</em>'.
-   * @see TableContent#getFrom()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getFrom()
    * @see #getTableContent()
    * @generated
    */
   EAttribute getTableContent_From();
 
   /**
-   * Returns the meta object for the containment reference '{@link TableContent#getGiven <em>Given</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getGiven <em>Given</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Given</em>'.
-   * @see TableContent#getGiven()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getGiven()
    * @see #getTableContent()
    * @generated
    */
   EReference getTableContent_Given();
 
   /**
-   * Returns the meta object for the attribute '{@link TableContent#getUse <em>Use</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getUse <em>Use</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Use</em>'.
-   * @see TableContent#getUse()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getUse()
    * @see #getTableContent()
    * @generated
    */
   EAttribute getTableContent_Use();
 
   /**
-   * Returns the meta object for the containment reference '{@link TableContent#getWhere <em>Where</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getWhere <em>Where</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Where</em>'.
-   * @see TableContent#getWhere()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TableContent#getWhere()
    * @see #getTableContent()
    * @generated
    */
   EReference getTableContent_Where();
 
   /**
-   * Returns the meta object for class '{@link WhereItems <em>Where Items</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WhereItems <em>Where Items</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Where Items</em>'.
-   * @see WhereItems
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WhereItems
    * @generated
    */
   EClass getWhereItems();
 
   /**
-   * Returns the meta object for the containment reference list '{@link WhereItems#getAssignment <em>Assignment</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.WhereItems#getAssignment <em>Assignment</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Assignment</em>'.
-   * @see WhereItems#getAssignment()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WhereItems#getAssignment()
    * @see #getWhereItems()
    * @generated
    */
   EReference getWhereItems_Assignment();
 
   /**
-   * Returns the meta object for class '{@link Assignment <em>Assignment</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment <em>Assignment</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Assignment</em>'.
-   * @see Assignment
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment
    * @generated
    */
   EClass getAssignment();
 
   /**
-   * Returns the meta object for the containment reference '{@link Assignment#getTerm <em>Term</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment#getTerm <em>Term</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Term</em>'.
-   * @see Assignment#getTerm()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment#getTerm()
    * @see #getAssignment()
    * @generated
    */
   EReference getAssignment_Term();
 
   /**
-   * Returns the meta object for the containment reference '{@link Assignment#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see Assignment#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Assignment#getExpression()
    * @see #getAssignment()
    * @generated
    */
   EReference getAssignment_Expression();
 
   /**
-   * Returns the meta object for class '{@link TermSimple <em>Term Simple</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TermSimple <em>Term Simple</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Term Simple</em>'.
-   * @see TermSimple
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TermSimple
    * @generated
    */
   EClass getTermSimple();
 
   /**
-   * Returns the meta object for class '{@link LowerAndOrUpper <em>Lower And Or Upper</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper <em>Lower And Or Upper</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Lower And Or Upper</em>'.
-   * @see LowerAndOrUpper
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper
    * @generated
    */
   EClass getLowerAndOrUpper();
 
   /**
-   * Returns the meta object for the attribute '{@link LowerAndOrUpper#getKind <em>Kind</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper#getKind <em>Kind</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Kind</em>'.
-   * @see LowerAndOrUpper#getKind()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper#getKind()
    * @see #getLowerAndOrUpper()
    * @generated
    */
   EAttribute getLowerAndOrUpper_Kind();
 
   /**
-   * Returns the meta object for the attribute '{@link LowerAndOrUpper#getUnits <em>Units</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper#getUnits <em>Units</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Units</em>'.
-   * @see LowerAndOrUpper#getUnits()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper#getUnits()
    * @see #getLowerAndOrUpper()
    * @generated
    */
   EAttribute getLowerAndOrUpper_Units();
 
   /**
-   * Returns the meta object for the containment reference '{@link LowerAndOrUpper#getUpper <em>Upper</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper#getUpper <em>Upper</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Upper</em>'.
-   * @see LowerAndOrUpper#getUpper()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper#getUpper()
    * @see #getLowerAndOrUpper()
    * @generated
    */
   EReference getLowerAndOrUpper_Upper();
 
   /**
-   * Returns the meta object for the containment reference '{@link LowerAndOrUpper#getLower <em>Lower</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper#getLower <em>Lower</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Lower</em>'.
-   * @see LowerAndOrUpper#getLower()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LowerAndOrUpper#getLower()
    * @see #getLowerAndOrUpper()
    * @generated
    */
   EReference getLowerAndOrUpper_Lower();
 
   /**
-   * Returns the meta object for class '{@link upperLower <em>upper Lower</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.upperLower <em>upper Lower</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>upper Lower</em>'.
-   * @see upperLower
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.upperLower
    * @generated
    */
   EClass getupperLower();
 
   /**
-   * Returns the meta object for class '{@link lowerUpper <em>lower Upper</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.lowerUpper <em>lower Upper</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>lower Upper</em>'.
-   * @see lowerUpper
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.lowerUpper
    * @generated
    */
   EClass getlowerUpper();
 
   /**
-   * Returns the meta object for class '{@link Upper <em>Upper</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Upper <em>Upper</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Upper</em>'.
-   * @see Upper
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Upper
    * @generated
    */
   EClass getUpper();
 
   /**
-   * Returns the meta object for the containment reference '{@link Upper#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Upper#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see Upper#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Upper#getExpression()
    * @see #getUpper()
    * @generated
    */
   EReference getUpper_Expression();
 
   /**
-   * Returns the meta object for class '{@link Lower <em>Lower</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Lower <em>Lower</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Lower</em>'.
-   * @see Lower
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Lower
    * @generated
    */
   EClass getLower();
 
   /**
-   * Returns the meta object for the containment reference '{@link Lower#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Lower#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see Lower#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Lower#getExpression()
    * @see #getLower()
    * @generated
    */
   EReference getLower_Expression();
 
   /**
-   * Returns the meta object for class '{@link Goal <em>Goal</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Goal <em>Goal</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Goal</em>'.
-   * @see Goal
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Goal
    * @generated
    */
   EClass getGoal();
 
   /**
-   * Returns the meta object for the containment reference '{@link Goal#getTa <em>Ta</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Goal#getTa <em>Ta</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Ta</em>'.
-   * @see Goal#getTa()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Goal#getTa()
    * @see #getGoal()
    * @generated
    */
   EReference getGoal_Ta();
 
   /**
-   * Returns the meta object for the attribute '{@link Goal#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Goal#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see Goal#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Goal#getName()
    * @see #getGoal()
    * @generated
    */
   EAttribute getGoal_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link Goal#getDefinition <em>Definition</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Goal#getDefinition <em>Definition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Definition</em>'.
-   * @see Goal#getDefinition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Goal#getDefinition()
    * @see #getGoal()
    * @generated
    */
   EReference getGoal_Definition();
 
   /**
-   * Returns the meta object for class '{@link GoalCase <em>Goal Case</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase <em>Goal Case</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Goal Case</em>'.
-   * @see GoalCase
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase
    * @generated
    */
   EClass getGoalCase();
 
   /**
-   * Returns the meta object for the containment reference '{@link GoalCase#getLhs <em>Lhs</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getLhs <em>Lhs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Lhs</em>'.
-   * @see GoalCase#getLhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getLhs()
    * @see #getGoalCase()
    * @generated
    */
   EReference getGoalCase_Lhs();
 
   /**
-   * Returns the meta object for the containment reference '{@link GoalCase#getContent <em>Content</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getContent <em>Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Content</em>'.
-   * @see GoalCase#getContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getContent()
    * @see #getGoalCase()
    * @generated
    */
   EReference getGoalCase_Content();
 
   /**
-   * Returns the meta object for the containment reference list '{@link GoalCase#getCaseContent <em>Case Content</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getCaseContent <em>Case Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Case Content</em>'.
-   * @see GoalCase#getCaseContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCase#getCaseContent()
    * @see #getGoalCase()
    * @generated
    */
   EReference getGoalCase_CaseContent();
 
   /**
-   * Returns the meta object for class '{@link GoalCaseContent <em>Goal Case Content</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent <em>Goal Case Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Goal Case Content</em>'.
-   * @see GoalCaseContent
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent
    * @generated
    */
   EClass getGoalCaseContent();
 
   /**
-   * Returns the meta object for the attribute '{@link GoalCaseContent#getCaseName <em>Case Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getCaseName <em>Case Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Case Name</em>'.
-   * @see GoalCaseContent#getCaseName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getCaseName()
    * @see #getGoalCaseContent()
    * @generated
    */
   EAttribute getGoalCaseContent_CaseName();
 
   /**
-   * Returns the meta object for the containment reference '{@link GoalCaseContent#getCondition <em>Condition</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getCondition <em>Condition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Condition</em>'.
-   * @see GoalCaseContent#getCondition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getCondition()
    * @see #getGoalCaseContent()
    * @generated
    */
   EReference getGoalCaseContent_Condition();
 
   /**
-   * Returns the meta object for the containment reference '{@link GoalCaseContent#getRhs <em>Rhs</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getRhs <em>Rhs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Rhs</em>'.
-   * @see GoalCaseContent#getRhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getRhs()
    * @see #getGoalCaseContent()
    * @generated
    */
   EReference getGoalCaseContent_Rhs();
 
   /**
-   * Returns the meta object for the containment reference '{@link GoalCaseContent#getSubContent <em>Sub Content</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getSubContent <em>Sub Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Sub Content</em>'.
-   * @see GoalCaseContent#getSubContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalCaseContent#getSubContent()
    * @see #getGoalCaseContent()
    * @generated
    */
   EReference getGoalCaseContent_SubContent();
 
   /**
-   * Returns the meta object for class '{@link GoalNoCaseContent <em>Goal No Case Content</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalNoCaseContent <em>Goal No Case Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Goal No Case Content</em>'.
-   * @see GoalNoCaseContent
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalNoCaseContent
    * @generated
    */
   EClass getGoalNoCaseContent();
 
   /**
-   * Returns the meta object for the containment reference '{@link GoalNoCaseContent#getRhs <em>Rhs</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalNoCaseContent#getRhs <em>Rhs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Rhs</em>'.
-   * @see GoalNoCaseContent#getRhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalNoCaseContent#getRhs()
    * @see #getGoalNoCaseContent()
    * @generated
    */
   EReference getGoalNoCaseContent_Rhs();
 
   /**
-   * Returns the meta object for the containment reference '{@link GoalNoCaseContent#getSubContent <em>Sub Content</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalNoCaseContent#getSubContent <em>Sub Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Sub Content</em>'.
-   * @see GoalNoCaseContent#getSubContent()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalNoCaseContent#getSubContent()
    * @see #getGoalNoCaseContent()
    * @generated
    */
   EReference getGoalNoCaseContent_SubContent();
 
   /**
-   * Returns the meta object for class '{@link SubContent <em>Sub Content</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SubContent <em>Sub Content</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Sub Content</em>'.
-   * @see SubContent
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SubContent
    * @generated
    */
   EClass getSubContent();
 
   /**
-   * Returns the meta object for the containment reference '{@link SubContent#getGt <em>Gt</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SubContent#getGt <em>Gt</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Gt</em>'.
-   * @see SubContent#getGt()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SubContent#getGt()
    * @see #getSubContent()
    * @generated
    */
   EReference getSubContent_Gt();
 
   /**
-   * Returns the meta object for the containment reference '{@link SubContent#getLt <em>Lt</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SubContent#getLt <em>Lt</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Lt</em>'.
-   * @see SubContent#getLt()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SubContent#getLt()
    * @see #getSubContent()
    * @generated
    */
   EReference getSubContent_Lt();
 
   /**
-   * Returns the meta object for class '{@link LhsGtRhs <em>Lhs Gt Rhs</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsGtRhs <em>Lhs Gt Rhs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Lhs Gt Rhs</em>'.
-   * @see LhsGtRhs
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsGtRhs
    * @generated
    */
   EClass getLhsGtRhs();
 
   /**
-   * Returns the meta object for the containment reference '{@link LhsGtRhs#getPenalty <em>Penalty</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsGtRhs#getPenalty <em>Penalty</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Penalty</em>'.
-   * @see LhsGtRhs#getPenalty()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsGtRhs#getPenalty()
    * @see #getLhsGtRhs()
    * @generated
    */
   EReference getLhsGtRhs_Penalty();
 
   /**
-   * Returns the meta object for class '{@link LhsLtRhs <em>Lhs Lt Rhs</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsLtRhs <em>Lhs Lt Rhs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Lhs Lt Rhs</em>'.
-   * @see LhsLtRhs
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsLtRhs
    * @generated
    */
   EClass getLhsLtRhs();
 
   /**
-   * Returns the meta object for the containment reference '{@link LhsLtRhs#getPenalty <em>Penalty</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsLtRhs#getPenalty <em>Penalty</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Penalty</em>'.
-   * @see LhsLtRhs#getPenalty()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsLtRhs#getPenalty()
    * @see #getLhsLtRhs()
    * @generated
    */
   EReference getLhsLtRhs_Penalty();
 
   /**
-   * Returns the meta object for class '{@link Penalty <em>Penalty</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Penalty <em>Penalty</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Penalty</em>'.
-   * @see Penalty
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Penalty
    * @generated
    */
   EClass getPenalty();
 
   /**
-   * Returns the meta object for the containment reference '{@link Penalty#getExpression <em>Expression</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Penalty#getExpression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Expression</em>'.
-   * @see Penalty#getExpression()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Penalty#getExpression()
    * @see #getPenalty()
    * @generated
    */
   EReference getPenalty_Expression();
 
   /**
-   * Returns the meta object for class '{@link GoalSimple <em>Goal Simple</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalSimple <em>Goal Simple</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Goal Simple</em>'.
-   * @see GoalSimple
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalSimple
    * @generated
    */
   EClass getGoalSimple();
 
   /**
-   * Returns the meta object for the containment reference '{@link GoalSimple#getConstraint <em>Constraint</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalSimple#getConstraint <em>Constraint</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Constraint</em>'.
-   * @see GoalSimple#getConstraint()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.GoalSimple#getConstraint()
    * @see #getGoalSimple()
    * @generated
    */
   EReference getGoalSimple_Constraint();
 
   /**
-   * Returns the meta object for class '{@link Constraint <em>Constraint</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint <em>Constraint</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Constraint</em>'.
-   * @see Constraint
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint
    * @generated
    */
   EClass getConstraint();
 
   /**
-   * Returns the meta object for the containment reference '{@link Constraint#getLhs <em>Lhs</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getLhs <em>Lhs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Lhs</em>'.
-   * @see Constraint#getLhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getLhs()
    * @see #getConstraint()
    * @generated
    */
   EReference getConstraint_Lhs();
 
   /**
-   * Returns the meta object for the attribute '{@link Constraint#getOperator <em>Operator</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getOperator <em>Operator</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Operator</em>'.
-   * @see Constraint#getOperator()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getOperator()
    * @see #getConstraint()
    * @generated
    */
   EAttribute getConstraint_Operator();
 
   /**
-   * Returns the meta object for the containment reference '{@link Constraint#getRhs <em>Rhs</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getRhs <em>Rhs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Rhs</em>'.
-   * @see Constraint#getRhs()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Constraint#getRhs()
    * @see #getConstraint()
    * @generated
    */
   EReference getConstraint_Rhs();
 
   /**
-   * Returns the meta object for class '{@link Group <em>Group</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Group <em>Group</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Group</em>'.
-   * @see Group
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Group
    * @generated
    */
   EClass getGroup();
 
   /**
-   * Returns the meta object for the attribute '{@link Group#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Group#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see Group#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Group#getName()
    * @see #getGroup()
    * @generated
    */
   EAttribute getGroup_Name();
 
   /**
-   * Returns the meta object for the containment reference list '{@link Group#getPattern <em>Pattern</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Group#getPattern <em>Pattern</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Pattern</em>'.
-   * @see Group#getPattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Group#getPattern()
    * @see #getGroup()
    * @generated
    */
   EReference getGroup_Pattern();
 
   /**
-   * Returns the meta object for the containment reference list '{@link Group#getIfincitems <em>Ifincitems</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Group#getIfincitems <em>Ifincitems</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Ifincitems</em>'.
-   * @see Group#getIfincitems()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Group#getIfincitems()
    * @see #getGroup()
    * @generated
    */
   EReference getGroup_Ifincitems();
 
   /**
-   * Returns the meta object for class '{@link Model <em>Model</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Model <em>Model</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Model</em>'.
-   * @see Model
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Model
    * @generated
    */
   EClass getModel();
 
   /**
-   * Returns the meta object for the attribute '{@link Model#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Model#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see Model#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Model#getName()
    * @see #getModel()
    * @generated
    */
   EAttribute getModel_Name();
 
   /**
-   * Returns the meta object for the containment reference list '{@link Model#getPattern <em>Pattern</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Model#getPattern <em>Pattern</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Pattern</em>'.
-   * @see Model#getPattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Model#getPattern()
    * @see #getModel()
    * @generated
    */
   EReference getModel_Pattern();
 
   /**
-   * Returns the meta object for the containment reference list '{@link Model#getIfincitems <em>Ifincitems</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Model#getIfincitems <em>Ifincitems</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Ifincitems</em>'.
-   * @see Model#getIfincitems()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Model#getIfincitems()
    * @see #getModel()
    * @generated
    */
   EReference getModel_Ifincitems();
 
   /**
-   * Returns the meta object for class '{@link Initial <em>Initial</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Initial <em>Initial</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Initial</em>'.
-   * @see Initial
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Initial
    * @generated
    */
   EClass getInitial();
 
   /**
-   * Returns the meta object for the containment reference list '{@link Initial#getPattern <em>Pattern</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Initial#getPattern <em>Pattern</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>Pattern</em>'.
-   * @see Initial#getPattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Initial#getPattern()
    * @see #getInitial()
    * @generated
    */
   EReference getInitial_Pattern();
 
   /**
-   * Returns the meta object for class '{@link Sequence <em>Sequence</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence <em>Sequence</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Sequence</em>'.
-   * @see Sequence
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence
    * @generated
    */
   EClass getSequence();
 
   /**
-   * Returns the meta object for the attribute '{@link Sequence#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see Sequence#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence#getName()
    * @see #getSequence()
    * @generated
    */
   EAttribute getSequence_Name();
 
   /**
-   * Returns the meta object for the reference '{@link Sequence#getModel <em>Model</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence#getModel <em>Model</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Model</em>'.
-   * @see Sequence#getModel()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence#getModel()
    * @see #getSequence()
    * @generated
    */
   EReference getSequence_Model();
 
   /**
-   * Returns the meta object for the containment reference '{@link Sequence#getCondition <em>Condition</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence#getCondition <em>Condition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Condition</em>'.
-   * @see Sequence#getCondition()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence#getCondition()
    * @see #getSequence()
    * @generated
    */
   EReference getSequence_Condition();
 
   /**
-   * Returns the meta object for the attribute '{@link Sequence#getOrder <em>Order</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence#getOrder <em>Order</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Order</em>'.
-   * @see Sequence#getOrder()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Sequence#getOrder()
    * @see #getSequence()
    * @generated
    */
   EAttribute getSequence_Order();
 
   /**
-   * Returns the meta object for class '{@link Condition <em>Condition</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Condition <em>Condition</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Condition</em>'.
-   * @see Condition
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Condition
    * @generated
    */
   EClass getCondition();
 
   /**
-   * Returns the meta object for the containment reference '{@link Condition#getLogical <em>Logical</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Condition#getLogical <em>Logical</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>Logical</em>'.
-   * @see Condition#getLogical()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Condition#getLogical()
    * @see #getCondition()
    * @generated
    */
   EReference getCondition_Logical();
 
   /**
-   * Returns the meta object for class '{@link LogicalExpression <em>Logical Expression</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression <em>Logical Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Logical Expression</em>'.
-   * @see LogicalExpression
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression
    * @generated
    */
   EClass getLogicalExpression();
 
   /**
-   * Returns the meta object for the containment reference '{@link LogicalExpression#getC1 <em>C1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression#getC1 <em>C1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>C1</em>'.
-   * @see LogicalExpression#getC1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression#getC1()
    * @see #getLogicalExpression()
    * @generated
    */
   EReference getLogicalExpression_C1();
 
   /**
-   * Returns the meta object for the containment reference list '{@link LogicalExpression#getC2 <em>C2</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression#getC2 <em>C2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>C2</em>'.
-   * @see LogicalExpression#getC2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogicalExpression#getC2()
    * @see #getLogicalExpression()
    * @generated
    */
   EReference getLogicalExpression_C2();
 
   /**
-   * Returns the meta object for class '{@link ConditionalUnary <em>Conditional Unary</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalUnary <em>Conditional Unary</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Conditional Unary</em>'.
-   * @see ConditionalUnary
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalUnary
    * @generated
    */
   EClass getConditionalUnary();
 
   /**
-   * Returns the meta object for class '{@link ConditionalTerm <em>Conditional Term</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalTerm <em>Conditional Term</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Conditional Term</em>'.
-   * @see ConditionalTerm
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalTerm
    * @generated
    */
   EClass getConditionalTerm();
 
   /**
-   * Returns the meta object for the containment reference '{@link ConditionalTerm#getE1 <em>E1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalTerm#getE1 <em>E1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E1</em>'.
-   * @see ConditionalTerm#getE1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalTerm#getE1()
    * @see #getConditionalTerm()
    * @generated
    */
   EReference getConditionalTerm_E1();
 
   /**
-   * Returns the meta object for the containment reference '{@link ConditionalTerm#getE2 <em>E2</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalTerm#getE2 <em>E2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E2</em>'.
-   * @see ConditionalTerm#getE2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ConditionalTerm#getE2()
    * @see #getConditionalTerm()
    * @generated
    */
   EReference getConditionalTerm_E2();
 
   /**
-   * Returns the meta object for class '{@link Expression <em>Expression</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Expression <em>Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Expression</em>'.
-   * @see Expression
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Expression
    * @generated
    */
   EClass getExpression();
 
   /**
-   * Returns the meta object for class '{@link Add <em>Add</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add <em>Add</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Add</em>'.
-   * @see Add
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add
    * @generated
    */
   EClass getAdd();
 
   /**
-   * Returns the meta object for the containment reference '{@link Add#getM1 <em>M1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add#getM1 <em>M1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>M1</em>'.
-   * @see Add#getM1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add#getM1()
    * @see #getAdd()
    * @generated
    */
   EReference getAdd_M1();
 
   /**
-   * Returns the meta object for the containment reference list '{@link Add#getM2 <em>M2</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add#getM2 <em>M2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>M2</em>'.
-   * @see Add#getM2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Add#getM2()
    * @see #getAdd()
    * @generated
    */
   EReference getAdd_M2();
 
   /**
-   * Returns the meta object for class '{@link Multiply <em>Multiply</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Multiply <em>Multiply</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Multiply</em>'.
-   * @see Multiply
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Multiply
    * @generated
    */
   EClass getMultiply();
 
   /**
-   * Returns the meta object for the containment reference '{@link Multiply#getU1 <em>U1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Multiply#getU1 <em>U1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>U1</em>'.
-   * @see Multiply#getU1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Multiply#getU1()
    * @see #getMultiply()
    * @generated
    */
   EReference getMultiply_U1();
 
   /**
-   * Returns the meta object for the containment reference list '{@link Multiply#getU2 <em>U2</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Multiply#getU2 <em>U2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>U2</em>'.
-   * @see Multiply#getU2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Multiply#getU2()
    * @see #getMultiply()
    * @generated
    */
   EReference getMultiply_U2();
 
   /**
-   * Returns the meta object for class '{@link Unary <em>Unary</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Unary <em>Unary</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Unary</em>'.
-   * @see Unary
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Unary
    * @generated
    */
   EClass getUnary();
 
   /**
-   * Returns the meta object for class '{@link Term <em>Term</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term <em>Term</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Term</em>'.
-   * @see Term
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term
    * @generated
    */
   EClass getTerm();
 
   /**
-   * Returns the meta object for the reference '{@link Term#getRef <em>Ref</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getRef <em>Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref</em>'.
-   * @see Term#getRef()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getRef()
    * @see #getTerm()
    * @generated
    */
   EReference getTerm_Ref();
 
   /**
-   * Returns the meta object for the attribute '{@link Term#getN <em>N</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getN <em>N</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>N</em>'.
-   * @see Term#getN()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getN()
    * @see #getTerm()
    * @generated
    */
   EAttribute getTerm_N();
 
   /**
-   * Returns the meta object for the containment reference '{@link Term#getF <em>F</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getF <em>F</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>F</em>'.
-   * @see Term#getF()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getF()
    * @see #getTerm()
    * @generated
    */
   EReference getTerm_F();
 
   /**
-   * Returns the meta object for the containment reference '{@link Term#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see Term#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getE()
    * @see #getTerm()
    * @generated
    */
   EReference getTerm_E();
 
   /**
-   * Returns the meta object for the attribute '{@link Term#getS <em>S</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getS <em>S</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>S</em>'.
-   * @see Term#getS()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Term#getS()
    * @see #getTerm()
    * @generated
    */
   EAttribute getTerm_S();
 
   /**
-   * Returns the meta object for class '{@link Function <em>Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Function <em>Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Function</em>'.
-   * @see Function
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Function
    * @generated
    */
   EClass getFunction();
 
   /**
-   * Returns the meta object for class '{@link ExternalFunction1 <em>External Function1</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1 <em>External Function1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>External Function1</em>'.
-   * @see ExternalFunction1
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1
    * @generated
    */
   EClass getExternalFunction1();
 
   /**
-   * Returns the meta object for the reference '{@link ExternalFunction1#getRef <em>Ref</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1#getRef <em>Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref</em>'.
-   * @see ExternalFunction1#getRef()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1#getRef()
    * @see #getExternalFunction1()
    * @generated
    */
   EReference getExternalFunction1_Ref();
 
   /**
-   * Returns the meta object for the containment reference '{@link ExternalFunction1#getE1 <em>E1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1#getE1 <em>E1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E1</em>'.
-   * @see ExternalFunction1#getE1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1#getE1()
    * @see #getExternalFunction1()
    * @generated
    */
   EReference getExternalFunction1_E1();
 
   /**
-   * Returns the meta object for the containment reference list '{@link ExternalFunction1#getE2 <em>E2</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1#getE2 <em>E2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>E2</em>'.
-   * @see ExternalFunction1#getE2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1#getE2()
    * @see #getExternalFunction1()
    * @generated
    */
   EReference getExternalFunction1_E2();
 
   /**
-   * Returns the meta object for the containment reference '{@link ExternalFunction1#getE0 <em>E0</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1#getE0 <em>E0</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E0</em>'.
-   * @see ExternalFunction1#getE0()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction1#getE0()
    * @see #getExternalFunction1()
    * @generated
    */
   EReference getExternalFunction1_E0();
 
   /**
-   * Returns the meta object for class '{@link ExternalFunction2 <em>External Function2</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction2 <em>External Function2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>External Function2</em>'.
-   * @see ExternalFunction2
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction2
    * @generated
    */
   EClass getExternalFunction2();
 
   /**
-   * Returns the meta object for the reference '{@link ExternalFunction2#getRef <em>Ref</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction2#getRef <em>Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref</em>'.
-   * @see ExternalFunction2#getRef()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ExternalFunction2#getRef()
    * @see #getExternalFunction2()
    * @generated
    */
   EReference getExternalFunction2_Ref();
 
   /**
-   * Returns the meta object for class '{@link TrunkTimeArray <em>Trunk Time Array</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArray <em>Trunk Time Array</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Trunk Time Array</em>'.
-   * @see TrunkTimeArray
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArray
    * @generated
    */
   EClass getTrunkTimeArray();
 
   /**
-   * Returns the meta object for the reference '{@link TrunkTimeArray#getRef <em>Ref</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArray#getRef <em>Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref</em>'.
-   * @see TrunkTimeArray#getRef()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArray#getRef()
    * @see #getTrunkTimeArray()
    * @generated
    */
   EReference getTrunkTimeArray_Ref();
 
   /**
-   * Returns the meta object for the containment reference '{@link TrunkTimeArray#getT1 <em>T1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArray#getT1 <em>T1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>T1</em>'.
-   * @see TrunkTimeArray#getT1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArray#getT1()
    * @see #getTrunkTimeArray()
    * @generated
    */
   EReference getTrunkTimeArray_T1();
 
   /**
-   * Returns the meta object for the containment reference '{@link TrunkTimeArray#getT2 <em>T2</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArray#getT2 <em>T2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>T2</em>'.
-   * @see TrunkTimeArray#getT2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArray#getT2()
    * @see #getTrunkTimeArray()
    * @generated
    */
   EReference getTrunkTimeArray_T2();
 
   /**
-   * Returns the meta object for class '{@link TrunkTimeArrayIndex <em>Trunk Time Array Index</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArrayIndex <em>Trunk Time Array Index</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Trunk Time Array Index</em>'.
-   * @see TrunkTimeArrayIndex
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArrayIndex
    * @generated
    */
   EClass getTrunkTimeArrayIndex();
 
   /**
-   * Returns the meta object for the reference '{@link TrunkTimeArrayIndex#getRef <em>Ref</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArrayIndex#getRef <em>Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref</em>'.
-   * @see TrunkTimeArrayIndex#getRef()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TrunkTimeArrayIndex#getRef()
    * @see #getTrunkTimeArrayIndex()
    * @generated
    */
   EReference getTrunkTimeArrayIndex_Ref();
 
   /**
-   * Returns the meta object for class '{@link MaxFunction <em>Max Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction <em>Max Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Max Function</em>'.
-   * @see MaxFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction
    * @generated
    */
   EClass getMaxFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link MaxFunction#getE1 <em>E1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction#getE1 <em>E1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E1</em>'.
-   * @see MaxFunction#getE1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction#getE1()
    * @see #getMaxFunction()
    * @generated
    */
   EReference getMaxFunction_E1();
 
   /**
-   * Returns the meta object for the containment reference list '{@link MaxFunction#getE2 <em>E2</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction#getE2 <em>E2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>E2</em>'.
-   * @see MaxFunction#getE2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.MaxFunction#getE2()
    * @see #getMaxFunction()
    * @generated
    */
   EReference getMaxFunction_E2();
 
   /**
-   * Returns the meta object for class '{@link MinFunction <em>Min Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MinFunction <em>Min Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Min Function</em>'.
-   * @see MinFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.MinFunction
    * @generated
    */
   EClass getMinFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link MinFunction#getE1 <em>E1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MinFunction#getE1 <em>E1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E1</em>'.
-   * @see MinFunction#getE1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.MinFunction#getE1()
    * @see #getMinFunction()
    * @generated
    */
   EReference getMinFunction_E1();
 
   /**
-   * Returns the meta object for the containment reference list '{@link MinFunction#getE2 <em>E2</em>}'.
+   * Returns the meta object for the containment reference list '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.MinFunction#getE2 <em>E2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference list '<em>E2</em>'.
-   * @see MinFunction#getE2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.MinFunction#getE2()
    * @see #getMinFunction()
    * @generated
    */
   EReference getMinFunction_E2();
 
   /**
-   * Returns the meta object for class '{@link ModFunction <em>Mod Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ModFunction <em>Mod Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Mod Function</em>'.
-   * @see ModFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ModFunction
    * @generated
    */
   EClass getModFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link ModFunction#getE1 <em>E1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ModFunction#getE1 <em>E1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E1</em>'.
-   * @see ModFunction#getE1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ModFunction#getE1()
    * @see #getModFunction()
    * @generated
    */
   EReference getModFunction_E1();
 
   /**
-   * Returns the meta object for the containment reference '{@link ModFunction#getE2 <em>E2</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.ModFunction#getE2 <em>E2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E2</em>'.
-   * @see ModFunction#getE2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.ModFunction#getE2()
    * @see #getModFunction()
    * @generated
    */
   EReference getModFunction_E2();
 
   /**
-   * Returns the meta object for class '{@link IntFunction <em>Int Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IntFunction <em>Int Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Int Function</em>'.
-   * @see IntFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IntFunction
    * @generated
    */
   EClass getIntFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link IntFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IntFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see IntFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IntFunction#getE()
    * @see #getIntFunction()
    * @generated
    */
   EReference getIntFunction_E();
 
   /**
-   * Returns the meta object for class '{@link AbsFunction <em>Abs Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AbsFunction <em>Abs Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Abs Function</em>'.
-   * @see AbsFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AbsFunction
    * @generated
    */
   EClass getAbsFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link AbsFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AbsFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see AbsFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AbsFunction#getE()
    * @see #getAbsFunction()
    * @generated
    */
   EReference getAbsFunction_E();
 
   /**
-   * Returns the meta object for class '{@link RoundFunction <em>Round Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.RoundFunction <em>Round Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Round Function</em>'.
-   * @see RoundFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.RoundFunction
    * @generated
    */
   EClass getRoundFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link RoundFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.RoundFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see RoundFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.RoundFunction#getE()
    * @see #getRoundFunction()
    * @generated
    */
   EReference getRoundFunction_E();
 
   /**
-   * Returns the meta object for class '{@link PowFunction <em>Pow Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.PowFunction <em>Pow Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Pow Function</em>'.
-   * @see PowFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.PowFunction
    * @generated
    */
   EClass getPowFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link PowFunction#getE1 <em>E1</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.PowFunction#getE1 <em>E1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E1</em>'.
-   * @see PowFunction#getE1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.PowFunction#getE1()
    * @see #getPowFunction()
    * @generated
    */
   EReference getPowFunction_E1();
 
   /**
-   * Returns the meta object for the containment reference '{@link PowFunction#getE2 <em>E2</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.PowFunction#getE2 <em>E2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E2</em>'.
-   * @see PowFunction#getE2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.PowFunction#getE2()
    * @see #getPowFunction()
    * @generated
    */
   EReference getPowFunction_E2();
 
   /**
-   * Returns the meta object for class '{@link LogFunction <em>Log Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogFunction <em>Log Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Log Function</em>'.
-   * @see LogFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogFunction
    * @generated
    */
   EClass getLogFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link LogFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see LogFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.LogFunction#getE()
    * @see #getLogFunction()
    * @generated
    */
   EReference getLogFunction_E();
 
   /**
-   * Returns the meta object for class '{@link SinFunction <em>Sin Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SinFunction <em>Sin Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Sin Function</em>'.
-   * @see SinFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SinFunction
    * @generated
    */
   EClass getSinFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link SinFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.SinFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see SinFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.SinFunction#getE()
    * @see #getSinFunction()
    * @generated
    */
   EReference getSinFunction_E();
 
   /**
-   * Returns the meta object for class '{@link CosFunction <em>Cos Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CosFunction <em>Cos Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Cos Function</em>'.
-   * @see CosFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.CosFunction
    * @generated
    */
   EClass getCosFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link CosFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CosFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see CosFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.CosFunction#getE()
    * @see #getCosFunction()
    * @generated
    */
   EReference getCosFunction_E();
 
   /**
-   * Returns the meta object for class '{@link TanFunction <em>Tan Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TanFunction <em>Tan Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Tan Function</em>'.
-   * @see TanFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TanFunction
    * @generated
    */
   EClass getTanFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link TanFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.TanFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see TanFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.TanFunction#getE()
    * @see #getTanFunction()
    * @generated
    */
   EReference getTanFunction_E();
 
   /**
-   * Returns the meta object for class '{@link CotFunction <em>Cot Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CotFunction <em>Cot Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Cot Function</em>'.
-   * @see CotFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.CotFunction
    * @generated
    */
   EClass getCotFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link CotFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.CotFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see CotFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.CotFunction#getE()
    * @see #getCotFunction()
    * @generated
    */
   EReference getCotFunction_E();
 
   /**
-   * Returns the meta object for class '{@link AsinFunction <em>Asin Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AsinFunction <em>Asin Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Asin Function</em>'.
-   * @see AsinFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AsinFunction
    * @generated
    */
   EClass getAsinFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link AsinFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AsinFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see AsinFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AsinFunction#getE()
    * @see #getAsinFunction()
    * @generated
    */
   EReference getAsinFunction_E();
 
   /**
-   * Returns the meta object for class '{@link AcosFunction <em>Acos Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AcosFunction <em>Acos Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Acos Function</em>'.
-   * @see AcosFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AcosFunction
    * @generated
    */
   EClass getAcosFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link AcosFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AcosFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see AcosFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AcosFunction#getE()
    * @see #getAcosFunction()
    * @generated
    */
   EReference getAcosFunction_E();
 
   /**
-   * Returns the meta object for class '{@link AtanFunction <em>Atan Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AtanFunction <em>Atan Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Atan Function</em>'.
-   * @see AtanFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AtanFunction
    * @generated
    */
   EClass getAtanFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link AtanFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AtanFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see AtanFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AtanFunction#getE()
    * @see #getAtanFunction()
    * @generated
    */
   EReference getAtanFunction_E();
 
   /**
-   * Returns the meta object for class '{@link AcotFunction <em>Acot Function</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AcotFunction <em>Acot Function</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Acot Function</em>'.
-   * @see AcotFunction
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AcotFunction
    * @generated
    */
   EClass getAcotFunction();
 
   /**
-   * Returns the meta object for the containment reference '{@link AcotFunction#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.AcotFunction#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see AcotFunction#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.AcotFunction#getE()
    * @see #getAcotFunction()
    * @generated
    */
   EReference getAcotFunction_E();
 
   /**
-   * Returns the meta object for class '{@link VarModel <em>Var Model</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel <em>Var Model</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Var Model</em>'.
-   * @see VarModel
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel
    * @generated
    */
   EClass getVarModel();
 
   /**
-   * Returns the meta object for the reference '{@link VarModel#getRef1 <em>Ref1</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel#getRef1 <em>Ref1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref1</em>'.
-   * @see VarModel#getRef1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel#getRef1()
    * @see #getVarModel()
    * @generated
    */
   EReference getVarModel_Ref1();
 
   /**
-   * Returns the meta object for the reference '{@link VarModel#getRef2 <em>Ref2</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel#getRef2 <em>Ref2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref2</em>'.
-   * @see VarModel#getRef2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModel#getRef2()
    * @see #getVarModel()
    * @generated
    */
   EReference getVarModel_Ref2();
 
   /**
-   * Returns the meta object for class '{@link VarModelStep <em>Var Model Step</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep <em>Var Model Step</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Var Model Step</em>'.
-   * @see VarModelStep
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep
    * @generated
    */
   EClass getVarModelStep();
 
   /**
-   * Returns the meta object for the reference '{@link VarModelStep#getRef1 <em>Ref1</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getRef1 <em>Ref1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref1</em>'.
-   * @see VarModelStep#getRef1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getRef1()
    * @see #getVarModelStep()
    * @generated
    */
   EReference getVarModelStep_Ref1();
 
   /**
-   * Returns the meta object for the reference '{@link VarModelStep#getRef2 <em>Ref2</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getRef2 <em>Ref2</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref2</em>'.
-   * @see VarModelStep#getRef2()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getRef2()
    * @see #getVarModelStep()
    * @generated
    */
   EReference getVarModelStep_Ref2();
 
   /**
-   * Returns the meta object for the containment reference '{@link VarModelStep#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see VarModelStep#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelStep#getE()
    * @see #getVarModelStep()
    * @generated
    */
   EReference getVarModelStep_E();
 
   /**
-   * Returns the meta object for class '{@link VarModelIndex <em>Var Model Index</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndex <em>Var Model Index</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Var Model Index</em>'.
-   * @see VarModelIndex
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndex
    * @generated
    */
   EClass getVarModelIndex();
 
   /**
-   * Returns the meta object for the reference '{@link VarModelIndex#getRef1 <em>Ref1</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndex#getRef1 <em>Ref1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref1</em>'.
-   * @see VarModelIndex#getRef1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndex#getRef1()
    * @see #getVarModelIndex()
    * @generated
    */
   EReference getVarModelIndex_Ref1();
 
   /**
-   * Returns the meta object for class '{@link VarModelIndexStep <em>Var Model Index Step</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep <em>Var Model Index Step</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Var Model Index Step</em>'.
-   * @see VarModelIndexStep
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep
    * @generated
    */
   EClass getVarModelIndexStep();
 
   /**
-   * Returns the meta object for the reference '{@link VarModelIndexStep#getRef1 <em>Ref1</em>}'.
+   * Returns the meta object for the reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep#getRef1 <em>Ref1</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the reference '<em>Ref1</em>'.
-   * @see VarModelIndexStep#getRef1()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep#getRef1()
    * @see #getVarModelIndexStep()
    * @generated
    */
   EReference getVarModelIndexStep_Ref1();
 
   /**
-   * Returns the meta object for the containment reference '{@link VarModelIndexStep#getE <em>E</em>}'.
+   * Returns the meta object for the containment reference '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep#getE <em>E</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the containment reference '<em>E</em>'.
-   * @see VarModelIndexStep#getE()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.VarModelIndexStep#getE()
    * @see #getVarModelIndexStep()
    * @generated
    */
   EReference getVarModelIndexStep_E();
 
   /**
-   * Returns the meta object for class '{@link Ident <em>Ident</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Ident <em>Ident</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Ident</em>'.
-   * @see Ident
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Ident
    * @generated
    */
   EClass getIdent();
 
   /**
-   * Returns the meta object for the attribute '{@link Ident#getName <em>Name</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Ident#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Name</em>'.
-   * @see Ident#getName()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.Ident#getName()
    * @see #getIdent()
    * @generated
    */
   EAttribute getIdent_Name();
 
   /**
-   * Returns the meta object for class '{@link IncludeFile <em>Include File</em>}'.
+   * Returns the meta object for class '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IncludeFile <em>Include File</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for class '<em>Include File</em>'.
-   * @see IncludeFile
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IncludeFile
    * @generated
    */
   EClass getIncludeFile();
 
   /**
-   * Returns the meta object for the attribute '{@link IncludeFile#getFile <em>File</em>}'.
+   * Returns the meta object for the attribute '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IncludeFile#getFile <em>File</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>File</em>'.
-   * @see IncludeFile#getFile()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.IncludeFile#getFile()
    * @see #getIncludeFile()
    * @generated
    */

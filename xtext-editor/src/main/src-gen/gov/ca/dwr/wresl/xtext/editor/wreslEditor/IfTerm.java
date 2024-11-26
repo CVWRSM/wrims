@@ -12,14 +12,14 @@ import org.eclipse.emf.common.util.EList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link IfTerm#getElseifterm <em>Elseifterm</em>}</li>
- *   <li>{@link IfTerm#getElseterm <em>Elseterm</em>}</li>
- *   <li>{@link IfTerm#getLogical <em>Logical</em>}</li>
- *   <li>{@link IfTerm#getPattern <em>Pattern</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getElseifterm <em>Elseifterm</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getElseterm <em>Elseterm</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getLogical <em>Logical</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getPattern <em>Pattern</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getIfTerm()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIfTerm()
  * @model
  * @generated
  */
@@ -35,14 +35,14 @@ public interface IfTerm extends IfIncItems
    * <!-- end-user-doc -->
    * @return the value of the '<em>Elseifterm</em>' containment reference.
    * @see #setElseifterm(ElseIfTerm)
-   * @see WreslEditorPackage#getIfTerm_Elseifterm()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIfTerm_Elseifterm()
    * @model containment="true"
    * @generated
    */
   ElseIfTerm getElseifterm();
 
   /**
-   * Sets the value of the '{@link IfTerm#getElseifterm <em>Elseifterm</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getElseifterm <em>Elseifterm</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Elseifterm</em>' containment reference.
@@ -61,14 +61,14 @@ public interface IfTerm extends IfIncItems
    * <!-- end-user-doc -->
    * @return the value of the '<em>Elseterm</em>' containment reference.
    * @see #setElseterm(ElseTerm)
-   * @see WreslEditorPackage#getIfTerm_Elseterm()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIfTerm_Elseterm()
    * @model containment="true"
    * @generated
    */
   ElseTerm getElseterm();
 
   /**
-   * Sets the value of the '{@link IfTerm#getElseterm <em>Elseterm</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getElseterm <em>Elseterm</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Elseterm</em>' containment reference.
@@ -87,14 +87,14 @@ public interface IfTerm extends IfIncItems
    * <!-- end-user-doc -->
    * @return the value of the '<em>Logical</em>' containment reference.
    * @see #setLogical(LogicalExpression)
-   * @see WreslEditorPackage#getIfTerm_Logical()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIfTerm_Logical()
    * @model containment="true"
    * @generated
    */
   LogicalExpression getLogical();
 
   /**
-   * Sets the value of the '{@link IfTerm#getLogical <em>Logical</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.IfTerm#getLogical <em>Logical</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Logical</em>' containment reference.
@@ -105,7 +105,7 @@ public interface IfTerm extends IfIncItems
 
   /**
    * Returns the value of the '<em><b>Pattern</b></em>' containment reference list.
-   * The list contents are of type {@link Pattern}.
+   * The list contents are of type {@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Pattern}.
    * <!-- begin-user-doc -->
    * <p>
    * If the meaning of the '<em>Pattern</em>' containment reference list isn't clear,
@@ -113,7 +113,7 @@ public interface IfTerm extends IfIncItems
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Pattern</em>' containment reference list.
-   * @see WreslEditorPackage#getIfTerm_Pattern()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getIfTerm_Pattern()
    * @model containment="true"
    * @generated
    */

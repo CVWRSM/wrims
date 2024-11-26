@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link Condition#getLogical <em>Logical</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Condition#getLogical <em>Logical</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getCondition()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getCondition()
  * @model
  * @generated
  */
@@ -32,14 +32,14 @@ public interface Condition extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Logical</em>' containment reference.
    * @see #setLogical(LogicalExpression)
-   * @see WreslEditorPackage#getCondition_Logical()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getCondition_Logical()
    * @model containment="true"
    * @generated
    */
   LogicalExpression getLogical();
 
   /**
-   * Sets the value of the '{@link Condition#getLogical <em>Logical</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Condition#getLogical <em>Logical</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Logical</em>' containment reference.

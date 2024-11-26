@@ -12,11 +12,11 @@ import org.eclipse.emf.ecore.EObject;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link LhsLtRhs#getPenalty <em>Penalty</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsLtRhs#getPenalty <em>Penalty</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getLhsLtRhs()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getLhsLtRhs()
  * @model
  * @generated
  */
@@ -32,14 +32,14 @@ public interface LhsLtRhs extends EObject
    * <!-- end-user-doc -->
    * @return the value of the '<em>Penalty</em>' containment reference.
    * @see #setPenalty(Penalty)
-   * @see WreslEditorPackage#getLhsLtRhs_Penalty()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getLhsLtRhs_Penalty()
    * @model containment="true"
    * @generated
    */
   Penalty getPenalty();
 
   /**
-   * Sets the value of the '{@link LhsLtRhs#getPenalty <em>Penalty</em>}' containment reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.LhsLtRhs#getPenalty <em>Penalty</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Penalty</em>' containment reference.

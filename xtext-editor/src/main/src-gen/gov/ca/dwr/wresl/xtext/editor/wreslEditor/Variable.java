@@ -11,11 +11,11 @@ package gov.ca.dwr.wresl.xtext.editor.wreslEditor;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link Variable#getRef <em>Ref</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Variable#getRef <em>Ref</em>}</li>
  * </ul>
  * </p>
  *
- * @see WreslEditorPackage#getVariable()
+ * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVariable()
  * @model
  * @generated
  */
@@ -31,14 +31,14 @@ public interface Variable extends Pattern
    * <!-- end-user-doc -->
    * @return the value of the '<em>Ref</em>' reference.
    * @see #setRef(Declaration)
-   * @see WreslEditorPackage#getVariable_Ref()
+   * @see gov.ca.dwr.wresl.xtext.editor.wreslEditor.WreslEditorPackage#getVariable_Ref()
    * @model
    * @generated
    */
   Declaration getRef();
 
   /**
-   * Sets the value of the '{@link Variable#getRef <em>Ref</em>}' reference.
+   * Sets the value of the '{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.Variable#getRef <em>Ref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @param value the new value of the '<em>Ref</em>' reference.

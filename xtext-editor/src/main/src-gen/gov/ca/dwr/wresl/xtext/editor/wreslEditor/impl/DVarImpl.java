@@ -19,8 +19,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link DVarImpl#getKind <em>Kind</em>}</li>
- *   <li>{@link DVarImpl#getUnits <em>Units</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.DVarImpl#getKind <em>Kind</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.DVarImpl#getUnits <em>Units</em>}</li>
  * </ul>
  * </p>
  *

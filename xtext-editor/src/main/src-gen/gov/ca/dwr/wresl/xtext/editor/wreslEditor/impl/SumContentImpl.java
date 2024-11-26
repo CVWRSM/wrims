@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link SumContentImpl#getHeader <em>Header</em>}</li>
- *   <li>{@link SumContentImpl#getExpression <em>Expression</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SumContentImpl#getHeader <em>Header</em>}</li>
+ *   <li>{@link gov.ca.dwr.wresl.xtext.editor.wreslEditor.impl.SumContentImpl#getExpression <em>Expression</em>}</li>
  * </ul>
  * </p>
  *

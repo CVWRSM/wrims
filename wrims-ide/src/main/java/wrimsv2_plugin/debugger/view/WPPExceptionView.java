@@ -31,7 +31,15 @@ public class WPPExceptionView extends ViewPart implements ISelectionListener{
 	}
 	
 	public void addException(Exception e){
-		list.add(e.getMessage());
+		String message = e.getMessage();
+		if(message!=null)
+		{
+			list.add(e.getMessage());
+		}
+		else
+		{
+			list.add("Unknown Exception");
+		}
 	}
 
 	@Override
