@@ -466,7 +466,7 @@ public abstract class SchematicBase extends ViewPart {
 			};
 		};
 		
-		zoomRectAction = new Action("Zoom to Rectangular", Activator.getImageDescriptor("zoom_region.png")) {
+		zoomRectAction = new Action("Zoom to Rectangular", Activator.getImageDescriptor("ZoomToFit24.gif")) {
 
 			private Behavior behavior=Behavior.SelectOnly;
 			
