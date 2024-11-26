@@ -423,6 +423,7 @@ public class DataOps {
 			String pathname=cr.getNominalPathname();
 			DSSPathname dssPathname = new DSSPathname(pathname);
 			String partB=dssPathname.bPart();
+			// lower case of B part for case insensitive search
 			pathnameMap.put(partB.toLowerCase(), pathname);
 			DssPluginCore.pathnameLists[j].add(pathname);
 		}
