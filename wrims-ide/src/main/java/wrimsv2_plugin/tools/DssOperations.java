@@ -1,48 +1,57 @@
 package wrimsv2_plugin.tools;
 
-import hec.heclib.util.Heclib;
+import static java.util.stream.Collectors.toSet;
 
+import hec.heclib.dss.DSSPathname;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
-
+import mil.army.usace.hec.metadata.Interval;
+import mil.army.usace.hec.metadata.IntervalFactory;
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
 import wrimsv2_plugin.debugger.exception.WPPException;
 
 public class DssOperations {
-	public static String matchPathName(Vector v, String partB, String partC, String partE){
+	public static String matchPathName(Vector<?> v, String partB, String partC, String partE) {
+		Set<String> equivalentIntervals = findEquivalentDssIntervals(partE);
 		String pn=null;
-		int i=0;
-		int size=v.size();
-		String partBString=partB.toUpperCase();
-		String partCString=partC.toUpperCase();
-		String partEString=partE.toUpperCase();
-		while (pn == null && i<size){
-			String pnv=v.get(i).toString();
-			String[] parts=pnv.split("/");
-			/*
-			if (pnv.contains(partBString) && pnv.contains(partCString) && pnv.contains(partEString) ){
-				pn=pnv;
+		for(Object path : v) {
+			String pnv = path.toString();
+			DSSPathname catPathname = new DSSPathname(pnv);
+			for (String potentialIntervalMatch : equivalentIntervals) {
+				if (catPathname.getBPart().equalsIgnoreCase(partB)
+					&& catPathname.getCPart().equalsIgnoreCase(partC)
+					&& catPathname.getEPart().equalsIgnoreCase(potentialIntervalMatch)) {
+					pn = pnv;
+					break;
+				}
 			}
-			*/
-			if (parts[2].equals(partBString) && parts[3].equals(partCString) && parts[5].equals(partEString)){
-				pn=pnv;
-			}
-			i++;
 		}
 		return pn;
 	}
-	
-	public static String matchPathName(Vector v, String partABC, String partEF){
+
+	private static Set<String> findEquivalentDssIntervals(String partE) {
+        return IntervalFactory.findAnyDss(IntervalFactory.equalsName(partE))
+            .map(c -> IntervalFactory.findAllDss(i -> i.getMinutes() == c.getMinutes()).stream()
+                .map(Interval::getInterval)
+                .collect(toSet()))
+            .orElse(new HashSet<>());
+	}
+
+	public static String matchPathName(Vector v, DSSPathname dssPathname){
+		Set<String> equivalentIntervals = findEquivalentDssIntervals(dssPathname.getEPart());
 		String pn=null;
-		int i=0;
-		int size=v.size();
-		partABC=partABC.toUpperCase();
-		partEF=partEF.toUpperCase();
-		while (pn == null && i<size){
-			String pnv=v.get(i).toString();
-			if (pnv.startsWith(partABC) && pnv.endsWith(partEF) ){
-				pn=pnv;
+		for (Object catPathObj : v){
+			String pnv=catPathObj.toString();
+			DSSPathname catPath = new DSSPathname(pnv);
+			DSSPathname copy = new DSSPathname(dssPathname.getPathname());
+			for (String potentialIntervalMatch : equivalentIntervals) {
+				copy.setEPart(potentialIntervalMatch);
+				if (catPath.isSamePathname(copy.getPathname(), false)) {
+					pn = pnv;
+					break;
+				}
 			}
-			i++;
 		}
 		return pn;
 	}

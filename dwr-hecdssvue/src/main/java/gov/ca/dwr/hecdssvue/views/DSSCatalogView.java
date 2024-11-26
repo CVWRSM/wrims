@@ -187,7 +187,7 @@ public class DSSCatalogView extends AbstractDSSView {
 				String pathName = condensedReference.getNominalPathname();
 				String[] parts = pathName.split("/");
 				if (parts[3].toLowerCase().startsWith("storage")) DssPluginCore.allStorageNames.add(parts[2]);
-				DssPluginCore.allPathName.put(parts[2], getPath(parts));
+				DssPluginCore.allPathName.put(parts[2].toLowerCase(), getPath(parts));
 				if (showFilteredRows(parts, DssPluginCore.filter, false)) pathParts.add(parts);
 			}
 			return pathParts.toArray();
