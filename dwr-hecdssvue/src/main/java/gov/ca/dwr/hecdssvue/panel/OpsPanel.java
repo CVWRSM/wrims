@@ -281,7 +281,7 @@ public class OpsPanel extends JPanel {
 				workbench.getDisplay().asyncExec(new Runnable(){
 					public void run(){
 						IWorkbenchPage workBenchPage = workbench.getActiveWorkbenchWindow().getActivePage();
-						DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DssPluginCore.ID_DSSVue_DSSCatalogView);
+						DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DSSCatalogView.ID);
 						dssCatalogView.getViewer().setInput(DssPluginCore.dssArray);
 					}
 				});
@@ -759,7 +759,7 @@ public class OpsPanel extends JPanel {
 				workbench.getDisplay().asyncExec(new Runnable(){
 					public void run(){
 						IWorkbenchPage workBenchPage = workbench.getActiveWorkbenchWindow().getActivePage();
-						DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DssPluginCore.ID_DSSVue_DSSCatalogView);
+						DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DSSCatalogView.ID);
 						dssCatalogView.getViewer().setInput(DssPluginCore.dssArray);
 					}
 				});

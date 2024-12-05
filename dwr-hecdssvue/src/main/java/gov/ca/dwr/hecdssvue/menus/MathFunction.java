@@ -26,7 +26,7 @@ public class MathFunction implements IWorkbenchWindowActionDelegate{
 	public void run(IAction action) {
 		IWorkbench workbench=PlatformUI.getWorkbench();
 		IWorkbenchPage workBenchPage = workbench.getActiveWorkbenchWindow().getActivePage();
-		DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DssPluginCore.ID_DSSVue_DSSCatalogView);
+		DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DSSCatalogView.ID);
 		
 		if (dssCatalogView !=null){
 			final Vector<String[]> selectedParts=dssCatalogView.getSelectedParts();			

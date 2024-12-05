@@ -22,7 +22,7 @@ public class AllowEdit implements IWorkbenchWindowActionDelegate{
 		DssPluginCore.dssEditable=!DssPluginCore.dssEditable;
 		IWorkbench workbench=PlatformUI.getWorkbench();
 		IWorkbenchPage workBenchPage = workbench.getActiveWorkbenchWindow().getActivePage();
-		DSSTableView dssTableView=(DSSTableView) workBenchPage.findView(DssPluginCore.ID_DSSVue_DSSTableView);
+		DSSTableView dssTableView=(DSSTableView) workBenchPage.findView(DSSTableView.ID);
 		
 		if (dssTableView !=null){
 			HecDataTable table = dssTableView.getTable();
