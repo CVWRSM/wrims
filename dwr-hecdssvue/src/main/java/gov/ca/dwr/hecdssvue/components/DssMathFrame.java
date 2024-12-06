@@ -198,7 +198,7 @@ public class DssMathFrame extends MathFrame2 {
 		final IWorkbench workbench=PlatformUI.getWorkbench();
 		workbench.getDisplay().syncExec(new Runnable(){
 			public void run(){
-				DSSCatalogView dssCatalogView = (DSSCatalogView)workbench.getActiveWorkbenchWindow().getActivePage().findView(DssPluginCore.ID_DSSVue_DSSCatalogView);
+				DSSCatalogView dssCatalogView = (DSSCatalogView)workbench.getActiveWorkbenchWindow().getActivePage().findView(DSSCatalogView.ID);
 				TableViewer viewer = dssCatalogView.getViewer();
 				viewer.setInput(viewer.getInput());
 			}

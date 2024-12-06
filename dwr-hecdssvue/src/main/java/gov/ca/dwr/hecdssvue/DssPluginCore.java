@@ -18,8 +18,6 @@ import calsim.gui.DtsTreePanel;
 
 public class DssPluginCore {
 	public static String ID_DSSVue_DSSTableView="gov.ca.dwr.hecdssvue.views.DSSTableView";
-	public static String ID_DSSVue_DSSCatalogView="gov.ca.dwr.hecdssvue.views.DSSCatalogView";
-	public static String ID_DSSVue_DSSMathFunctionView = "gov.ca.dwr.hecdssvue.views.DSSMathFunctionView"; 
 	
 	public static boolean dssEditable=false;
 	

@@ -1,8 +1,13 @@
 package gov.ca.dwr.hecdssvue.views;
 
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
 import gov.ca.dwr.hecdssvue.Activator;
 import gov.ca.dwr.hecdssvue.DssPluginCore;
 import gov.ca.dwr.hecdssvue.components.DataOps;
+import hec.heclib.dss.CondensedReference;
 import hec.heclib.dss.HecDss;
 
 import java.util.ArrayList;
@@ -15,8 +20,17 @@ import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.IntStream;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -39,9 +53,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.PluginTransfer;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.statushandlers.StatusManager;
 
@@ -67,7 +79,6 @@ public class DSSFileView extends ViewPart {
 	private Button saveButton;
 	private String unavailableFiles="";
 	private String unavailableFolders="";
-	private String errorFiles="";
 	private Combo[] studyType= new Combo[4];
 	
 	String lines[] = { "# comment",
@@ -324,29 +335,31 @@ public class DSSFileView extends ViewPart {
 			DebugCorePlugin.studySvFileNames[i]=svFileText[i].getText();
 		}
 	}
-	
 
-	public void showDssFileErrorDialog(final int flag){
+
+	public void showDssFileErrorDialog(List<String> errors){
 		final IWorkbench workbench=PlatformUI.getWorkbench();
 		workbench.getDisplay().asyncExec(new Runnable(){
 			public void run(){
 				Shell shell=workbench.getActiveWorkbenchWindow().getShell();
 				MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
 				messageBox.setText("Error:");
-				switch (flag){
-				case 0:
-					messageBox.setMessage("Files "+unavailableFiles+" do not exist.");
-					break;
-				case 1:
-					messageBox.setMessage("Dss files "+errorFiles+" could not be opened.");
-					break;
-//				case 2:
-//					messageBox.setMessage("Study folders "+unavailableFolders+" do not exist.");
-//					break;
-				}
+				messageBox.setMessage("Dss files " + errors.stream().collect(joining(",")) + " could not be opened.");
 				messageBox.open();
 			}
 		});
+	}
+	
+
+	public void showDssFileErrorDialog(){
+		final IWorkbench workbench=PlatformUI.getWorkbench();
+		workbench.getDisplay().asyncExec(() -> {
+            Shell shell=workbench.getActiveWorkbenchWindow().getShell();
+            MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+            messageBox.setText("Error:");
+            messageBox.setMessage("Files "+unavailableFiles+" do not exist.");
+            messageBox.open();
+        });
 	}
 	
 	
@@ -392,40 +405,83 @@ public class DSSFileView extends ViewPart {
 		}
 		return allFolderFound;
 	}
+
+	Job catalogJob = null;
 	
-	
-	public boolean openDssFiles(){
-		errorFiles="";
-		boolean success=true;
-		for (int i=0; i<4; i++){
-			if (DebugCorePlugin.selectedStudies[i]){
-				try {
-//					HecDss dss =HecDss.open(DebugCorePlugin.studyDvFileNames[i]);
-//					DebugCorePlugin.dvDss[i] = dss;
-					DebugCorePlugin.dvDss[i]=HecDss.open(DebugCorePlugin.studyDvFileNames[i]);
-					DebugCorePlugin.dvVector[i]=DebugCorePlugin.dvDss[i].getCondensedCatalog();
-				} catch (Exception e) {
-					WPPException.handleException(e);
-					errorFiles=errorFiles+DebugCorePlugin.studyDvFileNames[i]+",";
-					success=false;
-				}
-				try {
-					DebugCorePlugin.svDss[i]=HecDss.open(DebugCorePlugin.studySvFileNames[i]);
-					DebugCorePlugin.svVector[i]=DebugCorePlugin.svDss[i].getCondensedCatalog();
-				} catch (Exception e) {
-					WPPException.handleException(e);
-					errorFiles=errorFiles+DebugCorePlugin.studySvFileNames[i]+",";
-					success=false;
-				}
+	private void openDssFiles() {
+		while (catalogJob != null && catalogJob.getState() == Job.RUNNING) {
+			catalogJob.cancel();
+		}
+		catalogJob = Job.create("Opening DSS Catalogs", monitor -> {
+			List<String> errorFiles = readSelectedDssFiles(monitor);
+			if(errorFiles.isEmpty()) {
+				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+					try {
+						DSSCatalogView dcv = (DSSCatalogView) getSite().getWorkbenchWindow()
+							.getActivePage().showView(DSSCatalogView.ID);
+						dcv.getViewer().setInput(DssPluginCore.dssArray);
+						DataOps.clearGeoSchematicVariableData();
+						DataOps.loadAllSchematicVariableData();
+					} catch (Exception ex) {
+						Status status = new Status(IStatus.ERROR,
+							Activator.PLUGIN_ID,
+							"Error opening dss file: ", ex);
+						StatusManager.getManager().handle(status,
+							StatusManager.LOG);
+					}
+				});
+			} else {
+				showDssFileErrorDialog(errorFiles);
 			}
-			DssPluginCore.initWYTDss=true;
-		}
-		if (errorFiles.endsWith(",")){
-			errorFiles=errorFiles.substring(0, errorFiles.length()-1);
-		}
-		return success;
+			monitor.done();
+			return Status.OK_STATUS;
+		});
+		catalogJob.setUser(true);
+		catalogJob.schedule();
 	}
-	
+
+	private List<String> readSelectedDssFiles(IProgressMonitor monitor) {
+		int dssReads = (int) (IntStream.range(0, 4)
+			.filter(i -> DebugCorePlugin.selectedStudies[i])
+			.count() * 2);
+		SubMonitor subMonitor = SubMonitor.convert(monitor, dssReads);
+		List<String> errorFiles = new ArrayList<>();
+		for (int i = 0; i < 4; i++) {
+			if (DebugCorePlugin.selectedStudies[i] && !monitor.isCanceled() && !subMonitor.isCanceled()) {
+				try {
+					subMonitor.setTaskName("Reading DV DSS File " + DebugCorePlugin.studyDvFileNames[i]);
+					HecDss hecDss = HecDss.open(DebugCorePlugin.studyDvFileNames[i]);
+					DebugCorePlugin.dvDss[i] = hecDss;
+					DebugCorePlugin.dvVector[i] = hecDss.getCondensedCatalog();
+				} catch (Exception e) {
+					WPPException.handleException(e);
+					errorFiles.add(DebugCorePlugin.studyDvFileNames[i]);
+				}
+				subMonitor.worked(1);
+				try {
+					subMonitor.setTaskName("Reading SV DSS File " + DebugCorePlugin.studySvFileNames[i]);
+					HecDss hecDss = HecDss.open(DebugCorePlugin.studySvFileNames[i]);
+					DebugCorePlugin.svDss[i] = hecDss;
+					DebugCorePlugin.svVector[i] = hecDss.getCondensedCatalog();
+				} catch (Exception e) {
+					WPPException.handleException(e);
+					errorFiles.add(DebugCorePlugin.studySvFileNames[i]);
+				}
+				subMonitor.worked(1);
+				DssPluginCore.initWYTDss = true;
+			}
+		}
+		ArrayList<HecDss> dssList = new ArrayList<>();
+		for (int i = 0; i < DebugCorePlugin.selectedStudies.length / 2; i++) {
+			if (DebugCorePlugin.selectedStudies[i]) {
+				dssList.add(DebugCorePlugin.dvDss[i]);
+				dssList.add(DebugCorePlugin.svDss[i]);
+			}
+		}
+		DssPluginCore.dssArray = dssList;
+		return errorFiles;
+	}
+
 	public void openProject(String fn){
 		
 		for (int i=0; i<checkBox.length; i++){
@@ -511,59 +567,13 @@ public class DSSFileView extends ViewPart {
 	
 	public void selectFiles(){
 		selectFileNames();
-		//DataOps.setProject();
-		if (DebugCorePlugin.selectedStudies[0] || DebugCorePlugin.selectedStudies[1] || DebugCorePlugin.selectedStudies[2] || DebugCorePlugin.selectedStudies[3]){
-			if (checkFilesExist()){
-				boolean success=openDssFiles();
-				if (success){
-////					close();
-////					processViews();
-				}else{
-					showDssFileErrorDialog(1);
-				}
-				DssPluginCore.dssArray = new ArrayList<HecDss> ();
-//				dssArray.add(DebugCorePlugin.dvDss[0]);
-//				dssArray.add(DebugCorePlugin.svDss[0]);
-//				for (int i = 0; i <DebugCorePlugin.dvDss.length; i++){
-//					dssArray.add(DebugCorePlugin.dvDss[i]);
-//					dssArray.add(DebugCorePlugin.svDss[i]);
-//				}
-				for (int i = 0; i <DebugCorePlugin.selectedStudies.length/2;i++){
-					if (DebugCorePlugin.selectedStudies[i]==true){
-						DssPluginCore.dssArray.add(DebugCorePlugin.dvDss[i]);
-						DssPluginCore.dssArray.add(DebugCorePlugin.svDss[i]);
-					}
-				}
-				try {
-					DSSCatalogView dcv = (DSSCatalogView) getSite().getWorkbenchWindow()
-                                        .getActivePage().showView(DSSCatalogView.ID);
-					try {
-						dcv.getViewer().setInput(DssPluginCore.dssArray);
-						DataOps.clearGeoSchematicVariableData();
-						DataOps.loadAllSchematicVariableData();
-//						dcv.setInput(dssArray);
-//						dcv.updateData();
-					} catch (Exception ex) {
-						Status status = new Status(IStatus.ERROR,
-						                Activator.PLUGIN_ID,
-						                "Error opening dss file: ", ex);
-						StatusManager.getManager().handle(status,
-								StatusManager.LOG);
-					}
-				} catch (PartInitException e1) {
-					e1.printStackTrace();
-				}
-				// put in Catalog View
-			}else{
-				showDssFileErrorDialog(0);
+		if (DebugCorePlugin.selectedStudies[0] || DebugCorePlugin.selectedStudies[1]
+			|| DebugCorePlugin.selectedStudies[2] || DebugCorePlugin.selectedStudies[3]) {
+			if (checkFilesExist()) {
+				openDssFiles();
+			} else {
+				showDssFileErrorDialog();
 			}
-		}else{
-//			if (checkFoldersExist()){
-////				close();
-//				processViews();
-//			}else{
-//				showDssFileErrorDialog(2);
-//			}
 		}
 	}
 

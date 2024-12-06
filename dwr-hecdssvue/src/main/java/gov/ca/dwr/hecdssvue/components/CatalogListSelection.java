@@ -107,7 +107,7 @@ public class CatalogListSelection extends ListSelection {
 		
 		IWorkbench workbench=PlatformUI.getWorkbench();
 		IWorkbenchPage workBenchPage = workbench.getActiveWorkbenchWindow().getActivePage();
-		final DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DssPluginCore.ID_DSSVue_DSSCatalogView);
+		final DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DSSCatalogView.ID);
 
 		if (dssCatalogView !=null){
 			final Vector<String[]> selectedParts=dssCatalogView.getSelectedParts();			

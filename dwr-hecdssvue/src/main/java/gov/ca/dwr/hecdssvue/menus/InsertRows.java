@@ -20,7 +20,7 @@ public class InsertRows implements IWorkbenchWindowActionDelegate{
 		workbench.getDisplay().asyncExec(new Runnable(){
 			public void run(){
 				IWorkbenchPage workBenchPage = workbench.getActiveWorkbenchWindow().getActivePage();
-				DSSTableView dssTableView=(DSSTableView) workBenchPage.findView(DssPluginCore.ID_DSSVue_DSSTableView);
+				DSSTableView dssTableView=(DSSTableView) workBenchPage.findView(DSSTableView.ID);
 												
 				if (dssTableView !=null){
 					final HecDataTable table = dssTableView.getTable();

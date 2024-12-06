@@ -9,6 +9,8 @@ import hec.heclib.dss.CondensedReference;
 import hec.heclib.dss.HecDss;
 import hec.io.DataContainer;
 import hec.io.TimeSeriesContainer;
+import java.util.Collection;
+import java.util.stream.IntStream;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -66,6 +68,7 @@ import java.util.regex.Pattern;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 //public class DSSCatalogView extends ViewPart {
 public class DSSCatalogView extends AbstractDSSView {
@@ -134,42 +137,24 @@ public class DSSCatalogView extends AbstractDSSView {
 	}
 
 	class ViewContentProvider implements IStructuredContentProvider {
-		Job catalogJob = null;
 
+		@Override
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-			while (catalogJob != null && catalogJob.getState() == Job.RUNNING) {
-				catalogJob.cancel();
-			}
-			List<HecDss> dssInputs = (List<HecDss>) newInput;
-			if(dssInputs == null) {
+			if(newInput == null) {
 				DssPluginCore.condensedCatalog = null;
 				return;
 			}
-			catalogJob = Job.create("Opening DSS Catalogs", monitor -> {
-				DssPluginCore.condensedCatalog = new Vector<>();
-				Display.getDefault().asyncExec(v::refresh);
-				List<CondensedReference> catalog = new ArrayList<>();
-				SubMonitor subMonitor = SubMonitor.convert(monitor, dssInputs.size());
-				List<CompletableFuture<Void>> futures = new ArrayList<>();
-				for (HecDss dssInput : dssInputs) {
-					futures.add(CompletableFuture.runAsync(() -> {
-						catalog.addAll(dssInput.getCondensedCatalog());
-						subMonitor.worked(1);
-					}));
+			TreeSet<CondensedReference> unique = new TreeSet<>(comparing(CondensedReference::getNominalPathname));
+			for (int i = 0; i < 4; i++) {
+				if (DebugCorePlugin.selectedStudies[i]) {
+					List<CondensedReference> references = new ArrayList<>();
+					references.addAll(DebugCorePlugin.dvVector[i]);
+					references.addAll(DebugCorePlugin.svVector[i]);
+                    unique.addAll(references);
 				}
-				CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-				if(!subMonitor.isCanceled()) {
-					List<CondensedReference> unique = catalog.stream()
-							.collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(CondensedReference::getNominalPathname))),
-									ArrayList<CondensedReference>::new));
-					DssPluginCore.condensedCatalog.addAll(unique);
-				}
-				monitor.done();
-				Display.getDefault().asyncExec(v::refresh);
-				return Status.OK_STATUS;
-			});
-			catalogJob.setUser(true);
-			catalogJob.schedule();
+			}
+			DssPluginCore.condensedCatalog = new Vector<>(unique);
+			Display.getDefault().asyncExec(v::refresh);
 		}
 
 		public void dispose() {
@@ -451,7 +436,7 @@ public class DSSCatalogView extends AbstractDSSView {
 			public void run() {
 				IWorkbench workbench=PlatformUI.getWorkbench();
 				IWorkbenchPage workBenchPage = workbench.getActiveWorkbenchWindow().getActivePage();
-				final DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DssPluginCore.ID_DSSVue_DSSCatalogView);
+				final DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DSSCatalogView.ID);
 
 				if (dssCatalogView !=null){
 					final Vector<String[]> selectedParts=dssCatalogView.getSelectedParts();
@@ -530,7 +515,7 @@ public class DSSCatalogView extends AbstractDSSView {
 					public void run(){
 						IWorkbench workbench=PlatformUI.getWorkbench();
 						IWorkbenchPage workBenchPage = workbench.getActiveWorkbenchWindow().getActivePage();
-						final DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DssPluginCore.ID_DSSVue_DSSCatalogView);
+						final DSSCatalogView dssCatalogView=(DSSCatalogView) workBenchPage.findView(DSSCatalogView.ID);
 
 						if (dssCatalogView !=null){
 							final Vector<String[]> selectedParts=dssCatalogView.getSelectedParts();
