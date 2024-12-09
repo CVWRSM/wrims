@@ -110,11 +110,11 @@ contains
   subroutine rcc_cache_add_char( rcc_string)
     CHARACTER(LEN=*), INTENT(IN) :: rcc_string
     CHARACTER(LEN=32) :: row
-    CHARACTER(LEN=32) :: column
+    CHARACTER(LEN=16) :: column
     REAL :: coefficient
     READ(rcc_string,100) row, column, coefficient
     call rcc_cache_add_rcc(row, column, coefficient)
-100 FORMAT(a32,a32,f16.0)
+100 FORMAT(a32,a16,f16.0)
   END subroutine rcc_cache_add_char
 
 

@@ -86,7 +86,7 @@ SUBROUTINE ADD_CONSTRAINT (Control_Tag,C,Dvar_Name,&
   CHARACTER(LEN=*),               INTENT(IN) :: Control_Tag
   CHARACTER(LEN=*),               INTENT(IN) :: Surpl_label, Slack_label
   INTEGER,                        INTENT(IN) :: goal_count,ndvar
-  CHARACTER(LEN=32)                          :: Surpl_Name, Slack_Name, prioritized_objective
+  CHARACTER(LEN=16)                          :: Surpl_Name, Slack_Name, prioritized_objective
 !CB need???  CHARACTER(LEN=32)                          :: Surpl_Name, Slack_Name, prioritized_objective    !CB need to change LEN to 32?????????????????????????????????????
   INTEGER                                    :: i
   LOGICAL           			:: Slack_constrained,Surpl_constrained

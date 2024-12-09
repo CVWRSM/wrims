@@ -41,7 +41,6 @@ import java.io.*;
 import com.sun.xml.tree.XmlDocument;
 //import com.sun.xml.tree.TreeWalker;
 import org.w3c.dom.Element;
-import calsim.debug.DebugSetting;
 
 /**
 	* Contains all necessary properties required to run a study
@@ -64,7 +63,6 @@ public class Study {
     _filename = "";
     _wreslFile = "";
     _svFile = "";
-    _svFileFPart = "";    
     _dvFile = "";
     _initFile = "";
     _initFileFPart = "";
@@ -93,7 +91,6 @@ public class Study {
 //    _pricingRHSSensitivity = false; //CB added
 //	_activitySensitivity = false; //CB added
     _posAnalysis = new Boolean(false);
-    _genNewRandomTable = new Boolean(false);
     _useRestart = new Boolean(false);
     _genRestart = new Boolean(false);
     _dialogWindow = new Boolean(true);
@@ -133,19 +130,9 @@ public class Study {
   public String getSvFile() {
     return _svFile;
   }
-
-  public String getSvDvFileAPartOption() {
-	    return _svdvFileAPartOption;
-	  }
-
-  public String getSvFileFPart() {
-	    return _svFileFPart;
-	  }  
-  
   public String getDvFile() {
     return _dvFile;
   }
-
   public String getInitFile() {
     return _initFile;
   }
@@ -217,9 +204,6 @@ public class Study {
   public Boolean getPosAnalysisOption() {
     return _posAnalysis;
   }
-  public Boolean getGenNewRandomTableOption() {
-	    return _genNewRandomTable;
-  }
   public Boolean getDialogWindowOption() {
 	  return _dialogWindow;
   }
@@ -274,9 +258,6 @@ public class Study {
   public void setSvFile(String fname) {
     _svFile = fname;
   }
-  public void setSvFileFPart(String fname) {
-	_svFileFPart = fname;
-  } 
   public void setDvFile(String fname) {
     _dvFile = fname;
   }
@@ -315,9 +296,6 @@ public class Study {
   public void setSimOption(String option) {
     _simOption = option;
   }
-  public void setSvDvFileAPartOption(String option) {
-	    _svdvFileAPartOption = option;
-	  }
   public void setNumberSequences(Integer number) {
     _numberSequences = number;
   }
@@ -417,8 +395,6 @@ public class Study {
     v.addElement(_genRestart);
  //CB not yet   v.addElement(_pricingRHSSensitivity);
  //CB not yet   v.addElement(_activitySensitivity);
-    v.addElement(_svdvFileAPartOption);
-    v.addElement(_svFileFPart);    
     v.addElement(_initFileFPart);
     v.addElement(_posAnalysis);
     v.addElement(_dialogWindow);
@@ -437,58 +413,6 @@ public class Study {
     doc.write(pw); pw.close();
     _modified = false;
   }
-  
-  public Vector getAllPropertiesDescription() {
-	    Vector vDesc = new Vector();
-	    vDesc.addElement("study name");
-	    vDesc.addElement("author");
-	    vDesc.addElement("date");
-	    vDesc.addElement("desc");
-	    vDesc.addElement("hydrology");
-	    vDesc.addElement("study dir");
-	    vDesc.addElement("study filename");
-	    vDesc.addElement("main wreslFile");
-	    vDesc.addElement("SV DSS file");
-	    vDesc.addElement("DV DSS file");
-	    vDesc.addElement("INIT DSS file");
-	    //DJE********************************************************
-	    vDesc.addElement("timeStep");
-
-	    if (!AppUtils.position) {
-			  vDesc.addElement("number of steps");
-		  } else {
-			  vDesc.addElement("number of steps");
-		  }
-	    vDesc.addElement("start day");
-	    //******************************************
-	    vDesc.addElement("start month");
-	    vDesc.addElement("start year");
-	    //DJE removed stop date parameters
-	    vDesc.addElement("sim option");
-	    vDesc.addElement("number of sequences");
-	    vDesc.addElement("solver report");
-	    vDesc.addElement("solver list");
-	    vDesc.addElement("slack report");
-	    vDesc.addElement("slack save");
-	    vDesc.addElement("add XA options");
-	    vDesc.addElement("SV report");
-	    vDesc.addElement("SV save");
-	    vDesc.addElement("DSS debug");
-	    vDesc.addElement("DSS save");
-	    vDesc.addElement("gen WsiDi");
-	    vDesc.addElement("use restart");
-	    vDesc.addElement("gen restart");
-	 //CB not yet   vDesc.addElement(_pricingRHSSensitivity);
-	 //CB not yet   vDesc.addElement(_activitySensitivity);
-	    vDesc.addElement("SV DV DSS file A part");
-	    vDesc.addElement("SV    DSS file F part");    
-	    vDesc.addElement("Init  DSS file F part");
-	    vDesc.addElement("pos analysis");
-	    vDesc.addElement("show dialog window");
-	    vDesc.addElement("pos start year");
-	    return vDesc;
-	  }
-
   /**
    * reads all the study data from a file in binary format
    */
@@ -531,16 +455,6 @@ public class Study {
     setWreslFile(se.getAttribute("wreslfile"));
     setSvFile(se.getAttribute("svfile"));
     setDvFile(se.getAttribute("dvfile"));
-    setSvDvFileAPartOption(se.getAttribute("svdvfileapart"));
-    DebugSetting.setDebugOption(se.getAttribute("debug")); //debug setting
-    
-    if (se.getAttribute("svfilefpart").equals("")){ 
-    	_newStudyObject = false;
-    	setSvFileFPart(se.getAttribute("name"));
-    }
-    else{
-    	setSvFileFPart(se.getAttribute("svfilefpart"));
-    }    
     setInitFile(se.getAttribute("initfile"));
     setInitFileFPart(se.getAttribute("initfilefpart"));
     //DJE*************************************************
@@ -573,8 +487,6 @@ public class Study {
     styElement.setAttribute("wreslfile", getWreslFile());
     styElement.setAttribute("svfile", getSvFile());
     styElement.setAttribute("dvfile", getDvFile());
-    styElement.setAttribute("svdvfileapart", getSvDvFileAPartOption());    
-    styElement.setAttribute("svfilefpart", getSvFileFPart());    
     styElement.setAttribute("initfile", getInitFile());
     styElement.setAttribute("initfilefpart", getInitFileFPart());
     //DJE********************************************************
@@ -602,7 +514,6 @@ public class Study {
   private String _filename;
   private String _wreslFile;
   private String _svFile;
-  private String _svFileFPart;  
   private String _dvFile;
   private String _initFile;
   private String _initFileFPart;
@@ -614,7 +525,6 @@ public class Study {
   private String _stopMonth;
   private Integer _stopYear;
   private String _simOption;
-  private String _svdvFileAPartOption;
   private Integer _numberSequences;
   private Boolean _solverReport;
   private String _solverList;
@@ -627,7 +537,6 @@ public class Study {
   private Boolean _dssSave;
   private Boolean _genWsiDi;
   private Boolean _posAnalysis;
-  private Boolean _genNewRandomTable;
   private Boolean _useRestart;
   private Boolean _genRestart;
   private boolean _pricingRHSSensitivity; //CB added

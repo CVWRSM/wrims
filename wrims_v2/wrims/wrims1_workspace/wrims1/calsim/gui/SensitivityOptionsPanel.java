@@ -65,7 +65,6 @@ public class SensitivityOptionsPanel extends JPanel {
 
     _check = new JCheckBox[2];
     setLayout(new XYGridLayout(22,28) );
-    setBackground(new Color(229,240,203));
     // state variable output options
     JPanel panel = new JPanel();
     //panel.setLayout(new GridLayout(4,4));
@@ -75,8 +74,7 @@ public class SensitivityOptionsPanel extends JPanel {
     panel.add(createCheckBoxPanel(0));
     panel.add(createLabel("Column or row activity:"));
     panel.add(createCheckBoxPanel(1));
-    panel.setBackground(new Color(207,220,200));
-    add(panel, new Rectangle(1,1,10,6));
+    add(panel, new Rectangle(1,1,8,6));
 /*    // slack/ surplus output
     panel = new JPanel();
     panel.setLayout(new GridLayout(2,2));
@@ -175,7 +173,6 @@ public class SensitivityOptionsPanel extends JPanel {
     JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
     panel.add(label);
-    panel.setBackground(new Color(207,220,200));
     return panel;
   }
   /**
@@ -186,7 +183,6 @@ public class SensitivityOptionsPanel extends JPanel {
     panel.setLayout(new FlowLayout(FlowLayout.LEFT));
     _check[type] = new JCheckBox("",false);
     panel.add(_check[type]);
-    panel.setBackground(new Color(207,220,200));
     return panel;
   }
   /**

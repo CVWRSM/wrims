@@ -35,8 +35,6 @@ sushil@water.ca.gov
 */
 
 package calsim.gui;
-import java.awt.Color;
-
 import javax.swing.*;
 /**
   * This a panel which adapts an MPanel to be a tabbed
@@ -54,7 +52,6 @@ public class MTab extends JPanel{
     setName(panel.getFrameTitle());
     // add menu bar
     JPanel mbp = new JPanel();
-    mbp.setBackground(new Color(229,240,203));
     mbp.setLayout(new BoxLayout(mbp,BoxLayout.X_AXIS));
     mbp.add(panel.getJMenuBar()); mbp.add(Box.createVerticalStrut(15));
     mbp.add(Box.createHorizontalGlue());

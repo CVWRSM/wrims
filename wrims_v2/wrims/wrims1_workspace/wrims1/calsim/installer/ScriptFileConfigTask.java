@@ -1,4 +1,4 @@
-//package calsim.installer;  // comment out for external build
+package calsim.installer;  // comment out for external build
 
 import java.io.*;
 import java.util.*;

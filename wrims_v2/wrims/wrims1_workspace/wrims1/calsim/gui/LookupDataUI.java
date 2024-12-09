@@ -76,7 +76,6 @@ public class LookupDataUI extends MPanel{
       }
     });
     //
-    setBackground(new Color(207,220,200));
     setLayout(new BorderLayout());
     add(_tableNameLabel,BorderLayout.NORTH);
     add(new JScrollPane(_table),BorderLayout.CENTER);

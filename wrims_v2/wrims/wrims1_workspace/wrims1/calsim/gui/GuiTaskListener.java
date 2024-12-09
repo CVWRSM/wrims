@@ -68,14 +68,14 @@ public abstract class GuiTaskListener extends CursorChangeListener{
     */
   public void doPreWork(){
     super.doPreWork();
-    GuiUtils.setStatus(_preMsg);
+    //GuiUtils.setStatus(_preMsg);
   }
   /**
     *
     */
   public void doPostWork(){
     super.doPostWork();
-    GuiUtils.setStatus(_postMsg);
+    //GuiUtils.setStatus(_postMsg);
   }
 }
 

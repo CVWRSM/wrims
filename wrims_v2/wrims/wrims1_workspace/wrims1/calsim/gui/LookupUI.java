@@ -63,7 +63,6 @@ public class LookupUI extends MPanel{
       }
     });
     JPanel namePanel = new JPanel();
-    namePanel.setBackground(new Color(207,220,200));
     namePanel.setLayout(new BorderLayout());
     namePanel.add(_namesBox,BorderLayout.WEST);
     namePanel.setBorder(BorderFactory.createTitledBorder("Table filename"));

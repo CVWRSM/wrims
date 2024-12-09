@@ -35,20 +35,50 @@ sushil@water.ca.gov
 */
 
 package calsim.gui;
-import calsim.app.*;
-import vista.gui.*;
-import vista.set.*;
+import hec.io.DataContainer;
+
+import java.awt.BorderLayout;
+import java.awt.FileDialog;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.swing.AbstractAction;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.TableModelEvent;
+
+import vista.gui.CursorChangeListener;
+import vista.gui.VistaUtils;
+import vista.set.Pathname;
+import calsim.app.AppUtils;
+import calsim.app.DTSTableModel;
+import calsim.app.DerivedTimeSeries;
+import calsim.app.MTSTableModel;
+import calsim.app.MultipleTimeSeries;
+import calsim.app.Project;
 //import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
 //import javax.swing.table.*;
 //import javax.swing.text.*;
 //import javax.swing.tree.*;
 //import com.sun.java.util.collections.Arrays;
 //import java.text.*;
-import java.util.Hashtable;
 /**
   * Derived Timeseries table
   *
@@ -56,6 +86,7 @@ import java.util.Hashtable;
   * @version $Id: DTSTable.java,v 1.1.4.45 2001/10/23 16:28:35 jfenolio Exp $
   */
 public class DTSTable extends MPanel{
+  public JButton opencurrent; 
   public static boolean DEBUG = false;
   public static String [] itemText = { "Print",
 				       "Load",
@@ -87,6 +118,23 @@ public class DTSTable extends MPanel{
 				    KeyEvent.VK_Q,
 				    KeyEvent.VK_R
   };
+  /** 
+   * Provided for CalLite GUI access to _dts. Added by Tad Slawecki/LimnoTech 12/2013
+   * 
+   * @return
+   */
+  public DerivedTimeSeries getDTS() {
+  return _dts;
+  }
+
+  /** 
+   * Provided for CalLite GUI access to _mts. Added by Tad Slawecki/LimnoTech 12/2013
+   * 
+   * @return
+   */
+  public MultipleTimeSeries getMTS() {
+  return _mts;
+  }
   /**
    *
    */
@@ -98,7 +146,7 @@ public class DTSTable extends MPanel{
 				stopEditing();
       }
     }, null, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0,true), JComponent.WHEN_IN_FOCUSED_WINDOW );
-    int uw = 100;
+    int uw = 66;
     _table.getColumnModel().getColumn(0).setPreferredWidth(1*uw);
     _table.getColumnModel().getColumn(1).setPreferredWidth(5*uw);
     _table.getColumnModel().getColumn(2).setPreferredWidth(1*uw);
@@ -122,18 +170,18 @@ public class DTSTable extends MPanel{
     namePanel.setLayout(new BorderLayout());
     namePanel.add(nameLabel,BorderLayout.WEST);
     namePanel.add(_nameField,BorderLayout.CENTER);
+    namePanel.add(createButtonPanel(),BorderLayout.SOUTH);
     add(namePanel, BorderLayout.NORTH);
     add(new JScrollPane(_table),BorderLayout.CENTER);
-    add(createButtonPanel(),BorderLayout.SOUTH);
     setDTS(dts,null);
   }
 
   public JPanel createButtonPanel() {
-	JPanel holder = new JPanel(new FlowLayout(FlowLayout.CENTER,10,5));
+	JPanel holder = new JPanel(new FlowLayout(FlowLayout.LEFT,10,5));
 	JButton addrow = new JButton("Add");
 	JButton insertrow = new JButton("Insert");
 	JButton deleterow = new JButton("Delete");
-	JButton opencurrent = new JButton("Open");
+	opencurrent = new JButton("Open");
 //	JLabel filler = new JLabel("                                                  ");
 //	JLabel filler1 = new JLabel("      ");
 //	JLabel filler2 = new JLabel("      ");
@@ -152,11 +200,6 @@ public class DTSTable extends MPanel{
       public void doWork(){
 	    delete();
       }
-    });
-    opencurrent.addActionListener(new GuiTaskListener("Retrieving...") {
-			public void doWork(){
-				retrieve();
-			}
     });
     //holder.add(filler);
     holder.add(addrow); //holder.add(filler1);
@@ -673,10 +716,11 @@ public class DTSTable extends MPanel{
   /**
    *
    */
-  void retrieve(){
+  public void retrieve(){
     stopEditing();
     try {
 			if (_dts != null) {
+				System.out.println(_dts.getName());
 			  GuiUtils.displayDTS(_dts);
 			 } else if (_mts != null) {
 				GuiUtils.displayMTS(_mts);
@@ -685,6 +729,24 @@ public class DTSTable extends MPanel{
       VistaUtils.displayException(this,e);
     }
   }
+  /**
+  *
+  */
+ public Vector<DataContainer> retrieveData(){
+   stopEditing();
+   try {
+			if (_dts != null) {
+				System.out.println(_dts.getName());
+				return AppUtils.retrieveDTSData(_dts);
+			 } else if (_mts != null) {
+				return AppUtils.retrieveMTSData(_mts);
+			}
+   }catch(Exception e){
+     VistaUtils.displayException(this,e);
+   }
+   return new Vector<DataContainer>();
+ }
+  
   /**
    *
    */
@@ -723,7 +785,7 @@ public class DTSTable extends MPanel{
   /**
    *
    */
-  void stopEditing(){
+  public void stopEditing(){
     changeNameToField();
     _modified = true;
     _table.editingStopped(new ChangeEvent(_table));

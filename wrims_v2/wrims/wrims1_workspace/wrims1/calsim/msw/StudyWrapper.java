@@ -124,7 +124,7 @@ public class StudyWrapper {
 				} catch (IOException ioe) {
 					throw new RuntimeException(ioe.getMessage());
 				}
-				if (!MSWUtil.position) sty.setInitFile(getDVFile());  //TODO: weird ??
+				if (!MSWUtil.position) sty.setInitFile(getDVFile());
 				if (_wrapperDebug) System.out.println("Second set init: " + sty.getInitFile());
 			}
 		} //else if (_gui.isDvFileAsInitFile()) { // cannot do this here as it depends on the index of the last study

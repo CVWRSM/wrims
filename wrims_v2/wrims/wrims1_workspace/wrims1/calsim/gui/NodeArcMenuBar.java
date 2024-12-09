@@ -35,14 +35,20 @@ sushil@water.ca.gov
 */
 
 package calsim.gui;
-import calsim.app.*;
-import vista.gui.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.FileDialog;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JTextField;
+
+import vista.gui.VistaUtils;
 import wrims.schematic.Schematic;
 import wrims.schematic.SchematicUtils;
-import calsim.debug.*;
+import calsim.app.AppUtils;
+import calsim.app.Project;
+import calsim.debug.DebugSetting;
 /**
  * The menu bar for the Node/Arc toggle button in the main panel
  *
@@ -60,9 +66,11 @@ public class NodeArcMenuBar
    * parameters: main panel in the CalsimOASGUI frame
    */
   public NodeArcMenuBar(MainPanel mp) {
-    _mainPanel = mp;
-    _mainMenuBar = _mainPanel.getMainMenuBar();
-    _menuBar = createMenuBar();
+    if (mp != null) {
+    	_mainPanel = mp;
+        _mainMenuBar = _mainPanel.getMainMenuBar();
+        _menuBar = createMenuBar();
+    }
   }
 
   /**

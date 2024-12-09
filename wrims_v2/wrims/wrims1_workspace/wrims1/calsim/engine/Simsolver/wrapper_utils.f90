@@ -576,7 +576,7 @@ contains
     	
     	IF (chareq(Epart, '1DAY')) THEN
     		flush_interval = 365
-    		cache_back = 366   !changed from 180 to 366 by Z.Q. Richard Chen
+    		cache_back = 180
     		cache_forward = flush_interval + 35
     	ELSE IF (chareq(Epart, '1MON')) THEN
     		flush_interval = 120	 !CB TODO: THIS SHOULD BE SMALLER IF THE STUDY IS LESS THAN TEN YEARS IN LENGTH

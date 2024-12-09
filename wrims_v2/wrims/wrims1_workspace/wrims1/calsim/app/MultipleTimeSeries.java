@@ -455,26 +455,26 @@ public class MultipleTimeSeries implements Serializable{
 				if ( studyNumber==0 ) {
 					path.setPart(Pathname.F_PART,AppUtils.getCurrentProject().getBaseName());
 	      	refs[i] = new DefaultReference("local","calc.dss",path.toString(),
-						((DerivedTimeSeries) refs[i]).getData(0));
+						((DerivedTimeSeries) refs[i]).getDataW2(0));
 				} else if ( studyNumber == 1 ){
 					path.setPart(Pathname.F_PART,AppUtils.getCurrentProject().getComp1Name());
 				  refs[i] = new DefaultReference("local","calc.dss",path.toString(),
-					 ((DerivedTimeSeries) refs[i]).getData(1));
+					 ((DerivedTimeSeries) refs[i]).getDataW2(1));
 				} else if ( studyNumber == 2 ){
 					path.setPart(Pathname.F_PART,AppUtils.getCurrentProject().getComp2Name());
 				  refs[i] = new DefaultReference("local","calc.dss",path.toString(),
-					 ((DerivedTimeSeries) refs[i]).getData(2));
+					 ((DerivedTimeSeries) refs[i]).getDataW2(2));
 				} else if ( studyNumber == 3 ){
 					path.setPart(Pathname.F_PART,AppUtils.getCurrentProject().getComp3Name());
 				  refs[i] = new DefaultReference("local","calc.dss",path.toString(),
-					 ((DerivedTimeSeries) refs[i]).getData(3));
+					 ((DerivedTimeSeries) refs[i]).getDataW2(3));
 				}
 
       } else {
-//				String vt = getVarTypeAt(i);
+				String vt = getVarTypeAt(i);
 				String bpart = getBPartAt(i);
 				String cpart = getCPartAt(i);
-			 	refs[i] = AppUtils.getDataReference(studyNumber,bpart,cpart);
+			 	refs[i] = AppUtils.getDataReference(studyNumber,bpart,cpart, vt);
 			 	if ( refs[i] == null )
 					  throw new RuntimeException("No data found for " + cpart + " at " + bpart);
 

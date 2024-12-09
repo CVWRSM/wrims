@@ -388,7 +388,7 @@ public class MultiStudyRunner {
 		  for (int i=0; i<num; i++) {
 				DataReference ref = DataReference.createExpanded((DataReference)_b2Ref.elementAt(i),_tw);
 				ref.reloadData();
-        DSSUtil.writeData((String)_b2ToFile.elementAt(i),(String)_b2NewPath.elementAt(i),ref.getData());
+        DSSUtil.writeData((String)_b2ToFile.elementAt(i),(String)_b2NewPath.elementAt(i),ref.getData(),true);
         if (DEBUG) System.out.println("Transferring to: "+(String)_b2ToFile.elementAt(i)+" New Path: "+(String)_b2NewPath.elementAt(i));
 			}
 		}
@@ -397,7 +397,7 @@ public class MultiStudyRunner {
 		  for (int i=0; i<num; i++) {
 				DataReference ref = DataReference.createExpanded((DataReference)_ewaRef.elementAt(i),_tw);
         ref.reloadData();
-        DSSUtil.writeData((String)_ewaToFile.elementAt(i),(String)_ewaNewPath.elementAt(i),ref.getData());
+        DSSUtil.writeData((String)_ewaToFile.elementAt(i),(String)_ewaNewPath.elementAt(i),ref.getData(),true);
 			  if (DEBUG) System.out.println("Transferring to: "+(String)_ewaToFile.elementAt(i)+" New Path: "+(String)_ewaNewPath.elementAt(i));
 			}
 		}
@@ -504,7 +504,7 @@ public class MultiStudyRunner {
 				if (DEBUG) System.out.println("i "+i);
 				DataReference ref = DataReference.createExpanded((DataReference)_b2Ref.elementAt(i),_tw);
 				ref.reloadData();
-        DSSUtil.writeData((String)_b2ToFile.elementAt(i),(String)_b2NewPath.elementAt(i),ref.getData());
+        DSSUtil.writeData((String)_b2ToFile.elementAt(i),(String)_b2NewPath.elementAt(i),ref.getData(),true);
         if (DEBUG) System.out.println("Data to File: "+(String)_b2ToFile.elementAt(i));
         it++;
 			}
@@ -517,7 +517,7 @@ public class MultiStudyRunner {
 				if (DEBUG) System.out.println("i "+i);
 				DataReference ref = DataReference.createExpanded((DataReference)_ewaRef.elementAt(i),_tw);
         ref.reloadData();
-        DSSUtil.writeData((String)_ewaToFile.elementAt(i),(String)_ewaNewPath.elementAt(i),ref.getData());
+        DSSUtil.writeData((String)_ewaToFile.elementAt(i),(String)_ewaNewPath.elementAt(i),ref.getData(),true);
         if (DEBUG) System.out.println("Data to File: "+(String)_ewaToFile.elementAt(i));
         it++;
 			}

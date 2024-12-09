@@ -441,7 +441,7 @@ public class MultiStudyWrapper extends Thread {
 							}
 
 			 				if (!_position) setStudyInitFile(studyIndex,
-			 						getStudyDVFilename(sW[studyIndex].getInitIndex())); // TODO: weird??
+			 						getStudyDVFilename(sW[studyIndex].getInitIndex()));
 							else {
 								if (MSWUtil.posyr == _numyears - 1) {
 									setStudyInitFile(studyIndex, sW[studyIndex].getInitFile());

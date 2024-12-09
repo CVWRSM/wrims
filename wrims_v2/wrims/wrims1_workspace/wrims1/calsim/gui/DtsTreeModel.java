@@ -74,7 +74,7 @@ public class DtsTreeModel extends GeneralTreeModel {
   }
 
   JPopupMenu nodepopup = new JPopupMenu();
-  JMenuItem open = new JMenuItem("Open");
+  public JMenuItem open = new JMenuItem("Open");
   //open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,KeyEvent.CTRL_MASK));
   //open.setMnemonic('o');
   JMenuItem rename = new JMenuItem("Rename");
@@ -124,11 +124,6 @@ public class DtsTreeModel extends GeneralTreeModel {
   }
 
   public void getPopupMenuItems() {
-    open.addActionListener(new GuiTaskListener("Retrieving...") {
-	    public void doWork() {
-	      open();
-	    }
-	  });
     nodepopup.add(open);
     nodepopup.addSeparator();
     adddts.addActionListener(al);
@@ -852,7 +847,7 @@ public class DtsTreeModel extends GeneralTreeModel {
 	  	}
     }
     _tree.expandRow(0);
-    MessagePanel.setDtsMasterMessage(treefile);
+    //MessagePanel.setDtsMasterMessage(treefile);
   }
 
 
