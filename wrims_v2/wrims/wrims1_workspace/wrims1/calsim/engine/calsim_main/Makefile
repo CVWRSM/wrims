@@ -8,7 +8,7 @@ F90_FILES = calsim.f90
 F90_OBJS = $(F90_FILES:%.f90=%.obj)
 
 all: #$(F90_MODS) $(F90_OBJS) 
-	(cmd /c make_dos)
+	(cmd /c make_dos.bat)
 #	$(LINKER) $(F90_OBJS) -exe $(TARGET) $(LINK_OPTIONS) 
 
 release: clean all

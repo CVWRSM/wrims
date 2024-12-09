@@ -1,11 +1,17 @@
 package calsim.gui;
 
-import calsim.app.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import calsim.app.DerivedTimeSeries;
+import calsim.app.MultipleTimeSeries;
 //import java.io.*;
-import javax.swing.*;
-import javax.swing.tree.*;
 //import javax.swing.table.TableColumnModel;
 //import javax.swing.event.TableModelEvent;
 
@@ -60,7 +66,8 @@ public class DtsTreePanel extends JPanel {
 	_dts = dts;
   }
 
-  public DerivedTimeSeries getDTS() {
+	public DerivedTimeSeries getDTS() {
+		
 	return _dts;
   }
 

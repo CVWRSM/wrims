@@ -38,7 +38,7 @@ all dbg: setversion $(CLASS_FILES)
 	@echo "All done"
 
 setversion:
-	echo "version=1.3.4 Beta (XA16) Build Date: " `date` > $(CALSIM_HOME)${PATH_SEP}version
+	echo "version=1.3 Build Date: " `date` > $(CALSIM_HOME)${PATH_SEP}version
 
 test: dbg
 	(cd test $(CMD_SEP)  make test )

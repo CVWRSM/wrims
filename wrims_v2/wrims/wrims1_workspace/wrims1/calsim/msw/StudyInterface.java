@@ -105,7 +105,7 @@ public class StudyInterface {
 
     private DataReference createDataReference(Group g, String bpart) {
         Group temp = Group.createGroup(g);
-        temp.filterBy(true,new PathPartPredicate(bpart,Pathname.B_PART));
+        temp.filterBy(new PathPartPredicate(bpart,Pathname.B_PART),true);
         return temp.getDataReference(0);
     }
 
@@ -140,7 +140,7 @@ public class StudyInterface {
             			+ " before writing " + ds[j] + " dataset");  // to isolate Leaf's error
             	System.out.flush();
             	if (!_transferDebug)
-            		DSSUtil.writeData(toFile[i], pnString[i][j], ds[j]);
+            		DSSUtil.writeData(toFile[i], pnString[i][j], ds[j], true);
             	else {
 	            	long smin = 0L;
 	            	long emin = 0L;
@@ -211,7 +211,7 @@ public class StudyInterface {
  	       				throw new IllegalArgumentException("Data type: " + dataType + " is invalid");
             		}
 
-	       			DSSUtil.writeData(toFile[i], pnString[i][j], ds[j]);
+	       			DSSUtil.writeData(toFile[i], pnString[i][j], ds[j],true);
 	       			System.out.println("Successful data write");
    					System.out.flush();
 /*

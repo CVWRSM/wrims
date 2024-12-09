@@ -36,14 +36,19 @@ sushil@water.ca.gov
 
 package calsim.app;
 import calsim.gui.*;
+
 import java.io.*;
 import java.util.*;
+
 import javax.swing.*;
+
 import vista.set.*;
 import vista.time.*;
 import calsim.gym.Network;
+
 import com.sun.xml.tree.XmlDocument;
 import com.sun.xml.tree.TreeWalker;
+
 import org.w3c.dom.Element;
 /**
  * A project contains a user defined list of DerivedTimeSeries (DTS) and
@@ -84,12 +89,14 @@ public class Project implements Serializable{
   }
   //Sets the b and c parts in the SV file to a Hashtable
   public void setSVHashtable() {
-		Group g = Group.createGroup(getSVGroup());
+	Group g = getSVBaseGroup();
+	if (g !=null){    
+		//Group g = Group.createGroup(svg);
 		int num = g.getNumberOfDataReferences();
 		_svList = new Hashtable(num);
 		String b, c;
-		_bsv = new String[num-3];
-		for (int i = 0; i < num-3; i++) {
+		_bsv = new String[num];
+		for (int i = 0; i < num; i++) {
 			Pathname p = g.getDataReference(i).getPathname();
 			b = p.getPart(Pathname.B_PART);
 			c = p.getPart(Pathname.C_PART);
@@ -98,21 +105,25 @@ public class Project implements Serializable{
 			_svList.put(b,c);
 		}
 	}
+  }
 
   //Sets the b and c parts in the DV file to a Hashtable
   public void setDVHashtable() {
-		Group g = Group.createGroup(getDVGroup());
-		int num = g.getNumberOfDataReferences();
-		_dvList = new Hashtable(num);
-		String b, c;
-		_bdv = new String[num];
-		for (int i = 0; i < num; i++) {
-			Pathname p = g.getDataReference(i).getPathname();
-			b = p.getPart(Pathname.B_PART);
-			c = p.getPart(Pathname.C_PART);
-			if ( b == null || c == null) return;
-			_bdv[i] = b;
-			_dvList.put(b,c);
+	    Group g = getDVBaseGroup();
+	    if (g !=null){
+			//Group g = Group.createGroup(dvg);
+			int num = g.getNumberOfDataReferences();
+			_dvList = new Hashtable(num);
+			String b, c;
+			_bdv = new String[num];
+			for (int i = 0; i < num; i++) {
+				Pathname p = g.getDataReference(i).getPathname();
+				b = p.getPart(Pathname.B_PART);
+				c = p.getPart(Pathname.C_PART);
+				if ( b == null || c == null) return;
+				_bdv[i] = b;
+				_dvList.put(b,c);
+			}
 		}
 	}
 
@@ -498,26 +509,66 @@ public class Project implements Serializable{
    * for the decision variables in the study
    * @see vista.set.Group
    */
-  public Group getDVGroup(){
-    if ( _dvg == null || AppUtils.needsRecataloging(_dvf)){
-			_dvg = AppUtils.openDSSFile(_dvf);
+  public Group getDVBaseGroup(){
+    if (AppUtils.selectedStudies[0]){ // &&  AppUtils.needsRecataloging(_dvf)){
+		_dvgbase = AppUtils.openDSSFile(_dvf);
+    }else if (AppUtils.selectedStudies[1]){ // && AppUtils.needsRecataloging(_dv2f)){
+        _dvgbase = AppUtils.openDSSFile(_dv2f);	
+    }else if (AppUtils.selectedStudies[2]){ // && AppUtils.needsRecataloging(_dv3f)){
+        _dvgbase = AppUtils.openDSSFile(_dv3f);	
+    }else if (AppUtils.selectedStudies[3]){ // && AppUtils.needsRecataloging(_dv4f)){
+        _dvgbase = AppUtils.openDSSFile(_dv4f);    	
     }
     //if ( _dvg == null ){
     //  throw new RuntimeException("No file loaded for decision variables!");
     //}
-    return _dvg;
+    return _dvgbase;
   }
   /**
    * @return a group of all the data references (containing data sets)
    * for the state variables in the study
    * @see vista.set.Group
    */
-  public Group getSVGroup(){
-    if ( _svg == null || AppUtils.needsRecataloging(_svf)){
-      _svg = AppUtils.openDSSFile(_svf);
+  public Group getSVBaseGroup(){
+    if ( AppUtils.selectedStudies[0]){ // && AppUtils.needsRecataloging(_svf)){
+      _svgbase = AppUtils.openDSSFile(_svf);
+    }else if (AppUtils.selectedStudies[1]){// && AppUtils.needsRecataloging(_sv2f)){
+      _svgbase = AppUtils.openDSSFile(_sv2f);	
+    }else if (AppUtils.selectedStudies[2]){// && AppUtils.needsRecataloging(_sv3f)){
+      _svgbase = AppUtils.openDSSFile(_sv3f);	
+    }else if (AppUtils.selectedStudies[3]){// && AppUtils.needsRecataloging(_sv4f)){
+      _svgbase = AppUtils.openDSSFile(_sv4f);    	
     }
     //if ( _svg == null ){
     //  throw new RuntimeException("No file loaded for state variables!");
+    //}
+    return _svgbase;
+  }
+  /**
+   * @return a group of all the data references (containing data sets)
+   * for the decision variables in the alternative study
+   * @see vista.set.Group
+   */
+  public Group openDVGroup(){
+    //if ( _dvg == null || AppUtils.needsRecataloging(_dv2f)){
+      _dvg = AppUtils.openDSSFile(_dvf);
+    //}
+    //if ( _dv2g == null ){
+    //  throw new RuntimeException("No file loaded for alternate study decision variables!");
+    //}
+    return _dvg;
+  }
+  /**
+   * @return a group of all the data references (containing data sets)
+   * for the state variables in the alternative study
+   * @see vista.set.Group
+   */
+  public Group openSVGroup(){
+    //if ( _sv2g == null || AppUtils.needsRecataloging(_sv2f)) {
+      _svg = AppUtils.openDSSFile(_svf);
+    //}
+    //if ( _sv2g == null ){
+    //  throw new RuntimeException("No file loaded for alternate study state variables!");
     //}
     return _svg;
   }
@@ -526,10 +577,10 @@ public class Project implements Serializable{
    * for the decision variables in the alternative study
    * @see vista.set.Group
    */
-  public Group getDV2Group(){
-    if ( _dv2g == null || AppUtils.needsRecataloging(_dv2f)){
+  public Group openDV2Group(){
+    //if ( _dv2g == null || AppUtils.needsRecataloging(_dv2f)){
       _dv2g = AppUtils.openDSSFile(_dv2f);
-    }
+    //}
     //if ( _dv2g == null ){
     //  throw new RuntimeException("No file loaded for alternate study decision variables!");
     //}
@@ -540,10 +591,10 @@ public class Project implements Serializable{
    * for the state variables in the alternative study
    * @see vista.set.Group
    */
-  public Group getSV2Group(){
-    if ( _sv2g == null || AppUtils.needsRecataloging(_sv2f)) {
+  public Group openSV2Group(){
+    //if ( _sv2g == null || AppUtils.needsRecataloging(_sv2f)) {
       _sv2g = AppUtils.openDSSFile(_sv2f);
-    }
+    //}
     //if ( _sv2g == null ){
     //  throw new RuntimeException("No file loaded for alternate study state variables!");
     //}
@@ -554,10 +605,10 @@ public class Project implements Serializable{
    * for the decision variables in the alternative study
    * @see vista.set.Group
    */
-  public Group getDV3Group(){
-    if ( _dv3g == null || AppUtils.needsRecataloging(_dv3f)){
+  public Group openDV3Group(){
+    //if ( _dv3g == null || AppUtils.needsRecataloging(_dv3f)){
       _dv3g = AppUtils.openDSSFile(_dv3f);
-    }
+    //}
     //if ( _dv2g == null ){
     //  throw new RuntimeException("No file loaded for alternate study decision variables!");
     //}
@@ -568,10 +619,10 @@ public class Project implements Serializable{
    * for the state variables in the alternative study
    * @see vista.set.Group
    */
-  public Group getSV3Group(){
-    if ( _sv3g == null || AppUtils.needsRecataloging(_sv3f)) {
+  public Group openSV3Group(){
+    //if ( _sv3g == null || AppUtils.needsRecataloging(_sv3f)) {
       _sv3g = AppUtils.openDSSFile(_sv3f);
-    }
+    //}
     //if ( _sv3g == null ){
     //  throw new RuntimeException("No file loaded for alternate study state variables!");
     //}
@@ -582,10 +633,10 @@ public class Project implements Serializable{
    * for the decision variables in the alternative study
    * @see vista.set.Group
    */
-  public Group getDV4Group(){
-    if ( _dv4g == null || AppUtils.needsRecataloging(_dv4f)){
+  public Group openDV4Group(){
+    //if ( _dv4g == null || AppUtils.needsRecataloging(_dv4f)){
       _dv4g = AppUtils.openDSSFile(_dv4f);
-    }
+    //}
     //if ( _dv4g == null ){
     //  throw new RuntimeException("No file loaded for alternate study decision variables!");
     //}
@@ -596,21 +647,53 @@ public class Project implements Serializable{
    * for the state variables in the alternative study
    * @see vista.set.Group
    */
-  public Group getSV4Group(){
-    if ( _sv4g == null || AppUtils.needsRecataloging(_sv4f)) {
+  public Group openSV4Group(){
+    //if ( _sv4g == null || AppUtils.needsRecataloging(_sv4f)) {
       _sv4g = AppUtils.openDSSFile(_sv4f);
-    }
+    //}
     //if ( _sv4g == null ){
     //  throw new RuntimeException("No file loaded for alternate study state variables!");
     //}
     return _sv4g;
+  }
+  
+  public Group getDVGroup(){
+	  return _dvg;
+  }
+  
+  public Group getSVGroup(){
+	  return _svg;
+  }
+  
+  public Group getDV2Group(){
+	  return _dv2g;
+  }
+  
+  public Group getSV2Group(){
+	  return _sv2g;
+  }
+  
+  public Group getDV3Group(){
+	  return _dv3g;
+  }
+  
+  public Group getSV3Group(){
+	  return _sv3g;
+  }
+  
+  public Group getDV4Group(){
+	  return _dv4g;
+  }
+  
+  public Group getSV4Group(){
+	  return _sv4g;
   }
   /**
    * sets the time period of interest in this study to the
    * default of what exists in the database
    */
   public void setToDefaultTimeWindow(){
-    _tw = AppUtils.guessTimeWindowFromGroup(getSVGroup());
+    _tw = AppUtils.guessTimeWindowFromGroup(getSVBaseGroup());
   }
   /**
    * @return the currently valid time window
@@ -643,7 +726,7 @@ public class Project implements Serializable{
    */
   public String getBaseName(){
     if ( _studyName == null )
-      return AppUtils.guessStudyNameFromGroup(getDVGroup());
+      return AppUtils.guessStudyNameFromGroup(getDVBaseGroup());
     else
       return _studyName;
   }
@@ -981,7 +1064,7 @@ public class Project implements Serializable{
 
   // private class variables
   // transient ( not saved )
-  private transient Group _svg, _dvg, _sv2g, _dv2g, _sv3g, _dv3g, _sv4g, _dv4g;
+  private transient Group _svg, _dvg, _sv2g, _dv2g, _sv3g, _dv3g, _sv4g, _dv4g, _svgbase, _dvgbase;
   // non - transient saved
   public Hashtable _dtsList, _mtsList, _dvList, _svList;
   private String _svf, _dvf, _sv2f, _dv2f, _sv3f, _dv3f, _sv4f, _dv4f;

@@ -66,7 +66,6 @@ public class MainPanel extends JPanel
     JFrame frame = fr;
     _mainMenuBar = new MainMenuBar(this);
     _messagePanel = new MessagePanel(frame,this);
-    setBackground(new Color(229,240,203));
     setLayout(new BorderLayout(5,5));
     add(_messagePanel.getMessagePanelComp(),BorderLayout.NORTH);
     _tabbedPane = new JTabbedPane();

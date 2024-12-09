@@ -35,24 +35,53 @@ sushil@water.ca.gov
 */
 
 package calsim.gui;
-import vista.gui.*;
-import vista.app.DataGraph;
-import vista.app.DataTable;
-import vista.app.MultiDataTable;
-import vista.set.*;
-import calsim.app.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.print.*;  //CB added
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.PrintJob;
+import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.text.CollationKey;
+import java.text.Collator;
+import java.util.Properties;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+
+import vista.app.DataGraphFrame;
+import vista.app.DataTableFrame;
+import vista.app.MultiDataTableFrame;
+import vista.gui.VistaUtils;
+import vista.set.DataReference;
+import vista.set.Pathname;
+import calsim.app.AppUtils;
+import calsim.app.DerivedTimeSeries;
+import calsim.app.MultipleTimeSeries;
+import calsim.app.Project;
+import calsim.app.Study;
+//CB added
 //import java.awt.event.*;
 //import calsim.app.*;
-import java.util.Properties;
-import java.io.*;
-import java.text.*;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.*;
-import sun.print.*; //CB added
+//CB added
 /**
   *	Common utilities for Gui package
   *
@@ -165,11 +194,11 @@ public class GuiUtils{
 //    MainPanel mp = getMainPanel();
     for(int i=0; i < frs.length; i++){
       if ( frs[i] == null ) continue;
-      if ( frs[i] instanceof DataGraph ){
+      if ( frs[i] instanceof DataGraphFrame ){
 	//mp.getGraphOutputPanel().addToTabbedPane(createPanelFromFrame(frs[i]),tabName);
 	//frs[i].dispose();
 	frs[i].setVisible(true);
-      } else if ( frs[i] instanceof DataTable || frs[i] instanceof MultiDataTable ){
+      } else if ( frs[i] instanceof DataTableFrame || frs[i] instanceof MultiDataTableFrame ){
 	//	mp.getTableOutputPanel().addToTabbedPane(createPanelFromFrame(frs[i]),tabName);
 	//frs[i].dispose();
 	frs[i].setVisible(true);
@@ -392,12 +421,24 @@ public class GuiUtils{
     if ( _panel == null ) _panel = new MainPanel(fr);
     return _panel;
   }
+  
   /**
-   *
-   */
-  static MainPanel getMainPanel(){
-    return _panel;
+  *
+  */
+ static MainPanel getMainPanel(){
+   return _panel;
+ }
+ 
+ static CalLiteGUIMainPanel _panelCLG;
+  static CalLiteGUIMainPanel createMainPanelCLG(JFrame fr){
+	    if ( _panelCLG == null ) _panelCLG = new CalLiteGUIMainPanel(fr);
+	    return _panelCLG;
+	  }
+
+  public static CalLiteGUIMainPanel getCLGPanel() {
+	  return _panelCLG;
   }
+  
   /**
    * copies a frames menubar and content pane to create a panel with
    * that menubar and content pane.

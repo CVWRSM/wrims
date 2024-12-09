@@ -35,8 +35,15 @@ sushil@water.ca.gov
 */
 
 package calsim.app;
+import hec.heclib.util.HecTime;
+import hec.hecmath.HecMath;
+import hec.hecmath.HecMathException;
+import hec.io.DataContainer;
+import hec.io.TimeSeriesContainer;
+
 import java.util.*;
 import java.io.*;
+
 import vista.set.*;
 import vista.app.*;
 import vista.graph.*;
@@ -44,9 +51,13 @@ import vista.time.*;
 import vista.db.dss.*;
 import vista.gui.*;
 import calsim.gym.*;
+
 import javax.swing.*;
+
 import java.awt.*;
+
 import calsim.gui.*;
+
 import com.sun.java.util.collections.Arrays;
 import com.sun.java.util.collections.Comparator;
 /**
@@ -55,7 +66,24 @@ import com.sun.java.util.collections.Comparator;
  * @author Nicky Sandhu
  * @version $Id: AppUtils.java,v 1.1.4.74.2.1 2002/06/20 19:12:45 adraper Exp $
  */
-public class AppUtils{
+public class AppUtils{	
+  public static boolean[] selectedStudies={false, false, false, false, false, false, false, false};
+
+  public static ArrayList<Integer> months= new ArrayList<Integer>(){{
+	    add(10);
+	    add(11);
+	    add(12);
+	    add(1);
+	    add(2);
+	    add(3);
+	    add(4);
+	    add(5);
+	    add(6);
+	    add(7);
+	    add(8);
+	    add(9);
+	}};
+  
   public static boolean DEBUG = false;
   /**
    * true if graph is needed
@@ -166,7 +194,7 @@ public class AppUtils{
   /**
     * the default time window
     */
-  public static String DEFAULT_TIME_WINDOW = "OCT1921 - SEP2003";
+  public static String DEFAULT_TIME_WINDOW = "OCT1921 - SEP3000";
   /**
     *
     */
@@ -420,12 +448,12 @@ public class AppUtils{
 					       String bpart, String cpart, TimeWindow tw){
     DataReference ref = null;
     if ( dssGroup == null ) return null;
-    Group gc = Group.createGroup(dssGroup);
+    //Group gc = Group.createGroup(dssGroup);
+    Group gc=(Group) dssGroup.clone();
     // do mapping
-
     //
     if ( bpart != null && !bpart.equals(""))
-      gc.filterBy(true, new PathPartPredicate("^"+bpart+"$",Pathname.B_PART));
+      gc.filterBy(new PathPartPredicate("^"+bpart+"$",Pathname.B_PART),true);
     // no bpart found
     if ( gc.getNumberOfDataReferences() == 0 ){
       System.err.println("No matching reference in " + dssGroup.getName()
@@ -435,7 +463,7 @@ public class AppUtils{
       //      return null;
     }
     if ( cpart != null && !cpart.equals(""))
-      gc.filterBy(true, new PathPartPredicate("^"+cpart+"$",Pathname.C_PART));
+      gc.filterBy(new PathPartPredicate("^"+cpart+"$",Pathname.C_PART),true);
     if ( gc.getNumberOfDataReferences() > 1){
       System.err.println("Warning: " + dssGroup.getName()
 			 + " has more than one references for bpart = " + bpart
@@ -460,8 +488,8 @@ public class AppUtils{
 	 */
 	public static DataReference [] getDataReferences(String [] parts, String fileType) {
 		Group dssGroup = null;
-		if (fileType.equals(SVAR)) dssGroup = AppUtils.getCurrentProject().getSVGroup();
-    	else dssGroup = AppUtils.getCurrentProject().getDVGroup();
+		if (fileType.equals(SVAR)) dssGroup = AppUtils.getCurrentProject().getSVBaseGroup();
+    	else dssGroup = AppUtils.getCurrentProject().getDVBaseGroup();
 		if (dssGroup == null) {
 			if (fileType.equals(DVAR))
 				JOptionPane.showMessageDialog(null, "Load a base DV dss file before filtering",
@@ -480,7 +508,7 @@ public class AppUtils{
 			if (parts[i] != null) part = replace(parts[i],"*",".*?");
 			if (part != null && !part.equals("")) {
 				part = "^"+part+"$";
-				gc.filterBy(true, new PathPartPredicate(part,i));
+				gc.filterBy(new PathPartPredicate(part,i),true);
 			}
 			if (gc.getNumberOfDataReferences() == 0){
 				throw new RuntimeException("No matching reference in " + dssGroup.getName()
@@ -537,7 +565,7 @@ public class AppUtils{
 	baxis.setDCRange(stime.getTimeInMinutes(), etime.getTimeInMinutes());
       }
     }
-    DataGraph dg = new DataGraph(graph[0],"Graph",false);
+    DataGraphFrame dg = new DataGraphFrame(graph[0],"Graph",false);
     dg.setSize(DEFAULT_PLOT_SIZE); // set to 8.5x11 for landscape printing.
     Toolkit tk = dg.getToolkit();
     Dimension screenSize = tk.getScreenSize();
@@ -562,7 +590,7 @@ public class AppUtils{
     }
     Graph graph[] = gb.createGraphs();
     if ( graph == null ) return null;
-    DataGraph dg = new DataGraph(graph[0],"Graph", false);
+    DataGraphFrame dg = new DataGraphFrame(graph[0],"Graph", false);
     dg.setSize(DEFAULT_PLOT_SIZE); // set to 8.5x11 for landscape printing.
     Toolkit tk = dg.getToolkit();
     Dimension screenSize = tk.getScreenSize();
@@ -577,7 +605,7 @@ public class AppUtils{
    */
   public static JFrame tabulate(DataReference ref){
     if ( ref == null ) return null;
-    JFrame fr = new DataTable(ref, false);
+    JFrame fr = new DataTableFrame(ref, false);
     Toolkit tk = fr.getToolkit();
     fr.setSize(DEFAULT_TABLE_SIZE);
     Dimension screenSize = tk.getScreenSize();
@@ -594,9 +622,9 @@ public class AppUtils{
     JFrame fr = null;
     if ( refs == null ) return fr;
     if ( refs.length == 1 ){
-      fr = new DataTable(refs[0], false);
+      fr = new DataTableFrame(refs[0], false);
     }
-    fr = new MultiDataTable(refs, false);
+    fr = new MultiDataTableFrame(refs, false);
     Toolkit tk = fr.getToolkit();
     fr.setSize(DEFAULT_TABLE_SIZE);
     Dimension screenSize = tk.getScreenSize();
@@ -1005,12 +1033,14 @@ public class AppUtils{
       // upstream arcs which bring in flow to node
       if ( rts == null ){
 	String cpart = getCPartFromArc(upArcs[i]);
-	DataReference ref1 = AppUtils.getDataReference(studyNumber,upArcs[i].getName(),cpart);
+	String vt = "DVAR";
+	DataReference ref1 = AppUtils.getDataReference(studyNumber,upArcs[i].getName(),cpart, vt);
 	changeToCurrentUnits(ref1);
 	rts = (RegularTimeSeries) TSMath.createCopy((TimeSeries)ref1.getData());
       }else{
 	String cpart = getCPartFromArc(upArcs[i]);
-	DataReference ref1 = AppUtils.getDataReference(studyNumber,upArcs[i].getName(),cpart);
+	String vt = "DVAR";
+	DataReference ref1 = AppUtils.getDataReference(studyNumber,upArcs[i].getName(),cpart, vt);
 	changeToCurrentUnits(ref1);
 	RegularTimeSeries rtsy = (RegularTimeSeries) ref1.getData();
 	TSMath.doMath(rts,rtsy,TimeSeriesMath.ADD);
@@ -1023,13 +1053,15 @@ public class AppUtils{
       // downstream arcs which bring in flow to node
       if ( rts == null ){
 	String cpart = getCPartFromArc(downArcs[i]);
-	DataReference ref1 = AppUtils.getDataReference(studyNumber,downArcs[i].getName(),cpart);
+	String vt = "DVAR";
+	DataReference ref1 = AppUtils.getDataReference(studyNumber,downArcs[i].getName(),cpart, vt);
 	changeToCurrentUnits(ref1);
 	rts = (RegularTimeSeries) TSMath.createCopy((TimeSeries) ref1.getData());
 	rts = rts.__mul__(-1);
       } else{
 	String cpart = getCPartFromArc(downArcs[i]);
-	DataReference ref1 = AppUtils.getDataReference(studyNumber,downArcs[i].getName(),cpart);
+	String vt = "DVAR";
+	DataReference ref1 = AppUtils.getDataReference(studyNumber,downArcs[i].getName(),cpart, vt);
 	changeToCurrentUnits(ref1);
 	RegularTimeSeries rtsy = (RegularTimeSeries) ref1.getData();
 	TSMath.doMath(rts,rtsy,TimeSeriesMath.SUB);
@@ -1038,14 +1070,16 @@ public class AppUtils{
     // subtract out evaporation and flood flows if node has storage
     if ( node.hasStorage() ){
       if ( rts == null ){
-	DataReference ref1 = AppUtils.getDataReference(studyNumber,"E"+nodeId,"EVAPORATION");
+    String vt = "DVAR";
+	DataReference ref1 = AppUtils.getDataReference(studyNumber,"E"+nodeId,"EVAPORATION", vt);
 	changeToCurrentUnits(ref1);
 	rts = (RegularTimeSeries)
 	  TSMath.createCopy((TimeSeries)ref1.getData());
 	rts = rts.__mul__(-1);
       }
       else{
-	DataReference ref1 = AppUtils.getDataReference(studyNumber,"E"+nodeId,"EVAPORATION");
+    String vt = "DVAR";
+    DataReference ref1 = AppUtils.getDataReference(studyNumber,"E"+nodeId,"EVAPORATION", vt);
 	changeToCurrentUnits(ref1);
 	RegularTimeSeries rtsy =
 	  (RegularTimeSeries) ref1.getData();
@@ -1155,29 +1189,37 @@ public class AppUtils{
 	 * @param bpart The b part
 	 * @param cpart The c part
 	 */
-	public static DataReference getDataReference(int studyNumber, String bpart, String cpart){
+	public static DataReference getDataReference(int studyNumber, String bpart, String cpart, String vt){
 		Project prj = getCurrentProject();
 		TimeWindow tw = prj.getTimeWindow();
 		DataReference ref = null;
 		if (DEBUG) {System.out.println("SN is: "  + new Integer(studyNumber).toString() + "Base is" + new Integer(basenum).toString());}
-		if (baseOn && studyNumber == basenum) {
+		//if (baseOn && studyNumber == basenum) {
+		//if (selectedStudies[0]){
+		if (studyNumber==0){
 			if (DEBUG) System.out.println("In Base");
-			if (isDvarsFilter) ref = getDataReference(prj.getDVGroup(), bpart, cpart, tw);
+			if (vt.equals("DVAR")) ref = getDataReference(prj.getDVGroup(), bpart, cpart, tw);
 			else ref = getDataReference(prj.getSVGroup(), bpart, cpart, tw);
 		}
-		if (comp1On && studyNumber == comp1num) {
+		//if (comp1On && studyNumber == comp1num) {
+		//if (selectedStudies[1]){
+		else if (studyNumber==1){
 			if (DEBUG) System.out.println("In Comp1");
-			if (isDvarsFilter) ref = getDataReference(prj.getDV2Group(), bpart, cpart, tw);
+			if (vt.equals("DVAR")) ref = getDataReference(prj.getDV2Group(), bpart, cpart, tw);
 			else ref = getDataReference(prj.getSV2Group(), bpart, cpart, tw);
 		}
-		if (comp2On && studyNumber == comp2num) {
+		//if (comp2On && studyNumber == comp2num) {
+		//if (selectedStudies[2]){
+		else if (studyNumber==2){
 			if (DEBUG) System.out.println("In Comp2");
-			if (isDvarsFilter) ref = getDataReference(prj.getDV3Group(), bpart, cpart, tw);
+			if (vt.equals("DVAR")) ref = getDataReference(prj.getDV3Group(), bpart, cpart, tw);
 			else ref = getDataReference(prj.getSV3Group(), bpart, cpart, tw);
 		}
-		if (comp3On && studyNumber == comp3num) {
+		//if (comp3On && studyNumber == comp3num) {
+		//if (selectedStudies[3]){
+		else if (studyNumber==3){
 			if (DEBUG) System.out.println("In Comp3");
-			if (isDvarsFilter) ref = getDataReference(prj.getDV4Group(), bpart, cpart, tw);
+			if (vt.equals("DVAR")) ref = getDataReference(prj.getDV4Group(), bpart, cpart, tw);
 			else ref = getDataReference(prj.getSV4Group(), bpart, cpart, tw);
 		}
 	    return ref;
@@ -1211,7 +1253,8 @@ public class AppUtils{
 							Pathname p = refs[i].getPathname();
 							String b = p.getPart(Pathname.B_PART);
 							String c = p.getPart(Pathname.C_PART);
-					  		refs1[i] = getDataReference(1,b,c);
+							String vt = "DVAR";
+					  		refs1[i] = getDataReference(1,b,c, vt);
 							changeToCurrentUnits(refs1[i]); // bug fix when diff and cfs to taf or taf to cfs
 						}
 					} catch(RuntimeException re){
@@ -1229,7 +1272,8 @@ public class AppUtils{
 								Pathname p = refs[j].getPathname();
 								String b = p.getPart(Pathname.B_PART);
 								String c = p.getPart(Pathname.C_PART);
-						  		refholder.addElement(getDataReference(i,b,c));
+								String vt = "DVAR";
+						  		refholder.addElement(getDataReference(i,b,c, vt));
 							}
 						}
 					}catch(RuntimeException re){
@@ -1261,7 +1305,8 @@ public class AppUtils{
 		}
     DataReference[] ref = new DataReference[dssnum];
     try {
-      ref[0] = getDataReference(0,bpart, cpart);
+      String vt = "DVAR";
+      ref[0] = getDataReference(0,bpart, cpart, vt);
     }catch(RuntimeException e){
       ref[0] = null;
     }
@@ -1281,7 +1326,8 @@ public class AppUtils{
 //				DataReference ref2 = null;
 				if ( plotDifference ){
 					try {
-					  ref[1] = getDataReference(1,bpart,cpart);
+					  String vt = "DVAR";
+					  ref[1] = getDataReference(1,bpart,cpart, vt);
 					}catch(RuntimeException re){
 					  ref[1] = null;
 					}
@@ -1291,7 +1337,8 @@ public class AppUtils{
 				}else {
 					for (int i=1; i<dssnum; i++) {
 						try {
-						  ref[i] = getDataReference(i,bpart,cpart);
+						  String vt = "DVAR";	
+						  ref[i] = getDataReference(i,bpart,cpart, vt);
 						}catch(RuntimeException re){
 						  ref[i] = null;
 						}
@@ -1377,6 +1424,135 @@ public class AppUtils{
       System.err.println(re.getMessage());
     }
   }
+  /**
+  *
+  */  
+  public static Vector<DataContainer> retrieveDTSData(DerivedTimeSeries dts){
+	  Vector<DataContainer> v = new Vector<DataContainer>(); 
+	  for (int i=0; i<4; i++){
+		  if (selectedStudies[i]){
+			  RegularTimeSeries ds = (RegularTimeSeries)dts.getDataW2(i);
+			  String name = dts.getName();
+			  v=procDataSet(v, ds, name, i);
+			  if (plotDifference){
+				  v=procDiffDataSet(v);
+			  }
+		  }
+	  }
+	  return v;
+  }
+  /**
+  *
+  */  
+  public static Vector<DataContainer> retrieveMTSData(MultipleTimeSeries mts){
+	  Vector<DataContainer> v = new Vector<DataContainer>(); 
+	  for (int k=0; k<4; k++){
+		if (selectedStudies[k]){
+			DataReference[] drs = mts.getDataReferences(k);
+			for (int l=0; l<drs.length; l++){
+				RegularTimeSeries ds = (RegularTimeSeries)drs[l].getData();
+				String name = mts.getDTSNameAt(l);
+				v=procDataSet(v, ds, name, k);
+			}
+		}
+	  }
+	  return v;
+  }
+  
+  
+  public static Vector<DataContainer> procDataSet(Vector<DataContainer> v, RegularTimeSeries ds, String name, int studyNumber){
+	  TimeSeriesContainer tsc = new TimeSeriesContainer();
+	  tsc.location=name;
+	  tsc.units=ds.getAttributes().getYUnits();
+	  double[] yArray = ds.getYArray();
+	  ArrayList<Integer> times = new ArrayList<Integer>();
+	  ArrayList<Double> values = new ArrayList<Double>(); 
+	  tsc.type="PER-AVER";
+	  Date startDate = ds.getStartTime().getDate();
+	  String startDateStr="";
+	  TimeInterval ti = ds.getTimeInterval();
+	  String tiStr = ti.getIntervalAsString();
+	  if (tiStr.equalsIgnoreCase("1MON")){
+		  startDateStr=TimeOperation.dssTime(startDate.getYear()+1900, startDate.getMonth()+1, 1);
+	  }else if (tiStr.equalsIgnoreCase("1DAY")){
+		  startDateStr=TimeOperation.dssTime(startDate.getYear()+1900, startDate.getMonth()+1, startDate.getDate());
+	  }
+	  HecTime startTime = (new HecTime(startDateStr));
+	  tsc.startTime=startTime.value();
+	  if (tiStr.equalsIgnoreCase("1MON")){
+		  int size = yArray.length;
+		  //tsc.times = new int[size];
+		  for (int j=0; j<size; j++){
+			  int mon=startDate.getMonth()+1;
+			  if (months.contains(mon-1) || (months.contains(12) && mon==1)){
+				  startDateStr=TimeOperation.dssTime(startDate.getYear()+1900, mon, 1);
+				  startTime = (new HecTime(startDateStr));
+				  double yValue=yArray[j];
+				  if (yValue !=-901.0){
+					  times.add(startTime.value());
+					  values.add(yValue);
+				  }
+			  }
+			  startDate=TimeOperation.addOneMonth(startDate);
+		  }
+	  }else if (tiStr.equalsIgnoreCase("1DAY")){
+		  int size = yArray.length;
+		  //tsc.times = new int[size];
+		  for (int j=0; j<size; j++){
+			  int mon=startDate.getMonth()+1;
+			  if (months.contains(mon-1) || (months.contains(12) && mon==1)){
+				  startDateStr=TimeOperation.dssTime(startDate.getYear()+1900, mon, startDate.getDate());
+				  startTime = (new HecTime(startDateStr));
+				  double yValue=yArray[j];
+				  if (yValue !=-901.0){
+					  times.add(startTime.value());
+					  values.add(yValue);
+				  };
+			  }
+			  startDate=TimeOperation.addOneDay(startDate);
+		  }
+	  }
+	  int size1=times.size();
+	  tsc.times=new int[size1];
+	  tsc.values=new double[size1];
+	  for (int i=0; i<size1; i++){
+		  tsc.times[i]=times.get(i);
+		  tsc.values[i]=values.get(i);
+	  }
+	  tsc.fullName="//"+tsc.location+"///"+tiStr+"//";
+	  tsc.fileName=""+studyNumber;
+	  tsc.numberValues=tsc.values.length;
+	  v.add(tsc);
+	  return v;
+  }
+  
+  public static Vector<DataContainer> procDiffDataSet(Vector<DataContainer> v){
+	  if (v.size()<=1){
+		  return v;
+	  }else{
+		  Vector<DataContainer> v1=new Vector<DataContainer>();
+		  Iterator<DataContainer> ie = v.iterator();
+		  DataContainer dc0=ie.next();
+		  while (ie.hasNext()){
+			  DataContainer dc = ie.next();
+			  TimeSeriesContainer tsc = diff((TimeSeriesContainer)dc, (TimeSeriesContainer)dc0);
+			  v1.add(tsc);
+		  }
+		  return v1;
+	  }
+  }
+  
+  public static TimeSeriesContainer diff(TimeSeriesContainer tsc1, TimeSeriesContainer tsc0){
+		try {
+			HecMath hm0=HecMath.createInstance(tsc0);
+			HecMath hm1=HecMath.createInstance(tsc1);
+			hm1=hm1.subtract(hm0);
+			return (TimeSeriesContainer)hm1.getData();
+		} catch (HecMathException e) {
+			return tsc1;
+		}
+		
+	}
   /**
     *
     */
@@ -1599,7 +1775,7 @@ public class AppUtils{
     *
     */
   public static void exportToDSS(DerivedTimeSeries dts, String file, String pathname){
-    DSSUtil.writeData(file,pathname,dts.getData());
+    DSSUtil.writeData(file,pathname,dts.getData(),true);
   }
   /**
     *
@@ -1608,7 +1784,7 @@ public class AppUtils{
     DataReference [] refs = mts.getDataReferences(1);
     if ( refs == null ) return;
     for(int i=0; i < refs.length; i++)
-      DSSUtil.writeData(file,refs[i].getPathname().toString(),refs[i].getData());
+      DSSUtil.writeData(file,refs[i].getPathname().toString(),refs[i].getData(),true);
   }
   	public static int [] MT_40_30_30 = readMTList("MT40-30-30.table");
   	public static int [] MT_60_20_20 = readMTList("MT60-20-20.table");
@@ -1617,7 +1793,9 @@ public class AppUtils{
     */
   public static int [] readMTList(String file){
     try {
-      InputStream is = VistaUtils.getResourceAsStream("/calsim/app/data/"+file);
+      String dataDir="data";
+      File mtListFile=new File(dataDir, file);
+      InputStream is = new FileInputStream(mtListFile);
       LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
       Vector yearArray = new Vector(73);
       while ( true ){
@@ -1666,9 +1844,10 @@ public class AppUtils{
    */
   public static DataReference [] getCrossChannelGatePosition(){
     int snum = 1;
-    DataReference tmp1 = AppUtils.getDataReference(snum,"FRAC_OPEN","ALIAS");
+    String vt = "DVAR";
+    DataReference tmp1 = AppUtils.getDataReference(snum,"FRAC_OPEN","ALIAS", vt);
     DataReference one = AppUtils.makeOneRef(tmp1);
-    DataReference tmp2 = AppUtils.getDataReference(snum,"SAC_BELOW_THRESH","LP DVAR");
+    DataReference tmp2 = AppUtils.getDataReference(snum,"SAC_BELOW_THRESH","LP DVAR", vt);
     DataReference ref1 = one.__sub__(tmp1.__mul__(tmp2));
     // if (ref1 != null) changeToCurrentUnits(ref1);
     if ( ref1 == null )
@@ -1680,8 +1859,8 @@ public class AppUtils{
 	  throw new RuntimeException("Cannot compare without loading base and compare files");
 	DataReference ref2 = null;
 	snum = 2;
-	tmp1 = AppUtils.getDataReference(snum,"FRAC_OPEN","ALIAS");
-	tmp2 = AppUtils.getDataReference(snum,"SAC_BELOW_THRESH","LP DVAR");
+	tmp1 = AppUtils.getDataReference(snum,"FRAC_OPEN","ALIAS", vt);
+	tmp2 = AppUtils.getDataReference(snum,"SAC_BELOW_THRESH","LP DVAR", vt);
 	ref2 = one.__sub__(tmp1.__mul__(tmp2));
 	if ( ref2 == null )
 	  throw new RuntimeException("No matching data in study 1 found for Cross Channel gate position");
@@ -1738,12 +1917,12 @@ public class AppUtils{
     _isWaterYear = new Boolean(AppProps.getProperty("AppUtils.isWaterYear")).booleanValue();
     _show60_20_20 = new Boolean(AppProps.getProperty("AppUtils.show60_20_20")).booleanValue();
     _show40_30_30 = new Boolean(AppProps.getProperty("AppUtils.show40_30_30")).booleanValue();
-    DEFAULT_PLOT_SIZE = GraphUtils.parseDimensionProperty
-      (AppProps.getProperty("AppUtils.DEFAULT_PLOT_SIZE"));
-    DEFAULT_TABLE_SIZE = GraphUtils.parseDimensionProperty
-      (AppProps.getProperty("AppUtils.DEFAULT_TABLE_SIZE"));
-    DEFAULT_MT_SIZE= GraphUtils.parseDimensionProperty
-      (AppProps.getProperty("AppUtils.DEFAULT_MT_SIZE"));
+    //DEFAULT_PLOT_SIZE = GraphUtils.parseDimensionProperty
+    //  (AppProps.getProperty("AppUtils.DEFAULT_PLOT_SIZE"));
+    //DEFAULT_TABLE_SIZE = GraphUtils.parseDimensionProperty
+    //  (AppProps.getProperty("AppUtils.DEFAULT_TABLE_SIZE"));
+    //DEFAULT_MT_SIZE= GraphUtils.parseDimensionProperty
+    //  (AppProps.getProperty("AppUtils.DEFAULT_MT_SIZE"));
   }
   /**
     *
@@ -1758,9 +1937,9 @@ public class AppUtils{
     AppProps.setProperty("AppUtils.show60_20_20",new Boolean(_show60_20_20).toString());
     AppProps.setProperty("AppUtils.show40_30_30",new Boolean(_show40_30_30).toString());
 
-    AppProps.setProperty("AppUtils.DEFAULT_PLOT_SIZE",DEFAULT_PLOT_SIZE.toString());
-    AppProps.setProperty("AppUtils.DEFAULT_TABLE_SIZE",DEFAULT_TABLE_SIZE.toString());
-    AppProps.setProperty("AppUtils.DEFAULT_MT_SIZE",DEFAULT_MT_SIZE.toString());
+    //AppProps.setProperty("AppUtils.DEFAULT_PLOT_SIZE",DEFAULT_PLOT_SIZE.toString());
+    //AppProps.setProperty("AppUtils.DEFAULT_TABLE_SIZE",DEFAULT_TABLE_SIZE.toString());
+    //AppProps.setProperty("AppUtils.DEFAULT_MT_SIZE",DEFAULT_MT_SIZE.toString());
 
     AppProps.save();
   }

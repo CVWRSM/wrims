@@ -46,7 +46,7 @@ module dss_cache
   implicit none
   PUBLIC
 
-  INTEGER, PARAMETER                  :: DVAR_LEN = 32, header_len = 117
+  INTEGER, PARAMETER                  :: DVAR_LEN = 16, header_len = 117
   INTEGER, parameter                  :: kiwi = 32, datelen = 20
   INTEGER,PARAMETER,PRIVATE           :: message_unit = 14
   CHARACTER(LEN=200),private          :: msg
@@ -158,7 +158,7 @@ contains
        call stopWithError()
     end if
     
-   
+    if(debug) WRITE(message_unit,100) TRIM(path)
   END subroutine verifypath
 
 
@@ -172,14 +172,12 @@ contains
     CHARACTER(LEN=*),INTENT(IN)    :: path
     CHARACTER(LEN=80)              :: cpath
 
-100 FORMAT('Pathname: ',a,a,a)
     open(message_unit,FILE='wranglerDSS.log',STATUS='UNKNOWN',ACTION='DENYWRITE')
     WRITE(message_unit,*) 'Log Open.'
     call zset('MUNI','',message_unit)
 !    if (.not.debug) call zset('MLEVEL','',0)
     cpath = ADJUSTL(path)
     call verifypath(cpath)
-     if(debug) WRITE(message_unit,100) TRIM(cpath)
     ! Now, find the model time step and start date from the pathname
     npath = len_trim(cpath)
     call zufpn(ca,na,cb,nb,cc,nc,cd,nd,ce,ne,cf,nf,cpath,npath,istat)
@@ -491,7 +489,7 @@ contains
            a, "Variable : ",a, &
            a, "Requested ",i4," steps from ",a, "(pos: ",i2,")", &
            a, "Cache start : ",a, &
-           a, "Cache size : ",i4," timesteps") !TODO: May due to DSS path typo or missing data from other cycle
+           a, "Cache size : ",i4," timesteps")
       WRITE(msg,101) pos, &
            separator, cache%tab(pos)%NAME, &
            separator, requested_offset, simulation%current_date, pos_in_cache,&

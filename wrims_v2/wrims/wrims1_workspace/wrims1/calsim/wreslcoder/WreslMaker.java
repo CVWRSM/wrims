@@ -41,15 +41,14 @@ import calsim.wreslcoder.wresl.ParseException;
 import java.io.*;
 import java.util.Enumeration;
 import java.util.Vector;
-import calsim.debug.*;
+
 /**
  * Controller class for Wresl parse, compile, link, and executions
  * @author Armin Munevar
- * @author Clay Booher
+ * @author Clay Booher (version 1.3 changes)
  * @version $Id: WreslMaker.java,v 1.1.2.18 2001/12/11 23:46:19 jfenolio Exp $
  */
 public class WreslMaker {
-  //public static boolean DEBUG_FILEINPUT = true;
   private PrintWriter out;
   private String ident, tempFilePath, commonPath;
 //CB  private static String calsimProgDir=System.getProperty("calsim.home");
@@ -148,15 +147,11 @@ public class WreslMaker {
    *           1 and messages to the output PrintWriter if problems
    */
   public int runModel() {
-//    String directory;  
-    String cmdSetPath = "set path=" + tempFilePath +"\\external;%path%"; 
-    String cmdExec    =  exeFileName + " " + tempFilePath + " " + commonPath;
-    //int status = doCommand("set path=" + tempFilePath +"\\external;%path% \n" + exeFileName + " " + tempFilePath + " " + commonPath,false);
-    int status = doCommand(cmdExec,cmdSetPath,false);
+//    String directory;
+    int status = doCommand(exeFileName + " " + tempFilePath + " " + commonPath,false);
     if (status != 0) return status;
     // successful run.  Remove several temporary output files.
 		if (!_buildDebug) {
-			new File("compile.log").delete();
 			new File("wranglerDSS.log").delete();
 			new File(".","testxa.out").delete();
 			new File("temp.bat").delete();
@@ -164,21 +159,7 @@ public class WreslMaker {
     return 0;
   }
 
-// e.g., generate random table for position analysis.  
-  public int runTools(String toolName, String Dir) {
-    //String cmdSetPath = ""; 
-    //String cmdExec    =  "exeFileName + " " + tempFilePath + " " + commonPath;
-    //int status = doCommand("set path=" + tempFilePath +"\\external;%path% \n" + exeFileName + " " + tempFilePath + " " + commonPath,false);
-	String cmdExec = "start /wait tools " + toolName + " " + tempFilePath + "\\" + Dir;
-	
-	int status = doCommand(cmdExec,"",false);
-    if (status != 0) return status;
-    // successful run.  Remove several temporary output files.
-		if (!_buildDebug) {
-			new File("temp.bat").delete();
-		}
-    return 0;
-  }
+
   /**
    *  Contrives a name for the output excutable filename.
    *
@@ -206,7 +187,7 @@ public class WreslMaker {
       if (!_hideProgressDetails) out.println(cycleNum);
       // Create code.f90 and types.f90
       makerString = calsimProgDir+"\\bin\\mkcode.exe " + tempFilePath+ " " + cycleNum;
-      if (doCommand(makerString,"",true) > 0) return false;
+      if (doCommand(makerString,true) > 0) return false;
       if (!_buildDebug) {
 				new File(tempFilePath,"defines"+cycleNum+".txt").delete();
 				new File(tempFilePath,"goals"+cycleNum+".txt").delete();
@@ -217,7 +198,7 @@ public class WreslMaker {
 				+ tempFilePath +"\\types"+cycleNum+".f90 "
 				+ " -mod " + tempFilePath + ";" + sourcePath
 				+ " -win -trace -ml msvc";
-      if (doCommand(makerString,"",true) > 0) return false;
+      if (doCommand(makerString,true) > 0) return false;
       if (!_buildDebug) new File(tempFilePath,"types"+cycleNum+".f90").delete();
       if (cycleNum.equals("00")) {
 				makerString = "lf90 -c -o0 "
@@ -230,7 +211,7 @@ public class WreslMaker {
 				  + " -mod " + tempFilePath + ";" + sourcePath
 				  + " -win -trace -ml msvc -stack 1000000";
       }
-      if (doCommand(makerString,"",true) > 0) {
+      if (doCommand(makerString,true) > 0) {
 				new File( exeFileName).delete();
 				return false;
       }
@@ -242,9 +223,6 @@ public class WreslMaker {
       // no files need to be remade
       if (!_buildDebug) {
 				new File(tempFilePath,"dss_init.f90").delete();
-				new File(tempFilePath,"dss_initTs.f90").delete();
-				new File(tempFilePath,"dss_initDvar1.f90").delete();
-				new File(tempFilePath,"dss_initDvar2.f90").delete();
       }
       out.println(exeFileName + " is up to date.");
     }
@@ -264,22 +242,16 @@ public class WreslMaker {
       makerString = "lf90 -c -o0 "
 				+ tempFilePath +"\\code.f90 "
 				+ tempFilePath +"\\dss_init.f90 "
-				+ tempFilePath +"\\dss_initTs.f90 "
-				+ tempFilePath +"\\dss_initDvar1.f90 "
-				+ tempFilePath +"\\dss_initDvar2.f90 "
 				+ tempFilePath +"\\report_writer.f90 "
 				+ " -mod " + tempFilePath + ";" + sourcePath
 				+ " -win -trace -ml msvc -stack 1000000";
-      if (doCommand(makerString,"",true) > 0) {
+      if (doCommand(makerString,true) > 0) {
 				new File( exeFileName).delete();
 				return false;
       }
       if (!_buildDebug) {
 				new File(tempFilePath,"code.f90").delete();
 				new File(tempFilePath,"dss_init.f90").delete();
-				new File(tempFilePath,"dss_initTs.f90").delete();				
-				new File(tempFilePath,"dss_initDvar1.f90").delete();
-				new File(tempFilePath,"dss_initDvar2.f90").delete();
 				new File(tempFilePath,"report_writer.f90").delete();
       }
     } else {
@@ -306,9 +278,6 @@ public class WreslMaker {
 	      makerString = makerString
 					+ tempFilePath +"\\code.obj "
 					+ tempFilePath +"\\dss_init.obj "
-					+ tempFilePath +"\\dss_initTs.obj "	
-					+ tempFilePath +"\\dss_initDvar1.obj "
-					+ tempFilePath +"\\dss_initDvar2.obj "
 					+ tempFilePath +"\\report_writer.obj "
 					+ "@" + tempFilePath + "\\externals.rsp "
 					+ "@" + tempFilePath + "\\externalsLib.rsp "
@@ -317,11 +286,8 @@ public class WreslMaker {
 					+ " -mod " + tempFilePath + ";" + sourcePath
 					+ " -win -trace -ml msvc -stack 1000000 -wisk -nomap"
 					+ " -LIBpath " + sourcePath
-					+ " -lib wrangler simsolver ";
-                    //+ " -implib xav16.dll -import XBVAR";
-	      //if ()
-	      
-	      if (doCommand(makerString,"",true) > 0) {
+					+ " -lib wrangler,simsolver ";
+	      if (doCommand(makerString,true) > 0) {
 					new File(exeFileName).delete();
 					return false;
 	      }
@@ -337,22 +303,15 @@ public class WreslMaker {
 				new File(tempFilePath,"code.obj").delete();
 				new File(tempFilePath,"modtable.txt").delete();
 				new File(tempFilePath,"dss_init.obj").delete();
-				new File(tempFilePath,"dss_initTs.obj").delete();
-				new File(tempFilePath,"dss_initDvar1.obj").delete();
-				new File(tempFilePath,"dss_initDvar2.obj").delete();
 				new File(tempFilePath,"report_writer.obj").delete();
 				new File(tempFilePath,"externals.rsp").delete();
 				new File(tempFilePath,"externalsLib.rsp").delete();
-				new File("compile.log").delete();
 	      }
 	      //needToMake = false;
 	    } else {
 	      // no files need to be remade
 	      if (!_buildDebug) {
 				new File(tempFilePath,"dss_init.f90").delete();
-				new File(tempFilePath,"dss_initTs.f90").delete();
-				new File(tempFilePath,"dss_initDvar1.f90").delete();
-				new File(tempFilePath,"dss_initDvar2.f90").delete();
 				new File(tempFilePath,"report_writer.f90").delete();
 	      }
 	      out.println(exeFileName + " is up to date.");
@@ -395,45 +354,22 @@ public class WreslMaker {
 	/**
 	 *  Runs a DOS command and attempts to capture its output.
  	 */
-	
-    public int doCommand(String cmdExec, String cmdSetPath, boolean minwin) {
+	public int doCommand(String cmd, boolean minwin) {
 		Vector hidingDetailsMessages = null;    //CB added hiding messages code
-		String cmd;
-		if(cmdSetPath.trim()!="" ){
-			cmd = cmdSetPath + "\n" + cmdExec;
-		}
-		else{
-			cmd = cmdExec;
-		}
-		//if(DebugSetting.DEBUG_FILEINPUT){
-		//if((DebugSetting.getDebugOption().indexOf("compile"))>0){
-		try {
-			FileWriter compileBatchFile = new FileWriter("compile.log",true);
-			BufferedWriter compileWriter = new BufferedWriter(compileBatchFile);
-			compileWriter.write(cmd+"\n");
-			compileWriter.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//}
-
-		
 		try {
 			if (_hideProgressDetails)
 				hidingDetailsMessages = new Vector();
 			Process p;
 //			if (_buildDebug || _lf90Debug) {
-			//if (_buildDebug) {
-			//	p = Runtime.getRuntime().exec("cmd /c "+cmdSetPath);
-			//	p = Runtime.getRuntime().exec(cmdExec);
-			//} else {
+			if (_buildDebug) {
+				p = Runtime.getRuntime().exec(cmd);
+			} else {
 				PrintWriter tempWriter = new PrintWriter(new BufferedWriter(new FileWriter("temp.bat")));
 				if (minwin) tempWriter.println("start /min "+cmd);
 				else tempWriter.println(cmd);
 				tempWriter.close();
 				p = Runtime.getRuntime().exec("temp.bat");
-			//}
+			}
 			BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			BufferedReader stderr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			String line;

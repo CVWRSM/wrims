@@ -1,4 +1,4 @@
-//package calsim.installer;  // comment out for external build
+package calsim.installer;  // comment out for external build
 
 import java.io.*;
 import java.util.*;
@@ -109,7 +109,7 @@ public class BatchFileConfigTask extends Task implements Serializable {
 		//pw.println("");
 		//pw.println("set path=%path%;%calsim_home%/bin;");
 		pw.println("set path="+idir+"/bin;"+idir+"/../wrims/Schematic/images;%path%"); //CB added images path, but not needed if in classpath
-		//pw.println("set path="+idir+"/bin%path%");
+		pw.println("set path="+idir+"/bin%path%");
 		//pw.println("rem set Path=%calsim_home%/bin;%Path%");
 		//pw.println("");
 		pw.println("rem ###############");

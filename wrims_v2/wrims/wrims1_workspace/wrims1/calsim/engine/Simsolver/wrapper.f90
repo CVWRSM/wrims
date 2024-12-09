@@ -61,9 +61,8 @@ SUBROUTINE WRAPPER (date, code, dss_init, reportsv, runDirectory)
   EXTERNAL code, dss_init, reportsv
   TYPE(dwmy), INTENT(INOUT)       :: date
 
-  !CHARACTER(LEN=32), parameter     :: version_identifier = '1.3.4 Beta (XA16)' 
-  include '..\..\version_wrapper.inc'
-  CHARACTER(LEN=75), parameter    :: copyright = 'This program is Copyright (C) 1998, 2010 State of California, all rights reserved'
+  CHARACTER(LEN=4), parameter     :: version_identifier = '1.3'  !CB need to alter for WRIMS 1.3.1 (xa16)!!!!!!!!!!!!!!!!!!!!!
+  CHARACTER(LEN=75), parameter    :: copyright = 'This program is Copyright (C) 1998 State of California, all rights reserved'
   TYPE(rcc),DIMENSION(:), ALLOCATABLE :: problem
   TYPE(answer),DIMENSION(:), ALLOCATABLE:: solution
   INTEGER                          :: i,j
@@ -76,7 +75,7 @@ SUBROUTINE WRAPPER (date, code, dss_init, reportsv, runDirectory)
   INTEGER, DIMENSION(2)            :: stats
   INTEGER, DIMENSION(40)           :: opt_flag=0
   REAL(8),DIMENSION(9)             :: currentObjValue
-  CHARACTER(LEN=32)                :: ObjId
+  CHARACTER(LEN=16)                :: ObjId
   INTEGER,DIMENSION(9)             :: bigMlevel
   REAL(8),DIMENSION(9)             :: bigM
   CHARACTER(LEN=200),INTENT(IN)    :: runDirectory
@@ -107,18 +106,11 @@ SUBROUTINE WRAPPER (date, code, dss_init, reportsv, runDirectory)
   integer :: auto_solver_report = 0		!added by DE for automation of XA log when solver error such as infeas occurs
   character(LEN=8) :: report_cycle
 
-  real ExeStartTime, ExeFinishTime
-
   ! DSS cache flush interval and size
   !*******************INITIALIZATION WILL NOW BE DEPENDENT ON TIME STEP******************
   INTEGER :: flush_interval
   INTEGER :: cache_back, cache_forward
   !**************************************************************************
-  LOGICAL :: reload_table_log_exists
-  CHARACTER(LEN=100) :: reload_table_log_file
-  !-------------
-  
-  call cpu_time(ExeStartTime)
   ctime = 0.0
   stime = 0.0
   setuptime = 0.0
@@ -142,37 +134,7 @@ SUBROUTINE WRAPPER (date, code, dss_init, reportsv, runDirectory)
   stateFile(i+1:)="\statevars.out"
   errorLog(i+1:)="\error.log"
   outputDirectory=TRIM(runDirectory)
-  
-!-------------------------------------
-! delete previous reload table logs
 
-      reload_table_log_file = 'log_new_tables.txt'
-
-      INQUIRE(FILE = reload_table_log_file, EXIST=reload_table_log_exists )
-      if (reload_table_log_exists ) then
-        OPEN  (626, file=reload_table_log_file, status='scratch')
-        close (626) 
-      endif
-
-      reload_table_log_file = 'log_reload_tables.txt'
-
-      INQUIRE(FILE = reload_table_log_file, EXIST=reload_table_log_exists )
-      if (reload_table_log_exists ) then
-        OPEN  (626, file=reload_table_log_file, status='scratch')
-        close (626, status='delete') 
-      endif
-      
-      reload_table_log_file = 'log_existing_tables.txt'
-
-      INQUIRE(FILE = reload_table_log_file, EXIST=reload_table_log_exists )
-      if (reload_table_log_exists ) then
-        OPEN  (626, file=reload_table_log_file, status='scratch')
-        close (626, status='delete') 
-      endif
-
-
-
-!-------------------------------------
   OPEN (UNIT=12,FILE=traceFile,STATUS='REPLACE',ACTION='DENYWRITE')  ! trace file for debugging
   OPEN (UNIT=7, FILE=lpvarFile,STATUS='REPLACE',ACTION='DENYWRITE')  ! diagnostic file for non-Wresl decision variables
   OPEN (UNIT=15,FILE=stateFile,STATUS='REPLACE',ACTION='DENYWRITE')  ! diagnostic file for Wresl state variables
@@ -218,21 +180,19 @@ SUBROUTINE WRAPPER (date, code, dss_init, reportsv, runDirectory)
   READ (11,318) genWsiDi
   READ (11,318) useRestart
   READ (11,318) dumpRestart
-  READ (11,305) Apart  ! SV DV file A part
-  READ (11,305) Fpart  ! SV DV file F part  
   READ (11,305) initfilefpart
   READ (11,318) posAnalysis
   READ (11,318) dialogWindow
   READ (11,*) pos
   READ (11,318,END=10) studyType	! added var for single or multi studytype for msg dlvry. - ED 12/14/2006
 10  CLOSE(11)
-
+    
   date%timestep = Epart(1:4) !*************This will be used in taf_cfs conversion
   
   CALL set_flush_interval(Epart, flush_interval, cache_back, cache_forward) !************
 
-  Apart=TRIM(Apart) !Apart="CALSIM" 
-  Fpart=TRIM(Fpart) !Fpart=studyName  
+  Apart="CALSIM" !Apart=TRIM(Apart) 
+  Fpart=studyName
   title(1)=studyName
   start_date=" "
   start_date(1:3)=startMonth
@@ -694,15 +654,10 @@ SUBROUTINE WRAPPER (date, code, dss_init, reportsv, runDirectory)
   DEALLOCATE( solution)
   if (showDialogWindow) call dialogRemove()
 
-747 FORMAT(a, f7.1, a)
-
   ! final message indicating normal completion - solution errors terminate before here
   IF (stats(2)==1 .and. (stats(1)==1 .or. stats(1)==2) ) THEN
-     call cpu_time(ExeFinishTime)
-     write(msg,747) 'Computation Time: ', ExeFinishTime-ExeStartTime, ' Seconds'
-     if (showDialogWindow) then
-         IF (chareq(TRIM(genWsiDi),"FALSE").and.chareq(TRIM(posAnalysis),"FALSE"))  CALL StopWithFinal(msg)  !call dialogUpdate( 6000, msg)
-     end if    
+     msg='NORMAL COMPLETION'
+     IF (chareq(TRIM(genWsiDi),"FALSE").and.chareq(TRIM(posAnalysis),"FALSE"))  CALL StopWithFinal(msg)
   ELSE
      CALL XA_ERRORHANDLER(stats(1),stats(2),date,icycle,Number_of_cycles,studyType,errorLog)
      msg='XA HAD BAD SOLUTION'

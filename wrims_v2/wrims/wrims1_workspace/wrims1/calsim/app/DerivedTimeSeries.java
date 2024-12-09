@@ -38,11 +38,15 @@ package calsim.app;
 import calsim.gui.*;
 import vista.set.*;
 import vista.time.*;
+
 import java.util.*;
 import java.io.*;
+
 import javax.swing.table.AbstractTableModel;
+
 import com.sun.xml.tree.XmlDocument;
 import com.sun.xml.tree.TreeWalker;
+
 import org.w3c.dom.Element;
 //import java.text.*;
 //import javax.swing.tree.*;
@@ -561,6 +565,44 @@ public class DerivedTimeSeries extends DataReference implements Serializable{
 		return dataSet;
   }
   /**
+   * Retrieves data from the data base if data is null. If
+   * retrieval fails it throws a RuntimeException. It
+   * goes through the list of given references, gets the data
+   * and does the math operations
+   * @return reference to the initialized data set.
+   */
+  public DataSet getDataW2(int studyNumber){
+		if (DEBUG) System.out.println("Study Number: " + new Integer(studyNumber).toString());
+    // if calculations have been done then no need to repeat.
+    /*
+	if ( recalculationNeeded() || recalculate || updateDataSets()) {
+      _dataSet = null;
+      recalculate = false;
+    }else{
+      for (int i=0; i<AppUtils.getCheckedDSS(); i++) {
+				if (studyNumber == i) return _dataSet[i];
+			}
+    }
+    */
+    // get current project
+//    Project prj = AppUtils.getCurrentProject();
+    // form data references from b/c parts if any
+//    Group svg=null, dvg=null;
+    DataReference [] refs = getDataReferences(studyNumber);
+    // check to make sure some data is available
+    if ( refs == null) throw new RuntimeException("Empty DTS Table");
+//    String apart="",bpart = "",cpart="",epart="";
+//    boolean gotOneGood = false;
+    DataSet dataSet = null;
+    //for (int i=0; i<AppUtils.getCheckedDSS(); i++) {
+	//		if (studyNumber == i) {
+	      dataSet = doCalculations(studyNumber, refs);
+	      dataSet.setName( getPathname().toString());
+	//		}
+	//  }
+	return dataSet;
+  }
+  /**
    *Updates references to the correct selected dss files from the message panel
    *check box.  Returns true if the different dss's were selected from the last time this
    *method was called or the first time it is called
@@ -588,7 +630,7 @@ public class DerivedTimeSeries extends DataReference implements Serializable{
    */
   public DataSet getData(){
     // if calculations have been done then no need to repeat. ??
-    return getData(1);
+    return getDataW2(1);
   }
   /**
     *
@@ -668,7 +710,7 @@ public class DerivedTimeSeries extends DataReference implements Serializable{
 				if ( dataSet == null ){
 	   		  AppUtils.changeToCurrentUnits(ref);
 	    		if ( ref instanceof DerivedTimeSeries ) {
-						dataSet = ((DerivedTimeSeries)ref).getData(studyNumber);
+						dataSet = ((DerivedTimeSeries)ref).getDataW2(studyNumber);
 	   			} else {
 						dataSet = ref.getData();
 					}
@@ -680,7 +722,7 @@ public class DerivedTimeSeries extends DataReference implements Serializable{
 	    		}
 	    		DataSet ds2 = null;
 	    		AppUtils.changeToCurrentUnits(ref);
-	    		if ( ref instanceof DerivedTimeSeries ) ds2 = ((DerivedTimeSeries)ref).getData(studyNumber);
+	    		if ( ref instanceof DerivedTimeSeries ) ds2 = ((DerivedTimeSeries)ref).getDataW2(studyNumber);
 	    		else ds2 = ref.getData();
 	    		dataSet = TSMath.doMath((RegularTimeSeries) dataSet,
 			  	(RegularTimeSeries) ds2,
@@ -708,10 +750,10 @@ public class DerivedTimeSeries extends DataReference implements Serializable{
 	  		throw new RuntimeException("No DTS : " + dtsname
 				     + " found in current project or global space");
       } else {
-//				String vt = getVarTypeAt(i);
+				String vt = getVarTypeAt(i);
 				String bpart = getBPartAt(i);
 				String cpart = getCPartAt(i);
- 				refs[i] = AppUtils.getDataReference(studyNumber,bpart,cpart);
+ 				refs[i] = AppUtils.getDataReference(studyNumber,bpart,cpart, vt);
 				if ( refs[i] == null )
 	  			throw new RuntimeException("No data found for " + cpart + " at " + bpart);
       }

@@ -61,25 +61,25 @@ public class AppProps{
     } else { // read from app.props file
       try {
 	// always load defaults and then user customized properties
-	props.load(Object.class.getResourceAsStream("/calsim/app/app.props"));
+	//props.load(Object.class.getResourceAsStream("/calsim/app/app.props"));
 	props.load( new FileInputStream(appPropsFile));
 	// make sure the version is matched or exists. If not load from
 	// jar file first and then from props file again
-	Properties jarprops = new Properties();
-	jarprops.load(Object.class.getResourceAsStream("/calsim/app/app.props"));
-	String propVersion = props.getProperty("AppProps.version");
-	String jarPropVersion = jarprops.getProperty("AppProps.version");
-	if ( propVersion == null ||
-	     new Integer(propVersion).intValue() < new Integer(jarPropVersion).intValue() ){
+	//Properties jarprops = new Properties();
+	//jarprops.load(Object.class.getResourceAsStream("/calsim/app/app.props"));
+	//String propVersion = props.getProperty("AppProps.version");
+	//String jarPropVersion = jarprops.getProperty("AppProps.version");
+	//if ( propVersion == null ||
+	//     new Integer(propVersion).intValue() < new Integer(jarPropVersion).intValue() ){
 	  // load the latest
-	  props.load(Object.class.getResourceAsStream("/calsim/app/app.props"));
+	  //props.load(Object.class.getResourceAsStream("/calsim/app/app.props"));
 	  // override with users properties
-	  props.load( new FileInputStream(appPropsFile));
+	  //props.load( new FileInputStream(appPropsFile));
 	  // finally override the versionid for app props
-	  props.put("AppProps.version",jarPropVersion);
+	  //props.put("AppProps.version",jarPropVersion);
 	  // finally save all this work
 	  save();
-	}
+	//}
       }catch(IOException ioe){
 	ioe.printStackTrace(System.err);
       }
@@ -90,8 +90,9 @@ public class AppProps{
     */
   public static File checkForPropsDir(){
     // first look in user.home for .calsim directory
-    String appDir = System.getProperty("calsim.home") + File.separator + ".calsim";
-    File appPropsDir = new File(appDir);
+    //String appDir = System.getProperty("user.home") + File.separator + ".calsim";
+    String appDir="data";
+	File appPropsDir = new File(appDir);
     if ( ! appPropsDir.exists() ) {
       // create this directory...
       appPropsDir.mkdir();

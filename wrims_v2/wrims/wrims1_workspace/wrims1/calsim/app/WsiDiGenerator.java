@@ -237,10 +237,10 @@ public class WsiDiGenerator {
 		Group gWsi = Group.createGroup(g);
 		Group gDi = Group.createGroup(g);
 		// get data for wsi and di
-		gWsi.filterBy(true,new PathPartPredicate("^"+getWsiVariable()+"$",Pathname.B_PART));
+		gWsi.filterBy(new PathPartPredicate("^"+getWsiVariable()+"$",Pathname.B_PART),true);
     if (gWsi.getNumberOfDataReferences()!=1)
 		  throw new RuntimeException("No WSI Variable '"+ getWsiVariable() +"' in DSS File!");
-		gDi.filterBy(true,new PathPartPredicate("^"+getDiVariable()+"$",Pathname.B_PART));
+		gDi.filterBy(new PathPartPredicate("^"+getDiVariable()+"$",Pathname.B_PART),true);
     if (gDi.getNumberOfDataReferences()!=1)
 		  throw new RuntimeException("No DI Variable '"+ getDiVariable() +"' in DSS File!");
 		DataReference drWsi = gWsi.getDataReference(0);
@@ -339,7 +339,7 @@ public class WsiDiGenerator {
 		pl.getAxis(AxisAttr.LEFT).setAxisLabel("Demand Index TAF");
 		Graph gr = new Graph();
 		gr.add(pl);
-		DataGraph dg = new DataGraph(gr,"WSI-DI Generated Curve",false);
+		DataGraphFrame dg = new DataGraphFrame(gr,"WSI-DI Generated Curve",false);
 		dg.setLocation(100,100);
 		dg.setVisible(true);
 		dg.setSize(600,400);

@@ -13,7 +13,7 @@ F90_OBJS = $(F90_FILES:%.f90=%.obj)
 TARGET=simsolver.dll
 
 all: #$(F90_MOD) $(F90_OBJS) 
-	(cmd /c make_dos)
+	(cmd /c make_dos.bat)
 #	(export PATH;PATH="../libstuff;c:/lf9045/bin/;$$PATH"; \
 #	 $(LINKER) $(F90_OBJS) -exe $(TARGET) $(LINK_OPTIONS))
 

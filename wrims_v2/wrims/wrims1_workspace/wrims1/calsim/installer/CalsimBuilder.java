@@ -1,4 +1,4 @@
-//package calsim.installer;  // comment out for external build
+package calsim.installer;  // comment out for external build
 
 import com.sun.install.*;
 import com.sun.install.products.*;
@@ -34,7 +34,7 @@ public class CalsimBuilder extends InstallArchiveWriter
        * Sets the name of the product.  The name appears throughout the
        * installation to tell the user what they are installing.
        */
-      setProductName("WRIMS 1.3.4 Beta (XA16)");
+      setProductName("WRIMS 1.3");
 
       /*
        * The initial directory the user sees.  It can be changed, though,
@@ -45,7 +45,7 @@ public class CalsimBuilder extends InstallArchiveWriter
        */
 //CB      setDefaultDirectory("[userDir]/calsim"); //CB - NOT WORKING UNDER Java 1.5.0
 //      setDefaultDirectory(System.getProperty("user.dir") + "/calsim");  //CB - tried, not C: or R:, but a development directory
-      setDefaultDirectory("c:/calsim_1.3.4beta_xa16"); //CB
+      setDefaultDirectory("c:/calsim"); //CB
 
       /**
        * Use the supplied directories for the components, if supplied.
@@ -107,15 +107,15 @@ public class CalsimBuilder extends InstallArchiveWriter
        * Add the DesktopUnit, which adds desktop icons to the user's desktop if they
        * so desire.
        */
-      //DesktopUnit desktop = new DesktopUnit();
+      DesktopUnit desktop = new DesktopUnit();
 //      desktop.createDesktopItem(getProductName(), "CALSIM-1.0", {InstallLocation}\\bin\\WRIMS.bat", null);
-      //desktop.createDesktopItem(getProductName(), getProductName(), "{InstallLocation}\\bin\\WRIMS.bat", null);
-      //desktop.createDesktopItem(getProductName(), "MS Runner", "{InstallLocation}\\bin\\msr.bat", null);
-      //desktop.createDesktopItem(getProductName(), "Readme", "{InstallLocation}\\0Readme.txt", null);
-      //desktop.createDesktopItem(getProductName(), "Fixed Bugs", "{InstallLocation}\\fixedbugs.txt", null);
-      //desktop.createDesktopItem(getProductName(), "Copyright", "{InstallLocation}\\copyright.txt", null);
-      //desktop.createDesktopItem(getProductName(), "License", "{InstallLocation}\\license.txt", null);
-      //addComponent(desktop);
+      desktop.createDesktopItem(getProductName(), getProductName(), "{InstallLocation}\\bin\\WRIMS.bat", null);
+      desktop.createDesktopItem(getProductName(), "MS Runner", "{InstallLocation}\\bin\\msr.bat", null);
+      desktop.createDesktopItem(getProductName(), "Readme", "{InstallLocation}\\0Readme.txt", null);
+      desktop.createDesktopItem(getProductName(), "Fixed Bugs", "{InstallLocation}\\fixedbugs.txt", null);
+      desktop.createDesktopItem(getProductName(), "Copyright", "{InstallLocation}\\copyright.txt", null);
+      desktop.createDesktopItem(getProductName(), "License", "{InstallLocation}\\license.txt", null);
+      addComponent(desktop);
 
       /*
        * Set the InstallShield image into the wizard

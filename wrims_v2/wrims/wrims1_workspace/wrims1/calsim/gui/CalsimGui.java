@@ -51,10 +51,10 @@ import calsim.app.AppProps;
 
 public class CalsimGui {
   //public final String CALSIM_HOME = "D:\\WRIMS1Development\\Calsim1.3\\calsim"; // CB for IDE use (non-batch file)
-  private static JFrame frameBase = new JFrame(GuiUtils.getProgramName()); // version is already in About screen
+
   public static boolean DEBUG = true;
-  public static int FRAME_WIDTH=900;
-  public static int FRAME_HEIGHT=666;
+  public static int FRAME_WIDTH=800;
+  public static int FRAME_HEIGHT=600;
   static {
 		loadProps();
   }
@@ -81,13 +81,12 @@ public class CalsimGui {
    */
   public CalsimGui(String prjFile) {
 //    JFrame fr = new JFrame(GuiUtils.getProgramName()+GuiUtils.getVersionNo());
-    //JFrame fr = new JFrame(GuiUtils.getProgramName()); // version is already in About screen
-	frameBase.setIconImage(Toolkit.getDefaultToolkit().
+    JFrame fr = new JFrame(GuiUtils.getProgramName()); // version is already in About screen
+    fr.setIconImage(Toolkit.getDefaultToolkit().
 		createImage(VistaUtils.getImageAsBytes("/calsim/gui/calsimoas.gif")));
-	Container pane = frameBase.getContentPane();
-	pane.setBackground(new Color(207,220,200));
-	pane.setLayout(new BorderLayout());
-    TabbedPane tabbedPane = new TabbedPane(frameBase);
+    Container pane = fr.getContentPane();
+    pane.setLayout(new BorderLayout());
+    TabbedPane tabbedPane = new TabbedPane(fr);
     pane.add(tabbedPane.getTabbedPane(), BorderLayout.CENTER);
     pane.add(GuiUtils.getStatusPanel(), BorderLayout.SOUTH);
     //
@@ -96,17 +95,15 @@ public class CalsimGui {
     else
       GuiUtils.getMainPanel().getMessagePanel().updateMessagePanel();
     //
-    frameBase.addWindowListener( new WindowAdapter() {
+    fr.addWindowListener( new WindowAdapter() {
       public void windowClosing(WindowEvent evt){
 		exit();
       }
     });
     //System.out.println(FRAME_WIDTH+" "+FRAME_HEIGHT);
-    frameBase.setSize(FRAME_WIDTH,FRAME_HEIGHT);
-    frameBase.setExtendedState(JFrame.NORMAL);
-    frameBase.setVisible(true);
-    frameBase.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-
+    fr.setSize(810,FRAME_HEIGHT);
+    fr.setVisible(true);
+    fr.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
   }
 
   /**
@@ -115,36 +112,22 @@ public class CalsimGui {
    */
   void exit() {
     //
-      //saveProps();
-      GuiUtils.getMainPanel().getMainMenuBar().fileExit();
+      saveProps();
+    GuiUtils.getMainPanel().getMainMenuBar().fileExit();
     //
   }
     /**
      *
      */
-
-
-  
     public static void loadProps(){
-     String sytemName=System.getProperty("os.name");
-     if (System.getProperty("os.name").equals("Windows XP")){
-    	FRAME_WIDTH = new Integer(AppProps.getProperty("CalsimGui.FRAME_WIDTH1")).intValue();
-     }else{
-    	 FRAME_WIDTH = new Integer(AppProps.getProperty("CalsimGui.FRAME_WIDTH2")).intValue(); 
-     }
+	FRAME_WIDTH = new Integer(AppProps.getProperty("CalsimGui.FRAME_WIDTH")).intValue();
 	FRAME_HEIGHT = new Integer(AppProps.getProperty("CalsimGui.FRAME_HEIGHT")).intValue();
     }
     /**
      *
      */
     public static void saveProps(){
-    FRAME_WIDTH=frameBase.getWidth();
-    FRAME_HEIGHT=frameBase.getHeight();
-    if (System.getProperty("os.name").equals("Windows XP")){
-    	AppProps.setProperty("CalsimGui.FRAME_WIDTH1",new Integer(FRAME_WIDTH).toString());
-    }else{
-    	AppProps.setProperty("CalsimGui.FRAME_WIDTH2",new Integer(FRAME_WIDTH).toString());
-    }
+	AppProps.setProperty("CalsimGui.FRAME_WIDTH",new Integer(FRAME_WIDTH).toString());
 	AppProps.setProperty("CalsimGui.FRAME_HEIGHT",new Integer(FRAME_HEIGHT).toString());
     }
   /**

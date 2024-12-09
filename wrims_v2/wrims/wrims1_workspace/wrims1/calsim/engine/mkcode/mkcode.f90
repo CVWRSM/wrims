@@ -180,7 +180,7 @@ IF (charneq(cyclenum,'00'))  OPEN  (UNIT=8,  FILE=weight_file,  STATUS='old')
   		WRITE (16,*) '! Type Statements for WEIGHTS Variables '
   		WRITE (16,*) ' '
   		WRITE (16,*) 'REAL              :: Weight '
-  		WRITE (16,*) 'CHARACTER(LEN=32) :: ObjVar_Name '
+  		WRITE (16,*) 'CHARACTER(LEN=16) :: ObjVar_Name '
 		!  WRITE (16,*) 'CHARACTER(LEN=2)  :: Priority '
 		!  WRITE (16,*) 'INTEGER           :: nwt '
   		WRITE (16,*) ' '
@@ -195,7 +195,7 @@ IF (charneq(cyclenum,'00'))  OPEN  (UNIT=8,  FILE=weight_file,  STATUS='old')
   		WRITE (16,*) '! Type Statements for GOAL Variables '
   		WRITE (16,*) ' '
   		WRITE (16,*) 'REAL , DIMENSION(maxdvar)              :: C '
-  		WRITE (16,*) 'CHARACTER(LEN=32),DIMENSION(maxdvar)  :: Dvar_Name '
+  		WRITE (16,*) 'CHARACTER(LEN=16),DIMENSION(maxdvar)  :: Dvar_Name '
   		WRITE (16,*) 'CHARACTER(LEN=32)                     :: Control_Tag '
   		WRITE (16,*) 'CHARACTER(LEN=9)                      :: Surpl_Label, Slack_Label '
   		WRITE (16,*) 'REAL                                :: Pen_Surpl, Pen_Slack, RHS '
@@ -228,7 +228,7 @@ IF (charneq(cyclenum,'00'))  CALL GOALS(maxcond, cyclenum)
 
   INTEGER                             :: maxwt
   CHARACTER(LEN=32), DIMENSION(maxwt) :: Weight
-  CHARACTER(LEN=32), DIMENSION(maxwt) :: ObjVar_Name  
+  CHARACTER(LEN=16), DIMENSION(maxwt) :: ObjVar_Name  
   CHARACTER(LEN=2), DIMENSION(maxwt)  :: Priority
   INTEGER                             :: i,k,nwts
   CHARACTER(LEN=2), INTENT(IN):: cyclenum
@@ -330,9 +330,9 @@ defcond:  DO while (.true.) ! loop through the number of conditions in define st
                 isSum = .true.
                 DoRange = Def_Value(2:)
                 read (5,120) Def_Value
-                Def_Value(34:)=TRIM(Def_Value(1:))
-                Def_Value(1:32)=TRIM(Def_Var_Name)
-                Def_Value(33:33)='+'
+                Def_Value(18:)=TRIM(Def_Value(1:))
+                Def_Value(1:16)=TRIM(Def_Var_Name)
+                Def_Value(17:17)='+'
             END IF
             IF (isArray) THEN        ! An Array Statement
                 !write (15,*) 'do ',DoRange
@@ -411,17 +411,17 @@ defcond:  DO while (.true.) ! loop through the number of conditions in define st
 
   INTEGER                                       :: ndvar,maxcond
   CHARACTER(LEN=2)			:: cyclenum
-  CHARACTER(LEN=32), DIMENSION(maxcond) :: Pen_Surpl, Pen_Slack
+  CHARACTER(LEN=16), DIMENSION(maxcond) :: Pen_Surpl, Pen_Slack
 ! CHARACTER(LEN=16)                             :: Goal_Set
   CHARACTER(LEN=29)                             :: Goal_Tag
-  CHARACTER(LEN=32), DIMENSION(maxdvar) :: Dvar_Name
+  CHARACTER(LEN=16), DIMENSION(maxdvar) :: Dvar_Name
   CHARACTER(LEN=500), DIMENSION(maxdvar) :: C
   CHARACTER(LEN=500), DIMENSION(maxcond) :: Condition
   CHARACTER(LEN=2000), DIMENSION(maxcond) :: RHS
   CHARACTER(LEN=32), DIMENSION(maxcond) :: Condition_Tag
   CHARACTER(LEN=9),  DIMENSION(maxcond) :: Surpl_Label, Slack_Label
   INTEGER, DIMENSION(maxcond)           :: Cond_Num
-  CHARACTER(LEN=32)                             :: Bound_Var_Name
+  CHARACTER(LEN=16)                             :: Bound_Var_Name
   CHARACTER(LEN=64)                             :: Up_Bound, Lo_Bound
   CHARACTER(LEN=5)                              :: coefchar
   INTEGER                                       :: j,k
@@ -661,12 +661,11 @@ contains
 subroutine writetrimmed(iunit, var_name, var_expr)
   CHARACTER(LEN=*)   :: var_name,var_expr
 !  INTEGER :: maxLineLength = 130  !CB
-  maxLineLength = 100
-  
+  maxLineLength = 132  !CB
 
   ilen=LEN_TRIM(var_expr)
   WRITE(iunit, *) '!  ilen=', ilen
-  if (ilen<=maxLineLength) then
+  if (ilen<=100) then
      WRITE(iunit,450)  TRIM(var_name), var_expr(1:ilen)
   else
       call checkunderscore(var_expr)
@@ -696,7 +695,7 @@ subroutine writetrimmed(iunit, var_name, var_expr)
         IF (i==0) THEN
           WRITE (iunit,500) TRIM(var_name), var_expr(1:100)
         ELSE
-          IF (ilen > i*maxLineLength ) WRITE(iunit,510) var_expr( i*maxLineLength + 1: (i+1)*maxLineLength)
+          IF (ilen > (i-1)*maxLineLength + 100) WRITE(iunit,510) var_expr((i-1)*maxLineLength + 101:i*maxLineLength+100)
 !        WRITE(iunit, *) '!  (i-1)*maxLineLength + 101 =', (i-1)*maxLineLength + 101
 !        WRITE(iunit, *) '!  i*maxLineLength+100 =', i*maxLineLength+100
         END IF
@@ -715,35 +714,16 @@ subroutine checkunderscore(expr)
   CHARACTER(LEN=*) :: expr
   INTEGER :: i
   
-  maxLineLength = 100  
+  maxLineLength = 132  !CB
   
   ilen=LEN_TRIM(expr)
-  if (ilen>maxLineLength) then
-    do i=maxLineLength,ilen,maxLineLength
-      
-      ! prevent (1) "_" split
-      !         (2) ".and." splits into ".a&" and "&nd."
-      !         (3) ".or." splits into ".o&" and "&r."
-      if (chareq(expr(i:i),'_') ) then           
+  if (ilen>100) then
+    do i=100,ilen,maxLineLength
+      if (chareq(expr(i:i),'_')) then           
          expr(i+1:)=expr(i:)
          expr(i:i)='&'
          ilen=ilen+1
-
-      else if (chareq(expr(i-1:i+3),'.and.') )  then           
-         expr(i+1:)=expr(i-1:)
-         expr(i-1:i)='  '
-         !expr(i:i)='&'
-         ilen=ilen+2
-         
-      else if (chareq(expr(i-1:i+2),'.or.') )  then           
-         expr(i+1:)=expr(i-1:)
-         expr(i-1:i)='  '
-         !expr(i:i)='&'
-         ilen=ilen+2   
-         
       end if
-
-      
     end do
   end if
 

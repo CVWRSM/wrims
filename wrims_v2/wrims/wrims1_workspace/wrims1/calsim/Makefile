@@ -10,17 +10,14 @@ JAVADOC = ${JAVA_HOME}
 JAVADOC_OPT= -classpath ..\${CPATH_SEP}${CLASSPATH_DEF} -d docs -version -author
 
 complete:
-#	(cp -u ../hec_dlls/*.dll  bin/)
-#	(cp -u libs/* lib/)
 	cd wreslcoder$(PATH_SEP)wresl $(CMD_SEP) $(MAKE) all
 	cd wreslcoder $(CMD_SEP) $(MAKE) all
 	cd app $(CMD_SEP) $(MAKE) all
 	cd gui $(CMD_SEP) $(MAKE) all
-	cd debug $(CMD_SEP) $(MAKE) all	
 #        cd .$(PATH_SEP)gui $(CMD_SEP) $(MAKE) all  #CB does not work - cygwin bug
 	cd gym $(CMD_SEP) $(MAKE) all
 	cd schematic $(CMD_SEP) $(MAKE) all
-#	cd engine $(CMD_SEP) make --unix release
+	cd engine $(CMD_SEP) make --unix release
 	cd msw $(CMD_SEP) $(MAKE) all
 #	cd ../wrims/dss $(CMD_SEP) $(MAKE) all          #CB not needed
 #	cd ../wrims/schematic $(CMD_SEP) $(MAKE) all    #CB for building WRIMS Schematic as part of - now it is standalone
@@ -39,7 +36,6 @@ jar:
 	(cp -P gui/*.class classes/calsim)
 #	(cp -P gui/*.java classes/calsim)
 	(cp -P app/*.class classes/calsim)
-	(cp -P debug/*.class classes/calsim)	
 #	(cp -P app/*.java classes/calsim)
 	(cp -P msw/*.class classes/calsim)
 #	(cp -P msw/*.java classes/calsim)
@@ -64,14 +60,11 @@ jar:
 	(cd help; rm -rf calsim-help.jar; $(JAR) -cf calsim-help.jar *; cp calsim-help.jar ../lib;)
 
 pack:
-#	(cp -u ../hec_dlls/*.dll  bin/)
-#	(cp -u libs/* lib/)
-#	(cp -u svgs/* svg/)
-#	rm -rf calsim.zip
-#	cd ${CALSIM_HOME}/installer; $(MAKE) installer
+	rm -rf calsim.zip
+	cd ${CALSIM_HOME}/installer; $(MAKE) installer
 
 fullpack: pack
-#	zip -r calsim.zip jre
+	zip -r calsim.zip jre
 
 top-clean:
 	cd gui $(CMD_SEP) $(MAKE) clean

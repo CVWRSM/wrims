@@ -36,28 +36,49 @@
 
 package calsim.gui;
 
-import calsim.app.*;
-import vista.set.*;
-import vista.gui.*;
-import java.awt.*;
-import java.awt.event.*;
-//import java.io.*;
-import javax.swing.*;
-import javax.swing.table.TableColumnModel;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
+import javax.swing.table.TableColumnModel;
+
+import vista.gui.VistaUtils;
+import vista.set.DataReference;
+import vista.set.Group;
+import vista.set.GroupTableModel;
+import vista.set.PartNamePredicate;
+import vista.set.Pathname;
+import vista.set.SortMechanism;
+import calsim.app.AppUtils;
+
+//import java.io.*;
 
 /**
  * The split pane that let user select A/B/C/D/E/F parts individually, and
  * display the searched pathnames in a list, and let user plot/tabulate the
  * data.
- *
+ * 
  * @author Nicky Sandhu, Armin Munevar
  * @version $Id: GeneralRetrievePanel.java,v 1.1.2.9 2001/10/23 16:28:38
  *          jfenolio Exp $
  */
 public class GeneralRetrievePanel extends JPanel {
 	public static boolean DEBUG = true;
-	
+
 	public static final int NUM_PATH_PARTS = 6;
 
 	/**
@@ -67,7 +88,7 @@ public class GeneralRetrievePanel extends JPanel {
 		_upperPanel = createUpperPanel();
 		_lowerPanel = createLowerPanel();
 		setLayout(new BorderLayout());
-		setBackground(new Color(207,220,200));
+		setBackground(new Color(207, 220, 200));
 		add(_upperPanel, BorderLayout.NORTH);
 		add(_lowerPanel, BorderLayout.CENTER);
 	}
@@ -79,37 +100,37 @@ public class GeneralRetrievePanel extends JPanel {
 		// create filter panel
 		JPanel filterPanel = new JPanel();
 		filterPanel.setLayout(new GridLayout(1, 7));
-		filterPanel.setBackground(new Color(207,220,200));
+		filterPanel.setBackground(new Color(207, 220, 200));
 		_varTypeBox = new JComboBox(
 				new String[] { AppUtils.DVAR, AppUtils.SVAR });
-		_varTypeBox.setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLineBorder(Color.lightGray), "TYPE"));
+		_varTypeBox.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.lightGray), "TYPE"));
 		_pathText = new JTextField[6];
 		_pathText[0] = new JTextField(30);
-		_pathText[0].setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLineBorder(Color.lightGray), "A"));
+		_pathText[0].setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.lightGray), "A"));
 		_pathText[1] = new JTextField(30);
-		_pathText[1].setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLineBorder(Color.lightGray), "B"));
+		_pathText[1].setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.lightGray), "B"));
 		_pathText[2] = new JTextField(30);
-		_pathText[2].setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLineBorder(Color.lightGray), "C"));
+		_pathText[2].setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.lightGray), "C"));
 		_pathText[3] = new JTextField(30);
-		_pathText[3].setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLineBorder(Color.lightGray), "D"));
+		_pathText[3].setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.lightGray), "D"));
 		_pathText[4] = new JTextField(30);
-		_pathText[4].setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLineBorder(Color.lightGray), "E"));
+		_pathText[4].setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.lightGray), "E"));
 		_pathText[5] = new JTextField(30);
-		_pathText[5].setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLineBorder(Color.lightGray), "F"));
+		_pathText[5].setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.lightGray), "F"));
 		//
 		filterPanel.add(_varTypeBox);
 		for (int i = 0; i < NUM_PATH_PARTS; i++) {
 			filterPanel.add(_pathText[i]);
 		}
-		filterPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLineBorder(Color.blue), "Filter"));
+		filterPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.blue), "Filter"));
 		//
 		JButton filterBtn = new JButton("Filter");
 		_retrieveBtn = new JButton("Retrieve");
@@ -147,7 +168,7 @@ public class GeneralRetrievePanel extends JPanel {
 		box1.add(Box.createHorizontalGlue());
 		JPanel upperPanel = new JPanel();
 		upperPanel.setLayout(new BorderLayout());
-		upperPanel.setBackground(new Color(207,220,200));
+		upperPanel.setBackground(new Color(207, 220, 200));
 		upperPanel.add(box1, BorderLayout.CENTER);
 		return upperPanel;
 	}
@@ -159,10 +180,12 @@ public class GeneralRetrievePanel extends JPanel {
 	JPanel createLowerPanel() {
 		// Create the list of pathnames and put it in a scroll pane
 		_table = new JTable();
-		_table.getTableHeader().addMouseListener(new TableHeaderMouseListener());
+		_table.getTableHeader()
+				.addMouseListener(new TableHeaderMouseListener());
 		_table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		if (_table.getSelectedRowCount() > 0) _table.setRowSelectionInterval(0, 0);
+		if (_table.getSelectedRowCount() > 0)
+			_table.setRowSelectionInterval(0, 0);
 		_table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
 				if (me.getClickCount() < 2)
@@ -173,7 +196,7 @@ public class GeneralRetrievePanel extends JPanel {
 		//
 		JPanel lowerPanel = new JPanel();
 		lowerPanel.setLayout(new BorderLayout());
-		lowerPanel.setBackground(new Color(207,220,200));
+		lowerPanel.setBackground(new Color(207, 220, 200));
 		lowerPanel.add(new JScrollPane(_table), BorderLayout.CENTER);
 		return lowerPanel;
 	}
@@ -183,29 +206,36 @@ public class GeneralRetrievePanel extends JPanel {
 	 * the lower panel
 	 */
 	void filter() {
-		if (DEBUG) System.out.println("filter");
+		if (DEBUG)
+			System.out.println("filter");
 		if (!AppUtils.baseOn) {
-			JOptionPane.showMessageDialog(null, "The Base DSS files need to be selected",
-				"DSS Not Selected", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"The Base DSS files need to be selected",
+					"DSS Not Selected", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		// store filter on parts in array or null if empty string
 		String[] parts = new String[NUM_PATH_PARTS];
 		for (int i = 0; i < NUM_PATH_PARTS; i++) {
 			String txt = _pathText[i].getText().trim().toUpperCase();
-			if (txt.length() > 0) parts[i] = txt;
-			else parts[i] = null;
+			if (txt.length() > 0)
+				parts[i] = txt;
+			else
+				parts[i] = null;
 		}
-		// filter and get array of desired references depending upon varible type
+		// filter and get array of desired references depending upon varible
+		// type
 		try {
 			// if out of date recatalog...
-			AppUtils.getCurrentProject().getDVGroup(); // recatalogs
+			AppUtils.getCurrentProject().getDVBaseGroup(); // recatalogs
 			String selected;
 			// set table to these references
-			updateTable(AppUtils.getDataReferences(parts, selected = (String)_varTypeBox
-				.getSelectedItem()));
-			if (selected.equals(AppUtils.DVAR)) AppUtils.isDvarsFilter = true;
-			else AppUtils.isDvarsFilter = false;
+			updateTable(AppUtils.getDataReferences(parts,
+					selected = (String) _varTypeBox.getSelectedItem()));
+			if (selected.equals(AppUtils.DVAR))
+				AppUtils.isDvarsFilter = true;
+			else
+				AppUtils.isDvarsFilter = false;
 		} catch (RuntimeException re) {
 			VistaUtils.displayException(this, re);
 		}
@@ -229,22 +259,26 @@ public class GeneralRetrievePanel extends JPanel {
 	 */
 	void retrieve() {
 		if (!AppUtils.baseOn) {
-			JOptionPane.showMessageDialog(null, "The Base DSS files need to be selected",
-				"DSS Not Selected", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"The Base DSS files need to be selected",
+					"DSS Not Selected", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		try {
 			String noRowsString = "";
-			if (_table.getRowCount() == 0) 
+			if (_table.getRowCount() == 0)
 				noRowsString = " after using \"Filter\" to load variables";
-			 if (_group == null || _table.getSelectedRowCount() == 0) {
-				 JOptionPane.showMessageDialog(null, "Select one or more variables" + noRowsString, 
-				 	"Variable(s) Not Selected", JOptionPane.INFORMATION_MESSAGE);
-				 return;
-			 }
-			 int[] rows = _table.getSelectedRows(); // checked if count > 0 above
+			if (_group == null || _table.getSelectedRowCount() == 0) {
+				JOptionPane.showMessageDialog(null,
+						"Select one or more variables" + noRowsString,
+						"Variable(s) Not Selected",
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			int[] rows = _table.getSelectedRows(); // checked if count > 0 above
 			DataReference[] array = new DataReference[rows.length];
-			for (int i = 0; i < rows.length; i++) array[i] = _group.getDataReference(rows[i]);
+			for (int i = 0; i < rows.length; i++)
+				array[i] = _group.getDataReference(rows[i]);
 			GuiUtils.displayData(array);
 		} catch (Exception e) {
 			VistaUtils.displayException(GuiUtils.getMainPanel(), e);
@@ -256,10 +290,20 @@ public class GeneralRetrievePanel extends JPanel {
 	private JComboBox _varTypeBox;
 
 	private JButton _retrieveBtn;
+	private Group _group;
+	private JTable _table;
 
-	JTable _table;
+	public JButton getRetrieveBtn() {
+		return _retrieveBtn;
+	}
 
-	Group _group;
+	public JTable getTable() {
+		return _table;
+	}
+	
+	public Group getGroup() {
+		return _group;
+	}
 
 	private JPanel _upperPanel, _lowerPanel;
 
@@ -267,7 +311,7 @@ public class GeneralRetrievePanel extends JPanel {
 
 	/**
 	 * Sorts table by hits on header
-	 *
+	 * 
 	 * @author Nicky Sandhu
 	 * @version $Id: GeneralRetrievePanel.java,v 1.1.2.9 2001/10/23 16:28:38
 	 *          jfenolio Exp $
@@ -293,12 +337,15 @@ public class GeneralRetrievePanel extends JPanel {
 			column = column - 1;
 			if (e.getClickCount() == 1 && column != -1) {
 				SortMechanism sortMechanism = null;
-				sortMechanism = new PartNamePredicate(column, SortMechanism.INCREASING, null);
+				sortMechanism = new PartNamePredicate(column,
+						SortMechanism.INCREASING);
 				sortMechanism.setAscendingOrder(ascVals[column]);
-				GeneralRetrievePanel.this._group.sortBy(new PartSort(sortMechanism));
-				GeneralRetrievePanel.this._table.tableChanged(new TableModelEvent(
-					GeneralRetrievePanel.this._table.getModel(), 0,
-					GeneralRetrievePanel.this._table.getModel().getRowCount()));
+				GeneralRetrievePanel.this._group.sortBy(sortMechanism);
+				GeneralRetrievePanel.this._table
+						.tableChanged(new TableModelEvent(
+								GeneralRetrievePanel.this._table.getModel(), 0,
+								GeneralRetrievePanel.this._table.getModel()
+										.getRowCount()));
 				GeneralRetrievePanel.this._table.repaint();
 				ascVals[column] = !ascVals[column];
 			}
@@ -312,17 +359,16 @@ public class GeneralRetrievePanel extends JPanel {
  * new controller for multi-year position analysis 4) Output tab changes include
  * 4 different dss files can be viewed and other modifications to the message
  * panel and menus
- *
+ * 
  * Revision 1.1.2.8 2000/12/20 20:07:08 amunevar commit for ver 1.0.7
- *
+ * 
  * Revision 1.1.2.7 1999/10/13 16:46:43 nsandhu ** empty log message ***
- *
+ * 
  * Revision 1.1.2.6 1999/08/18 19:50:24 nsandhu ** empty log message ***
- *
+ * 
  * Revision 1.1.2.5 1999/07/25 19:25:00 nsandhu fixed repaint bug
- *
+ * 
  * Revision 1.1.2.4 1999/07/08 00:42:27 nsandhu ** empty log message ***
- *
+ * 
  * Revision 1.1.2.3 1999/07/02 20:26:26 nsandhu ** empty log message ***
- *
  */
