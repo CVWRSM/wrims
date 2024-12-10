@@ -14,8 +14,6 @@ import java.util.prefs.Preferences;
 
 import org.swixml.SwingEngine;
 
-import calsim.gui.DtsTreePanel;
-
 public class DssPluginCore {
 	public static String ID_DSSVue_DSSTableView="gov.ca.dwr.hecdssvue.views.DSSTableView";
 	
@@ -105,8 +103,6 @@ public class DssPluginCore {
 	public static String[][] CalSim2Lookups=new String[0][0];
 	public static String[][] CalSim3Lookups=new String[0][0];
 	public static ArrayList<String> selectedCheckBox=new ArrayList<String>();
-	
-	public static DtsTreePanel dtp;
 	
 	public static String lastCopiedDssFolder="c:\\";
 	public static MonthlyTablePanel mtp;

@@ -1,0 +1,32 @@
+
+plugins{
+    id 'library.deps-conventions'
+    id 'library.java-conventions'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['.'] // Reference the root directory
+        }
+    }
+}
+
+dependencies {
+
+    api libs.hec.monolith
+    implementation libs.hec.nucleus.metadata
+    implementation libs.guava
+    implementation libs.commons.io
+    implementation libs.javatuples
+    implementation libs.java.object.diff
+    implementation libs.kryo
+    implementation libs.jep
+    api(":vista")
+}
+
+configurations.all {
+    exclude group: "javax.media", module: "jai_core"
+    exclude group: "javax.media", module: "jai_codec"
+    exclude group: "com.sun.media", module: "jai_imageio"
+}

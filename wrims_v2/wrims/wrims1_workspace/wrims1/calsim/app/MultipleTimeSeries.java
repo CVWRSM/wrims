@@ -35,13 +35,13 @@ sushil@water.ca.gov
 */
 
 package calsim.app;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.traversal.TreeWalker;
 import vista.set.*;
-//import vista.time.*;
 import java.util.*;
 import java.io.*;
 import javax.swing.table.AbstractTableModel;
-import com.sun.xml.tree.XmlDocument;
-import com.sun.xml.tree.TreeWalker;
 import org.w3c.dom.Element;
 /**
  * A multiple time series is a time series which has multiple
@@ -404,11 +404,11 @@ public class MultipleTimeSeries implements Serializable{
   public void fromXml(Element de){
     _name = de.getAttribute("name");
     if(!_name.toUpperCase().endsWith(".MTS")) _name = new String(_name.toUpperCase()+".MTS");
-    TreeWalker tw = new TreeWalker(de);
     int rindex=0;
     while(true){
-      Element re = tw.getNextElement("row");
-      if (re == null) break;
+      Node node = de.getFirstChild();
+      if (node == null || !(node instanceof Element)) break;
+      Element re = (Element) node;
       String dtsatt = re.getAttribute("dts");
       if (!dtsatt.equals("") && !dtsatt.endsWith(".DTS")) dtsatt = dtsatt + ".DTS";
       setDTSNameAt(rindex,dtsatt);
@@ -421,7 +421,7 @@ public class MultipleTimeSeries implements Serializable{
   /**
    *
    */
-  public void toXml(XmlDocument doc, Element ae){
+  public void toXml(Document doc, Element ae){
     Element de = doc.createElement("MTS");
     de.setAttribute("name",_name);
     int count = getNumberOfDataReferences();

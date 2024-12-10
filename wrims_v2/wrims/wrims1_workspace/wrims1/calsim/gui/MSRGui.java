@@ -35,21 +35,18 @@ sushil@water.ca.gov
 */
 
 package calsim.gui;
-//import calsim.app.*;
-//import vista.set.*;
-//import vista.db.dss.DSSUtil;
-//import vista.gui.*;
-//import vista.time.*;
+import calsim.app.XmlUtilities;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-//import java.util.*;
 import javax.swing.*;
-//import javax.swing.table.*;
-//import calsim.wreslcoder.*;
-import com.sun.xml.tree.XmlDocument;
-import com.sun.xml.tree.TreeWalker;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.traversal.DocumentTraversal;
+import org.w3c.dom.traversal.NodeFilter;
+import org.w3c.dom.traversal.TreeWalker;
 
 
 /**
@@ -341,16 +338,18 @@ public class MSRGui {
 	 *Opens multistudy file
 	 */
   public void openFile() throws Exception {
-		String filename = getFileName(FileDialog.LOAD, "*msty");;
-    _mainFile = filename;
-    try {
-      XmlDocument doc = XmlDocument.createXmlDocument(new FileInputStream(_mainFile),false);
-      fromXml(doc.getDocumentElement());
-    }catch(Exception e){
-      e.printStackTrace(System.err);
-      throw new Exception("Invalid project file: " + _mainFile);
-    }
-	}
+	  String filename = getFileName(FileDialog.LOAD, "*msty");
+	  _mainFile = filename;
+	  try {
+		  DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		  DocumentBuilder builder = factory.newDocumentBuilder();
+		  Document doc = builder.parse(_mainFile);
+		  fromXml(doc.getDocumentElement());
+	  } catch (Exception e) {
+		  e.printStackTrace(System.err);
+		  throw new Exception("Invalid project file: " + _mainFile);
+	  }
+  }
 	/**
 	 *Saves msty file
 	 */
@@ -360,13 +359,12 @@ public class MSRGui {
 			if (filename == null) return;
 			_mainFile = filename;
 		}
-    XmlDocument mstydoc = new XmlDocument();
-    XmlDocument doc = new XmlDocument();
+    Document mstydoc = XmlUtilities.newDocument();
+    Document doc = XmlUtilities.newDocument();
     Element master = doc.createElement("MultiStudyFile");
     doc.appendChild(master);
     toXml(mstydoc);
-    PrintWriter pw = new PrintWriter(new FileOutputStream(_mainFile));
-    mstydoc.write(pw); pw.close();
+	XmlUtilities.saveTo(mstydoc, _mainFile);
     _changed = false;
 	}
 	/**
@@ -375,20 +373,19 @@ public class MSRGui {
   public void saveAsFile() throws IOException {
 		String filename = getFileName(FileDialog.SAVE, "*msty");
     if (filename == null) return;
-    XmlDocument mstydoc = new XmlDocument();
-    XmlDocument doc = new XmlDocument();
+    Document mstydoc = XmlUtilities.newDocument();
+    Document doc = XmlUtilities.newDocument();
     Element master = doc.createElement("MultiStudyFile");
     doc.appendChild(master);
     _mainFile = filename;
     toXml(mstydoc);
-    PrintWriter pw = new PrintWriter(new FileOutputStream(filename));
-    mstydoc.write(pw); pw.close();
+	XmlUtilities.saveTo(mstydoc, filename);
     _changed = false;
 	}
   /**
     * Returns a element of an xml document
     */
-  public void toXml(XmlDocument doc){
+  public void toXml(Document doc){
     Element el = doc.createElement("MultiStudyFile");
     el.appendChild(doc.createComment("MultiStudy xml format"));
     el.setAttribute("name", _mainFile);
@@ -418,28 +415,29 @@ public class MSRGui {
     *Gets data for msty file
     */
   public void fromXml(Element pe) throws IOException {
-    TreeWalker tw = new TreeWalker(pe);
-    // study items
-    for (int i=0; i<4; i++) {
-      Element se = tw.getNextElement("Study");
-      if ( i==0) {
-	      setD1485Sty(se.getAttribute("D1485"));
-      } else if ( i == 1 ){
-	      setD1641Sty(se.getAttribute("D1641"));
-      } else if ( i == 2 ){
-	      setB2Sty(se.getAttribute("B2"));
-      } else if ( i == 3 ){
-	      setEWASty(se.getAttribute("EWA"));
-      }
-    }
-    for (int i=0; i<2; i++) {
-      Element se = tw.getNextElement("Transfer");
-      if ( i==0) {
-	      setB2Transfer(se.getAttribute("B2"));
-      } else if ( i == 1 ){
-	      setEWATransfer(se.getAttribute("EWA"));
-			}
-		}
+	  DocumentTraversal traversal = (DocumentTraversal) pe.getOwnerDocument();
+	  TreeWalker tw = traversal.createTreeWalker(pe, NodeFilter.SHOW_ELEMENT, null, false);
+	  // study items
+	  for (int i = 0; i < 4; i++) {
+		  Element se = XmlUtilities.getNextElement(tw, "Study");
+		  if (i == 0) {
+			  setD1485Sty(se.getAttribute("D1485"));
+		  } else if (i == 1) {
+			  setD1641Sty(se.getAttribute("D1641"));
+		  } else if (i == 2) {
+			  setB2Sty(se.getAttribute("B2"));
+		  } else if (i == 3) {
+			  setEWASty(se.getAttribute("EWA"));
+		  }
+	  }
+	  for (int i = 0; i < 2; i++) {
+		  Element se = XmlUtilities.getNextElement(tw, "Transfer");
+		  if (i == 0) {
+			  setB2Transfer(se.getAttribute("B2"));
+		  } else if (i == 1) {
+			  setEWATransfer(se.getAttribute("EWA"));
+		  }
+	  }
   }
   /**
    *exits when menu item exit is selected

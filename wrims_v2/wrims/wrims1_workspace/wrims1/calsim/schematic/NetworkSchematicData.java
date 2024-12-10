@@ -61,8 +61,6 @@ import java.util.*;
 import java.text.NumberFormat;
 import java.io.*;
 import vista.graph.*;
-import com.sun.java.util.collections.Arrays;
-import com.sun.java.util.collections.Comparator;
 /**
   * An implementation of the CalsimSchematicDataModel for representing a view
   * on a network

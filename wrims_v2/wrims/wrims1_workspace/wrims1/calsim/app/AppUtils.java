@@ -58,8 +58,6 @@ import java.awt.*;
 
 import calsim.gui.*;
 
-import com.sun.java.util.collections.Arrays;
-import com.sun.java.util.collections.Comparator;
 /**
  * Common utility functions for App package
  *

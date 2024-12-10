@@ -1,54 +1,40 @@
 package gov.ca.dwr.hecdssvue.views;
 
-import java.util.Vector;
-
-import gov.ca.dwr.hecdssvue.DssPluginCore;
-import gov.ca.dwr.hecdssvue.actions.ReportButtonAction;
-import gov.ca.dwr.hecdssvue.actions.ReportCheckBoxAction;
-import gov.ca.dwr.hecdssvue.components.DataOps;
-import hec.io.DataContainer;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-
-import wrimsv2_plugin.debugger.core.DebugCorePlugin;
-import wrimsv2_plugin.debugger.exception.WPPException;
-import calsim.app.AppUtils;
-import calsim.app.Project;
-import calsim.gui.CalLiteGUIMainPanel;
 import calsim.gui.DTSTable;
 import calsim.gui.DtsTreeModel;
 import calsim.gui.DtsTreePanel;
 import calsim.gui.GuiTaskListener;
-import calsim.gui.GuiUtils;
+import gov.ca.dwr.hecdssvue.components.DataOps;
+import hec.io.DataContainer;
+import java.util.Vector;
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
+import wrimsv2_plugin.debugger.exception.WPPException;
 
 public class DTSView extends AbstractCalSimView{
 
 	public static String ID="gov.ca.dwr.hecdssvue.views.DTSView";
-	
+
+	@Override
 	public void createPartControl(Composite parent){
 		super.createPartControl(parent);
-		
-		DssPluginCore.dtp = new DtsTreePanel();
-		DtsTreeModel dtm = DssPluginCore.dtp.getCurrentModel();
+
+		DtsTreePanel dtp = new DtsTreePanel();
+		DtsTreeModel dtm = dtp.getCurrentModel();
 		dtm.clearVectors();
 		dtm.createTreeFromPrj(null, null, "");
 				
-		DssPluginCore.dtp.repaint();
-		contentPane.add(new JScrollPane(DssPluginCore.dtp));
+		dtp.repaint();
+		contentPane.add(new JScrollPane(dtp));
 		
 		DataOps.setProject();
 		
-		final DTSTable table = DssPluginCore.dtp.getTable();
+		final DTSTable table = dtp.getTable();
 		JButton opencurrent = table.opencurrent;
 		opencurrent.addActionListener(new GuiTaskListener("Retrieving...") {
 			public void doWork(){

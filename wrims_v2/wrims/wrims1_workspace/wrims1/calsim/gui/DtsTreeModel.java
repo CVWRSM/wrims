@@ -1,16 +1,19 @@
 package calsim.gui;
 import calsim.app.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.traversal.DocumentTraversal;
+import org.w3c.dom.traversal.NodeFilter;
+import org.w3c.dom.traversal.TreeWalker;
 import vista.gui.*;
-//import vista.time.*;
 import javax.swing.*;
 import javax.swing.event.*;
-//import javax.swing.JTree.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-import com.sun.xml.tree.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -711,25 +714,30 @@ public class DtsTreeModel extends GeneralTreeModel {
         InputStream is = new FileInputStream(filename);
         LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
         String check = reader.readLine();
-        if (!check.startsWith("name")) {
-		      XmlDocument doc = XmlDocument.createXmlDocument(new FileInputStream(filename),false);
-		      Element top = (Element)doc.getDocumentElement();
-          TreeWalker tw = new TreeWalker(top);
-          Element de = tw.getNextElement("DTS");
-          if ( de == null ) return;
-          dts = new DerivedTimeSeries();
-          dts.fromXml(de);
-	     } else {
-          dts = DerivedTimeSeries.load(filename);
-		}
-		is.close();
-        GuiUtils.checkAndAddToProject(_mp,dts);
-        child.setUserObject(dts.getName());
-        child.setAllowsChildren(false);
-        insertNodetoModel(parent,child,parent.getChildCount());
-        TreePath path = new TreePath(child.getPath());
-        tree.setSelectionPath(path);
-       } else {
+          if (!check.startsWith("name")) {
+
+              DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+              DocumentBuilder builder = factory.newDocumentBuilder();
+              Document doc = builder.parse(filename);
+              Element top = doc.getDocumentElement();
+              TreeWalker tw = ((DocumentTraversal)doc).createTreeWalker(top, NodeFilter.SHOW_ELEMENT, null, false);
+              Element de = XmlUtilities.getNextElement(tw, "DTS");
+              if (de == null) {
+                  return;
+              }
+              dts = new DerivedTimeSeries();
+              dts.fromXml(de);
+          } else {
+              dts = DerivedTimeSeries.load(filename);
+          }
+          is.close();
+          GuiUtils.checkAndAddToProject(_mp, dts);
+          child.setUserObject(dts.getName());
+          child.setAllowsChildren(false);
+          insertNodetoModel(parent, child, parent.getChildCount());
+          TreePath path = new TreePath(child.getPath());
+          tree.setSelectionPath(path);
+      } else {
         nodepopup.setVisible(false);
         cannotPerform();
       }
@@ -762,17 +770,21 @@ public class DtsTreeModel extends GeneralTreeModel {
         InputStream is = new FileInputStream(filename);
         LineNumberReader reader = new LineNumberReader(new InputStreamReader(is));
         String check = reader.readLine();
-        if (!check.startsWith("name")) {
-    		  XmlDocument doc = XmlDocument.createXmlDocument(new FileInputStream(filename),false);
-		      Element top = (Element)doc.getDocumentElement();
-          TreeWalker tw = new TreeWalker(top);
-          Element de = tw.getNextElement("MTS");
-          if ( de == null ) return;
-          mts = new MultipleTimeSeries();
-          mts.fromXml(de);
-	     } else {
-          mts = MultipleTimeSeries.load(filename);
-	    }
+          if (!check.startsWith("name")) {
+              DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+              DocumentBuilder builder = factory.newDocumentBuilder();
+              Document doc = builder.parse(filename);
+              Element top = doc.getDocumentElement();
+              TreeWalker tw = ((DocumentTraversal)doc).createTreeWalker(top, NodeFilter.SHOW_ELEMENT, null, false);
+              Element de = XmlUtilities.getNextElement(tw, "MTS");
+              if (de == null) {
+                  return;
+              }
+              mts = new MultipleTimeSeries();
+              mts.fromXml(de);
+          } else {
+              mts = MultipleTimeSeries.load(filename);
+          }
 		    is.close();
         GuiUtils.checkAndAddToProject(_mp,mts);
         child.setUserObject(mts.getName());
@@ -791,10 +803,10 @@ public class DtsTreeModel extends GeneralTreeModel {
     }
   }
 
-  public void save() throws FileNotFoundException, IOException {
+  public void save() throws IOException {
     DefaultMutableTreeNode node = (DefaultMutableTreeNode)(path.getLastPathComponent());
     String name = (String)node.getUserObject();
-    XmlDocument dtsdoc = new XmlDocument();
+    Document dtsdoc = XmlUtilities.newDocument();
     Element masterdts;
     String dtsfile = new String("default.dts");
     if (checkExtension(".dts",name)) {
@@ -816,12 +828,7 @@ public class DtsTreeModel extends GeneralTreeModel {
 		  dtsdoc.appendChild(masterdts);
           _mts.toXml(dtsdoc, masterdts);
     }
-          try {
-            PrintWriter pw1 = new PrintWriter(new FileOutputStream(dtsfile));
-            dtsdoc.write(pw1); pw1.close();
-          } catch (FileNotFoundException fnfe) {
-          } catch (IOException ioe) {
-          }
+    XmlUtilities.saveTo(dtsdoc, dtsfile);
   }
 
   public void createTreeFromPrj(String[] dtsarray, String[] mtsarray, String treefile) {
@@ -851,36 +858,31 @@ public class DtsTreeModel extends GeneralTreeModel {
   }
 
 
-  public void saveFile(String fname) throws FileNotFoundException, IOException {
-    XmlDocument dtsdoc = new XmlDocument();
+  public void saveFile(String fname) throws IOException {
+    Document dtsdoc = XmlUtilities.newDocument();
     Element masterdts = dtsdoc.createElement("dts_master");
     dtsdoc.appendChild(masterdts);
     saveData(dtsdoc,masterdts);
     saveDts(dtsdoc,masterdts);
     saveMts(dtsdoc,masterdts);
-    try {
-      PrintWriter pw1 = new PrintWriter(new FileOutputStream(fname));
-      dtsdoc.write(pw1); pw1.close();
-    } catch (FileNotFoundException fnfe) {
-    } catch (IOException ioe) {
-    }
+    XmlUtilities.saveTo(dtsdoc,fname);
   }
 
-  public void saveDts(XmlDocument doc, Element master) {
+  public void saveDts(Document doc, Element master) {
 	DerivedTimeSeries [] dtsList = AppUtils.getCurrentProject().getDTSList();
     if ( dtsList != null ) {
       for(int i=0; i < dtsList.length; i++) dtsList[i].toXml(doc, master);
     }
   }
 
-  public void saveMts(XmlDocument doc, Element master) {
+  public void saveMts(Document doc, Element master) {
     MultipleTimeSeries [] mtsList = AppUtils.getCurrentProject().getMTSList();
     if ( mtsList != null ) {
       for(int i=0; i < mtsList.length; i++) mtsList[i].toXml(doc, master);
     }
   }
 
-  public void saveData(XmlDocument doc, Element master) {
+  public void saveData(Document doc, Element master) {
 //    int children;
     String rootname = (String)root.getUserObject();
     String name;
@@ -1036,108 +1038,112 @@ public class DtsTreeModel extends GeneralTreeModel {
     }
   }
 
-  public TreeNode readData(String fname,String dirname) throws IOException, SAXException {
-    DefaultMutableTreeNode parentnode, prvnode, curnode;
-    Element parentel, prvel, curel;
-    Integer lvl;
-//    int parentlvl, prvlvl, curlvl;
-    int prvlvl, curlvl;
-    String name;
-    DefaultMutableTreeNode nodes[] = new DefaultMutableTreeNode[100];
-    FileInputStream fis = new FileInputStream(fname);
-    try {
-      XmlDocument doc = XmlDocument.createXmlDocument(fis,false);
-      Element top = (Element)doc.getDocumentElement();
-      TreeWalker xtt = new TreeWalker(top);
-      parentel = xtt.getNextElement("node");
-      parentnode = new DefaultMutableTreeNode(parentel.getAttribute("name"));
-      parentel = null;
-      if (!isMerge) {
-        root = parentnode;
+  public TreeNode readData(String fname, String dirname) throws IOException, SAXException {
+      DefaultMutableTreeNode parentnode, prvnode, curnode;
+      Element parentel, prvel, curel;
+      Integer lvl;
+      int prvlvl, curlvl;
+      String name;
+      DefaultMutableTreeNode nodes[] = new DefaultMutableTreeNode[100];
+      try {
+          DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+          DocumentBuilder builder = factory.newDocumentBuilder();
+          Document doc = builder.parse(fname);
+          Element top = doc.getDocumentElement();
+          TreeWalker tw = ((DocumentTraversal) doc).createTreeWalker(top, NodeFilter.SHOW_ELEMENT, null, false);
+          parentel = XmlUtilities.getNextElement(tw, "node");
+          parentnode = new DefaultMutableTreeNode(parentel.getAttribute("name"));
+          parentel = null;
+          if (!isMerge) {
+              root = parentnode;
 //        parentlvl = 0;
-        nodes[0] = root;
-        curel = xtt.getNextElement("node");
-        name = curel.getAttribute("name");
-        curnode = new DefaultMutableTreeNode(name);
-        curnode.setAllowsChildren(getAllowChildren(name));
-        lvl = new Integer(curel.getAttribute("level"));
-        curlvl = lvl.intValue();
-        nodes[curlvl] = curnode;
-        parentnode.add(curnode);
-        prvnode = curnode;
-        prvel = curel;
-        prvlvl = curlvl;
-			 } else {
-				root = (DefaultMutableTreeNode)readData();
+              nodes[0] = root;
+              curel = XmlUtilities.getNextElement(tw,"node");
+              name = curel.getAttribute("name");
+              curnode = new DefaultMutableTreeNode(name);
+              curnode.setAllowsChildren(getAllowChildren(name));
+              lvl = new Integer(curel.getAttribute("level"));
+              curlvl = lvl.intValue();
+              nodes[curlvl] = curnode;
+              parentnode.add(curnode);
+              prvnode = curnode;
+              prvel = curel;
+              prvlvl = curlvl;
+          } else {
+              root = (DefaultMutableTreeNode) readData();
 //        parentlvl = 0;
-        nodes[0] = root;
-        curel = xtt.getNextElement("node");
-        name = curel.getAttribute("name");
-        curnode = new DefaultMutableTreeNode(name);
-        curnode.setAllowsChildren(getAllowChildren(name));
-        lvl = new Integer(curel.getAttribute("level"));
-        curlvl = lvl.intValue();
-        nodes[curlvl] = curnode;
-        root.add(curnode);
-        prvnode = curnode;
-        prvel = curel;
-        prvlvl = curlvl;
-			}
-      isMerge = false;
-      while (true) {
-        curel = xtt.getNextElement("node");
-        if (curel == null) break;
-        name = curel.getAttribute("name");
-        curnode = new DefaultMutableTreeNode(name);
-        if (!getAllowChildren(name)) {
-          curnode.setAllowsChildren(false);
-         } else {
-          curnode.setAllowsChildren(true);
-        }
-        lvl = new Integer(curel.getAttribute("level"));
-        curlvl = lvl.intValue();
-        if (curlvl == prvlvl) {
-          parentnode.add(curnode);
-        } else if (curlvl > prvlvl) {
-          parentel = prvel;
-          parentnode = prvnode;
-          parentnode.add(curnode);
-          nodes[prvlvl] = parentnode;
-        } else if (curlvl < prvlvl) {
-          parentnode = nodes[curlvl-1];
-          parentnode.add(curnode);
-        }
-        prvlvl = curlvl;
-        prvel = curel;
-        prvnode = curnode;
+              nodes[0] = root;
+              curel = XmlUtilities.getNextElement(tw,"node");
+              name = curel.getAttribute("name");
+              curnode = new DefaultMutableTreeNode(name);
+              curnode.setAllowsChildren(getAllowChildren(name));
+              lvl = new Integer(curel.getAttribute("level"));
+              curlvl = lvl.intValue();
+              nodes[curlvl] = curnode;
+              root.add(curnode);
+              prvnode = curnode;
+              prvel = curel;
+              prvlvl = curlvl;
+          }
+          isMerge = false;
+          while (true) {
+              curel = XmlUtilities.getNextElement(tw,"node");
+              if (curel == null) {
+                  break;
+              }
+              name = curel.getAttribute("name");
+              curnode = new DefaultMutableTreeNode(name);
+              if (!getAllowChildren(name)) {
+                  curnode.setAllowsChildren(false);
+              } else {
+                  curnode.setAllowsChildren(true);
+              }
+              lvl = new Integer(curel.getAttribute("level"));
+              curlvl = lvl.intValue();
+              if (curlvl == prvlvl) {
+                  parentnode.add(curnode);
+              } else if (curlvl > prvlvl) {
+                  parentel = prvel;
+                  parentnode = prvnode;
+                  parentnode.add(curnode);
+                  nodes[prvlvl] = parentnode;
+              } else if (curlvl < prvlvl) {
+                  parentnode = nodes[curlvl - 1];
+                  parentnode.add(curnode);
+              }
+              prvlvl = curlvl;
+              prvel = curel;
+              prvnode = curnode;
+          }
+          reload();
+          setRoot(root);
+          tw = ((DocumentTraversal) doc).createTreeWalker(top, NodeFilter.SHOW_ELEMENT, null, false);
+          while (true) {
+              Element de = XmlUtilities.getNextElement(tw,"DTS");
+              if (de == null) {
+                  break;
+              }
+              DerivedTimeSeries dts = new DerivedTimeSeries();
+              dts.fromXml(de);
+              prjdts.addElement(dts);
+          }
+          tw = ((DocumentTraversal) doc).createTreeWalker(top, NodeFilter.SHOW_ELEMENT, null, false);
+          while (true) {
+              Element de = XmlUtilities.getNextElement(tw,"MTS");
+              if (de == null) {
+                  break;
+              }
+              MultipleTimeSeries mts = new MultipleTimeSeries();
+              mts.fromXml(de);
+              prjmts.addElement(mts);
+          }
+      } catch (IOException e) {
+          e.printStackTrace(System.err);
+          throw new IOException("File Not Found");
+      } catch (SAXException | ParserConfigurationException se) {
+          throw new SAXException("Error trying to read Xml File");
       }
-      reload();
-      setRoot(root);
-      xtt.reset();
-//   	  Project prj = AppUtils.getCurrentProject();
-      while(true){
-        Element de = xtt.getNextElement("DTS");
-        if ( de == null ) break;
-        DerivedTimeSeries dts = new DerivedTimeSeries();
-        dts.fromXml(de);
-        prjdts.addElement(dts);
-      }
-      xtt.reset();
-      while(true){
-        Element de = xtt.getNextElement("MTS");
-        if ( de == null ) break;
-        MultipleTimeSeries mts = new MultipleTimeSeries();
-        mts.fromXml(de);
-        prjmts.addElement(mts);
-      }
-    } catch (IOException e) {
-      e.printStackTrace(System.err);
-      throw new IOException("File Not Found");
-    } catch (SAXException se) {
-      throw new SAXException("Error trying to read Xml File");
-    }
-    fis.close();
-    return root;
+      return root;
   }
 
   public void cannotChange(int flag) {

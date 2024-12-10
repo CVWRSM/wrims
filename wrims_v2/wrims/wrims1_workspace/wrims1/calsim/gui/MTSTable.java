@@ -36,14 +36,13 @@ sushil@water.ca.gov
 
 package calsim.gui;
 import calsim.app.*;
+import java.util.Arrays;
 import vista.gui.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-//import javax.swing.table.*;
-import com.sun.java.util.collections.Arrays;
 /**
   * Multiple Timeseries table
   *

@@ -44,8 +44,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 
 import vista.gui.VistaUtils;
-import wrims.schematic.Schematic;
-import wrims.schematic.SchematicUtils;
 import calsim.app.AppUtils;
 import calsim.app.Project;
 import calsim.debug.DebugSetting;
@@ -80,10 +78,8 @@ public class NodeArcMenuBar
     JMenuBar mbar = new JMenuBar();
     mbar.add(_mainMenuBar.getFileMenu());
     mbar.add(_mainMenuBar.getEditMenu());
-    //mbar.add(_mainMenuBar.getViewMenu());
     mbar.add(createNodeMenu());
     mbar.add(createArcMenu());
-    mbar.add(createToolsMenu());
     mbar.add(_mainMenuBar.getHelpMenu());
     if(DebugSetting.DEBUG_FILEINPUT) mbar.add(_mainMenuBar.getDebugMenu());
     return mbar;
@@ -191,25 +187,6 @@ public class NodeArcMenuBar
     menu.setMnemonic('a');
     return menu;
   }
-
-  /**
-	 * create Tool menu
-	 */
-	JMenu createToolsMenu() {
-		JMenu menu = new JMenu("Tools     ");
-		
-		JMenuItem schematicitem = new JMenuItem("Schematic Window");
-		schematicitem.addActionListener(new GuiTaskListener("Starting schematic...") {
-			public void doWork() {
-//				new Schematic();
-				SchematicUtils.schematic = new Schematic();
-			}
-		});
-		menu.add(schematicitem);
-		menu.setToolTipText("Node/arc schematic of physical system");
-		menu.setMnemonic('t');
-		return menu;
-	}
 
   /**
 	 *

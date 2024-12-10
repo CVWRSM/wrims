@@ -36,12 +36,11 @@ sushil@water.ca.gov
 
 package calsim.gui;
 import calsim.app.*;
-//import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
+import java.util.Comparator;
 import javax.swing.*;
 import javax.swing.event.*;
-import com.sun.java.util.collections.Comparator;
-import com.sun.java.util.collections.Arrays;
 /**
   * Creates the MTS menu list dynamically from the current project's list
   *

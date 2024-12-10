@@ -37,10 +37,12 @@ sushil@water.ca.gov
 package calsim.app;
 import java.util.*;
 import java.io.*;
-//import javax.swing.JOptionPane;
-import com.sun.xml.tree.XmlDocument;
-//import com.sun.xml.tree.TreeWalker;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
 	* Contains all necessary properties required to run a study
@@ -405,12 +407,11 @@ public class Study {
   /**
    * saves all the study data in a binary format
    */
-  public void save(String saveFile) throws IOException{
-    XmlDocument doc = new XmlDocument();
+  public void save(String saveFile) throws IOException {
+    Document doc = XmlUtilities.newDocument();
     _filename = saveFile;
     this.toXml(doc);
-    PrintWriter pw = new PrintWriter(new FileOutputStream(saveFile));
-    doc.write(pw); pw.close();
+    XmlUtilities.saveTo(doc, saveFile);
     _modified = false;
   }
   /**
@@ -419,7 +420,9 @@ public class Study {
   public void load(String loadFile) throws IOException{
     Study sty = this;
     try {
-      XmlDocument doc = XmlDocument.createXmlDocument(new FileInputStream(loadFile),false);
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      Document doc = builder.parse(loadFile);
       sty.fromXml(doc.getDocumentElement());
     }catch(Exception e){
       e.printStackTrace(System.err);
@@ -474,7 +477,7 @@ public class Study {
   /**
    * Returns a element of an xml document
    */
-  public void toXml(XmlDocument doc){
+  public void toXml(Document doc){
     Element styElement = doc.createElement("study");
     styElement.appendChild(doc.createComment("study xml format"));
     styElement.setAttribute("name", getName());

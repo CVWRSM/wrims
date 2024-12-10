@@ -36,14 +36,11 @@ sushil@water.ca.gov
 
 package calsim.app;
 import java.io.*;
-//import javax.swing.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Vector;
 import javax.swing.table.*;
 import javax.swing.event.*;
-//import java.awt.*;
-import com.sun.java.util.collections.Comparator;
-import com.sun.java.util.collections.Collections;
-import com.sun.java.util.collections.Vector;
-//import com.sun.java.util.collections.List;
 import java.util.Enumeration;
 /**
   * A default implementation common to all table data in csv format
@@ -364,7 +361,7 @@ public class DefaultTableData extends AbstractTableModel implements InputTableDa
     * @author Nicky Sandhu
     * @version $Id: DefaultTableData.java,v 1.1.2.10 2001/10/23 16:28:20 jfenolio Exp $
     */
-  public class StringArrayComparator implements Comparator{
+  public class StringArrayComparator implements Comparator {
     private int _col;
     public StringArrayComparator(int col){
       _col = col;

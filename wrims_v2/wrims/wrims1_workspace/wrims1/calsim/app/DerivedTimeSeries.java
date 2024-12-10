@@ -36,6 +36,11 @@ sushil@water.ca.gov
 
 package calsim.app;
 import calsim.gui.*;
+import org.python.antlr.runtime.tree.Tree;
+import org.w3c.dom.Document;
+import org.w3c.dom.traversal.DocumentTraversal;
+import org.w3c.dom.traversal.NodeFilter;
+import org.w3c.dom.traversal.TreeWalker;
 import vista.set.*;
 import vista.time.*;
 
@@ -44,12 +49,8 @@ import java.io.*;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.sun.xml.tree.XmlDocument;
-import com.sun.xml.tree.TreeWalker;
-
 import org.w3c.dom.Element;
-//import java.text.*;
-//import javax.swing.tree.*;
+
 /**
  * A time series representing a time series
  * derived from math operations on other
@@ -783,10 +784,12 @@ public class DerivedTimeSeries extends DataReference implements Serializable{
   public void fromXml(Element de){
     _name = de.getAttribute("name");
     if(!_name.toUpperCase().endsWith(".DTS")) _name = new String(_name.toUpperCase()+".DTS");
-    TreeWalker tw = new TreeWalker(de);
+
+    DocumentTraversal traversal = (DocumentTraversal) de.getOwnerDocument();
+    TreeWalker tw = traversal.createTreeWalker(de, NodeFilter.SHOW_ELEMENT, null, false);
     int rindex=0;
     while(true){
-      Element re = tw.getNextElement("row");
+      Element re = XmlUtilities.getNextElement(tw, "row");
       if (re == null) break;
       int opId=AppUtils.getOperationId(re.getAttribute("operator"));
       setOperationIdAt(rindex,opId);
@@ -800,7 +803,7 @@ public class DerivedTimeSeries extends DataReference implements Serializable{
   /**
    *
    */
-  public void toXml(XmlDocument doc, Element ae){
+  public void toXml(Document doc, Element ae){
     Element de = doc.createElement("DTS");
     de.setAttribute("name",_name);
     int count = getNumberOfDataReferences();

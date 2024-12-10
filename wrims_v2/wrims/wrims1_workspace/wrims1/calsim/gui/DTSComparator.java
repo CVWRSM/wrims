@@ -36,14 +36,15 @@ sushil@water.ca.gov
 
 package calsim.gui;
 import calsim.app.*;
-import com.sun.java.util.collections.Comparator;
+import java.util.Comparator;
+
 /**
  * A class to compare derived time series by name
  *
  * @author Nicky Sandhu
  * @version $Id: DTSComparator.java,v 1.1.2.2 2000/12/20 20:07:03 amunevar Exp $
  */
-public class DTSComparator implements Comparator{
+public class DTSComparator implements Comparator {
   public int compare(Object obj1, Object obj2){
     if ( obj1 == null ) return -1;
     if ( obj2 == null ) return 1;

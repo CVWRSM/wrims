@@ -50,8 +50,6 @@ import javax.swing.event.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
 import vista.gui.DocumentWriter;
-import wrims.schematic.Schematic;
-import wrims.schematic.SchematicUtils;
 
 /**
  * GUI for Multistudy runner
@@ -71,7 +69,6 @@ public class MSWGui extends JFrame implements ActionListener, ComponentListener 
 		JMenuBar mb = new JMenuBar();
 		mb.add(createFileMenu());
 		mb.add(createDebugMenu());
-		mb.add(createToolMenu());
 		setJMenuBar(mb);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
@@ -235,25 +232,6 @@ public class MSWGui extends JFrame implements ActionListener, ComponentListener 
 		menu.add(build);
 		return menu;
 	}
-
-	/**
-	 * CB - added - Creates tools bar for the gui
-	 */
-	public JMenu createToolMenu() {
-		JMenu menu = new JMenu("  Tools  ");
-		menu.setMnemonic(KeyEvent.VK_T);
-		final JCheckBoxMenuItem schematic = new JCheckBoxMenuItem("Schematic Window");
-		schematic.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK));
-		schematic.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-//				new Schematic();
-				SchematicUtils.schematic = new Schematic();
-			}
-		});
-		menu.add(schematic);
-		return menu;
-	}
-
 
 //	added to combine TW and position panel into one panel to save vertical GUI space
 	public JPanel createTimeAndTermPanel() {

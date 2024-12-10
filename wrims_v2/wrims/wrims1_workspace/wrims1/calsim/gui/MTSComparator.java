@@ -36,14 +36,15 @@ sushil@water.ca.gov
 
 package calsim.gui;
 import calsim.app.*;
-import com.sun.java.util.collections.Comparator;
-  /**
+import java.util.Comparator;
+
+/**
     * A class to compare multiple time series by name
     *
     * @author Nicky Sandhu
     * @version $Id: MTSComparator.java,v 1.1.2.2 2000/12/20 20:07:18 amunevar Exp $
     */
-  public class MTSComparator implements Comparator{
+  public class MTSComparator implements Comparator {
     public int compare(Object obj1, Object obj2){
       if ( obj1 == null ) return -1;
       if ( obj2 == null ) return 1;

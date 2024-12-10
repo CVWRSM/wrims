@@ -42,13 +42,23 @@ import java.util.*;
 
 import javax.swing.*;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.traversal.DocumentTraversal;
+import org.w3c.dom.traversal.NodeFilter;
+import org.xml.sax.SAXException;
 import vista.set.*;
 import vista.time.*;
 import calsim.gym.Network;
 
-import com.sun.xml.tree.XmlDocument;
-import com.sun.xml.tree.TreeWalker;
-
+import org.w3c.dom.traversal.TreeWalker;
 import org.w3c.dom.Element;
 /**
  * A project contains a user defined list of DerivedTimeSeries (DTS) and
@@ -507,7 +517,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the decision variables in the study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group getDVBaseGroup(){
     if (AppUtils.selectedStudies[0]){ // &&  AppUtils.needsRecataloging(_dvf)){
@@ -527,7 +537,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the state variables in the study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group getSVBaseGroup(){
     if ( AppUtils.selectedStudies[0]){ // && AppUtils.needsRecataloging(_svf)){
@@ -547,7 +557,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the decision variables in the alternative study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group openDVGroup(){
     //if ( _dvg == null || AppUtils.needsRecataloging(_dv2f)){
@@ -561,7 +571,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the state variables in the alternative study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group openSVGroup(){
     //if ( _sv2g == null || AppUtils.needsRecataloging(_sv2f)) {
@@ -575,7 +585,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the decision variables in the alternative study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group openDV2Group(){
     //if ( _dv2g == null || AppUtils.needsRecataloging(_dv2f)){
@@ -589,7 +599,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the state variables in the alternative study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group openSV2Group(){
     //if ( _sv2g == null || AppUtils.needsRecataloging(_sv2f)) {
@@ -603,7 +613,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the decision variables in the alternative study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group openDV3Group(){
     //if ( _dv3g == null || AppUtils.needsRecataloging(_dv3f)){
@@ -617,7 +627,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the state variables in the alternative study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group openSV3Group(){
     //if ( _sv3g == null || AppUtils.needsRecataloging(_sv3f)) {
@@ -631,7 +641,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the decision variables in the alternative study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group openDV4Group(){
     //if ( _dv4g == null || AppUtils.needsRecataloging(_dv4f)){
@@ -645,7 +655,7 @@ public class Project implements Serializable{
   /**
    * @return a group of all the data references (containing data sets)
    * for the state variables in the alternative study
-   * @see vista.set.Group
+   * @see Group
    */
   public Group openSV4Group(){
     //if ( _sv4g == null || AppUtils.needsRecataloging(_sv4f)) {
@@ -697,7 +707,7 @@ public class Project implements Serializable{
   }
   /**
    * @return the currently valid time window
-   * @see vista.time.TimeWindow
+   * @see TimeWindow
    */
   public TimeWindow getTimeWindow(){
     return _tw;
@@ -834,19 +844,17 @@ public class Project implements Serializable{
    * saves all the state variables in a binary format
    */
   public void save(String saveFile) throws IOException{
-    XmlDocument prjdoc = new XmlDocument();
-    XmlDocument dtsdoc = new XmlDocument();
+    Document prjdoc = XmlUtilities.newDocument();
+    Document dtsdoc = XmlUtilities.newDocument();
     Element masterdts = dtsdoc.createElement("dts_master");
     dtsdoc.appendChild(masterdts);
     _filename = saveFile;
     this.toXml(prjdoc);
-    DtsTreePanel.getCurrentModel().saveData(dtsdoc,masterdts);
-    DtsTreePanel.getCurrentModel().saveDts(dtsdoc,masterdts);
-    DtsTreePanel.getCurrentModel().saveMts(dtsdoc,masterdts);
-    PrintWriter pw = new PrintWriter(new FileOutputStream(saveFile));
-    prjdoc.write(pw); pw.close();
-    PrintWriter pw1 = new PrintWriter(new FileOutputStream(_fname));
-    dtsdoc.write(pw1); pw1.close();
+    DtsTreePanel.getCurrentModel().saveData(dtsdoc, masterdts);
+    DtsTreePanel.getCurrentModel().saveDts(dtsdoc, masterdts);
+    DtsTreePanel.getCurrentModel().saveMts(dtsdoc, masterdts);
+    XmlUtilities.saveTo(prjdoc, saveFile);
+    XmlUtilities.saveTo(dtsdoc, _fname);
     _modified = false;
   }
 
@@ -862,15 +870,16 @@ public class Project implements Serializable{
     Project prj = this;
     _dtsList.clear();
     _loadFile = loadFile;
-    try {
-      XmlDocument doc = XmlDocument.createXmlDocument(new FileInputStream(loadFile),false);
+    try (FileInputStream fileInputStream = new FileInputStream(loadFile)) {
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      Document doc = builder.parse(fileInputStream);
       prj.fromXml(doc.getDocumentElement());
     }catch(Exception e){
       e.printStackTrace(System.err);
       throw new IOException("Invalid project file: " + loadFile);
     }
     setFilename(loadFile);
-    //if (oldprj) _dtm.createTreeFromPrj(getDTSNames(),getMTSNames());
   }
   /**
    * @return true if the project has been changed since a save
@@ -883,14 +892,15 @@ public class Project implements Serializable{
     *
     */
   public void fromXml(Element pe) throws IOException {
-    TreeWalker tw = new TreeWalker(pe);
+    DocumentTraversal traversal = (DocumentTraversal) pe.getOwnerDocument();
+    TreeWalker tw = traversal.createTreeWalker(pe, NodeFilter.SHOW_ELEMENT, null, false);
     _filename = pe.getAttribute("name");
-    //
-    _tw = AppUtils.createTimeWindowFromString(tw.getNextElement("tw").getFirstChild().getNodeValue());
+    Element twElement = XmlUtilities.getNextElement(tw, "tw");
+    _tw = AppUtils.createTimeWindowFromString(twElement.getFirstChild().getNodeValue());
     // study items
-    tw.reset();
+    tw = traversal.createTreeWalker(pe, NodeFilter.SHOW_ELEMENT, null, false);
     while(true){
-      Element se = tw.getNextElement("study");
+      Element se = XmlUtilities.getNextElement(tw, "study");
       if ( se == null ) break;
       int si = new Integer(se.getAttribute("number")).intValue();
       if ( si == 1 ){
@@ -907,9 +917,9 @@ public class Project implements Serializable{
 	      setDV4File(se.getAttribute("dvf"));
       }
     }
-    tw.reset();
+    tw = traversal.createTreeWalker(pe, NodeFilter.SHOW_ELEMENT, null, false);
     //Dts Master File
-    Element me = tw.getNextElement("dts_master");
+    Element me = XmlUtilities.getNextElement(tw, "dts_master");
     if (me != null) {
       String filepath = me.getAttribute("file");
       File file = new File(filepath);
@@ -941,9 +951,9 @@ public class Project implements Serializable{
 		   JOptionPane.showMessageDialog(null,"Cannot find Tree File", "Warning", JOptionPane.WARNING_MESSAGE);
 	   }
     } else {
-	  tw.reset();
+      tw = traversal.createTreeWalker(pe, NodeFilter.SHOW_ELEMENT, null, false);
       while(true){
-        Element de = tw.getNextElement("DTS");
+        Element de = XmlUtilities.getNextElement(tw, "DTS");
         if ( de == null ) break;
         DerivedTimeSeries dts = new DerivedTimeSeries();
         dts.fromXml(de);
@@ -951,9 +961,9 @@ public class Project implements Serializable{
         if ( olddts != null ) remove(olddts);
         add(dts);
       }
-      tw.reset();
+      tw = traversal.createTreeWalker(pe, NodeFilter.SHOW_ELEMENT, null, false);
       while(true){
-        Element de = tw.getNextElement("MTS");
+        Element de = XmlUtilities.getNextElement(tw, "MTS");
         if ( de == null ) break;
         MultipleTimeSeries mts = new MultipleTimeSeries();
         mts.fromXml(de);
@@ -972,7 +982,7 @@ public class Project implements Serializable{
   /**
     * Returns a element of an xml document
     */
-  public void toXml(XmlDocument doc){
+  public void toXml(Document doc){
     Element prjElement = doc.createElement("project");
     prjElement.appendChild(doc.createComment("project xml format"));
     prjElement.setAttribute("name", _filename);

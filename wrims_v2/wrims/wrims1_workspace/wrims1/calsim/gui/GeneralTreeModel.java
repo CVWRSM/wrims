@@ -1,5 +1,6 @@
 package calsim.gui;
 //import vista.gui.*;
+import calsim.app.XmlUtilities;
 import javax.swing.*;
 import javax.swing.event.*;
 //import javax.swing.JTree.*;
@@ -7,8 +8,19 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import com.sun.xml.tree.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.*;
+import org.w3c.dom.traversal.DocumentTraversal;
+import org.w3c.dom.traversal.NodeFilter;
+import org.w3c.dom.traversal.TreeWalker;
 import org.xml.sax.*;
 
 /**
@@ -366,22 +378,15 @@ public class GeneralTreeModel extends DefaultTreeModel implements Serializable {
   /**
    *Saves the tree structure to Xml at the specified path name
    */
-  public void saveFile(String fname) throws FileNotFoundException, IOException {
-    XmlDocument doc = new XmlDocument();
-    FileOutputStream fos = new FileOutputStream(fname);
-    try {
-      PrintWriter pw = new PrintWriter(fos);
-      saveData(doc);
-      doc.write(pw);
-    } catch (FileNotFoundException fnfe) {
-    } catch (IOException ioe) {
-    }
-    fos.close();
+  public void saveFile(String fname) throws IOException {
+    Document doc = XmlUtilities.newDocument();
+    saveData(doc);
+    XmlUtilities.saveTo(doc, fname);
   }
   /**
    *Saves the tree structure to Xml using the Xml Document class
    */
-  public void saveData(XmlDocument doc) {
+  public void saveData(Document doc) {
 //    int children;
     String rootname = (String)root.getUserObject();
     String name;
@@ -582,23 +587,23 @@ public class GeneralTreeModel extends DefaultTreeModel implements Serializable {
    */
   public TreeNode readData(String fname) throws IOException, SAXException {
     DefaultMutableTreeNode parentnode, prvnode, curnode;
-//    Element parentel, prvel, curel;
     Element curel;
     Integer lvl;
-//    int parentlvl, prvlvl, curlvl;
     int prvlvl, curlvl;
     String name;
     DefaultMutableTreeNode nodes[] = new DefaultMutableTreeNode[100];
-    FileInputStream fis = new FileInputStream(fname);
-    try {
-      XmlDocument doc = XmlDocument.createXmlDocument(fis,false);
-      Element top = (Element)doc.getDocumentElement();
-      TreeWalker xtt = new TreeWalker(top);
+
+    try{
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      Document doc = builder.parse(fname);
+      Element top = doc.getDocumentElement();
+      DocumentTraversal traversal = (DocumentTraversal) doc;
+      TreeWalker xtt = traversal.createTreeWalker(top, NodeFilter.SHOW_ELEMENT, null, false);
       parentnode = new DefaultMutableTreeNode(top.getAttribute("name"));
       root = parentnode;
-//      parentlvl = 0;
       nodes[0] = root;
-      curel = xtt.getNextElement("node");
+      curel = XmlUtilities.getNextElement(xtt, "node");
       name = curel.getAttribute("name");
       curnode = new DefaultMutableTreeNode(name);
       curnode.setAllowsChildren(getAllowChildren(name));
@@ -607,10 +612,9 @@ public class GeneralTreeModel extends DefaultTreeModel implements Serializable {
       nodes[curlvl] = curnode;
       parentnode.add(curnode);
       prvnode = curnode;
-//      prvel = curel;
       prvlvl = curlvl;
       while (true) {
-        curel = xtt.getNextElement("node");
+        curel = XmlUtilities.getNextElement(xtt, "node");
         if (curel == null) break;
         name = curel.getAttribute("name");
         curnode = new DefaultMutableTreeNode(name);
@@ -620,7 +624,6 @@ public class GeneralTreeModel extends DefaultTreeModel implements Serializable {
         if (curlvl == prvlvl) {
           parentnode.add(curnode);
         } else if (curlvl > prvlvl) {
-//          parentel = prvel;
           parentnode = prvnode;
           parentnode.add(curnode);
           nodes[prvlvl] = parentnode;
@@ -629,17 +632,15 @@ public class GeneralTreeModel extends DefaultTreeModel implements Serializable {
           parentnode.add(curnode);
         }
         prvlvl = curlvl;
-//        prvel = curel;
         prvnode = curnode;
       }
       setRoot(root);
     } catch (IOException e) {
       e.printStackTrace(System.err);
       throw new IOException("File Not Found");
-    } catch (SAXException se) {
+    } catch (SAXException | ParserConfigurationException se) {
       throw new SAXException("Error trying to read Xml File");
     }
-    fis.close();
     return root;
   }
   /**
