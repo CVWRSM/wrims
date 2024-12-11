@@ -1,9 +1,9 @@
 package gov.ca.dwr.hecdssvue.views;
 
-import calsim.gui.DTSTable;
-import calsim.gui.DtsTreeModel;
-import calsim.gui.DtsTreePanel;
-import calsim.gui.GuiTaskListener;
+import gov.ca.dwr.hecdssvue.dts.DTSTable;
+import gov.ca.dwr.hecdssvue.dts.DtsTreeModel;
+import gov.ca.dwr.hecdssvue.dts.DtsTreePanel;
+import gov.ca.dwr.hecdssvue.dts.GuiTaskListener;
 import gov.ca.dwr.hecdssvue.components.DataOps;
 import hec.io.DataContainer;
 import java.util.Vector;
@@ -27,7 +27,7 @@ public class DTSView extends AbstractCalSimView{
 		DtsTreePanel dtp = new DtsTreePanel();
 		DtsTreeModel dtm = dtp.getCurrentModel();
 		dtm.clearVectors();
-		dtm.createTreeFromPrj(null, null, "");
+		dtm.createTreeFromPrj(null, null);
 				
 		dtp.repaint();
 		contentPane.add(new JScrollPane(dtp));
@@ -36,7 +36,7 @@ public class DTSView extends AbstractCalSimView{
 		
 		final DTSTable table = dtp.getTable();
 		JButton opencurrent = table.opencurrent;
-		opencurrent.addActionListener(new GuiTaskListener("Retrieving...") {
+		opencurrent.addActionListener(new GuiTaskListener() {
 			public void doWork(){
 				Vector<DataContainer> v = table.retrieveData();
 				showSelected(v);
@@ -44,7 +44,7 @@ public class DTSView extends AbstractCalSimView{
 		});
 		
 		JMenuItem open = dtm.open;
-		open.addActionListener(new GuiTaskListener("Retrieving...") {
+		open.addActionListener(new GuiTaskListener() {
 			public void doWork(){
 				Vector<DataContainer> v = table.retrieveData();
 				showSelected(v);

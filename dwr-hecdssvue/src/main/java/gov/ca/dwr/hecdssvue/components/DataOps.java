@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.jface.viewers.TableViewer;
@@ -26,8 +25,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
-import calsim.app.AppUtils;
-import calsim.app.Project;
+import gov.ca.dwr.hecdssvue.dts.AppUtils;
+import gov.ca.dwr.hecdssvue.dts.Project;
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
 import wrimsv2_plugin.debugger.exception.WPPException;
 

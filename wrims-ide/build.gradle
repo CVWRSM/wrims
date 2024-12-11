@@ -7,7 +7,7 @@ plugins{
 }
 
 dependencies {
-    implementation project(':wrims-core')
+    api(project(':wrims-core'))
     implementation project(':third-party')
 
     compileOnly fileTree(dir: '../eclipse-luna-libs', include: ['*.jar'])

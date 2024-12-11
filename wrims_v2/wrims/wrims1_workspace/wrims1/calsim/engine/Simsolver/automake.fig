@@ -1,9 +1,0 @@
-NOQUITONERROR
-MODULE=.
-
-FILES=*.f90
-COMPILE=@lf90 -nap -ndal -nchk -ntrace -inln -npca -nsav -nstchk -o3 -nw -nwo -c %fi -MOD %mo -ml msvc -dll -wisk -win
-
-LINK=@lf90 @%rf -exe %ex -ml msvc -mod %mo -dll -wisk -win -nomap -lib ..\wrangler\wrangler.lib,xav13
-TARGET=simsolver.dll
-
