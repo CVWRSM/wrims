@@ -7,12 +7,14 @@
 
 package gov.ca.dwr.hecdssvue.dts;
 
-import vista.set.Constants;
+import vista.set.CompositeFilter;
 import vista.set.DataSet;
 import vista.set.DataSetAttr;
 import vista.set.DataSetElement;
 import vista.set.DataSetIterator;
 import vista.set.ElementFilter;
+import vista.set.MultiValueFilter;
+import vista.set.NaNFilter;
 import vista.set.RegularTimeSeries;
 import vista.set.TimeSeries;
 import vista.set.TimeSeriesMath;
@@ -27,7 +29,13 @@ import vista.time.TimeInterval;
  * @version $Id: TSMath.java,v 1.1.2.13 2001/07/12 01:58:32 amunevar Exp $
  */
 public class TSMath {
-    public static ElementFilter _filter = Constants.DEFAULT_FILTER;
+    public static final double MISSING_VALUE = -901.0F;
+    public static final ElementFilter DEFAULT_FILTER = new CompositeFilter(new ElementFilter[]{
+        new MultiValueFilter(new double[]{Float.MIN_VALUE, MISSING_VALUE, MISSING_VALUE}), new NaNFilter()});
+
+    private TSMath() {
+        throw new AssertionError("Utility class");
+    }
 
     /**
      * creates a copy of rts and returns it.
@@ -55,8 +63,8 @@ public class TSMath {
         while (!dsi1.atEnd()) {
             DataSetElement dse1 = dsi1.getElement();
             DataSetElement dse2 = dsi2.getElement();
-            double y = 0.0;
-            if (_filter.isAcceptable(dse1) && _filter.isAcceptable(dse2)) {
+            double y;
+            if (DEFAULT_FILTER.isAcceptable(dse1) && DEFAULT_FILTER.isAcceptable(dse2)) {
                 double y1 = dse1.getY();
                 double y2 = dse2.getY();
                 if (operationId == TimeSeriesMath.ADD) {
@@ -74,7 +82,7 @@ public class TSMath {
                 dse1.setY(y);
                 dsi1.putElement(dse1);
             } else {
-                dse1.setY(Constants.MISSING_VALUE);
+                dse1.setY(MISSING_VALUE);
                 dsi1.putElement(dse1);
             }
             dsi1.advance();
@@ -119,7 +127,7 @@ public class TSMath {
                 String tmstr = dse.getXString();
                 String monstr = tmstr.substring(2, 5);
                 String yearstr = tmstr.substring(5, 9);
-                if (_filter.isAcceptable(dse)) {
+                if (DEFAULT_FILTER.isAcceptable(dse)) {
                     double fac = getCFS2TAFFactor(monstr, yearstr);
                     dse.setY(fac * dse.getY());
                     dsi.putElement(dse);
@@ -150,7 +158,7 @@ public class TSMath {
                 String tmstr = dse.getXString();
                 String monstr = tmstr.substring(2, 5);
                 String yearstr = tmstr.substring(5, 9);
-                if (_filter.isAcceptable(dse)) {
+                if (DEFAULT_FILTER.isAcceptable(dse)) {
                     double fac = getCFS2TAFFactor(monstr, yearstr);
                     dse.setY(dse.getY() / fac);
                     dsi.putElement(dse);

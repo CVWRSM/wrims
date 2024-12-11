@@ -21,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -611,7 +612,9 @@ public class DtsTreeModel extends GeneralTreeModel {
                     mt.retrieve();
                 }
             } catch (Exception e) {
-                VistaUtils.displayException(null, e);
+                SwingUtilities.invokeLater(()->{
+                    VistaUtils.displayException(null, e);
+                });
             }
         } else {
             tree.expandPath(path);

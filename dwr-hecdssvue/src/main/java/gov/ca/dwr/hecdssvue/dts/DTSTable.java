@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 import vista.gui.CursorChangeListener;
@@ -457,7 +458,9 @@ public class DTSTable extends MPanel {
                 GuiUtils.displayMTS(_mts);
             }
         } catch (Exception e) {
-            VistaUtils.displayException(this, e);
+            SwingUtilities.invokeLater(()->{
+                VistaUtils.displayException(SwingUtilities.windowForComponent(this), e);
+            });
         }
     }
 
@@ -474,7 +477,9 @@ public class DTSTable extends MPanel {
                 return AppUtils.retrieveMTSData(_mts);
             }
         } catch (Exception e) {
-            VistaUtils.displayException(this, e);
+            SwingUtilities.invokeLater(()->{
+                VistaUtils.displayException(SwingUtilities.windowForComponent(this), e);
+            });
         }
         return new Vector<DataContainer>();
     }
@@ -495,7 +500,7 @@ public class DTSTable extends MPanel {
                 _dts.setName(_nameField.getText());
             }
         } catch (Exception e) {
-            VistaUtils.displayException(this, e);
+            VistaUtils.displayException(SwingUtilities.windowForComponent(this), e);
         }
     }
 

@@ -601,35 +601,14 @@ public class DerivedTimeSeries extends DataReference implements Serializable {
         if (DEBUG) {
             Integer.toString(studyNumber);
         }
-        // if calculations have been done then no need to repeat.
-    /*
-	if ( recalculationNeeded() || recalculate || updateDataSets()) {
-      _dataSet = null;
-      recalculate = false;
-    }else{
-      for (int i=0; i<AppUtils.getCheckedDSS(); i++) {
-				if (studyNumber == i) return _dataSet[i];
-			}
-    }
-    */
-        // get current project
-//    Project prj = AppUtils.getCurrentProject();
-        // form data references from b/c parts if any
-//    Group svg=null, dvg=null;
         DataReference[] refs = getDataReferences(studyNumber);
         // check to make sure some data is available
         if (refs == null) {
             throw new RuntimeException("Empty DTS Table");
         }
-//    String apart="",bpart = "",cpart="",epart="";
-//    boolean gotOneGood = false;
-        DataSet dataSet = null;
-        //for (int i=0; i<AppUtils.getCheckedDSS(); i++) {
-        //		if (studyNumber == i) {
+        DataSet dataSet;
         dataSet = doCalculations(studyNumber, refs);
         dataSet.setName(getPathname().toString());
-        //		}
-        //  }
         return dataSet;
     }
 
@@ -780,9 +759,6 @@ public class DerivedTimeSeries extends DataReference implements Serializable {
                         getOperationIdAt(i));
                 }
             }
-//			if ( ref.getData() == null){
-//  			throw new RuntimeException("No valid data available for # " + (i+1));
-//			}
         }
         return dataSet;
     }

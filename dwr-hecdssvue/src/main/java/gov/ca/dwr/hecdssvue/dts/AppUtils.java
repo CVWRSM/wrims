@@ -53,6 +53,7 @@ import vista.time.Time;
 import vista.time.TimeFactory;
 import vista.time.TimeInterval;
 import vista.time.TimeWindow;
+import wrimsv2_plugin.debugger.core.DebugCorePlugin;
 
 /**
  * Common utility functions for App package
@@ -61,7 +62,6 @@ import vista.time.TimeWindow;
  * @version $Id: AppUtils.java,v 1.1.4.74.2.1 2002/06/20 19:12:45 adraper Exp $
  */
 public class AppUtils {
-    public static boolean[] selectedStudies = {false, false, false, false, false, false, false, false};
 
     public static ArrayList<Integer> months = new ArrayList<Integer>() {{
         add(10);
@@ -420,21 +420,6 @@ public class AppUtils {
     }
 
     /**
-     * opens a dss file or returns null if it could not open file
-     */
-    public static Group openDSSFile(String dssfile) {
-        if (dssfile == null) {
-            return null;
-        }
-        try {
-            return DSSUtil.createGroup("local", dssfile);
-        } catch (Exception e) {
-            System.err.println("Exception: " + e.getMessage());
-            return null;
-        }
-    }
-
-    /**
      * plots a single data reference. This is a preliminary style of plotting
      * based on vista. This can be improved later ??
      */
@@ -654,7 +639,6 @@ public class AppUtils {
      *
      * @param operationStr is one of +,-,*,/
      * @return the operation id or -1 if none is found
-     * @see vista.set.TimeSeriesMath
      */
     public static int getOperationId(String operationStr) {
         String str = operationStr;
@@ -675,7 +659,6 @@ public class AppUtils {
      * gets the operation name for the given operation id
      *
      * @param operationId id one of TimeSeriesMath.ADD|SUB|MUL|DIV
-     * @see vista.set.TimeSeriesMath
      */
     public static String getOperationName(int operationId) {
         switch (operationId) {
@@ -935,10 +918,11 @@ public class AppUtils {
     public static Vector<DataContainer> retrieveDTSData(DerivedTimeSeries dts) {
         Vector<DataContainer> v = new Vector<DataContainer>();
         for (int i = 0; i < 4; i++) {
-            if (selectedStudies[i]) {
+            if (DebugCorePlugin.selectedStudies[i]) {
                 RegularTimeSeries ds = (RegularTimeSeries) dts.getDataW2(i);
                 String name = dts.getName();
-                v = procDataSet(v, ds, name, i);
+                TimeSeriesContainer tsc = procDataSet(ds, name, i);
+                v.add(tsc);
                 if (plotDifference) {
                     v = procDiffDataSet(v);
                 }
@@ -953,12 +937,13 @@ public class AppUtils {
     public static Vector<DataContainer> retrieveMTSData(MultipleTimeSeries mts) {
         Vector<DataContainer> v = new Vector<DataContainer>();
         for (int k = 0; k < 4; k++) {
-            if (selectedStudies[k]) {
+            if (DebugCorePlugin.selectedStudies[k]) {
                 DataReference[] drs = mts.getDataReferences(k);
                 for (int l = 0; l < drs.length; l++) {
                     RegularTimeSeries ds = (RegularTimeSeries) drs[l].getData();
                     String name = mts.getDTSNameAt(l);
-                    v = procDataSet(v, ds, name, k);
+                    TimeSeriesContainer tsc = procDataSet(ds, name, k);
+                    v.add(tsc);
                 }
             }
         }
@@ -966,8 +951,7 @@ public class AppUtils {
     }
 
 
-    public static Vector<DataContainer> procDataSet(Vector<DataContainer> v, RegularTimeSeries ds, String name,
-        int studyNumber) {
+    public static TimeSeriesContainer procDataSet(RegularTimeSeries ds, String name, int studyNumber) {
         TimeSeriesContainer tsc = new TimeSeriesContainer();
         tsc.location = name;
         tsc.units = ds.getAttributes().getYUnits();
@@ -989,7 +973,6 @@ public class AppUtils {
         tsc.startTime = startTime.value();
         if (tiStr.equalsIgnoreCase("1MON")) {
             int size = yArray.length;
-            //tsc.times = new int[size];
             for (int j = 0; j < size; j++) {
                 int mon = startDate.getMonth() + 1;
                 if (months.contains(mon - 1) || (months.contains(12) && mon == 1)) {
@@ -1005,7 +988,6 @@ public class AppUtils {
             }
         } else if (tiStr.equalsIgnoreCase("1DAY")) {
             int size = yArray.length;
-            //tsc.times = new int[size];
             for (int j = 0; j < size; j++) {
                 int mon = startDate.getMonth() + 1;
                 if (months.contains(mon - 1) || (months.contains(12) && mon == 1)) {
@@ -1030,8 +1012,7 @@ public class AppUtils {
         tsc.fullName = "//" + tsc.location + "///" + tiStr + "//";
         tsc.fileName = "" + studyNumber;
         tsc.numberValues = tsc.values.length;
-        v.add(tsc);
-        return v;
+        return tsc;
     }
 
     public static Vector<DataContainer> procDiffDataSet(Vector<DataContainer> v) {

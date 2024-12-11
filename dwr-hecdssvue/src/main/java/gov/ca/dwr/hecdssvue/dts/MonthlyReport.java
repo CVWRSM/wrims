@@ -13,7 +13,6 @@ import javax.swing.text.Style;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
-import vista.set.Constants;
 import vista.set.DataSetElement;
 import vista.set.DataSetIterator;
 import vista.set.Pathname;
@@ -345,7 +344,7 @@ public class MonthlyReport {
                 continue;
             }
             DataSetElement dse = dsi.getElement();
-            if (Constants.DEFAULT_FILTER.isAcceptable(dse)) {
+            if (TSMath.DEFAULT_FILTER.isAcceptable(dse)) {
                 month_vals[i] = dsi.getElement().getY();
                 dsi.advance();
             } else {
