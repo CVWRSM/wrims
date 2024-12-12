@@ -30,8 +30,7 @@ jobs:
       run: |
         ./gradlew clean
         ./gradlew :wrims-core:build
-        ./gradlew build
-        ./gradlew :wrims-gui:zipWrimsGui
+        ./gradlew build        
 
     - name: Upload Core jar
       uses: actions/upload-artifact@v4.0.0
@@ -81,10 +80,3 @@ jobs:
         name: xtext-editor-ui
         path: |
           ./xtext-editor-ui/build/libs/*.jar
-
-    - name: Upload WRIMS GUI zip
-      uses: actions/upload-artifact@v4.0.0
-      with:
-        name: wrims-gui-installer
-        path: |
-          ./wrims-gui/build/installer/*.zip
