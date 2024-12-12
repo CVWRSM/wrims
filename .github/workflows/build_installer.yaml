@@ -6,9 +6,8 @@ on:
 
 jobs:
   build:
-
+    permissions: write-all
     runs-on: windows-2022
-
     steps:
       - uses: actions/checkout@v2
 
@@ -33,4 +32,4 @@ jobs:
         run: |
           gh release upload ${{ github.event.release.tag_name }} wrims-gui/build/installer/wrims_gui_x64_${{ github.event.release.tag_name }}.zip --repo ${{ github.repository }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN_WITH_REPO_SCOPE }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
