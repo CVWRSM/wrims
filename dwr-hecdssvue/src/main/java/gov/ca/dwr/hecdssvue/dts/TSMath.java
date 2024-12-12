@@ -7,6 +7,7 @@
 
 package gov.ca.dwr.hecdssvue.dts;
 
+import mil.army.usace.hec.metadata.constants.NumericalConstants;
 import vista.set.CompositeFilter;
 import vista.set.DataSet;
 import vista.set.DataSetAttr;
@@ -30,8 +31,9 @@ import vista.time.TimeInterval;
  */
 public class TSMath {
     public static final double MISSING_VALUE = -901.0F;
-    public static final ElementFilter DEFAULT_FILTER = new CompositeFilter(new ElementFilter[]{
-        new MultiValueFilter(new double[]{Float.MIN_VALUE, MISSING_VALUE, MISSING_VALUE}), new NaNFilter()});
+    public static final ElementFilter DEFAULT_FILTER = new CompositeFilter(new ElementFilter[] {
+        d -> NumericalConstants.isValidValue(d.getY()),
+        new MultiValueFilter(new double[] {Float.MIN_VALUE})});
 
     private TSMath() {
         throw new AssertionError("Utility class");
