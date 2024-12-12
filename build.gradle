@@ -18,6 +18,5 @@ def versionLabel(gitInfo) {
 
 allprojects {
     group = 'gov.ca.dwr'
-    version = '1.0.0.0' //hard coding version to match wrims gui expectations.
-//    version = versionLabel(versionDetails())
+    version = versionLabel(versionDetails())
 }

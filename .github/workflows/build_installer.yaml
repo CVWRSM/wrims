@@ -1,0 +1,36 @@
+name: Publish WRIMS GUI installer
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Build with Gradle
+        env:
+          PKG_USERNAME: ${{ github.actor }}
+          PKG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./gradlew clean
+          ./gradlew :wrims-core:build
+          ./gradlew build
+          ./gradlew :wrims-gui:zipWrimsGui
+
+      - name: Attach WRIMS Installer zip to github deployment
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} wrims-gui/build/installer/wrims_gui_x64_${{ github.event.release.tag_name }}.zip --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
