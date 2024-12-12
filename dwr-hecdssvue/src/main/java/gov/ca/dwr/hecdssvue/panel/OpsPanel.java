@@ -52,8 +52,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
-import calsim.app.AppUtils;
-import calsim.app.Project;
+import gov.ca.dwr.hecdssvue.dts.AppUtils;
+import gov.ca.dwr.hecdssvue.dts.Project;
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
 import wrimsv2_plugin.tools.TimeOperation;
 

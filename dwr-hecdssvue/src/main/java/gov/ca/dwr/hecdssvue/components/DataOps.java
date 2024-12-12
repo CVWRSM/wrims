@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.jface.viewers.TableViewer;
@@ -26,8 +25,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 
-import calsim.app.AppUtils;
-import calsim.app.Project;
+import gov.ca.dwr.hecdssvue.dts.AppUtils;
+import gov.ca.dwr.hecdssvue.dts.Project;
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
 import wrimsv2_plugin.debugger.exception.WPPException;
 
@@ -509,18 +508,6 @@ public class DataOps {
 	
 	public static void setProject(){
 		Project prj = new Project();
-		prj.setDVFile(DebugCorePlugin.studyDvFileNames[0]);
-		prj.setDV2File(DebugCorePlugin.studyDvFileNames[1]);
-		prj.setDV3File(DebugCorePlugin.studyDvFileNames[2]);
-		prj.setDV4File(DebugCorePlugin.studyDvFileNames[3]);
-		
-		prj.setSVFile(DebugCorePlugin.studySvFileNames[0]);
-		prj.setSV2File(DebugCorePlugin.studySvFileNames[1]);
-		prj.setSV3File(DebugCorePlugin.studySvFileNames[2]);
-		prj.setSV4File(DebugCorePlugin.studySvFileNames[3]);
-		
-		AppUtils.selectedStudies=DebugCorePlugin.selectedStudies;
-		
 		prj.setDVHashtable();
 		prj.setSVHashtable();
 		prj.openDVGroup();

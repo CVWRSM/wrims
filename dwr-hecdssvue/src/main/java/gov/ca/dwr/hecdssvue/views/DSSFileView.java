@@ -417,6 +417,7 @@ public class DSSFileView extends ViewPart {
 			if(errorFiles.isEmpty()) {
 				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 					try {
+						DataOps.setProject();
 						DSSCatalogView dcv = (DSSCatalogView) getSite().getWorkbenchWindow()
 							.getActivePage().showView(DSSCatalogView.ID);
 						dcv.getViewer().setInput(DssPluginCore.dssArray);

@@ -1,8 +1,0 @@
-MODULE=.
-
-FILES=*.f90
-COMPILE=@lf90 -c %fi -dll -mod %mo -ml msvc -wisk -win -trace -o3
-
-LINK=@lf90 %ob -exe %ex -dll -mod %mo -ml msvc -win -wisk -trace -lib ..\lib\heclib\heclib42.lib,..\lib\hecNT\Debug\hecNT.lib
-TARGET=wrangler.dll
-
