@@ -30,6 +30,11 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 import vista.app.DataGraphFrame;
 import vista.app.DataTableFrame;
 import vista.app.DefaultGraphBuilder;
@@ -1371,6 +1376,19 @@ public class AppUtils {
         Time etime = tf.createTime(etstr, "MMMyyyy");
         etime = tf.createTime((etime.__add__(timin)).ceiling(ti));
         return tf.createTimeWindow(stime, etime);
+    }
+
+
+    public static void showDssFileErrorDialog(Exception ex){
+        ex.printStackTrace();
+        final IWorkbench workbench= PlatformUI.getWorkbench();
+        workbench.getDisplay().asyncExec(() -> {
+            Shell shell=workbench.getActiveWorkbenchWindow().getShell();
+            MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR);
+            messageBox.setText("Error:");
+            messageBox.setMessage(ex.getMessage());
+            messageBox.open();
+        });
     }
 
     /**

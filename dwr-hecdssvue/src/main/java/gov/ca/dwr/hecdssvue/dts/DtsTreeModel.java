@@ -612,9 +612,7 @@ public class DtsTreeModel extends GeneralTreeModel {
                     mt.retrieve();
                 }
             } catch (Exception e) {
-                SwingUtilities.invokeLater(()->{
-                    VistaUtils.displayException(null, e);
-                });
+                AppUtils.showDssFileErrorDialog(e);
             }
         } else {
             tree.expandPath(path);
@@ -671,8 +669,7 @@ public class DtsTreeModel extends GeneralTreeModel {
             }
             _dtp.setDTSTable(dts, null);
         } catch (Exception e) {
-            e.printStackTrace();
-            VistaUtils.displayException(null, e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 
@@ -699,7 +696,7 @@ public class DtsTreeModel extends GeneralTreeModel {
             }
             _dtp.setDTSTable(null, mts);
         } catch (Exception e) {
-            VistaUtils.displayException(null, e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 
@@ -757,8 +754,7 @@ public class DtsTreeModel extends GeneralTreeModel {
                 cannotPerform();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            VistaUtils.displayException(null, e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 
@@ -815,8 +811,7 @@ public class DtsTreeModel extends GeneralTreeModel {
                 cannotPerform();
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            VistaUtils.displayException(null, e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 

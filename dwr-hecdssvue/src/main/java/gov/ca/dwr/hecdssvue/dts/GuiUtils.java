@@ -50,12 +50,7 @@ public class GuiUtils {
             }
             pjob.end();
         } else {
-            try {
-                // CB TO DO: this should NOT happen if user cancels print job!
-                throw new RuntimeException("No print job available!!");
-            } catch (Exception e) {
-                VistaUtils.displayException(null, e);
-            }
+            AppUtils.showDssFileErrorDialog(new RuntimeException("No print job available!!"));
         }
     }
 

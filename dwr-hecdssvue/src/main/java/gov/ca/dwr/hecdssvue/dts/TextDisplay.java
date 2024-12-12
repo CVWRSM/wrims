@@ -179,7 +179,7 @@ public class TextDisplay extends MPanel {
             }
             GuiUtils.print(GuiUtils.getComponent(JTextPane.class, this));
         } catch (Exception e) {
-            VistaUtils.displayException(this, e);
+            AppUtils.showDssFileErrorDialog(e);
         } finally {
             if (s != null) {
                 s = _doc.getStyle("main");
@@ -213,7 +213,7 @@ public class TextDisplay extends MPanel {
                 }
                 writer.close();
             } catch (Exception e) {
-                VistaUtils.displayException(this, e);
+                AppUtils.showDssFileErrorDialog(e);
             }
         }
         if (DEBUG) {
@@ -237,7 +237,7 @@ public class TextDisplay extends MPanel {
                 new MinimalHTMLWriter(writer, _doc).write();
                 writer.close();
             } catch (Exception e) {
-                VistaUtils.displayException(this, e);
+                AppUtils.showDssFileErrorDialog(e);
             }
         }
         if (DEBUG) {

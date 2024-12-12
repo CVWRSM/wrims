@@ -361,7 +361,7 @@ public class MTSTable extends MPanel {
                 }
             }
         } catch (Exception e) {
-            VistaUtils.displayException(this, e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 
@@ -383,7 +383,7 @@ public class MTSTable extends MPanel {
             _mts.save(new FileOutputStream(mtsfile));
             _modified = false;
         } catch (Exception e) {
-            VistaUtils.displayException(this, e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 
@@ -462,7 +462,7 @@ public class MTSTable extends MPanel {
         try {
             GuiUtils.displayMTS(_mts);
         } catch (Exception e) {
-            VistaUtils.displayException(this, e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 
@@ -509,7 +509,7 @@ public class MTSTable extends MPanel {
             }
             _modified = true;
         } catch (Exception e) {
-            VistaUtils.displayException(this, e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 

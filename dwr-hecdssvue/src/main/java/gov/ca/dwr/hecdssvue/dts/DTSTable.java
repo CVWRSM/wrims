@@ -458,9 +458,7 @@ public class DTSTable extends MPanel {
                 GuiUtils.displayMTS(_mts);
             }
         } catch (Exception e) {
-            SwingUtilities.invokeLater(()->{
-                VistaUtils.displayException(SwingUtilities.windowForComponent(this), e);
-            });
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 
@@ -477,9 +475,7 @@ public class DTSTable extends MPanel {
                 return AppUtils.retrieveMTSData(_mts);
             }
         } catch (Exception e) {
-            SwingUtilities.invokeLater(()->{
-                VistaUtils.displayException(SwingUtilities.windowForComponent(this), e);
-            });
+            AppUtils.showDssFileErrorDialog(e);
         }
         return new Vector<DataContainer>();
     }
@@ -500,7 +496,7 @@ public class DTSTable extends MPanel {
                 _dts.setName(_nameField.getText());
             }
         } catch (Exception e) {
-            VistaUtils.displayException(SwingUtilities.windowForComponent(this), e);
+            AppUtils.showDssFileErrorDialog(e);
         }
     }
 
