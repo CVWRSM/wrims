@@ -24,7 +24,6 @@ jobs:
           PKG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./gradlew clean
-          ./gradlew :wrims-core:build
           ./gradlew build
           ./gradlew :wrims-gui:zipWrimsGui
 

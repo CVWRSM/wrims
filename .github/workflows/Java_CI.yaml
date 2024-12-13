@@ -28,8 +28,7 @@ jobs:
         PKG_USERNAME: ${{ github.actor }}
         PKG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        ./gradlew clean
-        ./gradlew :wrims-core:build
+        ./gradlew clean        
         ./gradlew build        
 
     - name: Upload Core jar

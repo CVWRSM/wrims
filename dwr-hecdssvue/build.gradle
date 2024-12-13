@@ -22,8 +22,3 @@ dependencies {
     //NOTE: These jars will get refactored into a github package zip. Tracking under issue: https://github.com/CentralValleyModeling/wrims/issues/148
 }
 
-configurations.configureEach {
-    exclude group: "javax.media", module: "jai_core"
-    exclude group: "javax.media", module: "jai_codec"
-    exclude group: "com.sun.media", module: "jai_imageio"
-}

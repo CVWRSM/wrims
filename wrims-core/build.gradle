@@ -16,6 +16,8 @@ sourceSets {
     }
 }
 
+
+
 dependencies {
     antlr libs.antlr
 
@@ -59,21 +61,6 @@ dependencies {
     implementation(':calsurrogate')
 
 }
-
-configurations.all {
-    exclude group: "javax.media", module: "jai_core"
-    exclude group: "javax.media", module: "jai_codec"
-    exclude group: "com.sun.media", module: "jai_imageio"
-}
-
-tasks.register('copyDependencies', Copy) {
-    from(configurations.runtimeClasspath)
-    into 'build/tmp/libs'
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-//make the jar task depend on the copyDependencies task
-jar.dependsOn copyDependencies
 
 // This moves .tokens files into the same generated-src files with the .java files
 tasks.withType(AntlrTask) {

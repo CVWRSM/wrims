@@ -30,3 +30,9 @@ repositories {
     // The primary public Maven repository, Maven Central where most 3rd party dependencies can be found
     mavenCentral()
 }
+
+configurations.configureEach {
+    exclude group: "javax.media", module: "jai_core"
+    exclude group: "javax.media", module: "jai_codec"
+    exclude group: "com.sun.media", module: "jai_imageio"
+}
