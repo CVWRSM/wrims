@@ -6,11 +6,18 @@ plugins{
     id 'biz.aQute.bnd.builder' version '6.4.0'
 }
 
+configurations {
+    windows_x64
+}
+
 dependencies {
     api(project(':wrims-core'))
     implementation project(':third-party')
 
     compileOnly fileTree(dir: '../eclipse-luna-libs', include: ['*.jar'])
+
+    windows_x64('mil.army.usace.hec:javaHeclib:7-IU-3-win-x86_64@zip')
+    testImplementation(libs.bundles.junit5)
 }
 
 jar {
@@ -27,4 +34,17 @@ configurations.configureEach {
     exclude group: "javax.media", module: "jai_core"
     exclude group: "javax.media", module: "jai_codec"
     exclude group: "com.sun.media", module: "jai_imageio"
+}
+
+
+//task to download native libraries (dlls)
+tasks.register('getNatives', Sync) { syncTask ->
+    syncTask.from configurations.windows_x64.collect { zipTree(it) }
+    syncTask.into file("${layout.buildDirectory.asFile.get()}/lib")
+}
+
+test {
+    useJUnitPlatform()
+    dependsOn(getNatives)
+    systemProperty "java.library.path", "${layout.buildDirectory.asFile.get()}/lib"
 }

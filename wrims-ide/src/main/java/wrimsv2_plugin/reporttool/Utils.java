@@ -1,5 +1,6 @@
 package wrimsv2_plugin.reporttool;
 
+import mil.army.usace.hec.metadata.IntervalFactory;
 import wrimsv2_plugin.reporttool.Report.PathnameMap;
 import wrimsv2_plugin.tools.TimeOperation;
 
@@ -106,11 +107,24 @@ public class Utils {
 				searchpath.setDPart("*");
 				searchpath.setFPart("*");
 				String[] paths = hts.getCatalog(false, searchpath.toString());
+				if(paths == null || paths.length == 0) {
+					//Try "1MON"
+					searchpath.setEPart(IntervalFactory.dss6Regular1Mon().getInterval());
+					paths = hts.getCatalog(false, searchpath.toString());
+				}
+				if(paths == null || paths.length == 0) {
+					//Try "1Month"
+					searchpath.setEPart(IntervalFactory.dssRegular1Month().getInterval());
+					paths = hts.getCatalog(false, searchpath.toString());
+				}
+				if(paths == null || paths.length == 0) {
+					//Try anything
+					searchpath.setEPart("*");
+					paths = hts.getCatalog(false, searchpath.toString());
+				}
 				searchpath.setPathname(paths[0]);
 				searchpath.setDPart("");
 				tsc.fullName = searchpath.toString();
-				// Utils.getReference(refBase, dssGroupBase, pathMap.pathBase,
-					//	calculate_dts, pathnameMaps, 1);
 				hts.read(tsc, false);
 				return tsc;
 			} catch (Exception ex) {
