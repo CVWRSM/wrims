@@ -9,6 +9,7 @@
 package wrimsv2_plugin.reporttool;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hec.heclib.dss.HecTimeSeries;
@@ -64,5 +65,27 @@ final class UtilsTest {
         read = Utils.getTSContainer(htsBase, dss6Path, false);
         assertNotNull(read);
         assertTrue(read.getNumberValues() > 0);
+    }
+
+    @Test
+    void testUtilsGetTSContainer1DayFail() throws IOException {
+        Heclib.zset("ALLV", "", 7);
+        Path wrimsTest = Files.createTempDirectory("WRIMS_TEST").resolve("testUtilsGetTSContainerDss6.dss");
+        HecTimeSeries htsBase = new HecTimeSeries(wrimsTest.toString());
+        TimeSeriesContainer write = new TimeSeriesContainer();
+        String dss7Path = "/CALSIM/A12/SURFACE-AREA//1Day/2020D09E/";
+        write.setName(dss7Path);
+        HecTimeArray hecTimes = new HecTimeArray(1);
+        hecTimes.setElementAt(new HecTime("12Dec2024 0100"), 0);
+        write.set(new double[]{5.0}, hecTimes);
+        htsBase.write(write);
+
+        TimeSeriesContainer read = Utils.getTSContainer(htsBase, dss7Path, false);
+        assertNotNull(read);
+        assertTrue(read.getNumberValues() > 0);
+        String dss6Path = "/CALSIM/A12/SURFACE-AREA//1MON/2020D09E/";
+        htsBase.write(write);
+        read = Utils.getTSContainer(htsBase, dss6Path, false);
+        assertNull(read);
     }
 }

@@ -1,7 +1,8 @@
 package wrimsv2_plugin.reporttool;
 
-import mil.army.usace.hec.metadata.IntervalFactory;
+import java.util.Set;
 import wrimsv2_plugin.reporttool.Report.PathnameMap;
+import wrimsv2_plugin.tools.DssOperations;
 import wrimsv2_plugin.tools.TimeOperation;
 
 import java.util.ArrayList;
@@ -10,10 +11,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
-import java.util.Iterator;
 
 import hec.heclib.dss.DSSPathname;
-import hec.heclib.dss.DataReference;
 import hec.heclib.dss.HecTimeSeries;
 import hec.io.TimeSeriesContainer;
 import hec.heclib.util.HecTime;
@@ -108,19 +107,18 @@ public class Utils {
 				searchpath.setFPart("*");
 				String[] paths = hts.getCatalog(false, searchpath.toString());
 				if(paths == null || paths.length == 0) {
-					//Try "1MON"
-					searchpath.setEPart(IntervalFactory.dss6Regular1Mon().getInterval());
-					paths = hts.getCatalog(false, searchpath.toString());
+					Set<String> equivalentDssIntervals =
+						DssOperations.findEquivalentDssIntervals(searchpath.getEPart());
+					for(String ePart : equivalentDssIntervals) {
+						searchpath.setEPart(ePart);
+						paths = hts.getCatalog(false, searchpath.toString());
+						if(paths != null && paths.length > 0) {
+							break;
+						}
+					}
 				}
 				if(paths == null || paths.length == 0) {
-					//Try "1Month"
-					searchpath.setEPart(IntervalFactory.dssRegular1Month().getInterval());
-					paths = hts.getCatalog(false, searchpath.toString());
-				}
-				if(paths == null || paths.length == 0) {
-					//Try anything
-					searchpath.setEPart("*");
-					paths = hts.getCatalog(false, searchpath.toString());
+					return null;
 				}
 				searchpath.setPathname(paths[0]);
 				searchpath.setDPart("");
