@@ -15,7 +15,7 @@ dependencies {
 def date = new Date()
 def formattedDate = date.format('yyyyMMdd')
 
-def wrimsGuiFolder = "wrims_gui_x64_2.2.0"
+def wrimsGuiFolder = "wrims_gui_x64_${version}"
 def wrimsGuiDownload = "${buildDir}/download/wrims2_gui_download.zip"
 
 //download the latest WRIMS GUI installer from DWR

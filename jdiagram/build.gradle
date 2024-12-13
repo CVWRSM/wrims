@@ -16,8 +16,3 @@ dependencies {
     compileOnly fileTree(dir: '../eclipse-luna-libs', include: ['*.jar'])
 }
 
-configurations.configureEach {
-    exclude group: "javax.media", module: "jai_core"
-    exclude group: "javax.media", module: "jai_codec"
-    exclude group: "com.sun.media", module: "jai_imageio"
-}

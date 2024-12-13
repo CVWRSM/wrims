@@ -61,7 +61,7 @@ dependencies {
     hecdll('mil.army.usace.hec:javaHeclib:7-IU-4-win-x86_64@zip')
 }
 
-configurations.all {
+configurations.configureEach {
     exclude group: "org.xml.sax", module: "sax"
     exclude group: "xml-apis", module: "xml-apis"
     exclude group: "mil.army.usace.hec", module: "hec-db-core"
@@ -86,9 +86,6 @@ configurations.all {
     exclude group: "com.oracle.database.jdbc", module: "jmscommon"
     exclude group: "org.apache.xmlbeans", module: "xmlbeans"
     exclude group: "dom4j", module: "dom4j"
-    exclude group: "javax.media", module: "jai_core"
-    exclude group: "javax.media", module: "jai_codec"
-    exclude group: "com.sun.media", module: "jai_imageio"
     exclude group: "net.java.dev.jna", module: "jna"
     exclude group: "com.fifesoft", module: "rstaui"
     exclude group: "org.python", module: "jython-standalone"
