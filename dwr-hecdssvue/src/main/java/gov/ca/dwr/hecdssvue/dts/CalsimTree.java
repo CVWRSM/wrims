@@ -1,8 +1,9 @@
 /*
- * Copyright (c) 2024
- * United States Army Corps of Engineers - Hydrologic Engineering Center (USACE/HEC)
- * All Rights Reserved.  USACE PROPRIETARY/CONFIDENTIAL.
- * Source may not be released without written approval from HEC
+ * Water Resource Integrated Modeling System (WRIMS) Copyright (c) 2024.
+ *
+ * WRIMS 2 is copyrighted by the State of California Department of Water Resources.
+ * It is licensed under the Eclipse Public License, Version 1.0.
+ * See Eclipse Public License for more details.
  */
 
 package gov.ca.dwr.hecdssvue.dts;
