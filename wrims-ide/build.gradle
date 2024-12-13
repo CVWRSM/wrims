@@ -16,7 +16,7 @@ dependencies {
 
     compileOnly fileTree(dir: '../eclipse-luna-libs', include: ['*.jar'])
 
-    windows_x64('mil.army.usace.hec:javaHeclib:7-IU-3-win-x86_64@zip')
+    windows_x64("mil.army.usace.hec:javaHeclib:${libs.versions.heclib.get()}@zip")
     testImplementation(libs.bundles.junit5)
 }
 
