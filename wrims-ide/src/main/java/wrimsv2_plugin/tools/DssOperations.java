@@ -30,7 +30,7 @@ public class DssOperations {
 		return pn;
 	}
 
-	private static Set<String> findEquivalentDssIntervals(String partE) {
+	public static Set<String> findEquivalentDssIntervals(String partE) {
         return IntervalFactory.findAnyDss(IntervalFactory.equalsName(partE))
             .map(c -> IntervalFactory.findAllDss(i -> i.getMinutes() == c.getMinutes()).stream()
                 .map(Interval::getInterval)

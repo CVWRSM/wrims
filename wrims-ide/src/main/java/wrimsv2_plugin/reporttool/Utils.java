@@ -1,6 +1,8 @@
 package wrimsv2_plugin.reporttool;
 
+import java.util.Set;
 import wrimsv2_plugin.reporttool.Report.PathnameMap;
+import wrimsv2_plugin.tools.DssOperations;
 import wrimsv2_plugin.tools.TimeOperation;
 
 import java.util.ArrayList;
@@ -9,10 +11,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TimeZone;
-import java.util.Iterator;
 
 import hec.heclib.dss.DSSPathname;
-import hec.heclib.dss.DataReference;
 import hec.heclib.dss.HecTimeSeries;
 import hec.io.TimeSeriesContainer;
 import hec.heclib.util.HecTime;
@@ -106,11 +106,23 @@ public class Utils {
 				searchpath.setDPart("*");
 				searchpath.setFPart("*");
 				String[] paths = hts.getCatalog(false, searchpath.toString());
+				if(paths == null || paths.length == 0) {
+					Set<String> equivalentDssIntervals =
+						DssOperations.findEquivalentDssIntervals(searchpath.getEPart());
+					for(String ePart : equivalentDssIntervals) {
+						searchpath.setEPart(ePart);
+						paths = hts.getCatalog(false, searchpath.toString());
+						if(paths != null && paths.length > 0) {
+							break;
+						}
+					}
+				}
+				if(paths == null || paths.length == 0) {
+					return null;
+				}
 				searchpath.setPathname(paths[0]);
 				searchpath.setDPart("");
 				tsc.fullName = searchpath.toString();
-				// Utils.getReference(refBase, dssGroupBase, pathMap.pathBase,
-					//	calculate_dts, pathnameMaps, 1);
 				hts.read(tsc, false);
 				return tsc;
 			} catch (Exception ex) {
