@@ -13,6 +13,16 @@ dependencies {
     compileOnly fileTree(dir: '../eclipse-luna-libs', include: ['*.jar'])
 }
 
+jar {
+    bundle {
+        // Bundle plugin does not properly declare dependency on Java configurations,
+        // so other projects do not generate jars before the bundle plugin tries to read them.
+        // The bundle plugin cannot read non-existent jars, so force an explicit dependency here
+        // so that the jars will be built before the Bundle process tries to read them.
+        dependsOn(configurations.runtimeClasspath)
+    }
+}
+
 configurations.configureEach {
     exclude group: "javax.media", module: "jai_core"
     exclude group: "javax.media", module: "jai_codec"
