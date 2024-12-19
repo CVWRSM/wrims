@@ -60,6 +60,7 @@ dependencies {
     implementation(':XAOptimizer')
     implementation(':calsurrogate')
 
+    testImplementation(libs.bundles.junit5)
 }
 
 // This moves .tokens files into the same generated-src files with the .java files
@@ -88,3 +89,6 @@ tasks.withType(AntlrTask) {
     }
 }
 
+test {
+    useJUnitPlatform()
+}
