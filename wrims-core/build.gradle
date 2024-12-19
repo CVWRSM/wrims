@@ -88,3 +88,16 @@ tasks.withType(AntlrTask) {
     }
 }
 
+tasks.register('runWrimsEngine', JavaExec) { ->
+    group = 'run'
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = "wrimsv2.components.ControllerBatch"
+    environment 'PATH', "${project.findProperty("java_library_path")}:${System.getenv('PATH')}"
+    jvmArgs("-Djava.library.path=" + project.findProperty("java_library_path"),
+            "-Xmx4096m",
+            "-Xss1024K",
+            "-XX:+CreateMinidumpOnCrash",
+            "-Duser.timezone=Etc/GMT+8",
+            "-Dname=51004")
+    args("-config=" + project.findProperty("study"))
+}
