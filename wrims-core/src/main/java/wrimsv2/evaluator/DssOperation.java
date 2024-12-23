@@ -48,7 +48,17 @@ public class DssOperation {
 		}
 
 		if (tsc==null){
-			return false;
+			if (timeStep.equalsIgnoreCase("1MON")) {
+				path=createPath(ControlData.partA.toUpperCase(),ts.dssBPart.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.svDvPartF.toUpperCase());
+				if (svFileIndex==1){
+					tsc = ControlData.cacheSvar.readFullRecord(path);
+				}else{
+					tsc = ControlData.cacheSvar2.readFullRecord(path);
+				}
+			}
+			if (tsc==null) {
+				return false;
+			}
 		}
 		if (!tsc.getUnits().toUpperCase().equals(ts.units.toUpperCase())){
 			return false;
@@ -121,7 +131,15 @@ public class DssOperation {
 		tsc = ControlData.cacheInit.readFullRecord(path);
 
 		if (tsc==null){
-			return false;
+			if (tsc==null){
+				if (ControlData.partE.equalsIgnoreCase("1MON")) {
+					path=createPath(ControlData.partA.toUpperCase(),ts.dssBPart.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.initPartF.toUpperCase());
+					tsc = ControlData.cacheInit.readFullRecord(path);
+				}
+				if (tsc==null) {
+					return false;
+				}
+			}
 		}
 		if (!tsc.getUnits().toUpperCase().equals(ts.units.toUpperCase())){
 			return false;
@@ -207,7 +225,15 @@ public class DssOperation {
 		tsc = ControlData.cacheInit.readFullRecord(path);
 
 		if (tsc==null){
-			return false;
+			if (tsc==null){
+				if (ControlData.partE.equalsIgnoreCase("1MON")) {
+					path=createPath(ControlData.partA.toUpperCase(),name.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.initPartF.toUpperCase());
+					tsc = ControlData.cacheInit.readFullRecord(path);
+				}
+				if (tsc==null) {
+					return false;
+				}
+			}
 		}
 		if (!tsc.getUnits().toUpperCase().equals(units.toUpperCase())){
 			return false;
