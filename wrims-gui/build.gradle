@@ -127,15 +127,16 @@ tasks.register('copyResources', Copy) {
 //Add the release date to the installer
 //generate a releasedate.log file that contains the current date in MM/DD/YYYY format
 tasks.register('addReleaseDate', DefaultTask) {
+    dependsOn copyResources
     doLast {
-        def releaseDateFile = file("${buildDir}/installer/releasedate.log")
+        def releaseDateFile = file("${buildDir}/installer/${wrimsGuiFolder}/releasedate.log")
         releaseDateFile.text = new Date().format('MM/dd/yyyy')
     }
 }
 
 // Task that zips the wrims_gui_x64_${version} folder into a zip file
 tasks.register('zipWrimsGui', Zip) {
-    dependsOn copyThirdPartyToLib
+    dependsOn addReleaseDate
     from("${buildDir}/installer/${wrimsGuiFolder}")
     archiveFileName = "${wrimsGuiFolder}.zip"
     destinationDirectory = file("${buildDir}/installer")
