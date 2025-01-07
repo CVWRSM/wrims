@@ -14,12 +14,22 @@ dependencies {
 
 def date = new Date()
 def formattedDate = date.format('yyyyMMdd')
+def releaseDate = date.format('MM/dd/yyyy')
 
 def wrimsGuiFolder = "wrims_gui_x64_${version}"
 def wrimsGuiDownload = "${buildDir}/download/wrims2_gui_download.zip"
+def wrimsPatchFolder = "wrims_patch_v2.2.0_basis"
+def wrimsPatchReleaseDateFile = "releasedate_v2.2.0_basis.log"
+
+//task to unzip the contents of the third-party jar into a temp folder
+tasks.register('unzipThirdPartyLibs', Copy) {
+    from(zipTree(project(':third-party').tasks.named('jar').get().archiveFile))
+    into("${buildDir}/third-party")
+}
 
 //download the latest WRIMS GUI installer from DWR
 tasks.register('downloadWrimsGuiInstaller', Download) {
+    dependsOn unzipThirdPartyLibs
     src 'https://data.cnra.ca.gov/dataset/0f6b03b4-7de8-4579-8aa0-60f73d9d21fb/resource/89f60e4a-c0c2-4ca2-acac-beb6bdb5d69e/download/wrims2_gui_x64_20240129.zip'
     dest new File(wrimsGuiDownload)
     onlyIfModified true
@@ -96,16 +106,9 @@ tasks.register('copyWrimsCoreToLib', Copy) {
     into("${buildDir}/installer/${wrimsGuiFolder}/lib")
 }
 
-//task to unzip the contents of the third-party jar into a temp folder
-tasks.register('unzipThirdPartyJar', Copy) {
-    dependsOn copyWrimsCoreToLib
-    from(zipTree(project(':third-party').tasks.named('jar').get().archiveFile))
-    into("${buildDir}/third-party")
-}
-
 //task to copy all files from ${buildDir}/third-party/lib_x64 to ${buildDir}/installer/${wrimsGuiFolder}/lib
 tasks.register('copyThirdPartyToLib', Copy) {
-    dependsOn unzipThirdPartyJar
+    dependsOn copyWrimsCoreToLib
     from("${buildDir}/third-party/lib_x64")
     from("${buildDir}/third-party/heclib")
     into("${buildDir}/installer/${wrimsGuiFolder}/lib")
@@ -121,25 +124,19 @@ tasks.register('copyResources', Copy) {
     }
 }
 
-/**
- * Running the WRIMS2_GUI_Start.bat file will launch the WRIMS exe with a -clean argument that
- * forces an update of some ecplise files and ensures the user can then run the WRIMS GUI
- * with the updated packages using the WRIMS2GUI_x64.exe file going forward.
- */
-tasks.register('runWrimsGui') {
+//Add the release date to the installer
+//generate a releasedate.log file that contains the current date in MM/DD/YYYY format
+tasks.register('addReleaseDate', DefaultTask) {
     dependsOn copyResources
     doLast {
-        def processBuilder = new ProcessBuilder('cmd', '/c', 'WRIMS2_GUI_Start.bat')
-        processBuilder.directory(new File("${buildDir}/installer/${wrimsGuiFolder}"))
-        def process = processBuilder.start()
-        Thread.sleep(60000)
-        def taskkill = new ProcessBuilder('cmd', '/c', 'taskkill', '/IM', 'WRIMS2_GUI_x64.exe', '/F').start()
+        def releaseDateFile = file("${buildDir}/installer/${wrimsGuiFolder}/releasedate.log")
+        releaseDateFile.text = new Date().format('MM/dd/yyyy')
     }
 }
 
 // Task that zips the wrims_gui_x64_${version} folder into a zip file
 tasks.register('zipWrimsGui', Zip) {
-    dependsOn runWrimsGui
+    dependsOn addReleaseDate
     from("${buildDir}/installer/${wrimsGuiFolder}")
     archiveFileName = "${wrimsGuiFolder}.zip"
     destinationDirectory = file("${buildDir}/installer")
@@ -148,54 +145,74 @@ tasks.register('zipWrimsGui', Zip) {
 //-------- PATCH INSTALLER BUILD TASKS---------------
 // Task to copy JARs to patch folder
 tasks.register('copyJarsToPatchDropins', Copy) {
-    dependsOn unzipThirdPartyJar
+    dependsOn unzipThirdPartyLibs
     from(project(':third-party').tasks.named('jar').get().archiveFile)
     from(project(':wrims-ide').tasks.named('jar').get().archiveFile)
     from(project(':dwr-hecdssvue').tasks.named('jar').get().archiveFile)
     from(project(':jdiagram').tasks.named('jar').get().archiveFile)
     from(project(':xtext-editor').tasks.named('jar').get().archiveFile)
     from(project(':xtext-editor-ui').tasks.named('jar').get().archiveFile)
-    into("${buildDir}/patch/${wrimsGuiFolder}/dropins")
+    into("${buildDir}/patch/${wrimsPatchFolder}/dropins")
 }
 
 //task to download native libraries (dlls)
-tasks.register('copyPatchLibs', Sync) { syncTask ->
+tasks.register('getNativesForPatch', Sync) { syncTask ->
     dependsOn copyJarsToPatchDropins
     syncTask.from configurations.windows_x64.collect { zipTree(it) }
-    syncTask.into file("${buildDir}/patch/${wrimsGuiFolder}/lib")
-}
-
-//task to copy all files from ${buildDir}/third-party/lib_x64 to ${buildDir}/installer/${wrimsGuiFolder}/lib
-tasks.register('copyDllsToPatchLib', Copy) {
-    dependsOn copyPatchLibs
-    from("${buildDir}/third-party/lib_x64")
-    from("${buildDir}/third-party/heclib")
-    into("${buildDir}/patch/${wrimsGuiFolder}/lib")
+    syncTask.into file("${buildDir}/patch/${wrimsPatchFolder}/lib")
 }
 
 // Task to copy JARs to dropins folder
 tasks.register('copyWrimsCoreToPatchLib', Copy) {
-    dependsOn copyDllsToPatchLib
+    dependsOn  getNativesForPatch
     from(project(':wrims-core').tasks.named('jar').get().archiveFile)
-    into("${buildDir}/patch/${wrimsGuiFolder}/lib")
+    into("${buildDir}/patch/${wrimsPatchFolder}/lib")
 }
+
+//task to copy all files from ${buildDir}/third-party/lib_x64 to ${buildDir}/installer/${wrimsPatchFolder}/lib
+tasks.register('copyThirdPartyToPatchLib', Copy) {
+    dependsOn copyWrimsCoreToPatchLib
+    from("${buildDir}/third-party/lib_x64")
+    from("${buildDir}/third-party/heclib")
+    into("${buildDir}/patch/${wrimsPatchFolder}/lib")
+}
+
 
 //Copies all updated resource files into the installer
 tasks.register('copyResourcesToPatch', Copy) {
-    dependsOn copyWrimsCoreToPatchLib
+    dependsOn copyThirdPartyToPatchLib
     from("src/main/resources/installer")
-    into("${buildDir}/patch/${wrimsGuiFolder}")
+    into("${buildDir}/patch/${wrimsPatchFolder}")
     filter { line ->
         line.replace('${WRIMS_VERSION}', version)
+    }
+}
+
+//Add the release date to the patch
+//generate a releasedate.log file that contains the current date in MM/DD/YYYY format
+tasks.register('addReleaseDateToPatch', DefaultTask) {
+    dependsOn copyResourcesToPatch
+    doLast {
+        def releaseDateFile = file("${buildDir}/patch/${wrimsPatchFolder}/releasedate.log")
+        releaseDateFile.text = new Date().format('MM/dd/yyyy')
+    }
+}
+
+//Add the release date for patch deployment in releasedate_v2.2.0_basis.log file that contains the current date in MM/DD/YYYY format
+tasks.register('addReleaseDateToPatchDeployment', DefaultTask) {
+    dependsOn addReleaseDateToPatch
+    doLast {
+        def patchReleaseDateFile = file("${buildDir}/patch/${wrimsPatchReleaseDateFile}")
+        patchReleaseDateFile.text = new Date().format('MM/dd/yyyy')
     }
 }
 
 //Zip patch files
 // Task that zips the wrims_gui_x64_${version} folder into a zip file
 tasks.register('zipWrimsPatch', Zip) {
-    dependsOn copyResourcesToPatch
-    from("${buildDir}/patch/${wrimsGuiFolder}")
-    archiveFileName = "${wrimsGuiFolder}_Patch.zip"
+    dependsOn addReleaseDateToPatchDeployment
+    from("${buildDir}/patch/${wrimsPatchFolder}")
+    archiveFileName = "${wrimsPatchFolder}.zip"
     destinationDirectory = file("${buildDir}/patch")
 }
 
