@@ -3,6 +3,7 @@ plugins{
     id 'antlr'
     id 'library.deps-conventions'
     id 'library.java-conventions'
+    id 'eclipse'
 }
 
 sourceSets {
@@ -85,6 +86,20 @@ tasks.withType(AntlrTask) {
                 into "${buildDir}/generated-src/antlr/main/wrimsv2/wreslplus/grammar/"
             }
             delete "${buildDir}/generated-src/antlr/main/*.tokens"
+        }
+    }
+}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged {
+                //Gradle Eclipse plugin and multiple source sets are causing issues with the eclipse
+                //classpath within the Eclipse IDE. We need to ignore the ones we know are duplicates.
+                cp ->
+                    cp.getEntries().removeIf(e -> (e.path == 'src/main/java' && e.output == 'bin/main')
+                            || (e.path == 'src/main/antlr' && e.output == 'bin/main'))
+            }
         }
     }
 }
