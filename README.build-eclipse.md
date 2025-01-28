@@ -15,9 +15,10 @@ The Gradle integration involved refactoring the primary modules into the these r
 
 # WRIMS Developer Build Setup - Using Gradle:
 PREREQUISITES:
-- Java 8
-- Gradle 8.5
+- Java JDK 1.8 installed (https://www.oracle.com/java/technologies/javase/javase8u211-later-archive-downloads.html)
+- JAVA_HOME environment variable set to installed JDK 1.8
 - Git
+  - https://github.com/git-guides/install-git
 - IDE Eclipse
   - Latest Eclipse RCP download site:
   - https://www.eclipse.org/downloads/packages/release/2024-12/r/eclipse-ide-rcp-and-rap-developers
@@ -30,21 +31,25 @@ cvmPassword=<userToken>
 ``` 
 
 ## 1. Pull Source from GitHub & build the project
-Clone the repository to your local machine.
-Repository Clone URL: https://github.com/CentralValleyModeling/wrims.git
-Checkout the "Feature/wrims-devops" branch.
-CD into the wrims directory
-Build the project with gradle
-Generate the Eclipse project files with gradle
+- Clone the repository to your local machine.
+- Repository Clone URL: https://github.com/CentralValleyModeling/wrims.git
+- CD into the wrims directory
+- Checkout the "Feature/wrims-devops" branch.
+- Build the project with gradle
+- Generate the Eclipse project files with gradle
 ```
 git clone https://github.com/CentralValleyModeling/wrims.git
-git switch Feature/wrims-devops
 cd wrims
-gradlew.bat build
-gradlew.bat eclipse
+git switch Feature/wrims-devops
+.\gradlew.bat build
+.\gradlew.bat eclipse
 ```
 
+![](./README_images/cmd_build_success.png)
+
 ## 2. Open Eclipse with a new/clean workspace
+
+![](./README_images/eclipse_new_workspace.png)
 
 ## 3. Import the wrims project into Eclipse
 Once the Eclipse IDE is loaded, go to File-> Import... and select Import as an Existing Gradle Project
