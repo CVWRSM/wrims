@@ -37,11 +37,10 @@ cvmPassword=<userToken>
 
 ## 1. Pull Source from GitHub & build the project
 - Clone the repository to your local machine.
-- Repository Clone URL: https://github.com/CentralValleyModeling/wrims.git
+  - Repository Clone URL: https://github.com/CentralValleyModeling/wrims.git
 - CD into the wrims directory
 - Checkout the "Feature/wrims-devops" branch.
 - Build the project with gradle
-- Generate the Eclipse project files with gradle
 ```
 git clone https://github.com/CentralValleyModeling/wrims.git
 cd wrims
@@ -59,7 +58,7 @@ git switch Feature/wrims-devops
 
 Open the Preferences window from the menu bar: Window->Preferences
 
-![](./README_images/eclipse_preferences.png)
+![](./README_images/eclipse_perferences.png)
 
 Set Gradle > "Java Home" to an appropriate JDK (1.8) </br>
 Click Apply.
