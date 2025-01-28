@@ -10,7 +10,9 @@ management system, rather than relying on manual updates or building locally fro
 
 ## An evolving build system
 The latest Feature/dev-ops WRIMS branch has been updated to use the Gradle build system.
-Instructions on how to build WRIMS following the gradle integration (2024) are located [here](./README.build-gradle.md).<br>
+Instructions on how to build WRIMS following the gradle integration (2024) located here:<br>
+[Eclipse build instructions](./README.build-eclipse.md).<br>
+[IntelliJ build instructions](./README.build-gradle.md).<br>
 
 The mainline WRIMS branch (DSS6) is exclusively built from Eclipse (Luna) and can be built from this 
 repository following the procedure described [here](./README.build.md).<br>
