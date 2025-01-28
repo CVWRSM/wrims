@@ -163,18 +163,6 @@ tasks.register('runWrimsGui') {
     }
 }
 
-//task that runs the bat file in build/download/${WRIMS_GUI_FOLDER/WRIMS2_GUI_Debug.bat
-//This launches WRIMS with remote debugging enabled
-//NOTE: You must build the installer before you can run it with this task using the buildWrimsInstall task
-tasks.register('debugWrimsGui') {
-    group 'debug'
-    doLast {
-        def processBuilder = new ProcessBuilder('cmd', '/c', 'WRIMS2_GUI_Debug.bat')
-        processBuilder.directory(new File("${buildDir}/installer/${wrimsGuiFolder}"))
-        def process = processBuilder.start()
-    }
-}
-
 //-------- PATCH INSTALLER BUILD TASKS---------------
 // Task to copy JARs to patch folder
 tasks.register('copyJarsToPatchDropins', Copy) {
