@@ -514,7 +514,7 @@ public class DssOperation {
 			TimeSeriesContainer dc = new TimeSeriesContainer();
 			Date startDate=dds.getStartTime();
 			//long startJulmin = TimeFactory.getInstance().createTime(startDate).getTimeInMinutes();
-			Date modelStartDate=new Date(ControlData.startYear-1900, ControlData.startMonth, ControlData.startDay);
+			Date modelStartDate=new Date(ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);
 			//ds._dataType=DSSUtil.REGULAR_TIME_SERIES;
 			dc.type="PER-AVER";
 			dc.numberValues=TimeOperation.getNumberOfTimestep(startDate, modelStartDate, timeStep);
@@ -554,7 +554,7 @@ public class DssOperation {
 			TimeSeriesContainer dc = new TimeSeriesContainer();
 			Date startDate=dds.getStartTime();
 			//long startJulmin = TimeFactory.getInstance().createTime(startDate).getTimeInMinutes();
-			Date modelStartDate=new Date(ControlData.startYear-1900, ControlData.startMonth, ControlData.startDay);
+			Date modelStartDate=new Date(ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);
 			//dd._dataType=DSSUtil.REGULAR_TIME_SERIES;
 			dc.type="PER-AVER";
 			dc.numberValues=TimeOperation.getNumberOfTimestep(startDate, modelStartDate, timeStep);
