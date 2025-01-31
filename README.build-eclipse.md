@@ -11,7 +11,7 @@ The Gradle integration involved refactoring the primary modules into the these r
 5. jdiagram: Schematic View source
 6. xtext: xtext processor source
 7. xtext-ui: xtext editor source
-8. wrims-gui: module used to assemble the WRIMS GUI application and Patch installers. 
+8. wrims-install: module used to assemble the WRIMS GUI application and Patch installers. 
 
 # WRIMS Developer Build Setup - Using Gradle:
 PREREQUISITES:
@@ -22,7 +22,9 @@ PREREQUISITES:
 - IDE Eclipse
   - Latest Eclipse RCP download site:
   - https://www.eclipse.org/downloads/packages/release/2024-12/r/eclipse-ide-rcp-and-rap-developers
-- \<USER-DIR\>\\.gradle\Gradle.properties configured with token for access to the CentralValleyModeling GitHub repository
+- \<USER-DIR\>\\.gradle\gradle.properties configured with token for access to the CentralValleyModeling GitHub repository
+  - Example: C:\\Users\\\<username\>\\.gradle\gradle.properties
+  - NOTE: If you have to create the gradle.properties file, make sure it's not a "gradle.properties.txt" file. 
 ```
 ...
 cvmUserId=<userId>
@@ -31,9 +33,10 @@ cvmPassword=<userToken>
 ``` 
 
 > [!WARNING]
-> If you don't set the cvmUserId and cvmPassword in your Gradle.properties file, you will get errors 
+> If you don't set the cvmUserId and cvmPassword in your gradle.properties file, you will get errors 
 > when you load the project into Eclipse. If that happens, you'll need to set the missing parameters in your gradle.properties file.
 > Then remove and re-import the project to eclipse to clear the errors and load correctly.
+> Make sure your gradle.properties file is in the correct location under your user directory and not a .txt file.
 
 ## 1. Pull Source from GitHub & build the project
 - Clone the repository to your local machine.
@@ -145,7 +148,7 @@ The following gradle tasks have been added to build/run the gradle installer:
 > If the buildWrimsInstall task fails with a 401 error like this: <br><br>
 >   Could not GET 'https://maven.pkg.github.com/CentralValleyModeling/wrims/gov/ca/dwr/run-libs/maven-metadata.xml'. 
 >   Received status code 401 from server: Unauthorized <br><br>
-> You are likely missing the cvmUserId and cvmPassword prerequisite settings in your Gradle.properties file
+> You are likely missing the cvmUserId and cvmPassword prerequisite settings in your gradle.properties file
 
 ## 9. Remote Debug the WRIMS GUI Application
 
@@ -202,3 +205,29 @@ Start the Remote Debug configuration.
 You can now set breakpoints in the WRIMS GUI code and debug the application.
 
 ![](./README_images/eclipse_debug_perspective.png)
+
+> [!NOTE]
+> Currently, hot swapping code through eclipse remote debugger throws an "Add method not implemented" error.
+> Regardless of the scope of the code change. This issue has been reported to the Eclipse buildship community
+> and is being tracked here: https://discuss.gradle.org/t/hotswapping-code-with-imported-gradle-project-fails/50387
+
+## 10. Debugging code changes for WRIMS
+Once the you have completed the above steps, the fastest way to push code changes to the dropin modules 
+is using the Gradle run>updateInstallerDropins task or the run>updateAndRun task. 
+
+![](./README_images/eclipse_update_dropins.png)
+
+Both of these tasks will force a rebuild of any modified dropin jars and push them into the WRIMS2 GUI application that was previously built in the wrims-install module using the buildWrimsInstall task. <br> 
+The updateAndRun task will also launch the WRIMS GUI application after the dropins have been updated.
+
+These tasks are much faster than doing a complete clean and rebuild of the WRIMS GUI application.
+
+> [!NOTE]
+> You will have to re-launch your remote-debugging session after the WRIMS GUI application has been updated and relaunch. 
+
+## 11. Eclipse WRIMS Launch Configuration
+Attempts have been made to run the WRIMS GUI application directly from Eclipse with a target platform set to use 
+only the plugins configured within the wrims-insall build.  <br><br>
+
+While this seems to be the correct approach, we are still experiencing issues with the application failing to launch. 
+This issue is being tracked here in github: https://github.com/CentralValleyModeling/wrims/issues/197

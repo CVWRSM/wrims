@@ -4,27 +4,27 @@ This gradle module uses an existing template copy of the WRIMS-GUI project to bu
 with the latest updated dropin jars and configuration file required to enable them. 
 
 ## How to build the installer/patch zip files
-The installer can be built by running the "zipWrimsGui" task in the wrims-gui module.
-The patch can be built by running the "zipWrimsPatch" task in the wrims-gui module.
+The installer can be built by running the "zipWrimsGui" task in the wrims-install module.
+The patch can be built by running the "zipWrimsPatch" task in the wrims-install module.
 
-The generated wrims install zip file will be located in the /wrims-gui/build/installer
+The generated wrims install zip file will be located in the /wrims-install/build/installer
 folder. The installer file will be named: wrims_gui_x64_<branch-name>.zip
 
-The generated wrims patch zip file will be located in the /wrims-gui/build/patch
+The generated wrims patch zip file will be located in the /wrims-install/build/patch
 folder. The patch file will be named: wrims_patch_v2.2.0_basis.zip
 
 ### From developer linux terminal:
 You can build the installer and patch by running the following linux command from the root of the project:
 ```
-./gradlew :wrims-gui:zipWrimsGui
-./gradlew :wrims-gui:zipWrimsPatch
+./gradlew :wrims-install:zipWrimsGui
+./gradlew :wrims-install:zipWrimsPatch
 ```
 
 ### From developer windows command line / terminal:
 You can build the installer and patch by running the following command from the root of the project:
 ```
-gradlew.bat :wrims-gui:zipWrimsGui
-gradlew.bat :wrims-gui:zipWrimsPatch
+gradlew.bat :wrims-install:zipWrimsGui
+gradlew.bat :wrims-install:zipWrimsPatch
 ```
 
 ### From GitHub Releases

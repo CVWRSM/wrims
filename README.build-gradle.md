@@ -11,12 +11,11 @@ The Gradle integration involved refactoring the primary modules into the these r
 5. jdiagram: Schematic View source
 6. xtext: xtext processor source
 7. xtext-ui: xtext editor source
-8. wrims-gui: module used to assemble the WRIMS GUI application and Patch installers. 
+8. wrims-install: module used to assemble the WRIMS application and Patch installers. 
 
 # WRIMS Developer Build Setup - Using Gradle:
 PREREQUISITES:
 - Java 8
-- Gradle 8.5
 - Git
 - IDE (IntelliJ, Eclipse, etc.)
 - \<USER-DIR\>\\.gradle\Gradle.properties configured with token for access to the CentralValleyModeling GitHub repository
@@ -63,9 +62,9 @@ gradlew.bat build
 ```
 
 ## 4. Build the installer/patch zip files locally
-The installer can be built by running the "zipWrimsGui" task in the wrims-gui module.
+The installer can be built by running the "zipWrimsGui" task in the wrims-install module.
 
-The generated wrims install zip file will be located in the /wrims-gui/build/installer
+The generated wrims install zip file will be located in the /wrims-install/build/installer
 folder. The installer file will be named: wrims_gui_x64_\<version\>.zip
 
 > [!NOTE]
@@ -74,13 +73,13 @@ folder. The installer file will be named: wrims_gui_x64_\<version\>.zip
 ### From developer linux terminal:
 You can build the installer by running the following linux command from the root of the project:
 ```
-./gradlew :wrims-gui:zipWrimsGui
+./gradlew :wrims-install:zipWrimsGui
 ```
 
 ### From developer windows command line / terminal:
 You can build the installer by running the following command from the root of the project:
 ```
-gradlew.bat :wrims-gui:zipWrimsGui
+gradlew.bat :wrims-install:zipWrimsGui
 ```
 
 > [!WARNING]
@@ -105,7 +104,7 @@ Configure a "Java Remote Debug" configuration in your IDE with the following set
 
 ![](./README_images/intellij_remote_debug.png)
 
-Update the /wrims-gui/build/installer/wrims_gui_x64_\<version\>/WRIMS2_GUI_Start.bat file to include the remote debug vmargs like this:
+Update the /wrims-install/build/installer/wrims_gui_x64_\<version\>/WRIMS2_GUI_Start.bat file to include the remote debug vmargs like this:
 ```
 wriMS2_GUI_x64 -clean -console -consoleLog -debug .options -vmargs -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
 ```
@@ -117,9 +116,9 @@ Start the RemoteDebug configuration in your IDE to connect to the WRIMS GUI appl
 At this point you can set breakpoints in the WRIMS GUI code from your IDE and debug the application.
 
 ## 6. Build the WRIMS Patch Files
-The patch can be built by running the "zipWrimsPatch" task in the wrims-gui module.
+The patch can be built by running the "zipWrimsPatch" task in the wrims-install module.
 
-The generated wrims patch zip file will be located in the /wrims-gui/build/patch
+The generated wrims patch zip file will be located in the /wrims-install/build/patch
 folder. The patch file will be named: wrims_patch_v2.2.0_basis.zip
 
 > [!NOTE]
@@ -129,13 +128,13 @@ folder. The patch file will be named: wrims_patch_v2.2.0_basis.zip
 ### From developer linux terminal:
 You can build the patch zip by running the following linux command from the root of the project:
 ```
-./gradlew :wrims-gui:zipWrimsPatch
+./gradlew :wrims-install:zipWrimsPatch
 ```
 
 ### From developer windows command line / terminal:
 You can build the patch zip by running the following command from the root of the project:
 ```
-gradlew.bat :wrims-gui:zipWrimsPatch
+gradlew.bat :wrims-install:zipWrimsPatch
 ```
 
 ## How to build wrims installer From GitHub Releases

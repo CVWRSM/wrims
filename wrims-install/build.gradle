@@ -136,6 +136,7 @@ tasks.register('copyResources', Copy) {
 //generate a releasedate.log file that contains the current date in MM/DD/YYYY format
 tasks.register('buildWrimsInstall', DefaultTask) {
     group 'install'
+    description 'Builds the complete WRIMS2 application'
     dependsOn copyResources
     doLast {
         def releaseDateFile = file("${buildDir}/installer/${wrimsGuiFolder}/releasedate.log")
@@ -146,6 +147,7 @@ tasks.register('buildWrimsInstall', DefaultTask) {
 // Task that zips the wrims_gui_x64_${version} folder into a zip file
 tasks.register('zipWrimsGui', Zip) {
     group 'release'
+    description 'Creates a zip of the of the WRIMS2 gui. Depends on buildWrimsInstall.'
     dependsOn buildWrimsInstall
     from("${buildDir}/installer/${wrimsGuiFolder}")
     archiveFileName = "${wrimsGuiFolder}.zip"
@@ -156,6 +158,31 @@ tasks.register('zipWrimsGui', Zip) {
 //NOTE: You must build the installer before you can run it with this task using the buildWrimsInstall task
 tasks.register('runWrimsGui') {
     group 'run'
+    description 'Launches the built WRIMS install from the WRIMS2_GUI_Start.bat file. Requires buildWrimsInstall task to have completed.'
+    doLast {
+        def processBuilder = new ProcessBuilder('cmd', '/c', 'WRIMS2_GUI_Start.bat')
+        processBuilder.directory(new File("${buildDir}/installer/${wrimsGuiFolder}"))
+        def process = processBuilder.start()
+    }
+}
+
+tasks.register('updateInstallerDropins', Copy) {
+    group 'run'
+    description 'Updates the dropin jars in the built installer'
+    // Task to copy JARs to dropins folder
+    from(project(':third-party').tasks.named('jar').get().archiveFile)
+    from(project(':wrims-ide').tasks.named('jar').get().archiveFile)
+    from(project(':dwr-hecdssvue').tasks.named('jar').get().archiveFile)
+    from(project(':jdiagram').tasks.named('jar').get().archiveFile)
+    from(project(':xtext-editor').tasks.named('jar').get().archiveFile)
+    from(project(':xtext-editor-ui').tasks.named('jar').get().archiveFile)
+    into("${buildDir}/installer/${wrimsGuiFolder}/dropins")
+}
+
+tasks.register('updateAndRun') {
+    group 'run'
+    description 'Updates the dropin jars in the built installer then runs WRIMS2 Gui from the WRIMS2_GUI_Start.bat file'
+    dependsOn updateInstallerDropins
     doLast {
         def processBuilder = new ProcessBuilder('cmd', '/c', 'WRIMS2_GUI_Start.bat')
         processBuilder.directory(new File("${buildDir}/installer/${wrimsGuiFolder}"))
@@ -231,7 +258,8 @@ tasks.register('addReleaseDateToPatchDeployment', DefaultTask) {
 //Zip patch files
 // Task that zips the wrims_gui_x64_${version} folder into a zip file
 tasks.register('zipWrimsPatch', Zip) {
-    group = 'release'
+    group 'release'
+    description 'Builds and zips the WrimsPatch file.'
     dependsOn addReleaseDateToPatchDeployment
     from("${buildDir}/patch/${wrimsPatchFolder}")
     archiveFileName = "${wrimsPatchFolder}.zip"

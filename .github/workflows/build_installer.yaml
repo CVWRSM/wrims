@@ -25,23 +25,23 @@ jobs:
         run: |
           ./gradlew clean
           ./gradlew build
-          ./gradlew :wrims-gui:zipWrimsGui
-          ./gradlew :wrims-gui:zipWrimsPatch
+          ./gradlew :wrims-install:zipWrimsGui
+          ./gradlew :wrims-install:zipWrimsPatch
 
       - name: Attach WRIMS Installer zip to github deployment
         run: |
-          gh release upload ${{ github.event.release.tag_name }} wrims-gui/build/installer/wrims_gui_x64_${{ github.event.release.tag_name }}.zip --repo ${{ github.repository }}
+          gh release upload ${{ github.event.release.tag_name }} wrims-install/build/installer/wrims_gui_x64_${{ github.event.release.tag_name }}.zip --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Attach WRIMS Patch zip to github deployment
         run: |
-          gh release upload ${{ github.event.release.tag_name }} wrims-gui/build/patch/wrims_patch_v2.2.0_basis.zip --repo ${{ github.repository }}
+          gh release upload ${{ github.event.release.tag_name }} wrims-install/build/patch/wrims_patch_v2.2.0_basis.zip --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Attach WRIMS Patch release date to github deployment
         run: |
-          gh release upload ${{ github.event.release.tag_name }} wrims-gui/build/patch/releasedate_v2.2.0_basis.log --repo ${{ github.repository }}
+          gh release upload ${{ github.event.release.tag_name }} wrims-install/build/patch/releasedate_v2.2.0_basis.log --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
