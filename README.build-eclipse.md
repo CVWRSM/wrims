@@ -16,7 +16,8 @@ The Gradle integration involved refactoring the primary modules into the these r
 # WRIMS Developer Build Setup - Using Gradle:
 PREREQUISITES:
 - Java JDK 1.8 installed (https://www.oracle.com/java/technologies/javase/javase8u211-later-archive-downloads.html)
-- JAVA_HOME environment variable set to installed JDK 1.8
+- JAVA_HOME environment variable set to installed JDK 1.8 (optional)
+  - This is only required to build the project from the command line. 
 - Git
   - https://github.com/git-guides/install-git
 - IDE Eclipse
@@ -27,23 +28,36 @@ PREREQUISITES:
   - NOTE: If you have to create the gradle.properties file, make sure it's not a "gradle.properties.txt" file. 
 ```
 ...
-cvmUserId=<userId>
-cvmPassword=<userToken>
+cvmUserId=<githubUserId>
+cvmPassword=<githubPersonalAccessToken>
 ...
-``` 
+```
+
+The cvmPassword is preferably set to a GitHub personal access token that has been granted access to 
+the CentralValleyModeling GitHub repository with public_repo access and read:packages enabled.<br>
+
+You can generate a personal access token here: https://github.com/settings/tokens/new
+
+![](./README_images/github_personal_access_token.png)
 
 > [!WARNING]
 > If you don't set the cvmUserId and cvmPassword in your gradle.properties file, you will get errors 
 > when you load the project into Eclipse. If that happens, you'll need to set the missing parameters in your gradle.properties file.
-> Then remove and re-import the project to eclipse to clear the errors and load correctly.
-> Make sure your gradle.properties file is in the correct location under your user directory and not a .txt file.
+> Then remove and re-import the project to eclipse to clear the errors and load correctly.<br>
+> Make sure your gradle.properties file is in the correct location under your user directory and not a .txt file.<br>
+> <br>
+> Never add your github username/token to any properties within project source code or it risks
+> being committed & exposed to the public.
 
 ## 1. Pull Source from GitHub & build the project
 - Clone the repository to your local machine.
   - Repository Clone URL: https://github.com/CentralValleyModeling/wrims.git
-- CD into the wrims directory
+- CD into the wrims directory.
 - Checkout the "Feature/wrims-devops" branch.
-- Build the project with gradle
+- Build the project with gradle (optional).
+
+The following commands will clone the repository, switch to the wrims-devops branch, and build the project from a command prompt.
+Alternatively, you can use your preferred git repo manager tool to clone the wrims repo and checkout the wrims-devops branch. 
 ```
 git clone https://github.com/CentralValleyModeling/wrims.git
 cd wrims
@@ -51,7 +65,9 @@ git switch Feature/wrims-devops
 .\gradlew.bat build
 ```
 
-![](./README_images/cmd_build_success.png)
+> [!NOTE] If you do not prebuild the project from command line and run into
+> issues with the Eclipse import, you may need to run the gradle build from the command line 
+> first and re-import the project into Eclipse.
 
 ## 2. Open Eclipse with a new/clean workspace
 
@@ -96,7 +112,7 @@ Click Finish to import.
 
 ![](./README_images/eclipse_import_project_final.png)
 
-Note: Click OK on this error window if it appears:
+> [!NOTE] Click OK on this error window if it appears:
 
 ![](./README_images/eclipse_import_project_error.png)
 
@@ -154,26 +170,13 @@ The following gradle tasks have been added to build/run the gradle installer:
 
 After the WRIMS source has been configured and the installer has been built, you are ready to remote debug WRIMS.
 
-### Update Project Explorer Filter to show build directory
-In the Project Explorer, click the icon for "Filters and Customization..."
+### Launch the WRIMS GUI application with Remote Debug enabled
 
-![](./README_images/eclipse_project_explorer_filter.png)
+The following gradle tasks hava been added to launch the WRIMS application with remote debugging enabled:
 
-Disable the "Gradle build folder" filter and click OK.
+![](./README_images/eclipse_debug_wrims_tasks.png)
 
-![](./README_images/eclipse_project_explorer_filter_disable.png)
-
-### Add the remote debug configuration to the WRIMS_Run.bat file:
-Edit the WRIMS_Run.bat file in built install folder. </br>
-
-![](./README_images/eclipse_wrims_run_bat.png)
-
-Replace the contents of the file with the following to add the remote debug vm arguments:
-
-```
-wriMS2_GUI_x64 -clean -console -consoleLog -debug .options -vmargs -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
-```
-Save and close the bat file. 
+Run either the debug>debugWRIMS task or the debug>updateAndDebugWRIMS task to launch the WRIMS GUI application with remote debugging enabled.
 
 ### Configure the Remote Debug sessions:
 From the toolbar, click Run>Debug Configurations

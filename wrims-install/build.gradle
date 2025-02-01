@@ -190,6 +190,21 @@ tasks.register('updateAndRun') {
     }
 }
 
+tasks.register('debugWRIMS', Exec) {
+    group 'debug'
+    description 'Runs WRIMS2 GUI with remote debugging enabled'
+    commandLine 'cmd', '/c', 'wriMS2_GUI_x64 -clean -console -consoleLog -debug .options -vmargs -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+    workingDir = file("${buildDir}/installer/${wrimsGuiFolder}")
+}
+
+tasks.register('updateAndDebugWRIMS', Exec) {
+    group 'debug'
+    description 'Updates the the dropin jars and runs WRIMS2 GUI with remote debugging enabled'
+    dependsOn updateInstallerDropins
+    commandLine 'cmd', '/c', 'wriMS2_GUI_x64 -clean -console -consoleLog -debug .options -vmargs -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+    workingDir = file("${buildDir}/installer/${wrimsGuiFolder}")
+}
+
 //-------- PATCH INSTALLER BUILD TASKS---------------
 // Task to copy JARs to patch folder
 tasks.register('copyJarsToPatchDropins', Copy) {
