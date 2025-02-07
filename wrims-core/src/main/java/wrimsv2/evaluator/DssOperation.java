@@ -48,7 +48,17 @@ public class DssOperation {
 		}
 
 		if (tsc==null){
-			return false;
+			if (timeStep.equalsIgnoreCase("1MON")) {
+				path=createPath(ControlData.partA.toUpperCase(),ts.dssBPart.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.svDvPartF.toUpperCase());
+				if (svFileIndex==1){
+					tsc = ControlData.cacheSvar.readFullRecord(path);
+				}else{
+					tsc = ControlData.cacheSvar2.readFullRecord(path);
+				}
+			}
+			if (tsc==null) {
+				return false;
+			}
 		}
 		if (!tsc.getUnits().toUpperCase().equals(ts.units.toUpperCase())){
 			return false;
@@ -121,7 +131,15 @@ public class DssOperation {
 		tsc = ControlData.cacheInit.readFullRecord(path);
 
 		if (tsc==null){
-			return false;
+			if (tsc==null){
+				if (ControlData.partE.equalsIgnoreCase("1MON")) {
+					path=createPath(ControlData.partA.toUpperCase(),ts.dssBPart.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.initPartF.toUpperCase());
+					tsc = ControlData.cacheInit.readFullRecord(path);
+				}
+				if (tsc==null) {
+					return false;
+				}
+			}
 		}
 		if (!tsc.getUnits().toUpperCase().equals(ts.units.toUpperCase())){
 			return false;
@@ -207,7 +225,15 @@ public class DssOperation {
 		tsc = ControlData.cacheInit.readFullRecord(path);
 
 		if (tsc==null){
-			return false;
+			if (tsc==null){
+				if (ControlData.partE.equalsIgnoreCase("1MON")) {
+					path=createPath(ControlData.partA.toUpperCase(),name.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.initPartF.toUpperCase());
+					tsc = ControlData.cacheInit.readFullRecord(path);
+				}
+				if (tsc==null) {
+					return false;
+				}
+			}
 		}
 		if (!tsc.getUnits().toUpperCase().equals(units.toUpperCase())){
 			return false;
@@ -488,7 +514,7 @@ public class DssOperation {
 			TimeSeriesContainer dc = new TimeSeriesContainer();
 			Date startDate=dds.getStartTime();
 			//long startJulmin = TimeFactory.getInstance().createTime(startDate).getTimeInMinutes();
-			Date modelStartDate=new Date(ControlData.startYear-1900, ControlData.startMonth, ControlData.startDay);
+			Date modelStartDate=new Date(ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);
 			//ds._dataType=DSSUtil.REGULAR_TIME_SERIES;
 			dc.type="PER-AVER";
 			dc.numberValues=TimeOperation.getNumberOfTimestep(startDate, modelStartDate, timeStep);
@@ -528,7 +554,7 @@ public class DssOperation {
 			TimeSeriesContainer dc = new TimeSeriesContainer();
 			Date startDate=dds.getStartTime();
 			//long startJulmin = TimeFactory.getInstance().createTime(startDate).getTimeInMinutes();
-			Date modelStartDate=new Date(ControlData.startYear-1900, ControlData.startMonth, ControlData.startDay);
+			Date modelStartDate=new Date(ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);
 			//dd._dataType=DSSUtil.REGULAR_TIME_SERIES;
 			dc.type="PER-AVER";
 			dc.numberValues=TimeOperation.getNumberOfTimestep(startDate, modelStartDate, timeStep);
