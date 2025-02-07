@@ -530,7 +530,7 @@ public class DssOperation {
 			try {
 				dss.put(dc);
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			//writer.storeTimeSeriesData(pathName, startJulmin, ds, storeFlags);
 		}
@@ -570,7 +570,7 @@ public class DssOperation {
 			try {
 				dss.put(dc);
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			//writer.storeTimeSeriesData(pathName, startJulmin, ds, storeFlags);
 		}
@@ -653,7 +653,7 @@ public class DssOperation {
 			try {
 				dss.put(dc);
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			//writer.storeTimeSeriesData(pathName, startJulmin, dd, storeFlags);
 		}
