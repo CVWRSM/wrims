@@ -7,6 +7,9 @@ import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 
+import mil.army.usace.hec.metadata.Interval;
+import mil.army.usace.hec.metadata.IntervalFactory;
+
 public class TimeOperation {
 	public static String[] month_const={"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"}; 
 	
@@ -174,7 +177,7 @@ public class TimeOperation {
 	
 	public static ParallelVars findTime(int value){
 		ParallelVars prvs=new ParallelVars();
-		if (ControlData.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			int detYear=value/12;
 			int detMonth=value%12;
 			prvs.dataMonth=ControlData.currMonth+detMonth;
@@ -210,7 +213,7 @@ public class TimeOperation {
 	
 	public static ParallelVars findTime(int value, int year, int month,  int day){
 		ParallelVars prvs = new ParallelVars();
-		if (ControlData.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			int detYear=value/12;
 			int detMonth=value%12;
 			prvs.dataMonth=month+detMonth;
@@ -259,7 +262,7 @@ public class TimeOperation {
 	}
 	
 	public static int getNumberOfTimestep(Date dateA, Date dateB, String timeStep){
-		if (timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timeStep)){
 			int monthA=dateA.getMonth();
 			int yearA=dateA.getYear();
 			int monthB=dateB.getMonth();
@@ -352,7 +355,7 @@ public class TimeOperation {
 			ControlData.outputMonth=12;
 		}
 		ControlData.outputDay=numberOfDays(ControlData.outputMonth, ControlData.outputYear);
-		if (ControlData.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			ControlData.prevOutputYear=ControlData.startYear;
 			ControlData.prevOutputMonth=ControlData.startMonth-1;
 			if (ControlData.prevOutputMonth==0){
@@ -417,7 +420,7 @@ public class TimeOperation {
 			ControlData.memStartYear=ControlData.memStartYear+1;
 			ControlData.memStartMonth=ControlData.memStartMonth-12;			
 		}
-		if (ControlData.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			ControlData.memStartDay=numberOfDays(ControlData.memStartMonth, ControlData.memStartYear);
 		}else{
 			ControlData.memStartDay=1;
@@ -427,4 +430,8 @@ public class TimeOperation {
 		ControlData.memStartDate=new Date(ControlData.memStartYear-1900, ControlData.memStartMonth-1, ControlData.memStartDay);
 	}
 	
+	public static boolean isMonthlyInterval(String intervalName) {
+		return IntervalFactory.findAllDss(IntervalFactory.equalsName(intervalName)).stream()
+			.anyMatch(Interval::isMonthly);
+	}
 }

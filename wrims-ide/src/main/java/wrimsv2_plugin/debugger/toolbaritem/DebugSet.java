@@ -264,7 +264,7 @@ public class DebugSet extends WorkbenchWindowControlContribution{
 	}
 	
 	public void nextTimeStep(){
-		if (DebugCorePlugin.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(DebugCorePlugin.timeStep)){
 			timeSlider.setSelection(timeSlider.getSelection()+1);
 			int selection = timeSlider.getSelection();
 			int[] yearMonth=TimeOperation.searchYearMonth(selection,startDebugYear, startDebugMonth);

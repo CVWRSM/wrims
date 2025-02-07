@@ -940,7 +940,7 @@ public class WPPBatchRunDialog extends Dialog {
 							dc2.type=dc1.type;
 							dc2.startTime=dc1.startTime;
 							int offset;
-							if (parts[5].equalsIgnoreCase("1MON")){
+							if (TimeOperation.isMonthlyInterval(parts[5])){
 								offset = TimeOperation.getNumberOfTimestep(dateA, dateB, "1MON")-1;							
 							}else{
 								offset = TimeOperation.getNumberOfTimestep(dateA, dateB, "1DAY")-1;
@@ -968,7 +968,7 @@ public class WPPBatchRunDialog extends Dialog {
 							Date dateA=new Date(dc1StartTime);
 							long dcStartTime=dc.startTime*60l*1000l-2208988800000l;
 							Date dateB=new Date(dcStartTime);
-							if (parts[5].equalsIgnoreCase("1MON")){
+							if (TimeOperation.isMonthlyInterval(parts[5])){
 								int offset = TimeOperation.getNumberOfTimestep(dateA, dateB, "1MON")-1;
 								for (int k=0; k<nv; k++){
 									dc1.times[offset+k]=dc.times[k];
@@ -994,7 +994,7 @@ public class WPPBatchRunDialog extends Dialog {
 							dc2.type=dc.type;
 							dc2.startTime=dc.startTime;
 							int offset;
-							if (parts[5].equalsIgnoreCase("1MON")){
+							if (TimeOperation.isMonthlyInterval(parts[5])){
 								offset = TimeOperation.getNumberOfTimestep(dateA, dateB, "1MON")-1;	
 								
 							}else{

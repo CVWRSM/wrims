@@ -1055,7 +1055,7 @@ public class WPPMainTab extends AbstractLaunchConfigurationTab {
 		public void modifyText(ModifyEvent e) {
 			updateLaunchConfigurationDialog();
 			String _strTimeStep =timeStepCombo.getText();
-			if (_strTimeStep.equalsIgnoreCase("1MON")) {
+			if (TimeOperation.isMonthlyInterval(_strTimeStep)) {
 				startDayCombo.removeModifyListener(sdl);
 				int startMonth=TimeOperation.monthValue(startMonthCombo.getText());
 				int startYear=Integer.parseInt(startYearCombo.getText());	
@@ -1123,7 +1123,7 @@ public class WPPMainTab extends AbstractLaunchConfigurationTab {
 				int startMonth=TimeOperation.monthValue(startMonthCombo.getText());
 				int startYear=Integer.parseInt(startYearCombo.getText());	
 				int maxDayInMonth=TimeOperation.numberOfDays(startMonth, startYear);
-				if (Integer.parseInt(startDayCombo.getText())>maxDayInMonth || timeStepCombo.getText().equalsIgnoreCase("1MON")){
+				if (Integer.parseInt(startDayCombo.getText())>maxDayInMonth || TimeOperation.isMonthlyInterval(timeStepCombo.getText())){
 					startDayCombo.removeModifyListener(sdl);
 					startDayCombo.select(TimeOperation.numberOfDays(startMonth, startYear)-1);
 					startDayCombo.addModifyListener(sdl);
@@ -1132,7 +1132,7 @@ public class WPPMainTab extends AbstractLaunchConfigurationTab {
 				int endMonth=TimeOperation.monthValue(endMonthCombo.getText());
 				int endYear=Integer.parseInt(endYearCombo.getText());	
 				int maxDayInMonth=TimeOperation.numberOfDays(endMonth, endYear);
-				if (Integer.parseInt(endDayCombo.getText())>maxDayInMonth || timeStepCombo.getText().equalsIgnoreCase("1MON")){
+				if (Integer.parseInt(endDayCombo.getText())>maxDayInMonth || TimeOperation.isMonthlyInterval(timeStepCombo.getText())){
 					endDayCombo.removeModifyListener(edl);
 					endDayCombo.select(TimeOperation.numberOfDays(endMonth, endYear)-1);
 					endDayCombo.addModifyListener(edl);

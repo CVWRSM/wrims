@@ -85,7 +85,7 @@ public class VariableTimeStep {
 		ArrayList<String> timeStepList=sds.getModelTimeStepList();
 		ControlData.totalTimeStep=new ArrayList<Integer>();
 		for (String timeStep: timeStepList){
-			if (timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(timeStep)){
 				if (ControlData.yearOutputSection<0){
 					ControlData.totalTimeStep.add((ControlData.endYear-ControlData.startYear)*12+(ControlData.endMonth-ControlData.startMonth)+1);
 				}else{
@@ -113,7 +113,7 @@ public class VariableTimeStep {
 	}
 	
 	public static int getTotalTimeStep(String timeStep){
-		if (timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timeStep)){
 			return (ControlData.endYear-ControlData.startYear)*12+(ControlData.endMonth-ControlData.startMonth)+1;
 		}else{
 			Date startDate = new Date (ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);
@@ -138,7 +138,7 @@ public class VariableTimeStep {
 				timeStepList.set(i, ControlData.defaultTimeStep);
 			}
 			String timeStep=timeStepList.get(i);
-			if (timeStep.equals("1MON") && ControlData.cycleTimeStepPriority<2.0){
+			if (TimeOperation.isMonthlyInterval(timeStep) && ControlData.cycleTimeStepPriority<2.0){
 				ControlData.cycleTimeStepPriority=2.0;
 			}else if (timeStep.equals("1DAY") && ControlData.cycleTimeStepPriority<1.0){
 				ControlData.cycleTimeStepPriority=1.0;
@@ -175,7 +175,7 @@ public class VariableTimeStep {
 	
 	public static void setCurrentDate(StudyDataSet sds, int day, int month, int year){
 		String timeStep=sds.getModelTimeStepList().get(ControlData.currCycleIndex);
-		if (timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timeStep)){
 			ControlData.currDay=TimeOperation.numberOfDays(month, year);
 			ControlData.currMonth=month;
 			ControlData.currYear=year;

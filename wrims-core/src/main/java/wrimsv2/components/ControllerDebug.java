@@ -426,7 +426,7 @@ public class ControllerDebug extends Thread {
 						if (Error.getTotalError()==0) noError=true;
 						//if (ControlData.currTimeStep==0 && ControlData.currCycleIndex==2) new RCCComparison();
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (ControlData.timeStep.equals("1MON")){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -441,7 +441,7 @@ public class ControllerDebug extends Thread {
 						new AssignPastCycleVariable();
 						deferPause(modelIndex);
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (ControlData.timeStep.equals("1MON")){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -513,7 +513,7 @@ public class ControllerDebug extends Thread {
 		VariableTimeStep.procCycleTimeStep(sds);
 		for(int i=0; i<initialTimeStep.size(); i++){
 			String timeStep=sds.getModelTimeStepList().get(i);
-			if (timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(timeStep)){
 				diffTimeStep=(ControlData.cycleStartYear-ControlData.resimYear)*12+(ControlData.cycleStartMonth-ControlData.resimMonth);
 			}else{
 				Date startDate = new Date (ControlData.resimYear-1900, ControlData.resimMonth-1, ControlData.resimDay);
@@ -535,7 +535,7 @@ public class ControllerDebug extends Thread {
 	}
 	
 	public void pauseForDebug(int i){
-		if (ControlData.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			if (ControlData.currYear==debugYear && ControlData.currMonth==debugMonth && i==debugCycle-1){
 				try {
 					di.sendEvent("suspended!"+debugYear+"#"+debugMonth+"#"+debugDay+"#"+debugCycle);
@@ -571,7 +571,7 @@ public class ControllerDebug extends Thread {
 	}
 	
 	public void deferPause(int i){
-		if (ControlData.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			if (ControlData.currYear==debugYear && ControlData.currMonth==debugMonth && i==debugCycle-1){
 				debugCycle=debugCycle+1;
 				if (debugCycle>totalCycles){
@@ -652,7 +652,7 @@ public class ControllerDebug extends Thread {
 				double[] dataArray = ddsf.getData();
 				ParallelVars prvs = TimeOperation.findTime(-1);
 				int currIndex;
-				if (monitorVarTimeStep.equals("1MON")){
+				if (TimeOperation.isMonthlyInterval(monitorVarTimeStep)){
 					currIndex=ValueEvaluation.timeSeriesIndex(ddsf, prvs)-1;
 				}else{
 					currIndex=ValueEvaluation.timeSeriesIndex(ddsf, prvs)-2;
@@ -695,7 +695,7 @@ public class ControllerDebug extends Thread {
 	
 	public void writeOutputDssEveryTenYears(){
 		if (ControlData.currMonth==12 && ControlData.currYear%10==0){
-			if (ControlData.timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				DssOperation.writeDVAliasToDSS();
 			}else if(ControlData.timeStep.equals("1DAY") && ControlData.currDay==31){
 				DssOperation.writeDVAliasToDSS();

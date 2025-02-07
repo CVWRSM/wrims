@@ -85,7 +85,7 @@ public class DssDataSet {
 		int sYear=st.getYear()+1900;
 		int sMonth=st.getMonth()+1; //Originally it should be getMonth()-1. However, dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
 		Date studyStart=new Date(ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);
-		if (getTimeStep().equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(getTimeStep())){
 			studyStartIndex=ControlData.startYear*12+ControlData.startMonth-(sYear*12+sMonth);
 		}else{
 			//double indexValue=(studyStartTime-sTime)/(1000*60*60*24);
@@ -116,7 +116,7 @@ public class DssDataSet {
 			m2=selMon.substring(3);
 		}
 		Date dataDate = startTime;
-		if (timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timeStep)){
 			dataDate=TimeOperation.backOneMonth(dataDate);
 		}else{
 			dataDate=TimeOperation.backOneDay(dataDate);
@@ -126,7 +126,7 @@ public class DssDataSet {
 			if (dataDate.after(selEd)){
 				return selData;
 			}else if (dataDate.before(selSd)){
-				if (timeStep.equals("1MON")){
+				if (TimeOperation.isMonthlyInterval(timeStep)){
 					dataDate=TimeOperation.addOneMonth(dataDate);
 				}else{
 					dataDate=TimeOperation.addOneDay(dataDate);
@@ -146,7 +146,7 @@ public class DssDataSet {
 						selDataMap.put(sum, entryDate);
 					}
 				}
-				if (timeStep.equals("1MON")){
+				if (TimeOperation.isMonthlyInterval(timeStep)){
 					dataDate=TimeOperation.addOneMonth(dataDate);
 				}else{
 					dataDate=TimeOperation.addOneDay(dataDate);
@@ -194,7 +194,7 @@ public class DssDataSet {
 		int dataYear=dataDate.getYear()+1900;
 		int dataMonth=dataDate.getMonth()+1; //HEC DSS7 uses getMonth()+1. However, Vista/HecDSS6 uses getMonth() because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921 
 		int dataDay = dataDate.getDate();
-		if (ControlData.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			return (dataYear-ControlData.currYear)*12+(dataMonth-ControlData.currMonth);
 		}else{
 			Date currDate=new Date (ControlData.currYear-1900, ControlData.currMonth-1, ControlData.currDay);

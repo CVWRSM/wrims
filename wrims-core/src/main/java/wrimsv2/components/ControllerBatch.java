@@ -409,7 +409,7 @@ public class ControllerBatch {
 						}
 
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -426,7 +426,7 @@ public class ControllerBatch {
 						System.out.println("Cycle "+cycleI+" in "+ControlData.currYear+"/"+ControlData.currMonth+"/"+ControlData.currDay+" Skipped. ("+model+")");
 						new AssignPastCycleVariable();
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -497,7 +497,7 @@ public class ControllerBatch {
 
 	public void writeOutputDssEveryTenYears(){
 		if (ControlData.currMonth==12 && ControlData.currYear%10==0){
-			if (isMonthlyInterval(ControlData.timeStep)){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				DssOperation.writeDVAliasToDSS();
 			}else if(ControlData.timeStep.equals("1DAY") && ControlData.currDay==31){
 				DssOperation.writeDVAliasToDSS();
@@ -805,7 +805,7 @@ public class ControllerBatch {
 						if (ControlData.solverType == Param.SOLVER_CBC1.intValue()||ControlData.solverType == Param.SOLVER_CBC.intValue()) { CbcSolver.resetModel();}
 						
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -819,7 +819,7 @@ public class ControllerBatch {
 						System.out.println("Cycle "+cycleI+" in "+ControlData.currYear+"/"+ControlData.currMonth+"/"+ControlData.currDay+" Skipped. ("+model+")");
 						new AssignPastCycleVariable();
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1029,7 +1029,7 @@ public class ControllerBatch {
 						}
 						
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1046,7 +1046,7 @@ public class ControllerBatch {
 						System.out.println("Cycle "+cycleI+" in "+ControlData.currYear+"/"+ControlData.currMonth+"/"+ControlData.currDay+" Skipped. ("+model+")");
 						new AssignPastCycleVariable();
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1286,7 +1286,7 @@ public class ControllerBatch {
 						if (Error.error_evaluation.size()>=1) noError=false;
 
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1303,7 +1303,7 @@ public class ControllerBatch {
 						System.out.println("Cycle "+cycleI+" in "+ControlData.currYear+"/"+ControlData.currMonth+"/"+ControlData.currDay+" Skipped. ("+model+")");
 						new AssignPastCycleVariable();
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1457,7 +1457,7 @@ public class ControllerBatch {
 						}
 						
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1474,7 +1474,7 @@ public class ControllerBatch {
 						System.out.println("Cycle "+cycleI+" in "+ControlData.currYear+"/"+ControlData.currMonth+"/"+ControlData.currDay+" Skipped. ("+model+")");
 						new AssignPastCycleVariable();
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1693,7 +1693,7 @@ public class ControllerBatch {
 						CbcSolver.resetModel();
 						
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1710,7 +1710,7 @@ public class ControllerBatch {
 						System.out.println("Cycle "+cycleI+" in "+ControlData.currYear+"/"+ControlData.currMonth+"/"+ControlData.currDay+" Skipped. ("+model+")");
 						new AssignPastCycleVariable();
 						ControlData.currTimeStep.set(ControlData.currCycleIndex, ControlData.currTimeStep.get(ControlData.currCycleIndex)+1);
-						if (isMonthlyInterval(ControlData.timeStep)){
+						if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 							VariableTimeStep.currTimeAddOneMonth();
 						}else{
 							VariableTimeStep.currTimeAddOneDay();
@@ -1792,10 +1792,5 @@ public class ControllerBatch {
 	public void procLaunch(String[] args){
 		String launchFilePath = args[0].substring(args[0].indexOf("=") + 1, args[0].length());
 		new LaunchConfiguration(launchFilePath);
-	}
-
-	static boolean isMonthlyInterval(String intervalName) {
-		return IntervalFactory.findAllDss(IntervalFactory.equalsName(intervalName)).stream()
-			.anyMatch(Interval::isMonthly);
 	}
 }
