@@ -170,6 +170,15 @@ The following gradle tasks have been added to build/run the gradle installer:
 
 After the WRIMS source has been configured and the installer has been built, you are ready to remote debug WRIMS.
 
+> [!NOTE]
+> Remote Debugging means the WRIMS GUI application is fully assembled under the wrims-install module and
+> run with "Remote Java Debugging" enabled as a flag in the launch script (e.g. the "remote java process). 
+> All the Luna Eclipse plugins and jars are included within the installer \plugins directory and are used to launch the WRIMS GUI application.
+> The developer can then connect their eclipse IDE to the running WRIMS GUI application and debug the code using a Remote Debug session (debugger java process) that is linked to the local java files.
+> <br><br>
+> Local Debugging implies running/debugging the application directly from a single jvm in the Eclipse IDE.
+> A working configuration for local running/debugging has not been established yet.
+
 ### Launch the WRIMS GUI application with Remote Debug enabled
 
 The following gradle tasks hava been added to launch the WRIMS application with remote debugging enabled:
@@ -214,9 +223,9 @@ You can now set breakpoints in the WRIMS GUI code and debug the application.
 > Regardless of the scope of the code change. This issue has been reported to the Eclipse buildship community
 > and is being tracked here: https://discuss.gradle.org/t/hotswapping-code-with-imported-gradle-project-fails/50387
 
-## 10. Debugging code changes for WRIMS
-Once the you have completed the above steps, the fastest way to push code changes to the dropin modules 
-is using the Gradle run>updateInstallerDropins task or the run>updateAndRun task. 
+## 10. Debugging/testing code changes for WRIMS
+Once you have completed the above steps and are able to run wrims from the build installer, 
+the fastest way to push code changes to the dropin modules is using the Gradle run>updateInstallerDropins task or the run>updateAndRun task.
 
 ![](./README_images/eclipse_update_dropins.png)
 
@@ -225,8 +234,13 @@ The updateAndRun task will also launch the WRIMS GUI application after the dropi
 
 These tasks are much faster than doing a complete clean and rebuild of the WRIMS GUI application.
 
+If the application does not reflect the latest changes, you may need to run a clean and buildWrimsInstall task before running the application.
+
 > [!NOTE]
-> You will have to re-launch your remote-debugging session after the WRIMS GUI application has been updated and relaunch. 
+> You will have to re-launch your remote-debugging session after the WRIMS GUI application has been updated and relaunch.
+> 
+> This process can also be used to test code changes from other developers that you have pulled from a branch update or after checking out their development branch. 
+
 
 ## 11. Eclipse WRIMS Launch Configuration
 Attempts have been made to run the WRIMS GUI application directly from Eclipse with a target platform set to use 
@@ -234,3 +248,11 @@ only the plugins configured within the wrims-insall build.  <br><br>
 
 While this seems to be the correct approach, we are still experiencing issues with the application failing to launch. 
 This issue is being tracked here in github: https://github.com/CentralValleyModeling/wrims/issues/197
+
+## 12. Testing Source Code Changes
+How to test source code changes after already configuring your working developer environment.
+1. Checkout the branch you want to test, or update your current branch with the latest changes.
+2. Run the "updateInstallerDropins" gradle task to update the dropin jars in your built WRIMS GUI application.
+- This task will rebuild any modified dropin jars and copy them into the wrims-installer build. 
+3. Run the "runWrimsGui" gradle task to launch the WRIMS GUI application.
+
