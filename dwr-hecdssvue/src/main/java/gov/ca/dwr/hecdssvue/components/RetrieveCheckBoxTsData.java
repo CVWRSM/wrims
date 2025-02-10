@@ -216,7 +216,7 @@ public class RetrieveCheckBoxTsData {
 		while (k<DssPluginCore.pathnameLists[j].size() && !found) {
 			String pathName = DssPluginCore.pathnameLists[j].get(k);
 			String[] parts = pathName.split("/");
-			if (parts[2].equals(partB) && parts[3].equals(partC)){
+			if (parts[2].equalsIgnoreCase(partB) && parts[3].equalsIgnoreCase(partC)){
 				found = true;
 				String pathname=getPathname(parts);
 				TimeSeriesContainer dataVector_file = getData(pathname, j, isBase);
