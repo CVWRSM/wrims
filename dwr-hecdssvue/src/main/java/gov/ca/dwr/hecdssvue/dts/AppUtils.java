@@ -969,7 +969,7 @@ public class AppUtils {
         String startDateStr = "";
         TimeInterval ti = ds.getTimeInterval();
         String tiStr = ti.getIntervalAsString();
-        if (tiStr.equalsIgnoreCase("1MON")) {
+        if (tiStr.equalsIgnoreCase("1MON") || tiStr.equalsIgnoreCase("1Month")) {
             startDateStr = TimeOperation.dssTime(startDate.getYear() + 1900, startDate.getMonth() + 1, 1);
         } else if (tiStr.equalsIgnoreCase("1DAY")) {
             startDateStr =
@@ -977,7 +977,7 @@ public class AppUtils {
         }
         HecTime startTime = (new HecTime(startDateStr));
         tsc.startTime = startTime.value();
-        if (tiStr.equalsIgnoreCase("1MON")) {
+        if (tiStr.equalsIgnoreCase("1MON") || tiStr.equalsIgnoreCase("1Month")) {
             int size = yArray.length;
             for (int j = 0; j < size; j++) {
                 int mon = startDate.getMonth() + 1;

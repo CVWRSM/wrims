@@ -48,7 +48,7 @@ public class DssOperation {
 		}
 
 		if (tsc==null){
-			if (timeStep.equalsIgnoreCase("1MON")) {
+			if (TimeOperation.isMonthlyInterval(timeStep)) {
 				path=createPath(ControlData.partA.toUpperCase(),ts.dssBPart.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.svDvPartF.toUpperCase());
 				if (svFileIndex==1){
 					tsc = ControlData.cacheSvar.readFullRecord(path);
@@ -132,7 +132,7 @@ public class DssOperation {
 
 		if (tsc==null){
 			if (tsc==null){
-				if (ControlData.partE.equalsIgnoreCase("1MON")) {
+				if (TimeOperation.isMonthlyInterval(ControlData.partE)) {
 					path=createPath(ControlData.partA.toUpperCase(),ts.dssBPart.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.initPartF.toUpperCase());
 					tsc = ControlData.cacheInit.readFullRecord(path);
 				}
@@ -226,7 +226,7 @@ public class DssOperation {
 
 		if (tsc==null){
 			if (tsc==null){
-				if (ControlData.partE.equalsIgnoreCase("1MON")) {
+				if (TimeOperation.isMonthlyInterval(ControlData.partE)) {
 					path=createPath(ControlData.partA.toUpperCase(),name.toUpperCase(),partC.toUpperCase(),"","1Month", ControlData.initPartF.toUpperCase());
 					tsc = ControlData.cacheInit.readFullRecord(path);
 				}
@@ -385,7 +385,7 @@ public class DssOperation {
 					values1[i]=values[i+nTimestep];
 				}
 				Date startDate;
-				if (timestep.equals("1MON")){
+				if (TimeOperation.isMonthlyInterval(timestep)){
 					startDate=TimeOperation.addOneMonth(ControlData.prevOutputDate);
 				}else{
 					startDate=TimeOperation.addOneDay(ControlData.prevOutputDate);
@@ -450,7 +450,7 @@ public class DssOperation {
 							values1[j]=values[j+nTimestep];
 						}
 						Date startDate;
-						if (timestep.equals("1MON")){
+						if (TimeOperation.isMonthlyInterval(timestep)){
 							startDate=TimeOperation.addOneMonth(ControlData.prevOutputDate);
 						}else{
 							startDate=TimeOperation.addOneDay(ControlData.prevOutputDate);
@@ -530,7 +530,7 @@ public class DssOperation {
 			try {
 				dss.put(dc);
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			//writer.storeTimeSeriesData(pathName, startJulmin, ds, storeFlags);
 		}
@@ -570,7 +570,7 @@ public class DssOperation {
 			try {
 				dss.put(dc);
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			//writer.storeTimeSeriesData(pathName, startJulmin, ds, storeFlags);
 		}
@@ -653,7 +653,7 @@ public class DssOperation {
 			try {
 				dss.put(dc);
 			} catch (Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			//writer.storeTimeSeriesData(pathName, startJulmin, dd, storeFlags);
 		}
@@ -678,7 +678,7 @@ public class DssOperation {
 				int size = values.length;
 				int nTimestep = TimeOperation.getNumberOfTimestep(ControlData.memStartDate, ControlData.prevOutputDate, timestep);
 				if (nTimestep<0) nTimestep=0;
-				if (timestep.equals("1MON")){
+				if (TimeOperation.isMonthlyInterval(timestep)){
 					int size1 = savedEndMonthlyTimestep+1-nTimestep;
 					values1=new double[size1];
 					for (int i=0; i<size1; i++){
@@ -692,7 +692,7 @@ public class DssOperation {
 					}
 				}
 				Date startDate;
-				if (timestep.equals("1MON")){
+				if (TimeOperation.isMonthlyInterval(timestep)){
 					startDate=TimeOperation.addOneMonth(ControlData.prevOutputDate);
 				}else{
 					startDate=TimeOperation.addOneDay(ControlData.prevOutputDate);
@@ -752,7 +752,7 @@ public class DssOperation {
 						String timestep=ddsfl.getTimeStep();
 						double[] values=ddsfl.getData();
 						double[] modValues;
-						if (timestep.equals("1MON")){
+						if (TimeOperation.isMonthlyInterval(timestep)){
 							modValues=new double[totalSavedMonthlyTimestep];
 							for (int j=savedStartMonthlyTimestep; j<=savedEndMonthlyTimestep; j++){
 								modValues[j-savedStartMonthlyTimestep]=values[j];
@@ -878,7 +878,7 @@ public class DssOperation {
 	}
 
 	public static int savedTimeStep(String timeStep, int year, int month, int day){
-		if (timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timeStep)){
 			return (year-ControlData.startYear)*12+(month-ControlData.startMonth);
 		}else{
 			Date startDate = new Date (ControlData.startYear-1900, ControlData.startMonth-1, ControlData.startDay);

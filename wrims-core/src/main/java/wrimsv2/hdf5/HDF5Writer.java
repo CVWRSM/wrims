@@ -299,7 +299,7 @@ public class HDF5Writer {
 			dvAsLookupTimestep[i]=timestep;
 			int j=i+1;
 			dvAsLookupIndex[i]=j;
-			if (timestep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(timestep)){
 				monthlyDvarAliasMap.put(dvAliasName, dvAliasNameMod);
 				monthlyDvarAliasKindMap.put(dvAliasName, kind);
 				monthlyDvarAliasList.add(dvAliasName);
@@ -717,7 +717,7 @@ public static void writeMonthlyTimestepDvarAlias(){
 	
 	public static void writeOneCycleSv(ModelDataSet mds, int index){
 		if (fid>0){
-			if (ControlData.timeStep.equals("1MON")) {
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)) {
 				writeMonthlyCycleSv(mds, index);
 			}else if (ControlData.timeStep.equals("1DAY")){
 				writeDailyCycleSv(mds, index);
@@ -750,7 +750,7 @@ public static void writeMonthlyTimestepDvarAlias(){
 			String strCycleI=cycleI+"";
 			
 			if (ControlData.isOutputCycle && General.isSelectedCycleOutput(strCycleI)){
-				if (timestep.equals("1MON")){
+				if (TimeOperation.isMonthlyInterval(timestep)){
 					if (gidSCMonthly>=0) HDF5Util.writeCycleStaticSvNames(mds, gidSCMonthly, i);
 				}else if (timestep.equals("1DAY")){
 					if (gidSCDaily>=0) HDF5Util.writeCycleStaticSvNames(mds, gidSCDaily, i);
@@ -771,7 +771,7 @@ public static void writeMonthlyTimestepDvarAlias(){
 			DssDataSetFixLength dds = dvAliasCycle.get(dvAliasName);
 			String dvAliasNameMod=dvAliasName.substring(0, dvAliasName.length()-5);
 			String timestep = dds.getTimeStep();
-			if (timestep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(timestep)){
 				monthlyCycleVarNamesArr.add(dvAliasNameMod);
 				monthlyCycleDataArr.add(dds.getData());
 			}else{
@@ -1003,7 +1003,7 @@ public static void writeMonthlyTimestepDvarAlias(){
 	
 	public static void skipOneCycle(ModelDataSet mds, int index){
 		if (fid>0){
-			if (ControlData.timeStep.equals("1MON")) {
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)) {
 				skipMonthlyCycle(mds, index);
 			}else if (ControlData.timeStep.equals("1DAY")){
 				skipDailyCycle(mds, index);

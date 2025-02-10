@@ -839,7 +839,7 @@ public class Evaluation {
 		long dataTime;
 		long startTime;
 		long currTime;
-		if (ControlData.timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			dataTime=new Date(prvs.dataYear-1900, prvs.dataMonth-1, 1).getTime();
 			startTime=new Date(ControlData.startYear-1900, ControlData.startMonth-1, 1).getTime();
 			currTime=new Date(ControlData.currYear-1900, ControlData.currMonth-1, 1).getTime();
@@ -1014,7 +1014,7 @@ public class Evaluation {
 		int sMonth=st.getMonth()+1; //HEC DSS7 uses getMonth()+1. However, Vista/HecDSS6 uses getMonth() because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921
 		Date dataDate=new Date(prvs.dataYear-1900, prvs.dataMonth-1, prvs.dataDay);
 		int index;
-		if (dds.getTimeStep().equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(dds.getTimeStep())){
 			index=prvs.dataYear*12+prvs.dataMonth-(sYear*12+sMonth);
 		}else{
 			//double indexValue=(dataTime-sTime)/(1000*60*60*24);
@@ -1035,7 +1035,7 @@ public class Evaluation {
 		int sMonth=st.getMonth()+1; //HEC DSS7 uses getMonth()+1. However, Vista/HecDSS6 uses getMonth() because dss data store at 24:00 Jan31, 1921 is considered to store at 0:00 Feb 1, 1921
 		Date dataDate=new Date(prvs.dataYear-1900, prvs.dataMonth-1, prvs.dataDay);
 		int index;
-		if (dds.getTimeStep().equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(dds.getTimeStep())){
 			index=prvs.dataYear*12+prvs.dataMonth-(sYear*12+sMonth);
 		}else{
 			//double indexValue=(dataTime-sTime)/(1000*60*60*24);
@@ -1646,7 +1646,7 @@ public class Evaluation {
 			
 			Date selSd;
 			Date selEd;
-			if (ControlData.timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				selSd=new Date(sy-1900, sm-1, TimeOperation.numberOfDays(sm, sy));
 				selEd=new Date(ey-1900, em-1, TimeOperation.numberOfDays(em, ey));
 			}else{
@@ -1688,7 +1688,7 @@ public class Evaluation {
 			
 			Date selSd;
 			Date selEd;
-			if (ControlData.timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				selSd=new Date(sy-1900, sm-1, TimeOperation.numberOfDays(sm, sy));
 				selEd=new Date(ey-1900, em-1, TimeOperation.numberOfDays(em, ey));
 			}else{
@@ -1712,7 +1712,7 @@ public class Evaluation {
 	}
 	
 	public static EvalExpression daysInTimeStep(){
-		if (ControlData.currTimeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 			return daysIn();
 		}else{
 			IntDouble id=new IntDouble(1, true);
@@ -1759,25 +1759,25 @@ public class Evaluation {
 		double convert;
 		int days=TimeOperation.numberOfDays(prvs.dataMonth, prvs.dataYear);
 		if (ident.equals("taf_cfs")){
-			if (ControlData.timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				return 504.1666667 / days;
 			}else{
 				return 504.1666667;
 			}
 		}else if (ident.equals("cfs_taf")){
-			if (ControlData.timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				return days / 504.1666667;
 			}else{
 				return 1 / 504.1666667;
 			}
 		}else if (ident.equals("af_cfs")){
-			if (ControlData.timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				return 504.1666667 / days / 1000.;
 			}else{
 				return 504.1666667 / 1000.;
 			}
 		}else{
-			if (ControlData.timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				return days / 504.1666667 * 1000.;
 			}else{
 				return 1 / 504.1666667 * 1000.;

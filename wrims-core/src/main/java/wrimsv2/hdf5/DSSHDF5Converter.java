@@ -1300,7 +1300,7 @@ public class DSSHDF5Converter {
 	}
 
 	public int getTotalTimeStep(String timestepStr){
-		if (timestepStr.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timestepStr)){
 			int timestep=(ControlData.endYear-ControlData.startYear)*12+(ControlData.endMonth-ControlData.startMonth)+1;
 			return timestep;
 		}else if (timestepStr.equals("1DAY")){

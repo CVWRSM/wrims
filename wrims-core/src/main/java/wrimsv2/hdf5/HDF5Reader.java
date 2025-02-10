@@ -709,7 +709,7 @@ public class HDF5Reader {
 		double[][] data=new double[0][0];
 		Date startDate=new Date(21, 9, 31, 24, 0);
 		
-		if (timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timeStep)){
 			listName = svMonthlyListName;
 			listKind = svMonthlyListKind;
 			data = svMonthlyData;
@@ -810,7 +810,7 @@ public class HDF5Reader {
 		double[][] data=new double[0][0];
 		Date startDate=new Date(21, 9, 31, 24, 0);
 		
-		if (timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timeStep)){
 			listName = initMonthlyListName;
 			listKind = initMonthlyListKind;
 			data = initMonthlyData;
@@ -876,7 +876,7 @@ public class HDF5Reader {
 		double[][] data=new double[0][0];
 		Date startDate=new Date(21, 9, 31, 24, 0);
 		
-		if (timeStep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timeStep)){
 			listName = initMonthlyListName;
 			listKind = initMonthlyListKind;
 			data = initMonthlyData;

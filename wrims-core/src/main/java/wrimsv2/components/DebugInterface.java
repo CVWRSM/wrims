@@ -2141,7 +2141,7 @@ public class DebugInterface {
 			double[] dataArray = ddsf.getData();
 			ParallelVars prvs = TimeOperation.findTime(0);
 			int currIndex;
-			if (ControlData.timeStep.equals("1MON")){
+			if (TimeOperation.isMonthlyInterval(ControlData.timeStep)){
 				currIndex=ValueEvaluation.timeSeriesIndex(ddsf, prvs);
 			}else{
 				currIndex=ValueEvaluation.timeSeriesIndex(ddsf, prvs)-1;

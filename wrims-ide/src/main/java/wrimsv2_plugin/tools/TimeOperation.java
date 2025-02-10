@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 
+import mil.army.usace.hec.metadata.Interval;
+import mil.army.usace.hec.metadata.IntervalFactory;
 import wrimsv2_plugin.debugger.core.DebugCorePlugin;
 
 public class TimeOperation {
@@ -88,7 +90,7 @@ public class TimeOperation {
 	
 	public static String createTimewindow (int year, int month, int day, String timestep){
 		String monthStr=getMonthText(month);
-		if (timestep.equals("1MON")){
+		if (isMonthlyInterval(timestep)){
 			int lastDay=numberOfDays(month, year);
 			return lastDay+monthStr+year+" 2300 "+lastDay+monthStr+year+" 2400";
 		}else{
@@ -113,7 +115,7 @@ public class TimeOperation {
 	
 	public static String createStartTime (int year, int month, int day, String timestep){
 		String monthStr=getMonthText(month);
-		if (timestep.equals("1MON")){
+		if (isMonthlyInterval(timestep)){
 			int lastDay=numberOfDays(month, year);
 			return lastDay+monthStr+year+" 2300";
 		}else{
@@ -128,7 +130,7 @@ public class TimeOperation {
 	
 	public static String createEndTime (int year, int month, int day, String timestep){
 		String monthStr=getMonthText(month);
-		if (timestep.equals("1MON")){
+		if (isMonthlyInterval(timestep)){
 			int lastDay=numberOfDays(month, year);
 			return lastDay+monthStr+year+" 2400";
 		}else{
@@ -143,7 +145,7 @@ public class TimeOperation {
 	
 	public static String createEndTime1 (int year, int month, int day, String timestep){
 		String monthStr=getMonthText(month);
-		if (timestep.equals("1MON")){
+		if (isMonthlyInterval(timestep)){
 			int lastDay=numberOfDays(month, year);
 			return lastDay+monthStr+year+" 2400";
 		}else{
@@ -213,7 +215,7 @@ public class TimeOperation {
 	}
 	
 	public static int getNumberOfTimestep(Date dateA, Date dateB, String timeStep){
-		if (timeStep.equals("1MON")){
+		if (isMonthlyInterval(timeStep)){
 			int monthA=dateA.getMonth();
 			int yearA=dateA.getYear();
 			int monthB=dateB.getMonth();
@@ -233,5 +235,11 @@ public class TimeOperation {
 			if (diff<=0) diff=0;
 			return diff;
 		}
+	}
+	
+	
+	public static boolean isMonthlyInterval(String intervalName) {
+		return IntervalFactory.findAllDss(IntervalFactory.equalsName(intervalName)).stream()
+			.anyMatch(Interval::isMonthly);
 	}
 }

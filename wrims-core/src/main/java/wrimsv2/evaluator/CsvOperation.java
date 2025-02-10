@@ -303,7 +303,7 @@ public class CsvOperation {
 	}
 	
 	public double factorTafToCfs(Date date, String timestep){
-		if (timestep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timestep)){
 			int year=date.getYear()+1900;
 			int month=date.getMonth()+1;
 			int daysInMonth=TimeOperation.numberOfDays(month, year);
@@ -314,7 +314,7 @@ public class CsvOperation {
 	}
 	
 	public double factorCfsToTaf(Date date, String timestep){
-		if (timestep.equals("1MON")){
+		if (TimeOperation.isMonthlyInterval(timestep)){
 			int year=date.getYear()+1900;
 			int month=date.getMonth()+1;
 			int daysInMonth=TimeOperation.numberOfDays(month, year);
