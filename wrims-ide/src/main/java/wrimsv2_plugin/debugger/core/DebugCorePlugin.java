@@ -238,6 +238,7 @@ public class DebugCorePlugin extends AbstractUIPlugin {
 	public static final String ATTR_WPP_ALLRESTARTFILES=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_ALLRESTARTFILES";
 	public static final String ATTR_WPP_NUMBERRESTARTFILES=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_NUMBERRESTARTFILES";
 	public static final String ATTR_WPP_WSIDIOFFSET=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_WSIDIOFFSET";
+	public static final String ATTR_WPP_OUTPUTWSIDIDVONLY=ID_WPP_DEBUG_MODEL + "ATTR_WPP_OUTPUTWSIDIDVONLY";
 	public static final String ATTR_WPP_IFSISSELENTRY=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_IFS_IS_SELECT_ENTRY";
 	public static final String ATTR_WPP_IFSNUMBERSELENTRIES=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_IFS_NUMBER_SELECT_ENTRIES";
 	public static final String ATTR_WPP_IFSSELENTRYNAME=ID_WPP_DEBUG_MODEL + ".ATTR_WPP_IFS_SELECT_ENTRY_NAME";
@@ -320,6 +321,8 @@ public class DebugCorePlugin extends AbstractUIPlugin {
 	
 	public static String[] wrimsGUIPerspectives=new String[]{"wpp.ideperspective", "wpp.dssperspective", "gov.ca.dwr.jdiagram.perspective", "gov.ca.dwr.jdiagram.schematiceditorperspective", "org.eclipse.datatools.sqltools.sqleditor.perspectives.EditorPerspective"};
 
+	public static boolean isWsiDiRun=false;
+	
 	/**
 	 * The constructor.
 	 */

@@ -67,6 +67,7 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 	private Text offsetText;
 	private ILaunchConfiguration launchConfig;
 	private Button wsidiGenBut;
+	private Button outputWsidiDvOnlyBut;
 	private WPPMainTab mainTab;
 	private String externalPath="";
 	
@@ -107,6 +108,20 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
+		outputWsidiDvOnlyBut = new Button(comp, SWT.CHECK);
+		outputWsidiDvOnlyBut.setText("&Output WsiDi related dvar timeseries only");
+		gd = new GridData(GridData.BEGINNING);
+		gd.horizontalSpan=7;
+		outputWsidiDvOnlyBut.setLayoutData(gd);
+		outputWsidiDvOnlyBut.setFont(font);
+		outputWsidiDvOnlyBut.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+		outputWsidiDvOnlyBut.setSelection(true);
+		
 		wsidiGenBut = new Button(comp, SWT.NONE);
 		wsidiGenBut.setText("&Wsi-Di Generator");
 		gd = new GridData(GridData.BEGINNING);
@@ -146,6 +161,17 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			WPPException.handleException(e);
 		}
+		
+		try {
+			String isOutputWsiDiDvOnly = configuration.getAttribute(DebugCorePlugin.ATTR_WPP_OUTPUTWSIDIDVONLY, "yes");
+			if (isOutputWsiDiDvOnly.equalsIgnoreCase("yes")) {
+				
+			}else {
+				
+			}
+		} catch (CoreException e) {
+			WPPException.handleException(e);
+		}
 		launchConfig=configuration;
 	}
 
@@ -153,6 +179,13 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		String offset=offsetText.getText();
 		configuration.setAttribute(DebugCorePlugin.ATTR_WPP_WSIDIOFFSET, offset);
+		
+		boolean isOutputWsiDiDvOnly=outputWsidiDvOnlyBut.getSelection();
+		if (isOutputWsiDiDvOnly) {
+			configuration.setAttribute(DebugCorePlugin.ATTR_WPP_OUTPUTWSIDIDVONLY, "yes");
+		}else {
+			configuration.setAttribute(DebugCorePlugin.ATTR_WPP_OUTPUTWSIDIDVONLY, "no");
+		}
 	}
 
 	@Override
@@ -225,17 +258,19 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 			String dvarFile = mainTab.fDvarFileText.getText();
 			if (new File(dvarFile).isAbsolute()){
 				//String wsidiDvarPath=getWsiDiDvarFilePath(dvarFile);
-				String wsidiDvarPath=dvarFile;
+				String wsidiDvarPath=dvarFile.toLowerCase();
+				wsidiDvarPath=wsidiDvarPath.substring(0, wsidiDvarPath.lastIndexOf(".dss"))+".csv";
 				String lookupPath=getLookupFolderPath(mainFileAbsPath);
-				out.println("DvarFile           "+wsidiDvarPath.toLowerCase());
+				out.println("DvarFile           "+wsidiDvarPath);
 				createWsiDiMain(wsidiDvarPath, lookupPath);
 			}else{
-				String procDvarFile=procRelativePath(dvarFile);
+				String procDvarPath=procRelativePath(dvarFile);
 				//String wsidiDvarFile=getWsiDiDvarFilePath(procDvarFile);
-				String wsidiDvarFile=procDvarFile;
+				String wsidiDvarPath=procDvarPath.toLowerCase();
+				wsidiDvarPath=wsidiDvarPath.substring(0, wsidiDvarPath.lastIndexOf(".dss"))+".csv";
 				String lookupFolder=getLookupFolderPath(mainFileAbsPath);
-				out.println("DvarFile           " + wsidiDvarFile.toLowerCase());
-				createWsiDiMain(wsidiDvarFile, lookupFolder);
+				out.println("DvarFile           " + wsidiDvarPath.toLowerCase());
+				createWsiDiMain(wsidiDvarPath, lookupFolder);
 			}
 			String svarFile = mainTab.fSvarFileText.getText();
 			if (new File(svarFile).isAbsolute()){
@@ -277,6 +312,7 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 			out.println("VersionHecDssOutput "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_VHECLIB, "6"));
 			out.println("DatabaseURL        "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_DATABASEURL, "none"));
 			out.println("SQLGroup           "+launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_SQLGROUP, "calsim"));
+			/*
 			String ovOption=launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_OVOPTION, "0");
 			String ovFile=launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_OVFILE, "");
 			if (ovFile.trim().equals("")){
@@ -289,7 +325,17 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 				out.println("OVOption           "+ovOption);
 				out.println("OVFile             "+FileProcess.procRelativePath(ovFile, launchConfig));
 			}
+			*/
 			
+			File wsidifvFile = new File(DebugCorePlugin.dataDir, "wsidi.fv");
+			String isOutputWsiDiDvOnly=launchConfig.getAttribute(DebugCorePlugin.ATTR_WPP_OUTPUTWSIDIDVONLY, "yes");
+			if (isOutputWsiDiDvOnly.equalsIgnoreCase("yes")) {
+				out.println("OVOption           1");
+				out.println("OVFile             "+wsidifvFile.getAbsolutePath());
+			}else {
+				out.println("OVOption           0");
+				out.println("OVFile             .");
+			}
 			out.println("OutputCycleDatatoDss no");
 						
 			if (DebugCorePlugin.outputAllCycles){

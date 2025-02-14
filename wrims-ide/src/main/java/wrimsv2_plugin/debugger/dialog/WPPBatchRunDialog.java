@@ -459,6 +459,7 @@ public class WPPBatchRunDialog extends Dialog {
 	protected void startAllBatchRun(){
 		
 		if (isWsidi){
+			DebugCorePlugin.isWsiDiRun=true;
 			if (isSequential){
 				prepareWsiDiSequential();
 				try {
@@ -475,6 +476,7 @@ public class WPPBatchRunDialog extends Dialog {
 				}
 			}
 		}else{
+			DebugCorePlugin.isWsiDiRun=false;
 			emptyProgressFiles();
 			clearBatchRunList();
 		
