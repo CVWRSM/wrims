@@ -641,7 +641,7 @@ public class BatchRunProcess {
 					dvFileFullPath=dvFileFullPath.substring(0, dvFileFullPath.lastIndexOf(".dss"))+".csv";
 					out.println("DvarFile           "+dvarFile);
 				}else{
-					String procDvarFile=FileProcess.procRelativePath(dvarFile, launchFilePath);
+					String procDvarFile=FileProcess.procRelativePath(dvarFile, launchFilePath).toLowerCase();
 					procDvarFile=procDvarFile.substring(0, procDvarFile.lastIndexOf(".dss"))+".csv";
 					out.println("DvarFile           " + procDvarFile);
 				}
