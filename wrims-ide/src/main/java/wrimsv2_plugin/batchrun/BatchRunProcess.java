@@ -122,6 +122,7 @@ public class BatchRunProcess {
 	private boolean isSameInitialDss=true;
 	private String genSVCatalog="no";
 	public String wsidiOffset;
+	private String isOutputWsiDiDvOnly;
 
 	public void launch(LaunchConfigInfo configuration, String launchFilePath) throws CoreException {		
 		
@@ -419,6 +420,7 @@ public class BatchRunProcess {
 		ifsIsSelFile=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_IFSISSELENTRY, "yes");
 		unchangeGWRestart=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_UNCHANGEGWRESTART, "yes");
 		wsidiOffset=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_WSIDIOFFSET, "1.2");
+		isOutputWsiDiDvOnly=configuration.getStringAttribute(DebugCorePlugin.ATTR_WPP_OUTPUTWSIDIDVONLY, "yes");
 
 		String mainFileAbsPath;
 		if (new File(mainFile).isAbsolute()){
@@ -632,14 +634,35 @@ public class BatchRunProcess {
 			if (DebugCorePlugin.log.equals("xa_cbc") || DebugCorePlugin.log.equals("cbc_xa")){
 				out.println("solvecompare       "+configMap.get("solvecompare".toLowerCase()));
 			}
-			if (new File(dvarFile).isAbsolute()){
-				out.println("DvarFile           "+dvarFile);
-				dvFileFullPath=dvarFile;
+			
+			if (DebugCorePlugin.isWsiDiRun) {
+				if (new File(dvarFile).isAbsolute()){
+					dvFileFullPath=dvarFile.toLowerCase();
+					dvFileFullPath=dvFileFullPath.substring(0, dvFileFullPath.lastIndexOf(".dss"))+".csv";
+					out.println("DvarFile           "+dvarFile);
+				}else{
+					String procDvarFile=FileProcess.procRelativePath(dvarFile, launchFilePath);
+					procDvarFile=procDvarFile.substring(0, procDvarFile.lastIndexOf(".dss"))+".csv";
+					out.println("DvarFile           " + procDvarFile);
+				}
+				if (isOutputWsiDiDvOnly.equalsIgnoreCase("yes")) {
+					File wsidifvFile = new File(DebugCorePlugin.dataDir, "wsidi.fv");
+					out.println("OVOption           1");
+					out.println("OVFile             "+wsidifvFile.getAbsolutePath());
+				}else {
+					out.println("OVOption           0");
+					out.println("OVFile             .");
+				}
 			}else{
-				String procDvarFile=FileProcess.procRelativePath(dvarFile, launchFilePath);
-				out.println("DvarFile           " + procDvarFile);
-				dvFileFullPath=procDvarFile;
+				if (new File(dvarFile).isAbsolute()){
+					dvFileFullPath=dvarFile.toLowerCase();
+					out.println("DvarFile           "+dvarFile);
+				}else{
+					String procDvarFile=FileProcess.procRelativePath(dvarFile, launchFilePath);
+					out.println("DvarFile           " + procDvarFile);
+				}
 			}
+			
 			if (new File(svarFile).isAbsolute()){
 				out.println("SvarFile           "+svarFile);
 			}else{

@@ -321,6 +321,8 @@ public class DebugCorePlugin extends AbstractUIPlugin {
 	
 	public static String[] wrimsGUIPerspectives=new String[]{"wpp.ideperspective", "wpp.dssperspective", "gov.ca.dwr.jdiagram.perspective", "gov.ca.dwr.jdiagram.schematiceditorperspective", "org.eclipse.datatools.sqltools.sqleditor.perspectives.EditorPerspective"};
 
+	public static boolean isWsiDiRun=false;
+	
 	/**
 	 * The constructor.
 	 */

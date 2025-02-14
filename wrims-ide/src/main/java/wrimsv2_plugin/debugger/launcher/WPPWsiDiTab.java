@@ -258,17 +258,19 @@ public class WPPWsiDiTab extends AbstractLaunchConfigurationTab {
 			String dvarFile = mainTab.fDvarFileText.getText();
 			if (new File(dvarFile).isAbsolute()){
 				//String wsidiDvarPath=getWsiDiDvarFilePath(dvarFile);
-				String wsidiDvarPath=dvarFile;
+				String wsidiDvarPath=dvarFile.toLowerCase();
+				wsidiDvarPath=wsidiDvarPath.substring(0, wsidiDvarPath.lastIndexOf(".dss"))+".csv";
 				String lookupPath=getLookupFolderPath(mainFileAbsPath);
-				out.println("DvarFile           "+wsidiDvarPath.toLowerCase());
+				out.println("DvarFile           "+wsidiDvarPath);
 				createWsiDiMain(wsidiDvarPath, lookupPath);
 			}else{
-				String procDvarFile=procRelativePath(dvarFile);
+				String procDvarPath=procRelativePath(dvarFile);
 				//String wsidiDvarFile=getWsiDiDvarFilePath(procDvarFile);
-				String wsidiDvarFile=procDvarFile;
+				String wsidiDvarPath=procDvarPath.toLowerCase();
+				wsidiDvarPath=wsidiDvarPath.substring(0, wsidiDvarPath.lastIndexOf(".dss"))+".csv";
 				String lookupFolder=getLookupFolderPath(mainFileAbsPath);
-				out.println("DvarFile           " + wsidiDvarFile.toLowerCase());
-				createWsiDiMain(wsidiDvarFile, lookupFolder);
+				out.println("DvarFile           " + wsidiDvarPath.toLowerCase());
+				createWsiDiMain(wsidiDvarPath, lookupFolder);
 			}
 			String svarFile = mainTab.fSvarFileText.getText();
 			if (new File(svarFile).isAbsolute()){
