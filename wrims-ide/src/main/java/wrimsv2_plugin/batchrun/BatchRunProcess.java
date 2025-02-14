@@ -641,9 +641,9 @@ public class BatchRunProcess {
 					dvFileFullPath=dvFileFullPath.substring(0, dvFileFullPath.lastIndexOf(".dss"))+".csv";
 					out.println("DvarFile           "+dvarFile);
 				}else{
-					String procDvarFile=FileProcess.procRelativePath(dvarFile, launchFilePath).toLowerCase();
-					procDvarFile=procDvarFile.substring(0, procDvarFile.lastIndexOf(".dss"))+".csv";
-					out.println("DvarFile           " + procDvarFile);
+					dvFileFullPath=FileProcess.procRelativePath(dvarFile, launchFilePath).toLowerCase();
+					dvFileFullPath=dvFileFullPath.substring(0, dvFileFullPath.lastIndexOf(".dss"))+".csv";
+					out.println("DvarFile           " + dvFileFullPath);
 				}
 				if (isOutputWsiDiDvOnly.equalsIgnoreCase("yes")) {
 					File wsidifvFile = new File(DebugCorePlugin.dataDir, "wsidi.fv");
@@ -658,8 +658,8 @@ public class BatchRunProcess {
 					dvFileFullPath=dvarFile.toLowerCase();
 					out.println("DvarFile           "+dvarFile);
 				}else{
-					String procDvarFile=FileProcess.procRelativePath(dvarFile, launchFilePath);
-					out.println("DvarFile           " + procDvarFile);
+					dvFileFullPath=FileProcess.procRelativePath(dvarFile, launchFilePath);
+					out.println("DvarFile           " + dvFileFullPath);
 				}
 			}
 			
